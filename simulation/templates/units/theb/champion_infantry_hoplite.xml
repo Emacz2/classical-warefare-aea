@@ -3,6 +3,14 @@
 <Auras datatype="tokens"> 
   units/thebes_sb
  </Auras>
+ <Attack>
+    <Melee>
+      <Damage>
+        <Hack op="mul">1.2</Hack>
+        <Pierce op="mul">1.2</Pierce>
+      </Damage>
+    </Melee>
+  </Attack>
   <Identity>
     <Civ>theb</Civ>
     <Lang>greek</Lang>

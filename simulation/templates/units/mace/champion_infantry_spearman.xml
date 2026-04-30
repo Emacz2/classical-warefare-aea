@@ -5,7 +5,11 @@
   </Auras>
   <Attack>
     <Melee>
+      <Damage>
+        <Pierce op="add">2</Pierce>
+      </Damage>
       <MaxRange op="add">2.5</MaxRange>
+      <RepeatTime op="add">250</RepeatTime>
     </Melee>
   </Attack>
    <Resistance>
