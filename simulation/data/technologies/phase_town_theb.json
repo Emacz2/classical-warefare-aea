@@ -1,0 +1,40 @@
+{
+	"genericName": "Town Phase",
+	"specificName": {
+		"spart": "Kōmopolis"
+	},
+	"description": "Advances from a small village to a bustling town, ready to expand rapidly.",
+	"cost": {
+		"food": 500,
+		"wood": 500,
+		"stone": 150,
+		"metal": 100
+	},
+
+	"requirements": {
+		"entity": {
+			"class": "Village",
+			"number": 6
+		}
+	},
+
+	"requirementsTooltip": "Requires six Village Structures.",
+	"supersedes": "phase_village",
+	"replaces": ["phase_town"],
+	"icon": "town_phase.png",
+	"researchTime": 40,
+	"tooltip": "Advance to Spartan town Phase, which unlocks more entities and technologies. Civic Centers +15% territory influence radius, 25% more garrison capacity, +10 range and 2.5 of each resistance. Structures +0.5 capture points regeneration rate for garrisoned units. Spartiates +0.5H/P resistances and +25 health.  All melee infantry 5% more dmg. Heltos 10% less train time and -125 repeat time. ",
+	"modifications": [
+		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.1, "affects": "CivCentre" },
+		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
+		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "CivCentre" },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" }
+
+		
+
+	],
+	"soundComplete": "interface/alarm/alarm_phase.xml"
+}

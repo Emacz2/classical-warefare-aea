@@ -1,0 +1,51 @@
+{
+	"genericName": "City Phase",
+	"specificName": {
+		"spart": "Megalopolis"
+	},
+
+	"description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology.",
+	"cost": {
+		"food": 500,
+		"wood": 500,
+		"stone": 750,
+		"metal": 500
+	},
+	 "requirements": {
+        "all": [
+            {
+                "entity": {
+                    "class": "Village",
+                    "number": 20
+                }
+            },
+            {
+                "entity": {
+                    "class": "Town",
+                    "number": 2
+                }
+            }
+        ]
+	},
+	"requirementsTooltip": "Requires 20 village and 2 town structures.",
+	"supersedes": "phase_town_theb",
+	"replaces": ["phase_city"],
+	"icon": "city_phase.png",
+	"researchTime": 60,
+	"tooltip": "Advance to Spartan city Phase, which unlocks more entities and technologies. Civic Centers +20% territory influence radius, 40% more garrison capacity, +5 range and +2.5C +5H +7.5P resittances. Structures +1 capture points regeneration rate for garrisoned units. Spartiates +25 health.  All infantry except Helots +0.5P resistances",
+	"modifications": [
+		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
+		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
+		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
+		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15, "affects": "Champion Spearman" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15, "affects": "Champion Spearman" }
+	
+		
+	],
+	"soundComplete": "interface/alarm/alarm_phase.xml"
+}
