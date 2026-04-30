@@ -20,13 +20,15 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 30,
-	"tooltip": "Pikemen −25% training time and −30% promotion experience and +1 range.",
+	"tooltip": "Polearm units −20% training time, −30% promotion experience +1 range and 5% faster movement speed.",
 	"modifications": [
-		{ "value": "Cost/BuildTime", "multiply": 0.75 },
+		{ "value": "Cost/BuildTime", "multiply": 0.8 },
 		{ "value": "Promotion/RequiredXp", "multiply": 0.7 },
-		{ "value": "Attack/Melee/MaxRange", "add": 1 }
+		{ "value": "Attack/Melee/MaxRange", "add": 1 },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
+		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.05 }
 		
 	],
-	"affects": ["Infantry Pikeman"],
+	"affects": ["Polearm"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

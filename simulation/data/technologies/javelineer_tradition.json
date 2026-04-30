@@ -2,8 +2,9 @@
 	"genericName": "Javelineer Tradition",
 	"description": "Celtic tribes were profcient with throwing javelins.",
 	"cost": {
-		"wood": 200,
-		"metal": 150
+		"food": 150,
+		"wood": 150,
+		"metal": 100
 	},
 	"requirements": {
 		"all": [
@@ -20,8 +21,9 @@
 	"requirementsTooltip": "Unlocked in Village Phase.",
 	"icon": "archery_tradition.png",
 	"researchTime": 40,
-	"tooltip": "Javelineers +3 attack range.",
+	"tooltip": "Javelineers -15% train time and +3 attack range.",
 	"modifications": [
+		{ "value": "Cost/BuildTime", "multiply": 0.85 },
 		{ "value": "Attack/Ranged/MaxRange", "add": 3 }
 	],
 	"affects": ["Javelineer"],
