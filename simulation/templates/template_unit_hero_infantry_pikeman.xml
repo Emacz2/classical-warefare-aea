@@ -5,15 +5,15 @@
       <AttackName>Pike</AttackName>
        <Damage>
         <Hack>9</Hack>
-        <Pierce>18</Pierce>
+        <Pierce>20</Pierce>
       </Damage>
-      <MaxRange>8</MaxRange>
+      <MaxRange>10</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>2000</RepeatTime>
+      <RepeatTime>2250</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>3.25</Multiplier>
+          <Multiplier>2.5</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
@@ -21,7 +21,7 @@
   </Attack>
   <Identity>
     <GenericName>Hero Pikeman</GenericName>
-    <Tooltip>Counters: 3.25 × vs Cavalry.</Tooltip>
+    <Tooltip>Counters: 2.5 × vs Cavalry.</Tooltip>
     <VisibleClasses datatype="tokens">Melee Pikeman</VisibleClasses>
   </Identity>
   <Sound>

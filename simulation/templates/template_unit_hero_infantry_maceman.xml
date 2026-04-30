@@ -8,9 +8,15 @@
         <Hack>7</Hack>
         <Pierce>2</Pierce>
       </Damage>
-      <MaxRange>3</MaxRange>
+      <MaxRange>2</MaxRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1000</RepeatTime>
+      <Bonuses>
+        <BonusMelee>
+          <Classes>Melee Infantry</Classes>
+          <Multiplier>1.5</Multiplier>
+        </BonusMelee>
+      </Bonuses>
       <PreferredClasses datatype="tokens">!Ship</PreferredClasses>
     </Melee>
   </Attack>

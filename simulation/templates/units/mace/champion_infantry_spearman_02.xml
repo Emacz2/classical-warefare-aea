@@ -8,21 +8,17 @@
       </Damage>
     </Melee>
   </Attack>
- <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
- <Health>
-    <Max op="add">25</Max>
+  <Health>
+    <Max op="add">50</Max>
   </Health>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
+    <Acceleration op="mul">1.05</Acceleration>
+  </UnitMotion>
   <Identity>
     <SpecificName>Hypaspistḗs Argyraspídi</SpecificName>
     <Icon>units/mace/argyraspidai.png</Icon>
-     <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
+    <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>

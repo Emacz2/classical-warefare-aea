@@ -8,9 +8,15 @@
         <Hack>3</Hack>
         <Pierce>1</Pierce>
       </Damage>
-      <MaxRange>3</MaxRange>
+      <MaxRange>1.5</MaxRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1000</RepeatTime>
+      <Bonuses>
+        <BonusMelee>
+          <Classes>Melee Infantry</Classes>
+          <Multiplier>1.5</Multiplier>
+        </BonusMelee>
+      </Bonuses>
       <PreferredClasses datatype="tokens">!Ship</PreferredClasses>
     </Melee>
   </Attack>
@@ -23,6 +29,7 @@
   <Identity>
     <GenericName>Infantry Maceman</GenericName>
     <VisibleClasses datatype="tokens">Maceman</VisibleClasses>
+    <Tooltip>Counters: 1.5× vs Melee Infantry.</Tooltip>
   </Identity>
   <UnitMotion>
     <WalkSpeed op="mul">1.03</WalkSpeed>

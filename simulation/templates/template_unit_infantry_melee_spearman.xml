@@ -13,7 +13,7 @@
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2.5</Multiplier>
+          <Multiplier>2</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -26,7 +26,7 @@
   </Cost>
   <Identity>
     <GenericName>Spearman</GenericName>
-    <Tooltip>Counters: 2.5× vs Cavalry.</Tooltip>
+    <Tooltip>Counters: 2× vs Cavalry.</Tooltip>
     <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
   <UnitMotion>

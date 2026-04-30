@@ -8,7 +8,7 @@
         <Hack>8</Hack>
         <Pierce>1</Pierce>
       </Damage>
-      <MaxRange>3.5</MaxRange>
+      <MaxRange>1.5</MaxRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1100</RepeatTime>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>

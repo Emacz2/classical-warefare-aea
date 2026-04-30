@@ -5,15 +5,15 @@
       <AttackName>Pike</AttackName>
       <Damage>
         <Hack>4</Hack>
-        <Pierce>8</Pierce>
+        <Pierce>8.5</Pierce>
       </Damage>
-      <MaxRange>8</MaxRange>
+      <MaxRange>10</MaxRange>
       <PrepareTime>1000</PrepareTime>
-      <RepeatTime>2000</RepeatTime>
+      <RepeatTime>2250</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>3</Multiplier>
+          <Multiplier>2.5</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
@@ -28,7 +28,7 @@
   </Cost>
   <Identity>
     <GenericName>Pikeman</GenericName>
-    <Tooltip>Counters: 3× vs Cavalry.</Tooltip>
+    <Tooltip>Counters: 2.5× vs Cavalry.</Tooltip>
     <VisibleClasses datatype="tokens">Pikeman</VisibleClasses>
   </Identity>
   <Resistance>
