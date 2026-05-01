@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="greek_olympian|template_unit_champion_infantry_pikeman">
- <UnitAI>
-    <Formations datatype="tokens">
-      special/formations/phalanx
-    </Formations>
-  </UnitAI>
    <Auras datatype="tokens">
     units/phalanx
   </Auras>
@@ -27,7 +22,7 @@
   <Identity>
     <SpecificName>Hypaspistḗs Argyraspídi</SpecificName>
     <Icon>units/mace/argyraspidai.png</Icon>
-    <VisibleClasses datatype="tokens">Nobel Polearm</VisibleClasses>
+    <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>

@@ -22,7 +22,7 @@
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
     <Tooltip>One handed spear with shield. Counters: 2× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Melee Spearman</VisibleClasses>
+    <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
   </Identity>
   <Resistance>
     <Entity>

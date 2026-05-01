@@ -1,15 +1,19 @@
 {
-	"genericName": "Shepard army core",
+	"genericName": "Phalangite core",
 	"autoResearch": true,
 	"description": "Infantry consisted primarely of shepherds",
 	"requirements": { "civ": "mace" },
 	"icon": "wooden_walls.png",
-	"tooltip": "Citizen Pikeman and Archers -10% train time and cost 5 less food and wood but 5% less dmg. Pikeman -0.5 pierce/hack resistance while Archers is 10% less accurate.  They lose consript status when promoted to basic rank..",
+	"tooltip": "Mace Foot Companions -0.5 Hack/Pierce, -1 Crush resistance but cost 5 less metal and -5% train time. .",
 	"modifications": [
-		
-		{ "value": "Cost/BuildTime", "multiply": 0.9 }
 
+		{ "value": "Resistance/Entity/Damage/Hack", "add": -0.5 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": -0.5 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": -1 },
+		{ "value": "Cost/BuildTime", "multiply": 0.95 },
+		{ "value": "Cost/Resources/metal", "add": -5 }
+		
 
 	],
-	"affects": ["Citizen Pikeman", "Citizen Archer"]
+	"affects": ["Citizen Pikeman"]
 }

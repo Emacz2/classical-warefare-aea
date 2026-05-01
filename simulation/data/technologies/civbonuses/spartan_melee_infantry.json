@@ -3,7 +3,7 @@
 	"autoResearch": true,
 	"description": "Spartans were trained from the age of 6 to be superior warriors in defense of the Spartan state.",
 	"icon": "agoge.png",
-	"tooltip": "Melee Infantry 5% more dmg and gains an additional 5% P2 and P3 but Sparta does not have Will to Fight.",
+	"tooltip": "Melee Infantry 5% more dmg.",
 	"requirements": { "civ": "spart" },
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05},

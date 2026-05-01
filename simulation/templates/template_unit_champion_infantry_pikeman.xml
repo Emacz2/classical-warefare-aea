@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_champion_infantry_melee">
-  <Auras datatype="tokens">
-    units/phalanx_pike
-  </Auras>
   <Attack>
     <Melee>
       <AttackName>Pike</AttackName>

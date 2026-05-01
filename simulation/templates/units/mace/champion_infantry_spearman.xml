@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="greek_olympian|polearm|template_unit_champion_infantry_spearman">
+<Entity parent="greek_olympian|template_unit_champion_infantry_spearman">
   <Attack>
     <Melee>
       <Damage>
@@ -7,6 +7,10 @@
       </Damage>
     </Melee>
   </Attack>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
+    <Acceleration op="mul">1.05</Acceleration>
+  </UnitMotion>
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>

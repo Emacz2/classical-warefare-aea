@@ -22,7 +22,7 @@
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
     <Tooltip>Two handed thursting spear. Counters: 2× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Melee Spearman</VisibleClasses>
+    <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
   </Identity>
  <UnitMotion>
     <WalkSpeed op="mul">0.98</WalkSpeed>

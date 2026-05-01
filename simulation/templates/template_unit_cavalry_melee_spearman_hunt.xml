@@ -17,7 +17,7 @@
   <Identity>
     <GenericName>Flanking Cavalry Spearman</GenericName>
     <Tooltip>Counters: 2.5× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
+    <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
   </Identity>
   <UnitMotion>
     <Acceleration op="mul">1.1</Acceleration>

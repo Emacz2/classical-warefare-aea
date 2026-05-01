@@ -1,0 +1,25 @@
+{
+	"genericName": "Successor Kingdoms",
+	"autoResearch": true,
+	"description": "",
+	"icon": "agoge.png",
+	"tooltip": "Pikeman +1.5 of Crush/Hack and +1 pierce resistance but 5% slower movement",
+		"requirements": {
+		"any": [
+			{ "civ": "ptol" },
+			{ "civ": "sele" }
+		]
+	},
+	"modifications": [
+
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 1.5 },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 }
+		
+
+	],
+
+	"affects": ["Pikeman"]
+	
+}
