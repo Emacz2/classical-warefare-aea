@@ -11,7 +11,7 @@
     <VisibleClasses datatype="tokens">Citizen Soldier Elephant</VisibleClasses>
   </Identity>
   <Loot>
-    <xp>260</xp>
+    <xp>200</xp>
   </Loot>
   <Position>
     <TurnRate>4</TurnRate>

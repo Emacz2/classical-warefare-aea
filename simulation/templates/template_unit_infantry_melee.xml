@@ -8,10 +8,10 @@
     <VisibleClasses datatype="tokens">Melee</VisibleClasses>
   </Identity>
   <Loot>
-    <xp>50</xp>
-    <wood>10</wood>
-    <stone>0</stone>
-    <metal>5</metal>
+    <xp>150</xp>
+    <wood>20</wood>
+    <stone>10</stone>
+    <metal>10</metal>
   </Loot>
   <Resistance>
     <Entity>

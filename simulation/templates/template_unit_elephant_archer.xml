@@ -31,9 +31,9 @@
     <Max>200</Max>
   </Health>
       <Loot>
-    <xp>65</xp>
-    <metal>5</metal>
-    <wood>10</wood>
+    <xp>200</xp>
+    <metal>15</metal>
+    <wood>30</wood>
   </Loot>
   <Identity>
     <GenericName>Elephant Archer</GenericName>

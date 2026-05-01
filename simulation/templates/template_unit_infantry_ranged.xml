@@ -24,9 +24,9 @@
   </Resistance>
   <Turretable/>
   <Loot>
-    <xp>25</xp>
-    <wood>10</wood>
-    <stone>0</stone>
+    <xp>75</xp>
+    <wood>15</wood>
+    <stone>5</stone>
     <metal>5</metal>
   </Loot>
   <UnitAI>

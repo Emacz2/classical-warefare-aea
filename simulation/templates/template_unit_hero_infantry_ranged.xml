@@ -16,7 +16,7 @@
     <Max>500</Max>
   </Health>
       <Loot>
-    <xp>165</xp>
+    <xp>500</xp>
   </Loot>
   <Position>
     <Anchor>upright</Anchor>

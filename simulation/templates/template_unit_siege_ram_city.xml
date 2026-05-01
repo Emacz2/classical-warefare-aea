@@ -45,9 +45,9 @@
     </Requirements>
   </Identity>
   <Loot>
-    <xp>250</xp>
-    <wood>75</wood>
-    <metal>35</metal>
+    <xp>400</xp>
+    <wood>100</wood>
+    <metal>50</metal>
   </Loot>
   <Resistance>
     <Entity>

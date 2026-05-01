@@ -23,9 +23,9 @@
     </Entity>
   </Resistance>
       <Loot>
-    <xp>65</xp>
-    <metal>5</metal>
-    <wood>10</wood>
+    <xp>125</xp>
+    <metal>15</metal>
+    <wood>30</wood>
   </Loot>
   <Selectable>
     <Overlay>

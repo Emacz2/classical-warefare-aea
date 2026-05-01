@@ -11,6 +11,10 @@
   <Health>
     <Max>600</Max>
   </Health>
+    <Loot>
+    <xp>600</xp>
+    <metal>50</metal>
+  </Loot>
   <Identity>
     <GenericName>War Elephant</GenericName>
     <VisibleClasses datatype="tokens">Elephant</VisibleClasses>

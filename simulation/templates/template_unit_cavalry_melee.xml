@@ -11,9 +11,9 @@
     <Max>200</Max>
   </Health>
     <Loot>
-    <xp>65</xp>
-    <metal>5</metal>
-    <wood>5</wood>
+    <xp>200</xp>
+    <metal>15</metal>
+    <wood>15</wood>
   </Loot>
   <Resistance>
     <Entity>

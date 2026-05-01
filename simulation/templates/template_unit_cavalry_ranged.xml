@@ -11,9 +11,9 @@
     <Max>150</Max>
   </Health>
     <Loot>
-    <xp>50</xp>
-    <metal>5</metal>
-    <wood>5</wood>
+    <xp>150</xp>
+    <metal>15</metal>
+    <wood>15</wood>
   </Loot>
   <UnitAI>
     <Formations datatype="tokens">

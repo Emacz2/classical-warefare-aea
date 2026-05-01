@@ -72,9 +72,9 @@
     </Requirements>
   </Identity>
   <Loot>
-    <xp>250</xp>
-    <wood>80</wood>
-    <stone>50</stone>
+    <xp>375</xp>
+    <wood>50</wood>
+    <stone>20</stone>
   </Loot>
   <Pack>
     <Time>5000</Time>

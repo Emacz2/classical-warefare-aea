@@ -33,9 +33,8 @@
     <VisibleClasses datatype="tokens">Melee Ram</VisibleClasses>
   </Identity>
   <Loot>
-    <xp>150</xp>
-    <wood>45</wood>
-    <metal>20</metal>
+    <xp>200</xp>
+    <wood>50</wood>
   </Loot>
   <Resistance>
     <Entity>

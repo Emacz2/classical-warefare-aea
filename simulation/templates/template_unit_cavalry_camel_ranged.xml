@@ -7,6 +7,9 @@
   <Health>
     <Max>150</Max>
   </Health>
+    <Loot>
+    <xp>150</xp>
+  </Loot>
   <UnitAI>
     <Formations datatype="tokens">
       special/formations/skirmish

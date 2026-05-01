@@ -61,9 +61,11 @@
     </Capacities>
   </ResourceGatherer>
    <Loot>
-    <xp>15</xp>
-    <food>5</food>
-    <wood>5</wood>
+    <xp>50</xp>
+    <food>10</food>
+    <metal>5</metal>
+    <stone>5</stone>
+    <wood>10</wood>
   </Loot>
   <Sound>
     <SoundGroups>
