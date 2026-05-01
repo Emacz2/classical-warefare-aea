@@ -17,6 +17,7 @@
     <GenericName>Sheep</GenericName>
     <SpecificName>Ovis aries</SpecificName>
     <Icon>gaia/fauna_sheep.png</Icon>
+    <Tooltip>Slow trickle +1 food every 4 seconds while alive</Tooltip>
   </Identity>
   <Loot>
     <xp>2</xp>
@@ -27,7 +28,7 @@
   </ResourceSupply>
   <ResourceTrickle>
     <Rates>
-      <food>0.5</food>
+      <food>0.25</food>
     </Rates>
     <Interval>1000</Interval>
   </ResourceTrickle>

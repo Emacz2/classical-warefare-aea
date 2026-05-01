@@ -17,6 +17,7 @@
     <GenericName>Sanga Cattle</GenericName>
     <SpecificName>Bos taurus africanus</SpecificName>
     <Icon>gaia/fauna_sanga.png</Icon>
+  <Tooltip>Slow trickle +1 food per second while alive</Tooltip>
   </Identity>
   <Loot>
     <xp>10</xp>

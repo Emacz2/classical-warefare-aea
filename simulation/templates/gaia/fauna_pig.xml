@@ -17,6 +17,7 @@
     <GenericName>Pig</GenericName>
     <SpecificName>Sus scrofa domesticus</SpecificName>
     <Icon>gaia/fauna_pig.png</Icon>
+    <Tooltip>Slow trickle +1 food every 2 seconds while alive</Tooltip>
   </Identity>
   <Loot>
     <xp>5</xp>

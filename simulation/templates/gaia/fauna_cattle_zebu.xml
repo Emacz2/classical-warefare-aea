@@ -17,6 +17,7 @@
     <GenericName>Zebu</GenericName>
     <SpecificName>Bos taurus indicus</SpecificName>
     <Icon>gaia/fauna_zebu.png</Icon>
+    <Tooltip>Slow trickle +1 food per second while alive</Tooltip>
   </Identity>
   <Loot>
     <xp>10</xp>

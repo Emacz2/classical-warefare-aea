@@ -17,6 +17,7 @@
     <GenericName>Cow</GenericName>
     <SpecificName>Bos taurus taurus</SpecificName>
     <Icon>gaia/fauna_cow.png</Icon>
+    <Tooltip>Slow trickle +1 food per second while alive</Tooltip>
   </Identity>
   <Loot>
     <xp>10</xp>

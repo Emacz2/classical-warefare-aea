@@ -29,7 +29,7 @@
     </Distance>
   </BuildRestrictions>
   <Loot>
-    <food>50</food>
+    <food>100</food>
   </Loot>
   <Minimap>
     <Color r="119" g="82" b="46"/>
