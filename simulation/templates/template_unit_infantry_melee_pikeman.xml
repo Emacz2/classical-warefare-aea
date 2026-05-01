@@ -29,7 +29,7 @@
   <Identity>
     <GenericName>Pikeman</GenericName>
     <Tooltip>Counters: 2.5× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Pikeman</VisibleClasses>
+    <VisibleClasses datatype="tokens">Pikeman Polearm</VisibleClasses>
   </Identity>
   <Resistance>
     <Entity>

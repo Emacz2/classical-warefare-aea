@@ -1,36 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="hoplite|greek_olympian|polearm|template_unit_champion_infantry_spearman">
-  <Auras datatype="tokens">
-    units/phalanx
-  </Auras>
+<Entity parent="greek_olympian|polearm|template_unit_champion_infantry_spearman">
   <Attack>
     <Melee>
       <Damage>
-        <Pierce op="add">2</Pierce>
+        <Pierce op="add">1.5</Pierce>
       </Damage>
-      <MaxRange op="add">1.5</MaxRange>
-      <RepeatTime op="add">250</RepeatTime>
     </Melee>
   </Attack>
-   <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">-1</Crush>
-        <Hack op="add">-1</Hack>
-        <Pierce op="add">-1.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.05</WalkSpeed>
-    <Acceleration op="mul">1.05</Acceleration>
-  </UnitMotion>
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>
     <GenericName>Macedonian Shield Bearer</GenericName>
     <SpecificName>Hypaspistḗs</SpecificName>
-    <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
+     <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
     <SelectionGroupName>units/mace/champion_infantry_spearman</SelectionGroupName>
     <Icon>units/mace/champion_infantry.png</Icon>
     <Requirements>

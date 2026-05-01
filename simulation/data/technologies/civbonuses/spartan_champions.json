@@ -3,7 +3,7 @@
 	"autoResearch": true,
 	"description": "Under the constitution written by the mythical lawgiver Lycurgus, the institution of the Agoge was established, where Spartans were trained from the age of 6 to be superior warriors in defense of the Spartan state.",
 	"icon": "agoge.png",
-	"tooltip": "Champion Hoplites are available in p1, and may promote to Hippeis. They attack 10% faster than other champion spearman. P1 take 15% less train but have 25 less health, -1 of hack and peirce resistance and do 10% less dmg.  It is gained back through phasing up.",
+	"tooltip": "Champion Hoplites are available in p1 and -10% repeat time compared other champion spearman.  As Young Hoplites (Paidiskoi) they cost -50 food and metal and take only 16 seconds to train.  However, they do 25% less dmg, have -2 hack/pierce resitance and -25 health.  They promote to normal Spartiates (Hebontes) which are avialble to train p2 and can eventualy promote to Olympic Spartiates (Hippeis)   ",
 	"requirements": { "civ": "spart" },
 	"modifications": [
 		{ "value": "Attack/Melee/RepeatTime", "multiply": 0.9}

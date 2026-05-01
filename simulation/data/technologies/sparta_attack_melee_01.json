@@ -14,19 +14,12 @@
 	"requirementsTooltip": "Unlocked in village.",
 	"icon": "sword_01.png",
 	"researchTime": 20,
-	"tooltip": "Soldiers +10% melee attack damage, Champions/Heroes an additional 5% but also +5% train time. ",
+	"tooltip": "Soldiers +10% melee attack damage. ",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1 },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Champion" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Champion" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Champion" },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Hero" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Hero" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hero" },
-		{ "value": "Cost/BuildTime", "multiply": 1.05, "affects": "Champion" },
-		{ "value": "Cost/BuildTime", "multiply": 1.05, "affects": "Hero" }
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 }
+		
 	],
 	"affects": ["Soldier !Mercenary !Elephant !Auxiliary"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"

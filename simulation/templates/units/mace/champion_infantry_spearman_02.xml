@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/mace/champion_infantry_spearman">
+<Entity parent="greek_olympian|template_unit_champion_infantry_pikeman">
+ <UnitAI>
+    <Formations datatype="tokens">
+      special/formations/phalanx
+    </Formations>
+  </UnitAI>
+   <Auras datatype="tokens">
+    units/phalanx
+  </Auras>
   <Attack>
     <Melee>
       <Damage>
         <Hack op="mul">1.1</Hack>
         <Pierce op="mul">1.1</Pierce>
       </Damage>
+      <RepeatTime op="add">-500</RepeatTime>
     </Melee>
   </Attack>
   <Health>
@@ -18,7 +27,7 @@
   <Identity>
     <SpecificName>Hypaspistḗs Argyraspídi</SpecificName>
     <Icon>units/mace/argyraspidai.png</Icon>
-    <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
+    <VisibleClasses datatype="tokens">Nobel Polearm</VisibleClasses>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
