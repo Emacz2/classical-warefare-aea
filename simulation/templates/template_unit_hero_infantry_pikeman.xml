@@ -4,12 +4,12 @@
     <Melee>
       <AttackName>Pike</AttackName>
        <Damage>
-        <Hack>9</Hack>
-        <Pierce>20</Pierce>
+        <Hack>10</Hack>
+        <Pierce>21</Pierce>
       </Damage>
       <MaxRange>10</MaxRange>
-      <PrepareTime>500</PrepareTime>
-      <RepeatTime>2250</RepeatTime>
+      <PrepareTime>0</PrepareTime>
+      <RepeatTime>200</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
@@ -35,7 +35,7 @@
     </Formations>
   </UnitAI>
   <UnitMotion>
-    <WalkSpeed op="mul">0.9</WalkSpeed>
+    <WalkSpeed op="mul">0.92</WalkSpeed>
     <Acceleration op="mul">0.85</Acceleration>
   </UnitMotion>
 </Entity>

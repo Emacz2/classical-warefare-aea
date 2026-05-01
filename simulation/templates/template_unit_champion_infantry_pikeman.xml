@@ -5,11 +5,11 @@
       <AttackName>Pike</AttackName>
       <Damage>
         <Hack>6</Hack>
-        <Pierce>13</Pierce>
+        <Pierce>13.5</Pierce>
       </Damage>
       <MaxRange>10</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>2250</RepeatTime>
+      <RepeatTime>2000</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
