@@ -32,12 +32,6 @@
       <Techs datatype="tokens">phase_village</Techs>
     </Requirements>
   </Identity>
-  <ResourceTrickle>
-    <Rates>
-      <food>0</food>
-    </Rates>
-    <Interval>5000</Interval>
-  </ResourceTrickle>
   <Loot>
     <wood>20</wood>
   </Loot>

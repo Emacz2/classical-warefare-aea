@@ -19,7 +19,7 @@
     <Icon>gaia/fauna_cow.png</Icon>
   </Identity>
   <Loot>
-    <xp>30</xp>
+    <xp>10</xp>
   </Loot>
   <ResourceSupply>
     <Max>240</Max>
