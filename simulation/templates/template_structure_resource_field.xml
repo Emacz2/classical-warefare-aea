@@ -18,7 +18,7 @@
     <GenericName>Field</GenericName>
     <SelectionGroupName>template_structure_resource_field</SelectionGroupName>
     <VisibleClasses datatype="tokens">Field</VisibleClasses>
-    <Tooltip>Harvest grain for food. Can not be placed within 50m of Civic Center. Each subsequent gatherer works less efficiently. Recieve a small trickle of food (1 food every 4 seconds)</Tooltip>
+    <Tooltip>Harvest grain for food. Can not be placed within 50m of Civic Center. Each subsequent gatherer works less efficiently.</Tooltip>
     <Icon>structures/field.png</Icon>
   </Identity>
    <BuildRestrictions>
