@@ -27,6 +27,9 @@
  <Health>
     <Max op="add">-25</Max>
   </Health>
+    <Loot>
+    <xp>200</xp>
+  </Loot>
  <UnitMotion>
  </UnitMotion>
   <Identity>

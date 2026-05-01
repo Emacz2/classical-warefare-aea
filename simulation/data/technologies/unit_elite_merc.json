@@ -7,6 +7,8 @@
 		{ "value": "Cost/Resources/metal", "add": 20 },
 		{ "value": "Health/Max", "add": 10, "affects": "Ranged !Switch"},
 		{ "value": "Health/Max", "add": 20, "affects": "Melee !Switch"},
+		{ "value": "Loot/xp", "add": 10, "affects": "Ranged !Switch" },
+		{ "value": "Loot/xp", "add": 20, "affects": "Melee !Switch" },
 		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9, "affects": "Ranged" },
 		{ "value": "Attack/Ranged/MaxRange", "multiply": 1.05  },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2, "affects": "!Switch" },

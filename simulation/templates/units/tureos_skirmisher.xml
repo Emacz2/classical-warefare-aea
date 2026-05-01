@@ -19,6 +19,11 @@
   <Health>
      <Max>135</Max>
   </Health>
+    <Loot>
+    <xp>135</xp>
+    <metal>30</metal>
+    <wood>15</wood>
+  </Loot>
     <UnitMotion>
     <WalkSpeed>8.0</WalkSpeed>
     <Acceleration>35</Acceleration>

@@ -28,6 +28,9 @@
    <Health>
     <Max>135</Max>
   </Health>
+      <Loot>
+    <xp>135</xp>
+  </Loot>
   <UnitMotion>
     <WalkSpeed op="mul">1.1</WalkSpeed>
     <RunMultiplier op="mul">1.1</RunMultiplier>
