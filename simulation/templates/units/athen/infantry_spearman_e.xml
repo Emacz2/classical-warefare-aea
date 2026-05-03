@@ -4,7 +4,7 @@
     <Rank>Elite</Rank>
   </Identity>
   <Promotion>
-	<RequiredXp>400</RequiredXp>
+	<RequiredXp>450</RequiredXp>
     <Entity>units/athen/champion_infantry</Entity>
   </Promotion>
   <VisualActor>
