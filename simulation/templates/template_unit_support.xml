@@ -20,12 +20,6 @@
       </Damage>
     </Entity>
   </Resistance>
-  <Loot>
-    <xp>15</xp>
-    <wood>5</wood>
-    <stone>0</stone>
-    <food>5</food>
-  </Loot>
   <Sound>
     <SoundGroups>
       <order_garrison>voice/{lang}/civ/civ_{phenotype}_garrison.xml</order_garrison>
