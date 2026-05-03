@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/athen/cavalry_archer_b">
+ <Identity>
+    <Rank>Advanced</Rank>
+   <Icon>units/pers/cavalry_archer.png</Icon>
+  </Identity>
+  <Promotion disable=""/>
+  <VisualActor>
+    <Actor>units/athenians/cavalry_archer_a_m.xml</Actor>
+  </VisualActor>
+</Entity>
