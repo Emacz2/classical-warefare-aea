@@ -23,7 +23,7 @@
 	"replaces": ["phase_town"],
 	"icon": "town_phase.png",
 	"researchTime": 40,
-	"tooltip": "Advance to Roman Town Phase, which unlocks more entities and technologies. Civic Centers +30% territory influence radius. Structures +0.5 capture points regeneration rate for garrisoned units.  Civ Center 25% more garrison capacity, 5 more range and 2.5 of each resistance. Swordsman 5% more pierce/hack dmg but 5% more train time. ",
+	"tooltip": "Advance to Roman Town Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius, +5 more garrison capacity/population bonus, +10 range and 2.5 of each resistance. Structures +0.5 capture points regeneration rate for garrisoned units. ",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },
@@ -34,7 +34,6 @@
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.98, "affects": "CivCentre" },
 		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Barracks" }
 		
 

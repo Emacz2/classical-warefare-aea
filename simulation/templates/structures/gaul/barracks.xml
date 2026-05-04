@@ -6,12 +6,15 @@
       <stone>0</stone>
     </Resources>
   </Cost>
-     <Resistance>
+ <Resistance>
     <Entity>
-    <ApplyStatus>
+      <Damage>
+        <Hack op="add">-5</Hack>
+      </Damage>
+      <ApplyStatus>
         <Burning>
-          <Duration>0.5</Duration>
-          <BlockChance>0.5</BlockChance>
+        <Duration>0.5</Duration>
+        <BlockChance>0.5</BlockChance>
         </Burning>
       </ApplyStatus>
     </Entity>

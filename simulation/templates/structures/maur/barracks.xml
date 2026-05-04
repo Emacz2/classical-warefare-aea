@@ -6,7 +6,7 @@
       <stone>0</stone>
     </Resources>
   </Cost>
-  <Resistance>
+ <Resistance>
     <Entity>
       <Damage>
         <Hack op="add">-5</Hack>
@@ -20,22 +20,13 @@
     </Entity>
   </Resistance>
   <Footprint>
-    <Square width="22.0" depth="22.0"/>
+    <Square width="24.0" depth="26.0"/>
     <Height>5.0</Height>
   </Footprint>
-  <Health>
-    <SpawnEntityOnDeath>decay|rubble/rubble_stone_5x5</SpawnEntityOnDeath>
-  </Health>
   <Identity>
-    <Civ>brit</Civ>
-    <SpecificName>Coriosessa</SpecificName>
+    <Civ>maur</Civ>
+    <SpecificName>Sainyavasa</SpecificName>
   </Identity>
-   <Trainer>
-    <BatchTimeModifier>0.8</BatchTimeModifier>
-    <Entities datatype="tokens">
-      units/{civ}/infantry_swordsman
-    </Entities>
-  </Trainer>
   <Loot>
     <wood>60</wood>
     <stone>0</stone>
@@ -44,7 +35,6 @@
     <Static width="20.0" depth="20.0"/>
   </Obstruction>
   <VisualActor>
-    <Actor>structures/britons/barracks.xml</Actor>
-    <FoundationActor>structures/fndn_6x6.xml</FoundationActor>
+    <Actor>structures/mauryas/barracks.xml</Actor>
   </VisualActor>
 </Entity>
