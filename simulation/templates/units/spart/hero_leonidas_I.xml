@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="polearm|hoplite|greek_olympian|units/spart/hero_leonidas">
+<Entity parent="hoplite|greek_olympian|units/spart/hero_leonidas">
   <Auras datatype="tokens">
     units/heroes/spart_hero_leonidas
     units/heroes/spart_hero_leonidas2

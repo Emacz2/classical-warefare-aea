@@ -19,6 +19,13 @@
       </Projectile>
     </Ranged>
   </Attack>
+  <Resistance>
+    <Entity>
+      <Damage>
+       <Hack op="add">-0.5</Hack>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Cost>
     <Resources>
       <stone>25</stone>
