@@ -22,6 +22,7 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 		"popForBarracks2": 60,
 		"popForForge": 65,
 		"popForStable1": 90,
+		"popForStable2": 150,
 		"numSentryTowers": 1
 	};
 
