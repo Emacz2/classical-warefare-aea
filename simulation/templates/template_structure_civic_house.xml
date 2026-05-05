@@ -6,6 +6,19 @@
       <wood>75</wood>
     </Resources>
   </Cost>
+   <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">-5</Hack>
+      </Damage>
+      <ApplyStatus>
+        <Burning>
+        <Duration>0.8</Duration>
+        <BlockChance>0.2</BlockChance>
+        </Burning>
+      </ApplyStatus>
+    </Entity>
+  </Resistance>
   <Footprint>
     <Square width="13.0" depth="13.0"/>
     <Height>5.0</Height>

@@ -1,5 +1,5 @@
 {
-	"genericName": "Hoplite Tradition",
+	"genericName": "Hoplite Reforms",
 	"description": "Hoplite soldiers constituted most of the armies of Greece.",
 	"cost": {
 		"food": 400,
@@ -20,13 +20,13 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 60,
-	"tooltip": "Hoplites −20% training time, −30% promotion experience, and 5% faster walk/run speed. Citizen +10 HP Champion +25, Hero +50.",
+	"tooltip": "Hoplites −20% training time, −30% promotion experience, and 5% faster walk/run speed. Citizen hoplites 10% less food/wood cost. While Champion +25 Health.",
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 0.80 },
 		{ "value": "Promotion/RequiredXp", "multiply": 0.7 },
-		{ "value": "Health/Max", "add": 10, "affects":"!Hero" },
-		{ "value": "Health/Max", "add": 15, "affects": "Champion !Hero" },
-		{ "value": "Health/Max", "add": 50, "affects": "Hero" },
+		{ "value": "Cost/Resources/food", "add": -5, "affects": "Citizen" },
+		{ "value": "Cost/Resources/wood", "add": -5, "affects": "Citizen" },
+		{ "value": "Health/Max", "add": 25, "affects": "Champion" },
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
 		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.05 }
 

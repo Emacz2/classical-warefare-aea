@@ -94,18 +94,22 @@
   <Repairable>
     <RepairTimeRatio>2.0</RepairTimeRatio>
   </Repairable>
-  <Resistance>
+<Resistance>
     <Entity>
       <ApplyStatus>
         <Poisoned>
           <Duration>0.0</Duration>
           <BlockChance>1</BlockChance>
         </Poisoned>
+         <Burning>
+        <Duration>0.7</Duration>
+        <BlockChance>0.3</BlockChance>
+        </Burning>
       </ApplyStatus>
       <Damage>
-        <Hack>5</Hack>
-        <Pierce>10</Pierce>
-        <Crush>2.5</Crush>
+        <Hack>10</Hack>
+        <Pierce>30</Pierce>
+        <Crush>5</Crush>
       </Damage>
     </Entity>
     <Foundation>
@@ -116,9 +120,9 @@
         </Poisoned>
       </ApplyStatus>
       <Damage>
-        <Crush>2.5</Crush>
-        <Hack>5</Hack>
-        <Pierce>10</Pierce>
+        <Hack>1</Hack>
+        <Pierce>20</Pierce>
+        <Crush>1</Crush>
       </Damage>
     </Foundation>
   </Resistance>

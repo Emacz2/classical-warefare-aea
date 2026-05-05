@@ -12,10 +12,14 @@
   </Identity>
   <Resistance>
     <Entity>
+      <Damage>
+        <Crush op="add">2.5</Crush>
+        <Hack op="add">2.5</Hack>
+      </Damage>
       <ApplyStatus>
         <Burning>
-          <Duration>0.0</Duration>
-          <BlockChance>0.5</BlockChance>
+        <Duration>0.2</Duration>
+        <BlockChance>0.5</BlockChance>
         </Burning>
       </ApplyStatus>
     </Entity>
