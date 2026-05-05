@@ -55,6 +55,10 @@
 			"Count": 2
 		},
 		{
+			"Template": "units/gaul/support_healer_b",
+			"Count": 1
+		},
+		{
 			"Template": "units/gaul/cavalry_javelineer_b"
 		}
 		

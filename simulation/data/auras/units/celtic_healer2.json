@@ -6,13 +6,13 @@
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.07 },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.07 },
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.07 },
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05 },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05 },
-		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05 },
-		{ "value": "Promotion/RequiredXp", "multiply": 0.75}
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.07 },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.07 },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.07 },
+		{ "value": "Promotion/RequiredXp", "multiply": 0.80 }
 	],
 	"auraName": "Deas Celtica",
 	"showDescription": 1,
-	"auraDescription": "Melee soldiers 7% more dmg, ranged soldiers 5% more dmg.  All soldiers 25% faster promotion.",
+	"auraDescription": "Soldiers 7% more dmg and 20% faster promotion.",
 	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
 }

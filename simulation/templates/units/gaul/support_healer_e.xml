@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/gaul/support_healer_a">
+<Auras datatype="tokens">
+    -units/celtic_healer
+    -units/celtic_healer2
+     units/celtic_healer3
+  </Auras>
+  <Identity>
+    <Rank>Elite</Rank>
+  </Identity>
+   <Vision>
+    <Range>75</Range>
+  </Vision>
+  <Promotion disable=""/>
+</Entity>

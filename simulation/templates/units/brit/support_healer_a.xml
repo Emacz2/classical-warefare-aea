@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/brit/support_healer_b">
+<Auras datatype="tokens">
+    -units/celtic_healer
+    units/celtic_healer2
+  </Auras>
+  <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
+   <Vision>
+    <Range>70</Range>
+  </Vision>
+  <Promotion>
+    <Entity>units/brit/support_healer_e</Entity>
+  </Promotion>
+</Entity>

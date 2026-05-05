@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_support_healer">
+  <Auras datatype="tokens">
+    units/celtic_healer
+  </Auras>
+  <Identity>
+    <Civ>gaul</Civ>
+    <GenericName>Druid</GenericName>
+    <SpecificName>Druid</SpecificName>
+    <Icon>units/celt/support_healer.png</Icon>
+  </Identity>
+  <Vision>
+    <Range>65</Range>
+  </Vision>
+<Heal>
+    <Range>15</Range>
+    <RangeOverlay>
+      <LineTexture>heal_overlay_range.png</LineTexture>
+      <LineTextureMask>heal_overlay_range_mask.png</LineTextureMask>
+      <LineThickness>0.35</LineThickness>
+    </RangeOverlay>
+    <Health>3</Health>
+    <Interval>1000</Interval>
+    <UnhealableClasses datatype="tokens"/>
+    <HealableClasses datatype="tokens">Human</HealableClasses>
+  </Heal>
+  <Promotion>
+    <Entity>units/gaul/support_healer_a</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/celts/healer.xml</Actor>
+  </VisualActor>
+</Entity>
