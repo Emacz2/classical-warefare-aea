@@ -7,9 +7,6 @@
     <GenericName>Cappadocian Schock Camel</GenericName>
     <SpecificName>Asabāra Katpatuka</SpecificName>
     <Icon>units/pers/spear_camel.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">unlock_spearcav</Techs>
-    </Requirements>
   </Identity>
    <Promotion>
     <Entity>units/pers/cavalry_camel_spearman_a</Entity>

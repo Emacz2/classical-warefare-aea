@@ -1,0 +1,23 @@
+{
+	"genericName": "Armor Plating",
+	"cost": {
+		"metal": 500,
+		"food": 500
+	},
+	"requirements": { "tech": "phase_city" },
+	"requirementsTooltip": "Unlocked in City Phase.",
+	"icon": "armor_plates_gold.png",
+	"researchTime": 40,
+	"tooltip": "Ranged Champion Cavalry +25 HP, Melee +50, all champion Cavalry +3 hack/pierce and +3 crush resistance but 5% slower walk speed.",
+	"modifications": [
+		{ "value": "Health/Max", "add": 25, "affects": "Ranged" },
+		{ "value": "Health/Max", "add": 50, "affects": "Melee" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 3 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 3 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 3 },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 }
+
+	],
+	"affects": ["Champion Cavalry"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}
