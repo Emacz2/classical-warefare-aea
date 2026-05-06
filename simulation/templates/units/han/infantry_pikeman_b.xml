@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_melee_pikeman">
+<Entity parent="template_unit_infantry_melee_spearman">
   <Auras datatype="tokens">
     units/han_scouttower
   </Auras>
@@ -9,22 +9,15 @@
       structures/han/range
     </Entities>
   </Builder>
-  <Cost>
-    <Resources>
-      <wood op="add">5</wood>
-      <metal op="add">-5</metal>
-    </Resources>
-  </Cost>
   <Attack>
     <Melee>
       <AttackName>Ji</AttackName>
       <Damage>
-        <Hack op="add">1.5</Hack>
-        <Pierce op="add">-0.5</Pierce>
+        <Hack op="add">2</Hack>
+        <Pierce op="add">0.5</Pierce>
       </Damage>
-      <MaxRange op="add">-6</MaxRange>
-      <PrepareTime>1000</PrepareTime>
-      <RepeatTime op="add">-750</RepeatTime>
+      <MaxRange op="add">-0.5</MaxRange>
+      <RepeatTime op="add">250</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
@@ -34,15 +27,6 @@
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Melee>
   </Attack>
-    <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">-1</Crush>
-        <Hack op="add">-1</Hack>
-        <Pierce op="add">-1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/infantry_pikeman_b</SelectionGroupName>
@@ -58,10 +42,6 @@
       special/formations/anti_cavalry
     </Formations>
   </UnitAI>
-    <UnitMotion>
-    <WalkSpeed op="mul">1.05</WalkSpeed>
-    <Acceleration op="mul">1.05</Acceleration>
-  </UnitMotion>
   <VisualActor>
     <Actor>units/han/infantry_halberdman_b.xml</Actor>
   </VisualActor>

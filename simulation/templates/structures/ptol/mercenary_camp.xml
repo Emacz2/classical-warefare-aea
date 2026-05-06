@@ -32,9 +32,6 @@
     <VisibleClasses datatype="tokens">Village</VisibleClasses>
     <Tooltip>Cheap Barracks-like structure that is buildable in neutral territory, but casts no territory influence. Train Mercenaries.</Tooltip>
     <Icon>structures/mercenary_camp.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">-phase_town phase_village</Techs>
-    </Requirements>
   </Identity>
    <Upgrade>
     <camp>
