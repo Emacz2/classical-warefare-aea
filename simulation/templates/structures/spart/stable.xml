@@ -4,11 +4,7 @@
     <Civ>spart</Civ>
     <GenericName>Allied Stable</GenericName>
     <SpecificName>Hippōn</SpecificName>
-<<<<<<< HEAD
-     <VisibleClasses datatype="tokens">-Village Town</VisibleClasses>
-=======
     <VisibleClasses datatype="tokens">-Village Town</VisibleClasses>
->>>>>>> parent of a18f3c8 (Revert "spart cavalry")
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
