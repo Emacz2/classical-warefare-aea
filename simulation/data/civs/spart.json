@@ -48,6 +48,9 @@
 			"Count": 4
 		},
 		{
+			"Template": "units/spart/scout"
+		},
+		{
 			"Template": "units/spart/support_female_citizen"
 		},
 		{
