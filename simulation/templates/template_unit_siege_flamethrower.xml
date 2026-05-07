@@ -4,7 +4,7 @@
     <Ranged>
       <AttackName>Fire</AttackName>
       <Damage>
-        <Fire>20</Fire>
+        <Fire>50</Fire>
       </Damage>
       <MaxRange>15</MaxRange>
       <MinRange>10</MinRange>
@@ -27,8 +27,8 @@
   <Cost>
     <BuildTime>30</BuildTime>
     <Resources>
-      <wood>300</wood>
-      <metal>150</metal>
+      <wood>400</wood>
+      <metal>100</metal>
     </Resources>
   </Cost>
   <DeathDamage>
@@ -36,11 +36,11 @@
     <Range>20</Range>
     <FriendlyFire>true</FriendlyFire>
     <Damage>
-      <Fire>50</Fire>
+      <Fire>300</Fire>
     </Damage>
   </DeathDamage>
   <Health>
-    <Max>250</Max>
+    <Max>300</Max>
   </Health>
   <Identity>
     <GenericName>Flamethrower</GenericName>
