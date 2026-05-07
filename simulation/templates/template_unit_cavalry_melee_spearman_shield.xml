@@ -2,6 +2,7 @@
 <Entity parent="template_unit_cavalry_melee_spearman">
    <Attack>
     <Melee>
+    <MaxRange op="add">-1</MaxRange>
     <PrepareTime op="add">250</PrepareTime>
     </Melee>
   </Attack>
@@ -20,12 +21,9 @@
   </Cost>
   <Identity>
     <GenericName>Shock Cavalry Spearman</GenericName>
-   <Tooltip>Shield adds +1 Hack/Pierce resitance but prepare time increased 1/4 of a second and 2% less walk speed.</Tooltip>
+   <Tooltip>Shield adds +1 Hack/Pierce resitance but prepare time increased 1/4 and spear 1m shorter.</Tooltip>
     <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.98</WalkSpeed>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/spear_attack.xml</attack_melee>
