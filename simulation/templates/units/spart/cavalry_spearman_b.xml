@@ -7,8 +7,12 @@
     <GenericName>Olynthian Allied Light Spear Cavalry</GenericName>
     <SpecificName>Hippeús Symmakhikós</SpecificName>
     <Icon>units/spart/cavalry_spearman.png</Icon>
+     <History>Sparta, known for its focus on hoplite infantry, had a relatively limited cavalry force. Spartan cavalry was often considered less effective compared to other Greek city-states. Melee Cavalry can't upgrade rank. Total Cavalry force limited to 40</History>
   </Identity>
  <Promotion disable=""/>
+ <TrainingRestrictions>
+  <Category>SpartCav</Category>
+  </TrainingRestrictions>
   <VisualActor>
     <Actor>units/spartans/cavalry_spearman_b_m.xml</Actor>
   </VisualActor>
