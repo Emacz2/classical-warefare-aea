@@ -4,9 +4,11 @@
     <Civ>spart</Civ>
     <GenericName>Allied Stable</GenericName>
     <SpecificName>Hippōn</SpecificName>
+     <VisibleClasses datatype="tokens">-Village Town</VisibleClasses>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
+     <History>Sparta, known for its focus on hoplite infantry, had a relatively limited cavalry force. Stable not aviable until town phase. Total cavalry force limited to 40</History>
   </Identity>
   <Obstruction>
     <Static width="23.0" depth="23.0"/>
