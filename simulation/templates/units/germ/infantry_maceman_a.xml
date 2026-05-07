@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/germ/infantry_maceman_b">
+  <Builder disable=""/>
+  <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
+  <Promotion>
+    <Entity>units/germ/infantry_maceman_e</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/germans/infantry_clubman.xml</Actor>
+  </VisualActor>
+</Entity>

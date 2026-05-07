@@ -9,9 +9,11 @@
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
     <Icon>units/germ/infantry_clubman.png</Icon>
-    <Rank>Advanced</Rank>
+    <Rank>Basic</Rank>
   </Identity>
-  <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/germ/infantry_maceman_a</Entity>
+  </Promotion>
   <Resistance>
     <Entity>
       <Damage>
