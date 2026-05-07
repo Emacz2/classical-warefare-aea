@@ -2,6 +2,7 @@
 <Entity parent="template_unit_hero_cavalry_swordsman">
   <Auras datatype="tokens">
     units/heroes/sele_hero_antiochus_iv
+    units/heroes/sele_hero_antiochus_iv2
   </Auras>
   <Identity>
     <Civ>sele</Civ>

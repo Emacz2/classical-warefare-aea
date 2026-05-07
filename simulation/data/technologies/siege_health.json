@@ -5,7 +5,15 @@
 		"metal": 600,
 		"wood": 400
 	},
-	"requirements": { "tech": "phase_city" },
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "notciv": "brit" },
+			{ "notciv": "gaul" },
+			{ "notciv": "german" }
+			
+		]
+	},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_plates_gold.png",
 	"researchTime": 40,

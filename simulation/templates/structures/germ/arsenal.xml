@@ -3,10 +3,12 @@
   <Identity>
     <Civ>germ</Civ>
     <SpecificName>Wēpnasfriþuz</SpecificName>
+      <Requirements>
+      <Techs datatype="tokens">-phase_town phase_village</Techs>
+    </Requirements>
   </Identity>
   <Trainer>
     <Entities datatype="tokens">
-      units/germ/siege_ram
       units/germ/siege_ram_covered
     </Entities>
   </Trainer>

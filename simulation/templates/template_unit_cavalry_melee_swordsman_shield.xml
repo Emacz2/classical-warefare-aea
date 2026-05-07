@@ -2,20 +2,20 @@
 <Entity parent="template_unit_cavalry_melee_swordsman">
  <Attack>
     <Melee>
-      <RepeatTime op="add">150</RepeatTime>
+    <PrepareTime op="add">250</PrepareTime>
     </Melee>
   </Attack>
   <Resistance>
     <Entity>
       <Damage>
-          <Hack op="add">0.5</Hack>
+          <Hack op="add">1</Hack>
         <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>
   </Resistance>
   <Identity>
     <GenericName>Cavalry Swordsman with shield</GenericName>
-    <Tooltip>Shield adds 0.5 Hack and 1 Pierce resitance but repeat time increased 150.</Tooltip>
+    <Tooltip>Shield adds +1 Hack/Pierce resitance but prepare time increased 1/4 of a second.</Tooltip>
   </Identity>
   <Loot>
     <metal op="add">2</metal>

@@ -10,15 +10,16 @@
     <Ranged>
     <ApplyStatus>
         <Burning>
-          <Interval>1500</Interval>
+          <Interval>1000</Interval>
           <Damage>
-            <Fire>3</Fire>
+            <Fire>2</Fire>
           </Damage>
           <Stackability>Stack</Stackability>
           <Duration>10000</Duration>
         </Burning>
       </ApplyStatus>
       <Damage>
+        <Crush op="mul">0.5</Crush>
         <Pierce op="mul">0.5</Pierce>
       </Damage>
       <PreferredClasses datatype="tokens">Structures</PreferredClasses>

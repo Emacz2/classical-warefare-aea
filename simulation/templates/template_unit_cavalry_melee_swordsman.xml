@@ -4,16 +4,16 @@
     <Melee>
       <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
        <Damage>
-        <Hack>8</Hack>
-        <Pierce>3</Pierce>
+        <Hack>6.6</Hack>
+        <Pierce>4.4</Pierce>
       </Damage>
-      <MaxRange>3.5</MaxRange>
+      <MaxRange>3</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>1100</RepeatTime>
+      <RepeatTime>1250</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Ranged Infantry</Classes>
-          <Multiplier>1.25</Multiplier>
+          <Multiplier>1.5</Multiplier>
         </BonusMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -25,11 +25,6 @@
       <metal>20</metal>
     </Resources>
   </Cost>
-  <Identity>
-    <GenericName>Cavalry Swordsman</GenericName>
-    <VisibleClasses datatype="tokens">Swordsman</VisibleClasses>
-    <Tooltip>Counters: 1.25× vs Ranged Infantry.</Tooltip>
-  </Identity>
   <Resistance>
     <Entity>
       <Damage>
@@ -37,6 +32,11 @@
       </Damage>
     </Entity>
   </Resistance>
+  <Identity>
+    <GenericName>Cavalry Swordsman</GenericName>
+    <VisibleClasses datatype="tokens">Swordsman</VisibleClasses>
+    <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
+  </Identity>
   <UnitMotion>
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>

@@ -2,7 +2,7 @@
 <Entity parent="template_unit_cavalry_ranged_javelineer">
    <Attack>
     <Ranged>
-      <RepeatTime op="add">150</RepeatTime>
+      <PrepareTime op="add">250</PrepareTime>
     </Ranged>
   </Attack>
  <Resistance>
@@ -15,7 +15,7 @@
   </Resistance>
   <Identity>
     <GenericName>Mounted Javelineer with shield</GenericName>
-    <Tooltip>Shield adds 0.5 Hack and 1 Pierce resitance but repeat time increased 150.</Tooltip>
+    <Tooltip>Shield adds 0.5 Hack and 1 Pierce resitance but prepare time increased 1/4 of a second.</Tooltip>
     <VisibleClasses datatype="tokens">Javelineer</VisibleClasses>
   </Identity>
   <Sound>

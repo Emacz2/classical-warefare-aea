@@ -4,12 +4,12 @@
     <Melee>
       <AttackName>Spear</AttackName>
       <Damage>
-        <Hack>4.5</Hack>
-        <Pierce>8</Pierce>
+        <Hack>4.4</Hack>
+        <Pierce>7.7</Pierce>
       </Damage>
       <MaxRange>5</MaxRange>
-      <PrepareTime>700</PrepareTime>
-      <RepeatTime>1400</RepeatTime>
+      <PrepareTime>750</PrepareTime>
+      <RepeatTime>1500</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>

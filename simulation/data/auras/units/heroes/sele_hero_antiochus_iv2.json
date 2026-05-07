@@ -1,0 +1,11 @@
+{
+	"type": "global",
+	"affects": [ "Mercenary" ],
+	"modifications": [
+		{ "value": "Cost/BuildTime", "multiply": 0.75},
+		{ "value": "Cost/Resources/metal","multiply": 0.75}
+	],
+	"auraName": "Mercanary forces",
+	"showDescription": 1,
+	"auraDescription": "Mercanaries -25% train time and cost while alive."
+}

@@ -10,7 +10,7 @@
   <Identity>
     <GenericName>Javelineer</GenericName>
     <VisibleClasses datatype="tokens">Javelineer Peltast</VisibleClasses>
-    <Tooltip>Named for the shield they carried, peltast +1 Pierce reistance</Tooltip>
+    <Tooltip>Named for the shield they carried, peltast +1 Pierce reistance but 2% slower walk speed</Tooltip>
   </Identity>
   <UnitMotion>
     <WalkSpeed op="mul">0.98</WalkSpeed>

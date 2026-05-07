@@ -4,17 +4,17 @@
     <Ranged>
       <AttackName>Bow</AttackName>
       <Damage>
-        <Pierce>8.8</Pierce>
+        <Pierce>10.1</Pierce>
       </Damage>
-      <MaxRange>65</MaxRange>
+      <MaxRange>45</MaxRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1500</RepeatTime>
       <Projectile>
-        <Speed>125</Speed>
-        <Spread>3</Spread>
+        <Speed>100</Speed>
+        <Spread>2</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="5"/>
+        <LaunchPoint y="3"/>
       </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Ranged>

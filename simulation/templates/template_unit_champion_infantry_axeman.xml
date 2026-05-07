@@ -4,13 +4,13 @@
     <Melee>
       <AttackName>Axe</AttackName>
       <Damage>
-        <Crush>4.5</Crush>
+        <Crush>6</Crush>
         <Hack>12</Hack>
         <Pierce>1.5</Pierce>
       </Damage>
       <MaxRange>2</MaxRange>
-      <PrepareTime>250</PrepareTime>
-      <RepeatTime>1100</RepeatTime>
+      <PrepareTime>500</PrepareTime>
+      <RepeatTime>1250</RepeatTime>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
@@ -22,7 +22,7 @@
     <Entity>
       <Damage>
         <Hack op="add">0.5</Hack>
-        <Pierce op="add">-1</Pierce>
+        <Pierce op="add">-0.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
