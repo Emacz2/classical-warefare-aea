@@ -7,9 +7,10 @@
   <Builder disable=""/>
   <ResourceGatherer disable=""/>
     <Cost>
-    <BuildTime>25</BuildTime>
+    <BuildTime>10</BuildTime>
+    <Population>0</Population>
     <Resources>
-      <food>0</food>
+      <food>50</food>
     </Resources>
   </Cost>
   <Identity>
