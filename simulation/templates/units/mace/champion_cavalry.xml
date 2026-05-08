@@ -8,7 +8,7 @@
     <Icon>units/mace/champion_cavalry.png</Icon>
     <SelectionGroupName>units/mace/champion_cavalry</SelectionGroupName>
     <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
-    <Tooltip>Slowly regenerate health over time 2hp every 4 seconds</Tooltip>
+     <Tooltip>Slowly regenerate health over time 2hp every 4 seconds and 10% more acceleration</Tooltip>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
@@ -24,6 +24,9 @@
       <Time>4</Time>
     </Sword>
   </Upgrade>
+   <UnitMotion>
+    <Acceleration op="mul">1.1</Acceleration>
+  </UnitMotion>
   <VisualActor>
     <Actor>units/macedonians/cavalry_spearman_c_m.xml</Actor>
   </VisualActor>
