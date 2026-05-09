@@ -5,7 +5,7 @@
     <GenericName>Champion Melee Cavalry</GenericName>
   </Identity>
    <Cost>
-    <BuildTime>28</BuildTime>
+    <BuildTime>27</BuildTime>
   </Cost>
    <Health>
     <Max>300</Max>

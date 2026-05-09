@@ -5,7 +5,7 @@
     <GenericName>Ranged Cavalry</GenericName>
   </Identity>
  <Cost>
-    <BuildTime>15</BuildTime>
+    <BuildTime>16</BuildTime>
   </Cost>
   <Health>
     <Max>150</Max>

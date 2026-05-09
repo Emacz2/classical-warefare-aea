@@ -5,7 +5,7 @@
     <VisibleClasses datatype="tokens">Melee</VisibleClasses>
   </Identity>
   <Cost>
-    <BuildTime>16</BuildTime>
+    <BuildTime>18</BuildTime>
   </Cost>
   <Health>
     <Max>200</Max>
