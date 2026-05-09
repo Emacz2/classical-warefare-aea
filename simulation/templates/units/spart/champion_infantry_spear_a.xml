@@ -11,7 +11,7 @@
   </Identity>
   <Promotion>
     <Entity>units/spart/champion_infantry_spear_olympian</Entity>
-    <RequiredXp>250</RequiredXp>
+    <RequiredXp>300</RequiredXp>
   </Promotion>
   <VisualActor>
     <Actor>units/spartans/champion_infantry_spear_a.xml</Actor>

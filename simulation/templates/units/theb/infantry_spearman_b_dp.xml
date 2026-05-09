@@ -10,7 +10,7 @@
     <GenericName>Boeotian Hoplite</GenericName>
     <SpecificName>Hoplī́tēs Boiotías</SpecificName>
     <SelectionGroupName>units/theb/infantry_hoplite_b_dp</SelectionGroupName>
-    <Icon>units/theb/theb_hoplite_merc.png</Icon>
+    <Icon>units/theb/thebes_csdp.png</Icon>
   </Identity>
   <Promotion>
     <Entity>units/theb/infantry_spearman_a_dp</Entity>
