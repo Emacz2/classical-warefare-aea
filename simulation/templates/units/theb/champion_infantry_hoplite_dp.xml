@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="hoplite|greek_olympian|template_unit_champion_infantry_spearman">
 <Auras datatype="tokens"> 
-  units/thebes_sb
+    -units/phalanx
+    units/thebes_sb
+    units/deep_phalanx
  </Auras>
  <Attack>
     <Melee>
@@ -17,16 +19,8 @@
     <GenericName>Sacred Band Hoplite</GenericName>
     <SpecificName>Hieròs Lókhos Hoplī́tēs</SpecificName>
     <History>The Sacred Band of Thebes was a troop of picked soldiers, consisting of 150 pederastic male couples which formed the elite force of the Theban army in the 4th century BC. It is said to have been organised by the Theban commander Gorgidas in 378 BC and to have played a crucial role in the Battle of Leuctra.</History>
-    <VisibleClasses datatype="tokens">Phalanx</VisibleClasses>
-    <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
-    <Icon>units/theb/champion_infantry_hoplite.png</Icon>
-    </Identity>
-    <Promotion>
-    <Entity>units/theb/champion_infantry_hoplite_dp</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
+    <Icon>units/theb/champion_infantry_swordsman.png</Icon>
+  </Identity>
   <VisualActor>
     <Actor>units/thebans/infantry_spearman_c.xml</Actor>
   </VisualActor>

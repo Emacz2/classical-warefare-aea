@@ -1,0 +1,19 @@
+{
+	"genericName": "Oblique order",
+	"description": "Gaius Octavius, later known as Augustus created a series of laws between 30 BCE and 2 BCE that transformed the constitution of the Roman Republic into the Constitution of the Roman Empire.  One of which created a standing army of approximately 28 legions consisting of 5,000-6,000 professional soldiers.",
+	"researchTime": 60,
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "civ": "theb" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in City Phase.",
+	"icon": "shield_scutum.png",
+	"modifications":[
+		{ "value": "Promotion/RequiredXp", "replace": 0 }
+	],
+	"affects": ["Phalanx"],
+	"tooltip": "Convert Infantry to Swordsman and Javelineers into Marian Legionaries. Unlock Onagers and Centurions. Javelineers gain +1 hack and 0.5 pierce resistance. Swordsman +1 pierce attack and +0.5 hack resistance. They can no longer gather resources but build 25% faster. Cost +10 metal but -10 wood.",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

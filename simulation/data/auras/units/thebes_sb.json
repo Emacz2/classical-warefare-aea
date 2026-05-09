@@ -4,11 +4,13 @@
 	"affects": ["Champion Spearman"],
 	"modifications": [
 		{ "value": "Health/Max", "multiply": 1.2 },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15},
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15},
 		{ "value": "Attack/Melee/RepeatTime", "multiply": 0.9}
 	
 	],
 	"auraName": "Lovers",
 	"showDescription": 1,
-	"auraDescription": "Sacred Band have 20% more health, attack 10% faster.",
+	"auraDescription": "Sacred Band have 20% more health, do 15% more dmg and attack 10% faster when they are next to their lover.",
 	"overlayIcon": "art/textures/ui/session/auras/health_bonus.png"
 }

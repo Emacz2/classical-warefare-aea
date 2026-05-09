@@ -1,0 +1,19 @@
+{
+	"type": "range",
+	"radius": 4,
+	"affects": ["Hoplite"],
+	"modifications": [
+		{ "value": "Promotion/RequiredXp", "multiply": 0.97 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.07},
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5, "affects": "Champion" },
+		{ "value": "Health/Max", "add": 10, "affects": "Citizen" },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95, "affects": "Citizen" }
+	
+	],
+	"auraName": "deep phalanx",
+	"showDescription": 1,
+	"auraDescription": "Hoplites promote 3% faster and 7% pierce damage; Citizens +10 health and 1.5 hack resistance, but walk speed reduced by 5%. Champions +3 hack resistance and no movement speed penalty.",
+	"overlayIcon": "art/textures/ui/session/auras/buildgather_bonus.png",
+	"stackable": false
+}
