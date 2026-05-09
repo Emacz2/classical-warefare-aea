@@ -34,6 +34,16 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+    <Resistance>
+    <Entity>
+       <ApplyStatus>
+        <Burning>
+        <Duration>0.5</Duration>
+        <BlockChance>0.8</BlockChance>
+        </Burning>
+      </ApplyStatus>
+    </Entity>
+  </Resistance>
   <UnitMotion>
     <WalkSpeed>8.2</WalkSpeed>
     <RunMultiplier>1.25</RunMultiplier>
