@@ -9,7 +9,7 @@
   <Resistance>
     <Entity>
       <Damage>
-          <Hack op="add">1</Hack>
+        <Hack op="add">0.5</Hack>
         <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>
@@ -21,7 +21,7 @@
   </Cost>
   <Identity>
     <GenericName>Shock Cavalry Spearman</GenericName>
-   <Tooltip>Shield adds +1 Hack/Pierce resitance but prepare time increased 1/4 and spear 1m shorter.</Tooltip>
+   <Tooltip>Shield adds +0.5 Hack and +1 Pierce resitance but prepare time increased 1/4 and spear 1m shorter.</Tooltip>
     <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
   </Identity>
   <Sound>
