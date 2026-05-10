@@ -3,10 +3,13 @@
 	"radius": 25,
 	"affects": ["Spearman"],
 	"modifications": [
-	  {"value": "UnitMotion/WalkSpeed", "multiply": 1.20}
+	  {"value": "UnitMotion/WalkSpeed", "multiply": 1.20},
+	  { "value": "Resistance/Entity/Damage/Hack", "add": 2 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5 }
 	 
 	],
 	"auraName": "Oblique Order",
-	"auraDescription": "All Hooplites +20% speed within range.",
+	"auraDescription": "All Hooplites +20% speed, +2.5C and +2H/P resistance whilein range.",
 	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
 }
