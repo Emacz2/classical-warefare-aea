@@ -27,6 +27,9 @@
     <Entity>units/theb/champion_infantry_hoplite_dp</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>
+  <TrainingRestrictions>
+  <Category>ThebsSB</Category>
+  </TrainingRestrictions>
   <VisualActor>
     <Actor>units/thebans/infantry_spearman_c.xml</Actor>
   </VisualActor>
