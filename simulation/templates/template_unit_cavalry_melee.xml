@@ -8,7 +8,7 @@
     <BuildTime>18</BuildTime>
   </Cost>
   <Health>
-    <Max>200</Max>
+    <Max>225</Max>
   </Health>
     <Loot>
     <xp>200</xp>
@@ -18,9 +18,9 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush>3.5</Crush>
-        <Hack>4</Hack>
-        <Pierce>4.5</Pierce>
+        <Crush>2.5</Crush>
+        <Hack>3.5</Hack>
+        <Pierce>3</Pierce>
       </Damage>
     </Entity>
   </Resistance>
