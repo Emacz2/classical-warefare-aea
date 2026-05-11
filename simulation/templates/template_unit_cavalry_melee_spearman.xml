@@ -30,6 +30,7 @@
     <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
   </Identity>
   <UnitMotion>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>
   <Sound>
