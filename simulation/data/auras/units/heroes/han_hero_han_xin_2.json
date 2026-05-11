@@ -1,11 +1,12 @@
 {
-	"type": "global",
+	"type": "range",
+	"radius": 90,
 	"affects": ["Soldier"],
-	"affectedPlayers": ["Ally"],
+		"affectedPlayers": ["Enemy"],
 	"modifications": [
-		{ "value": "Vision/Range", "multiply": 1.25 }
+		{ "value": "Vision/Range", "multiply": 0.8 }
 	],
 	"auraName": "Southern Army",
 	"showDescription": 1,
-	"auraDescription": "Own and Allied Soldiers +25% vision range."
+	"auraDescription": "Enemy soldiers -20% vision."
 }
