@@ -6,7 +6,7 @@
       <Damage>
         <Pierce>30</Pierce>
       </Damage>
-      <MaxRange>76</MaxRange>
+      <MaxRange>75</MaxRange>
       <PrepareTime>300</PrepareTime>
       <RepeatTime>3000</RepeatTime>
       <Projectile>
@@ -29,6 +29,14 @@
       <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
     </SoundGroups>
   </Sound>
+  <Resistance>
+    <Entity>
+      <Damage>
+       <Hack op="add">0.5</Hack>
+       <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Turretable/>
   <UnitAI>
     <Formations datatype="tokens">
@@ -36,7 +44,7 @@
     </Formations>
   </UnitAI>
     <UnitMotion>
-    <WalkSpeed op="mul">1.02</WalkSpeed>
+    <WalkSpeed op="mul">0.99</WalkSpeed>
     <Acceleration op="add">2.5</Acceleration>
   </UnitMotion>
 </Entity>

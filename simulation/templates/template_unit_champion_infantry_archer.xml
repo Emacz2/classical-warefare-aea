@@ -35,6 +35,13 @@
       special/formations/skirmish
     </Formations>
   </UnitAI>
+    <Resistance>
+    <Entity>
+      <Damage>
+       <Hack op="add">0.5</Hack>
+      </Damage>
+    </Entity>
+  </Resistance>
   <UnitMotion>
     <WalkSpeed op="mul">1.04</WalkSpeed>
     <Acceleration op="add">2.5</Acceleration>
