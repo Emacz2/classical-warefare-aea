@@ -49,8 +49,6 @@
     <Entities datatype="tokens">
       -units/{civ}/support_civilian
       -units/{civ}/support_female_citizen
-      -units/{civ}/serf_archer
-      -units/{civ}/serf_slinger
       units/{civ}/infantry_pikeman_a
       units/{civ}/infantry_archer_a
       units/{civ}/merc_thracian_peltast
