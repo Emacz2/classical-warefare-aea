@@ -33,7 +33,7 @@
       </ApplyStatus>
       <Damage>
         <Hack>6</Hack>
-        <Pierce>25</Pierce>
+        <Pierce>35</Pierce>
         <Crush>5</Crush>
       </Damage>
     </Entity>

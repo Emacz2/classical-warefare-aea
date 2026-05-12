@@ -4,12 +4,18 @@
     <Ranged>
       <AttackName>Bolt</AttackName>
       <Damage>
-        <Pierce>240</Pierce>
+        <Pierce>80</Pierce>
       </Damage>
       <MaxRange>80</MaxRange>
       <MinRange>15</MinRange>
       <PrepareTime>2000</PrepareTime>
       <RepeatTime>6000</RepeatTime>
+        <Bonuses>
+        <BonusMelee>
+          <Classes>Human</Classes>
+          <Multiplier>3</Multiplier>
+        </BonusMelee>
+      </Bonuses>
       <Projectile>
         <Speed>150</Speed>
         <Spread>1</Spread>
@@ -66,6 +72,7 @@
   <Identity>
     <VisibleClasses datatype="tokens">Ranged BoltShooter</VisibleClasses>
     <GenericName>Bolt Shooter</GenericName>
+    <Tooltip>3 x dmg vs Humnans</Tooltip>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>

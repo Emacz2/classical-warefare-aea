@@ -4,11 +4,17 @@
     <Melee>
       <AttackName>Ram</AttackName>
       <Damage>
-        <Crush>100</Crush>
+        <Crush>40</Crush>
       </Damage>
       <MaxRange>6.5</MaxRange>
       <PrepareTime>1000</PrepareTime>
       <RepeatTime>2000</RepeatTime>
+      <Bonuses>
+        <BonusMelee>
+          <Classes>Structure</Classes>
+          <Multiplier>3</Multiplier>
+        </BonusMelee>
+      </Bonuses>
       <PreferredClasses datatype="tokens">Structure</PreferredClasses>
       <RestrictedClasses datatype="tokens">Field Organic</RestrictedClasses>
     </Melee>
@@ -37,7 +43,7 @@
   </Health>
   <Identity>
     <GenericName>Battering Ram</GenericName>
-    <Tooltip>Cannot attack Fields or Organic Units.</Tooltip>
+    <Tooltip>Cannot attack Fields or Organic Units. 3 x dmg vs structures</Tooltip>
     <VisibleClasses datatype="tokens">Melee Ram</VisibleClasses>
   </Identity>
   <Loot>
