@@ -4,7 +4,6 @@
     <Entity>
       <Damage>
         <Hack op="add">0.5</Hack>
-        <Pierce op="add">0.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -14,7 +13,7 @@
     <SelectionGroupName>units/kush/cavalry_spearman_b</SelectionGroupName>
     <GenericName>Meroitic Heavy Spear Cavalry</GenericName>
     <SpecificName>Htr</SpecificName>
-    <Tooltip>Has an additional 0.5 of hack and pierce resistance</Tooltip>
+    <Tooltip>Has an additional 0.5 of hack resistance</Tooltip>
     <Icon>units/kush/cavalry_spearman.png</Icon>
   </Identity>
   <Promotion>
