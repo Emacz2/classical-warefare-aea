@@ -3,14 +3,20 @@
   <Attack>
     <Melee>
       <AttackName>Axe</AttackName>
-      <Damage>
-        <Crush>5</Crush>
-        <Hack>13</Hack>
-        <Pierce>2</Pierce>
+     <Damage>
+        <Crush>6.6</Crush>
+        <Hack>13.2</Hack>
+        <Pierce>1.6</Pierce>
       </Damage>
-      <MaxRange>4</MaxRange>
+      <MaxRange>2.5</MaxRange>
       <PrepareTime>300</PrepareTime>
-      <RepeatTime>1250</RepeatTime>
+      <RepeatTime>1500</RepeatTime>
+      <Bonuses>
+        <BonusMelee>
+          <Classes>Siege</Classes>
+          <Multiplier>1.5</Multiplier>
+        </BonusMelee>
+      </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
@@ -25,6 +31,7 @@
   <Identity>
     <VisibleClasses datatype="tokens">Melee Axeman</VisibleClasses>
     <GenericName>Champion Cavalry Axeman</GenericName>
+    <Tooltip> Counters: 1.5× vs Siege.</Tooltip>
   </Identity>
     <UnitMotion>
     <Acceleration op="mul">1.1</Acceleration>

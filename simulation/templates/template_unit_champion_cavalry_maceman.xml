@@ -3,20 +3,26 @@
   <Attack>
     <Melee>
       <AttackName>Mace</AttackName>
-     <Damage>
-        <Crush>13</Crush>
+      <Damage>
+        <Crush>11.6</Crush>
         <Hack>5</Hack>
-        <Pierce>2</Pierce>
       </Damage>
-      <MaxRange>3.5</MaxRange>
-      <PrepareTime>300</PrepareTime>
-      <RepeatTime>1100</RepeatTime>
+      <MaxRange>2.5</MaxRange>
+      <PrepareTime>500</PrepareTime>
+      <RepeatTime>1250</RepeatTime>
+      <Bonuses>
+        <BonusMelee>
+          <Classes>Melee Infantry</Classes>
+          <Multiplier>1.5</Multiplier>
+        </BonusMelee>
+      </Bonuses>
       <PreferredClasses datatype="tokens">!Ship</PreferredClasses>
     </Melee>
   </Attack>
   <Identity>
     <GenericName>Champion Cavalry Maceman</GenericName>
     <VisibleClasses datatype="tokens">Melee Maceman</VisibleClasses>
+    <Tooltip> Counters: 1.5× vs Melee Infantry.</Tooltip>
   </Identity>
   <Sound>
     <SoundGroups>
