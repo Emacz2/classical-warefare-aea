@@ -11,6 +11,12 @@
       <MaxRange>2.5</MaxRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1500</RepeatTime>
+       <Bonuses>
+       <BonusMelee>
+          <Classes>Siege</Classes>
+          <Multiplier>1.5</Multiplier>
+        </BonusMelee>
+      </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
