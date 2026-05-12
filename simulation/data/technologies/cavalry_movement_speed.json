@@ -9,7 +9,7 @@
 	"requirementsTooltip": "Unlocked in Village Phase.",
 	"icon": "cavalry_speed.png",
 	"researchTime": 15,
-	"tooltip": "Cavalry +10% walk and _15% run speed, but 10% more train time. Doesnt not apply to hunt cavalry.",
+	"tooltip": "Cavalry +10% walk and 15% run speed, but 10% more train time.",
 	"modifications": [
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.1 },
 		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.15 },

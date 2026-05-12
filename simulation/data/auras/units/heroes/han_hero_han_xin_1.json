@@ -1,14 +1,15 @@
 {
 	"type": "range",
-	"radius": 90,
+	"radius": 110,
 	"affects": ["Soldier"],
 	"modifications": [
 		{ "value": "Promotion/RequiredXp", "multiply": 0.8 },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.10 },
-		{ "value": "Vision/Range", "multiply": 1.20 }
+		{ "value": "Vision/Range", "multiply": 1.20 },
+		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.1 },
+		{ "value": "UnitMotion/Acceleration", "multiply": 1.1 }
 	],
 	"auraName": "Northern Army",
 	"showDescription": 1,
-	"auraDescription": "Soldiers −20% promotion experience, 20% more vision and 10% faster movement.",
+	"auraDescription": "Soldiers −20% promotion experience, +20% vision and 10% acceleration/run speed.",
 	"overlayIcon": "art/textures/ui/session/auras/xp.png"
 }
