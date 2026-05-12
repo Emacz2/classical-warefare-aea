@@ -34,7 +34,7 @@
     <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
   </Identity>
  <UnitMotion>
-    <WalkSpeed op="mul">1.05</WalkSpeed>
+    <WalkSpeed op="mul">1.03</WalkSpeed>
     <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>
   <Sound>
