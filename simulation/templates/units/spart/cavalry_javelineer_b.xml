@@ -8,7 +8,7 @@
     <Icon>units/spart/cavalry_javelinist.png</Icon>
       <History>Sparta, known for its focus on hoplite infantry, had a relatively limited cavalry force. Spartan cavalry was often considered less effective compared to other Greek city-states. Melee Cavalry can't upgrade rank. Total Cavalry force limited to 40</History>
        <Requirements>
-      <Techs datatype="tokens">unlock_javcav</Techs>
+      <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
   <Promotion>
