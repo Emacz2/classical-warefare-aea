@@ -36,7 +36,7 @@
       <Damage>
         <Crush op="add">1</Crush>
         <Hack op="add">1.5</Hack>
-        <Pierce op="add">1</Pierce>
+        <Pierce op="add">0.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
