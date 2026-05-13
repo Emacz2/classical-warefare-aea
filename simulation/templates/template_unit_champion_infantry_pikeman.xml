@@ -7,7 +7,7 @@
         <Hack>7.5</Hack>
         <Pierce>16.5</Pierce>
       </Damage>
-      <MaxRange>10</MaxRange>
+      <MaxRange>9</MaxRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>2000</RepeatTime>
       <Bonuses>
@@ -48,7 +48,7 @@
     </Formations>
   </UnitAI>
   <UnitMotion>
-    <WalkSpeed op="mul">0.92</WalkSpeed>
+    <WalkSpeed op="mul">0.90</WalkSpeed>
     <Acceleration op="mul">0.9</Acceleration>
   </UnitMotion>
 </Entity>

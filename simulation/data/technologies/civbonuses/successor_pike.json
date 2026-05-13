@@ -3,7 +3,7 @@
 	"autoResearch": true,
 	"description": "",
 	"icon": "agoge.png",
-	"tooltip": "Pikeman +1.5 of Crush/Hack and +1 pierce resistance but 5% slower movement",
+	"tooltip": "Pikeman +1 Crush/Hack, +0.5 pierce resistance and 1m longer pikes but 5% slower movement",
 		"requirements": {
 		"any": [
 			{ "civ": "ptol" },
@@ -11,10 +11,10 @@
 		]
 	},
 	"modifications": [
-
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 1.5 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 1},
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 },
+		{ "value": "Attack/Melee/MaxRange", "add": 1 },
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 }
 		
 
