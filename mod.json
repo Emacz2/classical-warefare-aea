@@ -2,7 +2,7 @@
 	"name": "classical-warfare-aea",
 	"version": "0.28.7",
 	"label": "classical-warfare-aea",
-	"url": "https://github.com/Emacz2/classical-warefare-aea", 
+	"url": "https://jeff-web-sketch.github.io/ClasicWareFareAEASite/", 
 	"description": "A more indepth version of 0AD with an emphasis on historical accuracy. New units and techs but a similar aproach to the game.",
 	"dependencies": [ "0ad=0.28.0" ]
 }
