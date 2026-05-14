@@ -16,7 +16,7 @@
         <Hack op="add">2</Hack>
         <Pierce op="add">0.5</Pierce>
       </Damage>
-      <MaxRange op="add">-0.5</MaxRange>
+      <MaxRange op="add">0.5</MaxRange>
       <RepeatTime op="add">250</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
@@ -27,6 +27,22 @@
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Melee>
   </Attack>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">0.5</Crush>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+    <Cost>
+    <BuildTime op="mul">1.1</BuildTime>
+    <Resources>
+      <wood op="add">-10</wood>
+      <metal op="add">10</metal>
+    </Resources>
+  </Cost>
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/infantry_pikeman_b</SelectionGroupName>
@@ -42,6 +58,10 @@
       special/formations/anti_cavalry
     </Formations>
   </UnitAI>
+  <UnitMotion>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <Acceleration op="mul">0.96</Acceleration>
+  </UnitMotion>
   <VisualActor>
     <Actor>units/han/infantry_halberdman_b.xml</Actor>
   </VisualActor>

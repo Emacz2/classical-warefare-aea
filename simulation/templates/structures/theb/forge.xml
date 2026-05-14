@@ -4,6 +4,22 @@
     <Civ>theb</Civ>
     <SpecificName>Chalkéōn</SpecificName>
   </Identity>
+   <Researcher>
+    <Technologies datatype="tokens">
+      greek_resistance_hack_01
+      greek_resistance_hack_02
+      greek_resistance_hack_03
+      greek_resistance_pierce_01
+      greek_resistance_pierce_02
+      greek_resistance_pierce_03
+      -soldier_resistance_hack_01
+      -soldier_resistance_hack_02
+      -soldier_resistance_hack_03
+      -soldier_resistance_pierce_01
+      -soldier_resistance_pierce_02
+      -soldier_resistance_pierce_03
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>structures/hellenes/blacksmith.xml</Actor>
   </VisualActor>

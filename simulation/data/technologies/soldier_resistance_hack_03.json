@@ -2,25 +2,28 @@
 	"genericName": "Mail Body Armor",
 	"description": "Body armor made of small metal rings linked together.",
 	"cost": {
-		"food": 500,
-		"metal": 400
+		"food": 350,
+		"metal": 350
 	},
 	"supersedes": "soldier_resistance_hack_02",
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },
+			{ "notciv": "athen" },
 			{ "notciv": "brit" },
 			{ "notciv": "pers" },
-			{ "notciv": "spart" }
+			{ "notciv": "spart" },
+			{ "notciv": "theb" }
 		]
 	},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_chain.png",
 	"researchTime": 60,
-	"tooltip": "Soldiers +2 hack and +1 crush resistance.",
+	"tooltip": "Soldiers +1.5 hack and +1 crush resistance",
 	"modifications": [
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 1 }
+
 	],
 	"affects": ["Soldier !Mercenary !Elephant !Auxiliary"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"

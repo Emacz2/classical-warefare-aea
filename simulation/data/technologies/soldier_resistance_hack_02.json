@@ -9,23 +9,25 @@
 	},
 	"description": "Body armor made from laminated linen.",
 	"cost": {
-		"food": 350,
-		"metal": 250
+		"food":250,
+		"metal": 200
 	},
 	"supersedes": "soldier_resistance_hack_01",
 	"requirements": {
 		"all": [
 			{ "tech": "phase_town" },
+			{ "notciv": "athen" },
 			{ "notciv": "pers" },
-			{ "notciv": "spart" }
+			{ "notciv": "spart" },
+			{ "notciv": "theb" }
 		]
 	},
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "armor_pteruges.png",
 	"researchTime": 40,
-	"tooltip": "Soldiers +1.5 hack and +0.5 crush resistance.",
+	"tooltip": "Soldiers +1 hack and +0.5 crush resistance.",
 	"modifications": [
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5 }
 	],
 	"affects": ["Soldier !Mercenary !Elephant !Auxiliary"],

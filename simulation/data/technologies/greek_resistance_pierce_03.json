@@ -1,0 +1,31 @@
+{
+	"genericName": "Improved Shield Alloys",
+	"description": "Strengthen shields further with stronger metal alloys.",
+	"cost": {
+		"wood": 500,
+		"metal": 200
+	},
+	"supersedes": "greek_resistance_pierce_02",
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "civ": "athen" },
+			{ "civ": "spart" },
+			{ "civ": "theb" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in City Phase.",
+	"icon": "shields_generic_silver.png",
+	"researchTime": 60,
+	"tooltip": "Soldiers +1.5 Pierce and +1 Crush resistance. Hoplites +0.5 Pierce/Crush resistance and 2% faster walk speed..",
+	"modifications": [
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1.5 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": -1, "affects": "Hoplite"},
+		{ "value": "Resistance/Entity/Damage/Crush", "add": -0.5, "affects": "Hoplite"},
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.02, "affects": "Hoplite" }
+
+	],
+	"affects": ["Soldier !Mercenary !Helot !Elephant"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

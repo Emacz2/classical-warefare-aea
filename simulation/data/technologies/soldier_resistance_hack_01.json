@@ -1,11 +1,9 @@
 {
 	"genericName": "Quilted Body Armor",
 	"specificName": {
-		"athen": "Spolas",
 		"mace": "Spolas",
 		"ptol": "Spolas",
-		"sele": "Spolas",
-		"spart": "Spolas"
+		"sele": "Spolas"
 	},
 	"description": "Body armor made from quilted wool, linen, cotton, or leather.",
 	"cost": {
@@ -15,8 +13,10 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_town" },
+			{ "notciv": "athen" },
 			{ "notciv": "pers" },
-			{ "notciv": "spart" }
+			{ "notciv": "spart" },
+			{ "notciv": "theb" }
 		]
 	},
 	"requirementsTooltip": "Unlocked in Town Phase.",

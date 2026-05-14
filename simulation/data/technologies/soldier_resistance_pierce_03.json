@@ -8,17 +8,20 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },
+			{ "notciv": "athen" },
 			{ "notciv": "pers" },
-			{ "notciv": "spart" }
+			{ "notciv": "spart" },
+			{ "notciv": "theb" }
 		]
 	},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "shields_generic_silver.png",
 	"researchTime": 60,
-	"tooltip": "Soldiers +2 pierce and +1 crush resistance.",
+	"tooltip": "Soldiers +1.5 pierce and +1 crush resistance but 2% slower walk speed",
 	"modifications": [
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1.5 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 1 }
+		
 	],
 	"affects": ["Soldier !Mercenary !Elephant !Auxiliary"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
