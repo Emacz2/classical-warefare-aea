@@ -12,17 +12,17 @@
     <Entity>
       <Damage>
          <Crush op="add">2</Crush>
-        <Hack op="add">1.5</Hack>
+        <Hack op="add">2</Hack>
         <Pierce op="add">1.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <UnitMotion>
-  <WalkSpeed op="mul">0.95</WalkSpeed>
+  <WalkSpeed op="mul">0.94</WalkSpeed>
  </UnitMotion>
   <Identity>
     <Classes datatype="tokens">Hoplite</Classes>
       <History>Hoplites were the very symbol of Hellenic prestige and citizenship, armed with a spear and a large round bronze-coated shield known as an aspis. Armor was heavy, with bronze helmets and a cuirass of either bronze or linen, in addition to greaves. Hoplites fought in a tight formation called a phalanx, guarding each other with their shields while they attacked the enemy with their 2.5 meter spear or short iron sword.</History>
-     <Tooltip>Hoplites +2 Crush resitance and +1.5 Hack/Pierce but 5% slower walk speed </Tooltip>
+     <Tooltip>Hoplites +2 Crush/Hack resitance and +1.5 Pierce but 6% slower walk speed </Tooltip>
      </Identity>
 </Entity>
