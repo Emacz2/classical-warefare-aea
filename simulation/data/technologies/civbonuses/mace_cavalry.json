@@ -15,5 +15,5 @@
 		{ "value": "Cost/Resources/metal", "add": 15, "affects": "!Hero !Champion"  }
 		
 	],
-	"affects": ["Cavalry !PaidMerc"]
+	"affects": ["Cavalry !Mercenary"]
 }

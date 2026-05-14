@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_champion_infantry_swordsman">
+<Auras datatype="tokens">
+    units/testudo
+  </Auras>
    <Attack>
     <Melee>
       <Damage>
@@ -25,7 +28,7 @@
     <VisibleClasses datatype="tokens">Praetorian Guard Rōmānī</VisibleClasses>
     <Icon>units/rome/champion_legion_centurio.png</Icon>
     <Requirements>
-      <Techs datatype="tokens">phase_city</Techs>
+      <Techs datatype="tokens">phase_empi</Techs>
     </Requirements>
   </Identity>
   <TrainingRestrictions>

@@ -31,7 +31,7 @@
 		{ "value": "Cost/Resources/food", "add": -5, "affects": "Citizen" },
 		{ "value": "Cost/Resources/wood", "add": -5, "affects": "Citizen" },
 		{ "value": "Health/Max", "add": 25, "affects": "Champion" },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 }
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.03 }
 		
 
 	],
