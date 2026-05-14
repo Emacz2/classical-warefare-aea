@@ -20,18 +20,18 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 60,
-	"tooltip": "Hoplites -0.5 of reach resitance but −20% training time, −30% promotion experience, and 3% faster walk speed. Citizen hoplites 10% less food/wood cost. While Champion +25 Health.",
+	"tooltip": "Hoplites -1 hack and -0.5 crush/pierce resitances but −20% training time, −30% promotion experience, and 3% faster walk speed. Citizen hoplites 10% less food/wood cost. While Champion +25 Health.",
 	
 	"modifications": [
 		{ "value": "Resistance/Entity/Damage/Crush", "add": -0.5 },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": -0.5 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": -1 },
 	    { "value": "Resistance/Entity/Damage/Pierce", "add": -0.5 },
 		{ "value": "Cost/BuildTime", "multiply": 0.80 },
 		{ "value": "Promotion/RequiredXp", "multiply": 0.7 },
 		{ "value": "Cost/Resources/food", "add": -5, "affects": "Citizen" },
 		{ "value": "Cost/Resources/wood", "add": -5, "affects": "Citizen" },
 		{ "value": "Health/Max", "add": 25, "affects": "Champion" },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.03 }
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 }
 		
 
 	],

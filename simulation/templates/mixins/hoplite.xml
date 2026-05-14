@@ -18,7 +18,7 @@
     </Entity>
   </Resistance>
  <UnitMotion>
-  <WalkSpeed op="mul">0.94</WalkSpeed>
+  <WalkSpeed op="mul">0.95</WalkSpeed>
  </UnitMotion>
   <Identity>
     <Classes datatype="tokens">Hoplite</Classes>
