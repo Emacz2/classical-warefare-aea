@@ -47,7 +47,7 @@
   </Identity>
    <Promotion>
     <Entity>units/rome/champion_infantry_swordsman_evocati</Entity>
-    <RequiredXp>150</RequiredXp>
+    <RequiredXp>200</RequiredXp>
   </Promotion>
   <VisualActor>
     <Actor>units/romans/infantry_swordsman_c6.xml</Actor>
