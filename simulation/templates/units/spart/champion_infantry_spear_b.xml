@@ -16,11 +16,12 @@
       </Damage>
     </Melee>
   </Attack>
- <Resistance>
+  <Resistance>
     <Entity>
       <Damage>
-        <Hack op="add">-2</Hack>
-        <Pierce op="add">-2</Pierce>
+        <Hack op="add">-1</Hack>
+        <Pierce op="add">-1</Pierce>
+	      <Crush op="add">-1</Crush>
       </Damage>
     </Entity>
   </Resistance>

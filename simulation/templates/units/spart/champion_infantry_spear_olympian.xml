@@ -13,7 +13,7 @@
       <Damage>
         <Hack op="add">1</Hack>
         <Pierce op="add">1</Pierce>
-	      <Crush op="add">5</Crush>
+	      <Crush op="add">2.5</Crush>
       </Damage>
     </Entity>
   </Resistance>
@@ -21,7 +21,6 @@
     <Max op="add">25</Max>
   </Health>
  <UnitMotion>
-  <WalkSpeed op="mul">1.05</WalkSpeed>
  </UnitMotion>
   <Upgrade>
     <xiphos>

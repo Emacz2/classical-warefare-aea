@@ -1,0 +1,26 @@
+{
+	"genericName": "Light armored mobile infantry",
+	"description": "Persian infantry often chose lighter armor in favor of mobility over protection.",
+	"cost": {
+		"food": 200,
+		"metal": 100
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "pers" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in Village Phase.",
+	"icon": "walk.png",
+	"researchTime": 30,
+	"tooltip": "Infantry 5% faster run/walk speed.  Immortals an additional 5% faster walk.",
+	"modifications": [
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05, "affects": "Champion Infantry" },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
+		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.05 }
+
+	],
+	"affects": ["Infantry"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

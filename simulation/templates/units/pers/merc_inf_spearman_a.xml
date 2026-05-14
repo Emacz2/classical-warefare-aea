@@ -7,11 +7,17 @@
     <GenericName>Greek Hoplite Mercanary</GenericName>
     <Icon>units/theb/theb_hoplite_merc.png</Icon>
   </Identity>
-   <Health>
-    <Max op="add">10</Max>
-  </Health>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">-0.5</Hack>
+        <Pierce op="add">-0.5</Pierce>
+	      <Crush op="add">-0.5</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
    <UnitMotion>
-  <WalkSpeed op="mul">1.05</WalkSpeed>
+  <WalkSpeed op="mul">1.03</WalkSpeed>
  </UnitMotion>
  <Promotion disable=""/>
   <VisualActor>
