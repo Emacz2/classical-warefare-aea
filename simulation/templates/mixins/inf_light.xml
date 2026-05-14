@@ -10,10 +10,10 @@
     </Entity>
   </Resistance>
  <UnitMotion>
-  <WalkSpeed op="mul">1.05</WalkSpeed>
+  <WalkSpeed op="mul">1.1</WalkSpeed>
  </UnitMotion>
   <Identity>
     <Classes datatype="tokens">Heavy</Classes>
-    <Tooltip>Light Infantry -2 of each resistance but 5% faster walk speed</Tooltip>
+    <Tooltip>Light Infantry -2 of each resistance but 10% faster walk speed</Tooltip>
      </Identity>
 </Entity>

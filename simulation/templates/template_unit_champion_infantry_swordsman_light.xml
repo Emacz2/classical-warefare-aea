@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_champion_infantry_swordsman">
+  <Attack>
+    <Melee>
+      <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
+      <RepeatTime op="add">-100</RepeatTime>
+    </Melee>
+  </Attack>
+   <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">-2</Crush>
+        <Hack op="add">-2</Hack>
+        <Pierce op="add">-2</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+ <UnitMotion>
+  <WalkSpeed op="mul">1.1</WalkSpeed>
+ </UnitMotion>
+  <Identity>
+    <VisibleClasses datatype="tokens">Melee Swordsman</VisibleClasses>
+    <Tooltip>-2 of each resistance but 10% faster attack and walk speed than regular champion swordsman</Tooltip>
+    <GenericName>Champion Light Swordsman</GenericName>
+  </Identity>
+  <Sound>
+    <SoundGroups>
+      <attack_melee>attack/weapon/sword_attack.xml</attack_melee>
+    </SoundGroups>
+  </Sound>
+  <UnitAI>
+    <Formations datatype="tokens">
+      special/formations/testudo
+    </Formations>
+  </UnitAI>
+</Entity>

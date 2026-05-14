@@ -39,9 +39,6 @@
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5, "affects": "Cavalry" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5, "affects": "Cavalry" },
-		{ "value": "Cost/BuildTime", "multiply": 1.05, "affects": "Cavalry !Hero" },
 		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Market" }
 	
 	],

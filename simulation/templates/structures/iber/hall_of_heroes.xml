@@ -38,6 +38,7 @@
     <Entities datatype="tokens">
       units/{civ}/champion_infantry_javelineer
       units/{civ}/champion_infantry_swordsman
+      units/{civ}/champion_infantry_swordsman2
       units/{civ}/champion_cavalry
       units/{civ}/hero_corbis
       units/{civ}/hero_indibil
