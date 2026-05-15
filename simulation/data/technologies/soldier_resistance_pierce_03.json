@@ -8,10 +8,8 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },
-			{ "notciv": "athen" },
 			{ "notciv": "pers" },
-			{ "notciv": "spart" },
-			{ "notciv": "theb" }
+			{ "notciv": "spart" }
 		]
 	},
 	"requirementsTooltip": "Unlocked in City Phase.",
