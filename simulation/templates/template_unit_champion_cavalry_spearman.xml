@@ -7,7 +7,7 @@
         <Hack>6.6</Hack>
         <Pierce>11.6</Pierce>
       </Damage>
-       <MaxRange>4</MaxRange>
+       <MaxRange>5</MaxRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1250</RepeatTime>
       <Bonuses>
@@ -30,11 +30,11 @@
   </Resistance>
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
-    <Tooltip>Single handed spear and shield 2× vs Cavalry.</Tooltip>
+    <Tooltip>Single handed spear. 2× vs Cavalry.</Tooltip>
     <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
   </Identity>
  <UnitMotion>
-    <WalkSpeed op="mul">1.03</WalkSpeed>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>
   <Sound>

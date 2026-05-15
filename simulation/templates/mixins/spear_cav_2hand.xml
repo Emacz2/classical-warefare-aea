@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Attack>
+    <Melee>
+      <MaxRange op="add">-0.5</MaxRange>
+      <RepeatTime op="add">-250</RepeatTime>
+    </Melee>
+  </Attack>
+  <Identity>
+    <GenericName>Two handed spear cav</GenericName>
+    <Tooltip>-250 repeat time but -0.5 range</Tooltip>
+  </Identity>
+</Entity>

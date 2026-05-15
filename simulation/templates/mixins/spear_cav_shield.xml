@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Attack>
+    <Melee>
+      <MaxRange op="add">-1</MaxRange>
+      <PrepareTime op="add">250</PrepareTime>
+    </Melee>
+  </Attack>
+  <Identity>
+    <GenericName>Cavalry Spearman with shield</GenericName>
+    <Tooltip>Add 0.5 Hack 1 Crush and 1.5 Pierce resistances, but -1m max range and +250 prepare time</Tooltip>
+  </Identity>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">0.5</Hack>
+        <Pierce op="add">1.5</Pierce>
+        <Crush op="add">1</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
+</Entity>
