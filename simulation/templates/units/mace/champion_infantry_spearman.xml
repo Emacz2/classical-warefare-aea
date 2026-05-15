@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="greek_olympian|template_unit_champion_infantry_spearman">
-  <Attack>
-    <Melee>
-      <Damage>
-        <Pierce op="add">1.5</Pierce>
-      </Damage>
-    </Melee>
-  </Attack>
+<Entity parent="template_unit_champion_infantry_spearman">
    <UnitMotion>
     <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="mul">1.05</Acceleration>
