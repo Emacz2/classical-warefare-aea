@@ -28,6 +28,6 @@
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
   <VisualActor>
-    <Actor>units/macedonians/cavalry_spearman_c_m.xml</Actor>
+    <Actor>units/macedonians/cavalry_sword_c_m.xml</Actor>
   </VisualActor>
 </Entity>
