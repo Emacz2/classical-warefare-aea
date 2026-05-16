@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Attack>
+    <Melee>
+      <Splash>
+        <Shape>Circular</Shape>
+        <Range>1.5</Range>
+        <FriendlyFire>false</FriendlyFire>
+        <Damage>
+          <Crush>5</Crush>
+        </Damage>
+      </Splash>
+    </Melee>
+  </Attack>
+  <Identity>
+    <GenericName>Schock Cavalry</GenericName>
+  </Identity>
+</Entity>

@@ -2,13 +2,12 @@
 <Entity>
   <Attack>
     <Melee>
-      <MaxRange op="add">1.5</MaxRange>
       <Splash>
         <Shape>Circular</Shape>
         <Range>2</Range>
         <FriendlyFire>false</FriendlyFire>
         <Damage>
-          <Crush>5</Crush>
+          <Crush>7.5</Crush>
         </Damage>
       </Splash>
     </Melee>

@@ -39,9 +39,11 @@
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1, "affects": "Champion Cavalry Spearman" },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1, "affects": "Champion Cavalry Spearman" },
 		{ "value": "Cost/Resources/wood", "add": 25, "affects": "Champion Cavalry Spearman"},
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.25, "affects": "Champion Cavalry Spearman" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.25, "affects": "Champion Cavalry Spearman"},
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Champion Cavalry Spearman" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Champion Cavalry Spearman"},
 		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Colony" }
 
 	

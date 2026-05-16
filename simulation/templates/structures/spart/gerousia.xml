@@ -20,7 +20,7 @@
   </Health>
   <Identity>
     <Civ>spart</Civ>
-    <GenericName>Spartan Senate</GenericName>
+    <GenericName>Assembly Chamber</GenericName>
     <SpecificName>Skias</SpecificName>
     <Tooltip>Train Soldiers and Heroes, research special military techs available only to sparta.</Tooltip>
     <Classes datatype="tokens">ConquestCritical</Classes>

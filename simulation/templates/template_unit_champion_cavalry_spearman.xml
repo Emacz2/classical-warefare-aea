@@ -19,15 +19,6 @@
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
-   <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">0.5</Crush>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
     <Tooltip>Single handed spear. 2× vs Cavalry.</Tooltip>

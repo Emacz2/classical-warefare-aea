@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_cavalry_spearman">
+<Entity parent="template_unit_champion_cavalry_melee">
   <Attack>
     <Melee>
-      <AttackName>Lance</AttackName>
+      <AttackName>Spear</AttackName>
       <Damage>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">1.5</Pierce>
+        <Hack>7</Hack>
+        <Pierce>13</Pierce>
       </Damage>
-      <MaxRange op="add">2</MaxRange>
-      <RepeatTime op="add">250</RepeatTime>
+       <MaxRange>6.5</MaxRange>
+      <PrepareTime>750</PrepareTime>
+      <RepeatTime>1500</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
@@ -18,20 +19,22 @@
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
-  <Resistance>
+   <Resistance>
     <Entity>
       <Damage>
-        <Hack op="add">1</Hack>
+        <Crush op="add">1.5</Crush>
+        <Hack op="add">2</Hack>
+        <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>
   </Resistance>
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
-    <Tooltip>Two handed thursting spear. Counters: 2× vs Cavalry.</Tooltip>
+    <Tooltip>Two handed long lance. Counters: 2× vs Cavalry.</Tooltip>
     <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
   </Identity>
  <UnitMotion>
-    <WalkSpeed op="mul">0.97</WalkSpeed>
+    <WalkSpeed op="mul">0.95</WalkSpeed>
   </UnitMotion>
   <Sound>
     <SoundGroups>
