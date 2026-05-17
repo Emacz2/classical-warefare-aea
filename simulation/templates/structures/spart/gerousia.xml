@@ -24,7 +24,7 @@
     <SpecificName>Skias</SpecificName>
     <Tooltip>Train Soldiers and Heroes, research special military techs available only to sparta.</Tooltip>
     <Classes datatype="tokens">ConquestCritical</Classes>
-    <VisibleClasses datatype="tokens">Town Council Special</VisibleClasses>
+    <VisibleClasses datatype="tokens">Town Special</VisibleClasses>
     <Icon>structures/tholos.png</Icon>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
