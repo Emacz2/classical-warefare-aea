@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_infantry_ranged_peltast">
-  <Cost>
-    <BuildTime op="mul">0.9</BuildTime>
-    <Resources>
-      <metal>80</metal>
-      <food>0</food>
-      <wood>0</wood>
-    </Resources>
-  </Cost>
    <Attack>
    <Capture>
       <AttackName>Capture</AttackName>
@@ -42,7 +34,7 @@
     <GenericName>Thracian Peltast</GenericName>
     <SpecificName>Peltastḗs Thrâx</SpecificName>
     <Icon>units/athen/infantry_javelinist.png</Icon>
-    <VisibleClasses datatype="tokens">Mercenary -Citizen Switch</VisibleClasses>
+    <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>

@@ -35,7 +35,7 @@
   </Ranged>
 </Attack>
   <Identity>
-    <VisibleClasses datatype="tokens">Allied</VisibleClasses>
+    <VisibleClasses datatype="tokens">Auxiliary -Citizen</VisibleClasses>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

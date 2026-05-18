@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="baleric_slinger|merc_inf_market|template_unit_infantry_ranged_slinger">
+<Entity parent="slinger_baleric|merc_inf_market|template_unit_infantry_ranged_slinger">
   <Identity>
     <Civ>rome</Civ>
     <GenericName>Balearic Slinger</GenericName>

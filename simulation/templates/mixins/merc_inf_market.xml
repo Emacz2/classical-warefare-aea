@@ -7,17 +7,9 @@
       <food>0</food>
     </Resources>
   </Cost>
-   <Attack>
-   <Capture>
-      <AttackName>Capture</AttackName>
-      <Capture>1.0</Capture>
-      <MaxRange>3</MaxRange>
-      <RepeatTime>1000</RepeatTime>
-    </Capture>
-  </Attack>
   <Identity>
    <VisibleClasses datatype="tokens">Mercenary</VisibleClasses>
-    <Tooltip>Specialized Mercenary with unique stats/abilties. Capture attack is 1. They do not gain forge techs or WTF. And have a different promotion system/stats</Tooltip>
+    <Tooltip>Purchase mercanaries from the market for the cost of metal only, -10% train time</Tooltip>
   </Identity>
   <Loot>
     <metal>10</metal>

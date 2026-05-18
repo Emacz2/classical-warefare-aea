@@ -24,7 +24,6 @@
     <GenericName>Balearic Slinger</GenericName>
     <SpecificName>Qallāʿ Ibušimi</SpecificName>
     <Icon>units/cart/infantry_slinger.png</Icon>
-    <VisibleClasses datatype="tokens">-Citizen</VisibleClasses>
     <Tooltip>20% more crush dmg and 10% more accurate than standard stone slingers. Can be upgraded to lead slingers once they hit elite status</Tooltip>
     <History>The Balearic slingers, indigenous to the Balearic Islands, were warriors from ancient times famed for their mastery in the art of using the sling;</History>
   </Identity>

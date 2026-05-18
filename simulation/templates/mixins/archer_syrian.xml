@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Attack>
+    <Ranged>
+    <Damage>
+      <Pierce op="mul">1.1</Pierce>
+    </Damage>
+  </Ranged>
+</Attack>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">1.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+   <UnitMotion>
+  <WalkSpeed op="mul">0.95</WalkSpeed>
+ </UnitMotion>
+  <Identity>
+    <Lang>greek</Lang>
+    <GenericName>Syrian Archer</GenericName>
+    <SpecificName>Toxótēs Syrías</SpecificName>
+    <Icon>units/sele/infantry_archer.png</Icon>
+    <Tooltip>Syrians highly sought after mercanaries; 10% more pierce dmg, +1 Hack and +1.5 peirce resistance</Tooltip>
+  </Identity>
+  <ResourceGatherer disable=""/>
+</Entity>
+

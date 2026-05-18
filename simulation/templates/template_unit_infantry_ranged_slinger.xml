@@ -7,12 +7,12 @@
         <Crush>3.5</Crush>
         <Pierce>3.5</Pierce>
       </Damage>
-      <MaxRange>47</MaxRange>
+      <MaxRange>51</MaxRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1000</RepeatTime>
       <Projectile>
         <Speed>125</Speed>
-        <Spread>2.5</Spread>
+        <Spread>4</Spread>
         <Gravity>45</Gravity>
         <FriendlyFire>false</FriendlyFire>
         <LaunchPoint y="3"/>

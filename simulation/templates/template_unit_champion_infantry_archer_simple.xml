@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged">
+<Entity parent="template_unit_champion_infantry_ranged">
   <Attack>
     <Ranged>
       <AttackName>Bow</AttackName>
       <Damage>
-        <Pierce>9.2</Pierce>
+        <Pierce>12</Pierce>
       </Damage>
-      <MaxRange>50</MaxRange>
+      <MaxRange>56</MaxRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1500</RepeatTime>
       <Projectile>
-        <Speed>100</Speed>
-        <Spread>2</Spread>
+        <Speed>125</Speed>
+        <Spread>3.1</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
         <LaunchPoint y="3"/>
@@ -19,15 +19,9 @@
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Ranged>
   </Attack>
-  <Cost>
-    <Resources>
-      <food>50</food>
-      <wood>50</wood>
-    </Resources>
-  </Cost>
   <Identity>
-    <VisibleClasses datatype="tokens">GreekArcher</VisibleClasses>
-    <GenericName>Archer</GenericName>
+    <VisibleClasses datatype="tokens">Ranged Archer</VisibleClasses>
+    <GenericName>Champion Archer</GenericName>
   </Identity>
   <Sound>
     <SoundGroups>
@@ -35,11 +29,24 @@
       <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
     </SoundGroups>
   </Sound>
+  <Turretable/>
+  <UnitAI>
+    <Formations datatype="tokens">
+      special/formations/skirmish
+    </Formations>
+  </UnitAI>
+    <Resistance>
+    <Entity>
+      <Damage>
+       <Hack op="add">0.5</Hack>
+      </Damage>
+    </Entity>
+  </Resistance>
   <UnitMotion>
     <WalkSpeed op="mul">1.04</WalkSpeed>
     <Acceleration op="add">2.5</Acceleration>
   </UnitMotion>
    <Vision>
-    <Range>65</Range>
+    <Range>75</Range>
   </Vision>
 </Entity>

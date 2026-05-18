@@ -21,7 +21,7 @@
     <GenericName>Mercenary Thureos Spearman</GenericName>
     <SpecificName>Thureophóros Misthophóros</SpecificName>
     <Icon>units/ptol/infantry_spearman_2.png</Icon>
-    <VisibleClasses datatype="tokens">Mercenary -Citizen Switch</VisibleClasses>
+    <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>

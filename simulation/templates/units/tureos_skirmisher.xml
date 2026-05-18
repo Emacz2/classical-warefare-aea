@@ -34,7 +34,7 @@
     <GenericName>Mercenary Thureos Skirmisher</GenericName>
     <SpecificName>Thureophóros Akrobolistḗs</SpecificName>
     <Icon>units/ptol/infantry_javelinist_merc.png</Icon>
-    <VisibleClasses datatype="tokens">Mercenary -Citizen Switch</VisibleClasses>
+    <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
