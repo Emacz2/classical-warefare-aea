@@ -14,7 +14,7 @@
       <AttackName>Pilum</AttackName>
       <Damage>
         <Hack op="mul">2</Hack>
-        <Pierce op="mul">1.25</Pierce>
+        <Pierce op="mul">1.5</Pierce>
       </Damage>
       <MaxRange op="mul">0.75</MaxRange>
       <PrepareTime>500</PrepareTime>
