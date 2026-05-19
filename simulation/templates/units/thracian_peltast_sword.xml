@@ -26,7 +26,7 @@
     <GenericName>Thracian Black Cloak</GenericName>
     <SpecificName>Rhomphaiophoros</SpecificName>
     <Icon>units/special/pelt_sword.png</Icon>
-    <VisibleClasses datatype="tokens">Citizen Switch</VisibleClasses>
+    <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
     <UnitMotion>
     <WalkSpeed>9.5</WalkSpeed>
