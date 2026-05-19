@@ -3,14 +3,14 @@
   <Attack>
     <Melee>
       <AttackName>Axe</AttackName>
-     <Damage>
-        <Crush>6.6</Crush>
-        <Hack>13.2</Hack>
-        <Pierce>1.6</Pierce>
+      <Damage>
+        <Crush>11</Crush>
+        <Hack>20</Hack>
+        <Pierce>2</Pierce>
       </Damage>
-      <MaxRange>2.5</MaxRange>
+     <MaxRange>3</MaxRange>
       <PrepareTime>300</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <RepeatTime>2250</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Siege</Classes>

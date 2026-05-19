@@ -2,14 +2,14 @@
 <Entity parent="template_unit_champion_cavalry_melee">
   <Attack>
     <Melee>
-      <AttackName>Spear</AttackName>
+      <AttackName>Lance</AttackName>
       <Damage>
-        <Hack>7</Hack>
-        <Pierce>13</Pierce>
+        <Hack>11</Hack>
+        <Pierce>26</Pierce>
       </Damage>
        <MaxRange>6.5</MaxRange>
       <PrepareTime>750</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <RepeatTime>2750</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>

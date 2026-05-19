@@ -4,12 +4,12 @@
     <Melee>
       <AttackName>Pike</AttackName>
       <Damage>
-        <Hack>7.5</Hack>
-        <Pierce>16.5</Pierce>
+        <Hack>9</Hack>
+        <Pierce>27</Pierce>
       </Damage>
       <MaxRange>9</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>2000</RepeatTime>
+      <RepeatTime>2750</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>

@@ -2,13 +2,13 @@
 <Entity parent="template_unit_cavalry_ranged">
   <Attack>
     <Ranged>
-      <AttackName>Bow</AttackName>
+      <AttackName>CompositeBow</AttackName>
       <Damage>
         <Pierce>8.8</Pierce>
       </Damage>
-      <MaxRange>65</MaxRange>
+      <MaxRange>51.5</MaxRange>
       <PrepareTime>750</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <RepeatTime>1000</RepeatTime>
       <Projectile>
         <Speed>125</Speed>
         <Spread>3</Spread>
@@ -24,6 +24,13 @@
       <wood>50</wood>
     </Resources>
   </Cost>
+  <Resistance>
+    <Entity>
+      <Damage>
+       <Hack op="add">0.5</Hack>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Identity>
     <VisibleClasses datatype="tokens">Archer</VisibleClasses>
     <GenericName>Mounted Archer</GenericName>

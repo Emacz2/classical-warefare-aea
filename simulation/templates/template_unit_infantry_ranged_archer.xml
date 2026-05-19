@@ -2,13 +2,13 @@
 <Entity parent="template_unit_infantry_ranged">
   <Attack>
     <Ranged>
-      <AttackName>Bow</AttackName>
+      <AttackName>CompositeBow</AttackName>
       <Damage>
         <Pierce>8</Pierce>
       </Damage>
-      <MaxRange>63</MaxRange>
+      <MaxRange>54</MaxRange>
       <PrepareTime>750</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <RepeatTime>1000</RepeatTime>
       <Projectile>
         <Speed>125</Speed>
         <Spread>1.7</Spread>

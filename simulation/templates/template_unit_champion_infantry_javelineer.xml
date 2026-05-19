@@ -5,9 +5,9 @@
       <AttackName>Javelin</AttackName>
       <Damage>
         <Hack>1.5</Hack>
-        <Pierce>24.5</Pierce>
+        <Pierce>25.5</Pierce>
       </Damage>
-      <MaxRange>36</MaxRange>
+      <MaxRange>31</MaxRange>
       <PrepareTime>250</PrepareTime>
       <RepeatTime>2000</RepeatTime>
       <Projectile>

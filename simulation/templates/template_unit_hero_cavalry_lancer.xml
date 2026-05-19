@@ -2,14 +2,14 @@
 <Entity parent="template_unit_hero_cavalry_melee">
    <Attack>
     <Melee>
-      <AttackName>Spear</AttackName>
+      <AttackName>Lance</AttackName>
       <Damage>
         <Hack>13</Hack>
-        <Pierce>30</Pierce>
+        <Pierce>33</Pierce>
       </Damage>
-      <MaxRange>5.5</MaxRange>
+       <MaxRange>6.5</MaxRange>
       <PrepareTime>750</PrepareTime>
-      <RepeatTime>2500</RepeatTime>
+      <RepeatTime>2750</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
@@ -19,6 +19,15 @@
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
+   <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">1.5</Crush>
+        <Hack op="add">2</Hack>
+        <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Identity>
     <GenericName>Hero Cavalry Spearman</GenericName>
     <Tooltip>Counters:2× vs Cavalry.</Tooltip>
@@ -30,7 +39,6 @@
     </SoundGroups>
   </Sound>
    <UnitMotion>
-    <WalkSpeed op="mul">1.05</WalkSpeed>
-    <Acceleration op="mul">1.15</Acceleration>
+  <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
 </Entity>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_cavalry_ranged">
   <Attack>
-    <Ranged>
-      <AttackName>Bow</AttackName>
+     <Ranged>
+      <AttackName>SimpleBow</AttackName>
       <Damage>
-        <Pierce>10.1</Pierce>
+        <Pierce>12.1</Pierce>
       </Damage>
-      <MaxRange>45</MaxRange>
+      <MaxRange>39</MaxRange>
       <PrepareTime>750</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <RepeatTime>1250</RepeatTime>
       <Projectile>
         <Speed>100</Speed>
         <Spread>2</Spread>

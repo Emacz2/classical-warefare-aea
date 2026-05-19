@@ -2,13 +2,13 @@
 <Entity parent="template_unit_champion_cavalry_ranged">
   <Attack>
     <Ranged>
-      <AttackName>Bow</AttackName>
+      <AttackName>CompositeBow</AttackName>
       <Damage>
-        <Pierce>12</Pierce>
+        <Pierce>13.2</Pierce>
       </Damage>
-      <MaxRange>67</MaxRange>
-      <PrepareTime>300</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <MaxRange>51.5</MaxRange>
+      <PrepareTime>750</PrepareTime>
+      <RepeatTime>1000</RepeatTime>
       <Projectile>
         <Speed>125</Speed>
         <Spread>2</Spread>

@@ -4,21 +4,33 @@
     <Melee>
       <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
       <Damage>
-        <Hack>18</Hack>
+        <Hack>15</Hack>
         <Pierce>6.5</Pierce>
       </Damage>
       <MaxRange>3.5</MaxRange>
       <PrepareTime>250</PrepareTime>
-      <RepeatTime>1100</RepeatTime>
+      <RepeatTime>1250</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Ranged Infantry</Classes>
-          <Multiplier>1.25</Multiplier>
+          <Multiplier>1.5</Multiplier>
         </BonusMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
+    <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">0.5</Crush>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <UnitMotion>
+    <Acceleration op="mul">1.1</Acceleration>
+  </UnitMotion>
   <Identity>
     <VisibleClasses datatype="tokens">Melee Swordsman</VisibleClasses>
     <GenericName>Hero Cavalry Swordsman</GenericName>

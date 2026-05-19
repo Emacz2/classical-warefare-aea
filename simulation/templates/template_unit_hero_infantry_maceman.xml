@@ -4,13 +4,12 @@
     <Melee>
       <AttackName>Mace</AttackName>
       <Damage>
-        <Crush>18</Crush>
-        <Hack>7</Hack>
-        <Pierce>2</Pierce>
+        <Crush>22</Crush>
+        <Hack>10</Hack>
       </Damage>
       <MaxRange>2.5</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>1000</RepeatTime>
+      <RepeatTime>1750</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Melee Infantry</Classes>

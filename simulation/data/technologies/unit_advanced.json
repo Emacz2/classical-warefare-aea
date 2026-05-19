@@ -1,7 +1,7 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_advanced.png",
-	"tooltip": "Advanced and Elite units +15% training time,-20% gathering rates and 20% more health;   Healers +5 healing rate and range;  Ranged units 10% more accurate and 0.5 Hack Resistance and Crossbows + 1, Javelineers +1.5, Greek Archers +2.5 and Archers +3.5 max range.  Melee units 5% more dmg and +1 capture attack. ", 
+	"tooltip": "Advanced and Elite units +15% training time,-20% gathering rates and 20% more health;   Healers +5 healing rate and range;  Ranged units +5% max range and dmg. Melee units 10% more dmg and +1 capture attack. ", 
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.15 },
 		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.80 },
