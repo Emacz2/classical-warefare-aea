@@ -24,7 +24,7 @@
     <GenericName>Rhodian Slinger</GenericName>
     <SpecificName>Sphendonḗtēs Rhódios</SpecificName>
     <Icon>units/mace/infantry_slinger.png</Icon>
-    <Tooltip>Rhodian slingers were renowned in the ancient world for their exceptional skill and effectiveness in using the sling as a projectile weapon; +2 max range and 10% more accurate.</Tooltip>
+    <Tooltip>Rhodian slingers were renowned in the ancient world for their exceptional skill and effectiveness in using the sling as a projectile weapon; +3 max range and 10% more accurate.</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>
