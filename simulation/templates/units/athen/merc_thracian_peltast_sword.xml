@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/thracian_peltast_sword|merc_inf_market">
+<Entity parent="units/thracian_peltast_sword|merc_inf_market|merc_inf">
   <Identity>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>

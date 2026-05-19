@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_economic_market_2">
+<Entity parent="template_structure_economic_market">
   <Auras datatype="tokens">
     structures/spart_structures
   </Auras>
   <Identity>
     <Civ>spart</Civ>
     <SpecificName>Emporion</SpecificName>
-    <VisibleClasses datatype="tokens">Market</VisibleClasses>
   </Identity>
   <Promotion>
     <Entity>structures/spart/market_2</Entity>

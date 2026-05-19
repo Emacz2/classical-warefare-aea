@@ -8,7 +8,6 @@
     </Resources>
   </Cost>
   <Identity>
-   <VisibleClasses datatype="tokens">Mercenary</VisibleClasses>
     <Tooltip>Purchase mercanaries from the market for the cost of metal only, -10% train time</Tooltip>
   </Identity>
   <Loot>

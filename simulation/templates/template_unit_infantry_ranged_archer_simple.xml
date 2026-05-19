@@ -26,7 +26,6 @@
     </Resources>
   </Cost>
   <Identity>
-    <VisibleClasses datatype="tokens">GreekArcher</VisibleClasses>
     <GenericName>Archer</GenericName>
   </Identity>
   <Sound>

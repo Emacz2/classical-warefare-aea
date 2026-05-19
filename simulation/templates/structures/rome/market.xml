@@ -15,15 +15,6 @@
     <Entity>structures/rome/market_2</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>
-  <Trainer>
-    <BatchTimeModifier>0.7</BatchTimeModifier>
-    <Entities datatype="tokens">
-      -units/{civ}/merc_inf_archer_market_b
-      -units/{civ}/merc_inf_slinger_market_b
-      units/{civ}/merc_inf_slinger_market_a
-      units/{civ}/merc_inf_archer_market_a
-    </Entities>
-  </Trainer>
   <Obstruction>
     <Static width="32.0" depth="26.0"/>
   </Obstruction>
