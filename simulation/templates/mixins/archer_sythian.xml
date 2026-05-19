@@ -16,7 +16,7 @@
     <GenericName>Sythian Archer</GenericName>
     <SpecificName>Toxótēs Syrías</SpecificName>
     <Icon>units/sele/infantry_archer.png</Icon>
-    <Tooltip>Syrians highly sought after mercanaries; 10% more pierce dmg, 5% more range, +1 Hack and +1.5 peirce resistance</Tooltip>
+    <Tooltip>Sythian archers; 5% more range</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

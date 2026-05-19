@@ -34,7 +34,7 @@
     <GenericName>Thracian Peltast</GenericName>
     <SpecificName>Peltastḗs Thrâx</SpecificName>
     <Icon>units/athen/infantry_javelinist.png</Icon>
-    <VisibleClasses datatype="tokens">Switch</VisibleClasses>
+    <VisibleClasses datatype="tokens">Citzen Switch</VisibleClasses>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
