@@ -69,7 +69,7 @@
     <WalkSpeed op="mul">1.1</WalkSpeed>
   </UnitMotion>
   <Identity>
-    <VisibleClasses datatype="tokens">HelotM -Citizen -Soldier</VisibleClasses>
+    <VisibleClasses datatype="tokens">HelotM -Soldier</VisibleClasses>
     <Tooltip>Helots are similar to serfs, but 25% less dmg and range instead of 50%</Tooltip>
   </Identity>
 </Entity>

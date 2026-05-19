@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_military_barracks">
+<Entity parent="template_structure_military_embassy">
   <BuildRestrictions>
     <Territory>own</Territory>
     <Distance>
@@ -32,6 +32,9 @@
     <VisibleClasses datatype="tokens">Village</VisibleClasses>
     <Tooltip>Cheap Barracks-like structure that is buildable in neutral territory, but casts no territory influence. Train Mercenaries.</Tooltip>
     <Icon>structures/mercenary_camp.png</Icon>
+      <Requirements>
+      <Techs datatype="tokens">-phase_town phase_village</Techs>
+    </Requirements>
   </Identity>
    <Upgrade>
     <camp>
@@ -74,13 +77,6 @@
       units/{civ}/merc_cavalry_spearman_b
     </Entities>
   </Trainer>
-    <Researcher>
-    <Technologies datatype="tokens">
-      -barracks_batch_training
-      -barracks_batch_training2
-      -judean_lead
-    </Technologies>
-  </Researcher>
   <VisualActor>
     <Actor>structures/ptolemies/settlement.xml</Actor>
     <FoundationActor>structures/fndn_7x7.xml</FoundationActor>
