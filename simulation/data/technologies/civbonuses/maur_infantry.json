@@ -4,16 +4,16 @@
 	"description": "The Mauryas infantry tended to be of the light variety .",
 	"requirements": { "civ": "maur" },
 	"icon": "wooden_walls.png",
-	"tooltip": "Citizen melee 5% more dmg, 4% faster movement speed, but -1.5 Hack and -1 Pierce armor.",
+	"tooltip": "Melee 5% more dmg, 5% faster movement speed, but -1.5 Hack and -1 Pierce armor.",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05 },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05},
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05 },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.04 },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": -1.5 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": -1 }
 		
 
 	],
-	"affects": ["Citizen Melee !Cavalry"]
+	"affects": ["Infantry Melee !Cavalry"]
 }

@@ -7,10 +7,10 @@
       structures/maur/range
     </Entities>
   </Builder>
-   <Attack>
-   <AttackName>SimpleLongBow</AttackName>
+  <Attack>
     <Ranged>
-      <MaxRange>54</MaxRange>
+    <AttackName>SimpleLongBow</AttackName>
+     <MaxRange>54</MaxRange>
     </Ranged>
   </Attack>
   <Identity>
