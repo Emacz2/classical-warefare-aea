@@ -4,9 +4,8 @@
 	"description": "Soldiers were well Trained to Operate Siege Engines.",
 	"requirements": { "civ": "rome" },
 	  "icon": "ionic_column.png",
-	  "tooltip": "Siege units 10% faster repeat time, 25% shorter pack time and 10% faster movement speed. Siege walls 20% less build time.",
+	  "tooltip": "25% shorter pack time and 10% faster movement speed. Siege walls 20% less build time.",
 	  "modifications": [
-		  { "value": "Attack/Ranged/RepeatTime", "multiply": 0.90, "affects": "Siege"},
 		  { "value": "Pack/Time", "multiply": 0.75, "affects": "Siege" },
 		  { "value": "UnitMotion/WalkSpeed", "multiply": 1.1, "affects": "Siege" },
 		  { "value": "Cost/BuildTime", "multiply": 0.8, "affects": "SiegeWall"}
