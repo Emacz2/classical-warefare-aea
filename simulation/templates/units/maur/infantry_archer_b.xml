@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_archer_simple">
+<Entity parent="template_unit_infantry_ranged_archer">
   <Builder>
     <Entities datatype="tokens">
       structures/maur/palace
@@ -9,8 +9,7 @@
   </Builder>
   <Attack>
     <Ranged>
-    <AttackName>SimpleLongBow</AttackName>
-     <MaxRange>54</MaxRange>
+    <AttackName>LongBow</AttackName>
     </Ranged>
   </Attack>
   <Identity>
