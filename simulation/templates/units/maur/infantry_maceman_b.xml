@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_infantry_melee_maceman">
+  <Attack>
+    <Melee>
+      <AttackName>Club</AttackName>
+    </Melee>
+  </Attack>
+  <Builder>
+    <Entities datatype="tokens">
+      structures/maur/palace
+      structures/maur/pillar_ashoka
+      structures/maur/range
+    </Entities>
+  </Builder>
+  <Identity>
+    <Civ>maur</Civ>
+    <SelectionGroupName>units/maur/infantry_maceman_b</SelectionGroupName>
+    <GenericName>Indian Club</GenericName>
+    <SpecificName>Khadagdhari</SpecificName>
+    <Icon>units/maur/infantry_maceman.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/maur/infantry_maceman_a</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/mauryas/infantry_maceman_b.xml</Actor>
+  </VisualActor>
+</Entity>

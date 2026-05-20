@@ -1,7 +1,7 @@
 {
 	"genericName": "Bamboo Longbows",
 	"autoResearch": true,
-	"description": "The Mauryas archers used 6 foot bows that sometimes needed to be stablized with their feet.",
+	"description": "The Mauryas archers used 6 foot Bamboo Longbows that sometimes needed to be stablized with their feet.",
 	"requirements": { "civ": "maur" },
 	"icon": "wooden_walls.png",
 	"tooltip": " Maury Archers +2.5 range and civ bonus, but 5% slower walk speed",
