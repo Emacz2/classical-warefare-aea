@@ -4,12 +4,12 @@
     <Ranged>
       <AttackName>Stone</AttackName>
       <Damage>
-        <Crush>100</Crush>
+        <Crush>150</Crush>
       </Damage>
-      <MaxRange>80</MaxRange>
-      <MinRange>26</MinRange>
+      <MaxRange>85</MaxRange>
+      <MinRange>25</MinRange>
       <PrepareTime>3000</PrepareTime>
-      <RepeatTime>7000</RepeatTime>
+      <RepeatTime>10000</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Structure</Classes>
@@ -53,7 +53,7 @@
     <Height>4.5</Height>
   </Footprint>
   <Health>
-    <Max>375</Max>
+    <Max>500</Max>
   </Health>
   <Resistance>
     <Entity>

@@ -4,12 +4,12 @@
     <Ranged>
       <AttackName>Bolt</AttackName>
       <Damage>
-        <Pierce>80</Pierce>
+        <Pierce>90</Pierce>
       </Damage>
-      <MaxRange>87</MaxRange>
+      <MaxRange>70</MaxRange>
       <MinRange>15</MinRange>
       <PrepareTime>2000</PrepareTime>
-      <RepeatTime>6000</RepeatTime>
+      <RepeatTime>6500</RepeatTime>
         <Bonuses>
         <BonusMelee>
           <Classes>Human</Classes>
@@ -34,7 +34,7 @@
         <Range>6</Range>
         <FriendlyFire>true</FriendlyFire>
         <Damage>
-          <Pierce>80</Pierce>
+          <Pierce>45</Pierce>
         </Damage>
       </Splash>
     </Ranged>

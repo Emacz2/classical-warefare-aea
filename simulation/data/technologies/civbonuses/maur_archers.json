@@ -1,17 +1,16 @@
 {
-	"genericName": "Bigger Bows",
+	"genericName": "Long Bows",
 	"autoResearch": true,
 	"description": "The Mauryas archers used 6 foot bows that sometimes needed to be stablized with their feet.",
 	"requirements": { "civ": "maur" },
 	"icon": "wooden_walls.png",
-	"tooltip": " Citzien archers +3 range and 5% pierce dmg but +150 prepare time.",
+	"tooltip": " Archers use simple bows but with the range of a composite Bow and -5% walk speed",
 	"modifications": [
-		{ "value": "Attack/Ranged/MaxRange", "add": 3 },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05 },
-		{ "value": "Attack/Ranged/PrepareTime", "add": 150}
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 }
+	
 	
 		
 
 	],
-	"affects": ["Citizen Infantry Archer"]
+	"affects": ["Infantry Archer"]
 }

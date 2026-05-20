@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="civ/athen|merc_inf|slinger_rhodian|merc_inf_market|template_unit_infantry_ranged_slinger_lead">
+<Entity parent="civ/athen|slinger_rhodian|merc_inf_market|merc_inf|template_unit_infantry_ranged_slinger_lead">
   <Identity>
     <SelectionGroupName>units/athen/infantry_slinger_b</SelectionGroupName>
     <GenericName>Rhodian Slinger</GenericName>

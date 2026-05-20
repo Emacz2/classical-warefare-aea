@@ -8,6 +8,18 @@
     <Entity>structures/athen/market_2</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>
+    <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/support_slave
+      units/{civ}/support_trader
+      -units/{civ}/merc_inf_slinger_market_b
+      -units/{civ}/merc_inf_archer_market_b
+      units/{civ}/merc_thracian_peltast
+      units/{civ}/merc_inf_slinger_market_a
+      units/{civ}/merc_inf_archer_market_a
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/hellenes/market.xml</Actor>
   </VisualActor>
