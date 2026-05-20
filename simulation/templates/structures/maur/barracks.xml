@@ -27,6 +27,13 @@
     <Civ>maur</Civ>
     <SpecificName>Sainyavasa</SpecificName>
   </Identity>
+    <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+     -units/{civ}/infantry_swordsman_b
+     units/{civ}/infantry_swordsman_a
+    </Entities>
+  </Trainer>
   <Loot>
     <wood>60</wood>
     <stone>0</stone>

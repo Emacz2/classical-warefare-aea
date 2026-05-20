@@ -19,7 +19,7 @@
     <SpecificName>Khadagdhari</SpecificName>
     <Icon>units/maur/infantry_swordsman.png</Icon>
     <Requirements>
-      <Techs datatype="tokens">unlock_swordsmen</Techs>
+      <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
   <Promotion>

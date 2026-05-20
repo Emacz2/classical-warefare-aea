@@ -17,7 +17,7 @@
     <SelectionGroupName>units/maur/infantry_maceman_b</SelectionGroupName>
     <GenericName>Indian Club</GenericName>
     <SpecificName>Khadagdhari</SpecificName>
-    <Icon>units/maur/infantry_maceman.png</Icon>
+    <Icon>units/maur/cs_mace.png</Icon>
   </Identity>
   <Promotion>
     <Entity>units/maur/infantry_maceman_a</Entity>
