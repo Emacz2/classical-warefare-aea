@@ -17,13 +17,13 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "siege_ram.png",
 	"researchTime": 40,
-	"tooltip": "Stone throwers +25% crush damage. Rams 100% crush dmg and 100% more garrison, but 50% more train time.",
+	"tooltip": "Siege 25% more crush dmg, rams 50% garrison capacity.",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.25 },
 		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.25 },
 		{ "value": "GarrisonHolder/Max", "multiply": 1.5, "affects": "Ram" }
 		
 	],
-	"affects": ["Ram", "Stonethrower"],
+	"affects":["Siege"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
