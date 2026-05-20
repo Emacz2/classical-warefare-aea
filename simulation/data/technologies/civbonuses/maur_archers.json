@@ -1,5 +1,5 @@
 {
-	"genericName": "Long Bows",
+	"genericName": "Bamboo Longbows",
 	"autoResearch": true,
 	"description": "The Mauryas archers used 6 foot bows that sometimes needed to be stablized with their feet.",
 	"requirements": { "civ": "maur" },
