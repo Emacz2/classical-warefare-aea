@@ -8,11 +8,53 @@
     <SpecificName>Scorpiō</SpecificName>
     <Icon>units/rome/siege_scorpio_packed.png</Icon>
   </Identity>
+  <Attack>
+    <Ranged>
+      <AttackName>Bolt</AttackName>
+      <Damage>
+        <Pierce op="mul">0.6</Pierce>
+      </Damage>
+      <MaxRange op="add">-5</MaxRange>
+      <MinRange>15</MinRange>
+      <RepeatTime op="mul">0.5</RepeatTime>
+        <Bonuses>
+        <BonusMelee>
+          <Classes>Human</Classes>
+          <Multiplier>3</Multiplier>
+        </BonusMelee>
+      </Bonuses>
+      <Projectile>
+        <Speed>150</Speed>
+        <Spread>1</Spread>
+        <Gravity>9.81</Gravity>
+        <FriendlyFire>false</FriendlyFire>
+        <LaunchPoint y="3"/>
+      </Projectile>
+      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+      <RangeOverlay>
+        <LineTexture>outline_border.png</LineTexture>
+        <LineTextureMask>outline_border_mask.png</LineTextureMask>
+        <LineThickness>0.175</LineThickness>
+      </RangeOverlay>
+      <Splash>
+        <Shape>Linear</Shape>
+        <Range>6</Range>
+        <FriendlyFire>true</FriendlyFire>
+        <Damage>
+          <Pierce>30</Pierce>
+        </Damage>
+      </Splash>
+    </Ranged>
+  </Attack>
   <Pack>
     <Entity>units/rome/siege_scorpio_unpacked</Entity>
     <State>packed</State>
     <Time>5000</Time>
   </Pack>
+  <UnitMotion>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <Acceleration op="mul">1.1</Acceleration>
+  </UnitMotion>
   <VisualActor>
     <Actor>units/romans/siege_scorpio_packed.xml</Actor>
   </VisualActor>
