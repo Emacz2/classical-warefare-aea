@@ -3,13 +3,13 @@
   <Attack>
   <Ranged>
 	<Damage>
-	    <Hack op="mul">1.2</Hack>
-      <Pierce op="mul">1.2</Pierce>
+	    <Hack op="mul">1.5</Hack>
+      <Pierce op="mul">1.5</Pierce>
       <Crush op="add">1</Crush>
   </Damage>
-    <MaxRange op="mul">0.95</MaxRange>
+    <MaxRange op="add">-10</MaxRange>
     <PrepareTime op="add">500</PrepareTime>
-    <RepeatTime op="add">500</RepeatTime>
+    <RepeatTime op="mul">2</RepeatTime>
     <Projectile>
         <Speed>175</Speed>
         <Spread op="mul">0.75</Spread>

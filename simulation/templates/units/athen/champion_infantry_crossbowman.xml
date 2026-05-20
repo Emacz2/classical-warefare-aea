@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="civ/athen|gastraphetes|template_unit_champion_infantry_crossbowman">
+  <Identity>
+    <Lang>greek</Lang>
+    <SpecificName>Gastraphetophoros</SpecificName>
+    <Icon>units/mace/champion_infantry_crossbowman.png</Icon>
+  </Identity>
+  <VisualActor>
+    <Actor>units/macedonians/infantry_crossbowman_c.xml</Actor>
+  </VisualActor>
+</Entity>
