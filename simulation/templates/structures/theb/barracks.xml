@@ -14,12 +14,22 @@
   <Obstruction>
     <Static width="20.0" depth="20.0"/>
   </Obstruction>
-  <Trainer>
-    <Entities datatype="tokens">
-      units/{civ}/champion_infantry_hoplite
-      units/{civ}/champion_infantry_swordsman
-    </Entities>
-  </Trainer>
+  <Upgrade>
+    <champ>
+      <Entity>structures/theb/champion_barracks</Entity>
+      <Tooltip>Upgrade a a champion baracks.</Tooltip>
+      <Cost>
+        <metal>25</metal>
+        <wood>100</wood>
+        <stone>25</stone>
+      </Cost>
+      <Time>30</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_town</Techs>
+      </Requirements>
+    </champ>
+  </Upgrade>
   <VisualActor>
     <Actor>structures/thebans/barracks.xml</Actor>
     <FoundationActor>structures/fndn_6x6.xml</FoundationActor>

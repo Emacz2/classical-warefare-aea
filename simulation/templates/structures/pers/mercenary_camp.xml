@@ -38,7 +38,7 @@
   </Identity>
    <Upgrade>
     <camp>
-      <Entity>structures/ptol/mercenary_camp_2</Entity>
+      <Entity>structures/pers/mercenary_camp_2</Entity>
       <Tooltip>Upgrade to a bigger camp, train elite and advanced Mercenaries.</Tooltip>
       <Cost>
         <metal>25</metal>
