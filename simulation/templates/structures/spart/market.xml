@@ -11,6 +11,12 @@
     <Entity>structures/spart/market_2</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>
+  <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities datatype="tokens">
+      -units/{civ}/merc_inf_archer_market_b
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/spartans/market.xml</Actor>
   </VisualActor>

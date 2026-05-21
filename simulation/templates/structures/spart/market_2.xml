@@ -4,6 +4,13 @@
     <Civ>spart</Civ>
     <SpecificName>Emporion</SpecificName>
   </Identity>
+   <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities datatype="tokens">
+      -units/{civ}/merc_inf_archer_market_b
+      units/{civ}/merc_inf_archer_market_e
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/spartans/market.xml</Actor>
   </VisualActor>

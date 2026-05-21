@@ -8,8 +8,6 @@
     <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
-      -units/{civ}/merc_inf_archer_market_b
-      -units/{civ}/merc_inf_slinger_market_b
       units/{civ}/aux_archer
       units/{civ}/aux_inf_slinger_stone
       units/{civ}/cavalry_numidian
