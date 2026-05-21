@@ -5,7 +5,7 @@
       <AttackName>Pike</AttackName>
       <Damage>
         <Hack>6</Hack>
-        <Pierce>18</Pierce>
+        <Pierce>17</Pierce>
       </Damage>
       <MaxRange>9</MaxRange>
       <PrepareTime>250</PrepareTime>
@@ -51,7 +51,7 @@
     </Formations>
   </UnitAI>
   <UnitMotion>
-    <WalkSpeed op="mul">0.93</WalkSpeed>
+    <WalkSpeed op="mul">0.92</WalkSpeed>
     <Acceleration op="mul">0.9</Acceleration>
   </UnitMotion>
 </Entity>
