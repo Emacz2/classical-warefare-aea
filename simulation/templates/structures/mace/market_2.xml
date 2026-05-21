@@ -4,6 +4,17 @@
     <Civ>mace</Civ>
     <SpecificName>Emporion</SpecificName>
   </Identity>
+      <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities datatype="tokens">
+      -units/{civ}/merc_inf_slinger_market_b
+      -units/{civ}/merc_inf_archer_market_b
+      -units/{civ}/merc_inf_swordsman_market_b
+      units/{civ}/merc_inf_swordsman_market_e
+      units/{civ}/merc_inf_slinger_market_e
+      units/{civ}/merc_inf_archer_market_e
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/hellenes/market.xml</Actor>
   </VisualActor>
