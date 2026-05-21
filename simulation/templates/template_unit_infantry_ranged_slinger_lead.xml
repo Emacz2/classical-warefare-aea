@@ -30,6 +30,13 @@
     <VisibleClasses datatype="tokens">Slinger</VisibleClasses>
     <GenericName>Slinger</GenericName>
   </Identity>
+    <Resistance>
+    <Entity>
+      <Damage>
+       <Hack op="add">-0.5</Hack>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Sound>
     <SoundGroups>
       <attack_ranged>attack/weapon/sling_attack.xml</attack_ranged>

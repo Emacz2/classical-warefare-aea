@@ -11,6 +11,13 @@
     <Civ>pers</Civ>
     <SpecificName>Ardatašta</SpecificName>
   </Identity>
+        <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities datatype="tokens">
+      -units/{civ}/merc_inf_swordsman_market_b
+      units/{civ}/merc_inf_swordsman_market_a
+    </Entities>
+  </Trainer>
   <Obstruction>
     <Static width="24.0" depth="24.0"/>
   </Obstruction>

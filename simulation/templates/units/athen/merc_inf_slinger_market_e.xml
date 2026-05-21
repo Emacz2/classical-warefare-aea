@@ -4,6 +4,17 @@
     <Rank>Elite</Rank>
   </Identity>
   <Promotion disable=""/>
+  <Upgrade>
+    <Lead>
+      <Entity>units/athen/merc_inf_slinger_lead</Entity>
+      <Tooltip>Switch to lead bullet Balearic Slinger</Tooltip>
+      <Cost>
+        <metal>10</metal>
+      </Cost>
+      <Variant>upgrading</Variant>
+      <Time>10</Time>
+    </Lead>
+  </Upgrade>
   <VisualActor>
     <Actor>units/macedonians/infantry_slinger_e.xml</Actor>
   </VisualActor>

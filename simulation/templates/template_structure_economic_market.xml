@@ -75,11 +75,10 @@
     <Entities datatype="tokens">
       units/{civ}/support_slave
       units/{civ}/support_trader
+      units/{civ}/merc_inf_swordsman_market_b
+      units/{civ}/merc_inf_spearman_market_b
       units/{civ}/merc_inf_slinger_market_b
-      units/{civ}/merc_swordsman_market_b
       units/{civ}/merc_inf_archer_market_b
-      units/{civ}/merc_maceman_market_b
-      units/{civ}/merc_javelineer_market_b
       units/{civ}/merc_thracian_peltast
       units/{civ}/merc_spear_market_b
       units/{civ}/merc_spearcav_market_b
