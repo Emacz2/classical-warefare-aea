@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_javelineer">
+<Entity parent="heavy_jav|template_unit_champion_infantry_javelineer">
   <Cost>
     <Resources>
       <food>150</food> 
@@ -7,15 +7,6 @@
       <metal>100</metal>
     </Resources>
   </Cost>
-  <Attack>
-    <Ranged>
-      <AttackName>Javelin</AttackName>
-      <Damage>
-        <Pierce op="mul">1.1</Pierce>
-        <Hack op="mul">1.25</Hack>
-      </Damage>
-    </Ranged>
-  </Attack>
   <Identity>
     <Civ>iber</Civ>
     <GenericName>Champion Javelineer</GenericName>
