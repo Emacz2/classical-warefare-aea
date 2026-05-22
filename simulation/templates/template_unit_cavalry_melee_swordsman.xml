@@ -9,7 +9,7 @@
       </Damage>
       <MaxRange>3.5</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>1250</RepeatTime>
+      <RepeatTime>1100</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Ranged Infantry</Classes>

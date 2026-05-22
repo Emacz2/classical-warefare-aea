@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_cavalry_swordsman">
+<Entity parent="sword_cav_shield|template_unit_champion_cavalry_swordsman">
  <Attack>
     <Melee>
       <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
@@ -20,14 +20,14 @@
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SpecificName>Eques Cōnsulāris</SpecificName>
-    <GenericName>Consular Bodyguard</GenericName>
+    <GenericName>Imperial Roman Cavalry</GenericName>
     <Icon>units/rome/champion_cavalry.png</Icon>
     <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
     <SelectionGroupName>units/rome/champion_cavalry</SelectionGroupName>
+    <Requirements>
+       <Techs datatype="tokens">phase_empi</Techs>
+    </Requirements>
   </Identity>
-  <TrainingRestrictions>
-    <Category>ConsularBodyguard</Category>
-  </TrainingRestrictions>
   <VisualActor>
     <Actor>units/romans/cavalry_swordsman_c_m.xml</Actor>
   </VisualActor>

@@ -12,6 +12,7 @@
     <GenericName>Agrianian Javelineer</GenericName>
     <SpecificName>Akontistai Agrías</SpecificName>
     <Icon>units/mace/infantry_javelinist.png</Icon>
+    <Tooltip>+5% faster walk speed</Tooltip>
     <Requirements>
       <Techs datatype="tokens">unlock_skirms</Techs>
     </Requirements>
@@ -23,6 +24,6 @@
     <Actor>units/macedonians/infantry_javelinist_b.xml</Actor>
   </VisualActor>
   <UnitMotion>
-  <WalkSpeed op="mul">1.03</WalkSpeed>
+  <WalkSpeed op="mul">1.05</WalkSpeed>
  </UnitMotion>
 </Entity>

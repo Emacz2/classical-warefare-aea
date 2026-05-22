@@ -2,13 +2,12 @@
 <Entity>
   <Attack>
     <Melee>
-      <MaxRange op="add">-1</MaxRange>
-      <PrepareTime op="add">250</PrepareTime>
+      <RepeatTime op="add">150</RepeatTime>
     </Melee>
   </Attack>
   <Identity>
     <GenericName>Cavalry Spearman with shield</GenericName>
-    <Tooltip>Add +1 Crush/Pierce resistances, but -1m max range and +250 prepare time</Tooltip>
+    <Tooltip>Add +1 Crush/Pierce resistances, but 150 slower repeat time</Tooltip>
   </Identity>
   <Resistance>
     <Entity>
