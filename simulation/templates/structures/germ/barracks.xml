@@ -19,6 +19,7 @@
   </Identity>
     <Trainer>
     <Entities datatype="tokens">
+    -units/{civ}/infantry_maceman_b
     units/{civ}/infantry_maceman_a
     </Entities>
   </Trainer>
