@@ -44,13 +44,6 @@
   <Loot>
     <xp>10</xp>
   </Loot>
-    <Capacities>
-      <food>15</food>
-      <wood>15</wood>
-      <stone>15</stone>
-      <metal>15</metal>
-    </Capacities>
-  </ResourceGatherer>
   <TreasureCollector disable=""/>
   <Sound>
     <SoundGroups>
