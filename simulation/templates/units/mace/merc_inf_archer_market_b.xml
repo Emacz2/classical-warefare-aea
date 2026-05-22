@@ -5,19 +5,6 @@
     <SelectionGroupName>units/mace/merc_inf_archer_b</SelectionGroupName>
   </Identity>
   <Promotion disable=""/>
-        <Trainer>
-    <BatchTimeModifier>0.7</BatchTimeModifier>
-    <Entities datatype="tokens">
-      units/{civ}/support_slave
-      units/{civ}/support_trader
-      -units/{civ}/merc_inf_slinger_market_b
-      -units/{civ}/merc_inf_archer_market_b
-      -units/{civ}/merc_inf_swordsman_market_b
-      units/{civ}/merc_inf_swordsman_market_e
-      units/{civ}/merc_inf_slinger_market_e
-      units/{civ}/merc_inf_archer_market_e
-    </Entities>
-  </Trainer>
   <VisualActor>
    <Actor>units/athenians/infantry_archer_b.xml</Actor>
   </VisualActor>
