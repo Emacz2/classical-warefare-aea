@@ -26,28 +26,6 @@
       <Techs datatype="tokens">roman_reforms</Techs>
     </Requirements>
   </Identity>
-  <ResourceGatherer>
-    <Rates>
-      <food.meat op="mul">1.15</food.meat>
-      <wood.tree op="mul">1.15</wood.tree>
-      <stone.rock op="mul">0.75</stone.rock>
-      <metal.ore op="mul">0.75</metal.ore>
-    </Rates>
-    <Capacities>
-      <food>10</food>
-      <wood>10</wood>
-      <stone>5</stone>
-      <metal>5</metal>
-    </Capacities>
-  </ResourceGatherer>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
    <Promotion disable=""/>
   <VisualActor>
     <Actor>units/romans/infantry_javelinist_reform.xml</Actor>

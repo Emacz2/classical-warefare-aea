@@ -20,13 +20,6 @@
       </Damage>
     </Melee>
   </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <GenericName>Legionary Swordsman</GenericName>
     <Lang>latin</Lang>

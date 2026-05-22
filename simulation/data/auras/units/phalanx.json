@@ -3,15 +3,14 @@
 	"radius": 4,
 	"affects": ["Polearm"],
 	"modifications": [
-		{ "value": "Promotion/RequiredXp", "multiply": 0.98 },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05},
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 },
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 }
 	
 	],
 	"auraName": "phalanx",
 	"showDescription": 1,
-	"auraDescription": "Polearm (Spearman/Pikeman) promote 2% faster, gain 1.5 Hack resistance and 5% pierce damage, but walk speed reduced by 5%",
+	"auraDescription": "Polearm (Spearman/Pikeman)  gain 0.5 Hack resistance and 5% pierce damage, but walk speed reduced by 5%",
 	"overlayIcon": "art/textures/ui/session/auras/buildgather_bonus.png",
 	"stackable": false
 }

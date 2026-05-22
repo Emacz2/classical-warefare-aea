@@ -4,7 +4,7 @@
     <Ranged>
       <AttackName>Longboww</AttackName>
       <Damage>
-        <Pierce>8</Pierce>
+        <Pierce>11</Pierce>
       </Damage>
       <MaxRange>56</MaxRange>
       <PrepareTime>750</PrepareTime>

@@ -3,9 +3,9 @@
 	"radius": 45,
 	"affects": ["Human", "Structure"],
 	"modifications": [
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1.5 },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 1.5 }
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 1 }
 	
 	],
 	"auraName": "Shield of Rome",

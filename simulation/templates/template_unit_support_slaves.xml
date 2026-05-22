@@ -38,24 +38,12 @@
   <Identity>
     <GenericName>Slave</GenericName>
     <SelectionGroupName>template_unit_support_slave</SelectionGroupName>
-    <Tooltip>Gather 50% faster than civilians and don't count torwards population</Tooltip>
+    <Tooltip>Same gather speed as civilians but zero pop</Tooltip>
     <VisibleClasses datatype="tokens">Worker Slave -Citizen</VisibleClasses>
   </Identity>
   <Loot>
     <xp>10</xp>
   </Loot>
-  <ResourceGatherer>
-    <MaxDistance>2.0</MaxDistance>
-    <BaseSpeed>1.0</BaseSpeed>
-    <Rates>
-      <food.fruit op="mul">1.5</food.fruit>
-      <food.grain op="mul">1.5</food.grain>
-      <wood.tree op="mul">1.5</wood.tree>
-      <wood.ruins op="mul">1.5</wood.ruins>
-      <stone.rock op="mul">1.5</stone.rock>
-      <stone.ruins op="mul">1.5</stone.ruins>
-      <metal.ore op="mul">1.5</metal.ore>
-    </Rates>
     <Capacities>
       <food>15</food>
       <wood>15</wood>

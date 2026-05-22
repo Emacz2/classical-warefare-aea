@@ -4,7 +4,7 @@
     <Melee>
       <AttackName>Axe</AttackName>
       <Damage>
-        <Crush>10.5</Crush>
+        <Crush>12</Crush>
         <Hack>18</Hack>
         <Pierce>1.5</Pierce>
       </Damage>
