@@ -14,14 +14,6 @@
   <Promotion>
     <Entity>units/germ/infantry_maceman_a</Entity>
   </Promotion>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-1</Hack>
-        <Pierce op="add">-1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Selectable>
     <Overlay>
       <Texture>
@@ -30,9 +22,6 @@
       </Texture>
     </Overlay>
   </Selectable>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.2</WalkSpeed>
-  </UnitMotion>
   <VisualActor>
     <Actor>units/germans/infantry_clubman.xml</Actor>
   </VisualActor>

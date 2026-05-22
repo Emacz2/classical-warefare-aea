@@ -1,0 +1,27 @@
+{
+	"genericName": "Tribal Warfare",
+	"autoResearch": true,
+	"description": "Britons paint their bodies with Woad, which produces a blue color and gives them a fiercesome appearance in battle.",
+	"icon": "woad_warriors.png",
+	"tooltip": "All Infantry Units +5% movement speed and +15 vision but -0.5P resistance. Melee infantry +5% dmg but -0.5H resistance",
+	"requirements": {
+		"any": [
+			{ "civ": "brit" },
+			{ "civ": "gaul" },
+			{ "civ": "germ" }
+		]
+	},
+	"modifications": [
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": -0.5 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": -0.5, "affects": "Melee" },
+		{ "value": "Vision/Range", "add": 15 }
+	
+
+	],
+	"affects": ["Infantry"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}
