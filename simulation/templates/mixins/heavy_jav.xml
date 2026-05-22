@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
+<Attack>
 <Ranged>
       <AttackName>Pilum</AttackName>
       <Damage>
         <Hack op="mul">2</Hack>
-        <Pierce op="mul">1.5</Pierce>
+        <Pierce op="mul">1.6</Pierce>
       </Damage>
-      <MaxRange op="mul">0.75</MaxRange>
+      <MaxRange op="mul">0.8</MaxRange>
       <RepeatTime op="mul">1.5</RepeatTime>
+      <Bonuses>
+        <BonusCavMelee>
+          <Classes>Shield</Classes>
+          <Multiplier>1.5</Multiplier>
+        </BonusCavMelee>
+      </Bonuses>
       <PreferredClasses datatype="tokens">Melee</PreferredClasses>
     </Ranged>
   </Attack>
@@ -16,6 +23,6 @@
  </UnitMotion>
   <Identity>
     <Classes datatype="tokens">Heavy</Classes>
-    <Tooltip>Heavy Javelins 100% more hack damge, 50% more pierce dmg but 25% less range and 50% slowert attack speed</Tooltip>
+    <Tooltip>Heavy Javelins 100% more hack damge, 650% more pierce dmg but 20% less range and 50% slower attack speed</Tooltip>
      </Identity>
 </Entity>
