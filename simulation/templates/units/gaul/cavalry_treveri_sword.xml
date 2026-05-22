@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_champion_cavalry_javelineer">
+  <Identity>
+    <Civ>gaul</Civ>
+    <SelectionGroupName>units/gaul/cavalry_treveri_jav_e</SelectionGroupName>
+    <GenericName>Treveri Javelineer Cavalry</GenericName>
+    <Icon>units/gaul/champion_cavalryjav.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">alliance_treveri</Techs>
+    </Requirements>
+  </Identity>
+  <ProductionQueue/>
+  <Researcher>
+    <Technologies datatype="tokens">
+      treveri_cav
+    </Technologies>
+  </Researcher>
+  <VisualActor>
+    <Actor>units/gauls/cavalry_treveri_jav_e_m</Actor>
+  </VisualActor>
+</Entity>
