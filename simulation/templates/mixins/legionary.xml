@@ -7,9 +7,20 @@
     <BuildTime op="mul">1.1</BuildTime>
     <Resources>
       <metal op="add">10</metal>
-      <wood op="add">-10</wood>
     </Resources>
   </Cost>
+    <ResourceGatherer>
+    <Rates>
+      <stone.rock op="mul">0.75</stone.rock>
+      <metal.ore op="mul">0.75</metal.ore>
+    </Rates>
+    <Capacities>
+      <food>10</food>
+      <wood>10</wood>
+      <stone>5</stone>
+      <metal>5</metal>
+    </Capacities>
+  </ResourceGatherer>
   <Identity>
     <Rank>Elite</Rank>
     <VisibleClasses datatype="tokens">Legionary</VisibleClasses>

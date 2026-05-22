@@ -24,7 +24,7 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "metalworker.png",
 	"researchTime": 60,
-	"tooltip": "Soldiers +15% melee attack damage. Swordsmen get an additional +15% bonus.",
+	"tooltip": "Soldiers +15% melee attack damage. Swordsmen get an additional +10% bonus.",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15 },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15 },

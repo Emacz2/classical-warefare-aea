@@ -3,9 +3,8 @@
   <Cost>
     <BuildTime op="mul">0.9</BuildTime>
      <Resources>
-      <food>150</food>
-      <metal>30</metal>
-      <wood>35</wood>
+      <food>175</food>
+      <wood>75</wood>
       <stone>0</stone>
     </Resources>
   </Cost>
@@ -21,3 +20,9 @@
     <Actor>units/carthaginians/champion_cavalry_numidian_c_m.xml</Actor>
   </VisualActor>
 </Entity>
+  <ResourceTrickle>
+    <Rates>
+      <food>-0.5</food>
+    </Rates>
+    <Interval>1000</Interval>
+  </ResourceTrickle>
