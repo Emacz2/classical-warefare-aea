@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_cavalry_melee_spearman">
+<Entity parent="spear_cav_shield|template_unit_cavalry_melee_spearman">
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/cavalry_spearman_b</SelectionGroupName>
     <GenericName>Han Spear Cavalry</GenericName>
     <SpecificName>Máo Qíbīng</SpecificName>
     <Icon>units/han/cavalry_spearman.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">unlock_spearcav</Techs>
-    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/han/cavalry_spearman_a</Entity>

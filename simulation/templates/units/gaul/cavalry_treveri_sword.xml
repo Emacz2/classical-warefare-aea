@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_cavalry_javelineer">
+<Entity parent="template_unit_champion_cavalry_swordsman">
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/cavalry_treveri_jav_e</SelectionGroupName>
-    <GenericName>Treveri Javelineer Cavalry</GenericName>
+    <GenericName>Treveri Champion Sword Cavalry</GenericName>
     <Icon>units/gaul/champion_cavalryjav.png</Icon>
     <Requirements>
       <Techs datatype="tokens">alliance_treveri</Techs>
@@ -16,6 +16,6 @@
     </Technologies>
   </Researcher>
   <VisualActor>
-    <Actor>units/gauls/cavalry_treveri_jav_e_m</Actor>
+    <Actor>units/gauls/cavalry_treveri_sword_e_m</Actor>
   </VisualActor>
 </Entity>

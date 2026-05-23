@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="schock_cavalry|template_unit_champion_cavalry_lancer">
+<Entity parent="shock_cavalry|template_unit_champion_cavalry_lancer">
   <Attack>
     <Melee>
       <MaxRange op="add">0.5</MaxRange>
@@ -31,9 +31,6 @@
       <Time>4</Time>
     </Sword>
   </Upgrade>
-   <UnitMotion>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <VisualActor>
     <Actor>units/macedonians/cavalry_spearman_c_m.xml</Actor>
   </VisualActor>

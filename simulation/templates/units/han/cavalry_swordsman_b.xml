@@ -6,6 +6,9 @@
     <GenericName>Han Sword Cavalry</GenericName>
     <SpecificName>Dāo Qíbīng</SpecificName>
     <Icon>units/han/cavalry_swordsman.png</Icon>
+      <Requirements>
+      <Techs datatype="tokens">unlock_swordcav</Techs>
+    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/han/cavalry_swordsman_a</Entity>

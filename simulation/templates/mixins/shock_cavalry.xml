@@ -12,6 +12,9 @@
       </Splash>
     </Melee>
   </Attack>
+   <UnitMotion>
+    <Acceleration op="mul">1.2</Acceleration>
+  </UnitMotion>
   <Identity>
     <GenericName>Schock Cavalry</GenericName>
   </Identity>

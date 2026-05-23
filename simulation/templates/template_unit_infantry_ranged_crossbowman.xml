@@ -45,4 +45,7 @@
   <UnitMotion>
     <Acceleration op="add">2.5</Acceleration>
   </UnitMotion>
+  <Vision>
+    <Range>75</Range>
+  </Vision>
 </Entity>
