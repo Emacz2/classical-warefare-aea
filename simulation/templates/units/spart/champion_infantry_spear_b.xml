@@ -5,14 +5,14 @@
     <Resources>
       <food>100</food>
       <wood>50</wood>
-      <metal>50</metal>
+      <metal>80</metal>
     </Resources>
   </Cost>
     <Attack>
     <Melee>
       <Damage>
-        <Hack op="mul">0.75</Hack>
-        <Pierce op="mul">0.75</Pierce>
+        <Hack op="mul">0.8</Hack>
+        <Pierce op="mul">0.8</Pierce>
       </Damage>
     </Melee>
   </Attack>

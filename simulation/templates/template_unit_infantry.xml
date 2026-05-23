@@ -4,7 +4,7 @@
     <Capture>
       <AttackName>Capture</AttackName>
       <Capture>2.0</Capture>
-      <MaxRange>4</MaxRange>
+      <MaxRange>3</MaxRange>
       <RepeatTime>1000</RepeatTime>
       <RestrictedClasses datatype="tokens">Field Palisade Wall</RestrictedClasses>
     </Capture>
