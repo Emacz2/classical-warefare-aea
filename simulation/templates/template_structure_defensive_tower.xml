@@ -6,7 +6,7 @@
       <Damage>
         <Pierce>5</Pierce>
       </Damage>
-      <MaxRange>65</MaxRange>
+      <MaxRange>70</MaxRange>
       <MinRange>10</MinRange>
       <PrepareTime>400</PrepareTime>
       <RepeatTime>2500</RepeatTime>
@@ -34,7 +34,7 @@
     <Category>Tower</Category>
     <Distance>
       <FromClass>Tower</FromClass>
-      <MinDistance>80</MinDistance>
+      <MinDistance>75</MinDistance>
     </Distance>
   </BuildRestrictions>
   <GarrisonHolder>
@@ -48,6 +48,9 @@
     <Max>1000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_2x2</SpawnEntityOnDeath>
   </Health>
+  <Capturable> 
+    <GarrisonRegenRate>1.5</GarrisonRegenRate>
+  </Capturable>
   <Identity>
     <GenericName>Tower</GenericName>
     <VisibleClasses datatype="tokens">Tower</VisibleClasses>
