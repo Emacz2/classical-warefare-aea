@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure">
   <Cost>
-    <BuildTime>200</BuildTime>
+    <BuildTime>90</BuildTime>
     <Resources>
-      <stone>100</stone>
-      <wood>600</wood>
+      <stone>50</stone>
+      <wood>200</wood>
     </Resources>
   </Cost>
   <Footprint replace="">
@@ -65,8 +65,7 @@
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/champion_cavalry
-      units/{civ}/champion_infantry_swordsman
+      units/{civ}/support_tribal_diplomat
       units/{civ}/hero_ambiorix
       units/{civ}/hero_brennus
       units/{civ}/hero_vercingetorix

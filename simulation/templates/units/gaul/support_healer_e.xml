@@ -9,7 +9,7 @@
     <Rank>Elite</Rank>
   </Identity>
    <Vision>
-    <Range>75</Range>
+    <Range>60</Range>
   </Vision>
   <Promotion disable=""/>
 </Entity>

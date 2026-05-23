@@ -3,13 +3,12 @@
    <Builder>
     <Entities datatype="tokens">
       structures/gaul/assembly
-      structures/gaul/celtic_coalitliton
     </Entities>
   </Builder>
   <Cost>
     <Resources>
-      <food>60</food>
-      <wood>40</wood>
+      <food>50</food>
+      <wood>35</wood>
       <metal>15</metal>
     </Resources>
   </Cost>

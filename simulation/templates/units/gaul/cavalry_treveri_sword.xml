@@ -4,17 +4,12 @@
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/cavalry_treveri_jav_e</SelectionGroupName>
     <GenericName>Treveri Champion Sword Cavalry</GenericName>
-    <Icon>units/gaul/champion_cavalryjav.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">alliance_treveri</Techs>
+    <Icon>units/gaul/gaul_champ_scav.png</Icon>
+      <Requirements>
+      <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
   <ProductionQueue/>
-  <Researcher>
-    <Technologies datatype="tokens">
-      treveri_cav
-    </Technologies>
-  </Researcher>
   <VisualActor>
     <Actor>units/gauls/cavalry_treveri_sword_e_m</Actor>
   </VisualActor>

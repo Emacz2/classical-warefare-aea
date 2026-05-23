@@ -10,7 +10,7 @@
     <Icon>units/celt/support_healer.png</Icon>
   </Identity>
   <Vision>
-    <Range>65</Range>
+    <Range>50</Range>
   </Vision>
 <Heal>
     <Range>15</Range>

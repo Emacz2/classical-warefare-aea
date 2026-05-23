@@ -7,18 +7,18 @@
 
 	"requirements": {
 		"all": [
-			{ "tech": "phase_city" },
+			{ "tech": "phase_town" },
 			{ "civ": "gaul" }
 		]
 	},
-	"requirementsTooltip": "Unlocked in City Phase.",
+	"requirementsTooltip": "Unlocked in town Phase.",
 	"icon": "horse_trainer.png",
 	"researchTime": 60,
-	"tooltip": "Champion Cavalry -5% train time and 5% faster movement speed.",
+	"tooltip": "Champion -10% train time and 5% faster movement speed.",
 	"modifications": [
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
-		{ "value": "Cost/BuildTime", "multiply": 0.95 }
+		{ "value": "Cost/BuildTime", "multiply": 0.9 }
 	],
-	"affects": ["Champion Cavalry"],
+	"affects": ["Cavalry"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
