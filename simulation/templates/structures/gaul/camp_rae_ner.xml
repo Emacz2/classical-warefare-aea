@@ -10,7 +10,7 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="29.0" depth="29.0"/>
+    <Square width="35.0" depth="35.0"/>
     <Height>12.0</Height>
   </Footprint>
   <Health>
@@ -19,8 +19,8 @@
   </Health>
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Treveri Village</GenericName>
-    <Tooltip>Train Treveri allies.</Tooltip>
+    <GenericName>Raeti and Nervii encampment</GenericName>
+    <Tooltip>Train Rutheni allies.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/mercenary_camp.png</Icon>
   </Identity>
@@ -29,7 +29,7 @@
     <metal>20</metal>
   </Loot>
   <Obstruction>
-    <Static width="29.0" depth="29.0"/>
+    <Static width="35.0" depth="35.0"/>
   </Obstruction>
   <TerritoryDecay>
     <DecayRate>1</DecayRate>
@@ -37,18 +37,16 @@
   <TerritoryInfluence disable=""/>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/cavalry_treveri_sword
-      units/{civ}/cavalry_treveri_jav
-      units/{civ}/champion_cavalry
+      units/{civ}/infantry_rhaetian_axeman
     </Entities>
   </Trainer>
-  <Researcher>
+   <Researcher>
     <Technologies datatype="tokens">
-      treveri_cav
+      nervii_melee
     </Technologies>
   </Researcher>
   <VisualActor>
-    <Actor>structures/mercenaries/camp_blemmye.xml</Actor>
-    <FoundationActor>structures/fndn_8x7.xml</FoundationActor>
+    <Actor>structures/mercenaries/camp_nuba.xml</Actor>
+    <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
   </VisualActor>
 </Entity>

@@ -1,0 +1,24 @@
+{
+	"genericName": "Nervii close combat fighting techniques",
+	
+	"description": "Learn the techniques of elite close combat fighting from the Nervii.",
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "gaul" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "metalworker.png",
+	"researchTime": 60,
+	"tooltip": "Melee infantry +10% melee attack damage but an additional 5% train time.",
+	"modifications": [
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 },
+		{ "value": "Cost/BuildTime", "multiply": 1.05 }
+
+	],
+	"affects": ["Melee Infantry"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

@@ -21,9 +21,9 @@
 	"requirementsTooltip": "Unlocked in Village Phase.",
 	"icon": "archery_tradition.png",
 	"researchTime": 40,
-	"tooltip": "Javelineers -15% train time and +3 attack range.",
+	"tooltip": "Javelineers -10% train time and +3 attack range.",
 	"modifications": [
-		{ "value": "Cost/BuildTime", "multiply": 0.85 },
+		{ "value": "Cost/BuildTime", "multiply": 0.9 },
 		{ "value": "Attack/Ranged/MaxRange", "add": 3 }
 	],
 	"affects": ["Javelineer"],

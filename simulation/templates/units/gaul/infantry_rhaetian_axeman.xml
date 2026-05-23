@@ -21,8 +21,6 @@
     <VisibleClasses datatype="tokens">-Citizen -Worker Builder</VisibleClasses>
      <Icon>units/gaul/gaul_infantry_axe.png</Icon>
       <Requirements>
-      <Techs datatype="tokens">alliance_raeti</Techs>
-    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/gaul/infantry_rhaetian_axeman_b</Entity>

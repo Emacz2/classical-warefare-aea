@@ -2,8 +2,8 @@
 <Entity parent="template_unit_support">
  <Builder>
     <Entities datatype="tokens">
-      structures/gaul/camp_treveri
-      structures/gaul/camp_rutheni
+      structures/gaul/camp_rae_ner
+      structures/gaul/camp_tre_rut
     </Entities>
   </Builder>
   <Cost>

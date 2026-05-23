@@ -1,0 +1,25 @@
+{
+	"genericName": "Renowned horsemanship",
+	"specificName": {
+		"rome": "Viae Romanum"
+	},
+	"description": "The Treveri were renowned for their horsemanship, providing some of the best cavalry in Gaul",
+
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "gaul" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in town Phase.",
+	"icon": "horse_trainer.png",
+	"researchTime": 60,
+	"tooltip": "Archers +5 Range and 10% more accurate.",
+	"modifications": [
+		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9},
+		{ "value": "Attack/Ranged/MaxRange", "add": 5 }
+		
+	],
+	"affects": ["Archer"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

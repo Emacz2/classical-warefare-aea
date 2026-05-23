@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_archer">
+<Entity parent="template_unit_infantry_ranged_archer_simple">
 <Builder>
     <Entities datatype="tokens">
       structures/gaul/assembly
     </Entities>
   </Builder>
+  <Attack>
+      <MaxRange op="add">6</MaxRange>
+    </Ranged>
+  </Attack>
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/infantry_rutheni_archer_b</SelectionGroupName>
@@ -12,12 +16,9 @@
     <Tooltip>Ruthenian Archers were know for their speed, often using the mane or the tail of the mounts of their camarades to get some additional speed. </Tooltip>
     <VisibleClasses datatype="tokens">-Worker Builder</VisibleClasses>
     <Icon>units/gaul/gaul_infantry_archer.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">alliance_rutheni</Techs>
-    </Requirements>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">1.03</WalkSpeed>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="add">2.5</Acceleration>
   </UnitMotion>
   <Promotion>
