@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+ <Health>
+    <Max op="add">25</Max>
+  </Health>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">0.5</Crush>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <Identity>
+    <GenericName>Camel</GenericName>
+    <VisibleClasses datatype="tokens">Cataphract</VisibleClasses>
+  </Identity>
+  <UnitMotion>
+    <WalkSpeed op="mul">0.95</WalkSpeed>
+  </UnitMotion>
+</Entity>

@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_cav|template_unit_cavalry_camel_swordsman">
+<Entity parent="merc_cav|cav_camel|template_unit_cavalry_melee_swordsman">
   <Footprint>
     <Height>7.5</Height>
   </Footprint>
-   <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <Civ>kush</Civ>
     <Lang>napatan</Lang>

@@ -60,7 +60,7 @@
         <Damage>
           <Hack>10</Hack>
           <Pierce>35</Pierce>
-          <Crush>10</Crush>
+          <Crush>15</Crush>
         </Damage>
       <ApplyStatus>
         <Burning>

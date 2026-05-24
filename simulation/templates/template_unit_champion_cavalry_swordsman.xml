@@ -28,7 +28,7 @@
     <Entity>
       <Damage>
         <Crush op="add">0.5</Crush>
-        <Hack op="add">1</Hack>
+        <Hack op="add">0.5</Hack>
         <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>

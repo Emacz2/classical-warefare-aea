@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="sword_cav_shield|template_unit_cavalry_melee_swordsman">
+<Entity parent="cav_sword_shield|template_unit_cavalry_melee_swordsman">
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/cavalry_swordsman_b</SelectionGroupName>

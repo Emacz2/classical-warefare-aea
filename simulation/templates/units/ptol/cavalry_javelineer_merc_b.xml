@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_cav|template_unit_cavalry_camel_javelineer">
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
+<Entity parent="merc_cav|cav_camel|template_unit_cavalry_ranged_javelineer">
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/cavalry_javelineer_merc_b</SelectionGroupName>
