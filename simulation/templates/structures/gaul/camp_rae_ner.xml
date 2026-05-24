@@ -38,11 +38,12 @@
   <Trainer>
     <Entities datatype="tokens">
       units/{civ}/infantry_rhaetian_axeman
+      units/{civ}/champion_fanatic
     </Entities>
   </Trainer>
    <Researcher>
     <Technologies datatype="tokens">
-      nervii_melee
+      gaul_nervii_melee
     </Technologies>
   </Researcher>
   <VisualActor>

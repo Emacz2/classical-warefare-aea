@@ -6,6 +6,7 @@
     </Entities>
   </Builder>
   <Attack>
+    <Ranged>
       <MaxRange op="add">6</MaxRange>
     </Ranged>
   </Attack>

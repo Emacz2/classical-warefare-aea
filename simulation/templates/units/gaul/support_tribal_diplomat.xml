@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_support">
+<Entity parent="builder|template_unit_support">
  <Builder>
     <Entities datatype="tokens">
       structures/gaul/camp_rae_ner
@@ -22,7 +22,7 @@
     <Tooltip>Allows you to build Rutheni structures</Tooltip>
     <Classes datatype="tokens">Organic Human</Classes>
     <VisibleClasses datatype="tokens">Diplomat</VisibleClasses>
-    <Icon>units/han/minister.png</Icon>
+    <Icon>units/gaul/celt_diplo.png</Icon>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
@@ -32,9 +32,6 @@
     <food>10</food>
     <metal>10</metal>
   </Loot>
-  <Minimap>
-    <Type>hero</Type>
-  </Minimap>
   <Position>
     <TurnRate>8</TurnRate>
   </Position>

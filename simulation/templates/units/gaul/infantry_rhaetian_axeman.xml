@@ -20,7 +20,6 @@
     <Tooltip>Rhaetian Axeman from the Alps were know for their proficiency with the Hellebardenaxt</Tooltip>
     <VisibleClasses datatype="tokens">-Citizen -Worker Builder</VisibleClasses>
      <Icon>units/gaul/gaul_infantry_axe.png</Icon>
-      <Requirements>
   </Identity>
   <Promotion>
     <Entity>units/gaul/infantry_rhaetian_axeman_b</Entity>

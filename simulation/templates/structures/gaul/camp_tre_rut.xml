@@ -45,8 +45,8 @@
   </Trainer>
   <Researcher>
     <Technologies datatype="tokens">
-      rutheni_archery
-      treveri_cav
+      gaul_rutheni_archery
+      gaul_treveri_cav
     </Technologies>
   </Researcher>
   <VisualActor>

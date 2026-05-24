@@ -2,30 +2,35 @@
 <Entity parent="template_unit_champion_infantry_spearman">
   <Cost>
     <Resources>
-      <food>120</food>
+      <food>100</food>
       <wood>100</wood>
       <metal>0</metal>
     </Resources>
   </Cost>
+  <Attack>
+    <Melee>
+      <RepeatTime op="add">-250</RepeatTime>
+    </Melee>
+  </Attack>
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Naked Fanatic</GenericName>
-    <SpecificName>Bariogaisatos</SpecificName>
+    <SpecificName>Gaesatae</SpecificName>
     <Icon>units/gaul/champion_fanatic.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
   </Identity>
+   <Health>
+    <Max op="add">25</Max>
+  </Health>
   <Resistance>
     <Entity>
       <Damage>
         <Hack op="add">-4</Hack>
-        <Pierce op="add">-3</Pierce>
+        <Pierce op="add">-4</Pierce>
       </Damage>
     </Entity>
   </Resistance>
   <UnitMotion>
-    <WalkSpeed op="mul">1.4</WalkSpeed>
+    <WalkSpeed op="mul">1.25</WalkSpeed>
     <Acceleration op="mul">1.7</Acceleration>
   </UnitMotion>
   <VisualActor>

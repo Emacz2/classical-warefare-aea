@@ -66,7 +66,6 @@
   </Obstruction>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/champion_fanatic
       units/{civ}/champion_infantry_trumpeter
     </Entities>
   </Trainer>
