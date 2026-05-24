@@ -5,6 +5,12 @@
       structures/mace/royal_stoa
   </Entities>
 </Builder>
+<Attack>
+    <Ranged>
+      <MaxRange op="add">-3</MaxRange>
+      <RepeatTime op="add">-500</RepeatTime>
+    </Ranged>
+  </Attack>
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>

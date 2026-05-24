@@ -5,14 +5,14 @@
       <AttackName>Sling</AttackName>
       <Damage>
         <Crush>0.5</Crush>
-        <Pierce>6.5</Pierce>
+        <Pierce>7</Pierce>
       </Damage>
       <MaxRange>59</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>1000</RepeatTime>
+      <RepeatTime>1250</RepeatTime>
       <Projectile>
         <Speed>125</Speed>
-        <Spread>2.2</Spread>
+        <Spread>1.8</Spread>
         <Gravity>45</Gravity>
         <FriendlyFire>false</FriendlyFire>
         <LaunchPoint y="3"/>
@@ -30,13 +30,6 @@
     <VisibleClasses datatype="tokens">Slinger</VisibleClasses>
     <GenericName>Slinger</GenericName>
   </Identity>
-    <Resistance>
-    <Entity>
-      <Damage>
-       <Hack op="add">-0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Sound>
     <SoundGroups>
       <attack_ranged>attack/weapon/sling_attack.xml</attack_ranged>

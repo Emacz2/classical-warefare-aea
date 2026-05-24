@@ -4,14 +4,14 @@
     <Ranged>
       <AttackName>SimpleBow</AttackName>
       <Damage>
-        <Pierce>10</Pierce>
+        <Pierce>9</Pierce>
       </Damage>
       <MaxRange>41</MaxRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1250</RepeatTime>
       <Projectile>
         <Speed>100</Speed>
-        <Spread>3.1</Spread>
+        <Spread>4.1</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
         <LaunchPoint y="3"/>
@@ -35,7 +35,7 @@
     </SoundGroups>
   </Sound>
    <UnitMotion>
-    <WalkSpeed op="mul">1.04</WalkSpeed>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="add">2.5</Acceleration>
   </UnitMotion>
    <Vision>

@@ -4,15 +4,15 @@
     <Ranged>
       <AttackName>Sling</AttackName>
       <Damage>
-        <Crush>4</Crush>
-        <Pierce>3.5</Pierce>
+        <Crush>5</Crush>
+        <Pierce>3</Pierce>
       </Damage>
       <MaxRange>45</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>1000</RepeatTime>
+      <RepeatTime>1250</RepeatTime>
       <Projectile>
         <Speed>125</Speed>
-        <Spread>4</Spread>
+        <Spread>3.7</Spread>
         <Gravity>45</Gravity>
         <FriendlyFire>false</FriendlyFire>
         <LaunchPoint y="3"/>
@@ -20,11 +20,6 @@
     </Ranged>
   </Attack>
   <Resistance>
-    <Entity>
-      <Damage>
-       <Hack op="add">-0.5</Hack>
-      </Damage>
-    </Entity>
   </Resistance>
   <Cost>
     <Resources>

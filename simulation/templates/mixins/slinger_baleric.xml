@@ -6,8 +6,11 @@
   <Attack>
     <Ranged>
     <Damage>
-      <Crush op="mul">1.20</Crush>
+      <Crush op="mul">1.15</Crush>
+      <Pierce op="mul">1.15</Pierce>
     </Damage>
+      <MaxRange op="add">+3</MaxRange>
+      <RepeatTime op="add">250</RepeatTime>
       <Projectile>
         <Spread op="mul">0.9</Spread>
     </Projectile>
@@ -24,7 +27,7 @@
     <GenericName>Balearic Slinger</GenericName>
     <SpecificName>Qallāʿ Ibušimi</SpecificName>
     <Icon>units/cart/infantry_slinger.png</Icon>
-    <Tooltip>20% more crush dmg and 10% more accurate than standard stone slingers. Can be upgraded to lead slingers once they hit elite status</Tooltip>
+    <Tooltip>Balleric slingers +15% Crush/Pierce damage, +3 range and 10% more accurate but 1/4 second slower repeat time and +25% train time.</Tooltip>
     <History>The Balearic slingers, indigenous to the Balearic Islands, were warriors from ancient times famed for their mastery in the art of using the sling;</History>
   </Identity>
   <ResourceGatherer disable=""/>

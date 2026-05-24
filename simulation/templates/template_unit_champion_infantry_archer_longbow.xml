@@ -2,16 +2,16 @@
 <Entity parent="template_unit_champion_infantry_ranged">
   <Attack>
     <Ranged>
-      <AttackName>SimpleBow</AttackName>
+      <AttackName>LongBow</AttackName>
       <Damage>
         <Pierce>16.5</Pierce>
       </Damage>
-      <MaxRange>65</MaxRange>
+      <MaxRange>70</MaxRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1500</RepeatTime>
       <Projectile>
         <Speed>125</Speed>
-        <Spread>3.1</Spread>
+        <Spread>2.2</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
         <LaunchPoint y="3"/>

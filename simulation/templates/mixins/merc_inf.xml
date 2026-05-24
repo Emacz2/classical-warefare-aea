@@ -34,10 +34,6 @@
     </Projectile>
   </Ranged>
 </Attack>
-  <Loot>
-    <metal>10</metal>
-    <food>5</food>
-  </Loot>
   <Promotion>
     <RequiredXp>200</RequiredXp>
   </Promotion>

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-  <Attack>
+   <Attack>
     <Ranged>
-    <Damage>
-      <Pierce op="mul">1.05</Pierce>
-    </Damage>
-  </Ranged>
-</Attack>
+      <RepeatTime op="add">-100</RepeatTime>
+      <Projectile>
+        <Spread>1.6</Spread>
+      </Projectile>
+      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+    </Ranged>
+  </Attack>
   <Resistance>
     <Entity>
       <Damage>
@@ -20,7 +22,7 @@
     <GenericName>Cretan Mercenary Archer</GenericName>
     <SpecificName>Toxótēs Krētikós</SpecificName>
     <Icon>units/mace/infantry_archer.png</Icon>
-    <Tooltip>Cretans were well known for their archery skills and hight sought after mercanaries; 5% more pierce dmg, +0.5H and +1P resistance.</Tooltip>
+    <Tooltip>Cretans were well known for their archery skills and hight sought after mercanaries; They shoot 10% faster and are 25% more accurate. Additionly they have +0.5H and +1P resistance.</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>
