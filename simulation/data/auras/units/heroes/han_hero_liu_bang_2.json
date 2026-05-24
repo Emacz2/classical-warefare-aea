@@ -5,7 +5,7 @@
 	{ "value": "Attack/Capture/Capture", "add": 1.5 }
 	],
 	"auraName": "Confucian Reforms",
-	"showDescription": 1.5,
-	"auraDescription": "Soldiers +2 capture attack.",
+	"showDescription": 1,
+	"auraDescription": "Soldiers +1.5 capture attack.",
 	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
 }
