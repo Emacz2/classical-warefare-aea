@@ -10,13 +10,14 @@
     <Melee>
       <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
       <Damage>
-        <Hack op="add">4.0</Hack>
-	      <Pierce op="add">2.0</Pierce>
+        <Hack op="mul">1.5</Hack>
+	      <Pierce op="mul">1.5</Pierce>
       </Damage>
        <RepeatTime>750</RepeatTime>
     </Melee>
   </Attack>
  <Health>
+    <Max op="add">75</Max>
     <RegenRate>-1</RegenRate>
     <Unhealable>true</Unhealable>
   </Health>

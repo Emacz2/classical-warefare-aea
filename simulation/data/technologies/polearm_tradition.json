@@ -20,10 +20,10 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 30,
-	"tooltip": "Polearm units −20% training time, −30% promotion experience and 5% faster movement speed.",
+	"tooltip": "Polearm units −20% training time, −20% promotion experience and 5% faster movement speed.",
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 0.8 },
-		{ "value": "Promotion/RequiredXp", "multiply": 0.7 },
+		{ "value": "Promotion/RequiredXp", "multiply": 0.8 },
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
 		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.05 }
 		
