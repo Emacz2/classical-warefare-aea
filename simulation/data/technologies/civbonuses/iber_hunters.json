@@ -1,13 +1,13 @@
 {
 	"genericName": "Execellent hunters",
 	"autoResearch": true,
-	"description": "Gathers 10% faster meat garthering.",
+	"description": "Iberians were excellent hunters and relied on the wild game as a source of food.",
 	"requirements": { "civ": "iber" },
 	"icon": "wooden_walls.png",
-	"tooltip": "Gathers 10% faster meat garthering.",
+	"tooltip": "Gathers 50% faster meat garthering.",
 	"modifications": 
 [
-	{ "value": "ResourceGatherer/Rates/food.meat", "multiply": 1.1 }
+	{ "value": "ResourceGatherer/Rates/food.meat", "multiply": 1.5 }
 	
 	],
 	"affects": ["Gathers"]

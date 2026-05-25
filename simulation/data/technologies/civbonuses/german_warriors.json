@@ -1,7 +1,7 @@
 {
 	"genericName": "Tribal Warfare",
 	"autoResearch": true,
-	"description": "Britons paint their bodies with Woad, which produces a blue color and gives them a fiercesome appearance in battle.",
+	"description": "German warriors often wore little or no armor.  However, they were still feered for their agressive hit and run tatics in the forerst.",
 	"icon": "woad_warriors.png",
 	"tooltip": "Infantry 10% faster walk speed and +15 vision but -0.5 Hack and Pierce Resistance",
 	"requirements": {

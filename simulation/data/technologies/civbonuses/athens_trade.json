@@ -1,7 +1,7 @@
 {
 	"genericName": "Center Of Greek Trade Routes",
 	"autoResearch": true,
-	"description": ".",
+	"description": "Athen's was the center for greek trade",
 	"icon": "woad_warriors.png",
 	"tooltip": "Traders 15% movement speed.",
 	"requirements": { "civ": "athen" },

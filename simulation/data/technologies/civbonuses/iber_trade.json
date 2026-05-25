@@ -1,7 +1,7 @@
 {
 	"genericName": "Legend of Tartessos",
 	"autoResearch": true,
-	"description": "Gathers 10% faster meat garthering.",
+	"description": "The Legend of Tartessos refers to the semi-mythical wealthy civilization called Tartessos that ancient Greek and Roman writers described in southern Iberia (modern southwestern Spain), especially near the Guadalquivir River and Atlantic coast",
 	"requirements": { "civ": "iber" },
 	"icon": "wooden_walls.png",
 	"tooltip": "Iberians can build markets p1, land and sea traders train time reduced by 50%.",

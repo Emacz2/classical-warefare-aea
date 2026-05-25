@@ -3,13 +3,13 @@
 	"autoResearch": true,
 	"description": "Britons paint their bodies with Woad, which produces a blue color and gives them a fiercesome appearance in battle.",
 	"icon": "woad_warriors.png",
-	"tooltip": "All Infantry Units +5% movement speed and melee +10% damage, but -.5 pierce resistance. They skip the first melee attack upgrade and start at level 2.",
+	"tooltip": "Infantry Units +5% movement but -.5 pierce resistance. Melee infantry +10% dmg but skip first melee attack upgrade from forge and start at level 2.",
 	"requirements": { "civ": "brit" },
 	"modifications": [
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05 },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05 },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05 },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": -0.5 }
 	
 
