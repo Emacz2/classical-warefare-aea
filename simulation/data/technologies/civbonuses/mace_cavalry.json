@@ -4,7 +4,7 @@
 	"description": "Mace cavalry were made up of noblemen while infantry were shepards.",
 	"requirements": { "civ": "mace" },
 	"icon": "sword_cavalry.png",
-	"tooltip": "Cavalry 1 of Hack/Pierce resistance and 10% more dmg, but citizen cavalry cost +15 metal and take 15% longer to train.",
+	"tooltip": "Cavalry 1 of Hack/Pierce resistance and 10% more dmg, but citizen cavalry cost +15 metal",
 	"modifications": [
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 },
