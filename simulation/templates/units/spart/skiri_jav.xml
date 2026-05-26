@@ -5,17 +5,17 @@
      <Resources>
       <food>100</food>
       <metal>0</metal>
-      <wood>35</wood>
+      <wood>30</wood>
       <stone>0</stone>
     </Resources>
   </Cost>
    <Health>
     <Max>150</Max>
   </Health>
-     <Resistance>
+       <Resistance>
     <Entity>
       <Damage>
-        <Crush>2</Crush>
+        <Crush>1.5</Crush>
         <Hack>1.5</Hack>
         <Pierce>1.5</Pierce>
       </Damage>
@@ -42,8 +42,8 @@
     </Skiri_thrust>
   </Upgrade>
   <UnitMotion>
-    <WalkSpeed op="mul">1.4</WalkSpeed>
-    <RunMultiplier>1.55</RunMultiplier>
+    <WalkSpeed>11.0</WalkSpeed>
+    <RunMultiplier>1.5</RunMultiplier>
   </UnitMotion>
  <Vision>
     <Range>80</Range>

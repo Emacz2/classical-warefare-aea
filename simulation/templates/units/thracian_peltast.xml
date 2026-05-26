@@ -11,20 +11,20 @@
  <Resistance>
     <Entity>
       <Damage>
-        <Hack>1</Hack>
+        <Hack>1.5</Hack>
         <Pierce>1.5</Pierce>
-        <Crush>0.5</Crush>
+        <Crush>1</Crush>
       </Damage>
     </Entity>
   </Resistance>
    <Health>
-    <Max>135</Max>
+    <Max>150</Max>
   </Health>
       <Loot>
-    <xp>135</xp>
+    <xp>150</xp>
   </Loot>
   <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
+    <WalkSpeed>10</WalkSpeed>
     <RunMultiplier op="mul">1.15</RunMultiplier>
     <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>

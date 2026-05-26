@@ -36,6 +36,6 @@
 		
 
 	],
-	"affects": ["Hoplite"],
+	"affects": ["Hoplite !Switch"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

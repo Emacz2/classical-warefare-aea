@@ -15,14 +15,14 @@
      <Resistance>
     <Entity>
       <Damage>
-        <Crush>2</Crush>
-        <Hack>2</Hack>
+        <Crush>2.5</Crush>
+        <Hack>3</Hack>
         <Pierce>2.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
    <Identity>
-    <Rank>Elite</Rank>
+    <Rank>Advanced</Rank>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
     <GenericName>Elite Skiritai Vanguard Sword</GenericName>

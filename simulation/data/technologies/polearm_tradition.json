@@ -28,6 +28,6 @@
 		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.05 }
 		
 	],
-	"affects": ["Polearm"],
+	"affects": ["Polearm !Switch"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

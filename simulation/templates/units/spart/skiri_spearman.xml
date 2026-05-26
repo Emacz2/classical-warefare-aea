@@ -12,17 +12,17 @@
    <Health>
     <Max>200</Max>
   </Health>
-     <Resistance>
+      <Resistance>
     <Entity>
       <Damage>
-        <Crush>2</Crush>
-        <Hack>2</Hack>
+        <Crush>2.5</Crush>
+        <Hack>3</Hack>
         <Pierce>2.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
    <Identity>
-    <Rank>Elite</Rank>
+    <Rank>Advanced</Rank>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
     <GenericName>Elite Skiritai Vanguard Spear</GenericName>
@@ -42,7 +42,7 @@
     </Skiri_sword>
   </Upgrade>
   <UnitMotion>
-    <WalkSpeed op="mul">1.3</WalkSpeed>
+    <WalkSpeed>10.5</WalkSpeed>
     <RunMultiplier>1.55</RunMultiplier>
   </UnitMotion>
  <Vision>

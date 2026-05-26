@@ -8,17 +8,17 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Hack>2</Hack>
-        <Pierce>2.5</Pierce>
+        <Hack>1.5</Hack>
+        <Pierce>1.5</Pierce>
         <Crush>1</Crush>
       </Damage>
     </Entity>
   </Resistance>
   <Health>
-    <Max>135</Max>
+    <Max>150</Max>
   </Health>
     <Loot>
-    <xp>135</xp>
+    <xp>150</xp>
   </Loot>
   <Identity>
     <Rank>Elite</Rank>
@@ -28,10 +28,10 @@
     <Icon>units/special/pelt_sword.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
-    <UnitMotion>
-    <WalkSpeed>9.5</WalkSpeed>
-   <RunMultiplier op="mul">1.1</RunMultiplier>
-    <Acceleration>44.8</Acceleration>
+  <UnitMotion>
+    <WalkSpeed>10</WalkSpeed>
+    <RunMultiplier op="mul">1.15</RunMultiplier>
+    <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>
   <Promotion disable=""/>
   <VisualActor>

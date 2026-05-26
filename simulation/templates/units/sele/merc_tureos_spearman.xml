@@ -7,7 +7,7 @@
   </Builder>
   <Upgrade>
     <Heavy_Jav>
-      <Entity>units/ptol/merc_tureos_skirmisher</Entity>
+      <Entity>units/sele/merc_tureos_skirmisher</Entity>
       <Tooltip>Switch to throwing javelins.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
@@ -15,7 +15,7 @@
   </Upgrade>
   <Identity>
     <Civ>sele</Civ>
-    <SelectionGroupName>units/ptol/infantry_spearman_merc_b</SelectionGroupName>
+    <SelectionGroupName>units/sele/infantry_spearman_merc_b</SelectionGroupName>
     <Lang>greek</Lang>
     <GenericName>Mercenary Thureos Spearman</GenericName>
     <SpecificName>Thureophóros Misthophóros</SpecificName>
