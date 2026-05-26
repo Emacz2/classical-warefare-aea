@@ -65,11 +65,8 @@
       </Damage>
     </Entity>
   </Resistance>
-   <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
-  </UnitMotion>
   <Identity>
     <VisibleClasses datatype="tokens">HelotM -Soldier</VisibleClasses>
-    <Tooltip>Helots are similar to serfs, but 25% less dmg and range instead of 50%</Tooltip>
+    <Tooltip>Helots 25% less dmg, range and spread than normal citizen infantry, but same gather rates as civlians.  They also only have 50 HPs but cost only 40 food and 10 wood or stone</Tooltip>
   </Identity>
 </Entity>
