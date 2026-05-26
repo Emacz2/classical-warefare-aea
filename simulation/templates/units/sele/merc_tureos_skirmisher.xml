@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="merc_inf|units/tureos_skirmisher">
+<Builder>
+    <Entities datatype="tokens">
+      structures/sele/range
+    </Entities>
+  </Builder>
+   <Upgrade>
+    <Spear>
+      <Entity>units/ptol/merc_tureos_spearman</Entity>
+      <Tooltip>Switch to using a spear.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>4</Time>
+    </Spear>
+  </Upgrade>
+  <Identity>
+    <Civ>sele</Civ>
+    <SelectionGroupName>units/ptol/infantry_javelineer_b</SelectionGroupName>
+  </Identity>
+  <Promotion disable=""/>
+  <VisualActor>
+    <Actor>units/iberians/infantry_javelinist_b.xml</Actor>
+  </VisualActor>
+</Entity>

@@ -4,7 +4,7 @@
 	"description": "The Mauryas archers used 6 foot Bamboo Longbows that sometimes needed to be stablized with their feet.",
 	"requirements": { "civ": "maur" },
 	"icon": "wooden_walls.png",
-	"tooltip": " Maury Archers +4 range and civ bonus",
+	"tooltip": " Maury Archers +4 range and 10% more pierece from civ bonus",
 	"modifications": [
 		{ "value": "Attack/Ranged/MaxRange", "add": 4}
 		

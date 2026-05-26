@@ -52,6 +52,7 @@
       units/{civ}/infantry_pikeman_a
       units/{civ}/infantry_archer_a
       units/{civ}/merc_thracian_peltast
+      units/{civ}/merc_tureos_skirmisher
       units/{civ}/merc_inf_archer_a
       units/{civ}/cavalry_spearman_merc_a
       units/{civ}/champion_infantry_pikeman

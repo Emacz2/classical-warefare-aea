@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_infantry_ranged_peltast">
-  <Attack>
-    <Ranged>
-      <Projectile>
-        <Spread>3.5</Spread>
-      </Projectile>
-    </Ranged>
-  </Attack>
-  <Resistance>
+<Resistance>
     <Entity>
       <Damage>
-        <Hack>4</Hack>
-        <Pierce>4.5</Pierce>
+        <Hack>2</Hack>
+        <Pierce>2.5</Pierce>
         <Crush>1.5</Crush>
       </Damage>
     </Entity>
   </Resistance>
+   <Health>
+    <Max>135</Max>
+  </Health>
+      <Loot>
+    <xp>135</xp>
+  </Loot>
+  <UnitMotion>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
+    <Acceleration op="mul">1.1</Acceleration>
+  </UnitMotion>
   <Health>
      <Max>135</Max>
   </Health>
@@ -24,10 +28,6 @@
     <metal>30</metal>
     <wood>15</wood>
   </Loot>
-    <UnitMotion>
-    <WalkSpeed>8.0</WalkSpeed>
-    <Acceleration>35</Acceleration>
-  </UnitMotion>
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>

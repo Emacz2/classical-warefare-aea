@@ -11,9 +11,9 @@
  <Resistance>
     <Entity>
       <Damage>
-        <Hack>2</Hack>
-        <Pierce>2.5</Pierce>
-        <Crush>1</Crush>
+        <Hack>1</Hack>
+        <Pierce>1.5</Pierce>
+        <Crush>0.5</Crush>
       </Damage>
     </Entity>
   </Resistance>
@@ -24,8 +24,8 @@
     <xp>135</xp>
   </Loot>
   <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
+    <WalkSpeed op="mul">1.15</WalkSpeed>
+    <RunMultiplier op="mul">1.15</RunMultiplier>
     <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>
   <Identity>

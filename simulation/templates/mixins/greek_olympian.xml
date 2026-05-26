@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Entity>
-  <Identity>
-    <Classes datatype="tokens">Olympian</Classes>
-     <VisibleClasses datatype="tokens">Olympian</VisibleClasses>
-  </Identity>
-</Entity>

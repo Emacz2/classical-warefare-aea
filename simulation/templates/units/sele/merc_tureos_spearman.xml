@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="merc_inf|units/tureos_spearman">
+<Builder>
+    <Entities datatype="tokens">
+      structures/sele/range
+    </Entities>
+  </Builder>
+  <Upgrade>
+    <Heavy_Jav>
+      <Entity>units/ptol/merc_tureos_skirmisher</Entity>
+      <Tooltip>Switch to throwing javelins.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>4</Time>
+    </Heavy_Jav>
+  </Upgrade>
+  <Identity>
+    <Civ>sele</Civ>
+    <SelectionGroupName>units/ptol/infantry_spearman_merc_b</SelectionGroupName>
+    <Lang>greek</Lang>
+    <GenericName>Mercenary Thureos Spearman</GenericName>
+    <SpecificName>Thureophóros Misthophóros</SpecificName>
+    <Icon>units/ptol/infantry_spearman_2.png</Icon>
+  </Identity>
+   <Promotion disable=""/>
+  <VisualActor>
+    <Actor>units/ptolemies/infantry_spearman_b.xml</Actor>
+  </VisualActor>
+</Entity>
