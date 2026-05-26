@@ -2,9 +2,12 @@
 <Entity parent="cav_shock|template_unit_champion_cavalry_lancer">
   <Attack>
     <Melee>
+    <Damage>
+        <Hack op="mul">1.15</Hack>
+        <Pierce op="add">1.15</Pierce>
+      </Damage>
       <MaxRange op="add">0.5</MaxRange>
-      <PrepareTime op="add">-250</PrepareTime>
-      <RepeatTime op="add">-250</RepeatTime>
+      <RepeatTime op="add">250</RepeatTime>
     </Melee>
   </Attack>
   <Identity>
@@ -15,7 +18,7 @@
     <Icon>units/mace/champion_cavalry.png</Icon>
     <SelectionGroupName>units/mace/champion_cavalry</SelectionGroupName>
     <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
-     <Tooltip>Slowly regenerate health over time 2hp every 4 seconds and 10% more acceleration</Tooltip>
+     <Tooltip>Companion Cavalry have 15% dmg increase, +0.5 range but attack 1/4 of a second slower. They slowly regenerate health over time 2hp every 4 seconds and 10% more acceleration</Tooltip>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
