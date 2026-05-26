@@ -1,7 +1,7 @@
 {
 	"genericName": "Elephants",
 	"autoResearch": true,
-	"description": "Stronger Elephants",
+	"description": "Kushshites were known for capturing, training, and exporting African elephants—especially for warfare and diplomacy.",
 	"requirements": { "civ": "kush" },
 	"icon": "parade_of_daphne.png",
 	"tooltip": "Elephants +1 Hack and +2 Pierce Resistance",

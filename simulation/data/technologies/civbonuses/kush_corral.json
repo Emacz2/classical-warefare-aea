@@ -1,9 +1,9 @@
 {
 	"genericName": "Domestic herding",
 	"autoResearch": true,
-	"description": "The Kushite.",
+	"description": "Kushite Herdsman represent the backbone of rural Kushite society and were skilled in cattle management.",
 	"icon": "wall.png",
-	"tooltip": "Corrals 50% build time and resources cost.",
+	"tooltip": "Corrals 50% build time and resources cost, live stock 25% less build time.",
 	"requirements": { "civ": "kush" },
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 0.5, "affects": "Corral"},

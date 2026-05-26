@@ -1,7 +1,7 @@
 {
 	"genericName": "Poison discipline",
 	"autoResearch": true,
-	"description": "Archers use poison arrows",
+	"description": "Archers used poison‑tipped arrows terrifying their enemies",
 	"requirements": { "civ": "kush" },
 	"icon": "parade_of_daphne.png",
 	"tooltip": "-5% pierce dmg and 4 less range but have added poison dmg",
