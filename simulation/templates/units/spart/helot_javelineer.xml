@@ -5,6 +5,7 @@
       structures/spart/gerousia
       structures/spart/syssiton
       structures/spart/camp
+      structures/spart/colony
       -structures/wallset_palisade
       -structures/{civ}/wallset_stone
     </Entities>

@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_civic_civil_centre_military_colony">
- <BuildRestrictions>
+<Entity parent="template_structure">
+  <BuildRestrictions>
      <Territory>own neutral</Territory>
     <Category>PerioikoiCamp</Category>
     <Distance>
       <FromClass>PerioikoiCamp</FromClass>
-      <MinDistance>90</MinDistance>
+      <MinDistance>75</MinDistance>
     </Distance>
   </BuildRestrictions>
-      <Cost>
-    <BuildTime>240</BuildTime>
+  <Capturable>
+    <CapturePoints op="mul">1.5</CapturePoints>
+    <RegenRate>8</RegenRate>
+    <GarrisonRegenRate>5.5</GarrisonRegenRate>
+  </Capturable>
+  <Cost>
+    <BuildTime>150</BuildTime>
     <Resources>
-      <food>100</food>
-      <wood>200</wood>
-      <stone>100</stone>
-      <metal>100</metal>
+      <wood>10000</wood>
+      <stone>1000</stone>
     </Resources>
   </Cost>
-  <Health>
-    <Max>1750</Max>
-    <SpawnEntityOnDeath>decay|rubble/rubble_stone_5x5</SpawnEntityOnDeath>
-  </Health>
-   <GarrisonHolder>
-    <Max>30</Max>
+  <Footprint>
+    <Square width="30.0" depth="30.0"/>
+    <Height>10.0</Height>
+  </Footprint>
+  <GarrisonHolder>
+    <Max>25</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
     <List datatype="tokens">Perioikoi HelotW HelotM</List>
@@ -30,16 +33,33 @@
     <LoadingRange>6</LoadingRange>
   </GarrisonHolder>
   <Population>
-    <Bonus>10</Bonus>
+    <Bonus>5</Bonus>
   </Population>
+  <Health>
+    <Max>1500</Max>
+    <SpawnEntityOnDeath>decay|rubble/rubble_rome_sb</SpawnEntityOnDeath>
+  </Health>
+  <Identity>
+   <Civ>spart</Civ>
+    <GenericName>Perioikoi Camp</GenericName>
+    <SpecificName>Perioecis Κομη</SpecificName>
+    <Tooltip>May be built in own or neutral teritory. Trains Periokoi/Helot units and used as a dropsite for resoruces. Adds 5 to population.</Tooltip>
+    <Classes datatype="tokens">PerioikoiCamp</Classes>
+    <VisibleClasses datatype="tokens">Village Camp</VisibleClasses>
+    <Icon>structures/roman_camp.png</Icon>
+  </Identity>
+     <Promotion>
+    <Entity>structures/spart/camp_2</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
    <Upgrade>
     <camp>
-      <Entity>structures/spart/camp_3</Entity>
+      <Entity>structures/spart/camp_2</Entity>
       <Tooltip>Upgrade to a bigger camp, train elite and advanced Mercenaries.</Tooltip>
       <Cost>
-        <metal>100</metal>
-        <wood>150</wood>
-        <stone>100</stone>
+        <metal>50</metal>
+        <wood>100</wood>
+        <stone>50</stone>
       </Cost>
       <Time>30</Time>
       <Variant>upgrading</Variant>
@@ -48,42 +68,55 @@
       </Requirements>
     </camp>
   </Upgrade>
-  <Footprint>
-    <Square width="31" depth="31"/>
-    <Height>8</Height>
-  </Footprint>
-  <Identity>
-    <Civ>spart</Civ>
-    <Classes datatype="tokens">PerioikoiCamp</Classes>
-    <VisibleClasses datatype="tokens">Town Camp2</VisibleClasses>
-  </Identity>
-  <Promotion>
-    <Entity>structures/spart/camp_3</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
-   <Trainer>
+  <Loot>
+    <wood>100</wood>
+  </Loot>
+  <Obstruction>
+    <Static width="36.0" depth="36.0"/>
+  </Obstruction>
+  <ProductionQueue/>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack>10</Hack>
+        <Pierce>20</Pierce>
+        <Crush>5</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <ResourceDropsite>
+    <Types>food wood stone metal</Types>
+    <Sharable>true</Sharable>
+  </ResourceDropsite>
+  <TrainingRestrictions>
+  <Category>PerioikoiCamp</Category>
+  </TrainingRestrictions>
+  <Sound>
+    <SoundGroups>
+      <select>interface/select/building/sel_broch.xml</select>
+      <constructed>interface/complete/building/complete_broch.xml</constructed>
+      <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
+      <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
+    </SoundGroups>
+  </Sound>
+  <TerritoryDecay disable=""/>
+  <Trainer>
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">
-      -units/{civ}/merc_thracian_peltast
-      units/{civ}/infantry_spearman_a
-      units/{civ}/skiri_spearman
-      units/{civ}/neodamodes_spearman
-      units/{civ}/perioikoi_range
+      units/{civ}/support_female_helot
+      units/{civ}/helot_javelineer
+      units/{civ}/infantry_spearman_b
     </Entities>
   </Trainer>
-    <TerritoryInfluence>
-    <Root>true</Root>
-    <Radius>75</Radius>
-    <Weight>10000</Weight>
-  </TerritoryInfluence>
-  <TerritoryInfluence>
-    <Radius>75</Radius>
-  </TerritoryInfluence>
-  <Obstruction>
-    <Static width="29" depth="29"/>
-  </Obstruction>
+  <Vision>
+    <Range>80</Range>
+  </Vision>
   <VisualActor>
-    <Actor>structures/seleucids/military_colony.xml</Actor>
-    <FoundationActor>structures/fndn_9x9.xml</FoundationActor>
+    <Actor>structures/romans/camp.xml</Actor>
+    <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
   </VisualActor>
+  <WallPiece>
+    <Length>29.5</Length>
+    <Indent>8</Indent>
+  </WallPiece>
 </Entity>

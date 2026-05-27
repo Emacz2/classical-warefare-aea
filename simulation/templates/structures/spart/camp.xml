@@ -52,22 +52,6 @@
     <Entity>structures/spart/camp_2</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>
-   <Upgrade>
-    <camp>
-      <Entity>structures/spart/camp_2</Entity>
-      <Tooltip>Upgrade to a bigger camp, train elite and advanced Mercenaries.</Tooltip>
-      <Cost>
-        <metal>50</metal>
-        <wood>100</wood>
-        <stone>50</stone>
-      </Cost>
-      <Time>30</Time>
-      <Variant>upgrading</Variant>
-      <Requirements>
-        <Techs datatype="tokens">phase_town</Techs>
-      </Requirements>
-    </camp>
-  </Upgrade>
   <Loot>
     <wood>100</wood>
   </Loot>

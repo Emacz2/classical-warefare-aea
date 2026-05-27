@@ -13,7 +13,7 @@
     <GenericName>Military Mess Hall</GenericName>
     <SpecificName>Pheideition</SpecificName>
     <Icon>structures/syssition.png</Icon>
-    <VisibleClasses datatype="tokens">Syssiton Special Phase_2</VisibleClasses>
+    <VisibleClasses datatype="tokens">Syssiton Special</VisibleClasses>
   </Identity>
   <Promotion>
     <Entity>structures/spart/syssiton_2</Entity>
