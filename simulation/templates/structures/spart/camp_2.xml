@@ -54,8 +54,8 @@
   </Footprint>
   <Identity>
     <Civ>spart</Civ>
-    <SpecificName>Klērouchia</SpecificName>
-    <Classes datatype="tokens">CivSpecific</Classes>
+    <Classes datatype="tokens">PerioikoiCamp</Classes>
+    <VisibleClasses datatype="tokens">Town Camp2</VisibleClasses>
   </Identity>
   <Promotion>
     <Entity>structures/spart/camp_3</Entity>
