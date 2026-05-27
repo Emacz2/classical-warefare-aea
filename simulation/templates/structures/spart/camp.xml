@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure">
-  <BuildRestrictions>
+   <BuildRestrictions>
      <Territory>own neutral</Territory>
     <Category>PerioikoiCamp</Category>
     <Distance>
@@ -20,10 +20,11 @@
       <stone>50</stone>
     </Resources>
   </Cost>
-  <Footprint>
-    <Square width="30.0" depth="30.0"/>
-    <Height>10.0</Height>
-  </Footprint>
+  <Capturable>
+    <CapturePoints op="mul">2</CapturePoints>
+    <RegenRate>10.0</RegenRate>
+    <GarrisonRegenRate>1.5</GarrisonRegenRate>
+  </Capturable>
   <GarrisonHolder>
     <Max>25</Max>
     <EjectHealth>0.1</EjectHealth>
@@ -48,15 +49,16 @@
     <VisibleClasses datatype="tokens">Village Camp</VisibleClasses>
     <Icon>structures/roman_camp.png</Icon>
   </Identity>
-     <Promotion>
-    <Entity>structures/spart/camp_2</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
+  <Footprint>
+    <Square width="37.0" depth="42.0"/>
+    <Height>12.0</Height>
+  </Footprint>
   <Loot>
-    <wood>100</wood>
+    <wood>80</wood>
+    <stone>30</stone>
   </Loot>
   <Obstruction>
-    <Static width="36.0" depth="36.0"/>
+    <Static width="35.0" depth="40.0"/>
   </Obstruction>
   <ProductionQueue/>
   <Resistance>
@@ -68,13 +70,6 @@
       </Damage>
     </Entity>
   </Resistance>
-  <ResourceDropsite>
-    <Types>food wood stone metal</Types>
-    <Sharable>true</Sharable>
-  </ResourceDropsite>
-  <TrainingRestrictions>
-  <Category>PerioikoiCamp</Category>
-  </TrainingRestrictions>
   <Sound>
     <SoundGroups>
       <select>interface/select/building/sel_broch.xml</select>
@@ -84,14 +79,14 @@
     </SoundGroups>
   </Sound>
   <TerritoryDecay disable=""/>
-  <Trainer>
+ <Trainer>
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
     </Entities>
   </Trainer>
   <Vision>
-    <Range>80</Range>
+    <Range>75</Range>
   </Vision>
   <VisualActor>
     <Actor>structures/romans/camp.xml</Actor>
