@@ -38,7 +38,7 @@
 		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "HelotW" },
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "HelotM" },
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "HelotM" },
-		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Structure !Camp2 !Market" }
+		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": " Phase_2" }
 		
 
 	],
