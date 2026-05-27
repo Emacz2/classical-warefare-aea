@@ -5,24 +5,15 @@
     <Category>PerioikoiCamp</Category>
     <Distance>
       <FromClass>PerioikoiCamp</FromClass>
-      <MinDistance>90</MinDistance>
+      <MinDistance>100</MinDistance>
     </Distance>
   </BuildRestrictions>
-      <Cost>
-    <BuildTime>240</BuildTime>
-    <Resources>
-      <food>100</food>
-      <wood>200</wood>
-      <stone>100</stone>
-      <metal>100</metal>
-    </Resources>
-  </Cost>
-  <Health>
-    <Max>1750</Max>
+    <Health>
+    <Max>2000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_5x5</SpawnEntityOnDeath>
   </Health>
    <GarrisonHolder>
-    <Max>30</Max>
+    <Max>35</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
     <List datatype="tokens">Perioikoi HelotW HelotM</List>
@@ -30,7 +21,7 @@
     <LoadingRange>6</LoadingRange>
   </GarrisonHolder>
   <Population>
-    <Bonus>10</Bonus>
+    <Bonus>15</Bonus>
   </Population>
   <Footprint>
     <Square width="31" depth="31"/>
@@ -41,15 +32,11 @@
     <SpecificName>Klērouchia</SpecificName>
     <Classes datatype="tokens">CivSpecific</Classes>
   </Identity>
-  <Promotion>
-    <Entity>structures/spart/camp_3</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
-   <Trainer>
+    <Trainer>
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/infantry_spearman_a
-      units/{civ}/skiri_spearman
+      units/{civ}/infantry_spearman_e
+      units/{civ}/skiri_jav
       units/{civ}/neodamodes_spearman
       units/{civ}/perioikoi_range
     </Entities>

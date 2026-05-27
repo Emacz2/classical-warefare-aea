@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure">
+<Attack>
+    <Ranged>
+      <AttackName>Bow</AttackName>
+      <Damage>
+        <Pierce>4</Pierce>
+      </Damage>
+      <MaxRange>30</MaxRange>
+      <PrepareTime>400</PrepareTime>
+      <RepeatTime>3500</RepeatTime>
+      <Projectile>
+        <Speed>100</Speed>
+        <Spread>1.5</Spread>
+        <Gravity>50</Gravity>
+        <FriendlyFire>false</FriendlyFire>
+        <LaunchPoint y="3"/>
+      </Projectile>
+      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+      <RangeOverlay>
+        <LineTexture>outline_border.png</LineTexture>
+        <LineTextureMask>outline_border_mask.png</LineTextureMask>
+        <LineThickness>0.175</LineThickness>
+      </RangeOverlay>
+    </Ranged>
+  </Attack>
+  <BuildingAI>
+    <DefaultArrowCount>0</DefaultArrowCount>
+    <MaxArrowCount>5</MaxArrowCount>
+    <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
+    <GarrisonArrowClasses>Perioikoi</GarrisonArrowClasses>
+  </BuildingAI>
   <BuildRestrictions>
      <Territory>own neutral</Territory>
     <Category>PerioikoiCamp</Category>
@@ -16,8 +46,7 @@
   <Cost>
     <BuildTime>150</BuildTime>
     <Resources>
-      <wood>200</wood>
-      <stone>50</stone>
+      <wood>250</wood>
     </Resources>
   </Cost>
   <Footprint>
@@ -25,7 +54,7 @@
     <Height>10.0</Height>
   </Footprint>
   <GarrisonHolder>
-    <Max>25</Max>
+    <Max>30</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
     <List datatype="tokens">Perioikoi HelotW HelotM</List>
@@ -48,10 +77,6 @@
     <VisibleClasses datatype="tokens">Village Camp</VisibleClasses>
     <Icon>structures/roman_camp.png</Icon>
   </Identity>
-     <Promotion>
-    <Entity>structures/spart/camp_2</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
   <Loot>
     <wood>100</wood>
   </Loot>
@@ -90,6 +115,9 @@
       units/{civ}/support_female_helot
       units/{civ}/helot_javelineer
       units/{civ}/infantry_spearman_b
+      units/{civ}/skiri_jav
+      units/{civ}/neodamodes_spearman
+      units/{civ}/perioikoi_range
     </Entities>
   </Trainer>
   <Vision>

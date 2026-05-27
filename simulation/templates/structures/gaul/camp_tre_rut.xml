@@ -19,7 +19,7 @@
   </Health>
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Treveri and Ruthni Camp</GenericName>
+    <GenericName>Treveri and Rutni Camp</GenericName>
     <Tooltip>Train Treveri and Ruthni allies and research learn new technologies from them.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/mercenary_camp.png</Icon>
@@ -37,7 +37,7 @@
   <TerritoryInfluence disable=""/>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/infantry_rutheni_archer_b
+      units/{civ}/infantry_ruteni_archer_b
       units/{civ}/cavalry_treveri_sword
       units/{civ}/cavalry_treveri_jav
       units/{civ}/champion_cavalry
