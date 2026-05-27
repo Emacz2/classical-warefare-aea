@@ -13,12 +13,8 @@
     <GenericName>Military Mess Hall</GenericName>
     <SpecificName>Pheideition</SpecificName>
     <Icon>structures/syssition.png</Icon>
-    <VisibleClasses datatype="tokens">Syssiton Special</VisibleClasses>
+    <VisibleClasses datatype="tokens">Syssiton</VisibleClasses>
   </Identity>
-  <Promotion>
-    <Entity>structures/spart/syssiton_2</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
   <Obstruction>
     <Static width="15.0" depth="25.0"/>
   </Obstruction>
@@ -40,7 +36,7 @@
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/champion_infantry_spear_b
+      units/{civ}/champion_infantry_spear_a
     </Entities>
   </Trainer>
   <Researcher>

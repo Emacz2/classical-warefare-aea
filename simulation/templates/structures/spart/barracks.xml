@@ -16,6 +16,7 @@
   </Obstruction>
   <Trainer>
     <Entities datatype="tokens">
+      units/{civ}/champion_infantry_spear_b
       units/{civ}/infantry_spearman_neodamodes
     </Entities>
   </Trainer>

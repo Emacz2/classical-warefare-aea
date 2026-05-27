@@ -87,8 +87,6 @@
   <Trainer>
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/support_female_helot
-      units/{civ}/helot_javelineer
       units/{civ}/infantry_spearman_b
     </Entities>
   </Trainer>

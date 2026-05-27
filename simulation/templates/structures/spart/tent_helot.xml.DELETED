@@ -5,13 +5,13 @@
   </BuildRestrictions>
   <Capturable>
     <CapturePoints>25</CapturePoints>
-    <RegenRate>0</RegenRate>
+    <RegenRate>1</RegenRate>
     <GarrisonRegenRate>1</GarrisonRegenRate>
   </Capturable>
   <Cost>
     <BuildTime>30</BuildTime>
     <Resources>
-      <wood>75</wood>
+      <wood>125</wood>
     </Resources>
   </Cost>
   <Footprint>
@@ -21,27 +21,29 @@
   <ProductionQueue/>
   <Trainer>
     <Entities datatype="tokens">
+      units/{civ}/support_female_helot
       units/{civ}/helot_javelineer
       units/{civ}/helot_stone_thrower
-      units/{civ}/neodamodes_spearman
-      units/{civ}/neodamodes_javelineer
     </Entities>
   </Trainer>
   <GarrisonHolder>
     <Max>5</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Helot Neodamodes</List>
+    <List datatype="tokens">Helot</List>
     <BuffHeal>0</BuffHeal>
     <LoadingRange>2</LoadingRange>
   </GarrisonHolder>
+   <Population>
+    <Bonus>2</Bonus>
+  </Population>
   <Health>
     <Max>500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_3x3</SpawnEntityOnDeath>
   </Health>
   <Identity>
     <Civ>spart</Civ>
-    <SpecificName>Helot Tents</SpecificName>
+    <SpecificName>Kleros</SpecificName>
     <GenericName>Tent</GenericName>
     <Icon>structures/mercenary_camp.png</Icon>
     <VisibleClasses datatype="tokens">Tent</VisibleClasses>

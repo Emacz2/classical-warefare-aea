@@ -42,6 +42,7 @@
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/support_ephor
+      units/{civ}/hero_leonidas
       units/{civ}/hero_brasidas
       units/{civ}/hero_agis
     </Entities>

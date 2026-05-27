@@ -36,9 +36,9 @@
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_e
-      units/{civ}/skiri_jav
       units/{civ}/neodamodes_spearman
-      units/{civ}/perioikoi_range
+      units/{civ}/skiri_jav
+      units/{civ}/merc_thracian_peltast
     </Entities>
   </Trainer>
      <TerritoryInfluence>

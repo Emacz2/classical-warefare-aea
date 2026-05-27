@@ -14,7 +14,7 @@
     <GenericName>Brasidas</GenericName>
     <SpecificName>Brasidas</SpecificName>
     <Icon>units/spart/hero_brasidas.png</Icon>
-    <VisibleClasses datatype="tokens">Olympian Ephor</VisibleClasses>
+    <VisibleClasses datatype="tokens">Ephor</VisibleClasses>
   </Identity>
   <ProductionQueue/>
   <Researcher>
@@ -22,6 +22,10 @@
       unlock_neodamodes
     </Technologies>
   </Researcher>
+   <TrainingRestrictions>
+    <Category>Ephor</Category>
+    <MatchLimit>5</MatchLimit>
+  </TrainingRestrictions>
   <VisualActor>
     <Actor>units/spartans/hero_infantry_swordsman_brasidas.xml</Actor>
   </VisualActor>

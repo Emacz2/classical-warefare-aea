@@ -41,6 +41,9 @@
       <Time>4</Time>
     </Skiri_thrust>
   </Upgrade>
+  <TrainingRestrictions>
+  <Category>Skirítēs</Category>
+  </TrainingRestrictions>
   <UnitMotion>
     <WalkSpeed>11.0</WalkSpeed>
     <RunMultiplier>1.5</RunMultiplier>

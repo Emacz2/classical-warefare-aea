@@ -64,11 +64,10 @@
    <Trainer>
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">
-      -units/{civ}/merc_thracian_peltast
       units/{civ}/infantry_spearman_a
       units/{civ}/skiri_spearman
       units/{civ}/neodamodes_spearman
-      units/{civ}/perioikoi_range
+      units/{civ}/merc_thracian_peltast
     </Entities>
   </Trainer>
     <TerritoryInfluence>

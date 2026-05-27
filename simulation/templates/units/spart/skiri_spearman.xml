@@ -41,6 +41,9 @@
       <Time>8</Time>
     </Skiri_sword>
   </Upgrade>
+  <TrainingRestrictions>
+  <Category>Skirítēs</Category>
+  </TrainingRestrictions>
   <UnitMotion>
     <WalkSpeed>10.5</WalkSpeed>
     <RunMultiplier>1.55</RunMultiplier>
