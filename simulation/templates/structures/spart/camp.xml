@@ -54,7 +54,7 @@
   </Promotion>
    <Upgrade>
     <camp>
-      <Entity>structures/spar/camp_2</Entity>
+      <Entity>structures/spart/camp_2</Entity>
       <Tooltip>Upgrade to a bigger camp, train elite and advanced Mercenaries.</Tooltip>
       <Cost>
         <metal>50</metal>
