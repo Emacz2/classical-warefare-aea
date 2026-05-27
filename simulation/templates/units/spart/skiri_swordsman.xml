@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="allied_inf|template_unit_infantry_melee_swordsman">
+ <Builder>
+    <Entities datatype="tokens">
+      structures/spart/camp
+      structures/spart/tent_helot
+      structures/spart/gerousia
+      structures/spart/syssiton
+      structures/spart/colony
+      -structures/wallset_palisade
+      -structures/{civ}/wallset_stone
+    </Entities>
+  </Builder>
  <Cost>
     <BuildTime op="mul">1.2</BuildTime>
      <Resources>

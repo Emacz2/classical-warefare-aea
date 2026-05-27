@@ -9,7 +9,7 @@
     <GarrisonRegenRate>1</GarrisonRegenRate>
   </Capturable>
   <Cost>
-    <BuildTime>30</BuildTime>
+    <BuildTime>50</BuildTime>
     <Resources>
       <wood>125</wood>
     </Resources>
@@ -35,7 +35,7 @@
     <LoadingRange>2</LoadingRange>
   </GarrisonHolder>
    <Population>
-    <Bonus>2</Bonus>
+    <Bonus>5</Bonus>
   </Population>
   <Health>
     <Max>500</Max>
@@ -47,8 +47,12 @@
     <GenericName>Tent</GenericName>
     <Icon>structures/mercenary_camp.png</Icon>
     <VisibleClasses datatype="tokens">Tent</VisibleClasses>
-	<Tooltip>Train helots to harvest resources.</Tooltip>
+	<Tooltip>Train helots, food dropsite.</Tooltip>
   </Identity>
+    <ResourceDropsite>
+    <Types>food</Types>
+    <Sharable>true</Sharable>
+  </ResourceDropsite>
   <Obstruction>
     <Static width="8.0" depth="8.0"/>
   </Obstruction>

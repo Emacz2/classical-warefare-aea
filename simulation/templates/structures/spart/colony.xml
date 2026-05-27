@@ -32,9 +32,22 @@
   <Population>
     <Bonus>10</Bonus>
   </Population>
-   <Upgrade>
+  <Footprint>
+    <Square width="31" depth="31"/>
+    <Height>8</Height>
+  </Footprint>
+  <Identity>
+    <Civ>spart</Civ>
+    <Classes datatype="tokens">PerioikoiCamp</Classes>
+    <VisibleClasses datatype="tokens">Town Camp2</VisibleClasses>
+  </Identity>
+  <Promotion>
+    <Entity>structures/spart/colony_2</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
+     <Upgrade>
     <camp>
-      <Entity>structures/spart/camp_3</Entity>
+      <Entity>structures/spart/colony_2</Entity>
       <Tooltip>Upgrade to a bigger camp, train elite and advanced Mercenaries.</Tooltip>
       <Cost>
         <metal>100</metal>
@@ -48,19 +61,6 @@
       </Requirements>
     </camp>
   </Upgrade>
-  <Footprint>
-    <Square width="31" depth="31"/>
-    <Height>8</Height>
-  </Footprint>
-  <Identity>
-    <Civ>spart</Civ>
-    <Classes datatype="tokens">PerioikoiCamp</Classes>
-    <VisibleClasses datatype="tokens">Town Camp2</VisibleClasses>
-  </Identity>
-  <Promotion>
-    <Entity>structures/spart/camp_3</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
    <Trainer>
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">

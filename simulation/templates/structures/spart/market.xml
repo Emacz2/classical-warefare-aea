@@ -14,6 +14,7 @@
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
+      -units/{civ}/merc_thracian_peltast
       -units/{civ}/merc_inf_archer_market_b
     </Entities>
   </Trainer>

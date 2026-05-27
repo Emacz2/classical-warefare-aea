@@ -2,9 +2,10 @@
 <Entity parent="helot|template_unit_infantry_ranged_javelineer">
  <Builder>
     <Entities datatype="tokens">
+      structures/spart/camp
+      structures/spart/tent_helot
       structures/spart/gerousia
       structures/spart/syssiton
-      structures/spart/camp
       structures/spart/colony
       -structures/wallset_palisade
       -structures/{civ}/wallset_stone
