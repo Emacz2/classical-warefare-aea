@@ -32,6 +32,22 @@
   <Population>
     <Bonus>10</Bonus>
   </Population>
+   <Upgrade>
+    <camp>
+      <Entity>structures/spar/camp_3</Entity>
+      <Tooltip>Upgrade to a bigger camp, train elite and advanced Mercenaries.</Tooltip>
+      <Cost>
+        <metal>100</metal>
+        <wood>150</wood>
+        <stone>100</stone>
+      </Cost>
+      <Time>30</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_town</Techs>
+      </Requirements>
+    </camp>
+  </Upgrade>
   <Footprint>
     <Square width="31" depth="31"/>
     <Height>8</Height>
