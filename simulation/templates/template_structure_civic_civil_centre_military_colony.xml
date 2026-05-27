@@ -64,6 +64,11 @@
       <constructed>interface/complete/building/complete_gymnasium.xml</constructed>
     </SoundGroups>
   </Sound>
+    <TerritoryInfluence>
+    <Root>true</Root>
+    <Radius>100</Radius>
+    <Weight>10000</Weight>
+  </TerritoryInfluence>
   <TerritoryInfluence>
     <Radius>75</Radius>
   </TerritoryInfluence>

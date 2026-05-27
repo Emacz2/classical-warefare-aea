@@ -54,6 +54,14 @@
       units/{civ}/perioikoi_range
     </Entities>
   </Trainer>
+    <TerritoryInfluence>
+    <Root>true</Root>
+    <Radius>75</Radius>
+    <Weight>10000</Weight>
+  </TerritoryInfluence>
+  <TerritoryInfluence>
+    <Radius>75</Radius>
+  </TerritoryInfluence>
   <Obstruction>
     <Static width="29" depth="29"/>
   </Obstruction>
