@@ -5,7 +5,6 @@
 		"food": 500,
 		"metal": 200
 	},
-	"supersedes": "greek_resistance_hack_02",
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },
@@ -17,13 +16,11 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_chain.png",
 	"researchTime": 60,
-	"tooltip": "Soldiers +1.5 Hack and +1 Crush resistance. Hoplites +0.5 Hack/Crush resistance and 2% faster walk speed. ",
+	"tooltip": "Soldiers +1.5 Hack and +1 Crush resistance. Instead of adding resistance, Hoplites gain 3% faster walk speed. ",
 	"modifications": [
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 1 },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": -1, "affects": "Hoplite"},
-		{ "value": "Resistance/Entity/Damage/Crush", "add": -0.5, "affects": "Hoplite"},
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.02, "affects": "Hoplite" }
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5, "affects": "!Hoplite" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 1, "affects": "!Hoplite" },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.03, "affects": "Hoplite" }
 	],
 	"affects": ["Soldier !Mercenary !Helot !Elephant"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
