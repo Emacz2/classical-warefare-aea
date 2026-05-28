@@ -63,6 +63,11 @@
       <death>attack/destruction/building_collapse_large.xml</death>
     </SoundGroups>
   </Sound>
+    <Researcher>
+    <Technologies datatype="tokens">
+      gather_wicker_baskets
+    </Technologies>
+  </Researcher>
   <StatusBars>
     <HeightOffset>6.0</HeightOffset>
   </StatusBars>

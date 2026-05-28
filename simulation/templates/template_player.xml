@@ -47,6 +47,7 @@
       <TempleOfAmun>1</TempleOfAmun>
       <TempleOfIsis>1</TempleOfIsis>
       <TempleOfVesta>1</TempleOfVesta>
+      <Tent>5</Tent>
       <Theater>1</Theater>
       <ThebsSB>50</ThebsSB>
       <ScythianGuard>0</ScythianGuard>
@@ -72,10 +73,10 @@
         <Market>5</Market>
       </LandTrader>
       <HelotM>
-        <Free>2</Free>
+        <Champion>3</Champion>
       </HelotM>
       <HelotW>
-        <HelotM>1</HelotM>
+        <Tent>10</Tent>
       </HelotW>
       <Juggernaut>
         <PtolemyIV>4</PtolemyIV>
