@@ -19,7 +19,6 @@
       units/{civ}/support_female_helot
       units/{civ}/helot_javelineer
       units/{civ}/helot_stone_thrower
-      units/{civ}/champion_infantry_spear_b
       units/{civ}/scout
     </Entities>
   </Trainer>
