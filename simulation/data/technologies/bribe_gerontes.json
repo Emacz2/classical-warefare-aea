@@ -1,0 +1,24 @@
+{
+	"genericName": "Bribe Gerontes",
+	"description": "Bribe Gerontes",
+	"cost": {
+		"food": 300,
+		"metal": 300
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "spart" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "skull_swords.png",
+	"researchTime": 40,
+	"tooltip": "Heroes promote, gaining stronger Auras",
+	"modifications": [
+	
+		{ "value": "Promotion/RequiredXp", "replace": 0 }
+	],
+	"affects": ["Hero"],
+    "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

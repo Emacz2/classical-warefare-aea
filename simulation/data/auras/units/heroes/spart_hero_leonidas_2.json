@@ -3,10 +3,11 @@
 	"affects": ["Spearman"],
 	"modifications": [
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
-		{ "value": "UnitMotion/RunMultiplier>", "multiply": 1.1 }
+		{ "value": "UnitMotion/RunMultiplier>", "multiply": 1.1 },
+		{ "value": "Health/Max", "add": 25, "affects": "Champion Hoplite" }
 	],
 	"auraName": "300 Reinforcements",
 	"showDescription": 1,
-	"auraDescription": "Spearman 5% walk and 10% run speed.",
+	"auraDescription": "Spearman 5% walk and 10% run speed. Champion Hoplites + 25 Health",
 	"overlayIcon": "art/textures/ui/session/auras/speed_bonus.png"
 }

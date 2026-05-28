@@ -6,10 +6,10 @@
   <Identity>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
-    <GenericName>Leonidas I</GenericName>
+    <GenericName>Leonidas</GenericName>
     <SpecificName>Leōnidēs</SpecificName>
     <Icon>units/spart/hero_leonidas.png</Icon>
-    <VisibleClasses datatype="tokens">Leonidas Olympian</VisibleClasses> 
+    <VisibleClasses datatype="tokens">Leonidas</VisibleClasses> 
     <Requirements>
       <Techs datatype="tokens">-phase_city phase_town</Techs>
     </Requirements>

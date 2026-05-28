@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_hero_infantry_swordsman">
+  <Auras datatype="tokens">
+    units/heroes/spart_hero_brasidas
+    units/heroes/spart_hero_brasidas_2
+    units/heroes/spart_hero_brasidas_3
+    units/heroes/spart_hero_brasidas_4
+  </Auras>
+  <Identity>
+    <Civ>spart</Civ>
+    <Lang>greek</Lang>
+    <Classes datatype="tokens">Brasidas</Classes>
+    <GenericName>Brasidas</GenericName>
+    <SpecificName>Brasidas</SpecificName>
+    <Icon>units/spart/hero_brasidas.png</Icon>
+    <VisibleClasses datatype="tokens">Ephor</VisibleClasses>
+  </Identity>
+  <ProductionQueue/>
+  <Researcher>
+    <Technologies datatype="tokens">
+      unlock_neodamodes
+    </Technologies>
+  </Researcher>
+  <VisualActor>
+    <Actor>units/spartans/hero_infantry_swordsman_brasidas.xml</Actor>
+  </VisualActor>
+</Entity>

@@ -3,12 +3,13 @@
 	"description": "Hoplite soldiers constituted most of the armies of Greece. As they evolved they chose to lighten their armor for more mobility",
 	"cost": {
 		"food": 200,
-		"wood": 200
+		"metal": 100,
+		"wood": 100
 	
 	},
 	"requirements": {
 		"all": [
-			{ "tech": "phase_town" },
+			{ "tech": "phase_village" },
 			{
 				"any": [
 					{ "civ": "athen" },
@@ -21,10 +22,10 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 60,
-	"tooltip": "Hoplites -1 of each resitances but −20% training time, −30% promotion experience, and 5% faster walk speed. Citizen hoplites 10% less food/wood cost. While Champion +25 Health.",
+	"tooltip": "Hoplites 20% less train time and need 20% less experience to promote.",
 	
 	"modifications": [
-		{ "value": "Cost/BuildTime", "multiply": 0.80 },
+		{ "value": "Cost/BuildTime", "multiply": 0.8 },
 		{ "value": "Promotion/RequiredXp", "multiply": 0.8 }
 		
 

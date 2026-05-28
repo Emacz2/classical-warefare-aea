@@ -1,0 +1,18 @@
+{
+	"type": "range",
+	"radius": 20,
+	"affects": ["Hoplite"],
+	"modifications": [
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 }
+	
+		
+	],
+	"auraName": "Last Stand",
+	"showDescription": 1,
+	"auraDescription": "Hoplites an additional 10% dmg, +1 Hack resitance and +0.5 Pierce resistance.",
+	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
+}

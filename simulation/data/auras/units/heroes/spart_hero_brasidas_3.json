@@ -1,0 +1,14 @@
+{
+	"type": "range",
+	"radius": 60,
+	"affects": ["Javelineer !Cavalry"],
+	"modifications": [
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.1 },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.1 },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.1 }
+	],
+	"auraName": "Diplomatic takeover",
+	"showDescription": 1,
+	"auraDescription": "Javelineers +10% dmg.",
+	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
+}

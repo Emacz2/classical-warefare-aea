@@ -20,6 +20,6 @@
 		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.1 }
 
 	],
-	"affects": ["Hoplites"],
+	"affects": ["Hoplite"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

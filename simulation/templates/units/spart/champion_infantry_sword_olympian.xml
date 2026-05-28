@@ -8,17 +8,17 @@
    <Resistance>
     <Entity>
       <Damage>
-        <Hack op="add">1.5</Hack>
-        <Pierce op="add">2</Pierce>
-        <Crush op="add">6.5</Crush>
+        <Hack op="add">2.5</Hack>
+        <Pierce op="add">2.5</Pierce>
+	      <Crush op="add">3</Crush>
       </Damage>
     </Entity>
   </Resistance>
  <Health>
-    <Max>275</Max>
+    <Max>250</Max>
   </Health>
- <UnitMotion>
-  <WalkSpeed>8.2</WalkSpeed>
+  <UnitMotion>
+  <WalkSpeed>8.5</WalkSpeed>
  </UnitMotion>
  <Upgrade>
     <doru>

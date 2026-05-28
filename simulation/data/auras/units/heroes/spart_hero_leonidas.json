@@ -1,19 +1,19 @@
 {
 	"type": "range",
-	"radius": 35,
+	"radius": 40,
 	"affects": ["Infantry"],
 	"modifications": [
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15 },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15 },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.15 },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1.5 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5 },
-		{ "value": "Health/Max", "add": 25}
+		{ "value": "Health/Max", "add": 25, "affects": "Champion Hoplite" }
 		
 	],
 	"auraName": "Last Stand",
 	"showDescription": 1,
-	"auraDescription": "Infantry +15% melee attack, +1.5 hack/pierce, +5 Crush resistances and +25 health.",
+	"auraDescription": "Infantry +10% melee attack, +1.5 hack/pierce, +5 Crush resistances; Champion Hoplites +25 health.",
 	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
 }

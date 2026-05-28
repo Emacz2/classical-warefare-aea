@@ -4,17 +4,6 @@
     units/heroes/spart_hero_leonidas
     units/heroes/spart_hero_leonidas2
   </Auras>
-  <Attack>
-    <Melee>
-      <Damage>
-        <Hack op="mul">1.2</Hack>
-        <Pierce op="mul">1.2</Pierce>
-      </Damage>
-    </Melee>
-  </Attack>
-  <Health>
-    <Max op="mul">2</Max>
-  </Health>
   <Identity>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
