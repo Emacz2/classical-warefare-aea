@@ -4,8 +4,8 @@
     <Melee>
       <AttackName>Mace</AttackName>
       <Damage>
-        <Crush>13.2</Crush>
-        <Hack>5.5</Hack>
+        <Crush>12.1</Crush>
+        <Hack>6.6</Hack>
       </Damage>
       <MaxRange>3</MaxRange>
       <PrepareTime>500</PrepareTime>

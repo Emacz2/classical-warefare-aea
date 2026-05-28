@@ -5,7 +5,7 @@
       <AttackName>Axe</AttackName>
       <Damage>
         <Crush>8</Crush>
-        <Hack>12</Hack>
+        <Hack>11</Hack>
         <Pierce>1</Pierce>
       </Damage>
       <MaxRange>2.5</MaxRange>
