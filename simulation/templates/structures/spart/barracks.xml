@@ -20,6 +20,11 @@
       -units/{civ}/infantry_spearman_b
     </Entities>
   </Trainer>
+   <Researcher>
+   <Technologies datatype="tokens">
+   tyrtean_paeans
+  </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>structures/spartans/barracks.xml</Actor>
     <FoundationActor>structures/fndn_7x7.xml</FoundationActor>

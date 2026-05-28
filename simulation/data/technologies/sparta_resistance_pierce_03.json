@@ -3,25 +3,25 @@
 	"description": "Strengthen shields further with stronger metal alloys.",
 	"cost": {
 		"wood": 500,
-		"metal": 200
+		"metal": 400
 	},
-	
+	"supersedes": "sparta_resistance_pierce_02",
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },
-			{ "civ": "athen" },
-			{ "civ": "spart" },
-			{ "civ": "theb" }
+			{ "civ": "spart" }
 		]
 	},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "shields_generic_silver.png",
 	"researchTime": 60,
-	"tooltip": "Soldiers +1.5 Pierce and +1 Crush resistance. Instead of adding resistance, Hoplites gain 3% faster walk speed. ",
+	"tooltip": "Soldiers +1.5 Pierce and +1 Crush resistance. Hoplites only add 1 PPierce and +0.5 Crush but gain 2+% faster walk speed.",
 	"modifications": [
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1.5, "affects": "!Hoplite" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 1, "affects": "!Hoplite" },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.03, "affects": "Hoplite" }
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1, "affects": "Hoplite" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5, "affects": "Hoplite" },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.02, "affects": "Hoplite" }
 
 	],
 	"affects": ["Soldier !Mercenary !Helot !Elephant"],

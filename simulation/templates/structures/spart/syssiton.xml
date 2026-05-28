@@ -40,13 +40,11 @@
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/champion_infantry_spear_a
+      units/{civ}/hero_leonidas
+      units/{civ}/hero_brasidas
+      units/{civ}/hero_agis
     </Entities>
   </Trainer>
-  <Researcher>
-   <Technologies datatype="tokens">
-   sparta_attack_melee_01
-  </Technologies>
-  </Researcher>
   <Vision>
     <Range>40</Range>
   </Vision>

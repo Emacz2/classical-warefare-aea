@@ -23,9 +23,8 @@
 	"tooltip": "Soldiers +1 Hack and +0.5 Crush resistance. Hoplites +0.5 Crush/Hack resistance, but 1% faster walk speed. ",
 	"modifications": [
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": -0.5, "affects": "Hoplite" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5 },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.01, "affects": "Hoplite" }
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5 }
+	
 	],
 	"affects": ["Soldier !Mercenary !Helot !Elephant"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
