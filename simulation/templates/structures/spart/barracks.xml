@@ -15,7 +15,7 @@
   </Footprint>
   <GarrisonHolder>
     <Max>10</Max>
-    <List datatype="tokens">Hoplites</List>
+    <List datatype="tokens">Hoplite</List>
   </GarrisonHolder>
   <Health>
     <Max op="mul">0.75</Max>
