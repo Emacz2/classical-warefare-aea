@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_inf|units/thracian_peltast_sword">
-  <Identity>
-    <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
-  </Identity>
+<Entity parent="merc_inf_market|merc_inf|units/thracian_peltast_sword">
   <Upgrade>
     <Peltast_Jav>
-      <Entity>units/spart/merc_thracian_peltast</Entity>
+      <Entity>units/athen/merc_market_thracian_peltast</Entity>
       <Tooltip>Switch to throwing javilin.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>

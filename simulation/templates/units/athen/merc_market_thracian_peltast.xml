@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="merc_inf_market|merc_inf|units/thracian_peltast">
-  <Identity>
-    <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
-  </Identity>
   <Upgrade>
     <Black_Cloack>
-      <Entity>units/athen/merc_thracian_peltast_sword</Entity>
+      <Entity>units/athen/merc_market_thracian_sword</Entity>
       <Tooltip>Switch to using a sword.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>

@@ -79,7 +79,7 @@
       units/{civ}/merc_inf_spearman_market_b
       units/{civ}/merc_inf_slinger_market_b
       units/{civ}/merc_inf_archer_market_b
-      units/{civ}/merc_thracian_peltast
+      units/{civ}/merc_market_thracian_peltast
       units/{civ}/merc_spear_market_b
       units/{civ}/merc_spearcav_market_b
     </Entities>

@@ -6,16 +6,15 @@
   <Identity>
     <Civ>spart</Civ>
     <SpecificName>Emporion</SpecificName>
+     <Requirements>
+      <Techs datatype="tokens">-phase_town phase_city</Techs>
+    </Requirements>
   </Identity>
-  <Promotion>
-    <Entity>structures/spart/market_2</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
-      -units/{civ}/merc_thracian_peltast
       -units/{civ}/merc_inf_archer_market_b
+       units/{civ}/merc_inf_archer_market_e
     </Entities>
   </Trainer>
   <VisualActor>

@@ -8,12 +8,6 @@
     <Entity>structures/sele/market_2</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>
-    <Trainer>
-    <BatchTimeModifier>0.7</BatchTimeModifier>
-    <Entities datatype="tokens">
-      -units/{civ}/merc_thracian_peltast
-    </Entities>
-  </Trainer>
   <VisualActor>
     <Actor>structures/seleucids/market.xml</Actor>
   </VisualActor>
