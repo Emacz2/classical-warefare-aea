@@ -12,7 +12,6 @@
  <Health>
     <Max>200</Max>
     <RegenRate>-0.5</RegenRate>
-    <IdleRegenRate>0.5</IdleRegenRate>
   </Health>
      <Resistance>
     <Entity>
@@ -30,7 +29,7 @@
     <GenericName>Elite Skiritai Scout Sword</GenericName>
     <SpecificName>Ékdromos Skirítēs</SpecificName>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
-    <Tooltip>As scout, speed is 12.0 but loses 1 HP every 2 seconds when moving. While idle health regenerates 1 HP every 2 seconds.  Can not build as a scout. Can switch to light spearman. Restricted to 20 Skirítēs total</Tooltip>
+    <Tooltip>As scout, speed is 12.0 but loses 1 HP every 2 seconds when moving.  Can not build as a scout. Can switch to light spearman. Restricted to 20 Skirítēs total</Tooltip>
     <History></History>
     <Icon>units/spart/skiri_sword_v.png</Icon>
   </Identity>
