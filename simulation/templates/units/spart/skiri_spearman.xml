@@ -11,6 +11,14 @@
       -structures/{civ}/wallset_stone
     </Entities>
   </Builder>
+   <Cost>
+     <Resources>
+      <food>90</food>
+      <metal>0</metal>
+      <wood>30</wood>
+      <stone>0</stone>
+    </Resources>
+  </Cost>
  <Health>
     <Max>200</Max>
   </Health>
