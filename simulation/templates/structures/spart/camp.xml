@@ -96,4 +96,8 @@
     <Length>29.5</Length>
     <Indent>8</Indent>
   </WallPiece>
+    <ResourceDropsite>
+    <Types>food wood stone metal</Types>
+    <Sharable>true</Sharable>
+  </ResourceDropsite>
 </Entity>
