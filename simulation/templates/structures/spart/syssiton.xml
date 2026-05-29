@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_military_syssiton">
   <BuildRestrictions>
-    <Category>Council</Category>
+    <Category>Pheideition</Category>
   </BuildRestrictions>
   <Footprint>
     <Square width="18.0" depth="28.0"/>

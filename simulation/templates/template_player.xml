@@ -19,12 +19,15 @@
   </Diplomacy>
   <EntityLimits>
     <Limits>
+      <Agora>1</Agora>
       <Animal>20</Animal>
       <Champion_Perioikoi>10</Champion_Perioikoi>
       <CivilCentre>1</CivilCentre>
       <ConsularBodyguard>24</ConsularBodyguard>
       <Diplomat>5</Diplomat>
       <Doulos>5</Doulos>
+      <Ephor>5</Ephor>
+      <Gerousia>1</Gerousia>
       <Gladiator>0</Gladiator>
       <HelotM>5</HelotM>
       <HelotW>10</HelotW>
@@ -38,8 +41,9 @@
       <Monument>5</Monument>
       <Neodamodes>15</Neodamodes>
       <Palace>1</Palace>
-      <PerioikoiCamp>1</PerioikoiCamp>
+      <PerioikoiCamp>2</PerioikoiCamp>
       <Skirítēs>25</Skirítēs>
+      <Pheideition>1</Pheideition>
       <Pillar>0</Pillar>
       <PyramidLarge>2</PyramidLarge>
       <PraetorianGuard>0</PraetorianGuard>
@@ -87,6 +91,9 @@
       <Neodamodes>
         <Brasidas>30</Brasidas>
       </Neodamodes>
+      <Pheideition>
+      <Stratopedon>1</Stratopedon>
+      </Pheideition>
       <PerioikoiCamp>
         <Syssiton>1</Syssiton>
       </PerioikoiCamp>

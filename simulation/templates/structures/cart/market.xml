@@ -2,8 +2,17 @@
 <Entity parent="template_structure_economic_market">
   <BuildRestrictions>
     <Territory>own ally neutral</Territory>
+    <Category>MarketC</Category>
+    <Distance>
+      <FromClass>MarketC</FromClass>
+      <MinDistance>70</MinDistance>
+    </Distance>
   </BuildRestrictions>
-  <TerritoryDecay disable=""/>
+  <Capturable>
+    <CapturePoints op="mul">1.5</CapturePoints>
+    <RegenRate>8</RegenRate>
+    <GarrisonRegenRate>5.5</GarrisonRegenRate>
+  </Capturable>
  <Identity>
     <Civ>cart</Civ>
     <SpecificName>Šūq</SpecificName>

@@ -24,7 +24,6 @@
   </Researcher>
    <TrainingRestrictions>
     <Category>Ephor</Category>
-    <MatchLimit>5</MatchLimit>
   </TrainingRestrictions>
   <VisualActor>
     <Actor>units/spartans/hero_infantry_swordsman_brasidas.xml</Actor>

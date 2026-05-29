@@ -15,7 +15,7 @@
     </Capture>
     </Attack>
   <Cost>
-    <Population>1</Population>
+    <Population>0</Population>
     <BuildTime>45</BuildTime>
     <Resources>
       <food>300</food>
@@ -71,7 +71,6 @@
   </Selectable>
   <TrainingRestrictions>
     <Category>Ephor</Category>
-    <MatchLimit>5</MatchLimit>
   </TrainingRestrictions>
   <Vision>
     <Range>40</Range>

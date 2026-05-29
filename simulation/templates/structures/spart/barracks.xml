@@ -21,6 +21,7 @@
   <Identity>
     <Civ>spart</Civ>
     <SpecificName>Stratopedon</SpecificName>
+    <VisibleClasses datatype="tokens">Stratopedon</VisibleClasses>
   </Identity>
   <Obstruction>
     <Static width="20.0" depth="20.0"/>
