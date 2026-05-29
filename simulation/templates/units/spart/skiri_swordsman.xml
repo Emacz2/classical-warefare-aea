@@ -1,34 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="allied_inf|template_unit_infantry_melee_swordsman">
- <Builder>
-    <Entities datatype="tokens">
-      structures/spart/camp
-      structures/spart/tent_helot
-      structures/spart/gerousia
-      structures/spart/syssiton
-      structures/spart/colony
-      -structures/wallset_palisade
-      -structures/{civ}/wallset_stone
-    </Entities>
-  </Builder>
- <Cost>
-    <BuildTime op="mul">1.2</BuildTime>
-     <Resources>
-      <food>100</food>
-      <metal>0</metal>
-      <wood>30</wood>
-      <stone>0</stone>
-    </Resources>
-  </Cost>
+ <Builder disable="" />
  <Health>
     <Max>200</Max>
+    <RegenRate>-0.5</RegenRate>
+    <IdleRegenRate>0.5</IdleRegenRate>
   </Health>
      <Resistance>
     <Entity>
       <Damage>
-        <Crush>2.5</Crush>
-        <Hack>3</Hack>
-        <Pierce>2.5</Pierce>
+        <Crush>1.5</Crush>
+        <Hack>2</Hack>
+        <Pierce>1.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -36,13 +19,12 @@
     <Rank>Advanced</Rank>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
-    <GenericName>Elite Skiritai Vanguard Sword</GenericName>
+    <GenericName>Elite Skiritai Scout Sword</GenericName>
     <SpecificName>Ékdromos Skirítēs</SpecificName>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
+    <Tooltip>As scout, speed is 12.0 but loses 1 HP every 2 seconds when moving. While idle health regenerates 1 HP every 2 seconds.  Can not build as a scout. Can switch to light spearman. Restricted to 20 Skirítēs total</Tooltip>
+    <History></History>
     <Icon>units/spart/skiri_sword_v.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
   </Identity>
     <Upgrade>
     <Skiri_sword>
@@ -56,8 +38,8 @@
   <Category>Skirítēs</Category>
   </TrainingRestrictions>
   <UnitMotion>
-    <WalkSpeed>10.5</WalkSpeed>
-    <RunMultiplier>1.55</RunMultiplier>
+    <WalkSpeed>12</WalkSpeed>
+    <RunMultiplier>1</RunMultiplier>
   </UnitMotion>
   <Vision>
     <Range>75</Range>

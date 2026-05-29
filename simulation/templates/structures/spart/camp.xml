@@ -83,6 +83,7 @@
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
+      units/{civ}/skiri_spearman
     </Entities>
   </Trainer>
   <Vision>

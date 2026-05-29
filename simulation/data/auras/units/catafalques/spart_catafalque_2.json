@@ -1,0 +1,11 @@
+{
+	"type": "global",
+	"affects": ["Hoplites"],
+	"modifications": [
+		{ "value": "Cost/Resources/food", "add": -5 },
+		{ "value": "Cost/Resources/wood", "add": -5 },
+		{ "value": "Cost/Resources/metal", "add": -5 }
+	],
+	"auraName": "Melas Zomos",
+	"auraDescription": "Lycurgus instituted several military reforms, thus the complete and undivided allegiance to Sparta from its citizens was implemented under his form of government. Hoplites cost 5 Less Food, Wood and Metal."
+}

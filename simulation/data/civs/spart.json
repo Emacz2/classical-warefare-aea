@@ -51,6 +51,9 @@
 			"Template": "units/spart/support_female_citizen"
 		},
 		{
+			"Template": "units/spart/skiri_swordsman"
+		},
+		{
 			"Template": "units/spart/champion_infantry_spear_b"
 		}
 	
