@@ -36,6 +36,7 @@
   <Identity>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
+    <Rank>Basic</Rank>
     <GenericName>Young Hoplite Spartan</GenericName>
     <SpecificName>Paidiskoi</SpecificName>
     <VisibleClasses datatype="tokens">Free</VisibleClasses>
