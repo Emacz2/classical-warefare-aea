@@ -1,9 +1,10 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_advanced.png",
-	"tooltip": "Elite melee Allied/Auxilary +25 health, +30% dmg, + 2 of reach resistance, but 15% longer train time compared to advanced melee Allied/Auxilary. ", 
+	"tooltip": "Elite mercanaries +15% train time and +20 metal cost compared to advanced mercanaries.They gain +2 of each resistance. Melee +30% dmg, +25 Health. Ranged +10 health, 10% more accurate and 25% more dmg. ", 
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.15 },
+		{ "value": "Cost/Resources/metal", "add": 20 },
 		{ "value": "Health/Max", "add": 25, "affects": "Melee !Switch"},
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2, "affects": "!Switch" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2, "affects": "!Switch" },
@@ -11,10 +12,12 @@
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.3 },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.3 },
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.3 },
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.3},
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.3 },
-		{ "value": "Atacck/Ranged/Damage/Crush", "multiply": 1.3 }
+		{ "value": "Health/Max", "add": 15, "affects": "Ranged !Switch"},
+		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9 },
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.25},
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.25 },
+		{ "value": "Atacck/Ranged/Damage/Crush", "multiply": 1.25 }
 	
 	],
-	"affects": ["Elite Melee Auxiliary", "Elite Melee Allied"]
+	"affects": ["Elite Melee Mercenary"]
 }

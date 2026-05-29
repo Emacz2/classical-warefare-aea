@@ -27,7 +27,7 @@
       <Doulos>5</Doulos>
       <Gladiator>0</Gladiator>
       <HelotM>5</HelotM>
-      <HelotW>5</HelotW>
+      <HelotW>10</HelotW>
       <Hero>1</Hero>
       <Juggernaut>1</Juggernaut>
       <Kennel>2</Kennel>
@@ -47,7 +47,7 @@
       <TempleOfAmun>1</TempleOfAmun>
       <TempleOfIsis>1</TempleOfIsis>
       <TempleOfVesta>1</TempleOfVesta>
-      <Tent>5</Tent>
+      <Tent>4</Tent>
       <Theater>1</Theater>
       <ThebsSB>50</ThebsSB>
       <ScythianGuard>0</ScythianGuard>

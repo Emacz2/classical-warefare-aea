@@ -1,0 +1,24 @@
+{
+	"autoResearch": true,
+	"icon": "upgrade_elite.png",
+	"tooltip": "Eliterank take 15% longer train time and -30% gathering rates compared to advanced rank. Melee units +25 health, +0.5 peirce resistance and +15% dmg Ranged units +15 health, +10% dmg and 10% morre accurate (crosswbowman do not gain accuracy)",
+	"modifications": [
+		{ "value": "Cost/BuildTime", "multiply": 1.15},
+		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.7 },
+		{ "value": "Health/Max", "add": 25, "affects": "Melee !Switch"},
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5, "affects": "!Switch" },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15},
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15},
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.15 },
+		{ "value": "Health/Max", "add": 15, "affects": "Ranged !Switch"},
+		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9, "affects": "!Crossbowman" },
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.1, "affects": "Ranged" },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.1, "affects": "Ranged" },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.1, "affects": "Ranged" }
+		
+	
+		
+	],
+		"affects": ["Elite Unit !Mercenary !Champion"]
+}
+
