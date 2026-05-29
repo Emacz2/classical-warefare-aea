@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_military_barracks">
+ <Auras datatype="tokens">
+    -structures/xp_trickle
+  </Auras>
+  <Cost>
+    <Resources>
+      <wood op="mul">0.75</wood>
+      <stone op="mul">0.75</stone>
+    </Resources>
+  </Cost>
+  <Footprint>
+    <Square width="19.0" depth="19.0"/>
+    <Height>12.0</Height>
+  </Footprint>
+  <GarrisonHolder>
+    <Max>10</Max>
+    <List datatype="tokens">Hoplites</List>
+  </GarrisonHolder>
+  <Health>
+    <Max op="mul">0.75</Max>
+    <SpawnEntityOnDeath>decay|rubble/rubble_stone_4x4</SpawnEntityOnDeath>
+  </Health>
   <Footprint>
     <Square width="25.0" depth="25.0"/>
     <Height>12.0</Height>
