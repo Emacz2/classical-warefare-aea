@@ -1,5 +1,9 @@
 {
 	"genericName": "Faster Cavalry",
+		"specificName": {
+		"spart": "Spiked Rollers"
+		
+	},
 	"description": "Selective breading for faster cavalry.",
 	"cost": {
 		"food": 100
