@@ -1,0 +1,14 @@
+{
+	"type": "range",
+	"radius": 12,
+	"affects": ["Soldier"],
+	"affectedPlayers": ["Player"],
+	"modifications": [
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.25 }
+		
+	],
+	"auraName": "Intimidating Sound",
+	"showDescription": 1,
+	"auraDescription": "Soldiers 25% more walk speed.",
+	"overlayIcon": "art/textures/ui/session/auras/broken_sword.png"
+}

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="hoplite|template_unit_champion_infantry_spearman">
+ <Auras datatype="tokens">
+    units/charge
+  </Auras>
   <Cost>
     <BuildTime>16</BuildTime>
     <Resources>

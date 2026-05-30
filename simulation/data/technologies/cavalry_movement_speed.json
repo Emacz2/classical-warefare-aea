@@ -1,7 +1,10 @@
 {
 	"genericName": "Faster Cavalry",
 		"specificName": {
-		"spart": "Spiked Rollers"
+		"athen": "Spiked Rollers",
+		"mace": "Spiked Rollers",
+		"spart": "Spiked Rollers",
+		"theb": "Spiked Rollers"
 		
 	},
 	"description": "Selective breading for faster cavalry.",
