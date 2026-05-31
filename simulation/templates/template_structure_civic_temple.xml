@@ -2,6 +2,7 @@
 <Entity parent="template_structure_civic">
   <Auras datatype="tokens">
     structures/temple_heal
+    structures/temple_efficiency
   </Auras>
   <Cost>
     <BuildTime>150</BuildTime>

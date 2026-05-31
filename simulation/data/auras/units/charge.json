@@ -2,7 +2,7 @@
 	"type": "range",
 	"radius": 12,
 	"affects": ["Charge"],
-	"affectedPlayers": ["Player", "Enemy"],
+	"affectedPlayers": ["Enemy"],
 	"modifications": [
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.5 }
 		
