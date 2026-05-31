@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_infantry">
+  <Auras datatype="tokens">
+    units/charge
+  </Auras>
   <Health>
     <Max>150</Max>
   </Health>
   <Identity>
     <GenericName>Melee Infantry</GenericName>
-    <VisibleClasses datatype="tokens">Melee</VisibleClasses>
+    <VisibleClasses datatype="tokens">Melee Charge</VisibleClasses>
   </Identity>
   <Loot>
     <xp>150</xp>

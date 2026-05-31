@@ -1,14 +1,14 @@
 {
 	"type": "range",
 	"radius": 12,
-	"affects": ["Soldier"],
-	"affectedPlayers": ["Player"],
+	"affects": ["Charge"],
+	"affectedPlayers": ["Player", "Enemy"],
 	"modifications": [
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.25 }
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.5 }
 		
 	],
-	"auraName": "Intimidating Sound",
+	"auraName": "Charge",
 	"showDescription": 1,
-	"auraDescription": "Soldiers 25% more walk speed.",
+	"auraDescription": "Soldiers 25% more walk speed as they charge into battle.",
 	"overlayIcon": "art/textures/ui/session/auras/broken_sword.png"
 }

@@ -4,9 +4,9 @@
     <Ranged>
       <AttackName>SimpleBow</AttackName>
       <Damage>
-        <Pierce>8</Pierce>
+        <Pierce>7.5</Pierce>
       </Damage>
-      <MaxRange>41</MaxRange>
+      <MaxRange>45</MaxRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1250</RepeatTime>
       <Projectile>

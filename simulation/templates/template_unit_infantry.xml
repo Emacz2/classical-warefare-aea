@@ -101,7 +101,7 @@
   </Sound>
   <UnitMotion>
     <WalkSpeed>8.1</WalkSpeed>
-    <RunMultiplier>1.25</RunMultiplier>
+    <RunMultiplier>1.5</RunMultiplier>
     <Acceleration>30</Acceleration>
     <Weight>10</Weight>
   </UnitMotion>

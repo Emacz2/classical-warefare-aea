@@ -4,9 +4,9 @@
     <Ranged>
       <AttackName>LongBow</AttackName>
       <Damage>
-        <Pierce>14.5</Pierce>
+        <Pierce>12.5</Pierce>
       </Damage>
-      <MaxRange>70</MaxRange>
+      <MaxRange>60</MaxRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1500</RepeatTime>
       <Projectile>

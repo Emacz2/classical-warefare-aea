@@ -7,7 +7,7 @@
         <Crush>0.4</Crush>
         <Pierce>6.3</Pierce>
       </Damage>
-      <MaxRange>59</MaxRange>
+      <MaxRange>65</MaxRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1250</RepeatTime>
       <Projectile>
