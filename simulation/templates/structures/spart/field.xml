@@ -10,8 +10,8 @@
     <BuildRestrictions>
     <Territory>own neutral</Territory>
     <Distance>
-      <FromClass>CivilCentre</FromClass>
-      <MinDistance>50</MinDistance>
+      <FromClass>Agora</FromClass>
+      <MinDistance>75</MinDistance>
     </Distance>
   </BuildRestrictions>
     <ProductionQueue/>
