@@ -7,7 +7,7 @@
     <Pierce op="mul">0.8</Pierce>
   </Damage>
       <MaxRange op="add">-0.5</MaxRange>
-      <RepeatTime op="add">-750</RepeatTime>
+      <RepeatTime op="add">-700</RepeatTime>
     </Melee>
   </Attack>
     <Resistance>
@@ -24,6 +24,6 @@
  </UnitMotion>
   <Identity>
     <GenericName>Thrusting spearman</GenericName>
-    <Tooltip>-250 repeat time but -0.5 range</Tooltip>
+    <Tooltip>7 tenths of a second faster repeat time and 25% faster walk speed but -0.5 range, only pierce dmg, 80% of regular spear, and -2 of each resistances</Tooltip>
   </Identity>
 </Entity>

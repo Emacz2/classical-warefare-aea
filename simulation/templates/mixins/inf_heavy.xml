@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
+<Attack>
+    <Melee>
+      <RepeatTime op="add">100</RepeatTime>
+    </Melee>
+  </Attack>
    <Resistance>
     <Entity>
       <Damage>

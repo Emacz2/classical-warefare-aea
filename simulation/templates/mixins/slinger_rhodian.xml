@@ -9,7 +9,7 @@
       <Pierce op="mul">1.10</Pierce>
     </Damage>
       <MaxRange op="add">+6</MaxRange>
-      <RepeatTime op="add">250</RepeatTime>
+      <RepeatTime op="add">300</RepeatTime>
       <Projectile>
         <Spread op="mul">0.8</Spread>
     </Projectile>
@@ -27,7 +27,7 @@
     <GenericName>Rhodian Slinger</GenericName>
     <SpecificName>Sphendonḗtēs Rhódios</SpecificName>
     <Icon>units/mace/infantry_slinger.png</Icon>
-    <Tooltip>+10% Pierce dmg, +6 range and 20% more accurate but 1/4 second slower repeat time and +25% train time.</Tooltip>
+    <Tooltip>+10% Pierce dmg, +6 range and 20% more accurate but 3 tenths of a second slower repeat time and +25% train time.</Tooltip>
     <History>Rhodian slingers were renowned in the ancient world for their exceptional skill and effectiveness in using the sling as a projectile weapon</History>
   </Identity>
   <ResourceGatherer disable=""/>

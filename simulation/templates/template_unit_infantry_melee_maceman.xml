@@ -9,7 +9,7 @@
       </Damage>
       <MaxRange>2.5</MaxRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>1750</RepeatTime>
+      <RepeatTime>1700</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Melee Infantry</Classes>
