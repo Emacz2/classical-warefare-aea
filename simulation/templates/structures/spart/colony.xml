@@ -8,13 +8,13 @@
       <MinDistance>90</MinDistance>
     </Distance>
   </BuildRestrictions>
-      <Cost>
-     <BuildTime op="mul">0.8</BuildTime>
+     <Cost>
+    <BuildTime>225</BuildTime>
     <Resources>
-      <food op="mul">0.8</food>
-      <wood op="mul">0.8</wood>
-      <stone op="mul">0.8</stone>
-      <metal op="mul">0.8</metal>
+      <food>80</food>
+      <wood>200</wood>
+      <stone>200</stone>
+      <metal>80</metal>
     </Resources>
   </Cost>
   <Health>
@@ -38,7 +38,7 @@
   </Footprint>
   <Identity>
     <Civ>spart</Civ>
-    <Classes datatype="tokens">PerioikoiTown -CivilCentre</Classes>
+    <Classes datatype="tokens">PerioikoiTown</Classes>
     <VisibleClasses datatype="tokens">Town Colony</VisibleClasses>
   </Identity>
   <Promotion>
