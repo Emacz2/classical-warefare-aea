@@ -42,6 +42,7 @@
       <Neodamodes>15</Neodamodes>
       <Palace>1</Palace>
       <PerioikoiCamp>2</PerioikoiCamp>
+      <PerioikoiTown>1</PerioikoiTown>
       <Skirítēs>20</Skirítēs>
       <Pheideition>1</Pheideition>
       <Pillar>0</Pillar>
@@ -94,9 +95,9 @@
       <Pheideition>
       <Stratopedon>1</Stratopedon>
       </Pheideition>
-      <PerioikoiCamp>
+      <PerioikoiTown>
         <Syssiton>1</Syssiton>
-      </PerioikoiCamp>
+      </PerioikoiTown>
       <Pillar>
         <Ashoka>5</Ashoka>
       </Pillar>

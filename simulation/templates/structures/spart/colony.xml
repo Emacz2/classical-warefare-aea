@@ -2,9 +2,9 @@
 <Entity parent="template_structure_civic_civil_centre_military_colony">
  <BuildRestrictions>
      <Territory>own neutral</Territory>
-    <Category>PerioikoiCamp</Category>
+    <Category>PerioikoiTown</Category>
     <Distance>
-      <FromClass>PerioikoiCamp</FromClass>
+      <FromClass>PerioikoiTown</FromClass>
       <MinDistance>90</MinDistance>
     </Distance>
   </BuildRestrictions>

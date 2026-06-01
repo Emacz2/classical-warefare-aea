@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_civil_centre_military_colony">
  <BuildRestrictions>
-     <Territory>own neutral</Territory>
-    <Category>PerioikoiCamp</Category>
+     <Territory>neutral</Territory>
+    <Category>PerioikoiTown</Category>
     <Distance>
-      <FromClass>PerioikoiCamp</FromClass>
+      <FromClass>PerioikoiTown</FromClass>
       <MinDistance>100</MinDistance>
     </Distance>
   </BuildRestrictions>

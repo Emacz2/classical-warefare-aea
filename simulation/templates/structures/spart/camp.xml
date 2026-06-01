@@ -29,7 +29,7 @@
     <Max>25</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Perioikoi HelotW HelotM</List>
+    <List datatype="tokens">Perioikoi HelotW HelotM Skirítēs</List>
     <BuffHeal>0</BuffHeal>
     <LoadingRange>6</LoadingRange>
   </GarrisonHolder>
