@@ -6,7 +6,7 @@
   <Identity>
     <Civ>spart</Civ>
     <SpecificName>Agora</SpecificName>
-    <VisibleClasses datatype="tokens">-CivilCentre Agora Phase_2</VisibleClasses>
+    <VisibleClasses datatype="tokens">Agora Phase_2</VisibleClasses>
   </Identity>
    <BuildRestrictions>
     <Category>Agora</Category>

@@ -10,7 +10,7 @@
     <BuildRestrictions>
     <Territory>own neutral</Territory>
     <Distance>
-      <FromClass>Agora</FromClass>
+      <FromClass>CivilCentre</FromClass>
       <MinDistance>75</MinDistance>
     </Distance>
   </BuildRestrictions>
