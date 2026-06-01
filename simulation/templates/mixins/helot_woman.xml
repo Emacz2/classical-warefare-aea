@@ -25,14 +25,14 @@
     <Population>0</Population>
     <BuildTime>8</BuildTime>
       <Resources>
-      <food>35</food>
+      <food>40</food>
       <metal>0</metal>
       <stone>0</stone>
       <wood>0</wood>
     </Resources>
   </Cost>
   <Health>
-    <Max>35</Max>
+    <Max>40</Max>
   </Health>
   <ResourceGatherer>
     <MaxDistance>2.0</MaxDistance>

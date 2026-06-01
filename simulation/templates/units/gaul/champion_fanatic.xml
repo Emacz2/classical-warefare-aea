@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_spearman">
+<Entity parent="thrusting_spear|template_unit_champion_infantry_spearman">
   <Cost>
     <Resources>
       <food>100</food>
@@ -7,11 +7,6 @@
       <metal>0</metal>
     </Resources>
   </Cost>
-  <Attack>
-    <Melee>
-      <RepeatTime op="add">-250</RepeatTime>
-    </Melee>
-  </Attack>
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Naked Fanatic</GenericName>
@@ -21,18 +16,18 @@
    <Health>
     <Max op="add">25</Max>
   </Health>
-  <Resistance>
+   <Resistance>
     <Entity>
       <Damage>
-        <Hack op="add">-4</Hack>
-        <Pierce op="add">-4</Pierce>
+        <Crush op="add">-1</Crush>
+        <Hack op="add">-2</Hack>
+        <Pierce op="add">-2</Pierce>
       </Damage>
     </Entity>
   </Resistance>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.25</WalkSpeed>
-    <Acceleration op="mul">1.7</Acceleration>
-  </UnitMotion>
+ <UnitMotion>
+  <WalkSpeed op="mul">1.25</WalkSpeed>
+ </UnitMotion>
   <VisualActor>
     <Actor>units/gauls/infantry_spearman_c.xml</Actor>
   </VisualActor>
