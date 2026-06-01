@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="buildLabel" ghost="true">
+
+	<!-- IMPORTANT: remember to update pregame/ProjectInformation.js in sync with this: -->
+	<object type="text" style="ModernLabelText" text_valign="top" ghost="true" size="0% 1 100% 100%">
+		<translatableAttribute id="caption">Release XXVIII: Boiorix With Classical Warfare AEA</translatableAttribute>
+	</object>
+
+	<!-- Displays build date and build version-->
+	<object
+		name="buildTimeLabel"
+		type="text"
+		style="ModernLabelText"
+		ghost="true"
+		size="0% 13 100% 100%-3"
+		font="sans-stroke-12"
+		text_valign="top"
+	/>
+</object>
