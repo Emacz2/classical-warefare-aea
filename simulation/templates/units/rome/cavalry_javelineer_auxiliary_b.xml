@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_cavalry_ranged_javelineer">
+<Entity parent="aux_cavunits/numidian_cavalry">
   <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
@@ -7,15 +7,16 @@
     <SpecificName>Eques Alaris Numidarum</SpecificName>
     <VisibleClasses datatype="tokens">Auxiliary</VisibleClasses>
     <SelectionGroupName>units/rome/cavalry_javelineer_auxiliary_b</SelectionGroupName>
-    <Icon>units/rome/cavalry_javelinist_auxiliary.png</Icon>
+    <Icon>units/special/num_cav_merc.png</Icon>
     <Requirements>
       <Techs datatype="tokens">roman_reforms</Techs>
     </Requirements>
   </Identity>
   <Promotion>
-    <Entity>units/rome/cavalry_javelineer_auxiliary_a</Entity>
+    <Entity>units/rome/champion_cavalry_numidian</Entity>
+    <RequiredXp>3000</RequiredXp>
   </Promotion>
-  <VisualActor>
-    <Actor>units/romans/cavalry_javelinist_auxiliary_b_m.xml</Actor>
-  </VisualActor>
+   <VisualActor>
+    <Actor>units/carthaginians/champion_cavalry_numidian_c_m.xml</Actor>
+  </VisualActor>=
 </Entity>

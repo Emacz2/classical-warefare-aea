@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_inf_champ|template_unit_champion_infantry_swordsman">
+<Entity parent="aux_inf_champ|template_unit_champion_infantry_swordsman">
   <Health>
     <DamageVariants>
       <lightdamage>0.85</lightdamage>
