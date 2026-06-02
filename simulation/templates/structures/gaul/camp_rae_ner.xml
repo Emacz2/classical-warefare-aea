@@ -3,10 +3,11 @@
   <BuildRestrictions>
     <Territory>own neutral</Territory>
   </BuildRestrictions>
-  <Cost>
+    <Cost>
     <Resources>
-      <wood>100</wood>
-      <metal>100</metal>
+      <metal>0</metal>
+      <stone>0</stone>
+      <wood>300</wood>
     </Resources>
   </Cost>
   <Footprint>

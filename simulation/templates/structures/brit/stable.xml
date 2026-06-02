@@ -2,8 +2,9 @@
 <Entity parent="template_structure_military_stable">
   <Cost>
     <Resources>
-      <wood>250</wood>
+      <metal>0</metal>
       <stone>0</stone>
+      <wood>300</wood>
     </Resources>
   </Cost>
   <Resistance>

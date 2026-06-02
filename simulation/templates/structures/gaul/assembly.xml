@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure">
-  <Cost>
-    <BuildTime>90</BuildTime>
+    <Cost>
+    <BuildTime>150</BuildTime>
     <Resources>
-      <stone>50</stone>
-      <wood>200</wood>
+      <metal>0</metal>
+      <stone>0</stone>
+      <wood>300</wood>
     </Resources>
   </Cost>
   <Footprint replace="">
@@ -71,13 +72,6 @@
       units/{civ}/hero_vercingetorix
     </Entities>
   </Trainer>
-    <Researcher>
-    <Technologies datatype="tokens">
-      alliance_raeti
-      alliance_rutheni
-      alliance_treveri
-    </Technologies>
-  </Researcher>
   <Vision>
     <Range>40</Range>
   </Vision>

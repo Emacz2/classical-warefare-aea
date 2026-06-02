@@ -4,7 +4,7 @@
     <Rank>Elite</Rank>
   </Identity>
   <Promotion>
-    <Entity>units/rome/cavalry_javelineer_auxiliary_b</Entity>
+    <Entity>units/rome/cavalry_numidian</Entity>
     <RequiredXp>2000</RequiredXp>
   </Promotion>
   <VisualActor>

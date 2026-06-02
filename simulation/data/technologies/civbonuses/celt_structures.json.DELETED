@@ -6,6 +6,7 @@
 		"any": [
 			{ "civ": "brit" },
 			{ "civ": "gaul" }
+			
 		]
 	},
 	"icon": "wooden_buildings.png",

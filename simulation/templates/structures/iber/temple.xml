@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_economic_market">
-    <Cost>
+<Entity parent="template_structure_civic_temple">
+  <Cost>
     <Resources>
       <metal>0</metal>
       <stone>0</stone>
@@ -8,21 +8,21 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="26.0" depth="24.0"/>
-    <Height>8.0</Height>
+    <Square width="24.0" depth="24.0"/>
+    <Height>10.0</Height>
   </Footprint>
   <Health>
-    <SpawnEntityOnDeath>decay|rubble/rubble_stone_5x5</SpawnEntityOnDeath>
+    <SpawnEntityOnDeath>decay|rubble/rubble_stone_4x4</SpawnEntityOnDeath>
   </Health>
   <Identity>
-    <Civ>gaul</Civ>
-    <SpecificName>Magos</SpecificName>
+    <Civ>iber</Civ>
+    <SpecificName>Loki</SpecificName>
   </Identity>
   <Obstruction>
-    <Static width="25.0" depth="23.0"/>
+    <Static width="20.0" depth="20.0"/>
   </Obstruction>
   <VisualActor>
-    <Actor>structures/gauls/market.xml</Actor>
+    <Actor>structures/iberians/temple.xml</Actor>
     <FoundationActor>structures/fndn_6x6.xml</FoundationActor>
   </VisualActor>
 </Entity>

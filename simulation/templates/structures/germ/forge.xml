@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_military_stable">
- <Cost>
+<Entity parent="template_structure_military_forge">
+  <Cost>
     <Resources>
       <metal>0</metal>
       <stone>0</stone>
@@ -9,10 +9,12 @@
   </Cost>
   <Identity>
     <Civ>germ</Civ>
-    <SpecificName>Stallaz</SpecificName>
+    <SpecificName>Smiþjǭ</SpecificName>
   </Identity>
+  <Obstruction>
+    <Static width="20.0" depth="20.0"/>
+  </Obstruction>
   <VisualActor>
-    <Actor>structures/germans/stable.xml</Actor>
-    <FoundationActor>structures/fndn_6x6.xml</FoundationActor>
+    <Actor>structures/germans/forge.xml</Actor>
   </VisualActor>
 </Entity>

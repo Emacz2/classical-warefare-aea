@@ -6,7 +6,7 @@
     <GenericName>Companion Light-Javelineer Cavalry</GenericName>
     <SpecificName>Eques Socius</SpecificName>
     <SelectionGroupName>units/rome/cavalry_javelineer_b</SelectionGroupName>
-    <VisibleClasses datatype="tokens">Rōmānī</VisibleClasses>
+    <VisibleClasses datatype="tokens">Republic</VisibleClasses>
     <Icon>units/rome/cavalry_javelinist.png</Icon>
   </Identity>
   <Promotion>

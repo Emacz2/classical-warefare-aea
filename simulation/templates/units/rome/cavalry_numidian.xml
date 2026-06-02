@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="units/numidian_cavalry">
   <Identity>
-    <GenericName>Allied Numidian Light Javelineer Cavalry</GenericName>
+    <GenericName>Numidian Auxiliary Javelineer Cavalry</GenericName>
+    <SpecificName>Eques Alaris Numidarum</SpecificName>
+    <SelectionGroupName>units/rome/cavalry_numidian</SelectionGroupName>
+    <Icon>units/special/num_cav_merc.png</Icon>
     <Icon>units/special/num_cav_merc.png</Icon>
   </Identity>
-  <Promotion>
-    <Entity>units/rome/champion_cavalry_numidian</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
   <VisualActor>
     <Actor>units/carthaginians/champion_cavalry_numidian_c_m.xml</Actor>
-  </VisualActor>=
-  </Entity>
+  </VisualActor>
+</Entity>
