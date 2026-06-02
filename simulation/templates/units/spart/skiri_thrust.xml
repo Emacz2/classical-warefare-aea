@@ -19,6 +19,19 @@
       <stone>0</stone>
     </Resources>
   </Cost>
+     <Resistance>
+    <Entity>
+      <Damage>
+        <Crush>1</Crush>
+        <Hack>1.5</Hack>
+        <Pierce>1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+   <UnitMotion>
+    <WalkSpeed>10.5</WalkSpeed>
+    <RunMultiplier>1</RunMultiplier>
+  </UnitMotion>
  <Health>
     <Max>175</Max>
   </Health>
