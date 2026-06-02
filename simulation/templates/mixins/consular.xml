@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+<Health>
+    <Max op="add">100</Max>
+  </Health>
+  <Identity>
+     <GenericName>Consular Bodyguard</GenericName>
+    <VisibleClasses datatype="tokens">ConsularBodyguard</VisibleClasses>
+  </Identity>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">1</Pierce>
+        <Crush op="add">1.5</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
+    <TrainingRestrictions>
+    <Category>ConsularBodyguard</Category>
+  </TrainingRestrictions>
+  <UnitMotion>
+    <Acceleration op="mul">1.1</Acceleration>
+  </UnitMotion>
+</Entity>

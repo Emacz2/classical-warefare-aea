@@ -10,6 +10,13 @@
     <SpecificName>Mārcus Claudius Mārcellus</SpecificName>
     <Icon>units/rome/hero_marcellus.png</Icon>
   </Identity>
+    <ProductionQueue/>
+  <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/rome/champion_cavalry_spear_consul
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>units/romans/hero_cavalry_swordsman_marcellus_m.xml</Actor>
   </VisualActor>
