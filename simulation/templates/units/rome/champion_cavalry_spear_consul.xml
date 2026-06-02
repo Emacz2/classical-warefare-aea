@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_champion_cavalry_swordsman">
+ <Attack>
+    <Melee>
+      <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
+      <Damage>
+        <Hack op="mul">1.1</Hack>
+        <Pierce op="mul">1.1</Pierce>
+      </Damage>
+      <Bonuses>
+        <BonusMelee>
+          <Classes>Ranged Infantry</Classes>
+          <Multiplier>1.5</Multiplier>
+        </BonusMelee>
+      </Bonuses>
+      <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
+    </Melee>
+  </Attack>
+  <Identity>
+    <Civ>rome</Civ>
+    <Lang>latin</Lang>
+    <SpecificName>Eques Cōnsulāris</SpecificName>
+    <GenericName>Imperial Roman Cavalry</GenericName>
+    <Icon>units/rome/champion_cavalry.png</Icon>
+    <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
+    <SelectionGroupName>units/rome/champion_cavalry</SelectionGroupName>
+    <Requirements>
+       <Techs datatype="tokens">phase_empi</Techs>
+    </Requirements>
+  </Identity>
+  <VisualActor>
+    <Actor>units/romans/cavalry_swordsman_c_m.xml</Actor>
+  </VisualActor>
+</Entity>

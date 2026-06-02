@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
- <Attack>
-  <Melee>
-	<Damage>
-	  <Hack op="mul">1.05</Hack>
-    <Pierce op="mul">1.05</Pierce>
-  </Damage>
-  </Melee>
-</Attack>
   <Cost>
     <Resources>
       <food>50</food>
@@ -16,20 +8,6 @@
       <metal>0</metal>
     </Resources>
   </Cost>
- <ResourceGatherer>
-    <MaxDistance>2.0</MaxDistance>
-    <BaseSpeed>1.0</BaseSpeed>
-    <Rates>
-      <food.fruit op="mul">0.9</food.fruit>
-      <food.grain op="mul">0.9</food.grain>
-      <food.meat op="mul">0.9</food.meat>
-      <wood.tree op="mul">0.9</wood.tree>
-      <wood.ruins op="mul">0.9</wood.ruins>
-      <stone.rock op="mul">0.9</stone.rock>
-      <stone.ruins op="mul">0.9</stone.ruins>
-      <metal.ore  op="mul">0.9</metal.ore>
-      <metal.ruins op="mul">0.9</metal.ruins>
-    </Rates>
     <Capacities>
       <food>10</food>
       <wood>10</wood>
@@ -39,6 +17,6 @@
   </ResourceGatherer>
   <Identity>
     <VisibleClasses datatype="tokens">Perioikoi Free</VisibleClasses>
-    <Tooltip>Perioikoi were free non citizen that were an important backbone in Sparta's military.  They do 5% more dmg, have +0.5H, +1 pierce resistances, but 10% longer train time and -10% gather speed compared to other spearman</Tooltip>
+    <Tooltip>Perioikoi were free non citizen that were an important backbone in Sparta's military.</Tooltip>
   </Identity>
 </Entity>

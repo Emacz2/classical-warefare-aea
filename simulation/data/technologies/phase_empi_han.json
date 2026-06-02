@@ -1,0 +1,50 @@
+{
+	"genericName": "Empire Phase",
+	"specificName": {
+		"han": "Han Dynasty"
+	},
+
+	"description": "Advances from a veritable metropolis to The Han Dynasty.",
+	"cost": {
+		"food": 750,
+		"wood": 750,
+		"stone": 1000,
+		"metal": 500
+	},
+	 "requirements": {
+        "all": [
+            {
+                "entity": {
+                    "class": "City",
+                    "number": 2
+                }
+            },
+            {
+                "entity": {
+                    "class": "Dynasty",
+                    "number": 1
+                }
+            }
+        ]
+	},
+	"requirementsTooltip": "Requires 3 town and 2 city structures.",
+	"supersedes": "phase_city_han",
+	"replaces": ["phase_empi"],
+	"icon": "empire_phase.png",
+	"researchTime": 75,
+	"tooltip": "Advance to the Empire Phase, which boosts max population 10% and unlocks more entities and technologies. Civic Centers +40% territory influence radius. Structures +1 capture points regeneration rate for garrisoned units.",
+	"modifications": [
+		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.4, "affects": "CivCentre" },
+		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
+		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "Structure" },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "Structure" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Structure" },
+		{ "value": "Player/MaxPopulation", "multiply": 1.1 }
+		
+	
+		
+	],
+	"soundComplete": "interface/alarm/alarm_phase.xml"
+}
