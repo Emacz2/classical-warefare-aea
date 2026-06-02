@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/rome/infantry_spearman_e">
-<Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
+<Entity parent="inf_heavy|units/rome/infantry_spearman_e">
     <Cost>
     <Resources>
       <wood op="add">-10</wood>
-      <metal op="add">15</metal>
+      <metal op="add">35</metal>
     </Resources>
   </Cost>
-  <Health>
-   <Max>200</Max>
-  </Health>
+    <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">1.5</Crush>
+        <Hack op="add">1</Hack>
+      </Damage>
+    </Entity>
+  </Resistance>
  <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
