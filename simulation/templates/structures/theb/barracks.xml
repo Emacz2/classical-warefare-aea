@@ -17,7 +17,7 @@
   <Upgrade>
     <champ>
       <Entity>structures/theb/champion_barracks</Entity>
-      <Tooltip>Upgrade a champion baracks.</Tooltip>
+      <Tooltip>Upgrade to champion baracks.</Tooltip>
       <Cost>
         <metal>25</metal>
         <wood>100</wood>
