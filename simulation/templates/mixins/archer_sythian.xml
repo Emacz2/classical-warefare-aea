@@ -2,22 +2,18 @@
 <Entity>
   <Attack>
     <Ranged>
-    <Damage>
-    </Damage>
     <MinRange>10</MinRange>
-    <MaxRange op="mul">1.05</MaxRange>
   </Ranged>
 </Attack>
  <UnitMotion>
-  <WalkSpeed op="mul">1.05</WalkSpeed>
+  <WalkSpeed op="mul">1.1</WalkSpeed>
  </UnitMotion>
   <Identity>
     <Lang>greek</Lang>
     <GenericName>Sythian Archer</GenericName>
     <SpecificName>Toxótēs Syrías</SpecificName>
     <Icon>units/sele/infantry_archer.png</Icon>
-    <Tooltip>Sythian archers; 5% more range</Tooltip>
-  </Identity>
+    <Tooltip>Sythian archers; 10% more walk speed
   <ResourceGatherer disable=""/>
 </Entity>
 

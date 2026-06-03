@@ -55,7 +55,7 @@
       <Tent>4</Tent>
       <Theater>1</Theater>
       <ThebsSB>50</ThebsSB>
-      <ScythianGuard>0</ScythianGuard>
+      <ScythianGuard>5</ScythianGuard>
       <Silvermine>3</Silvermine>
       <SpartW>0</SpartW>
       <Yakhchal>5</Yakhchal>
@@ -108,7 +108,7 @@
         <ArmyCamp>10</ArmyCamp>
       </RomanSlave>
       <ScythianGuard>
-        <Fortress>10</Fortress>
+        <Fortress>5</Fortress>
       </ScythianGuard>
       <SpartW>
         <House>1</House>
