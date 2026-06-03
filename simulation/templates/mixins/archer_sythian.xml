@@ -13,7 +13,8 @@
     <GenericName>Sythian Archer</GenericName>
     <SpecificName>Toxótēs Syrías</SpecificName>
     <Icon>units/sele/infantry_archer.png</Icon>
-    <Tooltip>Sythian archers; 10% more walk speed
+    <Tooltip>Sythian archers; 10% more walk speed</Tooltip>
   <ResourceGatherer disable=""/>
+  </Identity>
 </Entity>
 
