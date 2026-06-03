@@ -14,15 +14,15 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "skull_swords.png",
 	"researchTime": 40,
-	"tooltip": "Infantry +10% melee attack damage, heroes 25% melee attack but all infantry 10% more train time and helots -10 health.",
+	"tooltip": "Champions +10% melee damage, heroes 25% but all Champions 5% more train time and helots -50% health.",
 	"modifications": [
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Infantry !Hero" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Infantry !Hero" },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Champion" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Champion" },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.25, "affects": "Hero" },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.25, "affects": "Hero" },
-		{ "value": "Cost/BuildTime", "multiply": 1.1, "affects": "Infantry" },
-		{ "value": "Health/Max", "add": -10, "affects": "HelotM" },
-		{ "value": "Health/Max", "add": -10, "affects": "HelotW" }
+		{ "value": "Cost/BuildTime", "multiply": 1.05, "affects": "Champion" },
+		{ "value": "Health/Max", "multiply": 0.5, "affects": "HelotM" },
+		{ "value": "Health/Max", "multiply": 0.5, "affects": "HelotW" }
 	],
     "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

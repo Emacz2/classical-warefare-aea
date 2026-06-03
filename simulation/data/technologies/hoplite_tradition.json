@@ -27,8 +27,8 @@
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 0.8 },
 		{ "value": "Promotion/RequiredXp", "multiply": 0.8 },
-		{ "value": "Cost/Resources/food", "add": -5, "affects": "Citizen" },
-		{ "value": "Cost/Resources/wood", "add": -5, "affects": "Citizen" },
+		{ "value": "Cost/Resources/food", "add": -5, "affects": "Citizen !Champion" },
+		{ "value": "Cost/Resources/wood", "add": -5, "affects": "Citizen !Champion" },
 		{ "value": "Health/Max", "add": 25, "affects": "Champion" }
 		
 
