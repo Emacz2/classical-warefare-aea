@@ -11,7 +11,7 @@
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/infantry_javelineer_b</SelectionGroupName>
      <GenericName>Iberian Peltast</GenericName>
-    <SpecificName>Iberian Caetratus</SpecificName>
+    <SpecificName>Caetratus</SpecificName>
     <Icon>units/iber/infantry_javelinist.png</Icon>
   </Identity>
   <Promotion>
