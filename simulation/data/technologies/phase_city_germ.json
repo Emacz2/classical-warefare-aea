@@ -24,7 +24,7 @@
         ]
 	},
 	"requirementsTooltip": "Requires twenty five Village Structures.",
-	"supersedes": "phase_town_iber",
+	"supersedes": "phase_town_germ",
 	"replaces": ["phase_city"],
 	"icon": "city_phase.png",
 	"researchTime": 60,

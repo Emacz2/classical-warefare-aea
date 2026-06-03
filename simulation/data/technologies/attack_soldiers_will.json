@@ -18,7 +18,11 @@
 		"all": [
 			{ "tech": "phase_city" },
 			{ "notciv": "athen" },
+			{ "notciv": "brit" },
+			{ "notciv": "gaul" },
+			{ "notciv": "germ" },
 			{ "notciv": "han" },
+			{ "notciv": "iber" },
 			{ "notciv": "spart" },
 			{ "notciv": "theb" }
 		]

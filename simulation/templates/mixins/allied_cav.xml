@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
   <Cost>
-    <BuildTime op="mul">0.9</BuildTime>
+    <BuildTime op="mul">1.15</BuildTime>
      <Resources>
       <food>40</food>
       <metal>20</metal>
@@ -18,9 +18,9 @@
     </Capture>
      <Melee merge="">
 	<Damage>
-	  <Hack op="mul">1.075</Hack>
-    <Pierce op="mul">1.075</Pierce>
-    <Crush op="mul">1.075</Crush>
+	  <Hack op="mul">1.1</Hack>
+    <Pierce op="mul">1.1</Pierce>
+    <Crush op="mul">1.0</Crush>
   </Damage>
   </Melee>
   <Ranged merge="">

@@ -1,16 +1,16 @@
 {
 	"type": "range",
-	"radius": 4,
-	"affects": ["Polearm"],
+	"radius": 4.5,
+	"affects": ["Polearm !Cavalry"],
 	"modifications": [
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05},
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 }
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.01},
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.1 },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.99 }
 	
 	],
 	"auraName": "phalanx",
 	"showDescription": 1,
-	"auraDescription": "Polearm (Spearman/Pikeman)  gain 0.5 Hack resistance and 5% pierce damage, but walk speed reduced by 5%",
+	"auraDescription": "Polearm (Spearman/Pikeman)  gain 0.1 Hack resistance and 1% pierce damage, but walk speed reduced by 1% for each nearby polearm unit",
 	"overlayIcon": "art/textures/ui/session/auras/buildgather_bonus.png",
-	"stackable": false
+	"stackable": true
 }

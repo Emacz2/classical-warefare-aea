@@ -31,12 +31,14 @@
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.98, "affects": "CivCentre" },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.03, "affects": "Citizen Infantry !Serf" },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry !Serf" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry !Serf" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry !Serf" },
-		{ "value": "Health/Max", "add": 5, "affects": "Healer"},
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.03, "affects": "Ranged !Serf" }
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Health/Max", "add": 5, "affects": "Healer"}
+		
 		
 
 	],

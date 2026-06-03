@@ -40,6 +40,12 @@
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Cost/BuildTime", "multiply": 0.85, "affects": "Chariot" },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Health/Max", "add": 10, "affects": "Healer"}
 	],
 	"soundComplete": "interface/alarm/alarm_phase.xml"
