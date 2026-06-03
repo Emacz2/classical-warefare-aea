@@ -33,6 +33,7 @@
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
+		{ "value": "Cost/BuildTime", "multiply": 1.1, "affects": "Champion" },
 		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "Perioikoi" },
 		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "HelotM" },
 		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "HelotW" },

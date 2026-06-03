@@ -25,7 +25,6 @@
 	"modifications": [
 		{ "value": "ResourceGatherer/Rates/metal.ore", "multiply": 1.15, "affects": "Worker" },
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
         { "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "CivCentre" },

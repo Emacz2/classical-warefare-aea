@@ -35,7 +35,6 @@
 	"tooltip": "Advance to Spartan city Phase, which unlocks more entities and technologies. Civic Centers +20% territory influence radius, 40% more garrison capacity, +5 range and +2.5C +5H +7.5P resittances. Structures +1 capture points regeneration rate for garrisoned units. Spartiates +25 health.  All infantry except Helots +0.5P resistances",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },

@@ -5,7 +5,6 @@
       structures/gaul/assembly
     </Entities>
   </Builder>
-  </Attack>
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/infantry_rutheni_archer_b</SelectionGroupName>
