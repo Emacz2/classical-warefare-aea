@@ -18,14 +18,14 @@
     <GenericName>Field</GenericName>
     <SelectionGroupName>template_structure_resource_field</SelectionGroupName>
     <VisibleClasses datatype="tokens">Field</VisibleClasses>
-    <Tooltip>Harvest grain for food. Can not be placed within 50m of Civic Center. Each subsequent gatherer works less efficiently.</Tooltip>
+    <Tooltip>Harvest grain for food. Can not be placed within 60m of Civic Center. Each subsequent gatherer works less efficiently.</Tooltip>
     <Icon>structures/field.png</Icon>
   </Identity>
    <BuildRestrictions>
     <Territory>own</Territory>
     <Distance>
-      <FromClass>CivilCentre</FromClass>
-      <MinDistance>50</MinDistance>
+      <FromClass>FarmBlocker</FromClass>
+      <MinDistance>60</MinDistance>
     </Distance>
   </BuildRestrictions>
   <Loot>

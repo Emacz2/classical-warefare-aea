@@ -19,10 +19,10 @@
   </Diplomacy>
   <EntityLimits>
     <Limits>
-      <Agora>1</Agora>
       <Animal>20</Animal>
       <Champion_Perioikoi>10</Champion_Perioikoi>
       <CivilCentre>1</CivilCentre>
+      <CityStateCenter>1</CityStateCenter>
       <ConsularBodyguard>10</ConsularBodyguard>
       <Diplomat>5</Diplomat>
       <Doulos>5</Doulos>

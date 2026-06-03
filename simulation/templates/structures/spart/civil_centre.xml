@@ -6,9 +6,12 @@
   <Identity>
     <Civ>spart</Civ>
     <SpecificName>Agora</SpecificName>
-    <VisibleClasses datatype="tokens">Agora Phase_2</VisibleClasses>
+    <GenericName>Civic Center</GenericName>
+    <Classes datatype="tokens">Agora Phase_2</Classes>
+    <VisibleClasses datatype="tokens">Agora -CivilCentre</VisibleClasses>
+    <History>The most important place in any Greek city, the Agora served many purposes; it was a place for public speeches and was the stage for civic life and commercial interests.</History>
   </Identity>
-   <BuildRestrictions>
+    <BuildRestrictions>
     <Category>Agora</Category>
   </BuildRestrictions>
   <Researcher>
