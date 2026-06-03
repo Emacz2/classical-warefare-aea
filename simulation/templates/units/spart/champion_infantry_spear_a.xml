@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="hoplite|template_unit_champion_infantry_spearman">
+<Entity parent="citizen|hoplite|template_unit_champion_infantry_spearman">
  <Auras datatype="tokens">
     units/charge
   </Auras>
@@ -12,15 +12,6 @@
     <VisibleClasses datatype="tokens">Free</VisibleClasses>
     <Icon>units/spart/champ_spear_a.png</Icon>
   </Identity>
-   <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">0.5</Pierce>
-	      <Crush op="add">1</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Promotion>
     <Entity>units/spart/champion_infantry_spear_olympian</Entity>
     <RequiredXp>300</RequiredXp>

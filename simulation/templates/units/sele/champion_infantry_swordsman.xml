@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_swordsman">
+<Entity parent="citizen|inf_heavy|template_unit_champion_infantry_swordsman">
   <Identity>
     <Civ>sele</Civ>
     <Lang>greek</Lang>
@@ -10,15 +10,6 @@
       <Techs datatype="tokens">reformed_army_sele</Techs>
     </Requirements>
   </Identity>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">5</Crush>
-        <Hack op="add">1.5</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <VisualActor>
     <Actor>units/seleucids/infantry_swordsman_c.xml</Actor>
   </VisualActor>

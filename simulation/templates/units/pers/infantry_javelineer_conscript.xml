@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="concsript_ranged|template_unit_infantry_ranged_peltast">
+<Entity parent="citizen|concsript_ranged|template_unit_infantry_ranged_peltast">
    <Builder>
     <Entities datatype="tokens">
       structures/pers/persian_stoa

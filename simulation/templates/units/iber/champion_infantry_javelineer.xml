@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="heavy_jav|template_unit_champion_infantry_javelineer">
+<Entity parent="citizen|heavy_jav|template_unit_champion_infantry_javelineer">
   <Cost>
     <Resources>
       <food>150</food> 

@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_pikeman">
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
+<Entity parent="citizen|template_unit_champion_infantry_pikeman">
   <Identity>
     <Civ>ptol</Civ>
     <Lang>greek</Lang>

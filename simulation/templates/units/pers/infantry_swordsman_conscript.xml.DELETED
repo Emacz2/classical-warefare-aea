@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_melee_swordsman">
+<Entity parent="citizen|concsript_melee|template_unit_infantry_melee_swordsman">
    <Builder>
     <Entities datatype="tokens">
       structures/pers/persian_stoa
@@ -15,9 +15,9 @@
      <Icon>units/pers/pers_infantry_sword.png</Icon>
   </Identity>
   <Promotion>
-    <Entity>units/pers/infantry_axeman_a</Entity>
+    <Entity>units/pers/infantry_swordsman_b</Entity>
   </Promotion>
  <VisualActor>
-    <Actor>units/persians/infantry_axeman_b.xml</Actor>
+    <Actor>units/persians/infantry_swordsman_b.xml</Actor>
   </VisualActor>
 </Entity>

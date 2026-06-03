@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_slinger_lead">
+<Entity parent="citizen|template_unit_infantry_ranged_slinger_lead">
   <Identity>
     <Civ>sele</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/sele/infantry_slinger_b</SelectionGroupName>
-    <GenericName>Yavne Slinger</GenericName>
-    <SpecificName>Sphendonḗtēs Yavne</SpecificName>
+    <GenericName>Greek Psiloi Slinger</GenericName>
     <Icon>units/sele/inf_slinger.png</Icon>
     <Requirements>
       <Techs datatype="tokens">unlock_slingers</Techs>
