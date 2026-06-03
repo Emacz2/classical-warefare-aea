@@ -9,10 +9,6 @@
   </VisualActor>
     <BuildRestrictions>
     <Territory>own neutral</Territory>
-    <Distance>
-      <FromClass>CivilCentre</FromClass>
-      <MinDistance>75</MinDistance>
-    </Distance>
   </BuildRestrictions>
     <ProductionQueue/>
   <Researcher>

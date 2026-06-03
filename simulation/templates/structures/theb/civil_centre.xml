@@ -8,7 +8,7 @@
     <SpecificName>Agora</SpecificName>
     <GenericName>Civic Center</GenericName>
     <Classes datatype="tokens">Agora</Classes>
-    <VisibleClasses datatype="tokens">-CivilCentre</VisibleClasses>
+    <VisibleClasses datatype="tokens">-CivilCentre Agora</VisibleClasses>
     <History>The most important place in any Greek city, the Agora served many purposes; it was a place for public speeches and was the stage for civic life and commercial interests.</History>
   </Identity>
     <BuildRestrictions>

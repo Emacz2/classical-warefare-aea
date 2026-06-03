@@ -103,8 +103,8 @@
     <GenericName>Civic Center</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Build in own or neutral territory. Acquire large tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
-    <Classes datatype="tokens">CivCentre FarmBlocker</Classes>
-    <VisibleClasses datatype="tokens">Defensive CivilCentre</VisibleClasses>
+    <Classes datatype="tokens">CivCentre</Classes>
+    <VisibleClasses datatype="tokens">Defensive CivilCentre FarmBlocker</VisibleClasses>
     <Icon>structures/civic_centre.png</Icon>
   </Identity>
   <Minimap>
@@ -135,7 +135,7 @@
   </Sound>
   <TerritoryInfluence>
     <Root>true</Root>
-    <Radius>115</Radius>
+    <Radius>120</Radius>
     <Weight>10000</Weight>
   </TerritoryInfluence>
   <Trainer>

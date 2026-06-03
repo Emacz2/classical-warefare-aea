@@ -24,7 +24,7 @@
    <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/champion_ranged
+      units/{civ}/city_police
     </Entities>
   </Trainer>
 </Entity>

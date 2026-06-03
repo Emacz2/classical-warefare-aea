@@ -70,17 +70,14 @@
       -units/{civ}/merc_thracian_peltast
     </Entities>
   </Trainer>
-    <TerritoryInfluence>
+  <Obstruction>
+    <Static width="29" depth="29"/>
+  </Obstruction>
+   <TerritoryInfluence>
     <Root>true</Root>
     <Radius>75</Radius>
     <Weight>10000</Weight>
   </TerritoryInfluence>
-  <TerritoryInfluence>
-    <Radius>75</Radius>
-  </TerritoryInfluence>
-  <Obstruction>
-    <Static width="29" depth="29"/>
-  </Obstruction>
   <VisualActor>
     <Actor>structures/seleucids/military_colony.xml</Actor>
     <FoundationActor>structures/fndn_9x9.xml</FoundationActor>

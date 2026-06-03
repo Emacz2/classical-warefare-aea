@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_civil_centre">
   <BuildRestrictions>
-    <Territory>own neutral</Territory>
+    <Territory>neutral</Territory>
     <Category>Colony</Category>
     <Distance>
       <FromClass>CivilCentre</FromClass>
@@ -64,12 +64,9 @@
       <constructed>interface/complete/building/complete_gymnasium.xml</constructed>
     </SoundGroups>
   </Sound>
-    <TerritoryInfluence>
+ <TerritoryInfluence>
     <Root>true</Root>
-    <Radius>100</Radius>
+    <Radius>90</Radius>
     <Weight>10000</Weight>
-  </TerritoryInfluence>
-  <TerritoryInfluence>
-    <Radius>75</Radius>
   </TerritoryInfluence>
 </Entity>

@@ -40,13 +40,10 @@
       units/{civ}/merc_thracian_peltast
     </Entities>
   </Trainer>
-     <TerritoryInfluence>
+   <TerritoryInfluence>
     <Root>true</Root>
-    <Radius>100</Radius>
+    <Radius>90</Radius>
     <Weight>10000</Weight>
-  </TerritoryInfluence>
-  <TerritoryInfluence>
-    <Radius>100</Radius>
   </TerritoryInfluence>
   <Obstruction>
     <Static width="29" depth="29"/>
