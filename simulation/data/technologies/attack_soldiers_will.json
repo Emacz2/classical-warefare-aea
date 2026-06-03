@@ -17,6 +17,7 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },
+			{ "notciv": "athen" },
 			{ "notciv": "han" },
 			{ "notciv": "spart" },
 			{ "notciv": "theb" }

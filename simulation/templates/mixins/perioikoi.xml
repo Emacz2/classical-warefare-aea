@@ -8,13 +8,6 @@
       <metal>0</metal>
     </Resources>
   </Cost>
-    <Capacities>
-      <food>10</food>
-      <wood>10</wood>
-      <stone>10</stone>
-      <metal>10</metal>
-    </Capacities>
-  </ResourceGatherer>
   <Identity>
     <VisibleClasses datatype="tokens">Perioikoi Free</VisibleClasses>
     <Tooltip>Perioikoi were free non citizen that were an important backbone in Sparta's military.</Tooltip>
