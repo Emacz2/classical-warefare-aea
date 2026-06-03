@@ -1,32 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_melee_spearman">
+<Entity parent="citizen|thrusting_spear|template_unit_infantry_melee_spearman">
 <Builder>
   <Entities datatype="tokens">
       structures/brit/range
       structures/brit/hill_fort
   </Entities>
 </Builder>
-<Cost>
-    <Resources>
-      <food op="add">25</food>
-    </Resources>
-  </Cost>
-<Attack>
-    <Melee>
-      <Damage>
-        <Hack op="add">2</Hack>
-	      <Pierce op="add">1</Pierce>
-      </Damage>
-    </Melee>
-  </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-0.5</Hack>
-        <Pierce op="add">-1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <Civ>brit</Civ>
     <SelectionGroupName>units/brit/infantry_spearman_b</SelectionGroupName>
@@ -35,10 +14,6 @@
     <Icon>units/brit/thrust_spear.png</Icon>
     <Rank>Advanced</Rank>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.10</WalkSpeed>
-    <Acceleration op="mul">1.15</Acceleration>
-  </UnitMotion>
   <Promotion>
     <Entity>units/brit/infantry_spearman_temple_2</Entity>
   </Promotion>

@@ -5,8 +5,8 @@
     <Rank>Elite</Rank>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">1.2</WalkSpeed>
-    <Acceleration op="mul">1.2</Acceleration>
+    <WalkSpeed op="mul">1.15</WalkSpeed>
+    <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>
     <Resistance>
     <Entity>

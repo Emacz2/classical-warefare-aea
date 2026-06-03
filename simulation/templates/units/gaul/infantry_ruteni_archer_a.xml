@@ -7,7 +7,7 @@
     <Entity>units/gaul/infantry_rutheni_archer_e</Entity>
   </Promotion>
    <UnitMotion>
-    <WalkSpeed op="mul">1.03</WalkSpeed>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="add">2.5</Acceleration>
   </UnitMotion>
   <VisualActor>

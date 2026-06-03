@@ -33,8 +33,8 @@
   </Cost>
   <Identity>
     <GenericName>Infantry</GenericName>
-    <Classes datatype="tokens">Human CitizenSoldier</Classes>
-    <VisibleClasses datatype="tokens">Citizen Worker Soldier Infantry</VisibleClasses>
+    <Classes datatype="tokens">Human</Classes>
+    <VisibleClasses datatype="tokens">Worker Soldier Infantry</VisibleClasses>
     <Rank>Basic</Rank>
   </Identity>
   <Position>

@@ -23,7 +23,7 @@
   </Health>
   <Identity>
     <Classes datatype="tokens">-ConquestCritical</Classes>
-    <VisibleClasses datatype="tokens">Healer</VisibleClasses>
+    <VisibleClasses datatype="tokens">Healer Citizen</VisibleClasses>
     <GenericName>Healer</GenericName>
     <SelectionGroupName>template_unit_support_healer</SelectionGroupName>
     <Rank>Basic</Rank>

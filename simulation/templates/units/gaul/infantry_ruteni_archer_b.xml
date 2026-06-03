@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_archer_simple">
+<Entity parent="citizen|template_unit_infantry_ranged_archer_simple">
 <Builder>
     <Entities datatype="tokens">
       structures/gaul/assembly
     </Entities>
   </Builder>
-  <Attack>
-    <Ranged>
-      <MaxRange op="add">6</MaxRange>
-    </Ranged>
   </Attack>
   <Identity>
     <Civ>gaul</Civ>
