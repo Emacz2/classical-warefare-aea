@@ -5,7 +5,7 @@
     <GenericName>Thessalian Mounted Skirmisher</GenericName>
     <SpecificName>Xystophóros Thessalikós</SpecificName>
     <SelectionGroupName>units/theb/champion_cavalry</SelectionGroupName>
-    <Icon>units/mace/cavalry_javelinist.png</Icon>
+    <Icon>units/theb/champcav_jav.png</Icon>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
