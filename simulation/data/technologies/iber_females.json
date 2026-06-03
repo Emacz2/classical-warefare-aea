@@ -1,6 +1,6 @@
 {
 	"genericName": "Women Defenders",
-	"description": "The loom allowed the creation of finer clothing for settlers. Women of the household were taught from a young age how to weave on the loom, and subsequently spent a large share of their lives working with it.",
+	"description": "Iberian civilians defended themselves with a falcata.",
 	"cost": {
 		"food": 150,
 		"metal": 100
@@ -14,13 +14,13 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "sword_01.png",
 	"researchTime": 30,
-	"tooltip": "Iberian women gain +1.5 Hack and +1 pierce dmg useing a falcata instead of dagger.",
+	"tooltip": "Iberian civilians gain +1.5 Hack and +1 pierce dmg useing a falcata instead of dagger.",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "add": 1.5 },
 		{ "value": "Attack/Melee/Damage/Pierce", "add": 1 },
 		{ "value": "Promotion/RequiredXp", "replace": 0 }
 		
 	],
-	"affects": ["FemaleCitizen"],
+	"affects": ["Civilians"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

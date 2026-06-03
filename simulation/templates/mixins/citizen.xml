@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
   <Identity>
-    <GenericName>Citzen</GenericName>
-    <VisibleClasses datatype="tokens">Citzen</VisibleClasses>
+    <GenericName>Citizen</GenericName>
+    <VisibleClasses datatype="tokens">Citizen</VisibleClasses>
   </Identity>
 </Entity>
