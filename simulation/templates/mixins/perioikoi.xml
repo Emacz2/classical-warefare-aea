@@ -9,7 +9,7 @@
     </Resources>
   </Cost>
   <Identity>
-    <VisibleClasses datatype="tokens">Perioikoi</VisibleClasses>
+    <VisibleClasses datatype="tokens">Perioikoi -Citizen</VisibleClasses>
     <Tooltip>Perioikoi were free non citizen that were an important backbone in Sparta's military.</Tooltip>
   </Identity>
 </Entity>

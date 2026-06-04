@@ -25,7 +25,7 @@
     </Resources>
   </Cost>
   <Identity>
-    <VisibleClasses datatype="tokens">Neodamodes</VisibleClasses>
+    <VisibleClasses datatype="tokens">Neodamodes -Citizen</VisibleClasses>
   </Identity>
    <TrainingRestrictions>
     <Category>Neodamodes</Category>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
   <Cost>
-    <BuildTime op="mul">1.15</BuildTime>
+    <BuildTime op="mul">1</BuildTime>
      <Resources>
-      <food>40</food>
-      <metal>20</metal>
-      <wood>20</wood>
+      <food>125</food>
+      <metal>50</metal>
+      <wood>0</wood>
       <stone>0</stone>
     </Resources>
   </Cost>
@@ -35,7 +35,7 @@
   </Ranged>
 </Attack>
   <Identity>
-    <VisibleClasses datatype="tokens">Allied</VisibleClasses>
+    <VisibleClasses datatype="tokens">Allied -Citizen</VisibleClasses>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

@@ -66,7 +66,7 @@
     </Entity>
   </Resistance>
   <Identity>
-    <VisibleClasses datatype="tokens">HelotM -Soldier</VisibleClasses>
+    <VisibleClasses datatype="tokens">HelotM -Soldier -Citizen</VisibleClasses>
     <Tooltip>Helots 25% less dmg, range and spread than normal citizen infantry, but same gather rates as civlians.  They also only have 50 HPs but cost only 40 food and 10 wood or stone</Tooltip>
   </Identity>
 </Entity>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="citizen|template_unit_champion_cavalry_javelineer">
+<Entity parent="template_unit_champion_cavalry_javelineer">
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/cavalry_treveri_jav_e</SelectionGroupName>

@@ -38,7 +38,7 @@
     <RequiredXp>200</RequiredXp>
   </Promotion>
   <Identity>
-   <VisibleClasses datatype="tokens">Mercenary</VisibleClasses>
+   <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Tooltip>Merc Infantry have only 1 capture attack. Melee +10% dmg, Ranged +5% dmg and 10% more accurate than than CS equivalent. They do not gain forge techs or WTF. And have a different promotion system/stats</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>

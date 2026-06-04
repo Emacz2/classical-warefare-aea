@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="citizen|template_unit_champion_support_healer">
+<Entity parent="template_unit_champion_support_healer">
   <Auras datatype="tokens">
     units/germ_seer_1
     units/germ_seer_2

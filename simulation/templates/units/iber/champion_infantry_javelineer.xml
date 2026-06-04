@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="citizen|heavy_jav|template_unit_champion_infantry_javelineer">
+<Entity parent="heavy_jav|template_unit_champion_infantry_javelineer">
   <Cost>
     <Resources>
       <food>150</food> 
@@ -9,8 +9,8 @@
   </Cost>
   <Identity>
     <Civ>iber</Civ>
-    <GenericName>Champion Javelineer</GenericName>
-    <SpecificName>Iberian soliferreum</SpecificName>
+    <GenericName>Heavy Javelineer</GenericName>
+    <SpecificName>Oinezko Arker Soliferreum</SpecificName>
     <SelectionGroupName>units/rome/champion_infantry_javelineer</SelectionGroupName>
     <VisibleClasses datatype="tokens">Ranged</VisibleClasses>
     <Requirements>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
   <Cost>
-    <BuildTime op="mul">1.15</BuildTime>
+    <BuildTime op="mul">1</BuildTime>
      <Resources>
-      <food>60</food>
-      <metal>25</metal>
+      <food>250</food>
+      <metal>100</metal>
       <wood>0</wood>
       <stone>0</stone>
     </Resources>
@@ -13,14 +13,14 @@
    <Capture>
       <AttackName>Capture</AttackName>
       <Capture>2.0</Capture>
-      <MaxRange>3</MaxRange>
+      <MaxRange>4</MaxRange>
       <RepeatTime>1000</RepeatTime>
     </Capture>
      <Melee merge="">
 	<Damage>
 	  <Hack op="mul">1.1</Hack>
     <Pierce op="mul">1.1</Pierce>
-    <Crush op="mul">1.1</Crush>
+    <Crush op="mul">1.0</Crush>
   </Damage>
   </Melee>
   <Ranged merge="">

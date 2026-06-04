@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="citizen|template_unit_champion_infantry_spearman">
+<Entity parent="template_unit_champion_infantry_spearman">
  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <Civ>han</Civ>
     <GenericName>Tiger Guard Spearman</GenericName>

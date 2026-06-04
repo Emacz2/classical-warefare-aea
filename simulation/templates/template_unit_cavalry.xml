@@ -33,7 +33,7 @@
     <GenericName>Cavalry</GenericName>
     <Rank>Basic</Rank>
     <Classes datatype="tokens">Human FastMoving CitizenSoldier</Classes>
-    <VisibleClasses datatype="tokens">Soldier Cavalry</VisibleClasses>
+    <VisibleClasses datatype="tokens">Citizen Soldier Cavalry</VisibleClasses>
   </Identity>
   <Loot>
     <xp>100</xp>

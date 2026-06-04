@@ -3,17 +3,19 @@
    <Resistance>
     <Entity>
       <Damage>
-       <Pierce op="add">1</Pierce>
+      <Crush op="add">0.5</Crush>
+      <Hack op="add">0.5</Hack>
+      <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>
   </Resistance>
   <Identity>
-    <GenericName>Javelineer</GenericName>
-    <VisibleClasses datatype="tokens">Javelineer Peltast</VisibleClasses>
-    <Tooltip>Named for the shield they carried, peltast +1 Pierce reistance but 2% slower walk speed</Tooltip>
+    <GenericName>Javelineer With shield</GenericName>
+    <VisibleClasses datatype="tokens">Peltast</VisibleClasses>
+    <Tooltip>Named for the shield they carried, peltast +1 Pierce and +0.5 Crush/Hack reistance but 3% slower walk speed</Tooltip>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.98</WalkSpeed>
+    <WalkSpeed op="mul">0.97</WalkSpeed>
     <Acceleration op="add">3.5</Acceleration>
   </UnitMotion>
   <Sound>

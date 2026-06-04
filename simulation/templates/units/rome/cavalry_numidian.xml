@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/numidian_cavalry">
+<Entity parent="aux_cav|units/numidian_cavalry">
   <Identity>
     <GenericName>Numidian Auxiliary Javelineer Cavalry</GenericName>
     <SpecificName>Eques Alaris Numidarum</SpecificName>

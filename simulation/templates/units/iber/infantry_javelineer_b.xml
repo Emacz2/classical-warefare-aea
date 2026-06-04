@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="citizen|template_unit_infantry_ranged_peltast">
+<Entity parent="template_unit_infantry_ranged_peltast">
  <Builder>
     <Entities datatype="tokens">
       structures/iber/monument
@@ -10,8 +10,8 @@
   <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/infantry_javelineer_b</SelectionGroupName>
-     <GenericName>Iberian Peltast</GenericName>
-    <SpecificName>Caetratus</SpecificName>
+     <GenericName>Infantry Javelineer</GenericName>
+    <SpecificName>Txabalindari</SpecificName>
     <Icon>units/iber/infantry_javelinist.png</Icon>
   </Identity>
   <Promotion>
