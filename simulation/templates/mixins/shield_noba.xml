@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+   <Resistance>
+    <Entity>
+      <Damage>
+      <Crush op="add">1</Crush>
+      <Hack op="add">0.5</Hack>
+      <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+ <Identity>
+    <GenericName>Javelineer With shield</GenericName>
+    <VisibleClasses datatype="tokens">Caetra</VisibleClasses>
+    <Tooltip>Noba - small round shield; +1 Pierce/Crush reistance and +0.5 Hack</Tooltip>
+    <History>Small round or slightly oval shields ~45-65 cm made from thick hide.</History>
+  </Identity>
+</Entity>

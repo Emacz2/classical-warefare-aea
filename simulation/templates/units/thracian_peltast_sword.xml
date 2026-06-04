@@ -5,12 +5,12 @@
       <AttackName context="Name of an attack using a rhomphaia (ῥομφαία), a Thracian two-handed weapon capable of both thrusting and slashing.">Rhomphaia</AttackName>
     </Melee>
   </Attack>
-  <Resistance>
+ <Resistance>
     <Entity>
       <Damage>
         <Hack>1.5</Hack>
-        <Pierce>1.5</Pierce>
-        <Crush>1</Crush>
+        <Pierce>2</Pierce>
+        <Crush>1.5</Crush>
       </Damage>
     </Entity>
   </Resistance>
@@ -30,8 +30,8 @@
   </Identity>
   <UnitMotion>
     <WalkSpeed>10</WalkSpeed>
-    <RunMultiplier op="mul">1.15</RunMultiplier>
-    <Acceleration op="mul">1.15</Acceleration>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
+    <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
   <Promotion disable=""/>
   <VisualActor>

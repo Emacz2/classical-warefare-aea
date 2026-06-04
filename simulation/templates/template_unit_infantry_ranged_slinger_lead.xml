@@ -36,10 +36,10 @@
     </SoundGroups>
   </Sound>
    <UnitMotion>
-    <WalkSpeed op="mul">1.09</WalkSpeed>
-    <Acceleration op="add">3.0</Acceleration>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <Acceleration op="add">4</Acceleration>
   </UnitMotion>
   <Vision>
-    <Range>85</Range>
+    <Range>75</Range>
   </Vision>
 </Entity>

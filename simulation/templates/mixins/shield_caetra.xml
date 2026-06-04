@@ -4,7 +4,7 @@
     <Entity>
       <Damage>
       <Crush op="add">1</Crush>
-      <Hack op="add">1</Hack>
+      <Hack op="add">0.5</Hack>
       <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>
@@ -12,11 +12,11 @@
  <Identity>
     <GenericName>Javelineer With shield</GenericName>
     <VisibleClasses datatype="tokens">Caetra</VisibleClasses>
-    <Tooltip>Caetra - small Iberian shield; +1 Pierce of reistance but 5% slower walk speed</Tooltip>
+    <Tooltip>Caetra - small Iberian shield; +1 Pierce/Crush reistance and +0.5 Hack but 4% slower walk speed and -0.5 acceleration</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.95</WalkSpeed>
-    <Acceleration op="add">2.5</Acceleration>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <Acceleration op="add">3</Acceleration>
   </UnitMotion>
 </Entity>
