@@ -10,15 +10,13 @@
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "-10% maximum population limit but all infantry +5% dmg (does not apply to mercanaries).",
+	"tooltip": "-10% maximum population limit but all Hoplites +5% dmg and access to Hoplite reforms p1.",
 	"modifications": [
 		{ "value": "Player/MaxPopulation", "multiply": 0.9 },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05},
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05},
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05},
-		{ "value": "Ranged/Melee/Damage/Crush", "multiply": 1.05},
-		{ "value": "Ranged/Melee/Damage/Hack", "multiply": 1.05},
-		{ "value": "Ranged/Melee/Damage/Pierce", "multiply": 1.05}
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoplite"},
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Hoplite"},
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Hoplite"}
+
 	
 	]
 }
