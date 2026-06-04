@@ -3,11 +3,10 @@
   <Attack>
     <Ranged>
       <Damage>
-        <Crush>10</Crush>
+        <Crush>40</Crush>
       </Damage>
       <Projectile>
-        <Spread>3</Spread>
-        <Count>4</Count>
+        <Spread>2</Spread>
       </Projectile>
       <MaxRange>60</MaxRange>
       <MinRange>20</MinRange>
@@ -17,9 +16,9 @@
       <Splash>
         <Shape>Circular</Shape>
         <Range>4</Range>
-        <FriendlyFire>false</FriendlyFire>
+        <FriendlyFire>true</FriendlyFire>
         <Damage>
-          <Crush>50</Crush>
+          <Crush>160</Crush>
         </Damage>
       </Splash>
     </Ranged>
@@ -55,6 +54,6 @@
     </Foundation>
   </Resistance>
   <Vision>
-    <Range>95</Range>
+    <Range>80</Range>
   </Vision>
 </Entity>
