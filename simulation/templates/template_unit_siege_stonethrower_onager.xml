@@ -3,13 +3,13 @@
   <Attack>
     <Ranged>
       <Damage>
-        <Crush>10</Crush>
+        <Crush>15</Crush>
       </Damage>
       <Projectile>
         <Spread>3</Spread>
         <Count>4</Count>
       </Projectile>
-      <MaxRange>60</MaxRange>
+      <MaxRange>75</MaxRange>
       <MinRange>20</MinRange>
       <PrepareTime>1000</PrepareTime>
       <RepeatTime>5000</RepeatTime>
@@ -19,7 +19,7 @@
         <Range>4</Range>
         <FriendlyFire>false</FriendlyFire>
         <Damage>
-          <Crush>50</Crush>
+          <Crush>5</Crush>
         </Damage>
       </Splash>
     </Ranged>

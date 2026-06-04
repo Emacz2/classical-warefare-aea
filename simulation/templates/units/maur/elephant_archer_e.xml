@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="units/maur/elephant_archer_a">
-    <BuildingAI>
-    <DefaultArrowCount>3</DefaultArrowCount>
-    <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
-    <MaxArrowCount>3</MaxArrowCount>
-    <GarrisonArrowClasses>Infantry Archer</GarrisonArrowClasses>
-  </BuildingAI>
-  <Attack>
+   <Attack>
     <Ranged>
+      <AttackName>SimpleBow</AttackName>
       <Damage>
-        <Pierce op="mul">0.55</Pierce>
+          <Pierce op="mul">0.4</Pierce>
       </Damage>
+      <Projectile>
+         <Count>3</Count>
+      </Projectile>
+      <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Ranged>
   </Attack>
   <Identity>
