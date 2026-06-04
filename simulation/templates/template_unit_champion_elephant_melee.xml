@@ -6,19 +6,19 @@
       <AttackName>Trunk</AttackName>
       <Damage>
         <Hack>25</Hack>
-        <Crush>35</Crush>
+        <Crush>40</Crush>
       </Damage>
       <Splash>
         <Shape>Circular</Shape>
         <Range>2</Range>
         <FriendlyFire>false</FriendlyFire>
         <Damage>
-          <Crush>20</Crush>
+          <Crush>25</Crush>
         </Damage>
       </Splash>
       <MaxRange>5</MaxRange>
       <PrepareTime>750</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <RepeatTime>2200</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Structure</Classes>

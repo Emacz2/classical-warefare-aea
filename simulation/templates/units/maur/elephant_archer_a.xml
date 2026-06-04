@@ -15,7 +15,6 @@
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Ranged>
   </Attack>
-    </Attack>
   <Promotion>
     <Entity>units/maur/elephant_archer_e</Entity>
   </Promotion>
