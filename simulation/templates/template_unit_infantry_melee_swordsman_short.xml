@@ -4,12 +4,13 @@
     <Melee>
       <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
      <Damage>
-        <Hack>5.9</Hack>
-        <Pierce>3.2</Pierce>
+        <Hack>5.5</Hack>
+        <Pierce>3</Pierce>
       </Damage>
-      <MaxRange>2.75</MaxRange>
+      <MaxRange>2</MaxRange>
+      <MinRange>0.5</MinRange>
       <PrepareTime>550</PrepareTime>
-      <RepeatTime>1100</RepeatTime>
+      <RepeatTime>900</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Ranged Infantry</Classes>
@@ -25,11 +26,10 @@
       </Bonuses>
     </Melee>
   </Attack>
-  <Resistance>
+    <Resistance>
     <Entity>
       <Damage>
-        <Hack op="add">1.5</Hack>
-        <Pierce op="add">1</Pierce>
+        <Hack op="add">0.5</Hack>
       </Damage>
     </Entity>
   </Resistance>
@@ -39,9 +39,9 @@
       <metal>15</metal>
     </Resources>
   </Cost>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.9</WalkSpeed>
-    <Acceleration op="mul">0.9</Acceleration>
+    <UnitMotion>
+    <WalkSpeed op="mul">1.02</WalkSpeed>
+    <Acceleration op="add">1</Acceleration>
   </UnitMotion>
   <Identity>
     <VisibleClasses datatype="tokens">Swordsman</VisibleClasses>

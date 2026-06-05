@@ -5,9 +5,10 @@
       <AttackName>Sling</AttackName>
       <Damage>
         <Crush>4.5</Crush>
-        <Pierce>2.7</Pierce>
+        <Pierce>2.5</Pierce>
       </Damage>
       <MaxRange>50</MaxRange>
+      <MinRange>15</MinRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1200</RepeatTime>
       <Projectile>
@@ -23,8 +24,9 @@
   </Resistance>
   <Cost>
     <Resources>
+      <food op="add">15</food>
       <stone>25</stone>
-      <wood>25</wood>
+      <wood>10</wood>
     </Resources>
   </Cost>
   <Identity>
