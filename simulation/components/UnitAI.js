@@ -6307,30 +6307,56 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 	let bestPref;
 	const targets = [];
 	let pref;
-	for (const v of entities)
-	{
-		if (this.CanAttack(v) && attackfilter(v))
-		{
-			pref = cmpAttack.GetPreference(v);
-			if (pref === 0)
-			{
-				attack(v);
-				return true;
-			}
-			targets.push(v);
-		}
-		prefs[v] = pref;
-		if (pref !== undefined && (bestPref === undefined || pref < bestPref))
-			bestPref = pref;
-	}
+const perfectTargets = [];
 
-	for (const targ of targets)
-	{
-		if (prefs[targ] !== bestPref)
-			continue;
-		attack(targ);
-		return true;
-	}
+for (const v of entities)
+{
+    if (this.CanAttack(v) && attackfilter(v))
+    {
+        pref = cmpAttack.GetPreference(v);
+
+        if (pref === 0)
+        {
+            perfectTargets.push(v);
+            continue;
+        }
+
+        targets.push(v);
+        prefs[v] = pref;
+
+        if (pref !== undefined &&
+            (bestPref === undefined || pref < bestPref))
+            bestPref = pref;
+    }
+}
+
+if (perfectTargets.length)
+{
+    attack(
+        perfectTargets[
+            randIntInclusive(0, perfectTargets.length - 1)
+        ]
+    );
+    return true;
+}
+
+const bestTargets = [];
+
+for (const targ of targets)
+{
+    if (prefs[targ] === bestPref)
+        bestTargets.push(targ);
+}
+
+if (bestTargets.length)
+{
+    attack(
+        bestTargets[
+            randIntInclusive(0, bestTargets.length - 1)
+        ]
+    );
+    return true;
+}
 
 	// healers on a walk-and-fight order should heal injured units
 	if (this.IsHealer())
