@@ -5,16 +5,16 @@
       <AttackName>Spear</AttackName>
       <Damage>
         <Hack>5</Hack>
-        <Pierce>13.5</Pierce>
+        <Pierce>14</Pierce>
       </Damage>
-      <MaxRange>4.5</MaxRange>
-      <MinRange>1.5</MinRange>
-      <PrepareTime>750</PrepareTime>
-      <RepeatTime>2200</RepeatTime>
+      <MaxRange>5</MaxRange>
+      <MinRange>2</MinRange>
+      <PrepareTime>700</PrepareTime>
+      <RepeatTime>2400</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2</Multiplier>
+          <Multiplier>2x vs Cavalry</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -26,13 +26,11 @@
     </Resources>
   </Cost>
   <Identity>
-    <GenericName>Spearman</GenericName>
-    <Tooltip>Counters: 2× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
+    <GenericName>Heavy Spearman</GenericName>
+    <Tooltip>Counters: 2 × vs Cavalry.</Tooltip>
+    <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
-  </UnitMotion>
+<UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/spear_attack.xml</attack_melee>

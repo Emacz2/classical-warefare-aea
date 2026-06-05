@@ -2,13 +2,14 @@
 <Entity parent="template_unit_infantry_melee">
   <Attack>
     <Melee>
-      <AttackName>Axe</AttackName>
+       <AttackName>Axe</AttackName>
       <Damage>
-        <Crush>8</Crush>
-        <Hack>11</Hack>
-        <Pierce>1</Pierce>
+        <Crush>7.5</Crush>
+        <Hack>10</Hack>
+        <Pierce>0.5</Pierce>
       </Damage>
       <MaxRange>2.5</MaxRange>
+      <MinRange>0.5</MinRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>2000</RepeatTime>
       <Bonuses>

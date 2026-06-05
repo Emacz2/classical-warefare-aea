@@ -4,13 +4,13 @@
     <Melee>
       <AttackName>Spear</AttackName>
       <Damage>
-        <Hack>5</Hack>
-        <Pierce>13.5</Pierce>
+        <Hack>4</Hack>
+        <Pierce>13</Pierce>
       </Damage>
-      <MaxRange>4.5</MaxRange>
-      <MinRange>1.5</MinRange>
-      <PrepareTime>750</PrepareTime>
-      <RepeatTime>2200</RepeatTime>
+      <MaxRange>4</MaxRange>
+      <MinRange>1</MinRange>
+      <PrepareTime>300</PrepareTime>
+      <RepeatTime>2000</RepeatTime>
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
@@ -27,12 +27,9 @@
   </Cost>
   <Identity>
     <GenericName>Spearman</GenericName>
-    <Tooltip>Counters: 2× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
+    <Tooltip>Counters: 2 × vs Cavalry. Light infantry spearman, without a shield</Tooltip>
+    <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/spear_attack.xml</attack_melee>
