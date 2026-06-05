@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_siege_boltshooter">
+  <Attack>
+    <Ranged>
+      <Damage>
+        <Pierce op="mul">0.55</Pierce>
+      </Damage>
+      <RepeatTime op="mul">0.5</RepeatTime>
+      <Splash>
+        <Damage>
+          <Pierce op="mul">0.55</Pierce>
+        </Damage>
+      </Splash>
+    </Ranged>
+  </Attack>
+  <Identity>
+    <Civ>ptol</Civ>
+    <SpecificName>Polybolos</SpecificName>
+    <Icon>units/hele/siege_oxybeles_packed.png</Icon>
+  </Identity>
+  <Pack>
+    <Entity>units/ptol/siege_polybolos_unpacked</Entity>
+    <State>packed</State>
+  </Pack>
+  <VisualActor>
+    <Actor>units/ptolemies/siege_spear_packed.xml</Actor>
+  </VisualActor>
+</Entity>
