@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+<Attack>
+    <Melee>
+     <Damage>
+        <Pierce op="add">0.5</Pierce>
+      </Damage>
+      <MaxRange  op="add">0.5</MaxRange>
+      <MinRange  op="add">0.5</MinRange>
+      <RepeatTime  op="add">200</RepeatTime>
+    </Melee>
+  </Attack>
+  <Identity>
+    <GenericName>Long spear</GenericName>
+  </Identity>
+</Entity>

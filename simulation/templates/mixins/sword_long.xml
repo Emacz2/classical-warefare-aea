@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+<Attack>
+    <Melee>
+      <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
+     <Damage>
+        <Pierce op="add">1</Pierce>
+      </Damage>
+      <MaxRange  op="add">0.5</MaxRange>
+      <MinRange  op="add">0.5</MinRange>
+      <RepeatTime  op="add">100</RepeatTime>
+    </Melee>
+  </Attack>
+  <Cost>
+    <Resources>
+      <wood op="add">-10</wood>
+      <metal op="add">10</metal>
+    </Resources>
+  </Cost>
+  <Identity>
+    <GenericName>Long sword</GenericName>
+  </Identity>
+</Entity>
