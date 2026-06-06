@@ -4,10 +4,11 @@
     <Melee>
       <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
        <Damage>
-        <Hack>7.7</Hack>
+        <Hack>6.6</Hack>
         <Pierce>3.3</Pierce>
       </Damage>
-      <MaxRange>3.5</MaxRange>
+      <MaxRange>3</MaxRange>
+      <MinRange>1</MinRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1100</RepeatTime>
       <Bonuses>

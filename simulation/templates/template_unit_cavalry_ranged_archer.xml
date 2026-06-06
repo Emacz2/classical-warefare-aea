@@ -4,9 +4,10 @@
     <Ranged>
       <AttackName>CompositeBow</AttackName>
       <Damage>
-        <Pierce>7.1</Pierce>
+        <Pierce>5.5</Pierce>
       </Damage>
-      <MaxRange>51.5</MaxRange>
+      <MaxRange>60</MaxRange>
+      <MinRange>15</MinRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1000</RepeatTime>
       <Projectile>

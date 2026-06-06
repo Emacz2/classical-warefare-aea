@@ -99,7 +99,7 @@
     </SoundGroups>
   </Sound>
   <UnitMotion>
-    <WalkSpeed>8.1</WalkSpeed>
+    <WalkSpeed>8.4</WalkSpeed>
     <RunMultiplier>1.5</RunMultiplier>
     <Acceleration>30</Acceleration>
     <Weight>10</Weight>

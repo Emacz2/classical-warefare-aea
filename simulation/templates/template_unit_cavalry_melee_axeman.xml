@@ -3,12 +3,13 @@
   <Attack>
     <Melee>
       <AttackName>Axe</AttackName>
-      <Damage>
-        <Crush>8.8</Crush>
-        <Hack>12.1</Hack>
-        <Pierce>1.1</Pierce>
+     <Damage>
+        <Crush>8.3</Crush>
+        <Hack>11</Hack>
+        <Pierce>0.7</Pierce>
       </Damage>
       <MaxRange>3</MaxRange>
+      <MinRange>1</MinRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>2200</RepeatTime>
        <Bonuses>

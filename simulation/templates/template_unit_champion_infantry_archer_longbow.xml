@@ -3,10 +3,11 @@
   <Attack>
     <Ranged>
       <AttackName>LongBow</AttackName>
-      <Damage>
-        <Pierce>12.5</Pierce>
+    <Damage>
+        <Pierce>12.8</Pierce>
       </Damage>
       <MaxRange>60</MaxRange>
+      <MinRange>20</MinRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1500</RepeatTime>
       <Projectile>
