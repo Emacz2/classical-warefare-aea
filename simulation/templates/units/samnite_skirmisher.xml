@@ -21,7 +21,7 @@
     </Entity>
   </Resistance>
     <Health>
-    <Max op="add">25</Max>
+    <Max op="add">15</Max>
   </Health>
   <Promotion disable=""/>
   <VisualActor>

@@ -3,11 +3,12 @@
   <Attack>
     <Melee>
       <AttackName>Spear</AttackName>
-      <Damage>
-        <Hack>10</Hack>
-        <Pierce>24.5</Pierce>
+       <Damage>
+        <Hack>8.5</Hack>
+        <Pierce>22.5</Pierce>
       </Damage>
-      <MaxRange>5.5</MaxRange>
+      <MaxRange>5</MaxRange>
+      <MinRange>2</MinRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>2500</RepeatTime>
       <Bonuses>

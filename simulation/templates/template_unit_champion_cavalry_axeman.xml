@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_champion_cavalry_melee">
   <Attack>
+  <Damage>
     <Melee>
       <AttackName>Axe</AttackName>
-      <Damage>
-        <Crush>11</Crush>
-        <Hack>20</Hack>
-        <Pierce>2</Pierce>
+        <Crush>12.5</Crush>
+        <Hack>16.5</Hack>
+        <Pierce>1</Pierce>
       </Damage>
-     <MaxRange>3</MaxRange>
-      <PrepareTime>300</PrepareTime>
-      <RepeatTime>2250</RepeatTime>
+      <MaxRange>3</MaxRange>
+      <MinRange>1</MinRange>
+      <PrepareTime>500</PrepareTime>
+      <RepeatTime>2200</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Siege</Classes>
