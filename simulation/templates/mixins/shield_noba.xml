@@ -3,16 +3,19 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1</Crush>
+      <Crush op="add">0.5</Crush>
       <Hack op="add">0.5</Hack>
-      <Pierce op="add">1</Pierce>
+      <Pierce op="add">0.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
-    <GenericName>Javelineer With shield</GenericName>
+    <GenericName>Round animal hide shield</GenericName>
     <VisibleClasses datatype="tokens">Caetra</VisibleClasses>
-    <Tooltip>Noba - small round shield; +1 Pierce/Crush reistance and +0.5 Hack</Tooltip>
+    <Tooltip>Noba - small round shield; +0.5 of each resistance</Tooltip>
     <History>Small round or slightly oval shields ~45-65 cm made from thick hide.</History>
   </Identity>
+    <UnitMotion>
+    <WalkSpeed op="mul">0.99</WalkSpeed>
+  </UnitMotion>
 </Entity>

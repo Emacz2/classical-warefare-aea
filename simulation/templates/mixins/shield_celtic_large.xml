@@ -4,15 +4,15 @@
     <Entity>
       <Damage>
       <Crush op="add">1</Crush>
-      <Hack op="add">1</Hack>
+      <Hack op="add">1.5</Hack>
       <Pierce op="add">1.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
-    <GenericName>Celtic</GenericName>
-    <VisibleClasses datatype="tokens">Celtic</VisibleClasses>
-    <Tooltip>+1 Crush/Hack resistance and +1 peirce but 4% slower walk speed and -3 acceleration</Tooltip>
+    <GenericName>Celtic Large</GenericName>
+    <VisibleClasses datatype="tokens">Celtic Large</VisibleClasses>
+    <Tooltip> +1.5 Pierce/Hack and +1 Crush reistance but 4% slower walk speed and -3 acceleration</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
