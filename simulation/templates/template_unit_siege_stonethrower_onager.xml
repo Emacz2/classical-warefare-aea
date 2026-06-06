@@ -7,7 +7,6 @@
       </Damage>
       <Projectile>
         <Spread>3</Spread>
-        <Count>4</Count>
       </Projectile>
       <MaxRange>75</MaxRange>
       <MinRange>20</MinRange>
