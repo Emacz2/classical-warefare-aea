@@ -10,7 +10,7 @@
     <SpecificName>Šūq</SpecificName>
     <VisibleClasses datatype="tokens">Village -Town</VisibleClasses>
       <Requirements>
-      <Techs datatype="tokens">-phase_town -phase_city</Techs>
+      <Techs datatype="tokens">-phase_town</Techs>
     </Requirements>
   </Identity>
      <Trainer>
