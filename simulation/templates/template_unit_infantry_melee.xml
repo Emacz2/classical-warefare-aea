@@ -11,7 +11,7 @@
     <VisibleClasses datatype="tokens">Melee Charge</VisibleClasses>
   </Identity>
   <Loot>
-    <xp>150</xp>
+    <xp>75</xp>
     <wood>20</wood>
     <stone>10</stone>
     <metal>10</metal>
@@ -19,9 +19,9 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush>1.5</Crush>
-        <Hack>2.5</Hack>
-        <Pierce>3</Pierce>
+        <Crush>1</Crush>
+        <Hack>2</Hack>
+        <Pierce>2.5</Pierce>
       </Damage>
        <ApplyStatus>
         <Burning>

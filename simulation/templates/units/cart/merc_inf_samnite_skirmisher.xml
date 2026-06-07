@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/samnite_skirmisher">
+<Entity parent="shield_peltast|units/samnite_skirmisher">
   <Identity>
     <Rank>Advanced</Rank>
     <SelectionGroupName>units/cart/merc_inf_samnite_skirmisher</SelectionGroupName>

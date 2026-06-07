@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="hoplite|template_unit_infantry_melee_spearman">
+<Entity parent="hoplite|shield_aspis|template_unit_infantry_melee_spearman">
   <Auras datatype="tokens">
     -units/phalanx
     units/deep_phalanx

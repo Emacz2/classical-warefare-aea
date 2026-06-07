@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/samnite_spearman">
+<Entity parent="shield_aspis|units/samnite_spearman">
   <Identity>
     <Rank>Advanced</Rank>
     <SelectionGroupName>units/cart/merc_inf_samnite_spearman</SelectionGroupName>
