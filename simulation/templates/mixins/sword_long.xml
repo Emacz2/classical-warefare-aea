@@ -2,9 +2,18 @@
 <Entity>
 <Attack>
     <Melee>
-      <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
+    <ApplyStatus>
+        <Bleeding>
+          <Interval>1000</Interval>
+          <Damage>
+            <Bleeding>0.5</Bleeding>
+          </Damage>
+          <Stackability>Extend</Stackability>
+          <Duration>9000</Duration>
+        </Bleeding>
+      </ApplyStatus>
      <Damage>
-        <Pierce op="add">1</Pierce>
+        <Pierce op="add">-2</Pierce>
       </Damage>
       <MaxRange  op="add">0.5</MaxRange>
       <MinRange  op="add">0.5</MinRange>
