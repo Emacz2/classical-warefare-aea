@@ -26,6 +26,10 @@
       <metal op="add">10</metal>
     </Resources>
   </Cost>
+  <UnitMotion>
+  <WalkSpeed op="mul">0.97</WalkSpeed>
+  <Acceleration op="add">-2.5</Acceleration>
+  </UnitMotion>
   <Identity>
     <GenericName>Long sword</GenericName>
   </Identity>

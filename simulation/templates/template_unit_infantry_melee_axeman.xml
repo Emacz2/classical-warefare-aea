@@ -40,6 +40,9 @@
       </Damage>
     </Entity>
   </Resistance>
+  <UnitMotion>
+    <WalkSpeed op="mul">0.86</WalkSpeed>
+  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>

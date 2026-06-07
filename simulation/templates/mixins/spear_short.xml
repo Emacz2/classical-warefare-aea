@@ -11,6 +11,10 @@
       <RepeatTime  op="add">-200</RepeatTime>
     </Melee>
   </Attack>
+  <UnitMotion>
+  <WalkSpeed op="mul">1.05</WalkSpeed>
+  <Acceleration op="add">+5</Acceleration>
+  </UnitMotion>
   <Identity>
     <GenericName>Short spear</GenericName>
   </Identity>

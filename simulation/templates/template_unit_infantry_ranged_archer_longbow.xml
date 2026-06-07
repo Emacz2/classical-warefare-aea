@@ -37,7 +37,9 @@
     <VisibleClasses datatype="tokens">Archer</VisibleClasses>
     <GenericName>Longbow Archer</GenericName>
   </Identity>
-  <UnitMotion>
+ <UnitMotion>
+    <WalkSpeed op="mul">0.93</WalkSpeed>
+    <Acceleration op="add">-2.5</Acceleration>
   </UnitMotion>
   <Sound>
     <SoundGroups>

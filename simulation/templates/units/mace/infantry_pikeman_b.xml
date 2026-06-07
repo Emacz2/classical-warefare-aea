@@ -10,9 +10,6 @@
       special/formations/phalanx
     </Formations>
   </UnitAI>
-   <Auras datatype="tokens">
-    units/phalanx
-  </Auras>
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>

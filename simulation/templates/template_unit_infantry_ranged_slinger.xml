@@ -38,9 +38,6 @@
       <attack_ranged>attack/weapon/sling_attack.xml</attack_ranged>
     </SoundGroups>
   </Sound>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
-  </UnitMotion>
   <Vision>
     <Range>65</Range>
   </Vision>

@@ -10,6 +10,10 @@
       <RepeatTime  op="add">200</RepeatTime>
     </Melee>
   </Attack>
+  <UnitMotion>
+  <WalkSpeed op="mul">0.97</WalkSpeed>
+  <Acceleration op="add">-2.5</Acceleration>
+  </UnitMotion>
   <Identity>
     <GenericName>Long spear</GenericName>
   </Identity>

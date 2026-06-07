@@ -11,6 +11,10 @@
       <RepeatTime  op="add">-100</RepeatTime>
     </Melee>
   </Attack>
+   <UnitMotion>
+  <WalkSpeed op="mul">1.05</WalkSpeed>
+  <Acceleration op="add">2.5</Acceleration>
+  </UnitMotion>
   <Identity>
     <GenericName>Short sword</GenericName>
   </Identity>

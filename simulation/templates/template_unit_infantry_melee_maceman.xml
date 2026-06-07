@@ -31,8 +31,8 @@
     <VisibleClasses datatype="tokens">Maceman</VisibleClasses>
     <Tooltip>Counters: 1.5× vs Melee Infantry.</Tooltip>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.03</WalkSpeed>
+   <UnitMotion>
+    <WalkSpeed op="mul">0.86</WalkSpeed>
   </UnitMotion>
   <Sound>
     <SoundGroups>
