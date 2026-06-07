@@ -38,7 +38,7 @@
     <GenericName>Archer</GenericName>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">1.04</WalkSpeed>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="add">2.5</Acceleration>
   </UnitMotion>
   <Sound>
