@@ -452,6 +452,49 @@ UnitAI.prototype.UnitFsmSpec = {
 		return ACCEPT_ORDER;
 	},
 
+        /* classical warefare aea */
+	"Order.ChargeAttack": function(msg) {
+		const type = this.GetBestAttackAgainst(msg.data.target, msg.data.allowCapture);
+		if (!type)
+			return this.FinishOrder();
+
+		msg.data.attackType = type;
+
+		this.RememberTargetPosition();
+		if (msg.data.hunting && this.orderQueue.length > 1 && this.orderQueue[1].type === "Gather")
+			this.RememberTargetPosition(this.orderQueue[1].data);
+
+		if (this.CheckTargetAttackRange(msg.data.target, msg.data.attackType))
+		{
+			if (this.CanUnpack())
+			{
+				this.PushOrderFront("Unpack", { "force": true });
+				return ACCEPT_ORDER;
+			}
+
+			// Cancel any current packing order.
+			if (this.EnsureCorrectPackStateForAttack(false))
+				this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
+
+			return ACCEPT_ORDER;
+		}
+
+		// If we're hunting, that's a special case where we should continue attacking our target.
+		if (this.GetStance().respondStandGround && !msg.data.force && !msg.data.hunting || !this.AbleToMove())
+			return this.FinishOrder();
+
+		if (this.CanPack())
+		{
+			this.PushOrderFront("Pack", { "force": true });
+			return ACCEPT_ORDER;
+		}
+
+		// If we're currently packing/unpacking, make sure we are packed, so we can move.
+		if (this.EnsureCorrectPackStateForAttack(true))
+			this.SetNextState("INDIVIDUAL.COMBAT.CHARGING");
+		return ACCEPT_ORDER;
+	},
+
 	"Order.Patrol": function(msg) {
 		if (!this.AbleToMove())
 			return this.FinishOrder();
@@ -786,7 +829,7 @@ UnitAI.prototype.UnitFsmSpec = {
 				}
 				return this.FinishOrder();
 			}
-			this.CallMemberFunction("Attack", [target, msg.data.allowCapture, false]);
+			this.CallMemberFunction("ChargeAttack", [target, msg.data.allowCapture, false]);
 			const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
 			if (cmpAttack && cmpAttack.CanAttackAsFormation())
 				this.SetNextState("COMBAT.ATTACKING");
@@ -1294,7 +1337,7 @@ UnitAI.prototype.UnitFsmSpec = {
 					if (cmpTargetUnitAI && cmpTargetUnitAI.IsFormationMember())
 						target = cmpTargetUnitAI.GetFormationController();
 					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-					this.CallMemberFunction("Attack", [target, this.order.data.allowCapture, false]);
+					this.CallMemberFunction("ChargeAttack", [target, this.order.data.allowCapture, false]);
 					if (cmpAttack.CanAttackAsFormation())
 						this.SetNextState("COMBAT.ATTACKING");
 					else
@@ -2089,6 +2132,88 @@ UnitAI.prototype.UnitFsmSpec = {
 						this.SetAnimationVariant("combat");
 
 					this.StartTimer(1000, 1000);
+					return false;
+				},
+
+				"leave": function() {
+					this.StopMoving();
+					this.StopTimer();
+				},
+
+				"Timer": function(msg) {
+					if (this.ShouldAbandonChase(this.order.data.target, this.order.data.force, IID_Attack, this.order.data.attackType))
+					{
+						this.FinishOrder();
+
+						if (this.GetStance().respondHoldGround)
+							this.WalkToHeldPosition();
+					}
+					else
+					{
+						this.RememberTargetPosition();
+						if (this.order.data.hunting && this.orderQueue.length > 1 &&
+						     this.orderQueue[1].type === "Gather")
+							this.RememberTargetPosition(this.orderQueue[1].data);
+					}
+				},
+
+				"MovementUpdate": function(msg) {
+					if (msg.likelyFailure)
+					{
+						// This also handles hunting.
+						if (this.orderQueue.length > 1)
+						{
+							this.FinishOrder();
+							return;
+						}
+						else if (!this.order.data.force || !this.order.data.lastPos)
+						{
+							this.SetNextState("COMBAT.FINDINGNEWTARGET");
+							return;
+						}
+						// If the order was forced, try moving to the target position,
+						// under the assumption that this is desirable if the target
+						// was somewhat far away - we'll likely end up closer to where
+						// the player hoped we would.
+						const lastPos = this.order.data.lastPos;
+						this.PushOrder("WalkAndFight", {
+							"x": lastPos.x, "z": lastPos.z,
+							"force": false,
+						});
+						return;
+					}
+
+					if (this.CheckTargetAttackRange(this.order.data.target, this.order.data.attackType))
+					{
+						if (this.CanUnpack())
+						{
+							this.PushOrderFront("Unpack", { "force": true });
+							return;
+						}
+						this.SetNextState("ATTACKING");
+					}
+					else if (msg.likelySuccess)
+						// Try moving again,
+						// attack range uses a height-related formula and our actual max range might have changed.
+						if (!this.MoveToTargetAttackRange(this.order.data.target, this.order.data.attackType))
+							this.FinishOrder();
+				},
+			},
+
+                        /* classical warefare aea */
+			"CHARGING": {
+				"enter": function() {
+					if (!this.MoveToTargetAttackRange(this.order.data.target, this.order.data.attackType))
+					{
+						this.FinishOrder();
+						return true;
+					}
+
+					if (!this.formationAnimationVariant)
+						this.SetAnimationVariant("combat");
+
+					this.StartTimer(1000, 1000);
+                                        this.Run();
 					return false;
 				},
 
@@ -5586,6 +5711,43 @@ UnitAI.prototype.Attack = function(target, allowCapture = this.DEFAULT_CAPTURE, 
 	}
 
 	this.AddOrder("Attack", order, queued, pushFront);
+};
+
+/* classical warefare aea */
+UnitAI.prototype.ChargeAttack = function(target, allowCapture = this.DEFAULT_CAPTURE, queued = false, pushFront = false)
+{
+	if (!this.CanAttack(target))
+	{
+		// We don't want to let healers walk to the target unit so they can be easily killed.
+		// Instead we just let them get into healing range.
+		if (this.IsHealer())
+			this.WalkToTargetRange(target, IID_Heal, null, queued, pushFront);
+		else
+			this.WalkToTarget(target, queued, pushFront);
+		return;
+	}
+
+	const order = {
+		"target": target,
+		"force": true,
+		"allowCapture": allowCapture,
+	};
+
+	this.RememberTargetPosition(order);
+
+	if (this.order && this.order.type == "Attack" &&
+		this.order.data &&
+		this.order.data.target === order.target &&
+		this.order.data.allowCapture === order.allowCapture)
+	{
+		this.order.data.lastPos = order.lastPos;
+		this.order.data.force = order.force;
+		if (order.force)
+			this.orderQueue = [this.order];
+		return;
+	}
+
+	this.AddOrder("ChargeAttack", order, queued, pushFront);
 };
 
 /**
