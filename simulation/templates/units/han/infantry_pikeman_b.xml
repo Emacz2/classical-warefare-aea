@@ -15,7 +15,7 @@
       <Damage>
         <Crush op="add">2</Crush>
         <Hack op="add">2</Hack>
-        <Pierce op="add">-1.5</Piercek>
+        <Pierce op="add">-1.5</Pierce>
       </Damage>
       <MaxRange op="add">0.5</MaxRange>
       <Bonuses>
