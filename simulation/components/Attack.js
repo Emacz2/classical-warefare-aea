@@ -36,7 +36,7 @@ Attack.prototype.Schema =
 			"<RepeatTime>1000</RepeatTime>" +
 			"<Bonuses>" +
 				"<Bonus1>" +
-					"<Civ>pers</Civ>" +
+					"<Civ>achae</Civ>" +
 					"<Classes>Infantry</Classes>" +
 					"<Multiplier>1.5</Multiplier>" +
 				"</Bonus1>" +
@@ -380,7 +380,8 @@ Attack.prototype.GetBestAttackAgainst = function(target, allowCapture)
 		return "Slaughter";
 
 	const targetClasses = cmpIdentity.GetClassesList();
-	const getPreferrence = attackType => {
+	const getPreferrence = attackType =>
+	{
 		let pref = 0;
 		if (MatchesClassList(targetClasses, this.GetPreferredClasses(attackType)))
 			pref += 2;
@@ -389,7 +390,8 @@ Attack.prototype.GetBestAttackAgainst = function(target, allowCapture)
 		return pref;
 	};
 
-	return types.filter(type => this.CanAttack(target, [type])).sort((a, b) => {
+	return types.filter(type => this.CanAttack(target, [type])).sort((a, b) =>
+	{
 		const prefA = getPreferrence(a);
 		const prefB = getPreferrence(b);
 		return (types.indexOf(a) + (prefA > 0 ? prefA + types.length : 0)) -
@@ -468,7 +470,8 @@ Attack.prototype.GetAttackYOrigin = function(type)
 	return ApplyValueModificationsToEntity("Attack/" + type + "/Origin/Y", +this.template[type].Origin.Y, this.entity);
 };
 
-Attack.prototype.RepeatRangeCheck = function(type) {
+Attack.prototype.RepeatRangeCheck = function(type)
+{
 	if (!this.IsTargetInRange(this.target, type))
 		this.StopAttacking("OutOfRange");
 };
