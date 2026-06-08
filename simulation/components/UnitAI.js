@@ -1723,7 +1723,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 			"LosAttackRangeUpdate": function(msg) {
 				if (this.isIdle && msg && msg.data && msg.data.added && msg.data.added.length && this.GetStance().targetVisibleEnemies)
-					this.AttackEntitiesByPreference(msg.data.added);
+					this.AttackRandomEntityInRange(msg.data.added);
 			},
 
 			"Timer": function(msg) {
@@ -2019,7 +2019,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 				"LosAttackRangeUpdate": function(msg) {
 					if (this.GetStance().targetVisibleEnemies)
-						this.AttackEntitiesByPreference(msg.data.added);
+						this.AttackRandomEntityInRange(msg.data.added);
 				},
 
 				"Timer": function(msg) {
@@ -3494,7 +3494,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 			"LosAttackRangeUpdate": function(msg) {
 				if (msg && msg.data && msg.data.added && msg.data.added.length && this.GetStance().targetVisibleEnemies)
-					this.AttackEntitiesByPreference(msg.data.added);
+					this.AttackRandomEntityInRange(msg.data.added);
 			},
 
 			"Timer": function(msg) {
@@ -6205,7 +6205,14 @@ UnitAI.prototype.FindNewTargets = function()
 		return false;
 
 	const cmpRangeManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_RangeManager);
-	return this.AttackEntitiesByPreference(cmpRangeManager.ResetActiveQuery(this.losAttackRangeQuery));
+	const ents = cmpRangeManager.ResetActiveQuery(this.losAttackRangeQuery);
+
+	// Melee units pick the closest target; ranged use random selection.
+	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+	if (cmpAttack && cmpAttack.GetAttackTypes().every(t => t === "Melee"))
+		return this.AttackClosestEntityInRange(ents);
+
+	return this.AttackRandomEntityInRange(ents);
 };
 
 UnitAI.prototype.FindWalkAndFightTargets = function()
@@ -6619,6 +6626,85 @@ UnitAI.prototype.GetFacePointAfterMove = function()
 {
 	const cmpUnitMotion = Engine.QueryInterface(this.entity, IID_UnitMotion);
 	return cmpUnitMotion && cmpUnitMotion.GetFacePointAfterMove();
+};
+
+/**
+ * Attack a random valid target from the given entities.
+ * Used by LosAttackRangeUpdate call sites so units spread
+ * attacks unpredictably rather than always converging on
+ * the same preference-ordered target.
+ */
+UnitAI.prototype.AttackRandomEntityInRange = function(ents)
+{
+	if (!ents.length)
+		return false;
+
+	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+	if (!cmpAttack)
+		return false;
+
+	const validEnts = ents.filter(e => {
+		if (!cmpAttack.CanAttack(e))
+			return false;
+		const cmpOwnership = Engine.QueryInterface(e, IID_Ownership);
+		if (cmpOwnership && cmpOwnership.GetOwner() > 0)
+			return true;
+		const cmpUnitAI = Engine.QueryInterface(e, IID_UnitAI);
+		return cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal());
+	});
+
+	if (!validEnts.length)
+		return false;
+
+	const target = validEnts[randIntExclusive(0, validEnts.length)];
+	return this.RespondToTargetedEntities([target]);
+};
+
+/**
+ * Find and attack the closest valid enemy within attack range.
+ * Used by melee units to pick a reachable target rather than
+ * waiting on a blocked one.
+ */
+UnitAI.prototype.AttackClosestEntityInRange = function(ents)
+{
+	if (!ents.length)
+		return false;
+
+	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+	if (!cmpAttack)
+		return false;
+
+	const cmpPosition = Engine.QueryInterface(this.entity, IID_Position);
+	if (!cmpPosition || !cmpPosition.IsInWorld())
+		return false;
+
+	const selfPos = cmpPosition.GetPosition2D();
+
+	// Filter to valid targets then sort by distance
+	const validEnts = ents
+		.filter(e => {
+			if (!cmpAttack.CanAttack(e))
+				return false;
+			const cmpOwnership = Engine.QueryInterface(e, IID_Ownership);
+			if (cmpOwnership && cmpOwnership.GetOwner() > 0)
+				return true;
+			const cmpUnitAI = Engine.QueryInterface(e, IID_UnitAI);
+			return cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal());
+		})
+		.sort((a, b) => {
+			const posA = Engine.QueryInterface(a, IID_Position)?.GetPosition2D();
+			const posB = Engine.QueryInterface(b, IID_Position)?.GetPosition2D();
+			if (!posA) return 1;
+			if (!posB) return -1;
+			const distA = (posA.x - selfPos.x) ** 2 + (posA.y - selfPos.y) ** 2;
+			const distB = (posB.x - selfPos.x) ** 2 + (posB.y - selfPos.y) ** 2;
+			return distA - distB;
+		});
+
+	if (!validEnts.length)
+		return false;
+
+	return this.RespondToTargetedEntities([validEnts[0]]);
 };
 
 UnitAI.prototype.AttackEntitiesByPreference = function(ents)
