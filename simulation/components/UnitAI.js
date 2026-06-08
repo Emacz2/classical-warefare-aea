@@ -2354,6 +2354,16 @@ UnitAI.prototype.UnitFsmSpec = {
 				},
 
 				"OutOfRange": function() {
+					// If the target is fleeing and this is a melee unit, don't chase —
+					// find the next closest target instead.
+					const cmpTargetAI = Engine.QueryInterface(this.order.data.target, IID_UnitAI);
+					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+					const isMelee = cmpAttack && cmpAttack.GetAttackTypes().every(t => t === "Melee");
+					if (isMelee && cmpTargetAI && cmpTargetAI.IsFleeing())
+					{
+						this.SetNextState("FINDINGNEWTARGET");
+						return;
+					}
 					if (this.ShouldChaseTargetedEntity(this.order.data.target, this.order.data.force))
 					{
 						if (this.CanPack())
@@ -5225,6 +5235,9 @@ UnitAI.prototype.RespondToTargetedEntities = function(ents)
 
 	if (this.GetStance().respondFlee)
 	{
+		const cmpHealth = Engine.QueryInterface(this.entity, IID_Health);
+		if (!cmpHealth || cmpHealth.GetHitpoints() / cmpHealth.GetMaxHitpoints() > 0.25)
+			return false;
 		if (this.order && this.order.type == "Flee")
 			this.orderQueue.shift();
 		this.PushOrderFront("Flee", { "target": ents[0], "force": false });
