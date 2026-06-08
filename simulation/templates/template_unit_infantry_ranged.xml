@@ -30,10 +30,8 @@
     <metal>5</metal>
   </Loot>
     <UnitMotion>
-    <FormationController>false</FormationController>
-    <PassabilityClass>default</PassabilityClass>
-    <WalkSpeed>9.1</WalkSpeed>
-    <RunMultiplier>1.6</RunMultiplier>
+    <WalkSpeed>8.6</WalkSpeed>
+    <RunMultiplier>1.7</RunMultiplier>
     <Acceleration op="add">10</Acceleration>
     <Weight>10</Weight>
   </UnitMotion>

@@ -25,14 +25,6 @@
       <wood>50</wood>
     </Resources>
   </Cost>
-  <Resistance>
-    <Entity>
-      <Damage>
-       <Hack op="add">0.5</Hack>
-       <Pierce op="add">0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <GenericName>Infantry Crossbowman</GenericName>
     <VisibleClasses datatype="tokens">Crossbowman</VisibleClasses>
@@ -44,7 +36,7 @@
     </SoundGroups>
   </Sound>
 <UnitMotion>
-    <WalkSpeed op="mul">0.79</WalkSpeed>
+    <WalkSpeed op="mul">0.94</WalkSpeed>
     <Acceleration op="add">-5</Acceleration>
   </UnitMotion>
   <Vision>

@@ -26,20 +26,13 @@
       <metal>15</metal>
     </Resources>
   </Cost>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <VisibleClasses datatype="tokens">Swordsman</VisibleClasses>
     <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
     <GenericName>Swordsman</GenericName>
   </Identity>
   <UnitMotion>
-  <WalkSpeed op="mul">0.86</WalkSpeed>
+  <WalkSpeed op="mul">0.98</WalkSpeed>
   </UnitMotion>
   <Sound>
     <SoundGroups>

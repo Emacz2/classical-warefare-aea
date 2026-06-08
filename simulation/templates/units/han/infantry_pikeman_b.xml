@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="spear_long|template_unit_infantry_melee_spearman">
+<Entity parent="armor_medium|spear_long|template_unit_infantry_melee_spearman">
   <Auras datatype="tokens">
     units/han_scouttower
   </Auras>
@@ -13,7 +13,9 @@
     <Melee>
       <AttackName>Ji</AttackName>
       <Damage>
+        <Crush op="add">2</Crush>
         <Hack op="add">2</Hack>
+        <Pierce op="add">-1.5</Piercek>
       </Damage>
       <MaxRange op="add">0.5</MaxRange>
       <Bonuses>
@@ -25,17 +27,7 @@
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Melee>
   </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">0.5</Crush>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
     <Cost>
-    <BuildTime op="mul">1.1</BuildTime>
     <Resources>
       <wood op="add">-10</wood>
       <metal op="add">10</metal>
@@ -56,10 +48,6 @@
       special/formations/anti_cavalry
     </Formations>
   </UnitAI>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
-    <Acceleration op="mul">0.96</Acceleration>
-  </UnitMotion>
   <VisualActor>
     <Actor>units/han/infantry_halberdman_b.xml</Actor>
   </VisualActor>

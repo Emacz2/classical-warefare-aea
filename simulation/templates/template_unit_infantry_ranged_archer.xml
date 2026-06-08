@@ -26,17 +26,13 @@
       <wood>50</wood>
     </Resources>
   </Cost>
-  <Resistance>
-    <Entity>
-      <Damage>
-       <Hack op="add">0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <VisibleClasses datatype="tokens">Archer</VisibleClasses>
     <GenericName>Archer</GenericName>
   </Identity>
+  <UnitMotion>
+    <WalkSpeed op="mul">1.01</WalkSpeed>
+  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
