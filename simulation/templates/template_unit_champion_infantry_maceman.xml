@@ -24,9 +24,6 @@
     <GenericName>Champion Infantry Maceman</GenericName>
     <VisibleClasses datatype="tokens">Melee Maceman</VisibleClasses>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.03</WalkSpeed>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>

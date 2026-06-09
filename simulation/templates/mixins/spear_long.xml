@@ -11,8 +11,8 @@
     </Melee>
   </Attack>
   <UnitMotion>
-  <WalkSpeed op="mul">0.97</WalkSpeed>
-  <Acceleration op="add">-2.5</Acceleration>
+  <WalkSpeed op="mul">0.96</WalkSpeed>
+  <Acceleration op="add">-3</Acceleration>
   </UnitMotion>
   <Identity>
     <GenericName>Long spear</GenericName>

@@ -3,19 +3,18 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">0.5</Crush>
-      <Hack op="add">0.5</Hack>
-      <Pierce op="add">1</Pierce>
+      <Hack op="add">1</Hack>
+      <Pierce op="add">1.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
+    <UnitMotion>
+    <WalkSpeed op="mul">0.98</WalkSpeed>
+  </UnitMotion>
  <Identity>
     <GenericName>Round animal hide shield</GenericName>
     <VisibleClasses datatype="tokens">Caetra</VisibleClasses>
-    <Tooltip>Noba - small round shield; 1 Pierce and +0.5 Crush/Hack reistance but 1% slower walk speed</Tooltip>
+    <Tooltip>+1.5 pierce and +1 hack resitance but -2% walk speed</Tooltip>
     <History>Small round or slightly oval shields ~45-65 cm made from thick hide.</History>
   </Identity>
-    <UnitMotion>
-    <WalkSpeed op="mul">0.99</WalkSpeed>
-  </UnitMotion>
 </Entity>

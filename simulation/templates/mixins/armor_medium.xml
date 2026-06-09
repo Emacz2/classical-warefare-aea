@@ -11,10 +11,10 @@
   </Resistance>
  <Identity>
     <GenericName>Medium Armor</GenericName>
-    <Tooltip>+2.5 Hack, 2 Pierce and 1.5 Crush resitance but -5% slower walk speed</Tooltip>
+    <Tooltip>+2.5 Hack, 2 Pierce and 1.5 Crush resitance but -4% slower walk speed</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.95</WalkSpeed>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
   </UnitMotion>
 </Entity>

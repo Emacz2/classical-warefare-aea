@@ -8,22 +8,18 @@
     <Max>225</Max>
   </Health>
       <Loot>
-    <xp>225</xp>
+    <xp>115</xp>
     <metal>30</metal>
     <wood>15</wood>
   </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush>3</Crush> 
-        <Hack>5</Hack>
-        <Pierce>6</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
+  <UnitMotion>
+    <WalkSpeed>8.7</WalkSpeed>
+    <RunMultiplier>1.6</RunMultiplier>
+    <Acceleration op="add">5</Acceleration>
+    </UnitMotion>
   <Selectable>
     <Overlay>
       <Texture>

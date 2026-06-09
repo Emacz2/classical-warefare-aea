@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_archer">
+<Entity parent="armor_light|template_unit_champion_infantry_archer">
   <Cost>
     <Resources>
       <food>50</food>
       <wood>50</wood>
-      <metal>100</metal>
+      <metal>50</metal>
     </Resources>
   </Cost>
   <Health>
@@ -20,8 +20,4 @@
   <VisualActor>
     <Actor>units/mauryas/infantry_archer_c.xml</Actor>
   </VisualActor>
-  <UnitMotion>
-    <WalkSpeed op="add">2.0</WalkSpeed>
-    <Acceleration op="add">15.0</Acceleration>
-  </UnitMotion>
 </Entity>

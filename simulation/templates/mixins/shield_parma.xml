@@ -4,19 +4,19 @@
     <Entity>
       <Damage>
       <Crush op="add">1</Crush>
-      <Hack op="add">1</Hack>
-      <Pierce op="add">1</Pierce>
+      <Hack op="add">2.5</Hack>
+      <Pierce op="add">3</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
     <GenericName>Skirmisher</GenericName>
     <VisibleClasses datatype="tokens">Parma</VisibleClasses>
-    <Tooltip>Parma- small round sound; +1 of each reistance but 6% slower walk speed and -1 acceleration</Tooltip>
+    <Tooltip>Parma- small round sound; +3 pierce, +2.5 hack and +1 crush resitance but -4% walk and -2 accleration</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.97</WalkSpeed>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
     <Acceleration op="add">-2</Acceleration>
   </UnitMotion>
 </Entity>

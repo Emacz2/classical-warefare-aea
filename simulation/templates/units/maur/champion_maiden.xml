@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_swordsman">
+<Entity parent="armor_light|shield_caetra_light|template_unit_champion_infantry_swordsman">
   <Cost>
     <Resources>
       <food>100</food>
       <wood>0</wood>
-      <metal>100</metal>
+      <metal>50</metal>
     </Resources>
   </Cost>
   <Health>
@@ -18,18 +18,7 @@
     <SelectionGroupName>units/maur/champion_maiden</SelectionGroupName>
     <Icon>units/maur/champion_maiden.png</Icon>
   </Identity>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-1</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
   <VisualActor>
     <Actor>units/mauryas/infantry_swordsman_c.xml</Actor>
   </VisualActor>
-  <UnitMotion>
-    <WalkSpeed op="add">2.2</WalkSpeed>
-    <Acceleration op="add">15.0</Acceleration>
-  </UnitMotion>
 </Entity>

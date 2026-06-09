@@ -5,16 +5,16 @@
       <Damage>
       <Crush op="add">3</Crush>
       <Hack op="add">4</Hack>
-      <Pierce op="add">3</Pierce>
+      <Pierce op="add">4</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
     <GenericName>Heavy Armor</GenericName>
-    <Tooltip>4 Hack and 3 Crush/Pierce resistance -10% slower walk speed</Tooltip>
+    <Tooltip>4 Hack/Pierce 3 Crush resistance -6% slower walk speed</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.9</WalkSpeed>
+    <WalkSpeed op="mul">0.94</WalkSpeed>
   </UnitMotion>
 </Entity>

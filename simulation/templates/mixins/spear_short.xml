@@ -12,7 +12,7 @@
     </Melee>
   </Attack>
   <UnitMotion>
-  <WalkSpeed op="mul">1.05</WalkSpeed>
+  <WalkSpeed op="mul">1.08</WalkSpeed>
   <Acceleration op="add">+5</Acceleration>
   </UnitMotion>
   <Identity>

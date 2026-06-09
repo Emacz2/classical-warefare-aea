@@ -3,20 +3,20 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1.5</Crush>
-      <Hack op="add">1.5</Hack>
-      <Pierce op="add">1.5</Pierce>
+      <Crush op="add">3</Crush>
+      <Hack op="add">4.5</Hack>
+      <Pierce op="add">5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
     <GenericName>Aspis</GenericName>
     <VisibleClasses datatype="tokens">Aspis</VisibleClasses>
-    <Tooltip> +1.5 of each reistance but 4% slower walk speed and -3 acceleration</Tooltip>
+    <Tooltip>+5 pierce, +4.5 hack and + 3 crush resistances but -7% walk speed and -3 acceleration</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <WalkSpeed op="mul">0.93</WalkSpeed>
     <Acceleration op="add">-3</Acceleration>
   </UnitMotion>
 </Entity>

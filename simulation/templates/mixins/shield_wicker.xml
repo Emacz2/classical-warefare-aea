@@ -3,15 +3,18 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">0.5</Crush>
-      <Pierce op="add">0.5</Pierce>
+      <Hack op="add">1</Hack>
+      <Pierce op="add">1.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
+   <UnitMotion>
+    <WalkSpeed op="mul">0.98</WalkSpeed>
+  </UnitMotion>
  <Identity>
     <GenericName>Wicker Shield</GenericName>
     <VisibleClasses datatype="tokens">Skrimisher</VisibleClasses>
-    <Tooltip>+0.5 Crush/Pierce resistance</Tooltip>
+    <Tooltip>+1.5 pierce and +1 hack resitance but -2% walk speed</Tooltip>
     <History></History>
   </Identity>
 </Entity>

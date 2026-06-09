@@ -11,10 +11,10 @@
   </Resistance>
  <Identity>
     <GenericName>Light Armor</GenericName>
-    <Tooltip>+1 of each resistance but -3% walk speed</Tooltip>
+    <Tooltip>+1 of each resistance but -2% walk speed</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.97</WalkSpeed>
+    <WalkSpeed op="mul">0.98</WalkSpeed>
   </UnitMotion>
 </Entity>

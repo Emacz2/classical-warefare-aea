@@ -4,19 +4,19 @@
     <Entity>
       <Damage>
       <Crush op="add">1</Crush>
-      <Hack op="add">1.5</Hack>
-      <Pierce op="add">1</Pierce>
+      <Hack op="add">3</Hack>
+      <Pierce op="add">4</Pierce>
       </Damage>
     </Entity>
   </Resistance>
     <UnitMotion>
-    <WalkSpeed op="mul">0.98</WalkSpeed>
-    <Acceleration op="add">-1</Acceleration>
+    <WalkSpeed op="mul">0.95</WalkSpeed>
+    <Acceleration op="add">-2</Acceleration>
   </UnitMotion>
  <Identity>
     <GenericName>Sparabara</GenericName>
     <VisibleClasses datatype="tokens">Light infantry</VisibleClasses>
-    <Tooltip>1.5 Hack resistance and +1 Crush/Pierce Resistance but -2% walk speed and -1 acceleration</Tooltip>
+    <Tooltip>+4 Pierce, +3 Hack and +1 Crush resistance but -5% walk and -2 acceleration</Tooltip>
     <History>woven wicker or cane, sometimes wood frame with leather facing</History>
   </Identity>
 </Entity>

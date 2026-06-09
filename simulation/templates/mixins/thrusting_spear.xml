@@ -10,20 +10,12 @@
       <RepeatTime op="add">-700</RepeatTime>
     </Melee>
   </Attack>
-    <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">-1</Crush>
-        <Hack op="add">-2</Hack>
-        <Pierce op="add">-2</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
- <UnitMotion>
-  <WalkSpeed op="mul">1.25</WalkSpeed>
- </UnitMotion>
+  <UnitMotion>
+  <WalkSpeed op="mul">1.08</WalkSpeed>
+  <Acceleration op="add">+5</Acceleration>
+  </UnitMotion>
   <Identity>
     <GenericName>Thrusting spearman</GenericName>
-    <Tooltip>7 tenths of a second faster repeat time and 25% faster walk speed but -0.5 range, only pierce dmg, 80% of regular spear, and -2 of each resistances</Tooltip>
+    <Tooltip>7 tenths of a second faster repeat time and 8% faster walk speed but -0.5 range, only pierce dmg, 80% of regular spear</Tooltip>
   </Identity>
 </Entity>

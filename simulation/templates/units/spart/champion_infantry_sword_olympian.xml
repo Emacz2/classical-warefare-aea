@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_swordsman">
-  <Attack>
-    <Melee>
-      <MaxRange>2.5</MaxRange>
-    </Melee>
-  </Attack>
-   <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">2.5</Hack>
-        <Pierce op="add">2.5</Pierce>
-	      <Crush op="add">3</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
+<Entity parent="armor_heavy|shield_aspis|template_unit_champion_infantry_swordsman">
  <Health>
     <Max>250</Max>
   </Health>
-  <UnitMotion>
-  <WalkSpeed>8.5</WalkSpeed>
- </UnitMotion>
  <Upgrade>
     <doru>
       <Entity>units/spart/champion_infantry_spear_olympian</Entity>

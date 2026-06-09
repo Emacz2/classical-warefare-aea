@@ -3,19 +3,19 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1</Crush>
-      <Hack op="add">1</Hack>
-      <Pierce op="add">1.5</Pierce>
+      <Crush op="add">1.5</Crush>
+      <Hack op="add">1.5</Hack>
+      <Pierce op="add">2</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
     <GenericName>Caetra Light</GenericName>
     <VisibleClasses datatype="tokens">Caetra</VisibleClasses>
-    <Tooltip>+1.5 Pierce and 1 Crush/Hack resistance but -2% walk speed</Tooltip>
+    <Tooltip>+2 Pierce and +1.5 Crush/Hack resistance but -3% walk speed</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.98</WalkSpeed>
+    <WalkSpeed op="mul">0.97</WalkSpeed>
   </UnitMotion>
 </Entity>

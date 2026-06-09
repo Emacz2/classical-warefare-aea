@@ -3,20 +3,20 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1.5</Crush>
-      <Hack op="add">1.5</Hack>
-      <Pierce op="add">1.5</Pierce>
+      <Crush op="add">4</Crush>
+      <Hack op="add">4.5</Hack>
+      <Pierce op="add">5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
     <GenericName>Scutum</GenericName>
     <VisibleClasses datatype="tokens">Scutum</VisibleClasses>
-    <Tooltip> +1.5 of each resistance but -5% walk speed and -4 acceleration</Tooltip>
+    <Tooltip>+5 Pierce, +4.5 Hack and +4 pierce resistance but -8% walk and -4 acceleration</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
-    <Acceleration op="add">-3</Acceleration>
+    <WalkSpeed op="mul">0.92</WalkSpeed>
+    <Acceleration op="add">-4</Acceleration>
   </UnitMotion>
 </Entity>

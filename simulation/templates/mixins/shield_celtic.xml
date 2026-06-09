@@ -4,19 +4,19 @@
     <Entity>
       <Damage>
       <Crush op="add">1</Crush>
-      <Hack op="add">1</Hack>
-      <Pierce op="add">1.5</Pierce>
+      <Hack op="add">2</Hack>
+      <Pierce op="add">2</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
     <GenericName>Celtic</GenericName>
     <VisibleClasses datatype="tokens">Celtic</VisibleClasses>
-    <Tooltip>+1 Crush/Hack resistance and +1 peirce but 4% slower walk speed and -3 acceleration</Tooltip>
+    <Tooltip>+ Hack/Pierce resistance and +1 crush but 4% slower walk speed and -1 acceleration</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
-    <Acceleration op="add">-3</Acceleration>
+    <WalkSpeed op="mul">0.97</WalkSpeed>
+    <Acceleration op="add">-1</Acceleration>
   </UnitMotion>
 </Entity>
