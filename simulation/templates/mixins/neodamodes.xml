@@ -8,14 +8,6 @@
   </Damage>
   </Melee>
 </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-1</Hack>
-        <Pierce op="add">-1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
  <Cost>
   <Population>0</Population>
   <Resources>
