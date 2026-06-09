@@ -4,9 +4,9 @@
 	"affectedPlayers": ["MutualAlly"],
 	"modifications": [
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5},
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1, "affects": "Champions"},
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1, "affects": "Champion"},
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Spearman"},
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Spearmans"}
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Spearman"}
 
 
 	],
