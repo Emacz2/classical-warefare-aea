@@ -38,7 +38,8 @@
     <VisibleClasses datatype="tokens">Swordsman</VisibleClasses>
     <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
   </Identity>
-  <UnitMotion>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
   <Sound>

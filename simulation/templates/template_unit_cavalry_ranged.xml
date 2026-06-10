@@ -11,7 +11,7 @@
     <Max>150</Max>
   </Health>
     <Loot>
-    <xp>150</xp>
+    <xp>75</xp>
     <metal>15</metal>
     <wood>15</wood>
   </Loot>
@@ -20,13 +20,4 @@
       special/formations/skirmish
     </Formations>
   </UnitAI>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush>1</Crush>
-        <Hack>1.5</Hack>
-        <Pierce>1.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
 </Entity>

@@ -13,23 +13,14 @@
         <Hack op="mul">1.5</Hack>
 	      <Pierce op="mul">1.5</Pierce>
       </Damage>
-       <RepeatTime>750</RepeatTime>
+       <RepeatTime op="add">-100</RepeatTime>
     </Melee>
   </Attack>
  <Health>
     <Max op="add">75</Max>
-    <RegenRate>-1</RegenRate>
+    <RegenRate>-0.5</RegenRate>
     <Unhealable>true</Unhealable>
   </Health>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-4</Hack>
-	      <Pierce op="add">-4.5</Pierce>
-	      <Crush op="add">-2</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Upgrade>
     <Berserker_Rage>
       <Entity>units/brit/champion_infantry_swordsman</Entity>
@@ -39,7 +30,7 @@
     </Berserker_Rage>
   </Upgrade>
 <UnitMotion>
-    <WalkSpeed op="mul">1.4</WalkSpeed>
+    <WalkSpeed op="mul">1.25</WalkSpeed>
     <Acceleration op="mul">1.5</Acceleration>
   </UnitMotion>
   <VisualActor>

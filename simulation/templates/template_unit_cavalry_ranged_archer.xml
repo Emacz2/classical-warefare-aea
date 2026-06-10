@@ -25,13 +25,6 @@
       <wood>50</wood>
     </Resources>
   </Cost>
-  <Resistance>
-    <Entity>
-      <Damage>
-       <Hack op="add">0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <VisibleClasses datatype="tokens">Archer</VisibleClasses>
     <GenericName>Mounted Archer</GenericName>
@@ -45,8 +38,7 @@
   <Vision>
     <Range>75</Range>
   </Vision>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.93</WalkSpeed>
-    <Acceleration op="mul">0.95</Acceleration>
+ <UnitMotion>
+    <WalkSpeed op="mul">1.07</WalkSpeed>
   </UnitMotion>
 </Entity>

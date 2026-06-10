@@ -31,15 +31,8 @@
     <GenericName>Cavalry Axeman</GenericName>
     <VisibleClasses datatype="tokens">Axeman</VisibleClasses>
   </Identity>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">-0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
    <UnitMotion>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
   <Sound>
