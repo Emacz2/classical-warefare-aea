@@ -3,8 +3,7 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1</Crush>
-      <Hack op="add">2</Hack>
+      <Hack op="add">1</Hack>
       <Pierce op="add">2</Pierce>
       </Damage>
     </Entity>
@@ -12,10 +11,10 @@
  <Identity>
     <GenericName>Javelineer With shield</GenericName>
     <VisibleClasses datatype="tokens">Peltast</VisibleClasses>
-    <Tooltip>Named for the shield they carried, peltast +2 Pierce/Hack and +1 crush reistance but 3% slower walk speed</Tooltip>
+    <Tooltip>Named for the shield they carried, peltast +2 Pierce and +1 hack reistance but 2% slower walk speed</Tooltip>
     <History>Peltasts were javelinists originating in Thrace but their form of combat was widely copied by the Hellenes, Macedonians, and Persians. Equipped with a small oval or crescent shield, a peltast would charge at enemy formations whilst hurling his javelins then fall back to avoid close combat. They wore no armor and were at a significant disadvantage against heavy infantry and cavalry, relying on their speed and skill for survival. Thracians sold their services to Hellene cities as mercenaries and added a much needed ranged and skirmishing ability to Hellenic armies.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.97</WalkSpeed>
+    <WalkSpeed op="mul">0.98</WalkSpeed>
   </UnitMotion>
 </Entity>

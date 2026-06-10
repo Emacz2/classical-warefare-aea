@@ -9,12 +9,12 @@
     </Entity>
   </Resistance>
  <Identity>
-    <GenericName>Caetra Light</GenericName>
+    <GenericName>Light Skirmishing Shield</GenericName>
     <VisibleClasses datatype="tokens">Caetra</VisibleClasses>
     <Tooltip>+2 Pierce and +1 Hack resistance but -2% walk speed</Tooltip>
     <History>.</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.98</WalkSpeed>
+    <WalkSpeed op="mul">0.987</WalkSpeed>
   </UnitMotion>
 </Entity>
