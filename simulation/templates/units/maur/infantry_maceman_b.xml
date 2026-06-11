@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="armor_light|shield_thureos_light|template_unit_infantry_melee_maceman">
+<Entity parent="shield_light|template_unit_infantry_melee_maceman">
   <Attack>
     <Melee>
       <AttackName>Club</AttackName>
@@ -16,7 +16,7 @@
     <Civ>maur</Civ>
     <SelectionGroupName>units/maur/infantry_maceman_b</SelectionGroupName>
     <GenericName>Indian Club</GenericName>
-    <SpecificName>Khadagdhari</SpecificName>
+    <SpecificName>Gadādhara (गदाधर)</SpecificName>
     <Icon>units/maur/cs_mace.png</Icon>
   </Identity>
   <Promotion>

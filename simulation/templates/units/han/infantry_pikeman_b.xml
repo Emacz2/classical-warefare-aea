@@ -21,7 +21,7 @@
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2.5</Multiplier>
+          <Multiplier>2</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>

@@ -12,8 +12,8 @@
     </Melee>
   </Attack>
   <UnitMotion>
-  <WalkSpeed op="mul">1.08</WalkSpeed>
-  <Acceleration op="add">+5</Acceleration>
+  <WalkSpeed op="mul">1.03</WalkSpeed>
+  <Acceleration op="add">+3</Acceleration>
   </UnitMotion>
   <Identity>
     <GenericName>Short spear</GenericName>

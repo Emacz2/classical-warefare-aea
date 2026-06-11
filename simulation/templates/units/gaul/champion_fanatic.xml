@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="thrusting_spear|shield_celtic|template_unit_champion_infantry_spearman">
+<Entity parent="shield_medium|spear_long|inf_shock|template_unit_champion_infantry_spearman">
   <Cost>
     <Resources>
       <food>100</food>
@@ -16,9 +16,6 @@
    <Health>
     <Max op="add">25</Max>
   </Health>
- <UnitMotion>
-  <WalkSpeed op="mul">1.25</WalkSpeed>
- </UnitMotion>
   <VisualActor>
     <Actor>units/gauls/infantry_spearman_c.xml</Actor>
   </VisualActor>

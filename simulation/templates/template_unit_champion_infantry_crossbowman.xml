@@ -4,12 +4,12 @@
     <Ranged>
       <AttackName>Crossbow</AttackName>
      <Damage>
-        <Pierce>46.5</Pierce>
+        <Pierce>50</Pierce>
       </Damage>
-      <MaxRange>70</MaxRange>
+      <MaxRange>75</MaxRange>
       <MinRange>10</MinRange>
       <PrepareTime>1000</PrepareTime>
-      <RepeatTime>6000</RepeatTime>
+      <RepeatTime>7000</RepeatTime>
       <Projectile>
         <Speed>175</Speed>
         <Spread>1.2</Spread>
@@ -30,22 +30,14 @@
       <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
     </SoundGroups>
   </Sound>
-  <Resistance>
-    <Entity>
-      <Damage>
-       <Hack op="add">0.5</Hack>
-       <Pierce op="add">0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Turretable/>
   <UnitAI>
     <Formations datatype="tokens">
       special/formations/skirmish
     </Formations>
   </UnitAI>
-    <UnitMotion>
-    <WalkSpeed op="mul">0.99</WalkSpeed>
-    <Acceleration op="add">2.5</Acceleration>
+<UnitMotion>
+    <WalkSpeed op="mul">0.94</WalkSpeed>
+    <RunMultiplier op="mul">1.5</RunMultiplier>
   </UnitMotion>
 </Entity>

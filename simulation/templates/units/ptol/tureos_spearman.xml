@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_inf|units/tureos_spearman">
+<Entity parent="units/tureos_spearman">
  <Builder>
     <Entities datatype="tokens">
       structures/ptol/lighthouse
@@ -19,8 +19,8 @@
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/infantry_spearman_merc_b</SelectionGroupName>
     <Lang>greek</Lang>
-    <GenericName>Mercenary Thureos Spearman</GenericName>
-    <SpecificName>Thureophóros Misthophóros</SpecificName>
+    <GenericName>Thureos Spearman</GenericName>
+    <SpecificName>Thureophóros</SpecificName>
     <Icon>units/ptol/infantry_spearman_2.png</Icon>
   </Identity>
    <Promotion disable=""/>

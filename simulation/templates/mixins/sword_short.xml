@@ -4,16 +4,16 @@
     <Melee>
       <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
      <Damage>
-        <Hack  op="add">-0.5</Hack>
+        <Hack op="add">-0.5</Hack>
         <Pierce>3</Pierce>
       </Damage>
-      <MaxRange  op="add">-0.5</MaxRange>
-      <RepeatTime  op="add">-100</RepeatTime>
+      <MaxRange op="add">-0.5</MaxRange>
+      <RepeatTime op="add">-100</RepeatTime>
     </Melee>
   </Attack>
    <UnitMotion>
-  <WalkSpeed op="mul">1.05</WalkSpeed>
-  <Acceleration op="add">2.5</Acceleration>
+  <WalkSpeed op="mul">1.03</WalkSpeed>
+  <Acceleration op="add">2</Acceleration>
   </UnitMotion>
   <Identity>
     <GenericName>Short sword</GenericName>

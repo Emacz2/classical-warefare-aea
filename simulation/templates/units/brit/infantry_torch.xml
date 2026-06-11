@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="armor_light|template_unit_infantry_melee_firetorch">
+<Entity parent="shield_light|template_unit_infantry_melee_firetorch">
   <Identity>
     <Civ>brit</Civ>
     <SelectionGroupName>units/gaul/infantry_torch</SelectionGroupName>
     <GenericName>Brythonic Fire Torch</GenericName>
+    <SpecificName>Brandos</SpecificName>
     <Icon>units/brit/brit_infantry_torch.png</Icon>
   </Identity>
 <Promotion disable=""/>

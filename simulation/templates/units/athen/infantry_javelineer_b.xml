@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="civ/athen|shield_peltast|template_unit_infantry_ranged_javelineer">
+<Entity parent="civ/athen|shield_light|template_unit_infantry_ranged_javelineer">
   <Identity>
     <SelectionGroupName>units/athen/infantry_javelineer_b</SelectionGroupName>
     <GenericName>Athenian Javelineer</GenericName>
+    <SpecificName>Akontistḗs</SpecificName>
     <Icon>units/athen/infantry_jav.png</Icon>
   </Identity>
   <Promotion>

@@ -20,7 +20,7 @@
     <Icon>units/mace/infantry_javelinist.png</Icon>
     <Tooltip>+5% faster walk speed</Tooltip>
     <Requirements>
-      <Techs datatype="tokens">unlock_skirms</Techs>
+      <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
   <Promotion>

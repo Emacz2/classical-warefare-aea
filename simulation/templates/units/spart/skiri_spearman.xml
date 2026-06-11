@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_inf|template_unit_infantry_melee_spearman">
+<Entity parent="allied_inf|armor_light|shield_medium|template_unit_infantry_melee_spearman">
  <Builder>
     <Entities datatype="tokens">
       structures/spart/camp
@@ -23,15 +23,6 @@
     <Max>200</Max>
     <IdleRegenRate>0.25</IdleRegenRate>
   </Health>
-     <Resistance>
-    <Entity>
-      <Damage>
-        <Crush>1.5</Crush>
-        <Hack>2</Hack>
-        <Pierce>1.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
    <Identity>
     <Rank>Advanced</Rank>
     <Civ>spart</Civ>
@@ -54,10 +45,6 @@
   <TrainingRestrictions>
   <Category>Skirítēs</Category>
   </TrainingRestrictions>
-  <UnitMotion>
-    <WalkSpeed>10</WalkSpeed>
-    <RunMultiplier>1.25</RunMultiplier>
-  </UnitMotion>
  <Vision>
     <Range>75</Range>
   </Vision>

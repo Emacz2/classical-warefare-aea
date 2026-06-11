@@ -9,6 +9,10 @@
       </Damage>
     </Entity>
   </Resistance>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.48</WalkSpeed>
+    <RunMultiplier op="mul">1.8</RunMultiplier>
+  </UnitMotion>
  <Identity>
     <GenericName>Medium Armored Cavalary</GenericName>
     <Tooltip>+2.5 Hack, +2 pierce, +1.5 Crush</Tooltip>

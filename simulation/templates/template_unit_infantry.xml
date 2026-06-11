@@ -98,11 +98,8 @@
       <invalid_building_placement>interface/alarm/alarm_invalid_building_placement.xml</invalid_building_placement>
     </SoundGroups>
   </Sound>
-  <UnitMotion>
-    <WalkSpeed>8.4</WalkSpeed>
-    <RunMultiplier>1.5</RunMultiplier>
-    <Acceleration>30</Acceleration>
-    <Weight>10</Weight>
+   <UnitMotion>
+    <WalkSpeed>9</WalkSpeed>
   </UnitMotion>
   <Vision>
     <Range>50</Range>

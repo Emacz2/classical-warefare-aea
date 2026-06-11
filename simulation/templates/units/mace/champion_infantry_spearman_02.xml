@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="armor_medium|shield_peltast|template_unit_champion_infantry_pikeman">
-  <Attack>
-    <Melee>
-      <RepeatTime op="add">-800</RepeatTime>
-    </Melee>
-  </Attack>
+<Entity parent="hoplite|shield_super_heavy|armor_heavy|template_unit_champion_infantry_spearman">
   <Health>
     <Max op="add">50</Max>
   </Health>

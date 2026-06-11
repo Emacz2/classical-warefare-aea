@@ -23,11 +23,9 @@
       </ApplyStatus>
     </Entity>
   </Resistance>
-  <UnitMotion>
-    <WalkSpeed>8.6</WalkSpeed>
-    <RunMultiplier>1.6</RunMultiplier>
-    <Acceleration op="add">5</Acceleration>
-    </UnitMotion>
+ <UnitMotion>
+    <Acceleration>30</Acceleration>
+  </UnitMotion>
   <UnitAI>
     <Formations datatype="tokens">
       special/formations/testudo

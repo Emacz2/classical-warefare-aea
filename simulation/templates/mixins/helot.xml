@@ -12,9 +12,9 @@
   </Melee>
   <Ranged merge="">
 	  <Damage>
-	    <Hack op="mul">0.75</Hack>
-      <Pierce op="mul">0.75</Pierce>
-      <Crush op="mul">0.75</Crush>
+	    <Hack op="mul">0.9</Hack>
+      <Pierce op="mul">0.9</Pierce>
+      <Crush op="mul">0.9</Crush>
     </Damage>
       <MaxRange op="mul">0.75</MaxRange>
       <Projectile>
@@ -67,6 +67,6 @@
   </Resistance>
   <Identity>
     <VisibleClasses datatype="tokens">HelotM -Soldier -Citizen</VisibleClasses>
-    <Tooltip>Helots 25% less dmg, range and spread than normal citizen infantry, but same gather rates as civlians.  They also only have 50 HPs but cost only 40 food and 10 wood or stone. They don't recieve forge techs.</Tooltip>
+    <Tooltip>Helots 25% less range and spread, 10% less dmg than normal citizen infantry, but same gather rates as civlians.  They also only have 50 HPs but cost only 40 food and 10 wood or stone. They don't recieve forge techs.</Tooltip>
   </Identity>
 </Entity>

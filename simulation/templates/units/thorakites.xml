@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_champion_infantry_swordsman">
+  <Identity>
+    <Lang>greek</Lang>
+    <GenericName>Armored Swordsman</GenericName>
+    <SpecificName>Thorakitēs Agēma</SpecificName>
+    <Icon>units/mace/thorakites.png</Icon>
+  </Identity>
+  <Attack>
+    <Melee>
+      <RepeatTime op="add">100</RepeatTime>
+    </Melee>
+  </Attack>
+  <Resistance>
+    <Entity>
+      <Damage>
+      <Crush>5</Crush>
+      <Hack>5</Hack>
+      <Pierce>7.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+   <UnitMotion>
+  <WalkSpeed op="mul">0.95</WalkSpeed>
+ </UnitMotion>
+  <VisualActor>
+    <Actor>units/hellenes/infantry_swordsman_c_thorakites.xml</Actor>
+  </VisualActor>
+</Entity>

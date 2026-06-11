@@ -7,6 +7,20 @@
       <metal>50</metal>
     </Resources>
   </Cost>
+      <Attack>
+    <Ranged>
+    <ApplyStatus>
+        <Poisoned>
+          <Interval>1000</Interval>
+          <Damage>
+            <Poison>1.5</Poison>
+          </Damage>
+          <Stackability>Extend</Stackability>
+          <Duration>6000</Duration>
+        </Poisoned>
+      </ApplyStatus>
+    </Ranged>
+  </Attack>
   <Health>
     <Max>100</Max>
   </Health>

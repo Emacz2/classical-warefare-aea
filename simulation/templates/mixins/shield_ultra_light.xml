@@ -13,8 +13,7 @@
   </UnitMotion>
  <Identity>
     <GenericName>Ultra light skirmishing shields</GenericName>
-    <VisibleClasses datatype="tokens">Caetra</VisibleClasses>
     <Tooltip>+1 pierce and +0.5 hack resitance but -1% walk speed</Tooltip>
-    <History>Small round or slightly oval shields ~45-65 cm made from thick hide.</History>
+    <History>Noba; Pelta (Thracian light pelt); Maury; Gerrhon (small Persian wicker pelta).</History>
   </Identity>
 </Entity>

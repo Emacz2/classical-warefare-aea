@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="concsript_ranged|template_unit_infantry_ranged_archer_simple">
+ <Builder>
+    <Entities datatype="tokens">
+      structures/ptol/lighthouse
+      structures/ptol/library
+      structures/ptol/temple_2
+      structures/ptol/mercenary_camp
+    </Entities>
+  </Builder>
+  <Identity>
+    <Civ>ptol</Civ>
+    <SelectionGroupName>units/ptol/infantry_archer_b</SelectionGroupName>
+    <GenericName>Machimoi Archers</GenericName>
+    <SpecificName>Toxótēs</SpecificName>
+    <Icon>units/ptol/inf_archer.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/ptol/infantry_archer_a</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/ptolemies/infantry_archer_b.xml</Actor>
+  </VisualActor>
+</Entity>

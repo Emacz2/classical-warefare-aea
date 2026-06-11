@@ -1,29 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/rome/champion_infantry_swordsman_first_cohert">
-   <Cost>
-   <BuildTime op="mul">1.05</BuildTime>
-    <Resources>
-      <metal op="add">15</metal>
-    </Resources>
-  </Cost>
-  <Attack>
-    <Melee>
-      <Damage>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">0.5</Pierce>
-      </Damage>
-    </Melee>
-  </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
-   <Health>
-    <Max op="add">25</Max>
-  </Health>
+<Entity parent="shield_super_heavy|armor_heavy|sword_short|template_unit_champion_infantry_swordsman">
   <Identity>
     <GenericName>Evocati</GenericName>
     <SpecificName>Evocati</SpecificName>

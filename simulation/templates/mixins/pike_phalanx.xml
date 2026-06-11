@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <UnitAI>
+    <Formations datatype="tokens">
+      special/formations/phalanx
+    </Formations>
+  </UnitAI>
+  <Attack>
+    <Melee>
+        <Damage>
+        <Hack op="mul">1.15</Hack>
+        <Pierce op="mul">1.15</Pierce>
+      </Damage>
+      <RepeatTime op="add">200</RepeatTime>
+    </Melee>
+  </Attack>
+    <UnitMotion>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+  </UnitMotion>
+  <Identity>
+    <Classes datatype="tokens">Phalanx</Classes>
+      <Tooltip>Phalanx pikeman 2 tenths of a second slower repeat time and 4% slower walk speed but 15% more dmg</Tooltip>
+      <History></History>
+     </Identity>
+</Entity>

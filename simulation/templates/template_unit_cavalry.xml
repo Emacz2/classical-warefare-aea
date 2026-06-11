@@ -84,8 +84,7 @@
     </Formations>
   </UnitAI>
   <UnitMotion>
-    <WalkSpeed>10.8</WalkSpeed>
-    <RunMultiplier>2</RunMultiplier>
+    <WalkSpeed>9.0</WalkSpeed>
   </UnitMotion>
   <Vision>
     <Range>55</Range>

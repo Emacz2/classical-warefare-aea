@@ -3,9 +3,9 @@
 <Resistance>
     <Entity>
       <Damage>
-      <Crush>2</Crush>
+      <Crush>3.5</Crush>
       <Hack>3.5</Hack>
-      <Pierce>4</Pierce>
+      <Pierce>5.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -15,16 +15,11 @@
       <Loot>
     <xp>150</xp>
   </Loot>
-  <UnitMotion>
-    <WalkSpeed>9.5</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>
-    <GenericName>Mercenary Thureos Spearman</GenericName>
-    <SpecificName>Thureophóros Misthophóros</SpecificName>
+    <GenericName>Thureos Spearman</GenericName>
+    <SpecificName>Thureophóros</SpecificName>
     <Icon>units/ptol/infantry_spearman_2.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>

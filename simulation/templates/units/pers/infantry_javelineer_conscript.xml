@@ -10,8 +10,8 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/infantry_javelineer_b</SelectionGroupName>
-    <GenericName>Lydian Auxiliary</GenericName>
-    <SpecificName>Pastiš Spardiya</SpecificName>
+    <GenericName>Persian Levy Skirmisher</GenericName>
+    <SpecificName>Pastiš Asabara</SpecificName>
     <Icon>units/pers/infantry_javelinist.png</Icon>
   </Identity>
   <Promotion>

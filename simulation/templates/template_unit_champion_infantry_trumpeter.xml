@@ -29,16 +29,9 @@
     <wood>10</wood>
     <metal>7</metal>
   </Loot>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-0.5</Hack>
-        <Pierce op="add">-0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <UnitMotion>
-    <WalkSpeed op="mul">0.95</WalkSpeed>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <RunMultiplier op="mul">1.45</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

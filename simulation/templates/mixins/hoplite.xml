@@ -5,8 +5,28 @@
       special/formations/phalanx
     </Formations>
   </UnitAI>
+  <Attack>
+    <Melee>
+        <Damage>
+        <Hack op="mul">1.05</Hack>
+        <Pierce op="mul">1.05</Pierce>
+      </Damage>
+    </Melee>
+  </Attack>
+    <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">0.5</Hack>
+        <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+    <UnitMotion>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+  </UnitMotion>
   <Identity>
     <Classes datatype="tokens">Hoplite</Classes>
+      <Tooltip>Hoplites 2 tenths of a second slower repeat time and 4% slower walk speed but 10% more dmg and +0.5 hack/pierce resistance</Tooltip>
       <History>Hoplites were the very symbol of Hellenic prestige and citizenship, armed with a spear and a large round bronze-coated shield known as an aspis. Armor was heavy, with bronze helmets and a cuirass of either bronze or linen, in addition to greaves. Hoplites fought in a tight formation called a phalanx, guarding each other with their shields while they attacked the enemy with their 2.5 meter spear or short iron sword.</History>
      </Identity>
 </Entity>

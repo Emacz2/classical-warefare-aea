@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/cart/infantry_marine_e">
+ <Identity>
+    <Rank>Elite</Rank>
+  </Identity>
+  <VisualActor>
+    <Actor>units/athenians/infantry_swordsman_c.xml</Actor>
+  </VisualActor>
+</Entity>
