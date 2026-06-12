@@ -20,12 +20,12 @@
     <Lang>greek</Lang>
     <GenericName>Thureos Skirmisher</GenericName>
     <SpecificName>Thureophóros Akrobolistḗs</SpecificName>
-    <Icon>units/ptol/infantry_javelinist_merc.png</Icon>
+    <Icon>units/mace/thureophoros.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
-    <Actor>units/iberians/infantry_javelinist_b.xml</Actor>
+   <Actor>units/hellenes/infantry_javelinist_c_thureophoros.xml</Actor>
   </VisualActor>
 </Entity>
  
