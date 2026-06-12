@@ -18,7 +18,7 @@
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>
-    <GenericName>Mercenary Thureos Skirmisher</GenericName>
+    <GenericName>Thureos Skirmisher</GenericName>
     <SpecificName>Thureophóros Akrobolistḗs</SpecificName>
     <Icon>units/ptol/infantry_javelinist_merc.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>

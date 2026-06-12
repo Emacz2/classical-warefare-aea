@@ -12,6 +12,9 @@
     <GenericName>Imperial Skirmisher</GenericName>
     <SpecificName>Katoikos Akontistēs</SpecificName>
     <Icon>units/sele/infantry_javelinist.png</Icon>
+        <Requirements>
+      <Techs datatype="tokens">unlock_skirms</Techs>
+    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/sele/infantry_javelineer_a</Entity>
