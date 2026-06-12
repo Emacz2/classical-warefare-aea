@@ -5,7 +5,7 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },
-			{ "civ": "theb" }
+			{ "civ": "athen" }
 		]
 	},
 	"requirementsTooltip": "Unlocked in Town Phase.",
@@ -23,4 +23,3 @@
 	"affects": ["Hoplite"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
-
