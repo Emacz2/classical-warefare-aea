@@ -9,7 +9,7 @@
   </Builder>
    <Upgrade>
     <Spear>
-      <Entity>units/ptol/merc_tureos_spearman</Entity>
+      <Entity>units/ptol/tureos_spearman</Entity>
       <Tooltip>Switch to using a spear.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
@@ -17,7 +17,7 @@
   </Upgrade>
   <Identity>
     <Civ>ptol</Civ>
-    <SelectionGroupName>units/ptol/infantry_javelineer_b</SelectionGroupName>
+    <SelectionGroupName>units/ptol/tureos_skirmisher</SelectionGroupName>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>

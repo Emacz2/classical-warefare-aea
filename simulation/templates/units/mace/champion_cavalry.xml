@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="cav_shock|template_unit_champion_cavalry_lancer">
+<Entity parent="cav_shock|cav_heavy|template_unit_champion_cavalry_lancer">
   <Attack>
     <Melee>
     <Damage>
         <Hack op="mul">1.1</Hack>
-        <Pierce op="add">1.1</Pierce>
+        <Pierce op="mul">1.1</Pierce>
       </Damage>
       <MaxRange op="add">0.5</MaxRange>
       <RepeatTime op="add">250</RepeatTime>

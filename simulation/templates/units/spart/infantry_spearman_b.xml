@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="perioikoi|hoplite|shield_aspis|shield_super_heavy|template_unit_infantry_melee_spearman">
+<Entity parent="perioikoi|hoplite|armor_medium|shield_super_heavy|template_unit_infantry_melee_spearman">
 <Builder>
     <Entities datatype="tokens">
       structures/spart/camp

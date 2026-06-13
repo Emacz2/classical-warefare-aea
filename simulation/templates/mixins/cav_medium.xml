@@ -3,19 +3,20 @@
     <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1.5</Crush>
-      <Hack op="add">2.5</Hack>
-      <Pierce op="add">2</Pierce>
+      <Crush op="add">2</Crush>
+      <Hack op="add">3</Hack>
+      <Pierce op="add">2.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
    <UnitMotion>
-    <WalkSpeed op="mul">1.48</WalkSpeed>
+    <WalkSpeed op="mul">1.45</WalkSpeed>
     <RunMultiplier op="mul">1.8</RunMultiplier>
   </UnitMotion>
  <Identity>
     <GenericName>Medium Armored Cavalary</GenericName>
-    <Tooltip>+2.5 Hack, +2 pierce, +1.5 Crush</Tooltip>
+     <VisibleClasses datatype="tokens">Merdium Cavalry</VisibleClasses>
+    <Tooltip>+3 Hack +2.5 Pierce and +2 Crush resistance and 45% faster than standard unit.</Tooltip>
     <History>.</History>
   </Identity>
 </Entity>

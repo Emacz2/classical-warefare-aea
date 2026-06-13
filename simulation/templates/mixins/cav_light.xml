@@ -3,19 +3,20 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1</Crush>
-      <Hack op="add">1</Hack>
-      <Pierce op="add">1</Pierce>
+      <Crush op="add">1.5</Crush>
+      <Hack op="add">1.5</Hack>
+      <Pierce op="add">1.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
-    <GenericName>Light Armor</GenericName>
-    <Tooltip>+1 of each resistance</Tooltip>
+    <GenericName>Light Cavalry</GenericName>
+     <VisibleClasses datatype="tokens">Light Cavalry</VisibleClasses>
+    <Tooltip>+1.5 of each resistance and 60% faster than standard unit</Tooltip>
     <History>.</History>
   </Identity>
    <UnitMotion>
-    <WalkSpeed op="mul">1.62</WalkSpeed>
+    <WalkSpeed op="mul">1.60</WalkSpeed>
     <RunMultiplier op="mul">1.9</RunMultiplier>
   </UnitMotion>
 </Entity>
