@@ -8,10 +8,10 @@
     <BuildTime>16</BuildTime>
   </Cost>
   <Health>
-    <Max>150</Max>
+    <Max>175</Max>
   </Health>
     <Loot>
-    <xp>75</xp>
+    <xp>90</xp>
     <metal>15</metal>
     <wood>15</wood>
   </Loot>

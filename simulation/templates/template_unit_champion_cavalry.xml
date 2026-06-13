@@ -35,10 +35,6 @@
   <StatusBars>
     <HeightOffset>7.0</HeightOffset>
   </StatusBars>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.75</WalkSpeed>
-    <RunMultiplier>1.5</RunMultiplier>
-  </UnitMotion>
   <UnitAI>
     <Formations datatype="tokens">
       special/formations/wedge

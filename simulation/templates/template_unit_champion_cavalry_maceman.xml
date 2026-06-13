@@ -24,9 +24,6 @@
     <VisibleClasses datatype="tokens">Melee Maceman</VisibleClasses>
     <Tooltip> Counters: 1.5× vs Melee Infantry.</Tooltip>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.05</WalkSpeed>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>

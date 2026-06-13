@@ -10,7 +10,7 @@
       <MaxRange>3</MaxRange>
       <MinRange>1</MinRange>
       <PrepareTime>500</PrepareTime>
-      <RepeatTime>1100</RepeatTime>
+      <RepeatTime>1200</RepeatTime>
       <Bonuses>
         <BonusMelee>
           <Classes>Ranged Infantry</Classes>
@@ -25,7 +25,7 @@
     <GenericName>Champion Cavalry Swordsman</GenericName>
     <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
   </Identity>
-    <Resistance>
+  <Resistance>
     <Entity>
       <Damage>
         <Crush op="add">0.5</Crush>
@@ -34,9 +34,6 @@
       </Damage>
     </Entity>
   </Resistance>
-  <UnitMotion>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>

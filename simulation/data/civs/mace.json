@@ -45,11 +45,11 @@
 			"Count": 4
 		},
 		{
-			"Template": "units/mace/infantry_pikeman_concsript",
+			"Template": "units/mace/infantry_pikeman_conscript",
 			"Count": 3
 		},
 		{
-			"Template": "units/mace/infantry_archer_concsript",
+			"Template": "units/mace/infantry_slinger_b",
 			"Count": 2
 		}
 	

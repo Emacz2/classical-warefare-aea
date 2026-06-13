@@ -21,22 +21,11 @@
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
-   <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">-0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <VisibleClasses datatype="tokens">Melee Axeman</VisibleClasses>
     <GenericName>Champion Cavalry Axeman</GenericName>
     <Tooltip> Counters: 1.5× vs Siege.</Tooltip>
   </Identity>
-    <UnitMotion>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>
