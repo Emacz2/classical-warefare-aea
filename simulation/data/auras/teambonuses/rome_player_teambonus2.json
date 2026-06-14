@@ -1,6 +1,6 @@
 {
 	"type": "global",
-	"affects": ["Citizen Infantry !Mercenary"],
+	"affects": ["Infantry !Mercenary"],
 	"affectedPlayers": ["MutualAlly"],
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 0.9 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_light|concsript_melee|template_unit_infantry_melee_spearman">
+<Entity parent="shield_light|conscript_melee|template_unit_infantry_melee_spearman">
   <Builder>
     <Entities datatype="tokens">
       structures/rome/army_camp

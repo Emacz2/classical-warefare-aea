@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="armor_medium|shield_celtic_large|units/samnite_spearman">
+<Entity parent="armor_medium|shield_medium|units/samnite_spearman">
   <Identity>
     <SelectionGroupName>units/rome/aux_inf_samnite_spearman</SelectionGroupName>
     <GenericName>Samnite Spearman</GenericName>

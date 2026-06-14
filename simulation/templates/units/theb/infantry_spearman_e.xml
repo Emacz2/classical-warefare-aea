@@ -3,10 +3,7 @@
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
-  <Promotion>
-    <Entity>units/theb/infantry_spearman_b_dp</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/thebans/infantry_spearman_e.xml</Actor>
   </VisualActor>

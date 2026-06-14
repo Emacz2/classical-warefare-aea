@@ -35,13 +35,13 @@
 	"modifications": [
 		{ "value": "ResourceGatherer/Rates/metal.ore", "multiply": 1.15, "affects": "Worker" },
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.97, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
+		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "Agora" },
+		{ "value": "Population/Bonus", "add": 10, "affects": "Agora" },
+		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "Agora" },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.97, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" },
 		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Market" }
 		
 	],

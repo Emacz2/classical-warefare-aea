@@ -26,19 +26,16 @@
 	"tooltip": "Advance to Spartan Town Phase (Kōmopolis), which unlocks more entities and technologies. Civic Centers +5 more garrison capacity/population bonus, +10 range and 2.5 of each resistance. Structures +0.5 capture points regeneration rate for garrisoned units.  Helots and Perioikoi 10% less train time; Helots -125 repeat time. ",
 	"modifications": [
 		
-		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
+		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "Agora" },
+		{ "value": "Population/Bonus", "add": 5, "affects": "Agora" },
+		{ "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" },
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
 		{ "value": "Cost/BuildTime", "multiply": 1.1, "affects": "Champion" },
 		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "Perioikoi" },
 		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "HelotM" },
-		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "HelotW" },
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "HelotM" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "HelotM" },
 		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Agora" }
 
 

@@ -3,7 +3,7 @@
   <Attack>
     <Melee>
       <MaxRange op="add">-0.5</MaxRange>
-      <RepeatTime op="add">100</ReepeatTime>
+      <RepeatTime op="add">100</RepeatTime>
     </Melee>
   </Attack>
     <Resistance>
