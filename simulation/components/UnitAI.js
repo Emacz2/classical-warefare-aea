@@ -43,6 +43,11 @@ UnitAI.prototype.Schema =
 		"</element>" +
 	"</optional>" +
 	"<optional>" +
+		"<element name='ChargeDistance'>" +
+			"<data type='nonNegativeInteger'/>" +
+		"</element>" +
+	"</optional>" +
+	"<optional>" +
 		"<interleave>" +
 			"<element name='RoamDistance'>" +
 				"<ref name='positiveDecimal'/>" +
@@ -5054,9 +5059,10 @@ UnitAI.prototype.CheckFormationTargetAttackRange = function(target)
 	const cmpFormationAttack = Engine.QueryInterface(this.entity, IID_Attack);
 	if (!cmpFormationAttack)
 		return false;
-	const range = cmpFormationAttack.GetRange(target);
-	if (range.max != -1 && range.max < 60)
-		range.max = 60
+	const chargeDistance = +this.template.ChargeDistance;
+	const range = cmpFormationAttack.GetRange(target, chargeDistance);
+	if (range.max != -1 && range.max < chargeDistance)
+		range.max = chargeDistance;
 
 	const cmpObstructionManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ObstructionManager);
 	return cmpObstructionManager.IsInTargetRange(this.entity, target, range.min, range.max, false);
