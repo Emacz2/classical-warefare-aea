@@ -9,8 +9,8 @@
 		"all": [
 			{ "tech": "phase_village" },
 			{ "civ": "gaul" },
-			{ "civ": "maur" },
-			{ "civ": "sele" }
+			{ "civ": "maur" }
+		
 		
 	
 		]

@@ -9,7 +9,7 @@
     <Civ>mace</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/mace/infantry_pikeman_b</SelectionGroupName>
-    <GenericName>Conscripted Foot Companion</GenericName>
+    <GenericName>Conscripted Pikeman</GenericName>
     <SpecificName>Pezétairos</SpecificName>
     <Icon>units/mace/conscript_pike.png</Icon>
   </Identity>
