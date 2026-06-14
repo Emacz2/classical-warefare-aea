@@ -452,7 +452,8 @@ UnitAI.prototype.UnitFsmSpec = {
 		return ACCEPT_ORDER;
 	},
 
-        /* classical warefare aea */
+	// Classical Warefare AEA
+	// Copied from "Order.Attack"
 	"Order.ChargeAttack": function(msg) {
 		const type = this.GetBestAttackAgainst(msg.data.target, msg.data.allowCapture);
 		if (!type)
@@ -1324,15 +1325,32 @@ UnitAI.prototype.UnitFsmSpec = {
 						this.FinishOrder();
 						return true;
 					}
+					this.StartTimer(200, 200);
 					return false;
 				},
 
 				"leave": function() {
 					this.StopMoving();
+					this.StopTimer();
 				},
 
 				"MovementUpdate": function(msg) {
 					let target = this.order.data.target;
+					const cmpTargetUnitAI = Engine.QueryInterface(target, IID_UnitAI);
+					if (cmpTargetUnitAI && cmpTargetUnitAI.IsFormationMember())
+						target = cmpTargetUnitAI.GetFormationController();
+					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+					this.CallMemberFunction("ChargeAttack", [target, this.order.data.allowCapture, false]);
+					if (cmpAttack.CanAttackAsFormation())
+						this.SetNextState("COMBAT.ATTACKING");
+					else
+						this.SetNextState("MEMBER");
+				},
+
+				"Timer": function(msg) {
+					let target = this.order.data.target;
+					if (!this.CheckFormationTargetAttackRange(target))
+						return;
 					const cmpTargetUnitAI = Engine.QueryInterface(target, IID_UnitAI);
 					if (cmpTargetUnitAI && cmpTargetUnitAI.IsFormationMember())
 						target = cmpTargetUnitAI.GetFormationController();
@@ -2200,7 +2218,8 @@ UnitAI.prototype.UnitFsmSpec = {
 				},
 			},
 
-                        /* classical warefare aea */
+			// Classical Warefare AEA
+			// Copied from "APPROACHING"
 			"CHARGING": {
 				"enter": function() {
 					if (!this.MoveToTargetAttackRange(this.order.data.target, this.order.data.attackType))
@@ -2213,7 +2232,7 @@ UnitAI.prototype.UnitFsmSpec = {
 						this.SetAnimationVariant("combat");
 
 					this.StartTimer(1000, 1000);
-                                        this.Run();
+					this.Run();
 					return false;
 				},
 
@@ -5036,6 +5055,8 @@ UnitAI.prototype.CheckFormationTargetAttackRange = function(target)
 	if (!cmpFormationAttack)
 		return false;
 	const range = cmpFormationAttack.GetRange(target);
+	if (range.max != -1 && range.max < 60)
+		range.max = 60
 
 	const cmpObstructionManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ObstructionManager);
 	return cmpObstructionManager.IsInTargetRange(this.entity, target, range.min, range.max, false);
@@ -5713,7 +5734,8 @@ UnitAI.prototype.Attack = function(target, allowCapture = this.DEFAULT_CAPTURE, 
 	this.AddOrder("Attack", order, queued, pushFront);
 };
 
-/* classical warefare aea */
+// Classical Warefare AEA
+// Copied from UnitAI.prototype.Attack
 UnitAI.prototype.ChargeAttack = function(target, allowCapture = this.DEFAULT_CAPTURE, queued = false, pushFront = false)
 {
 	if (!this.CanAttack(target))
