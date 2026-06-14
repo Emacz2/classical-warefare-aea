@@ -71,7 +71,7 @@ FormationAttack.prototype.GetRange = function(target, chargeDistance)
 
 		var range = cmpAttack.GetRange(type);
 
-		if (range.min < chargeDistance && result.max > chargeDistance)
+		if (range.max < chargeDistance && result.max > chargeDistance)
 			result.max = chargeDistance;
 	}
 	// add half the formation size, so it counts as the range for the units on the first row
