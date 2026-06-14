@@ -496,8 +496,13 @@ UnitAI.prototype.UnitFsmSpec = {
 		}
 
 		// If we're currently packing/unpacking, make sure we are packed, so we can move.
-		if (this.EnsureCorrectPackStateForAttack(true))
-			this.SetNextState("INDIVIDUAL.COMBAT.CHARGING");
+		if (this.EnsureCorrectPackStateForAttack(true)) {
+			const cmpIdentity = Engine.QueryInterface(this.entity, IID_Identity);
+			if (cmpIdentity && cmpIdentity.HasClass("Melee"))
+				this.SetNextState("INDIVIDUAL.COMBAT.CHARGING");
+			else
+				this.SetNextState("INDIVIDUAL.COMBAT.APPROACHING");
+		}
 		return ACCEPT_ORDER;
 	},
 
@@ -1341,6 +1346,8 @@ UnitAI.prototype.UnitFsmSpec = {
 
 				"MovementUpdate": function(msg) {
 					let target = this.order.data.target;
+					if (!this.CheckFormationTargetAttackRange(target))
+						return;
 					const cmpTargetUnitAI = Engine.QueryInterface(target, IID_UnitAI);
 					if (cmpTargetUnitAI && cmpTargetUnitAI.IsFormationMember())
 						target = cmpTargetUnitAI.GetFormationController();
