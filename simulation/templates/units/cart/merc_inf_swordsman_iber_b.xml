@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_inf|shield_caetra|template_unit_infantry_melee_swordsman">
+<Entity parent="allied_inf|shield_medium|armor_heavy|sword_long|template_unit_infantry_melee_swordsman">
  <Builder>
     <Entities datatype="tokens">
       structures/cart/super_dock
@@ -17,15 +17,6 @@
       </Damage>
     </Melee>
   </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">2.5</Crush>
-        <Hack op="add">2</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <Civ>cart</Civ>
     <GenericName>Iberian Allied Heavy Swordsman</GenericName>
@@ -34,9 +25,6 @@
     <Icon>units/cart/infantry_swordsman.png</Icon>
   </Identity>
  <Promotion disable=""/>
-   <UnitMotion>
-    <WalkSpeed op="mul">0.97</WalkSpeed>
-  </UnitMotion>
   <VisualActor>
     <Actor>units/iberians/infantry_swordsman_b.xml</Actor>
   </VisualActor>

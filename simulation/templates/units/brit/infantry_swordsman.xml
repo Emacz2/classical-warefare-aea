@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_celtic_large|template_unit_infantry_melee_swordsman">
+<Entity parent="shield_medium|armor_medium|template_unit_infantry_melee_swordsman">
   <Cost>
     <Resources>
     <wood op="add">-15</wood>
@@ -11,7 +11,7 @@
     <Civ>brit</Civ>
     <SelectionGroupName>units/brit/infantry_swordsman</SelectionGroupName>
     <GenericName>Brythonic Elite Swordsman</GenericName>
-    <SpecificName>Catucos</SpecificName>
+    <SpecificName>Cingetos</SpecificName>
     <Icon>units/brit/brit_infantry_axe.png</Icon>
      <Requirements>
       <Techs datatype="tokens">phase_town</Techs>

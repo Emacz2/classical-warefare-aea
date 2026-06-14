@@ -14,7 +14,7 @@
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2</Multiplier>
+          <Multiplier>1.5</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -27,11 +27,11 @@
   </Cost>
   <Identity>
     <GenericName>Shock Cavalry Spearman</GenericName>
-    <Tooltip>Counters: 2× vs Cavalry.</Tooltip>
+    <Tooltip>Counters: 1.5× vs Cavalry.</Tooltip>
     <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">1.05</WalkSpeed>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
     <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>
   <Sound>

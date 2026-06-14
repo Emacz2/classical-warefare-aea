@@ -17,6 +17,11 @@
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/military_settlement.png</Icon>
   </Identity>
+    <Trainer>
+    <Entities datatype="tokens">
+      units/{civ}/tureos_spearman
+    </Entities>
+  </Trainer>
   <Obstruction>
     <Static width="32" depth="31"/>
   </Obstruction>

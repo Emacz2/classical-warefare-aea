@@ -3,9 +3,9 @@
 <Resistance>
     <Entity>
       <Damage>
-        <Hack>2</Hack>
-        <Pierce>2.5</Pierce>
-        <Crush>1.5</Crush>
+      <Crush>3</Crush>
+      <Hack>3.5</Hack>
+      <Pierce>5.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -13,24 +13,19 @@
     <Max>150</Max>
   </Health>
       <Loot>
-    <xp>150</xp>
+    <xp>75</xp>
   </Loot>
-  <UnitMotion>
-    <WalkSpeed>9.5</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>
-    <GenericName>Mercenary Thureos Skirmisher</GenericName>
+    <GenericName>Thureos Skirmisher</GenericName>
     <SpecificName>Thureophóros Akrobolistḗs</SpecificName>
-    <Icon>units/ptol/infantry_javelinist_merc.png</Icon>
+    <Icon>units/mace/thureophoros.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
-    <Actor>units/iberians/infantry_javelinist_b.xml</Actor>
+   <Actor>units/hellenes/infantry_javelinist_c_thureophoros.xml</Actor>
   </VisualActor>
 </Entity>
  

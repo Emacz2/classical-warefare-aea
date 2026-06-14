@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="aux_inf_champ|template_unit_champion_infantry_javelineer">
+<Entity parent="aux_inf_champ|armor_medium|shield_medium|template_unit_champion_infantry_javelineer">
   <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <GenericName>Italic Javelineer</GenericName>
-      <SpecificName>Extraordinarii</SpecificName>
+    <SpecificName>Extraordinarii</SpecificName>
     <SelectionGroupName>units/rome/champion_infantry_javelineer</SelectionGroupName>
+    <VisibleClasses datatype="tokens">Republic</VisibleClasses>
     <Icon>units/rome/rome_champ_jav.png</Icon>
   </Identity>
-  <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/rome/infantry_antesignanus</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
   <VisualActor>
     <Actor>units/romans/infantry_champion_jav.xml</Actor>
   </VisualActor>

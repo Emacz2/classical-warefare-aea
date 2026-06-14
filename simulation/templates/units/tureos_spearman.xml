@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_infantry_melee_spearman">
- <Resistance>
+<Resistance>
     <Entity>
       <Damage>
-        <Hack>2</Hack>
-        <Pierce>2.5</Pierce>
-        <Crush>1.5</Crush>
+      <Crush>3.5</Crush>
+      <Hack>3.5</Hack>
+      <Pierce>5.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -13,18 +13,13 @@
     <Max>150</Max>
   </Health>
       <Loot>
-    <xp>150</xp>
+    <xp>75</xp>
   </Loot>
-  <UnitMotion>
-    <WalkSpeed>9.5</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>
-    <GenericName>Mercenary Thureos Spearman</GenericName>
-    <SpecificName>Thureophóros Misthophóros</SpecificName>
+    <GenericName>Thureos Spearman</GenericName>
+    <SpecificName>Thureophóros</SpecificName>
     <Icon>units/ptol/infantry_spearman_2.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>

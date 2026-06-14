@@ -32,15 +32,6 @@
     <Tooltip>Counters: 2 vs Cavalry.</Tooltip>
     <VisibleClasses datatype="tokens">Pikeman Polearm</VisibleClasses>
   </Identity>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">2</Crush>
-        <Hack op="add">2</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/pike_attack.xml</attack_melee>
@@ -51,8 +42,8 @@
       special/formations/syntagma
     </Formations>
   </UnitAI>
-  <UnitMotion>
-  <WalkSpeed op="mul">0.64</WalkSpeed>
-  <Acceleration op="add">-5</Acceleration>
+<UnitMotion>
+    <WalkSpeed op="mul">0.92</WalkSpeed>
+    <RunMultiplier op="mul">1.35</RunMultiplier>
   </UnitMotion>
 </Entity>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="aux_inf|armor_medium|shield_medium|template_unit_infantry_melee_spearman">
+    <Cost>
+     <Resources>
+      <metal>0</metal>
+      <wood>0</wood>
+      <stone>0</stone>
+    </Resources>
+  </Cost>
+  <Identity>
+    <Rank>Elite</Rank>
+    <SelectionGroupName>units/rome/aux_inf_samnite_spearman</SelectionGroupName>
+    <GenericName>Auxiliary Spearman</GenericName>
+    <SpecificName>Cohors Auxiliaria</SpecificName>
+    <Icon>units/samn/spearman.png</Icon>
+     <Requirements>
+      <Techs datatype="tokens">roman_reforms</Techs>
+    </Requirements>
+  </Identity>
+  <VisualActor>
+    <Actor>units/carthaginians/infantry_spearman_c_samnite.xml</Actor>
+  </VisualActor>
+</Entity>

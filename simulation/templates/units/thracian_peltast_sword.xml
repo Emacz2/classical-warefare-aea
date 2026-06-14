@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="longsword|template_unit_infantry_melee_swordsman">
-  <Attack>
-    <Melee>
-      <AttackName context="Name of an attack using a rhomphaia (ῥομφαία), a Thracian two-handed weapon capable of both thrusting and slashing.">Rhomphaia</AttackName>
-    </Melee>
-  </Attack>
+<Entity parent="sword_long|template_unit_infantry_melee_swordsman">
  <Resistance>
     <Entity>
       <Damage>
-        <Hack>1.5</Hack>
-        <Pierce>2</Pierce>
-        <Crush>1.5</Crush>
+      <Crush>1</Crush>
+      <Hack>2</Hack>
+      <Pierce>2</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -18,7 +13,7 @@
     <Max>150</Max>
   </Health>
     <Loot>
-    <xp>135</xp>
+    <xp>75</xp>
   </Loot>
   <Identity>
     <Rank>Elite</Rank>

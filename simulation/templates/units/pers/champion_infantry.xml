@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_spearman">
+<Entity parent="armor_medium|shield_heavy|template_unit_champion_infantry_spearman">
   <Health>
     <Max>180</Max>
   </Health>
@@ -30,15 +30,6 @@
       </Damage>
     </Melee>
   </Attack>
- <Resistance>
-    <Entity>
-      <Damage>
-        <Crush>2</Crush> 
-        <Hack>3</Hack>
-        <Pierce>4</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Upgrade>
     <Immortal_archer>
       <Entity>units/pers/champion_infantry_archer_upgrade</Entity>

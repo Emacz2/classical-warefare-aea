@@ -13,20 +13,17 @@
   <Position>
     <Anchor>upright</Anchor>
   </Position>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush>1.5</Crush>
-        <Hack>2</Hack>
-        <Pierce>2.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
-      <Loot>
-    <xp>125</xp>
+    <Loot>
+    <xp>65</xp>
     <metal>15</metal>
     <wood>30</wood>
   </Loot>
+     <UnitMotion>
+    <WalkSpeed>8.7</WalkSpeed>
+    <RunMultiplier>1.7</RunMultiplier>
+    <Acceleration op="add">10</Acceleration>
+    <Weight>10</Weight>
+  </UnitMotion>
   <Selectable>
     <Overlay>
       <Texture>

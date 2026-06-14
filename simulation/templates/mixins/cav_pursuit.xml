@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+<Cost>
+    <Resources>
+      <wood op="add">-25</wood>
+    </Resources>
+  </Cost>
+<Attack>
+  <Melee merge="">
+   <Bonuses>
+        <BonusCavMelee>
+          <Classes>Cavalry</Classes>
+          <Multiplier>2.5</Multiplier>
+        </BonusCavMelee>
+      </Bonuses>
+      <PrepareTime>0</PrepareTime>
+  </Melee>
+  <Ranged merge="">
+     <Bonuses>
+        <BonusCavMelee>
+          <Classes>Cavalry</Classes>
+          <Multiplier>2</Multiplier>
+        </BonusCavMelee>
+      </Bonuses>
+      <PrepareTime>0</PrepareTime>
+  </Ranged>
+</Attack>
+   <Resistance>
+    <Entity>
+      <Damage>
+      <Crush op="add">0.5</Crush>
+      <Hack op="add">0.5</Hack>
+      <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+ <Identity>
+    <GenericName>Pursuit Cavalry</GenericName>
+     <VisibleClasses datatype="tokens">Pursuit Cavalry</VisibleClasses>
+    <Tooltip>only 0.5 of Hack and Pierce resistance but the fastest/best riders for scouting and pursuing enemy cav. 1.65 walk 2.0 run multiplier and 2.5x dmg against cav</Tooltip>
+    <History>.</History>
+  </Identity>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.65</WalkSpeed>
+    <RunMultiplier op="mul">2</RunMultiplier>
+  </UnitMotion>
+</Entity>

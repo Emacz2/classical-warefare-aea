@@ -3,11 +3,40 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Hack op="add">2</Hack>
-        <Pierce op="add">2</Pierce>
+        <Crush op="add">3</Crush>
+        <Hack op="add">4</Hack>
+        <Pierce op="add">3.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
+  <Attack>
+    <Ranged>
+      <PrepareTime>0</PrepareTime>
+    </Ranged>
+  </Attack>
+    <Health>
+    <Max>250</Max>
+  </Health>
+   <Cost>
+    <Population>2</Population>
+    <BuildTime>30</BuildTime>
+    <Resources>
+      <food>250</food>
+      <wood>100</wood>
+      <metal>200</metal>
+    </Resources>
+  </Cost>
+   <Loot>
+    <xp>125</xp>
+    <metal>15</metal>
+    <wood>30</wood>
+  </Loot>
+<BuildingAI>
+    <DefaultArrowCount>1</DefaultArrowCount>
+    <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
+    <MaxArrowCount>1</MaxArrowCount>
+    <GarrisonArrowClasses>Infantry Ranged</GarrisonArrowClasses>
+  </BuildingAI>
   <Identity>
     <VisibleClasses datatype="tokens">Chariot</VisibleClasses>
   </Identity>
@@ -16,8 +45,7 @@
   </Position>
   <ResourceGatherer disable=""/>
   <UnitMotion>
-    <WalkSpeed op="mul">0.90</WalkSpeed>
-    <Acceleration op="mul">0.5</Acceleration>
+    <WalkSpeed op="mul">1.4</WalkSpeed>
     <PassabilityClass>large</PassabilityClass>
     <Weight op="mul">3.0</Weight>
   </UnitMotion>

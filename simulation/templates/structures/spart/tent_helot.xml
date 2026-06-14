@@ -22,7 +22,6 @@
   <ProductionQueue/>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/support_female_helot
       units/{civ}/helot_javelineer
       units/{civ}/helot_stone_thrower
     </Entities>

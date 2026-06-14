@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_peltast|template_unit_infantry_ranged_javelineer">
+<Entity parent="shield_ultra_light|armor_light|template_unit_infantry_ranged_javelineer">
    <Builder>
     <Entities datatype="tokens">
       structures/pers/range
@@ -9,8 +9,8 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/infantry_javelineer_b</SelectionGroupName>
-    <GenericName>Lydian Auxiliary</GenericName>
-    <SpecificName>Pastiš Spardiya</SpecificName>
+    <GenericName>Persian Skirmisher</GenericName>
+    <SpecificName>Pastiš Asabara</SpecificName>
     <Icon>units/pers/infantry_javelinist.png</Icon>
   </Identity>
   <Promotion>

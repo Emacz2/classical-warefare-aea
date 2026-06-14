@@ -16,13 +16,6 @@
     </Projectile>
   </Ranged>
 </Attack>
- <Resistance>
-    <Entity>
-      <Damage>
-        <Pierce op="add">-0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <GenericName>Balearic Slinger</GenericName>
     <SpecificName>Qallāʿ Ibušimi</SpecificName>

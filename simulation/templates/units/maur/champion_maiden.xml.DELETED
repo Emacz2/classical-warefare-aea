@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="sword_short|template_unit_champion_infantry_swordsman">
+  <Cost>
+    <Resources>
+      <food>100</food>
+      <wood>0</wood>
+      <metal>50</metal>
+    </Resources>
+  </Cost>
+    <Attack>
+    <Melee>
+    <ApplyStatus>
+        <Poisoned>
+          <Interval>1000</Interval>
+          <Damage>
+            <Poison>1.5</Poison>
+          </Damage>
+          <Stackability>Extend</Stackability>
+          <Duration>6000</Duration>
+        </Poisoned>
+      </ApplyStatus>
+    </Melee>
+  </Attack>
+  <Health>
+    <Max>150</Max>
+  </Health>
+  <Identity>
+    <Civ>maur</Civ>
+    <Phenotype>female</Phenotype>
+    <GenericName>Maiden Guard</GenericName>
+    <SpecificName>Visha Kanya</SpecificName>
+    <SelectionGroupName>units/maur/champion_maiden</SelectionGroupName>
+    <Icon>units/maur/champion_maiden.png</Icon>
+  </Identity>
+  <VisualActor>
+    <Actor>units/mauryas/infantry_swordsman_c.xml</Actor>
+  </VisualActor>
+</Entity>

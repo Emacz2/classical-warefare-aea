@@ -11,22 +11,13 @@
     <Max>300</Max>
   </Health>
       <Loot>
-    <xp>300</xp>
+    <xp>150</xp>
     <metal>30</metal>
     <wood>15</wood>
   </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush>4</Crush> 
-        <Hack>6</Hack>
-        <Pierce>6</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Selectable>
     <Overlay>
       <Texture>

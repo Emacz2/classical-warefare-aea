@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+   <Resistance>
+    <Entity>
+      <Damage>
+      <Crush op="add">2</Crush>
+      <Hack op="add">2</Hack>
+      <Pierce op="add">4</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+ <Identity>
+    <GenericName>Super Heavy Armor</GenericName>
+    <Tooltip>+4 Pierce and +2 Crush/Hack resistance -6% slower walk speed</Tooltip>
+    <History>.</History>
+  </Identity>
+  <UnitMotion>
+    <WalkSpeed op="mul">0.94</WalkSpeed>
+  </UnitMotion>
+</Entity>

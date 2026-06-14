@@ -30,8 +30,9 @@
     <Tooltip>Counters: 2× vs Cavalry.</Tooltip>
     <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
   </Identity>
-  <UnitMotion>
-  <WalkSpeed op="mul">0.86</WalkSpeed>
+ <UnitMotion>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <RunMultiplier op="mul">1.45</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

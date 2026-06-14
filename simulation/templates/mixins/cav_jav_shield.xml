@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+    <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">0.5</Crush>
+        <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+    <Cost>
+     <Resources>
+      <wood op="add">10</wood>
+    </Resources>
+  </Cost>
+  <Identity>
+    <GenericName>Cavalry Spearman with shield</GenericName>
+    <Tooltip>+1 Pierce and +0.5 Crush resistance but +10 wood cost</Tooltip>
+  </Identity>
+</Entity>

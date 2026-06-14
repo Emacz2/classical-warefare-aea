@@ -7,8 +7,18 @@
       <stone>0</stone>
     </Resources>
   </Cost>
+  <Attack>
+    <Ranged>
+      <AttackName>Javelin</AttackName>
+    <Damage>
+        <Pierce op="mul">0.95</Pierce>
+      </Damage>
+      <PrepareTime>500</PrepareTime>
+      <RepeatTime op="add">-300</RepeatTime>
+    </Ranged>
+  </Attack>
   <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
     <RunMultiplier op="mul">1.1</RunMultiplier>
     <Acceleration op="add">10</Acceleration>
   </UnitMotion>

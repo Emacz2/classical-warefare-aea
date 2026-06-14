@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+   <Resistance>
+    <Entity>
+      <Damage>
+      <Crush op="add">3</Crush>
+      <Hack op="add">3</Hack>
+      <Pierce op="add">4</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+ <Identity>
+    <GenericName>Super Heavy Shield</GenericName>
+    <Tooltip>+4 pierce and +3 Crush/Hack resistance but -6% walk speed</Tooltip>
+    <History>Aspis (Greek hoplon); Scutum (Roman legionary); Large Macedonian reinforced hoplon; Seleucid/Ptolemaic heavy hoplon variants</History>
+  </Identity>
+  <UnitMotion>
+    <WalkSpeed op="mul">0.94</WalkSpeed>
+  </UnitMotion>
+</Entity>

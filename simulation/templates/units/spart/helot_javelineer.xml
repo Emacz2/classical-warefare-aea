@@ -21,8 +21,8 @@
     <Lang>greek</Lang>
     <SelectionGroupName>units/spart/helot_javelineer</SelectionGroupName>
     <GenericName>Helot Skirmisher</GenericName>
-    <Tooltip>Slaves of Sparta</Tooltip>
     <SpecificName>Akontistḗs Heílōs</SpecificName>
+    <Tooltip>Slaves of Sparta</Tooltip>
     <Icon>units/spart/helot_jav.png</Icon>
   </Identity>
   <TrainingRestrictions>

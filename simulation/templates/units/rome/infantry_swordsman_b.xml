@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_scutum|template_unit_infantry_melee_swordsman">
+<Entity parent="shield_super_heavy|armor_medium|template_unit_infantry_melee_swordsman">
   <Builder>
     <Entities datatype="tokens">
       structures/rome/army_camp

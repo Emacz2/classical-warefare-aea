@@ -31,7 +31,7 @@
       units/{civ}/infantry_swordsman_b
       units/{civ}/infantry_javelineer_b
       units/{civ}/cavalry_spearman_b
-      units/{civ}/infantry_spearman_consript
+      units/{civ}/infantry_spearman_conscript
     </Entities>
   </Trainer>
   <VisualActor>

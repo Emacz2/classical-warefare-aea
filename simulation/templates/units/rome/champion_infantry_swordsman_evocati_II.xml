@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/rome/champion_infantry_swordsman_evocati">
+<Entity parent="shield_super_heavy|armor_super_heavy|sword_short|template_unit_champion_infantry_swordsman">
     <Attack>
     <Melee>
       <Damage>
@@ -8,14 +8,6 @@
       </Damage>
     </Melee>
   </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Health>
     <Max op="add">25</Max>
   </Health>

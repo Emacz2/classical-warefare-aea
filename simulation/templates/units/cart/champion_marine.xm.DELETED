@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="armor_medium|shield_heavy|sword_short|template_unit_champion_infantry_swordsman">
+  <Identity>
+    <GenericName>Liby-Phoenicians Marine</GenericName>
+    <SpecificName>Ḥanīt Yam</SpecificName>
+    <Icon>units/athen/champion_marine.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
+  </Identity>
+  <VisualActor>
+    <Actor>units/athenians/infantry_swordsman_c.xml</Actor>
+  </VisualActor>
+</Entity>

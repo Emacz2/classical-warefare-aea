@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="concsript_ranged|template_unit_infantry_ranged_archer">
+<Builder>
+  <Entities datatype="tokens">
+      structures/mace/royal_stoa
+  </Entities>
+</Builder>
+  <Identity>
+    <Civ>mace</Civ>
+    <Lang>greek</Lang>
+    <SelectionGroupName>units/mace/infantry_archer_b</SelectionGroupName>
+    <GenericName>Macedonian Conscripted Archer</GenericName>
+    <SpecificName>Toxotia</SpecificName>
+    <Icon>units/mace/conscript_archer.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/mace/infantry_archer_b</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/persians/infantry_archer_b.xml</Actor>
+  </VisualActor>
+</Entity>

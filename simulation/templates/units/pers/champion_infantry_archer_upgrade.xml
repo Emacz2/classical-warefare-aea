@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_archer">
+<Entity parent="armor_medium|template_unit_champion_infantry_archer">
     <Attack>
     <Ranged>
       <Damage>
@@ -31,15 +31,6 @@
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
- <Resistance>
-    <Entity>
-      <Damage>
-        <Crush>2</Crush> 
-        <Hack>3</Hack>
-        <Pierce>4</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Upgrade>
     <Immortal_spearman>
       <Entity>units/pers/champion_infantry</Entity>

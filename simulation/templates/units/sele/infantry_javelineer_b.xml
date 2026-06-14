@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_peltast|template_unit_infantry_ranged_javelineer">
+<Entity parent="armor_light|template_unit_infantry_ranged_javelineer">
 <Builder>
     <Entities datatype="tokens">
       structures/sele/range
@@ -10,8 +10,11 @@
     <Lang>greek</Lang>
     <SelectionGroupName>units/sele/infantry_javelineer_b</SelectionGroupName>
     <GenericName>Imperial Skirmisher</GenericName>
-    <SpecificName>Katoikos Doryphoros</SpecificName>
+    <SpecificName>Katoikos Akontistēs</SpecificName>
     <Icon>units/sele/infantry_javelinist.png</Icon>
+        <Requirements>
+      <Techs datatype="tokens">unlock_skirms</Techs>
+    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/sele/infantry_javelineer_a</Entity>

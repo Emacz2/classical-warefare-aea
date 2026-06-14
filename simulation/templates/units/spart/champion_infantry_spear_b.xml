@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="hoplite|template_unit_champion_infantry_spearman">
+<Entity parent="hoplite|shield_super_heavy|armor_heavy|template_unit_champion_infantry_spearman">
   <Cost>
     <BuildTime>16</BuildTime>
     <Resources>
-      <food>100</food>
+      <food>80</food>
       <wood>50</wood>
       <metal>80</metal>
     </Resources>
@@ -16,20 +16,11 @@
       </Damage>
     </Melee>
   </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-1</Hack>
-        <Pierce op="add">-1</Pierce>
-	      <Crush op="add">-1</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
  <Health>
     <Max op="add">-25</Max>
   </Health>
     <Loot>
-    <xp>200</xp>
+    <xp>100</xp>
   </Loot>
  <UnitMotion>
  </UnitMotion>

@@ -25,13 +25,13 @@
 	"modifications": [
 		{ "value": "ResourceGatherer/Rates/metal.ore", "multiply": 1.15, "affects": "Worker" },
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
-		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
-        { "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.98, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" }
+		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "Agora" },
+		{ "value": "Population/Bonus", "add": 5, "affects": "Agora" },
+		{ "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "Agora" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" }
+		
 
 	],
 	"soundComplete": "interface/alarm/alarm_phase.xml"

@@ -21,6 +21,8 @@
       units/{civ}/infantry_pikeman_concsript
       -units/{civ}/infantry_archer_b
       units/{civ}/infantry_archer_concsript
+      -units/{civ}/infantry_javelineer_b
+      units/{civ}/infantry_javelineer_e
     </Entities>
   </Trainer>
   <VisualActor>

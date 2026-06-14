@@ -32,16 +32,9 @@
     <GenericName>Axeman</GenericName>
     <Tooltip>Counters: 1.5× vs Siege.</Tooltip>
   </Identity>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">-0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.86</WalkSpeed>
+ <UnitMotion>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <RunMultiplier op="mul">1.45</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

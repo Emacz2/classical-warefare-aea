@@ -35,9 +35,6 @@
     <Classes datatype="tokens">Human FastMoving CitizenSoldier</Classes>
     <VisibleClasses datatype="tokens">Citizen Soldier Cavalry</VisibleClasses>
   </Identity>
-  <Loot>
-    <xp>100</xp>
-  </Loot>
   <Position>
     <TurnRate>10</TurnRate>
   </Position>
@@ -87,8 +84,7 @@
     </Formations>
   </UnitAI>
   <UnitMotion>
-    <WalkSpeed op="mul">1.7</WalkSpeed>
-    <RunMultiplier>1.5</RunMultiplier>
+    <WalkSpeed>9.0</WalkSpeed>
   </UnitMotion>
   <Vision>
     <Range>55</Range>

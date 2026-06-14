@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="pike_phalanx|shield_ultra_light|armor_heavy|template_unit_champion_infantry_pikeman">
+  <Health>
+    <Max op="add">50</Max>
+  </Health>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
+    <Acceleration op="mul">1.05</Acceleration>
+  </UnitMotion>
+  <Identity>
+    <SpecificName>Hypaspistḗs Argyraspídi</SpecificName>
+    <Icon>units/mace/argyraspidai.png</Icon>
+    <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
+    <Requirements>
+      <Techs datatype="tokens">phase_city</Techs>
+    </Requirements>
+  </Identity>
+  <Promotion disable=""/>
+  <VisualActor>
+    <Actor>units/macedonians/infantry_spearman_c_e.xml</Actor>
+  </VisualActor>
+</Entity>

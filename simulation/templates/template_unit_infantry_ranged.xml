@@ -9,11 +9,6 @@
   </Health>
   <Resistance>
     <Entity>
-      <Damage>
-        <Hack>0.5</Hack>
-        <Pierce>0.5</Pierce>
-        <Crush>0</Crush>
-      </Damage>
       <ApplyStatus>
         <Burning>
         <Duration>0.5</Duration>
@@ -29,13 +24,8 @@
     <stone>5</stone>
     <metal>5</metal>
   </Loot>
-    <UnitMotion>
-    <FormationController>false</FormationController>
-    <PassabilityClass>default</PassabilityClass>
-    <WalkSpeed>9.7</WalkSpeed>
-    <RunMultiplier>1.6</RunMultiplier>
-    <Acceleration op="add">10</Acceleration>
-    <Weight>10</Weight>
+ <UnitMotion>
+    <Acceleration>40</Acceleration>
   </UnitMotion>
   <UnitAI>
     <Formations datatype="tokens">

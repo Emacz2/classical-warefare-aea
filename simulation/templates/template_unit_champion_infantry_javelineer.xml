@@ -20,14 +20,6 @@
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Ranged>
   </Attack>
-   <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <GenericName>Champion Infantry Javelineer</GenericName>
     <VisibleClasses datatype="tokens">Ranged Javelineer</VisibleClasses>
@@ -49,7 +41,7 @@
     </Formations>
   </UnitAI>
 <UnitMotion>
-    <WalkSpeed op="mul">1.06</WalkSpeed>
-    <Acceleration op="add">4</Acceleration>
+    <WalkSpeed op="mul">1.08</WalkSpeed>
+    <RunMultiplier op="mul">1.65</RunMultiplier>
   </UnitMotion>
 </Entity>

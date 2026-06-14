@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-  <Attack>
+ <Attack>
     <Melee>
+      <AttackName>Lance</AttackName>
       <Splash>
         <Shape>Circular</Shape>
         <Range>1.5</Range>
@@ -16,6 +17,6 @@
     <Acceleration op="mul">1.2</Acceleration>
   </UnitMotion>
   <Identity>
-    <GenericName>Schock Cavalry</GenericName>
+    <GenericName>Shock Cavalry</GenericName>
   </Identity>
 </Entity>

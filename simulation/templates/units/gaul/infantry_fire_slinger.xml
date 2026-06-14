@@ -28,7 +28,8 @@
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/infantry_fire_slinger</SelectionGroupName>
-    <SpecificName>Talmoris</SpecificName>
+    <GenericName>Celtic Fire Slinger</GenericName>
+    <SpecificName>Talmoris Losgos</SpecificName>
     <Icon>units/gaul/infantry_slinger.png</Icon>
   </Identity>
   <Promotion disable=""/>

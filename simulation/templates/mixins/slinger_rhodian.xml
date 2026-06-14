@@ -15,13 +15,6 @@
     </Projectile>
   </Ranged>
 </Attack>
- <Resistance>
-    <Entity>
-      <Damage>
-        <Pierce op="add">-0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <Lang>greek</Lang>
     <GenericName>Rhodian Slinger</GenericName>

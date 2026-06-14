@@ -1,0 +1,13 @@
+{
+	"genericName": "Veteran Citizenry",
+	"description": "Citizen infantry train 10% faster, reflecting the strong military traditions of Boeotia and Thebes.",
+	"autoResearch": true,
+	"requirements": { "civ": "theb" },
+	"icon": "enlightenment.png",
+	"tooltip": "Infantry promote 10% faster.",
+	"modifications": [{ "value": "Promotion/RequiredXp", "multiply": 0.9 }],
+	"affects": ["Citizen Infantry"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}
+	
+	

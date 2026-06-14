@@ -48,7 +48,6 @@
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/champion_marine
       units/{civ}/champion_infantry_javelineer
       units/{civ}/champion_infantry_crossbowman
     </Entities>

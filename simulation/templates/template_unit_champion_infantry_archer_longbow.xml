@@ -6,7 +6,7 @@
     <Damage>
         <Pierce>12.8</Pierce>
       </Damage>
-      <MaxRange>60</MaxRange>
+      <MaxRange>65</MaxRange>
       <MinRange>20</MinRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1500</RepeatTime>
@@ -36,16 +36,9 @@
       special/formations/skirmish
     </Formations>
   </UnitAI>
-    <Resistance>
-    <Entity>
-      <Damage>
-       <Hack op="add">0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.04</WalkSpeed>
-    <Acceleration op="add">2.5</Acceleration>
+   <UnitMotion>
+    <WalkSpeed op="mul">1</WalkSpeed>
+    <RunMultiplier op="mul">1.5</RunMultiplier>
   </UnitMotion>
    <Vision>
     <Range>75</Range>

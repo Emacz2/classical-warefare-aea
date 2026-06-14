@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_maceman">
+<Entity parent="armor_heavy|shield_medium|template_unit_champion_infantry_maceman">
   <Identity>
     <Civ>maur</Civ>
-    <GenericName>Warrior</GenericName>
+    <GenericName>gada warrior</GenericName>
     <SpecificName>Yōddha</SpecificName>
     <SelectionGroupName>units/maur/champion_infantry</SelectionGroupName>
     <Icon>units/maur/champion_maceman.png</Icon>

@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="inf_heavy|units/rome/infantry_spearman_e">
+<Entity parent="shield_super_heavy|armor_heavy|spear_long|template_unit_infantry_melee_spearman">
     <Cost>
     <Resources>
       <wood op="add">-10</wood>
       <metal op="add">35</metal>
     </Resources>
   </Cost>
-    <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">1.5</Crush>
-        <Hack op="add">1</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
  <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
-    <SelectionGroupName>units/rome/infantry_spearman_b</SelectionGroupName>
+    <Rank>Elite</Rank>
+    <SelectionGroupName>units/rome/infantry_spearman_t</SelectionGroupName>
     <GenericName>Veteran Spearman</GenericName>
     <SpecificName>Triārius</SpecificName>
     <Icon>units/samn/spearman.png</Icon>
   </Identity>
+  <Promotion>
+    <Entity>units/rome/aux_inf_spearman</Entity>
+  </Promotion>
   <VisualActor>
     <Actor>units/carthaginians/infantry_spearman_c_samnite.xml</Actor>
   </VisualActor>

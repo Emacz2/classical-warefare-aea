@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_swordsman">
+<Entity parent="armor_super_heavy|shield_super_heavy|sword_short|template_unit_champion_infantry_swordsman">
    <Attack>
     <Melee>
       <Damage>
@@ -11,16 +11,8 @@
   <Health>
     <Max op="add">50</Max>
   </Health>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
-    <GenericName>Praetorian Guard</GenericName>
+    <GenericName>Emperial Guard Infantry</GenericName>
     <SpecificName>Praetorianus</SpecificName>
     <VisibleClasses datatype="tokens">Praetorian Guard Rōmānī</VisibleClasses>
     <Icon>units/rome/champion_legion_centurio.png</Icon>

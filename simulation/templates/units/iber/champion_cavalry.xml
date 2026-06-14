@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_cavalry_swordsman">
+<Entity parent="cav_light|template_unit_champion_cavalry_swordsman">
   <Identity>
     <Civ>iber</Civ>
-    <SpecificName>Zaldun Arrin</SpecificName>
-    <GenericName>Elite Cavalry Swordsman</GenericName>
+    <SpecificName>Zaldun Buruzagi</SpecificName>
+    <GenericName>Iberian Elite Sword Cavalry</GenericName>
     <SelectionGroupName>units/iber/champion_cavalry</SelectionGroupName>
     <Icon>units/iber/champ_cav.png</Icon>
     <Requirements>

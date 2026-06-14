@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="concsript_ranged|template_unit_infantry_ranged_archer">
+<Entity parent="conscript_ranged|template_unit_infantry_ranged_archer_simple">
     <Builder>
     <Entities datatype="tokens">
       structures/pers/persian_stoa

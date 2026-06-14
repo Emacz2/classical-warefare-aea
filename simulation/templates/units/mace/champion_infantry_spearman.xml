@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_infantry_spearman">
+<Entity parent="armor_medium|shield_heavy|template_unit_champion_infantry_spearman">
    <UnitMotion>
     <WalkSpeed op="mul">1.05</WalkSpeed>
     <Acceleration op="mul">1.05</Acceleration>
@@ -17,7 +17,7 @@
     </Requirements>
   </Identity>
   <Promotion>
-    <Entity>units/mace/champion_infantry_spearman_02</Entity>
+    <Entity>units/mace/champion_infantry_spearman_2</Entity>
     <RequiredXp>400</RequiredXp>
   </Promotion>
   <VisualActor>

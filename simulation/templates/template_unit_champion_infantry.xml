@@ -44,10 +44,7 @@
       </ApplyStatus>
     </Entity>
   </Resistance>
-  <UnitMotion>
-    <WalkSpeed>8.2</WalkSpeed>
-    <RunMultiplier>1.5</RunMultiplier>
-    <Acceleration>30</Acceleration>
-    <Weight>10</Weight>
+    <UnitMotion>
+    <WalkSpeed>9.1</WalkSpeed>
   </UnitMotion>
 </Entity>

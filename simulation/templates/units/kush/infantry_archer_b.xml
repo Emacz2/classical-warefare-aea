@@ -11,7 +11,7 @@
   </Builder>
   <Attack>
     <Ranged>
-    <AttackName>SimpleLongBow</AttackName>
+    <AttackName>LongBow</AttackName>
     <ApplyStatus>
         <Poisoned>
           <Interval>1500</Interval>

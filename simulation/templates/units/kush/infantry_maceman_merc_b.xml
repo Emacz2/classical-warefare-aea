@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_inf|shield_noba|template_unit_infantry_melee_maceman">
+<Entity parent="merc_inf|shield_light|armor_light|template_unit_infantry_melee_maceman">
   <Builder>
     <Entities datatype="tokens">
       structures/kush/pyramid_large

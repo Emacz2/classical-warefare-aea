@@ -21,11 +21,9 @@
   </Researcher>
   <Trainer>
     <Entities datatype="tokens">
-      -units/{civ}/support_female_citizen
-      units/{civ}/support_female_helot
+      units/{civ}/support_female_citizen
       units/{civ}/helot_javelineer
       units/{civ}/helot_stone_thrower
-      units/{civ}/scout
     </Entities>
   </Trainer>
     <Promotion>

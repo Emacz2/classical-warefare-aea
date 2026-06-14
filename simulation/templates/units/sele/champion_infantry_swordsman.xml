@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="inf_heavy|template_unit_champion_infantry_swordsman">
+<Entity parent="units/thorakites">
   <Identity>
     <Civ>sele</Civ>
     <Lang>greek</Lang>
-     <GenericName>Silver Shield Swordsman</GenericName>
-    <SpecificName>Argyraspis</SpecificName>
+     <GenericName>Champion Heavy Infantry</GenericName>
+    <SpecificName>Thorakitēs Agēma</SpecificName>
     <Icon>units/sele/champion_swordsman.png</Icon>
-     <Requirements>
-      <Techs datatype="tokens">reformed_army_sele</Techs>
-    </Requirements>
   </Identity>
   <VisualActor>
     <Actor>units/seleucids/infantry_swordsman_c.xml</Actor>

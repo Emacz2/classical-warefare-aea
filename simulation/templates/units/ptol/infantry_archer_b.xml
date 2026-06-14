@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_archer">
+<Entity parent="armor_light|template_unit_infantry_ranged_archer">
  <Builder>
     <Entities datatype="tokens">
       structures/ptol/lighthouse
@@ -11,8 +11,8 @@
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/infantry_archer_b</SelectionGroupName>
-    <GenericName>Machimoi Archers</GenericName>
-    <SpecificName>Toxótēs </SpecificName>
+    <GenericName>Ptolemaic archer</GenericName>
+    <SpecificName>Toxótēs</SpecificName>
     <Icon>units/ptol/inf_archer.png</Icon>
   </Identity>
   <Promotion>

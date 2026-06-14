@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_slinger">
+<Entity parent="shield_ultra_light|template_unit_infantry_ranged_slinger">
  <Builder>
     <Entities datatype="tokens">
       structures/pers/range
@@ -9,7 +9,7 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/infantry_slinger_b</SelectionGroupName>
-    <SpecificName>Habailari</SpecificName>
+   <SpecificName>Pastiš Bandakabara</SpecificName>
     <Icon>units/iber/infantry_slinger.png</Icon>
   </Identity>
   <Promotion>

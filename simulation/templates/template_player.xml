@@ -29,8 +29,7 @@
       <Ephor>5</Ephor>
       <Gerousia>1</Gerousia>
       <Gladiator>0</Gladiator>
-      <HelotM>10</HelotM>
-      <HelotW>10</HelotW>
+      <HelotM>15</HelotM>
       <Hero>1</Hero>
       <Juggernaut>1</Juggernaut>
       <Kennel>2</Kennel>
@@ -57,7 +56,7 @@
       <ThebsSB>50</ThebsSB>
       <ScythianGuard>5</ScythianGuard>
       <Silvermine>3</Silvermine>
-      <SpartW>0</SpartW>
+      <SpartW>1</SpartW>
       <Yakhchal>5</Yakhchal>
       <WarDog>5</WarDog>
       <SpartCav>40</SpartCav>
@@ -78,11 +77,14 @@
         <Market>5</Market>
       </LandTrader>
       <HelotM>
-        <Champion>3</Champion>
+        <Champion>1</Champion>
       </HelotM>
-      <HelotW>
-        <Tent>10</Tent>
-      </HelotW>
+      <HelotM>
+        <Perioikoi>1</Perioikoi>
+      </HelotM>
+       <HelotM>
+        <SpartW>1</SpartW>
+      </HelotM>
       <Juggernaut>
         <PtolemyIV>4</PtolemyIV>
       </Juggernaut>

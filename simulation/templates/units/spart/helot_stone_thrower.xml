@@ -21,6 +21,7 @@
     <Lang>greek</Lang>
     <SelectionGroupName>units/spart/infantry_archer_b</SelectionGroupName>
     <GenericName>Helot Stone Thrower</GenericName>
+    <SpecificName>Helōtikós Sphendonḗtēs</SpecificName>
     <Icon>units/spart/helot_stone.png</Icon>
   </Identity>
   <TrainingRestrictions>

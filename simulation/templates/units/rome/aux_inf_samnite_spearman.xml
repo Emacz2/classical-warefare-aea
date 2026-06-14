@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="aux_inf|units/samnite_spearman">
+<Entity parent="aux_inf|armor_medium|shield_medium|units/samnite_spearman">
     <Cost>
      <Resources>
       <metal>0</metal>
@@ -9,8 +9,8 @@
   </Cost>
   <Identity>
     <SelectionGroupName>units/rome/aux_inf_samnite_spearman</SelectionGroupName>
-    <GenericName>Samnite Spearman</GenericName>
-    <SpecificName>Samnite Spearman</SpecificName>
+    <GenericName>Auxiliary Spearman</GenericName>
+    <SpecificName>Cohors Auxiliaria</SpecificName>
     <Icon>units/samn/spearman.png</Icon>
      <Requirements>
       <Techs datatype="tokens">roman_reforms</Techs>
