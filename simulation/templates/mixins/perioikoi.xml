@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-  <Cost>
-    <Resources>
-      <food>50</food>
-      <wood>50</wood>
-      <stone>0</stone>
-      <metal>0</metal>
-    </Resources>
-  </Cost>
   <Identity>
     <VisibleClasses datatype="tokens">Perioikoi -Citizen</VisibleClasses>
     <Tooltip>Perioikoi were free non citizen that were an important backbone in Sparta's military.</Tooltip>
