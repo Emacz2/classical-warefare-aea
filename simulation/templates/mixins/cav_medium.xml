@@ -11,11 +11,11 @@
   </Resistance>
    <UnitMotion>
     <WalkSpeed op="mul">1.45</WalkSpeed>
-    <RunMultiplier op="mul">1.8</RunMultiplier>
+    <RunMultiplier op="mul">1.7</RunMultiplier>
   </UnitMotion>
  <Identity>
     <GenericName>Medium Armored Cavalary</GenericName>
-     <VisibleClasses datatype="tokens">Merdium Cavalry</VisibleClasses>
+     <VisibleClasses datatype="tokens">Medium Cavalry</VisibleClasses>
     <Tooltip>+3 Hack +2.5 Pierce and +2 Crush resistance and 45% faster than standard unit.</Tooltip>
     <History>.</History>
   </Identity>

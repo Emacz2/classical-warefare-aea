@@ -14,7 +14,7 @@
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2</Multiplier>
+          <Multiplier>1.5</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -22,8 +22,9 @@
   </Attack>
   <Identity>
     <GenericName>Champion Spearman</GenericName>
-    <Tooltip>Counters: 2 × vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
+    <Tooltip>Counters: 1.5 × vs Cavalry.</Tooltip>
+    <Classes datatype="tokens">Polearm</Classes>
+    <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
   <Sound>
     <SoundGroups>

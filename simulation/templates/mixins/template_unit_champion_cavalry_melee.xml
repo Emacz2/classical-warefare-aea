@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_champion_cavalry">
+  <Identity>
+    <VisibleClasses datatype="tokens">Cavalry</VisibleClasses>
+    <GenericName>Champion Melee Cavalry</GenericName>
+  </Identity>
+   <Cost>
+    <BuildTime>27</BuildTime>
+  </Cost>
+   <Health>
+    <Max>300</Max>
+  </Health>
+      <Loot>
+    <xp>150</xp>
+    <metal>30</metal>
+    <wood>15</wood>
+  </Loot>
+  <Position>
+    <Anchor>upright</Anchor>
+  </Position>
+  <Selectable>
+    <Overlay>
+      <Texture>
+        <MainTexture>128x128/arrow.png</MainTexture>
+        <MainTextureMask>128x128/arrow_mask.png</MainTextureMask>
+      </Texture>
+    </Overlay>
+  </Selectable>
+  <Sound>
+    <SoundGroups>
+      <trained>interface/alarm/alarm_create_infantry.xml</trained>
+      <walk>actor/human/movement/walk.xml</walk>
+      <run>actor/human/movement/walk.xml</run>
+      <death>actor/human/death/{phenotype}_death.xml</death>
+    </SoundGroups>
+  </Sound>
+</Entity>

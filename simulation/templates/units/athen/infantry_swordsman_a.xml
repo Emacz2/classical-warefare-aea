@@ -2,6 +2,7 @@
 <Entity parent="civ/athen|armor_light|shield_medium|template_unit_infantry_melee_swordsman">
   <Identity>
     <Rank>Advanced</Rank>
+    <Icon>units/athen/champion_marine.png</Icon>
   </Identity>
   <Promotion>
     <Entity>units/athen/infantry_swordsman_e</Entity>

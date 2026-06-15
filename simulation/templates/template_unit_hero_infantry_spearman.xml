@@ -22,7 +22,8 @@
   <Identity>
     <GenericName>Hero Spearman</GenericName>
     <Tooltip>Counters: 2× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
+    <Classes datatype="tokens">Polearm</Classes>
+    <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
   <Sound>
     <SoundGroups>

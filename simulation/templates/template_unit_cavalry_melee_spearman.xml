@@ -26,14 +26,11 @@
     </Resources>
   </Cost>
   <Identity>
-    <GenericName>Shock Cavalry Spearman</GenericName>
+    <GenericName>Cavalry Spearman</GenericName>
     <Tooltip>Counters: 1.5× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Spearman Polearm</VisibleClasses>
+    <Classes datatype="tokens">Polearm</Classes>
+    <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
-    <Acceleration op="mul">1.15</Acceleration>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/spear_attack.xml</attack_melee>

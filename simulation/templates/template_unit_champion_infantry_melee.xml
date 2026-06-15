@@ -15,11 +15,15 @@
   <Position>
     <Anchor>upright</Anchor>
   </Position>
-  <UnitMotion>
-    <WalkSpeed>8.7</WalkSpeed>
-    <RunMultiplier>1.6</RunMultiplier>
-    <Acceleration op="add">5</Acceleration>
-    </UnitMotion>
+    <Resistance>
+    <Entity>
+      <Damage>
+      <Crush op="add">2</Crush>
+      <Hack op="add">2</Hack>
+      <Pierce op="add">2</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Selectable>
     <Overlay>
       <Texture>

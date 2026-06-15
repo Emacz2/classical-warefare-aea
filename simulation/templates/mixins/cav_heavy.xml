@@ -11,10 +11,10 @@
   </Resistance>
     <UnitMotion>
     <WalkSpeed op="mul">1.30</WalkSpeed>
-    <RunMultiplier op="mul">1.7</RunMultiplier>
+    <RunMultiplier op="mul">1.6</RunMultiplier>
   </UnitMotion>
  <Identity>
-    <GenericName>Medium Armored Cavalary</GenericName>
+    <GenericName>Heavily Armored Cavalary</GenericName>
      <VisibleClasses datatype="tokens">Heavy Cavalry</VisibleClasses>
     <Tooltip>4.5 Hack, 4 Pierce and 3.5 Crush resistance but only 30%% faster walk speed than standard unit</Tooltip>
     <History>.</History>

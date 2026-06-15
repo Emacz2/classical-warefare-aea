@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_champion_cavalry">
   <Identity>
-    <VisibleClasses datatype="tokens">Cavalry</VisibleClasses>
-    <GenericName>Champion Melee Cavalry</GenericName>
+    <VisibleClasses datatype="tokens">Melee</VisibleClasses>
   </Identity>
    <Cost>
     <BuildTime>27</BuildTime>
   </Cost>
    <Health>
-    <Max>300</Max>
+    <Max>325</Max>
   </Health>
       <Loot>
     <xp>150</xp>
@@ -26,6 +25,15 @@
       </Texture>
     </Overlay>
   </Selectable>
+     <Resistance>
+    <Entity>
+      <Damage>
+      <Crush>2</Crush>
+      <Hack>2</Hack>
+      <Pierce>2</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Sound>
     <SoundGroups>
       <trained>interface/alarm/alarm_create_infantry.xml</trained>

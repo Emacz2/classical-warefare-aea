@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="citizen|builder|template_unit_support">
+ <Builder>
+    <Entities datatype="tokens">
+      structures/gaul/arvernian_camp
+    </Entities>
+  </Builder>
+  <Cost>
+    <Population>0</Population>
+    <BuildTime>30</BuildTime>
+    <Resources>
+      <food>50</food>
+    </Resources>
+  </Cost>
+  <Health>
+    <Max>200</Max>
+  </Health>
+  <Identity>
+    <Civ>gaul</Civ>
+    <GenericName>Arvernian Diplomat</GenericName>
+    <Tooltip>Allows you to build Arvernian_camp Coalition Camps recruit Champion Gaesatae and Ruteni Archers</Tooltip>
+    <Classes datatype="tokens">Organic Human</Classes>
+    <VisibleClasses datatype="tokens">Diplomat</VisibleClasses>
+    <Icon>units/gaul/celt_diplo.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
+  </Identity>
+  <Loot>
+    <xp>150</xp>
+    <food>10</food>
+    <metal>10</metal>
+  </Loot>
+  <Position>
+    <TurnRate>8</TurnRate>
+  </Position>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack>5</Hack>
+        <Pierce>5</Pierce>
+        <Crush>5</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <Selectable>
+    <Overlay>
+      <AlwaysVisible/>
+      <Shape>
+        <Circle radius="2.5"/>
+      </Shape>
+      <Texture>
+        <MainTexture>128x128/octagram.png</MainTexture>
+        <MainTextureMask>128x128/octagram_mask.png</MainTextureMask>
+      </Texture>
+    </Overlay>
+  </Selectable>
+  <Sound>
+    <SoundGroups>
+    <trained>interface/alarm/alarm_create_infantry.xml</trained>
+      <select>voice/{lang}/civ/civ_{phenotype}_select.xml</select>
+      <order_walk>voice/{lang}/civ/civ_{phenotype}_walk.xml</order_walk>
+      <order_attack>voice/{lang}/civ/civ_{phenotype}_attack.xml</order_attack>
+      <order_gather>voice/{lang}/civ/civ_{phenotype}_gather.xml</order_gather>
+      <order_repair>voice/{lang}/civ/civ_{phenotype}_repair.xml</order_repair>
+      <order_build>voice/{lang}/civ/civ_{phenotype}_build.xml</order_build>
+      <order_garrison>voice/{lang}/civ/civ_{phenotype}_garrison.xml</order_garrison>
+      <invalid_building_placement>interface/alarm/alarm_invalid_building_placement.xml</invalid_building_placement>
+      <walk>actor/human/movement/walk.xml</walk>
+      <run>actor/human/movement/run.xml</run>
+      <attack_melee>attack/weapon/knife_attack.xml</attack_melee>
+      <attack_slaughter>attack/weapon/knife_attack.xml</attack_slaughter>
+      <death>actor/human/death/{phenotype}_death.xml</death>
+      <build>resource/construction/con_wood.xml</build>
+      <gather_fruit>resource/foraging/forage_leaves.xml</gather_fruit>
+      <gather_grain>resource/farming/farm.xml</gather_grain>
+      <gather_meat>resource/gathering/gather_meat.xml</gather_meat>
+      <gather_tree>resource/lumbering/lumbering.xml</gather_tree>
+      <gather_rock>resource/mining/pickaxe.xml</gather_rock>
+      <gather_ore>resource/mining/mining.xml</gather_ore>
+      <gather_ruins>resource/mining/mining.xml</gather_ruins>
+    </SoundGroups>
+  </Sound>
+  <TrainingRestrictions>
+    <Category>Diplomat</Category>
+    <MatchLimit>1</MatchLimit>
+  </TrainingRestrictions>
+  <Vision>
+    <Range>40</Range>
+  </Vision>
+  <VisualActor>
+    <Actor>units/gauls/rutheni.xml</Actor>
+  </VisualActor>
+</Entity>

@@ -2,8 +2,7 @@
 <Entity parent="citizen|builder|template_unit_support">
  <Builder>
     <Entities datatype="tokens">
-      structures/gaul/camp_rae_ner
-      structures/gaul/camp_tre_rut
+      structures/gaul/belgian_camp
     </Entities>
   </Builder>
   <Cost>
@@ -18,8 +17,8 @@
   </Health>
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Rutheni Diplomat</GenericName>
-    <Tooltip>Allows you to build Rutheni structures</Tooltip>
+    <GenericName>Belgian Diplomat</GenericName>
+    <Tooltip>Allows you to build Belgian Coalition Camps and research new technogies and train Treveri Cavalry</Tooltip>
     <Classes datatype="tokens">Organic Human</Classes>
     <VisibleClasses datatype="tokens">Diplomat</VisibleClasses>
     <Icon>units/gaul/celt_diplo.png</Icon>

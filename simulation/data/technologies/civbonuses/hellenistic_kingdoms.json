@@ -1,0 +1,18 @@
+{
+	"genericName": "Hellenistic Kingdoms",
+	"autoResearch": true,
+	"description": ".",
+	"requirements": {
+		"any": [
+			{ "civ": "mace" },
+			{ "civ": "sele" },
+			{ "civ": "ptol" }
+		]
+	},
+	"icon": "ionic_column.png",
+	"tooltip": ".",
+	"modifications": [
+	
+	
+	]
+}

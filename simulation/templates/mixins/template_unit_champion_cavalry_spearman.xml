@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_champion_cavalry_melee">
+  <Attack>
+    <Melee>
+      <AttackName>Spear</AttackName>
+       <Damage>
+        <Hack>8.5</Hack>
+        <Pierce>22.5</Pierce>
+      </Damage>
+      <MaxRange>5</MaxRange>
+      <MinRange>2</MinRange>
+      <PrepareTime>750</PrepareTime>
+      <RepeatTime>2500</RepeatTime>
+      <Bonuses>
+        <BonusCavMelee>
+          <Classes>Cavalry</Classes>
+          <Multiplier>1.5</Multiplier>
+        </BonusCavMelee>
+      </Bonuses>
+      <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
+    </Melee>
+  </Attack>
+  <Identity>
+    <GenericName>Champion Cavalry Spearman</GenericName>
+    <Tooltip>Single handed spear 1.5× vs Cavalry.</Tooltip>
+    <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
+  </Identity>
+  <Sound>
+    <SoundGroups>
+      <attack_melee>attack/weapon/spear_attack.xml</attack_melee>
+    </SoundGroups>
+  </Sound>
+</Entity>
+

@@ -66,7 +66,10 @@
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/support_tribal_diplomat
+      units/{civ}/support_arvernian_diplomat
+      units/{civ}/support_belgian_diplomat
+      units/{civ}/support_cisalpine_diplomat
+      units/{civ}/champion_infantry_swordsman
       units/{civ}/hero_ambiorix
       units/{civ}/hero_brennus
       units/{civ}/hero_vercingetorix

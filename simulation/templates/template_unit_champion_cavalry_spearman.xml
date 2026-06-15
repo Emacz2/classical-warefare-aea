@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_champion_cavalry_melee">
+<Entity parent="template_unit_champion_cavalry">
   <Attack>
     <Melee>
       <AttackName>Spear</AttackName>
@@ -20,10 +20,31 @@
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
+   <Cost>
+    <BuildTime>27</BuildTime>
+  </Cost>
+   <Health>
+    <Max>325</Max>
+  </Health>
+      <Loot>
+    <xp>150</xp>
+    <metal>30</metal>
+    <wood>15</wood>
+  </Loot>
+      <Resistance>
+    <Entity>
+      <Damage>
+      <Crush>2</Crush>
+      <Hack>2</Hack>
+      <Pierce>2</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
     <Tooltip>Single handed spear 1.5× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
+    <Classes datatype="tokens">Polearm</Classes>
+    <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
   <Sound>
     <SoundGroups>

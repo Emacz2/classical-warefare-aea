@@ -17,6 +17,6 @@
   </Identity>
    <UnitMotion>
     <WalkSpeed op="mul">1.60</WalkSpeed>
-    <RunMultiplier op="mul">1.9</RunMultiplier>
+    <RunMultiplier op="mul">1.8</RunMultiplier>
   </UnitMotion>
 </Entity>

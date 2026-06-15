@@ -38,8 +38,4 @@
    <Vision>
     <Range>75</Range>
   </Vision>
- <UnitMotion>
-    <WalkSpeed op="mul">0.93</WalkSpeed>
-    <Acceleration op="mul">0.95</Acceleration>
-  </UnitMotion>
 </Entity>

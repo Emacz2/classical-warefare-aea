@@ -1,0 +1,13 @@
+{
+	"type": "global",
+	"affects": [ "Swordsman", "Axeman" ],
+	"affectedPlayers": [ "MutualAlly" ],
+	"modifications": [
+		{
+			"value": "Cost/Resources/metal",
+			"add": -5
+		}
+	],
+	"auraName": "Stolen Arms",
+	"auraDescription": "Swordsmen and Axemen of all kinds -5 metal cost."
+}

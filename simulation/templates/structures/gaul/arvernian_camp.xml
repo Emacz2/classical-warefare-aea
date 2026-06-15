@@ -11,7 +11,7 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="35.0" depth="35.0"/>
+    <Square width="29.0" depth="29.0"/>
     <Height>12.0</Height>
   </Footprint>
   <Health>
@@ -20,8 +20,8 @@
   </Health>
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Raeti and Nervii encampment</GenericName>
-    <Tooltip>Train Rutheni allies.</Tooltip>
+    <GenericName>Arvernian Coalition Camp</GenericName>
+    <Tooltip>Train Treveri and Ruthni allies and research learn new technologies from them.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/mercenary_camp.png</Icon>
   </Identity>
@@ -30,7 +30,7 @@
     <metal>20</metal>
   </Loot>
   <Obstruction>
-    <Static width="35.0" depth="35.0"/>
+    <Static width="29.0" depth="29.0"/>
   </Obstruction>
   <TerritoryDecay>
     <DecayRate>1</DecayRate>
@@ -38,17 +38,12 @@
   <TerritoryInfluence disable=""/>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/infantry_rhaetian_axeman
+      units/{civ}/infantry_ruteni_archer_b
       units/{civ}/champion_fanatic
     </Entities>
   </Trainer>
-   <Researcher>
-    <Technologies datatype="tokens">
-      gaul_nervii_melee
-    </Technologies>
-  </Researcher>
   <VisualActor>
-    <Actor>structures/mercenaries/camp_nuba.xml</Actor>
-    <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
+    <Actor>structures/mercenaries/camp_blemmye.xml</Actor>
+    <FoundationActor>structures/fndn_8x7.xml</FoundationActor>
   </VisualActor>
 </Entity>

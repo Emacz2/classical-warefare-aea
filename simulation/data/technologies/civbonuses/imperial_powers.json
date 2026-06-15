@@ -1,0 +1,19 @@
+{
+	"genericName": "Imperial Powers",
+	"autoResearch": true,
+	"description": ".",
+	"requirements": {
+		"any": [
+			{ "civ": "han" },
+			{ "civ": "maur" },
+			{ "civ": "pers" },
+			{ "civ": "rome" }
+		]
+	},
+	"icon": "ionic_column.png",
+	"tooltip": "4th phase, the imperial phase. +10% max population",
+	"modifications": [
+	
+	
+	]
+}

@@ -4,7 +4,7 @@
 	"description": "The Achaemenid Empire maintaired an active policy of recruiting citizens to serve in the imperial army ",
 	"requirements": { "civ": "pers" },
 	"icon": "wooden_walls.png",
-	"tooltip": "Persian citizen infantry -10% train time and cost 5 less food and wood but 5% less dmg. Melee infantry -0.5 pierce/hack resistance while ranged infantry is 10% less accurate.  They lose consript status when promoted to basic rank.",
+	"tooltip": "Persian citizen infantry -10% train time and cost 5 less food and wood but 5% less dmg and ranged infantry is 10% less accurate.  They lose consript status when promoted to basic rank.",
 	"modifications": [
 
 		{ "value": "Cost/BuildTime", "multiply": 0.9 }

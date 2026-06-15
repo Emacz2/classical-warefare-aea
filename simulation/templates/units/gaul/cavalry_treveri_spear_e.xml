@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/gaul/cavalry_treveri_spear_a">
+  <Identity>
+    <Rank>Elite</Rank>
+  </Identity>
+  <Promotion disable=""/>
+  <ResourceGatherer disable=""/>
+  <VisualActor>
+    <Actor>units/gauls/cavalry_treveri_spear_m.xml</Actor>
+  </VisualActor>
+</Entity>
+
+    
+  
+ 

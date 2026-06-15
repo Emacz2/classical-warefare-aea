@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="cav_spear_shield|cav_medium|template_unit_champion_cavalry_spearman">
+<Entity parent="allied_cav_champ|cav_spear_shield|cav_heavy|template_unit_champion_cavalry_spearman">
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Gallic Noble Cavalry</GenericName>
+    <GenericName>Treveri Noble Cavalry</GenericName>
     <SpecificName>Uerouicos</SpecificName>
     <SelectionGroupName>units/gaul/champion_cavalry</SelectionGroupName>
     <Icon>units/gaul/champion_cavalry.png</Icon>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="allied_cav|cav_light|units/numidian_cavalry">
+  <Identity>
+    <GenericName>Allied Numidian Light Javelineer Cavalry</GenericName>
+    <Icon>units/special/num_cav_merc.png</Icon>
+  </Identity>
+  <VisualActor>
+    <Actor>units/carthaginians/champion_cavalry_numidian_c_m.xml</Actor>
+  </VisualActor>
+</Entity>

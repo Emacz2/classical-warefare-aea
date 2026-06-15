@@ -14,7 +14,7 @@
     </Resources>
   </Cost>
   <Identity>
-    <GenericName>Cavalry Spearman with shield</GenericName>
+    <GenericName>Cavalry Javelineer with shield</GenericName>
     <Tooltip>+1 Pierce and +0.5 Crush resistance but +10 wood cost</Tooltip>
   </Identity>
 </Entity>

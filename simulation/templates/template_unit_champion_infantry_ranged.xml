@@ -18,12 +18,15 @@
     <metal>15</metal>
     <wood>30</wood>
   </Loot>
-     <UnitMotion>
-    <WalkSpeed>8.7</WalkSpeed>
-    <RunMultiplier>1.7</RunMultiplier>
-    <Acceleration op="add">10</Acceleration>
-    <Weight>10</Weight>
-  </UnitMotion>
+      <Resistance>
+    <Entity>
+      <Damage>
+      <Crush op="add">1</Crush>
+      <Hack op="add">1</Hack>
+      <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Selectable>
     <Overlay>
       <Texture>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_champion_cavalry">
   <Identity>
-    <VisibleClasses datatype="tokens">Cavalry</VisibleClasses>
+  <VisibleClasses datatype="tokens">Ranged</VisibleClasses>
     <GenericName>Champion Ranged Cavalry</GenericName>
   </Identity>
     <Cost>
@@ -18,6 +18,15 @@
   <Position>
     <Anchor>upright</Anchor>
   </Position>
+     <Resistance>
+    <Entity>
+      <Damage>
+      <Crush>1</Crush>
+      <Hack>1</Hack>
+      <Pierce>1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Selectable>
     <Overlay>
       <Texture>

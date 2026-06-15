@@ -22,7 +22,8 @@
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
     <Tooltip>Two handed long lance. Counters: 2× vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Melee Spearman Polearm</VisibleClasses>
+    <Classes datatype="tokens">Polearm</Classes>
+    <VisibleClasses datatype="tokens">Lance</VisibleClasses>
   </Identity>
   <Sound>
     <SoundGroups>

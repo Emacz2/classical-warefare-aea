@@ -23,7 +23,8 @@
   <Identity>
     <GenericName>Champion Pikeman</GenericName>
     <Tooltip>Counters: 2 vs Cavalry.</Tooltip>
-    <VisibleClasses datatype="tokens">Melee Pikeman Polearm</VisibleClasses>
+    <Classes datatype="tokens">Polearm</Classes>
+    <VisibleClasses datatype="tokens">Pikeman</VisibleClasses>
   </Identity>
   <Loot>
     <wood>15</wood>
