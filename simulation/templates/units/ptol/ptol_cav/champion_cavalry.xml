@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="cav_heavy|cav_shock|template_unit_champion_cavalry_lancer">
+<Entity parent="cav_shock|template_unit_champion_cavalry_lancer">
   <Identity>
     <Civ>ptol</Civ>
-    <GenericName>Agema Companion Cavalry</GenericName>
+    <GenericName>Hellenistic lancer cavalry</GenericName>
     <SpecificName>Ágēma Basiléōs</SpecificName>
     <Icon>units/ptol/champion_cavalry.png</Icon>
   </Identity>
