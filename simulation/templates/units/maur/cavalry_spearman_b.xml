@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="cav_medium|cav_spear_shield|template_unit_cavalry_melee_spearman">
+  <Identity>
+    <Civ>maur</Civ>
+    <SelectionGroupName>units/maur/cavalry_spearman_b</SelectionGroupName>
+    <GenericName>Indian Medium Spear cavalry</GenericName>
+    <SpecificName>Aśva Bhalladhara</SpecificName>
+    <Icon>units/rome/cavalry_spearman_auxiliary.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/maur/cavalry_spearman_a</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/carthaginians/cavalry_spearmanH_b_m.xml</Actor>
+  </VisualActor>
+</Entity>
