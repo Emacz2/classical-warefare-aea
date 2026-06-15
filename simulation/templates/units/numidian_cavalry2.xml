@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_cav_champ|template_unit_champion_cavalry_javelineer">
+<Entity parent="cav_light|cav_jav_shield|template_unit_champion_cavalry_javelineer">
   <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
     <RunMultiplier op="mul">1.1</RunMultiplier>
     <Acceleration op="add">10</Acceleration>
   </UnitMotion>

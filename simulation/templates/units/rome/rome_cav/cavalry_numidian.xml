@@ -5,6 +5,7 @@
     <SpecificName>Eques Alaris Numidarum</SpecificName>
     <SelectionGroupName>units/rome/cavalry_numidian</SelectionGroupName>
     <Icon>units/special/num_cav_merc.png</Icon>
+    <Icon>units/special/num_cav_merc.png</Icon>
   </Identity>
   <VisualActor>
     <Actor>units/carthaginians/champion_cavalry_numidian_c_m.xml</Actor>

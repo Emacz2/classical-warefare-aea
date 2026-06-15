@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="consular|cav_heavy|cav_spear_shield|template_unit_champion_cavalry_spearman">
+<Entity parent="consular|cav_spear_shield|template_unit_champion_cavalry_spearman">
   <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
