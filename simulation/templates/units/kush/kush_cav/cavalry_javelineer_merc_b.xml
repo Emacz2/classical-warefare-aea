@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_cav|cav_camel|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
+<Entity parent="merc_cav|cav_camel|template_unit_cavalry_ranged_javelineer">
   <Attack>
     <Ranged>
       <Projectile>

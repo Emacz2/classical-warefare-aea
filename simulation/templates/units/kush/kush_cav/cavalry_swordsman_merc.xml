@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_cav|cav_camel|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
-  <Attack>
-    <Ranged>
-      <Projectile>
-        <LaunchPoint y="7"/>
-      </Projectile>
-    </Ranged>
-  </Attack>
+<Entity parent="merc_cav|cav_camel|template_unit_cavalry_melee_swordsman">
   <Footprint>
     <Height>7.5</Height>
   </Footprint>
   <Identity>
     <Civ>kush</Civ>
     <Lang>napatan</Lang>
-    <SelectionGroupName>units/kush/cavalry_javelineer_merc_b</SelectionGroupName>
-    <GenericName>Blemmye Desert Raider (Jav)</GenericName>
+    <SelectionGroupName>units/kush/cavalry_swordsman_merc</SelectionGroupName>
+    <GenericName>Blemmye Desert Raider</GenericName>
     <SpecificName>Nhw Bulahau gml</SpecificName>
     <VisibleClasses datatype="tokens">Camel</VisibleClasses>
     <Icon>units/kush/camel_javelinist.png</Icon>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
+    <Rank>Advanced</Rank>
   </Identity>
-  <Promotion>
-    <Entity>units/kush/cavalry_javelineer_merc_a</Entity>
-  </Promotion>
+   <Promotion disable=""/>
   <Sound>
     <SoundGroups>
       <select>actor/fauna/animal/camel.xml</select>
@@ -36,6 +28,6 @@
     <HeightOffset>8.5</HeightOffset>
   </StatusBars>
   <VisualActor>
-    <Actor>units/kushites/camel_javelinist_b_m.xml</Actor>
+    <Actor>units/kushites/camel_swordsman_m.xml</Actor>
   </VisualActor>
 </Entity>

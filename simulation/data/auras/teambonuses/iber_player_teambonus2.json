@@ -3,12 +3,12 @@
 	"affects": ["Cavalry"],
 	"affectedPlayers": ["MutualAlly"],
 	"modifications": [
-		{ "value": "Health/Max", "add": 20, "affects": "!Hero"},
+		{ "value": "Health/Max", "add": 25, "affects": "!Hero"},
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05},
 		{ "value": "Cost/BuildTime", "multiply": 1.05 }
 	
 	],
 	"auraName": "Suppior horses",
 	"showDescription": 1,
-	"auraDescription": "Cavalry +20 more health and 5% faster walk speed but 5% longer train time."
+	"auraDescription": "Cavalry +25 more health and 5% faster walk speed but 5% longer train time."
 }
