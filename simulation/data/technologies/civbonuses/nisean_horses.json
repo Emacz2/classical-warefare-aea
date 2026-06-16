@@ -16,10 +16,11 @@
 
 	"icon": "chamfron.png",
 	"researchTime": 45,
-	"tooltip": "Champion Cavalry +50 health, but 10% longer train time.",
+	"tooltip": "Champion Cavalry +75 health, but 5% longer train time and +25 food.",
 	"modifications": [
-		{ "value": "Cost/BuildTime", "multiply": 1.1 },
-		{ "value": "Health/Max", "add": 50 }
+		{ "value": "Cost/BuildTime", "multiply": 1.05 },
+		{ "value": "Cost/Resources/Food", "add": 25 },
+		{ "value": "Health/Max", "add": 75 }
 
 
 	],

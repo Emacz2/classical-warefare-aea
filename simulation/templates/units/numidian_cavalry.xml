@@ -19,7 +19,6 @@
   </Attack>
   <UnitMotion>
     <WalkSpeed op="mul">1.1</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
     <Acceleration op="add">10</Acceleration>
   </UnitMotion>
   <Identity>

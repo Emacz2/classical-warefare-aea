@@ -19,10 +19,6 @@
     <VisibleClasses datatype="tokens">Town Two</VisibleClasses>
     <Icon>structures/mercenary_camp.png</Icon>
   </Identity>
-   <Promotion>
-    <Entity>structures/cart/numidian_camp2</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
   <Loot>
     <metal>40</metal>
   </Loot>

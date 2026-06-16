@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
 <Health>
-    <Max op="add">100</Max>
+    <Max op="add">75</Max>
   </Health>
   <Identity>
      <GenericName>Consular Bodyguard</GenericName>
