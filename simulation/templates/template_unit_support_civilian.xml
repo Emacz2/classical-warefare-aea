@@ -54,10 +54,10 @@
       <metal.ruins>2</metal.ruins>
     </Rates>
     <Capacities>
-      <food>15</food>
-      <wood>15</wood>
-      <stone>15</stone>
-      <metal>15</metal>
+      <food>10</food>
+      <wood>10</wood>
+      <stone>10</stone>
+      <metal>10</metal>
     </Capacities>
   </ResourceGatherer>
    <Loot>
