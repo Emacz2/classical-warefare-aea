@@ -20,7 +20,7 @@
     <Entities datatype="tokens">
       units/{civ}/hero_gorgidas
       units/{civ}/hero_pelopidas
-	  units/{civ}/hero_epaminondas
+	    units/{civ}/hero_epaminondas
     </Entities>
   </Trainer>
   <VisualActor>

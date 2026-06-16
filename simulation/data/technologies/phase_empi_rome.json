@@ -27,7 +27,7 @@
             }
         ]
 	},
-	"requirementsTooltip": "Requires 3 town and 2 city structures.",
+	"requirementsTooltip": "Requires 2 city and Reforms.",
 	"supersedes": "phase_city_rome",
 	"replaces": ["phase_empi"],
 	"icon": "empire_phase.png",

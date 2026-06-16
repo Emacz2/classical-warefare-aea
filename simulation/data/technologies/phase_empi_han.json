@@ -21,13 +21,13 @@
             },
             {
                 "entity": {
-                    "class": "Dynasty",
+                    "class": "ImperialCourt",
                     "number": 1
                 }
             }
         ]
 	},
-	"requirementsTooltip": "Requires 3 town and 2 city structures.",
+	"requirementsTooltip": "Requires 2 City and the ImperialCourt.",
 	"supersedes": "phase_city_han",
 	"replaces": ["phase_empi"],
 	"icon": "empire_phase.png",

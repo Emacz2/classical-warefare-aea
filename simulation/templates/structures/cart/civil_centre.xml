@@ -16,7 +16,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
       units/{civ}/infantry_javelineer_b
-      units/{civ}/cavalry_spearman_b
+      units/{civ}/champion_infantry
       units/{civ}/champion_cavalry
     </Entities>
   </Trainer>
