@@ -13,7 +13,8 @@
         </Bleeding>
       </ApplyStatus>
      <Damage>
-        <Pierce op="add">-2</Pierce>
+        <Hack op="add">-1</Hack>
+        <Pierce op="add">-1</Pierce>
       </Damage>
       <MaxRange  op="add">0.5</MaxRange>
       <RepeatTime  op="add">100</RepeatTime>
