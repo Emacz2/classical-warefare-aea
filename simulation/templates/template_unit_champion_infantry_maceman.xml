@@ -5,7 +5,7 @@
       <AttackName>Mace</AttackName>
          <Damage>
         <Crush>15</Crush>
-        <Hack>9</Hack>
+        <Hack>7.5</Hack>
       </Damage>
       <MaxRange>2</MaxRange>
       <MinRange>0.5</MinRange>
