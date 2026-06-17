@@ -16,7 +16,6 @@
         <Pierce op="add">-2</Pierce>
       </Damage>
       <MaxRange  op="add">0.5</MaxRange>
-      <MinRange  op="add">0.5</MinRange>
       <RepeatTime  op="add">100</RepeatTime>
     </Melee>
   </Attack>

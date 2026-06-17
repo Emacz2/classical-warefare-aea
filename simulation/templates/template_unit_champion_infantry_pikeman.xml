@@ -8,7 +8,7 @@
         <Pierce>21</Pierce>
       </Damage>
       <MaxRange>10</MaxRange>
-      <MinRange>3</MinRange>
+      <MinRange>2</MinRange>
       <PrepareTime>250</PrepareTime>
       <RepeatTime>2800</RepeatTime>
       <Bonuses>

@@ -8,7 +8,6 @@
         <Hack>17.5</Hack>
       </Damage>
       <MaxRange>2.5</MaxRange>
-      <MinRange>0.5</MinRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>2000</RepeatTime>
      <Bonuses>
