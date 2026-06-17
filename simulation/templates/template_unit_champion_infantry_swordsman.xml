@@ -14,7 +14,7 @@
       <Bonuses>
         <BonusMelee>
           <Classes>Ranged Infantry</Classes>
-          <Multiplier>1.5</Multiplier>
+          <Multiplier>1.2</Multiplier>
         </BonusMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -22,7 +22,7 @@
   </Attack>
   <Identity>
     <VisibleClasses datatype="tokens">Melee Swordsman</VisibleClasses>
-    <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
+    <Tooltip>Counters: 1.2× vs Polearm Infantry.</Tooltip>
     <GenericName>Champion Swordsman</GenericName>
   </Identity>
   <Sound>

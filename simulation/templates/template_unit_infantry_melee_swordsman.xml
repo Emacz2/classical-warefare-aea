@@ -28,7 +28,7 @@
   </Cost>
   <Identity>
     <VisibleClasses datatype="tokens">Swordsman</VisibleClasses>
-    <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
+    <Tooltip>Counters: 1.2× vs Polearm Infantry.</Tooltip>
     <GenericName>Swordsman</GenericName>
   </Identity>
   <UnitMotion>

@@ -99,7 +99,7 @@
     </SoundGroups>
   </Sound>
    <UnitMotion>
-    <WalkSpeed>9</WalkSpeed>
+    <WalkSpeed>8.5</WalkSpeed>
   </UnitMotion>
   <Vision>
     <Range>50</Range>
