@@ -3,11 +3,12 @@
 	"autoResearch": true,
 	"History": "The Romans commonly used the Testudo or 'turtle' formation for defense: Legionaries were formed into hollow squares with twelve men on each side, standing so close together that their shields overlapped like fish scales.",
 	"icon": "agoge.png",
-	"tooltip": "Citzen swordsmen cost +5 metal but gain testudo bonus when elite rank and promote 3 champion versions.",
+	"tooltip": "Citzen swordsmen cost +5 metal but -5 wood. They gain testudo bonus when elite rank and promote 3 champion versions.",
 	"requirements": { "civ": "rome" },
 	"modifications": [
 	
-		{ "value": "Cost/Resources/metal", "add": 5 }
+		{ "value": "Cost/Resources/metal", "add": 5 },
+		{ "value": "Cost/Resources/wood", "add": -5 }
 		
 
 	],

@@ -9,14 +9,6 @@
       structures/rome/numidian_camp
     </Entities>
   </Builder>
-  <Attack>
-    <Melee>
-      <Damage>
-        <Hack op="mul">1.05</Hack>
-        <Pierce op="mul">1.05</Pierce>
-      </Damage>
-    </Melee>
-  </Attack>
   <Identity>
     <GenericName>Legionary Swordsman</GenericName>
     <Lang>latin</Lang>

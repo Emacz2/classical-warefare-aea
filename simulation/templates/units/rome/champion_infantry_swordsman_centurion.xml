@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="sword_short|armor_heavy|template_unit_champion_infantry_swordsman">
+<Entity parent="sword_short|shield_super_heavy|armor_heavy|template_unit_champion_infantry_swordsman">
   <Auras datatype="tokens">
     units/centurion
     units/centurion_2
@@ -11,10 +11,6 @@
       <metal op="add">20</metal>
     </Resources>
   </Cost>
-  <Loot>
-    <food op="add">4</food>
-    <metal op="add">2</metal>
-  </Loot>
   <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
