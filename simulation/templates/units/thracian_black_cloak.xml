@@ -1,33 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="sword_long|template_unit_infantry_melee_swordsman">
+<Entity parent="sword_long|inf_shock|template_unit_infantry_melee_swordsman">
  <Resistance>
     <Entity>
       <Damage>
-      <Crush>1</Crush>
-      <Hack>2</Hack>
-      <Pierce>2</Pierce>
+      <Crush op="add">2.5</Crush>
+      <Hack op="add">3.5</Hack>
+      <Pierce op="add">4.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
-  <Health>
-    <Max>150</Max>
-  </Health>
-    <Loot>
-    <xp>75</xp>
-  </Loot>
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>
     <GenericName>Thracian Black Cloak</GenericName>
     <SpecificName>Rhomphaiophoros</SpecificName>
     <Icon>units/special/pelt_sword.png</Icon>
-    <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed>10</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>
