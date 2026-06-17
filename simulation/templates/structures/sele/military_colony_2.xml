@@ -9,6 +9,12 @@
     <SpecificName>Klērouchia</SpecificName>
     <Classes datatype="tokens">CivSpecific</Classes>
   </Identity>
+   <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/inf_black_cloack_ally
+    </Entities>
+  </Trainer>
    <Researcher>
     <Technologies datatype="tokens">
       pair_unlock_champions_sele

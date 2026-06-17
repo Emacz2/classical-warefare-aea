@@ -4,8 +4,11 @@
     <SpawnEntityOnDeath>decay|rubble/rubble_hele_cc</SpawnEntityOnDeath>
   </Health>
   <Identity>
-    <Civ>spart</Civ>
+     <Civ>spart</Civ>
     <SpecificName>Agora</SpecificName>
+    <GenericName>Civic Center</GenericName>
+    <Classes datatype="tokens">Agora</Classes>
+    <VisibleClasses datatype="tokens">Agora -CivilCentre</VisibleClasses>
   </Identity>
   <Researcher>
     <Technologies datatype="tokens">
@@ -14,11 +17,10 @@
   </Researcher>
   <Trainer>
     <Entities datatype="tokens">
-     -units/{civ}/support_female_citizen
+      units/{civ}/support_female_citizen
       units/{civ}/helot_javelineer
       units/{civ}/helot_stone_thrower
       units/{civ}/champion_infantry_spear_a
-      units/{civ}/scout
     </Entities>
   </Trainer>
      <GarrisonHolder>

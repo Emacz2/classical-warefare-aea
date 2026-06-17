@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="citizen|template_unit_support_female_citizen">
  <Auras datatype="tokens">
-    units/spart_woman_gathering
-    units/spart_woman_building
+    units/spart_oikos
   </Auras>
   <Builder disable=""/>
   <ResourceGatherer disable=""/>

@@ -16,7 +16,7 @@
     <GenericName>Military Mess Hall</GenericName>
     <SpecificName>Pheideition</SpecificName>
     <Icon>structures/syssition.png</Icon>
-    <VisibleClasses datatype="tokens">Syssiton</VisibleClasses>
+    <VisibleClasses datatype="tokens">Syssiton -Village Town</VisibleClasses>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>

@@ -29,6 +29,7 @@
   <Researcher>
     <Technologies datatype="tokens">
       -phase_town_{civ}
+      phase_empi_han
     </Technologies>
   </Researcher>
   <Trainer>

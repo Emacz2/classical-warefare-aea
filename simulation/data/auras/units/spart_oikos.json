@@ -1,0 +1,13 @@
+{
+	"type": "range",
+	"radius": 25,
+	"affects": ["HelotM"],
+	"modifications": [
+		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 1.1 },
+		{ "value": "Builder/Rate", "multiply": 1.1 }
+	],
+	"auraName": "Guardians of the Oikos",
+	"auraDescription": "Spartan women oversee the estates that sustain Lacedaemon. Helots gather resources and construct buildings 10% faster.",
+	"overlayIcon": "art/textures/ui/session/auras/buildgather_bonus.png",
+	"stackable": false
+}

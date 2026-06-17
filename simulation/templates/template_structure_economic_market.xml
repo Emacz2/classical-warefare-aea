@@ -75,6 +75,7 @@
     <Entities datatype="tokens">
       units/{civ}/support_slave
       units/{civ}/support_trader
+      units/{civ}/inf_black_cloak_merc
       units/{civ}/merc_inf_swordsman_market_b
       units/{civ}/merc_inf_spearman_market_b
       units/{civ}/merc_inf_slinger_market_b

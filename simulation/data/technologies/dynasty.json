@@ -1,0 +1,19 @@
+{
+	"genericName": "First Empire",
+	"description": ".",
+	
+	"requirements": {
+		"all": [
+			{ "civ": "han" }
+		]
+	},
+	"requirementsTooltip": ".",
+	"icon": "silvershields.png",
+	"researchTime": 30,
+	"modifications":[
+		{ "value": "Promotion/RequiredXp", "replace": 0 }
+	],
+	"affects": ["Academy"],
+	"tooltip": "Upgrade academies to Dynasty class, -.1 faster batch training and unlocks empire phase",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

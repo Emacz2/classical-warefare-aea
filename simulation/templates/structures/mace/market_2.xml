@@ -10,6 +10,7 @@
       -units/{civ}/merc_inf_slinger_market_b
       -units/{civ}/merc_inf_archer_market_b
       -units/{civ}/merc_inf_swordsman_market_b
+      -units/{civ}/inf_black_cloak_merc
       units/{civ}/merc_inf_swordsman_market_e
       units/{civ}/merc_inf_slinger_market_e
       units/{civ}/merc_inf_archer_market_e
