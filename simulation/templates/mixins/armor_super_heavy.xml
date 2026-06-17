@@ -11,6 +11,7 @@
   </Resistance>
  <Identity>
     <GenericName>Super Heavy Armor</GenericName>
+    <VisibleClasses datatype="tokens">Armored</VisibleClasses>
     <Tooltip>+4 Pierce and +2 Crush/Hack resistance -6% slower walk speed</Tooltip>
     <History>.</History>
   </Identity>
