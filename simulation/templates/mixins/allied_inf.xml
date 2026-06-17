@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
   <Cost>
-    <BuildTime op="mul">1.15</BuildTime>
+    <BuildTime op="mul">1.2</BuildTime>
      <Resources>
       <food>100</food>
       <metal>0</metal>
@@ -11,6 +11,7 @@
   </Cost>
   <Identity>
     <VisibleClasses datatype="tokens">Allied -Citizen</VisibleClasses>
+    <Tooltip>Allied troops only cost food, but 20% more train time than normal citzen soldiers</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

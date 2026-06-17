@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="merc_inf|units/thracian_black_cloak">
+  <Identity>
+    <Civ>mace</Civ>
+    <Lang>greek</Lang>
+    <GenericName>Thracian Black Cloak</GenericName>
+    <SpecificName>Rhomphaiaphoros</SpecificName>
+    <Icon>units/thrac/champion_infantry_swordsman.png</Icon>
+  </Identity>
+  <Promotion disable=""/>
+  <VisualActor>
+    <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>
+  </VisualActor>
+</Entity>

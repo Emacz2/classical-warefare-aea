@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
   <Cost>
-    <BuildTime op="mul">1</BuildTime>
+    <BuildTime op="mul">0.8</BuildTime>
      <Resources>
       <metal>60</metal>
       <food>25</food>
@@ -39,7 +39,7 @@
   </Promotion>
   <Identity>
    <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
-    <Tooltip>Merc Infantry have only 1 capture attack. Melee +10% dmg, Ranged +5% dmg and 10% more accurate than than CS equivalent. They do not gain forge techs or WTF. And have a different promotion system/stats</Tooltip>
+    <Tooltip>Merc Infantry have only 1 capture attack. Melee +10% dmg, Ranged +5% dmg and 10% more accurate than than CS equivalent. They train 20% faster than CS but do not promote or recieve forge/fortress techs.</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>
