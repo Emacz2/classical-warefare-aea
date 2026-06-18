@@ -39,7 +39,6 @@
       <Monument>5</Monument>
       <Neodamodes>15</Neodamodes>
       <Palace>1</Palace>
-      <PerioikoiCamp>2</PerioikoiCamp>
       <PerioikoiTown>1</PerioikoiTown>
       <Skirítēs>20</Skirítēs>
       <Pheideition>1</Pheideition>
@@ -52,10 +51,12 @@
       <TempleOfVesta>1</TempleOfVesta>
       <Tent>5</Tent>
       <Theater>1</Theater>
+      <ThebeFort>2</ThebeFort>
       <ThebsSB>50</ThebsSB>
       <TribalCenter>1</TribalCenter>
       <ScythianGuard>5</ScythianGuard>
       <Silvermine>3</Silvermine>
+      <SkiritaiCamp>2</SkiritaiCamp>
       <SpartW>1</SpartW>
       <Yakhchal>5</Yakhchal>
       <WarDog>5</WarDog>

@@ -5,18 +5,15 @@
 	"requirements": {
 		"any": [
 			{ "civ": "athen" },
-			{ "civ": "mace" },
-			{ "civ": "rome" },
-			{ "civ": "sele" },
 			{ "civ": "spart" },
 			{ "civ": "theb" }
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "CCs, Tempples, Special buildngs and Wonders +10% health and +20% capture points.",
+	"tooltip": "Capital City, Tempples, Special buildngs and Wonders +25% health and +25% capture points.",
 	"modifications": [
-		{ "value": "Capturable/CapturePoints", "multiply": 1.2 },
-		{ "value": "Health/Max", "multiply": 1.1 }
+		{ "value": "Capturable/CapturePoints", "multiply": 1.25 },
+		{ "value": "Health/Max", "multiply": 1.25 }
 	],
-	"affects": ["CivCentre", "Temple", "Special", "Wonder"]
+	"affects": ["Agora", "Temple", "Special", "Wonder"]
 }

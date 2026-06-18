@@ -10,12 +10,13 @@
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "-10% maximum population limit but all Hoplites +5% dmg and access to Hoplite reforms p1.",
+	"tooltip": "Only allowed one CityState capital (Agora/CivilCenter.) It recieves 50% population bonus.  It also has more health/capture poitns (Hellenistic Architecture) Hoplites +5% dmg and access to Hoplite reforms p1.  -10% maximum population",
 	"modifications": [
-		{ "value": "Player/MaxPopulation", "multiply": 0.9 },
+		{ "value": "Population/Bonus", "multiply": 1.5, "affects": "Agora" },
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoplite"},
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Hoplite"},
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Hoplite"}
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Hoplite"},
+		{ "value": "Player/MaxPopulation", "multiply": 0.9 }
 
 	
 	]

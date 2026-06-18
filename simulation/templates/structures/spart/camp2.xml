@@ -1,63 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure">
-  <BuildRestrictions>
+ <Identity>
+   <Civ>spart</Civ>
+    <GenericName>Skiritai Camp</GenericName>
+    <SpecificName></SpecificName>
+    <Tooltip> </Tooltip>
+    <Classes datatype="tokens">SkiritaiCamp</Classes>
+    <VisibleClasses datatype="tokens">Village Camp</VisibleClasses>
+    <Icon>structures/roman_camp.png</Icon>
+  </Identity>
+  
+   <BuildRestrictions>
      <Territory>own neutral</Territory>
-    <Category>PerioikoiCamp</Category>
+    <Category>SkiritaiCamp</Category>
     <Distance>
-      <FromClass>PerioikoiCamp</FromClass>
+      <FromClass>SkiritaiCamp</FromClass>
       <MinDistance>75</MinDistance>
     </Distance>
   </BuildRestrictions>
+
+  <Population>
+    <Bonus>10</Bonus>
+  </Population>
+
   <Capturable>
     <CapturePoints op="mul">1.5</CapturePoints>
     <RegenRate>8</RegenRate>
     <GarrisonRegenRate>5.5</GarrisonRegenRate>
   </Capturable>
-  <Cost>
-    <BuildTime>150</BuildTime>
-    <Resources>
-      <wood>200</wood>
-      <stone>50</stone>
-    </Resources>
-  </Cost>
-  <Footprint>
-    <Square width="30.0" depth="30.0"/>
-    <Height>10.0</Height>
-  </Footprint>
+  
   <GarrisonHolder>
     <Max>25</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Perioikoi HelotW HelotM</List>
+    <List datatype="tokens">Perioikoi HelotM Skirítēs</List>
     <BuffHeal>0</BuffHeal>
     <LoadingRange>6</LoadingRange>
   </GarrisonHolder>
-  <Population>
-    <Bonus>5</Bonus>
-  </Population>
+  
   <Health>
-    <Max>1500</Max>
+    <Max>2000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_rome_sb</SpawnEntityOnDeath>
   </Health>
-  <Identity>
-   <Civ>spart</Civ>
-    <GenericName>Perioikoi Camp</GenericName>
-    <SpecificName>Perioecis Κομη</SpecificName>
-    <Tooltip>May be built in own or neutral teritory. Trains Periokoi/Helot units and used as a dropsite for resoruces. Adds 5 to population.</Tooltip>
-    <Classes datatype="tokens">PerioikoiCamp</Classes>
-    <VisibleClasses datatype="tokens">Village Camp</VisibleClasses>
-    <Icon>structures/roman_camp.png</Icon>
-  </Identity>
-     <Promotion>
-    <Entity>structures/spart/camp_2</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
-  <Loot>
-    <wood>100</wood>
-  </Loot>
-  <Obstruction>
-    <Static width="36.0" depth="36.0"/>
-  </Obstruction>
+  
+   <ResourceDropsite>
+    <Types>food wood stone metal</Types>
+    <Sharable>true</Sharable>
+  </ResourceDropsite>
+
   <ProductionQueue/>
   <Resistance>
     <Entity>
@@ -68,14 +58,34 @@
       </Damage>
     </Entity>
   </Resistance>
-  <ResourceDropsite>
-    <Types>food wood stone metal</Types>
-    <Sharable>true</Sharable>
-  </ResourceDropsite>
-  <TrainingRestrictions>
-  <Category>PerioikoiCamp</Category>
-  </TrainingRestrictions>
-  <Sound>
+
+  <TerritoryDecay disable=""/>
+  <ProductionQueue/>
+ <Trainer>
+    <BatchTimeModifier>0.9</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/infantry_spearman_a
+      units/{civ}/skiri_thrust
+    </Entities>
+  </Trainer>
+  <Vision>
+    <Range>75</Range>
+  </Vision>
+
+    <Footprint>
+    <Square width="37.0" depth="42.0"/>
+    <Height>12.0</Height>
+  </Footprint>
+  <Obstruction>
+    <Static width="35.0" depth="40.0"/>
+  </Obstruction>
+ 
+  <WallPiece>
+    <Length>29.5</Length>
+    <Indent>8</Indent>
+  </WallPiece>
+
+    <Sound>
     <SoundGroups>
       <select>interface/select/building/sel_broch.xml</select>
       <constructed>interface/complete/building/complete_broch.xml</constructed>
@@ -83,22 +93,9 @@
       <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
     </SoundGroups>
   </Sound>
-  <TerritoryDecay disable=""/>
-  <Trainer>
-    <BatchTimeModifier>0.9</BatchTimeModifier>
-    <Entities datatype="tokens">
-      units/{civ}/infantry_spearman_b
-    </Entities>
-  </Trainer>
-  <Vision>
-    <Range>80</Range>
-  </Vision>
-  <VisualActor>
+ 
+   <VisualActor>
     <Actor>structures/romans/camp.xml</Actor>
     <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
   </VisualActor>
-  <WallPiece>
-    <Length>29.5</Length>
-    <Indent>8</Indent>
-  </WallPiece>
 </Entity>

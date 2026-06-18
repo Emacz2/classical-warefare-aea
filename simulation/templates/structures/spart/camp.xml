@@ -1,65 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure">
+  <Identity>
+   <Civ>spart</Civ>
+    <GenericName>Skiritai Camp</GenericName>
+    <SpecificName></SpecificName>
+    <Tooltip>May be built in own or neutral teritory. Train Skiritai and Perioikoi. Adds 5 to population.</Tooltip>
+    <Classes datatype="tokens">SkiritaiCamp</Classes>
+    <VisibleClasses datatype="tokens">Village Camp</VisibleClasses>
+    <Icon>structures/skiritai_camp.png</Icon>
+  </Identity>
    <BuildRestrictions>
      <Territory>own neutral</Territory>
-    <Category>PerioikoiCamp</Category>
+    <Category>SkiritaiCamp</Category>
     <Distance>
-      <FromClass>PerioikoiCamp</FromClass>
+      <FromClass>SkiritaiCamp</FromClass>
       <MinDistance>75</MinDistance>
     </Distance>
   </BuildRestrictions>
-  <Capturable>
-    <CapturePoints op="mul">1.5</CapturePoints>
-    <RegenRate>8</RegenRate>
-    <GarrisonRegenRate>5.5</GarrisonRegenRate>
-  </Capturable>
+
   <Cost>
-    <BuildTime>150</BuildTime>
+    <BuildTime>120</BuildTime>
     <Resources>
       <wood>200</wood>
       <stone>50</stone>
     </Resources>
   </Cost>
-  <Capturable>
-    <CapturePoints op="mul">2</CapturePoints>
-    <RegenRate>10.0</RegenRate>
-    <GarrisonRegenRate>1.5</GarrisonRegenRate>
-  </Capturable>
-  <GarrisonHolder>
-    <Max>25</Max>
-    <EjectHealth>0.1</EjectHealth>
-    <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Perioikoi HelotW HelotM Skirítēs</List>
-    <BuffHeal>0</BuffHeal>
-    <LoadingRange>6</LoadingRange>
-  </GarrisonHolder>
+
   <Population>
     <Bonus>5</Bonus>
   </Population>
+
+  <Capturable>
+    <CapturePoints op="mul">1.5</CapturePoints>
+    <RegenRate>8</RegenRate>
+    <GarrisonRegenRate>5.5</GarrisonRegenRate>
+  </Capturable>
+  
+  <GarrisonHolder>
+    <Max>20</Max>
+    <EjectHealth>0.1</EjectHealth>
+    <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
+    <List datatype="tokens">Perioikoi HelotM Skirítēs</List>
+    <BuffHeal>0</BuffHeal>
+    <LoadingRange>6</LoadingRange>
+  </GarrisonHolder>
+  
   <Health>
     <Max>1500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_rome_sb</SpawnEntityOnDeath>
   </Health>
-  <Identity>
-   <Civ>spart</Civ>
-    <GenericName>Perioikoi Camp</GenericName>
-    <SpecificName>Perioecis Κομη</SpecificName>
-    <Tooltip>May be built in own or neutral teritory. Trains Periokoi/Helot units and used as a dropsite for resoruces. Adds 5 to population.</Tooltip>
-    <Classes datatype="tokens">PerioikoiCamp</Classes>
-    <VisibleClasses datatype="tokens">Village Camp</VisibleClasses>
-    <Icon>structures/roman_camp.png</Icon>
-  </Identity>
-  <Footprint>
-    <Square width="37.0" depth="42.0"/>
-    <Height>12.0</Height>
-  </Footprint>
-  <Loot>
-    <wood>80</wood>
-    <stone>30</stone>
-  </Loot>
-  <Obstruction>
-    <Static width="35.0" depth="40.0"/>
-  </Obstruction>
+  
+  <Upgrade>
+    <ImperialCourt>
+      <Entity>structures/{civ}/camp2</Entity>
+      <Tooltip>Upgrade to a bigger Skiritai Camp.  Train Advaced Ranked Perioikoi and Elite Skiritai</Tooltip>
+      <Cost>
+        <stone>100</stone>
+        <wood>100</wood>
+      </Cost>
+      <Time>30</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_city</Techs>
+      </Requirements>
+    </ImperialCourt>
+  </Upgrade>
+
+   <ResourceDropsite>
+    <Types>food wood stone metal</Types>
+    <Sharable>true</Sharable>
+  </ResourceDropsite>
+
   <ProductionQueue/>
   <Resistance>
     <Entity>
@@ -70,15 +81,9 @@
       </Damage>
     </Entity>
   </Resistance>
-  <Sound>
-    <SoundGroups>
-      <select>interface/select/building/sel_broch.xml</select>
-      <constructed>interface/complete/building/complete_broch.xml</constructed>
-      <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
-      <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
-    </SoundGroups>
-  </Sound>
+
   <TerritoryDecay disable=""/>
+  <ProductionQueue/>
  <Trainer>
     <BatchTimeModifier>0.9</BatchTimeModifier>
     <Entities datatype="tokens">
@@ -89,16 +94,31 @@
   <Vision>
     <Range>75</Range>
   </Vision>
-  <VisualActor>
-    <Actor>structures/romans/camp.xml</Actor>
-    <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
-  </VisualActor>
+
+    <Footprint>
+    <Square width="37.0" depth="42.0"/>
+    <Height>12.0</Height>
+  </Footprint>
+  <Obstruction>
+    <Static width="35.0" depth="40.0"/>
+  </Obstruction>
+ 
   <WallPiece>
     <Length>29.5</Length>
     <Indent>8</Indent>
   </WallPiece>
-    <ResourceDropsite>
-    <Types>food wood stone metal</Types>
-    <Sharable>true</Sharable>
-  </ResourceDropsite>
+
+    <Sound>
+    <SoundGroups>
+      <select>interface/select/building/sel_broch.xml</select>
+      <constructed>interface/complete/building/complete_broch.xml</constructed>
+      <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
+      <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
+    </SoundGroups>
+  </Sound>
+ 
+   <VisualActor>
+    <Actor>structures/romans/camp.xml</Actor>
+    <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
+  </VisualActor>
 </Entity>

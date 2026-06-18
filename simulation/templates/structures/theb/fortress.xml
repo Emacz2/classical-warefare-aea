@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_military_fortress">
+  <BuildRestrictions>
+    <Category>ThebeFort</Category>
+  </BuildRestrictions>
   <Footprint>
     <Square width="26.0" depth="28.0"/>
     <Height>8.0</Height>
   </Footprint>
   <Identity>
     <Civ>theb</Civ>
-    <SpecificName>Phrourion</SpecificName>
+    <SpecificName>League Citadel</SpecificName>
   </Identity>
   <Obstruction>
     <Static width="24.0" depth="26.0"/>

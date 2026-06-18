@@ -7,6 +7,7 @@
         <Crush>12.5</Crush>
         <Hack>16.5</Hack>
         <Pierce>1</Pierce>
+      </Melee>
       </Damage>
       <MaxRange>3</MaxRange>
       <PrepareTime>500</PrepareTime>
@@ -18,7 +19,6 @@
         </BonusMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
-    </Melee>
   </Attack>
   <Identity>
     <VisibleClasses datatype="tokens">Melee Axeman</VisibleClasses>
