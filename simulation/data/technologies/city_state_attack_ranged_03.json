@@ -1,27 +1,23 @@
 {
-	"genericName": "Trilobate arrowheads",
+	"genericName": "Pyramidal arrowheads",
 	"cost": {
-		"wood": 300,
-		"metal": 200
+		"wood": 350,
+		"metal": 250
 	},
-	"supersedes": "soldier_attack_ranged_01",
-	"requirements": {
+	"supersedes": "city_state_attack_ranged_02",
+		"requirements": {
 		"all": [
 			{ "tech": "phase_town" },
-			{ "notciv": "athen" },
-			{ "notciv": "brit" },
-			{ "notciv": "gaul" },
-			{ "notciv": "germ" },
-			{ "notciv": "iber" },
-			{ "notciv": "spart" },
-			{ "notciv": "theb" }
+			{ "civ": "athen" },
+			{ "civ": "spart" },
+			{ "civ": "theb" }
 		
 			
 		]
 	},
-	"requirementsTooltip": "Unlocked in Town Phase.",
-	"icon": "arrow_02.png",
-	"researchTime": 40,
+	"requirementsTooltip": "Unlocked in City Phase.",
+	"icon": "arrow_03.png",
+	"researchTime": 60,
 	"tooltip": "Soldiers +15% ranged attack damage.",
 	"modifications": [
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.15 },

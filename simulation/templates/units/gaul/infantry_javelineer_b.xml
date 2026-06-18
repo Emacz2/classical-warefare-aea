@@ -3,6 +3,7 @@
   <Builder>
     <Entities datatype="tokens">
       structures/gaul/assembly
+      structures/gaul/oppidum
     </Entities>
   </Builder>
   <Identity>

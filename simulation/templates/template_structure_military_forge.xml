@@ -38,8 +38,11 @@
       soldier_attack_melee_01
       soldier_attack_melee_02
       soldier_attack_melee_03
-      soldier_attack_melee_01_tribal
-      soldier_attack_melee_02_tribal
+      tribal_soldier_attack_melee_01
+      tribal_soldier_attack_melee_02
+      city_state_attack_melee_01
+      city_state_attack_melee_02
+      city_state_attack_melee_03
       soldier_attack_ranged_01
       soldier_attack_ranged_02
       soldier_attack_ranged_03
@@ -49,8 +52,8 @@
       soldier_resistance_pierce_01
       soldier_resistance_pierce_02
       soldier_resistance_pierce_03
-      greek_hoplite_hack_03
-      greek_hoplite_pierce_03
+      tribal_soldier_attack_ranged_01
+      tribal_soldier_attack_ranged_02
       heavy_plating
       archer_attack_spread
       unlock_archers

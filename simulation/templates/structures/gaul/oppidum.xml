@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_civic_civil_tribal">
+  <Identity>
+    <Civ>gaul</Civ>
+    <SpecificName>Oppidum</SpecificName>
+    <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
+    <Tooltip>Build in own or neutral territory. Acquire small tracts of territory. Territory root. Train Citizens. Garrison Soldiers for additional arrows.</Tooltip>
+    <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
+    <Icon>structures/brit_hill_fort.png</Icon>
+  </Identity>
+  <Upgrade>
+    <ImperialCourt>
+      <Entity>structures/{civ}/great_oppidum</Entity>
+      <Tooltip>greatly increase the health, capture resistance and garrison capacity of this hill fort.</Tooltip>
+      <Cost>
+        <stone>300</stone>
+        <wood>300</wood>
+      </Cost>
+      <Time>40</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_town</Techs>
+      </Requirements>
+    </ImperialCourt>
+  </Upgrade>
+  <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/infantry_spearman_b
+      units/{civ}/infantry_slinger_b
+    </Entities>
+  </Trainer>
+  <Minimap>
+    <Type>structure</Type>
+    <Icon size="16.0">civil_centre.png</Icon>
+  </Minimap>
+<Footprint>
+  <Square width="22.0" depth="22.0"/>
+  <Height>7.0</Height>
+</Footprint>
+<Obstruction>
+  <Static width="20.0" depth="20.0"/>
+</Obstruction>
+  <ResourceDropsite>
+    <Types>food wood stone metal</Types>
+    <Sharable>true</Sharable>
+  </ResourceDropsite>
+  <Sound>
+    <SoundGroups>
+      <select>interface/select/building/sel_civ_center.xml</select>
+      <constructed>interface/complete/building/complete_civ_center.xml</constructed>
+      <upgraded>interface/complete/building/complete_civ_center.xml</upgraded>
+      <alert_raise>interface/alarm/alarm_alert_0.xml</alert_raise>
+      <alert_end>interface/alarm/alarm_alert_1.xml</alert_end>
+      <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
+      <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
+    </SoundGroups>
+  </Sound>
+  <VisualActor>
+       <Actor>structures/celts/hut.xml</Actor>
+  </VisualActor>
+</Entity>

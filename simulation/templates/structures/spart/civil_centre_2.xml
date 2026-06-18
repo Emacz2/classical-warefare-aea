@@ -10,6 +10,9 @@
     <Classes datatype="tokens">Agora</Classes>
     <VisibleClasses datatype="tokens">Agora -CivilCentre</VisibleClasses>
   </Identity>
+  <BuildRestrictions>
+    <Category>Agora</Category>
+  </BuildRestrictions>
   <Researcher>
     <Technologies datatype="tokens">
       helot_economy
@@ -27,7 +30,7 @@
     <Max>20</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Support Infantry HelotW</List>
+    <List datatype="tokens">Support Infantry</List>
     <BuffHeal>1</BuffHeal>
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>

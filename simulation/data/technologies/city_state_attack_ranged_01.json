@@ -7,13 +7,9 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_town" },
-			{ "notciv": "athen" },
-			{ "notciv": "brit" },
-			{ "notciv": "gaul" },
-			{ "notciv": "germ" },
-			{ "notciv": "iber" },
-			{ "notciv": "spart" },
-			{ "notciv": "theb" }
+			{ "civ": "athen" },
+			{ "civ": "spart" },
+			{ "civ": "theb" }
 			
 		]
 	},

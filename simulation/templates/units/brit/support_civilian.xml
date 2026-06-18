@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_support_civilian">
+  <Builder>
+  <Entities datatype="tokens">
+      structures/brit/range
+      structures/brit/hill_fort
+  </Entities>
+</Builder>
   <Identity>
     <Civ>brit</Civ>
-    <GenericName>Briton Countryman</GenericName>
+    <GenericName>Briton Tribal Member</GenericName>
     <SpecificName>Ambactos</SpecificName>
     <Icon>units/celt/support_civilian.png</Icon>
   </Identity>

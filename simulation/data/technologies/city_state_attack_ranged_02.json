@@ -1,0 +1,29 @@
+{
+	"genericName": "Trilobate arrowheads",
+	"cost": {
+		"wood": 250,
+		"metal": 150
+	},
+	"supersedes": "city_state_attack_ranged_01",
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "athen" },
+			{ "civ": "spart" },
+			{ "civ": "theb" }
+		
+			
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "arrow_02.png",
+	"researchTime": 40,
+	"tooltip": "Soldiers +10% ranged attack damage.",
+	"modifications": [
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.10 },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.10 },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.10 }
+	],
+	"affects": ["Soldier !Helot !Mercenary"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

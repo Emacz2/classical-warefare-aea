@@ -3,7 +3,7 @@
   <Builder>
     <Entities datatype="tokens">
       structures/gaul/assembly
-      structures/gaul/celtic_coalitliton
+      structures/gaul/oppidum
     </Entities>
   </Builder>
   <Attack>

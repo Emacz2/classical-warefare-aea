@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="shield_light|template_unit_infantry_melee_axeman">
-   <Builder>
+  <Builder>
     <Entities datatype="tokens">
       structures/gaul/assembly
+      structures/gaul/oppidum
     </Entities>
   </Builder>
   <Cost>
