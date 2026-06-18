@@ -10,6 +10,7 @@
     <Tooltip>Buildable in own or neutral territory. Train Citizens and Wagons and research technologies.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <VisibleClasses datatype="tokens">Encampment</VisibleClasses>
+     <Icon>structures/encampment.png</Icon>
   </Identity>
   <Obstruction>
     <Static width="34.0" depth="34.0"/>
@@ -46,7 +47,7 @@
       <Variant>upgrading</Variant>
       <Time>30</Time>
       <Requirements>
-        <Techs datatype="tokens">phase_city</Techs>
+        <Techs datatype="tokens">phase_town</Techs>
       </Requirements>
     </Tower>
   </Upgrade>

@@ -1,0 +1,13 @@
+{
+	"type": "garrison",
+	"stackable": true,
+	"affects": ["Wagon"],
+	"affectedPlayers": ["Player", "MutualAlly"],
+	"modifications": [
+		{ "value": "UnitMotion/WalkSpeed", "add": -0.1 },
+		{ "value": "UnitMotion/Acceleration", "add": -1 }
+	
+	],
+	"auraName": "WagonTransport",
+	"auraDescription": "Waggons lose 0.1 speed and -1 acceleration for each garrisoned unit."
+}

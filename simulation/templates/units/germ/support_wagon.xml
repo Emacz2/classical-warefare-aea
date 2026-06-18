@@ -6,12 +6,28 @@
       <wood>50</wood>
     </Resources>
   </Cost>
-  <Promotion>
-    <Entity>units/germ/support_wagon_house</Entity>
-    <RequiredXp>5000</RequiredXp>
-  </Promotion>
+    <Upgrade>
+    <House>
+      <Entity>units/germ/support_wagon_house</Entity>
+      <Tooltip>Upgrade to a covered wagon house. Gains +5 population bonus, +50 Health, +1 pierce and +0.5 Crush resistance</Tooltip>
+      <Cost>
+        <food>25</food>
+        <wood>25</wood>
+      </Cost>
+      <Variant>upgrading</Variant>
+      <Time>30</Time>
+   </House>
+   </Upgrade>
     <Identity>
     <Civ>germ</Civ>
     <SpecificName>Wagnaz</SpecificName>
   </Identity>
+   <GarrisonHolder>
+    <Max>6</Max>
+    <EjectHealth>0.1</EjectHealth>
+    <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
+    <List datatype="tokens">Infantry Civilian</List>
+    <BuffHeal>0</BuffHeal>
+    <LoadingRange>2</LoadingRange>
+  </GarrisonHolder>
 </Entity>

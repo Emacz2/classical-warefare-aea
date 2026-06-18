@@ -3,7 +3,7 @@
   <Identity>
     <GenericName>Fortified Wagon Encampment</GenericName>
     <VisibleClasses datatype="tokens">Fortified</VisibleClasses>
-    <Icon>structures/mercenary_camp.png</Icon>
+    <Icon>structures/encampment_fortified.png</Icon>
   </Identity>
   <VisualActor>
     <Actor>structures/germans/encampment_fortified.xml</Actor>

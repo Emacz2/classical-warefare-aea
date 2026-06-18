@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="builder|template_unit">
+  <Auras datatype="tokens">
+    units/ram_garrison
+  </Auras>
   <Attack>
     <Capture>
       <AttackName>Capture</AttackName>
@@ -19,9 +22,6 @@
       <RestrictedClasses datatype="tokens">!Domestic</RestrictedClasses>
     </Slaughter>
   </Attack>
-  <Auras datatype="tokens">
-    units/ram_garrison
-  </Auras>
   <Cost>
     <BuildTime>10</BuildTime>
     <Resources>

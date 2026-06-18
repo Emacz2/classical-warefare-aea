@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="shield_light|template_unit_infantry_ranged_javelineer">
+ <Auras datatype="tokens">
+    units/waggon_garrison
+  </Auras>
   <Builder>
     <Entities datatype="tokens">
       structures/germ/great_hall
