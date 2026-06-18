@@ -6,7 +6,16 @@
 		"wood": 600
 	},
 	"supersedes": "gather_capacity_wheelbarrow",
-	"requirements": { "tech": "phase_city" },
+		"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "notciv": "brit" },
+			{ "notciv": "gaul" },
+			{ "notciv": "germ" },
+			{ "notciv": "iber" }
+			
+		]
+	},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "handcart_empty.png",
 	"researchTime": 60,

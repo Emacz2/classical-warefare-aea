@@ -6,7 +6,16 @@
 		"metal": 300
 	},
 	"supersedes": "gather_lumbering_strongeraxes",
-	"requirements": { "tech": "phase_city" },
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "notciv": "brit" },
+			{ "notciv": "gaul" },
+			{ "notciv": "germ" },
+			{ "notciv": "iber" }
+			
+		]
+	},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "wood_axe_03.png",
 	"researchTime": 60,

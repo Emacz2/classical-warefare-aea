@@ -10,7 +10,16 @@
 		"stone": 300
 	},
 	"supersedes": "gather_mining_shaftmining",
-	"requirements": { "tech": "phase_city" },
+		"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "notciv": "brit" },
+			{ "notciv": "gaul" },
+			{ "notciv": "germ" },
+			{ "notciv": "iber" }
+			
+		]
+	},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "mining_metal_03.png",
 	"researchTime": 60,

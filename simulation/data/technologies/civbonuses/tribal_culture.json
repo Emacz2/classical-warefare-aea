@@ -1,0 +1,35 @@
+{
+	"genericName": "Wooden Construction",
+	"autoResearch": true,
+	"description": "Celtic structures were mostly made of wood with rubble foundations.",
+	"requirements": {
+		"any": [
+			{ "civ": "brit" },
+			{ "civ": "gaul" },
+			{ "civ": "germ" },
+			{ "civ": "iber" }
+		]
+	},
+	"icon": "wooden_buildings.png",
+	"tooltip": "Structures are built 20% faster, but have 20% less Health and 20% fewer Capture Points. Infantry gain +5% Walk Speed, +5% Damage, +10 Vision, and generate 25% more Loot. Workers gather Wood 10% faster. However, Tribal Civilizations cannot research Tier III Economic Technologies. Britons, Gauls, and Germans cannot construct Fortresses. Instead, they may upgrade their Hill Forts, Oppida, or Ringforts into Great Fortified Settlements. ",
+	"modifications": [
+		{ "value": "Capturable/CapturePoints", "multiply": 0.8 },
+		{ "value": "Cost/BuildTime", "multiply": 0.8 },
+		{ "value": "Health/Max", "multiply": 0.8 },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05, "affects": "Infantry"  },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Infantry" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Infantry" },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Infantry" },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Infantry" },
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Infantry" },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Infantry" },
+		{ "value": "Vision/Range", "add": 10, "affects": "Infantry" },
+		{ "value": "Looter/Resource/metal",  "multiply": 1.25, "affects": "Infantry" },
+		{ "value": "Looter/Resource/stone",  "multiply": 1.25, "affects": "Infantry" },
+		{ "value": "Looter/Resource/food",  "multiply": 1.25, "affects": "Infantry" },
+		{ "value": "Looter/Resource/wood",  "multiply": 1.25, "affects": "Infantry" },
+		{ "value": "ResourceGatherer/Rates/wood.tree", "multiply": 1.1, "affects": "Worker" }
+
+	],
+	"affects": ["Structure !Wonder !Fortress !Tower"]
+}

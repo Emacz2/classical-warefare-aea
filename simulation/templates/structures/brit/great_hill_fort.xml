@@ -10,9 +10,9 @@
     <Ranged>
       <AttackName>Bow</AttackName>
       <Damage>
-        <Pierce>3</Pierce>
+        <Pierce>5</Pierce>
       </Damage>
-      <MaxRange>35</MaxRange>
+      <MaxRange>50</MaxRange>
       <PrepareTime>400</PrepareTime>
       <RepeatTime>2000</RepeatTime>
       <Projectile>
@@ -43,7 +43,7 @@
     </Distance>
   </BuildRestrictions>
   <BuildingAI>
-    <DefaultArrowCount>5</DefaultArrowCount>
+    <DefaultArrowCount>8</DefaultArrowCount>
     <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
     <GarrisonArrowClasses>Soldier</GarrisonArrowClasses>
   </BuildingAI>
@@ -61,7 +61,7 @@
     </Resources>
   </Cost>
   <GarrisonHolder>
-    <Max>15</Max>
+    <Max>25</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
     <List datatype="tokens">Support Infantry Cavalry</List>
@@ -78,29 +78,14 @@
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Build in own or neutral territory. Acquire small tracts of territory. Territory root. Train Citizens. Garrison Soldiers for additional arrows.</Tooltip>
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
-    <Icon>structures/brit_hill_fort.png</Icon>
+    <Icon>structures/brit_great_hill_fort.png</Icon>
   </Identity>
-  <Upgrade>
-    <ImperialCourt>
-      <Entity>structures/{civ}/great_hill_fort</Entity>
-      <Tooltip>greatly increase the health, capture resistance and garrison capacity of this hill fort.</Tooltip>
-      <Cost>
-        <stone>300</stone>
-        <wood>300</wood>
-      </Cost>
-      <Time>40</Time>
-      <Variant>upgrading</Variant>
-      <Requirements>
-        <Techs datatype="tokens">phase_town</Techs>
-      </Requirements>
-    </ImperialCourt>
-  </Upgrade>
   <Minimap>
     <Type>structure</Type>
     <Icon size="16.0">civil_centre.png</Icon>
   </Minimap>
   <Population>
-    <Bonus>15</Bonus>
+    <Bonus>25</Bonus>
   </Population>
 <Footprint>
   <Square width="22.0" depth="22.0"/>
@@ -134,6 +119,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
       units/{civ}/infantry_javelineer_b
+      units/{civ}/champion_chariot_melee
     </Entities>
   </Trainer>
   <Researcher disable=""/>
@@ -141,6 +127,6 @@
     <Range>60</Range>
   </Vision>
   <VisualActor>
-       <Actor>structures/celts/hut.xml</Actor>
+      <Actor>structures/celts/longhouse.xml</Actor>
   </VisualActor>
 </Entity>

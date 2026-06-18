@@ -10,15 +10,22 @@
   <Identity>
     <Civ>brit</Civ>
     <SpecificName>Tigernotreba</SpecificName>
-    <VisibleClasses datatype="tokens">TribalCenter Defensive FarmBlocker</VisibleClasses>
+    <Classes datatype="tokens">-CivCentre TribalCenter</Classes>
+    <VisibleClasses datatype="tokens">-CivilCentre TribalCenter Defensive FarmBlocker</VisibleClasses>
   </Identity>
   <Obstruction>
     <Static width="25.0" depth="25.0"/>
   </Obstruction>
+      <BuildRestrictions>
+    <Category>TribalCenter</Category>
+  </BuildRestrictions>
   <Trainer>
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
       units/{civ}/infantry_javelineer_b
+      units/{civ}/hero_boudicca
+      units/{civ}/hero_caratacos
+      units/{civ}/hero_cunobelin
     </Entities>
   </Trainer>
   <VisualActor>
