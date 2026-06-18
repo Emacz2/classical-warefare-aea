@@ -19,7 +19,7 @@
       <Damage>
         <Pierce>3</Pierce>
       </Damage>
-      <MaxRange>45</MaxRange>
+      <MaxRange>60</MaxRange>
       <PrepareTime>400</PrepareTime>
       <RepeatTime>2000</RepeatTime>
       <Projectile>
@@ -40,46 +40,29 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush>7.5</Crush>
-        <Hack>15</Hack>
+        <Crush>12.5</Crush>
+        <Hack>22.5</Hack>
         <Pierce>35</Pierce>
       </Damage>
     <ApplyStatus>
         <Burning>
           <Duration>0.2</Duration>
-          <BlockChance>0.5</BlockChance>
+          <BlockChance>0.75</BlockChance>
         </Burning>
       </ApplyStatus>
     </Entity>
   </Resistance> 
-  <BuildRestrictions>
-    <Territory>neutral</Territory>
-    <Category>TribalVillage</Category>
-    <Distance>
-      <FromClass>TribalVillage</FromClass>
-      <MinDistance>75</MinDistance>
-    </Distance>
-  </BuildRestrictions>
   <BuildingAI>
-    <DefaultArrowCount>6</DefaultArrowCount>
+    <DefaultArrowCount>8</DefaultArrowCount>
     <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
     <GarrisonArrowClasses>Soldier</GarrisonArrowClasses>
   </BuildingAI>
   <Capturable>
-    <CapturePoints>2000</CapturePoints>
-    <RegenRate>5</RegenRate>
+    <CapturePoints op="mul">4</CapturePoints>
+    <RegenRate>9</RegenRate>
   </Capturable>
-  <Cost>
-    <BuildTime>300</BuildTime>
-    <Resources>
-      <food>100</food>
-      <wood>300</wood>
-      <stone>50</stone>
-      <metal>50</metal>
-    </Resources>
-  </Cost>
   <GarrisonHolder>
-    <Max>15</Max>
+    <Max>25</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
     <List datatype="tokens">Support Infantry Cavalry Serf</List>
@@ -87,7 +70,7 @@
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>
-    <Max>2500</Max>
+    <Max>3500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
    <Researcher>
@@ -99,10 +82,13 @@
       unlock_spies
       iber_females
       spy_counter
+      tower_murderholes
+      fort_garrison
+      fort_range
     </Technologies>
   </Researcher>
     <Population>
-    <Bonus>15</Bonus>
+    <Bonus>20</Bonus>
   </Population>
   <ProductionQueue/>
   <ResourceDropsite>
@@ -111,17 +97,28 @@
   </ResourceDropsite>
    <TerritoryInfluence>
     <Root>true</Root>
-    <Radius>60</Radius>
+    <Radius>90</Radius>
     <Weight>10000</Weight>
   </TerritoryInfluence>
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/support_civilian
+      units/{civ}/infantry_spearman_a
+      units/{civ}/infantry_maceman_a
+      units/{civ}/infantry_axeman_a
+      units/{civ}/infantry_swordsman_a
+      units/{civ}/infantry_javelineer_a
+      units/{civ}/infantry_slinger_a
+      units/{civ}/infantry_archer_a
+      units/{civ}/champion_infantry_spearman
+      units/{civ}/champion_infantry_pikeman
+      units/{civ}/champion_infantry_maceman
+      units/{civ}/champion_infantry_axeman
+      units/{civ}/champion_infantry_swordsman
     </Entities>
   </Trainer>
   <Vision>
-    <Range>50</Range>
+    <Range>75</Range>
   </Vision>
   <Minimap>
     <Type>structure</Type>

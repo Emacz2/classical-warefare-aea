@@ -4,7 +4,7 @@
 	"affectedPlayers": ["MutualAlly"],
 	"modifications": [
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5},
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1, "affects": "Champion"},
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5, "affects": "Champion"},
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Spearman"},
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Spearman"}
 
@@ -12,6 +12,6 @@
 	],
 	"auraName": "Peloponnesian League",
 	"showDescription": 1,
-	"auraDescription": "All Infantry +0.5 hack resistance; spearman 5% more dmg, Champions +1 Hack resistance. Does not apply to mercanaries."
+	"auraDescription": "All Infantry +0.5 hack resistance; spearman 5% more dmg, Champions +0.5 Hack resistance. Does not apply to mercanaries."
 	
 	}

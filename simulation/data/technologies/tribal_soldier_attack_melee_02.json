@@ -2,15 +2,18 @@
 	"genericName": "Carburization",
 	"description": "By adding a small amount of carbon during the iron smelting process, a stronger material, steel, can be forged.",
 	"cost": {
-		"food": 450,
-		"metal": 400
+		"food": 400,
+		"metal": 300
 	},
-	"supersedes": "soldier_attack_melee_02_brit",
+	"supersedes": "tribal_soldier_attack_melee_01",
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },
 			{ 	"any": [
-					{ "civ": "brit" }
+					{ "civ": "brit" },
+					{ "civ": "gaul" },
+					{ "civ": "germ" },
+					{ "civ": "iber" }
 				
 				] 
 		

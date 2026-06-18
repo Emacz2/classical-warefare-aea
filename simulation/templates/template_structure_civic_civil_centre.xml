@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic">
+<Identity>
+    <GenericName>Civic Center</GenericName>
+    <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
+    <Tooltip>Build in own or neutral territory. Acquire large tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
+    <Classes datatype="tokens">CivCentre</Classes>
+    <VisibleClasses datatype="tokens">Defensive CivilCentre FarmBlocker</VisibleClasses>
+    <Icon>structures/civic_centre.png</Icon>
+  </Identity>
   <AlertRaiser>
     <List datatype="tokens">Civilian</List>
     <RaiseAlertRange>120</RaiseAlertRange>
@@ -14,7 +22,7 @@
       </Damage>
       <MaxRange>45</MaxRange>
       <PrepareTime>400</PrepareTime>
-      <RepeatTime>2000</RepeatTime>
+      <RepeatTime>1500</RepeatTime>
       <Projectile>
         <Speed>100</Speed>
         <Spread>2</Spread>
@@ -32,6 +40,11 @@
   </Attack>
   <Resistance>
     <Entity>
+      <Damage>
+        <Crush>10</Crush>
+        <Hack>20</Hack>
+        <Pierce>40</Pierce>
+      </Damage>
     <ApplyStatus>
         <Burning>
           <Duration>0.2</Duration>
@@ -40,23 +53,6 @@
       </ApplyStatus>
     </Entity>
   </Resistance> 
-  <Researcher>
-    <Technologies datatype="tokens">
-      phase_town_{civ}
-      phase_city_{civ}
-      cc_range
-      unlock_shared_los
-      archery_tradition
-      hoplite_tradition
-      javelineer_tradition
-      polearm_tradition
-      hellenistic_metropolis
-      roman_roads
-      unlock_spies
-      iber_females
-      spy_counter
-    </Technologies>
-  </Researcher>
   <BuildRestrictions>
     <Territory>own neutral</Territory>
     <Category>CivilCentre</Category>
@@ -83,10 +79,6 @@
       <metal>150</metal>
     </Resources>
   </Cost>
-  <Footprint>
-    <Square depth="32.0" width="32.0"/>
-    <Height>8.0</Height>
-  </Footprint>
   <GarrisonHolder>
     <Max>20</Max>
     <EjectHealth>0.1</EjectHealth>
@@ -99,22 +91,24 @@
     <Max>3000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
-  <Identity>
-    <GenericName>Civic Center</GenericName>
-    <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
-    <Tooltip>Build in own or neutral territory. Acquire large tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
-    <Classes datatype="tokens">CivCentre</Classes>
-    <VisibleClasses datatype="tokens">Defensive CivilCentre FarmBlocker</VisibleClasses>
-    <Icon>structures/civic_centre.png</Icon>
-  </Identity>
-  <Minimap>
-    <Type>structure</Type>
-    <Icon size="16.0">civil_centre.png</Icon>
-  </Minimap>
-  <Obstruction>
-    <Static depth="30.0" width="30.0"/>
-  </Obstruction>
-  <Population>
+   <Researcher>
+    <Technologies datatype="tokens">
+      phase_town_{civ}
+      phase_city_{civ}
+      cc_range
+      unlock_shared_los
+      archery_tradition
+      hoplite_tradition
+      javelineer_tradition
+      polearm_tradition
+      hellenistic_metropolis
+      roman_roads
+      unlock_spies
+      iber_females
+      spy_counter
+    </Technologies>
+  </Researcher>
+    <Population>
     <Bonus>20</Bonus>
   </Population>
   <ProductionQueue/>
@@ -122,18 +116,7 @@
     <Types>food wood stone metal</Types>
     <Sharable>true</Sharable>
   </ResourceDropsite>
-  <Sound>
-    <SoundGroups>
-      <select>interface/select/building/sel_civ_center.xml</select>
-      <constructed>interface/complete/building/complete_civ_center.xml</constructed>
-      <upgraded>interface/complete/building/complete_civ_center.xml</upgraded>
-      <alert_raise>interface/alarm/alarm_alert_0.xml</alert_raise>
-      <alert_end>interface/alarm/alarm_alert_1.xml</alert_end>
-      <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
-      <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
-    </SoundGroups>
-  </Sound>
-  <TerritoryInfluence>
+   <TerritoryInfluence>
     <Root>true</Root>
     <Radius>120</Radius>
     <Weight>10000</Weight>
@@ -148,6 +131,28 @@
   <Vision>
     <Range>70</Range>
   </Vision>
+  <Minimap>
+    <Type>structure</Type>
+    <Icon size="16.0">civil_centre.png</Icon>
+  </Minimap>
+  <Obstruction>
+    <Static depth="30.0" width="30.0"/>
+  </Obstruction>
+  <Footprint>
+    <Square depth="32.0" width="32.0"/>
+    <Height>8.0</Height>
+  </Footprint>
+  <Sound>
+    <SoundGroups>
+      <select>interface/select/building/sel_civ_center.xml</select>
+      <constructed>interface/complete/building/complete_civ_center.xml</constructed>
+      <upgraded>interface/complete/building/complete_civ_center.xml</upgraded>
+      <alert_raise>interface/alarm/alarm_alert_0.xml</alert_raise>
+      <alert_end>interface/alarm/alarm_alert_1.xml</alert_end>
+      <attack_ranged>attack/weapon/bow_attack.xml</attack_ranged>
+      <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
+    </SoundGroups>
+  </Sound>
   <VisualActor>
     <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
   </VisualActor>

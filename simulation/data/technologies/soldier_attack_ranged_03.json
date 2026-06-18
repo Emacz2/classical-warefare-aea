@@ -1,11 +1,21 @@
 {
 	"genericName": "Pyramidal arrowheads",
 	"cost": {
-		"wood": 500,
-		"metal": 400
+		"wood": 400,
+		"metal": 300
 	},
 	"supersedes": "soldier_attack_ranged_02",
-	"requirements": { "tech": "phase_city" },
+		"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "notciv": "brit" },
+			{ "notciv": "gaul" },
+			{ "notciv": "germ" },
+			{ "notciv": "iber" }
+		
+			
+		]
+	},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "arrow_03.png",
 	"researchTime": 60,

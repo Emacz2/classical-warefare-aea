@@ -4,7 +4,16 @@
 		"wood": 200,
 		"metal": 100
 	},
-	"requirements": { "tech": "phase_town" },
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "notciv": "brit" },
+			{ "notciv": "gaul" },
+			{ "notciv": "germ" },
+			{ "notciv": "iber" }
+			
+		]
+	},
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "arrow_01.png",
 	"researchTime": 20,

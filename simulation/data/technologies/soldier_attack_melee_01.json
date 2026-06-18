@@ -16,8 +16,14 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_town" },
+			{ "notciv": "athen" },
+			{ "notciv": "brit" },
+			{ "notciv": "gaul" },
+			{ "notciv": "germ" },
+			{ "notciv": "iber" },
 			{ "notciv": "spart" },
-			{ "notciv": "brit" }
+			{ "notciv": "theb" }
+			
 		]
 	},
 	"requirementsTooltip": "Unlocked in Town Phase.",
@@ -29,6 +35,6 @@
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.10 },
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.10 }
 	],
-	"affects": ["Soldier !Mercenary !Auxiliary !Elephant"],
+	"affects": ["Soldier !Mercenary !Elephant"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

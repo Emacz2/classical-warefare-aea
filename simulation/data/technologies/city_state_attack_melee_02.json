@@ -1,0 +1,31 @@
+{
+	"genericName": " Quenching",
+	"cost": {
+		"food": 400,
+		"metal": 300
+	},
+	"supersedes": "city_state_attack_melee_01",
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "athen" },
+			{ "civ": "spart" },
+			{ "civ": "theb" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in town phase.",
+	"icon": "sword_02.png",
+	"researchTime": 40,
+	"tooltip": "Soldiers +10% melee attack damage. Hoplites additional 10% but also +10% train time. ",
+	"modifications": [
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Hoplite" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Hoplite" },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1, "affects": "Hoplite" },
+		{ "value": "Cost/BuildTime", "multiply": 1.1, "affects": "Hoplite" }
+	],
+	"affects": ["Soldier !Mercenary !Elephant"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

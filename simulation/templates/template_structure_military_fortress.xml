@@ -37,9 +37,9 @@
         </Burning>
       </ApplyStatus>
       <Damage>
-        <Crush>10</Crush>
-        <Hack>20</Hack>
-        <Pierce>40</Pierce>
+        <Crush>15</Crush>
+        <Hack>25</Hack>
+        <Pierce>45</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -47,7 +47,7 @@
     <Category>Fortress</Category>
     <Distance>
       <FromClass>Fortress</FromClass>
-      <MinDistance>125</MinDistance>
+      <MinDistance>120</MinDistance>
     </Distance>
   </BuildRestrictions>
   <BuildingAI>

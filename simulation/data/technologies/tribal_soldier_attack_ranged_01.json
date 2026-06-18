@@ -1,24 +1,27 @@
 {
-	"genericName": "Trilobate arrowheads",
+	"genericName": "Bodkin Arrowheads",
 	"cost": {
 		"wood": 300,
 		"metal": 200
 	},
-	"supersedes": "soldier_attack_ranged_01",
 	"requirements": {
 		"all": [
 			{ "tech": "phase_town" },
-			{ "notciv": "brit" },
-			{ "notciv": "gaul" },
-			{ "notciv": "germ" },
-			{ "notciv": "iber" }
+			{ 
+				"any": [
+					{ "civ": "brit" },
+					{ "civ": "gaul" },
+					{ "civ": "germ" },
+					{ "civ": "iber" }
+				
+				] 
 		
-			
+		}
 		]
 	},
 	"requirementsTooltip": "Unlocked in Town Phase.",
-	"icon": "arrow_02.png",
-	"researchTime": 40,
+	"icon": "arrow_01.png",
+	"researchTime": 20,
 	"tooltip": "Soldiers +15% ranged attack damage.",
 	"modifications": [
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.15 },

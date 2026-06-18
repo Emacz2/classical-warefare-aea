@@ -23,20 +23,12 @@
 	"tooltip": "Advance to Iberian Town Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +0.5 capture points regeneration rate for garrisoned units.  Civic Centers 25% garrison capacity, +5 range and 2.5 of each resistance but -2% pierce dmg. Slingers -125 repeat time, 5% more accurate and +1 range but 5% longer train time. ",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "CivCentre" },
-		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
-        { "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.98, "affects": "CivCentre" }
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" }
 		
 		
 

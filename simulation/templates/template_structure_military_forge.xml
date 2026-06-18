@@ -37,10 +37,9 @@
     <Technologies datatype="tokens">
       soldier_attack_melee_01
       soldier_attack_melee_02
-      soldier_attack_melee_02_brit
       soldier_attack_melee_03
-      soldier_attack_melee_03_brit
-      soldier_attack_melee_03_variant
+      soldier_attack_melee_01_tribal
+      soldier_attack_melee_02_tribal
       soldier_attack_ranged_01
       soldier_attack_ranged_02
       soldier_attack_ranged_03

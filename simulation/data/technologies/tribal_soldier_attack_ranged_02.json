@@ -1,0 +1,34 @@
+{
+	"genericName": "Trilobate arrowheads",
+	"cost": {
+		"wood": 400,
+		"metal": 300
+	},
+	"supersedes": "tribal_soldier_attack_ranged_01",
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ 	"any": [
+					{ "civ": "brit" },
+					{ "civ": "gaul" },
+					{ "civ": "germ" },
+					{ "civ": "iber" }
+				
+				] 
+		
+		} 
+			
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "arrow_02.png",
+	"researchTime": 40,
+	"tooltip": "Soldiers +20% ranged attack damage.",
+	"modifications": [
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.2 },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.2 },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.2 }
+	],
+	"affects": ["Soldier !Helot !Mercenary"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

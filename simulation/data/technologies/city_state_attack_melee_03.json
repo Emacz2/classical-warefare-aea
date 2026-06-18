@@ -1,0 +1,31 @@
+{
+	"genericName": "Tempering",
+	"cost": {
+		"food": 500,
+		"metal": 500
+	},
+	"supersedes": "city_state_attack_melee_02",
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "civ": "athen" },
+			{ "civ": "spart" },
+			{ "civ": "theb" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in city phase.",
+	"icon": "sword_03.png",
+	"researchTime": 60,
+	"tooltip": "Soldiers +15% melee attack damage.  Hoplites an additional 10% but also +10% train time. ",
+	"modifications": [
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.15 },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Hoplite" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Hoplite" },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1, "affects": "Hoplite" },
+		{ "value": "Cost/BuildTime", "multiply": 1.1, "affects": "Hoplite" }
+	],
+	"affects": ["Soldier !Mercenary !Elephant"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

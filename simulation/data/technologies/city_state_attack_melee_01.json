@@ -1,0 +1,31 @@
+{
+	"genericName": "Carburisation",
+	"description": "By adding a small amount of carbon during the iron smelting process, a stronger material, steel, can be forged.",
+	"cost": {
+		"food": 200,
+		"metal": 200
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_village" },
+			{ "civ": "athen" },
+			{ "civ": "spart" },
+			{ "civ": "theb" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in village.",
+	"icon": "sword_01.png",
+	"researchTime": 20,
+	"tooltip": "Soldiers +5% melee attack damage. Hoplites gain an additional 10% ",
+	"modifications": [
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05 },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Hoplite" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05,"affects": "Hoplite" },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoptlite" }
+		
+	],
+	"affects": ["Soldier !Mercenary !Elephant"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}
