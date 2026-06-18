@@ -4,6 +4,15 @@
     <Circle radius="20.0"/>
     <Height>8.0</Height>
   </Footprint>
+  <Cost>
+    <BuildTime op="mul">0.75</BuildTime>
+    <Resources>
+      <food>100</food>
+      <wood>300</wood>
+      <stone op="add">-25</stone>
+      <metal op="add">-50</metal>
+    </Resources>
+  </Cost>
   <Identity>
     <Civ>germ</Civ>
     <GenericName>Wagon Encampment</GenericName>
@@ -12,6 +21,12 @@
     <VisibleClasses datatype="tokens">Encampment</VisibleClasses>
      <Icon>structures/encampment.png</Icon>
   </Identity>
+  <Capturable>
+    <CapturePoints op="mul">0.75</CapturePoints>
+  </Capturable>
+  <Health>
+    <Max op="mul">0.8</Max>
+  </Health>
   <Obstruction>
     <Static width="34.0" depth="34.0"/>
   </Obstruction>
@@ -39,7 +54,7 @@
   <Upgrade>
     <Tower>
       <Entity>structures/{civ}/encampment_fortified</Entity>
-      <Tooltip>Reinforce the Wagon Encampment with a spiked log palisade. This increases the Encampment's health by +50% and adds +5 hack resistance and allows the Encampment to train log rams.</Tooltip>
+      <Tooltip>Reinforce the Wagon Encampment with a spiked log palisade, greatly increasing the health, capture resistance and garrison capacity of this Encamptment.</Tooltip>
       <Cost>
         <wood>200</wood>
         <metal>200</metal>

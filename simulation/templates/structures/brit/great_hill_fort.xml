@@ -4,7 +4,7 @@
     <Civ>brit</Civ>
     <SpecificName>Great Hill Fort</SpecificName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
-    <Tooltip>A Fortifed Oppidum, the Brits version of a Fort</Tooltip>
+    <Tooltip>A Fortifed Hill Fort, the Brits version of a Fort</Tooltip>
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
     <Icon>structures/brit_great_hill_fort.png</Icon>
   </Identity>

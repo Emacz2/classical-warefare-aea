@@ -11,7 +11,7 @@
   <Upgrade>
     <ImperialCourt>
       <Entity>structures/{civ}/great_oppidum</Entity>
-      <Tooltip>greatly increase the health, capture resistance and garrison capacity of this hill fort.</Tooltip>
+      <Tooltip>greatly increase the health, capture resistance and garrison capacity of this Oppidum.</Tooltip>
       <Cost>
         <stone>300</stone>
         <wood>300</wood>
