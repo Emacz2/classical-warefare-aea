@@ -9,6 +9,8 @@
   <Identity>
     <Civ>germ</Civ>
     <SpecificName>Fulkasrēdaz</SpecificName>
+    <Classes datatype="tokens">-CivCentre TribalCenter</Classes>
+    <VisibleClasses datatype="tokens">-CivilCentre TribalCenter Defensive FarmBlocker</VisibleClasses>
   </Identity>
   <Obstruction>
     <Static width="31.0" depth="27.0"/>

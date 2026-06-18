@@ -6,7 +6,7 @@
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Build in own or neutral territory. Acquire small tracts of territory. Territory root. Train Citizens. Garrison Soldiers for additional arrows.</Tooltip>
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
-    <Icon>structures/brit_hill_fort.png</Icon>
+    <Icon>structures/oppidum.png</Icon>
   </Identity>
   <Upgrade>
     <ImperialCourt>

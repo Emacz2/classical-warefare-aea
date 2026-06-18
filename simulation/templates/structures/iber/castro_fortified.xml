@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_civic_civil_tribal_fort">
+  <Identity>
+    <GenericName>Fortified Wagon Encampment</GenericName>
+    <VisibleClasses datatype="tokens">Fortified</VisibleClasses>
+    <Icon>structures/casto_fort.png</Icon>
+  </Identity>
+  <VisualActor>
+    <Actor>structures/germans/encampment_fortified.xml</Actor>
+  </VisualActor>
+</Entity>

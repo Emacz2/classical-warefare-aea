@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_civil_centre">
   <Identity>
-    <Civ>brit</Civ>
+    <Civ>gaul</Civ>
     <SpecificName>Great Oppidum</SpecificName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>A Fortifed Oppidum, the Gauls version of a Fort</Tooltip>
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
-    <Icon>structures/brit_great_hill_fort.png</Icon>
+    <Icon>structures/oppidum_fort.png</Icon>
   </Identity>
   <Minimap>
     <Type>structure</Type>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="shield_light|armor_light|template_unit_infantry_melee_swordsman">
- <Builder>
+<Builder>
     <Entities datatype="tokens">
+      structures/iber/castro
       structures/iber/monument
       structures/iber/hall_of_heroes
       structures/iber/silvermine

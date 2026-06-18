@@ -4,28 +4,31 @@
     <Circle radius="20.0"/>
     <Height>8.0</Height>
   </Footprint>
-  <Cost>
-    <BuildTime op="mul">0.75</BuildTime>
+  <Identity>
+    <Civ>iber</Civ>
+    <GenericName>Castro</GenericName>
+    <Tooltip>Buildable in neutral territory. Train Citizens and Wagons and research technologies.</Tooltip>
+    <Classes datatype="tokens">CivSpecific</Classes>
+    <VisibleClasses datatype="tokens">Castro</VisibleClasses>
+     <Icon>structures/castro.png</Icon>
+     <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
+  </Identity>
+   <Cost>
+    <BuildTime op="mul">1.25</BuildTime>
     <Resources>
       <food>100</food>
-      <wood>300</wood>
-      <stone op="add">-25</stone>
-      <metal op="add">-50</metal>
+      <wood op="add">50</wood>
+      <stone op="add">100</stone>
+      <metal>50</metal>
     </Resources>
   </Cost>
-  <Identity>
-    <Civ>germ</Civ>
-    <GenericName>Wagon Encampment</GenericName>
-    <Tooltip>Buildable in own or neutral territory. Train Citizens and Wagons and research technologies.</Tooltip>
-    <Classes datatype="tokens">CivSpecific</Classes>
-    <VisibleClasses datatype="tokens">Encampment</VisibleClasses>
-     <Icon>structures/encampment.png</Icon>
-  </Identity>
-  <Capturable>
-    <CapturePoints op="mul">0.75</CapturePoints>
+    <Capturable>
+    <CapturePoints op="mul">1.25</CapturePoints>
   </Capturable>
   <Health>
-    <Max op="mul">0.8</Max>
+    <Max op="mul">1.25</Max>
   </Health>
   <Obstruction>
     <Static width="34.0" depth="34.0"/>
@@ -33,15 +36,11 @@
   <Trainer>
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
+      units/{civ}/infantry_swordsman_b
+      units/{civ}/infantry_javelineer_b
       units/{civ}/infantry_slinger_b
-      units/{civ}/support_wagon
 	</Entities>
   </Trainer>
-  <Researcher>
-    <Technologies datatype="tokens">
-      wagon_trains
-    </Technologies>
-  </Researcher>
   <Sound>
     <SoundGroups>
       <select>interface/select/building/sel_civ_center.xml</select>
@@ -53,14 +52,14 @@
   </Sound>
   <Upgrade>
     <Tower>
-      <Entity>structures/{civ}/encampment_fortified</Entity>
-      <Tooltip>Reinforce the Wagon Encampment with a spiked log palisade, greatly increasing the health, capture resistance and garrison capacity of this Encamptment.</Tooltip>
+      <Entity>structures/{civ}/castro_fortified</Entity>
+      <Tooltip>Upgrade the castro greatly increasing the health, capture resistance and garrison capacity.</Tooltip>
       <Cost>
-        <stone>100</stone>
-        <wood>400</wood>
+        <stone>400</stone>
+        <wood>300</wood>
       </Cost>
       <Variant>upgrading</Variant>
-      <Time>30</Time>
+      <Time>45</Time>
       <Requirements>
         <Techs datatype="tokens">phase_town</Techs>
       </Requirements>

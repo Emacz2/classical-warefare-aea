@@ -6,6 +6,8 @@
   <Identity>
     <Civ>iber</Civ>
     <SpecificName>Iltun</SpecificName>
+     <Classes datatype="tokens">-CivCentre TribalCenter</Classes>
+    <VisibleClasses datatype="tokens">-CivilCentre TribalCenter Defensive FarmBlocker</VisibleClasses>
   </Identity>
   <Trainer>
     <Entities datatype="tokens">

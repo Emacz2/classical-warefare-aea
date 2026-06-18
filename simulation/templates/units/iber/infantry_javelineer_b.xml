@@ -2,6 +2,7 @@
 <Entity parent="shield_light|template_unit_infantry_ranged_javelineer">
  <Builder>
     <Entities datatype="tokens">
+      structures/iber/castro
       structures/iber/monument
       structures/iber/hall_of_heroes
       structures/iber/silvermine

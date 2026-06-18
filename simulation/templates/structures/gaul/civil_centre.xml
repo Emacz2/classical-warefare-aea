@@ -10,6 +10,8 @@
   <Identity>
     <Civ>gaul</Civ>
     <SpecificName>Lissos</SpecificName>
+     <Classes datatype="tokens">-CivCentre TribalCenter</Classes>
+    <VisibleClasses datatype="tokens">-CivilCentre TribalCenter Defensive FarmBlocker</VisibleClasses>
   </Identity>
   <Obstruction>
     <Static width="25.0" depth="25.0"/>
