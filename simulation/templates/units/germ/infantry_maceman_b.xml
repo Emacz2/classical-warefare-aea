@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="shield_light|template_unit_infantry_melee_maceman">
-  <Builder disable=""/>
+    <Builder>
+    <Entities datatype="tokens">
+      structures/germ/great_hall
+      structures/germ/encampment
+    </Entities>
+  </Builder>
   <Identity>
     <Civ>germ</Civ>
     <GenericName>Cimbrian Clubman</GenericName>

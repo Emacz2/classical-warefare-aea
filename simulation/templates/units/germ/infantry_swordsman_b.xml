@@ -3,6 +3,7 @@
   <Builder>
     <Entities datatype="tokens">
       structures/germ/great_hall
+      structures/germ/encampment
     </Entities>
   </Builder>
   <Identity>
