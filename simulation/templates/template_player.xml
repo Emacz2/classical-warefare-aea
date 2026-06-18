@@ -53,6 +53,7 @@
       <Tent>5</Tent>
       <Theater>1</Theater>
       <ThebsSB>50</ThebsSB>
+      <TribalCenter>1</TribalCenter>
       <ScythianGuard>5</ScythianGuard>
       <Silvermine>3</Silvermine>
       <SpartW>1</SpartW>
@@ -198,6 +199,7 @@
     <StructureClasses datatype="tokens">
       Economic
       CivCentre
+      TribalCapital
       FarmBlocker
       Special
       Fortress
