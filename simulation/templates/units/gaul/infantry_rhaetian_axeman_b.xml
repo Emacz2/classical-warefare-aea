@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="allied_inf|shield_medium|armor_light|template_unit_infantry_melee_axeman">
+  <Builder>
+    <Entities datatype="tokens">
+      structures/gaul/assembly
+      structures/gaul/oppidum
+    </Entities>
+  </Builder>
+  <Identity>
+    <Civ>gaul</Civ>
+    <SelectionGroupName>units/brit/infantry_rhaetian_axeman_b</SelectionGroupName>
+    <GenericName>Rhaetian Axeman</GenericName>
+    <Tooltip>Rhaetian Axeman from the Alps were know for their proficiency with the Hellebardenaxt</Tooltip>
+    <VisibleClasses datatype="tokens">-Worker Builder</VisibleClasses>
+     <Icon>units/gaul/gaul_infantry_axe.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/gaul/infantry_rhaetian_axeman_a</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/gauls/infantry_axeman_b.xml</Actor>
+  </VisualActor>
+  <ResourceGatherer disable=""/>
+</Entity>

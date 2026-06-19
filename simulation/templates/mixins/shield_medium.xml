@@ -12,7 +12,7 @@
  <Identity>
     <GenericName>Medium Shield</GenericName>
     <Tooltip>+2 Pierce and +1.5 Crush/Hack resistance but -3% walk speed</Tooltip>
-    <History>Han Elitee; Caetra Medium; German Melee Shield; Sparabara (Persian large wicker); Celtic Melee (large Celtic oval); Clipeus (Roman/Italic round); Carthaginian medium; Kushite medium bossed; Boeotian variant; British large oval</History>
+    <History>Han Elite; Caetra Medium; German Melee Shield; Sparabara (Persian large wicker); Celtic Melee (large Celtic oval); Clipeus (Roman/Italic round); Carthaginian medium; Kushite medium bossed; Boeotian variant; British large oval</History>
   </Identity>
   <UnitMotion>
     <WalkSpeed op="mul">0.97</WalkSpeed>
