@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_light|template_unit_infantry_melee_axeman">
+<Entity parent="allied_inf|shield_light|armor_light|template_unit_infantry_melee_axeman">
   <Builder>
     <Entities datatype="tokens">
       structures/gaul/assembly
       structures/gaul/oppidum
     </Entities>
   </Builder>
-  <Cost>
-    <Resources>
-      <food>50</food>
-      <wood>35</wood>
-      <metal>15</metal>
-    </Resources>
-  </Cost>
   <Identity>
     <Civ>gaul</Civ>
     <Rank>Advanced</Rank>
@@ -26,7 +19,7 @@
     <Entity>units/gaul/infantry_rhaetian_axeman_b</Entity>
   </Promotion>
   <VisualActor>
-    <Actor>units/gauls/infantry_axeman_a.xml</Actor>
+    <Actor>units/gauls/infantry_axeman_b.xml</Actor>
   </VisualActor>
   <ResourceGatherer disable=""/>
 </Entity>

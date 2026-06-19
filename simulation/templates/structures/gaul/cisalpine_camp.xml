@@ -21,7 +21,7 @@
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Raeti and Nervii encampment</GenericName>
-    <Tooltip>Train Rutheni allies.</Tooltip>
+    <Tooltip>Train Rutheni and Senones allies.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/mercenary_camp.png</Icon>
   </Identity>
@@ -38,9 +38,15 @@
   <TerritoryInfluence disable=""/>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/infantry_rhaetian_axeman
+      units/{civ}/infantry_rhaetian_axeman_a
+      units/{civ}/infantry_senones_swordsman_a
     </Entities>
   </Trainer>
+    <Researcher>
+    <Technologies datatype="tokens">
+     gaul_senones_capture
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>structures/ptolemies/settlement.xml</Actor>
     <FoundationActor>structures/fndn_8x8.xml</FoundationActor>

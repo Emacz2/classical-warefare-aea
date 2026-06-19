@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="shield_light|template_unit_infantry_melee_swordsman">
+  <Builder>
+    <Entities datatype="tokens">
+      structures/gaul/assembly
+      structures/gaul/oppidum
+    </Entities>
+  </Builder>
+  <Cost>
+    <Resources>
+      <food>50</food>
+      <wood>35</wood>
+      <metal>15</metal>
+    </Resources>
+  </Cost>
+  <Identity>
+    <Civ>gaul</Civ>
+    <Rank>Advanced</Rank>
+    <SelectionGroupName>units/brit/infantry_rhaetian_axeman</SelectionGroupName>
+    <GenericName>Senones Raider</GenericName>
+    <Tooltip></Tooltip>
+    <VisibleClasses datatype="tokens">-Worker Builder</VisibleClasses>
+     <Icon>units/gaul/gaul_infantry_axe.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/gaul/senones_swordman_e</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/gauls/senones_swordsman_b.xml</Actor>
+  </VisualActor>
+  <ResourceGatherer disable=""/>
+</Entity>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="allied_inf|inf_raider|shield_light|template_unit_infantry_melee_swordsman">
+  <Builder>
+    <Entities datatype="tokens">
+      structures/gaul/assembly
+      structures/gaul/oppidum
+    </Entities>
+  </Builder>
+  <Identity>
+    <Civ>gaul</Civ>
+    <Rank>Advanced</Rank>
+    <SelectionGroupName>units/brit/infantry_senones_swordsman</SelectionGroupName>
+    <GenericName>Senones Raider</GenericName>
+    <Tooltip></Tooltip>
+    <VisibleClasses datatype="tokens">-Worker Builder</VisibleClasses>
+     <Icon>units/gaul/senones_swordsman.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/gaul/senones_swordsman_e</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/gauls/senones_swordsman_b.xml</Actor>
+  </VisualActor>
+  <ResourceGatherer disable=""/>
+</Entity>
