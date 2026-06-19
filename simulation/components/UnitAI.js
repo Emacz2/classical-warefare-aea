@@ -2284,9 +2284,8 @@ UnitAI.prototype.UnitFsmSpec = {
 							this.SetNextState("COMBAT.FINDINGNEWTARGET");
 							return;
 						}
-						if (this.FindChargeAndFightTargets()) {
+						if (this.FindChargeAndFightTargets())
 							return;
-						}
 						// If the order was forced, try moving to the target position,
 						// under the assumption that this is desirable if the target
 						// was somewhat far away - we'll likely end up closer to where
