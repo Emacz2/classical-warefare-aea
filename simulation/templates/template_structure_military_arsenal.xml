@@ -16,6 +16,7 @@
   <BuildRestrictions>
     <Territory>own neutral</Territory>
   </BuildRestrictions>
+  <TerritoryDecay disable=""/>
   <GarrisonHolder>
     <Max>6</Max>
     <List datatype="tokens">Siege Infantry</List>

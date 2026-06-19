@@ -21,4 +21,5 @@
     <Types>food</Types>
     <Sharable>true</Sharable>
   </ResourceDropsite>
+  <TerritoryDecay disable=""/>
 </Entity>

@@ -3,14 +3,14 @@
 <Identity>
     <Civ>spart</Civ>
     <SpecificName>Kleros</SpecificName>
-    <GenericName>Tent</GenericName>
+    <GenericName>Helot Farmstead</GenericName>
     <Icon>structures/kleros.png</Icon>
     <VisibleClasses datatype="tokens">Tent</VisibleClasses>
-	<Tooltip>Train helots, food dropsite.</Tooltip>
+	<Tooltip>Helot agricultural estate. Trains Helots and serves as a food dropsite. Provides 1 food every 2 seconds per Kleros (maximum of 5)</Tooltip>
   </Identity>
 
   <BuildRestrictions>
-    <Territory>own</Territory>
+    <Territory>own neutral</Territory>
     <Category>Tent</Category>
   </BuildRestrictions>
   <Capturable>
@@ -57,6 +57,14 @@
     <Types>food</Types>
     <Sharable>true</Sharable>
   </ResourceDropsite>
+  <ResourceTrickle>
+    <Rates>
+      <food>0.5</food>
+    </Rates>
+    <Interval>1000</Interval>
+  </ResourceTrickle>
+
+
   <Obstruction>
     <Static width="8.0" depth="8.0"/>
   </Obstruction>
@@ -75,9 +83,7 @@
   <StatusBars>
     <HeightOffset>6.0</HeightOffset>
   </StatusBars>
-  <TerritoryDecay>
-    <DecayRate>1</DecayRate>
-  </TerritoryDecay>
+  <TerritoryDecay disable=""/>
   <TerritoryInfluence disable=""/>
   <VisualActor>
     <Actor>structures/tent_greek.xml</Actor>

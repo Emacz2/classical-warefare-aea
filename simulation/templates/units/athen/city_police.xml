@@ -20,7 +20,7 @@
     </Resources>
   </Cost>
   <Identity>
-    <GenericName>Scythian Archer</GenericName>
+    <GenericName>Scythian Archer Guard</GenericName>
     <SpecificName>Speusínios</SpecificName>
     <Icon>units/athen/champion_ranged.png</Icon>
        <Requirements>

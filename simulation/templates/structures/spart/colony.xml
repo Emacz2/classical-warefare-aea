@@ -2,6 +2,7 @@
 <Entity parent="template_structure_civic_civil_city_state">
   <Identity>
     <Civ>spart</Civ>
+    <GenericName>Perioikoi Settlement</GenericName>
     <Classes datatype="tokens">PerioikoiTown</Classes>
     <VisibleClasses datatype="tokens">Town</VisibleClasses>
     <Icon>structures/perioikoi_town.png</Icon>
@@ -16,6 +17,8 @@
       units/{civ}/infantry_spearman_a
       units/{civ}/neodamodes_spearman
       units/{civ}/merc_thracian_peltast
+      units/{civ}/helot_javelineer
+      units/{civ}/helot_stone_thrower
     </Entities>
   </Trainer>
 
