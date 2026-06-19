@@ -2284,6 +2284,9 @@ UnitAI.prototype.UnitFsmSpec = {
 							this.SetNextState("COMBAT.FINDINGNEWTARGET");
 							return;
 						}
+						if (this.FindChargeAndFightTargets()) {
+							return;
+						}
 						// If the order was forced, try moving to the target position,
 						// under the assumption that this is desirable if the target
 						// was somewhat far away - we'll likely end up closer to where
@@ -5770,7 +5773,7 @@ UnitAI.prototype.ChargeAttack = function(target, allowCapture = this.DEFAULT_CAP
 
 	this.RememberTargetPosition(order);
 
-	if (this.order && this.order.type == "Attack" &&
+	if (this.order && this.order.type == "ChargeAttack" &&
 		this.order.data &&
 		this.order.data.target === order.target &&
 		this.order.data.allowCapture === order.allowCapture)
@@ -6298,6 +6301,94 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 			this.ReplaceOrder("Attack", order);
 		else
 			this.PushOrderFront("Attack", order);
+	};
+
+	const prefs = {};
+	let bestPref;
+	const targets = [];
+	let pref;
+	for (const v of entities)
+	{
+		if (this.CanAttack(v) && attackfilter(v))
+		{
+			pref = cmpAttack.GetPreference(v);
+			if (pref === 0)
+			{
+				attack(v);
+				return true;
+			}
+			targets.push(v);
+		}
+		prefs[v] = pref;
+		if (pref !== undefined && (bestPref === undefined || pref < bestPref))
+			bestPref = pref;
+	}
+
+	for (const targ of targets)
+	{
+		if (prefs[targ] !== bestPref)
+			continue;
+		attack(targ);
+		return true;
+	}
+
+	// healers on a walk-and-fight order should heal injured units
+	if (this.IsHealer())
+		return this.FindNewHealTargets();
+
+	return false;
+};
+
+// Classical Warfare AEA
+// Copied from "UnitAI.prototype.FindWalkAndFightTargets"
+UnitAI.prototype.FindChargeAndFightTargets = function()
+{
+	if (this.IsFormationController())
+		return this.CallMemberFunction("FindChargeAndFightTargets", null);
+
+	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+
+	let entities;
+	if (!this.losAttackRangeQuery || !this.GetStance().targetVisibleEnemies || !cmpAttack)
+		entities = [];
+	else
+	{
+		const cmpRangeManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_RangeManager);
+		entities = cmpRangeManager.ResetActiveQuery(this.losAttackRangeQuery);
+	}
+
+	const attackfilter = e => {
+		if (this?.order?.data?.targetClasses)
+		{
+			const cmpIdentity = Engine.QueryInterface(e, IID_Identity);
+			const targetClasses = this.order.data.targetClasses;
+			if (cmpIdentity && targetClasses.attack &&
+				!MatchesClassList(cmpIdentity.GetClassesList(), targetClasses.attack))
+				return false;
+			if (cmpIdentity && targetClasses.avoid &&
+				MatchesClassList(cmpIdentity.GetClassesList(), targetClasses.avoid))
+				return false;
+			// Only used by the AIs to prevent some choices of targets
+			if (targetClasses.vetoEntities && targetClasses.vetoEntities[e])
+				return false;
+		}
+		const cmpOwnership = Engine.QueryInterface(e, IID_Ownership);
+		if (cmpOwnership && cmpOwnership.GetOwner() > 0)
+			return true;
+		const cmpUnitAI = Engine.QueryInterface(e, IID_UnitAI);
+		return cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal());
+	};
+
+	const attack = target => {
+		const order = {
+			"target": target,
+			"force": false,
+			"allowCapture": this.order?.data?.allowCapture || this.DEFAULT_CAPTURE
+		};
+		if (this.IsFormationMember())
+			this.ReplaceOrder("ChargeAttack", order);
+		else
+			this.PushOrderFront("ChargeAttack", order);
 	};
 
 	const prefs = {};
