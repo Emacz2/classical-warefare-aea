@@ -2,9 +2,6 @@
 <Entity>
    <Attack>
     <Melee>
-      <Damage>
-        <Crush>0</Crush>
-      </Damage>
       <Charge>
         <Damage>
           <Hack>5</Hack>
