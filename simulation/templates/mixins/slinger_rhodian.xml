@@ -14,6 +14,7 @@
         <Spread op="mul">0.8</Spread>
     </Projectile>
   </Ranged>
+  </Attack>
      <Resistance>
     <Entity>
       <Damage>
@@ -23,7 +24,6 @@
       </Damage>
     </Entity>
   </Resistance>
-</Attack>
   <Identity>
     <Lang>greek</Lang>
     <GenericName>Rhodian Slinger</GenericName>
