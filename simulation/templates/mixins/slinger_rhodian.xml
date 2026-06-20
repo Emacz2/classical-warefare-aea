@@ -14,6 +14,15 @@
         <Spread op="mul">0.8</Spread>
     </Projectile>
   </Ranged>
+     <Resistance>
+    <Entity>
+      <Damage>
+      <Crush op="add">0.5</Crush>
+      <Hack op="add">0.5</Hack>
+      <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
 </Attack>
   <Identity>
     <Lang>greek</Lang>

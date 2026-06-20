@@ -1,28 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_javelineer">
+<Entity parent="shield_light|template_unit_infantry_ranged_javelineer">
   <Identity>
     <GenericName>Samnite Skirmisher</GenericName>
-    <SpecificName>Samnite Skirmisher</SpecificName>
     <Icon>units/samn/skirmisher.png</Icon>
   </Identity>
-  <Attack>
-    <Ranged>
-      <Projectile>
-        <Spread>2.5</Spread>
-      </Projectile>
-    </Ranged>
-  </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
-    <Health>
-    <Max op="add">15</Max>
-  </Health>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/carthaginians/infantry_javelinist_c_samnite.xml</Actor>

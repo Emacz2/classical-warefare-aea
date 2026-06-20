@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_super_heavy|armor_heavy|spear_long|template_unit_infantry_melee_spearman">
+<Entity parent="shield_heavy|armor_medium|spear_long|thrusting_spear|template_unit_infantry_melee_spearman">
     <Cost>
     <Resources>
       <wood op="add">-10</wood>
-      <metal op="add">35</metal>
+      <metal op="add">10</metal>
     </Resources>
   </Cost>
  <Identity>

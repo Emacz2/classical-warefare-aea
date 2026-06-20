@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="aux_inf|archer_cretan|template_unit_infantry_ranged_archer_simple">
+<Entity parent="aux_inf|archer_cretan|template_unit_infantry_ranged_archer">
   <Identity>
     <Civ>rome</Civ>
     <Lang>greek</Lang>

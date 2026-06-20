@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_super_heavy|armor_super_heavy|sword_short|template_unit_champion_infantry_swordsman">
+<Entity parent="shield_heavy|armor_super_heavy|sword_short|template_unit_champion_infantry_swordsman">
     <Attack>
     <Melee>
       <Damage>

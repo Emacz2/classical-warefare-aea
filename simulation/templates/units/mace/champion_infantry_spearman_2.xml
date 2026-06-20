@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="pike_phalanx|shield_ultra_light|armor_heavy|template_unit_champion_infantry_pikeman">
+<Entity parent="pike_phalanx|shield_light|armor_heavy|template_unit_champion_infantry_pikeman">
   <Health>
     <Max op="add">50</Max>
   </Health>

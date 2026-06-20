@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="sword_long|template_unit_infantry_melee_swordsman">
+<Entity parent="shield_light|sword_long|template_unit_infantry_melee_swordsman">
  <Resistance>
     <Entity>
       <Damage>
@@ -18,13 +18,11 @@
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>
-    <GenericName>Thracian Black Cloak</GenericName>
-    <SpecificName>Rhomphaiophoros</SpecificName>
+    <GenericName>Thracian Peltast sword</GenericName>
     <Icon>units/special/pelt_sword.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
   <UnitMotion>
-    <WalkSpeed>10</WalkSpeed>
     <RunMultiplier op="mul">1.1</RunMultiplier>
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
