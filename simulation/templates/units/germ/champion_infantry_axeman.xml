@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_medium|armor_medium|template_unit_champion_infantry_axeman">
+<Entity parent="shield_medium|armor_medium|charge|template_unit_champion_infantry_axeman">
   <Identity>
     <Civ>germ</Civ>
     <GenericName>Cimbri Raider</GenericName>
