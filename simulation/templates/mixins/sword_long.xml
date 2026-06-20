@@ -2,19 +2,9 @@
 <Entity>
 <Attack>
     <Melee>
-    <ApplyStatus>
-        <Bleeding>
-          <Interval>1000</Interval>
-          <Damage>
-            <Bleeding>0.5</Bleeding>
-          </Damage>
-          <Stackability>Extend</Stackability>
-          <Duration>9000</Duration>
-        </Bleeding>
-      </ApplyStatus>
      <Damage>
-        <Hack op="add">-1</Hack>
-        <Pierce op="add">-1</Pierce>
+        <Hack op="add">0.5</Hack>
+        <Pierce op="add">0.5</Pierce>
       </Damage>
       <MaxRange  op="add">0.5</MaxRange>
       <RepeatTime  op="add">100</RepeatTime>

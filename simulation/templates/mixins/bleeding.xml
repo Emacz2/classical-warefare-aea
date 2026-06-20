@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+<Attack>
+<ApplyStatus>
+        <Bleeding>
+          <Interval>1000</Interval>
+          <Damage>
+            <Bleeding>0.5</Bleeding>
+          </Damage>
+          <Stackability>Extend</Stackability>
+          <Duration>9000</Duration>
+        </Bleeding>
+      </ApplyStatus>
+  </Attack>
+  <Identity>
+    <GenericName>Open wound</GenericName>
+  </Identity>
+</Entity>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="armor_heavy|shield_heavy|spear_long|template_unit_champion_infantry_spearman">
+<Entity parent="armor_heavy|shield_heavy|template_unit_champion_infantry_spearman">
   <Identity>
     <Civ>han</Civ>
     <GenericName>Tiger Guard Spearman</GenericName>
