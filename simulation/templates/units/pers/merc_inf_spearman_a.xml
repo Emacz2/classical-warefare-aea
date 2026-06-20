@@ -3,22 +3,8 @@
   <Identity>
     <Rank>Advanced</Rank>
     <Lang>greek</Lang>
-    <SelectionGroupName>units/pers/merc_spearman_b</SelectionGroupName>
-    <GenericName>Greek Hoplite Mercanary</GenericName>
-    <Icon>units/theb/theb_hoplite_merc.png</Icon>
   </Identity>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-0.5</Hack>
-        <Pierce op="add">-0.5</Pierce>
-	      <Crush op="add">-0.5</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
-   <UnitMotion>
-  <WalkSpeed op="mul">1.03</WalkSpeed>
- </UnitMotion>
+
  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/thebans/infantry_spearman_b.xml</Actor>
