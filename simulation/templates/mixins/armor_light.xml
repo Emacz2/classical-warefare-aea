@@ -12,7 +12,7 @@
  <Identity>
     <GenericName>Light Armor</GenericName>
     <Tooltip>+0.5 of each resistance but -1% walk speed</Tooltip>
-    <History>.</History>
+    <History>Leather, padded cloth, cotton armor.</History>
   </Identity>
   <UnitMotion>
     <WalkSpeed op="mul">0.99</WalkSpeed>

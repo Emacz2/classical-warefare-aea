@@ -3,16 +3,16 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1.5</Crush>
+      <Crush op="add">1</Crush>
       <Hack op="add">1.5</Hack>
-      <Pierce op="add">2</Pierce>
+      <Pierce op="add">3</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
     <GenericName>Medium Shield</GenericName>
-    <Tooltip>+2 Pierce and +1.5 Crush/Hack resistance but -3% walk speed</Tooltip>
-    <History>Han Elite; Caetra Medium; German Melee Shield; Sparabara (Persian large wicker); Celtic Melee (large Celtic oval); Clipeus (Roman/Italic round); Carthaginian medium; Kushite medium bossed; Boeotian variant; British large oval</History>
+    <Tooltip>+3 Pierce, +1.5 Hack and +1 Crush resistance but -3% walk speed</Tooltip>
+    <History>Germanic, Celtic, Han Infantry, Parma, Large CaetraGermanic, Celtic, Han Infantry, Parma, Large Caetra</History>
   </Identity>
   <UnitMotion>
     <WalkSpeed op="mul">0.97</WalkSpeed>
