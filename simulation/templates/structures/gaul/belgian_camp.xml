@@ -23,7 +23,7 @@
     <GenericName>Belgian Coalition Camp</GenericName>
     <Tooltip>Reruit allies and research new techs from The Nervii, Eburones and Treveri tribes.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
-    <Icon>structures/mercenary_camp.png</Icon>
+    <Icon>structures/belgian_camp.png</Icon>
   </Identity>
   <Loot>
     <wood>20</wood>

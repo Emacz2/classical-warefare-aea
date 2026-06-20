@@ -16,10 +16,6 @@
     <Square width="15.0" depth="15.0"/>
     <Height>8.0</Height>
   </Footprint>
-  <Health>
-    <Max>800</Max>
-    <SpawnEntityOnDeath>decay|rubble/rubble_stone_3x3</SpawnEntityOnDeath>
-  </Health>
   <Identity>
     <GenericName>Storehouse</GenericName>
     <SelectionGroupName>template_structure_economic_storehouse</SelectionGroupName>

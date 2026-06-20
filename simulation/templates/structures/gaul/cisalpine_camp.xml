@@ -23,7 +23,7 @@
     <GenericName>Raeti and Nervii encampment</GenericName>
     <Tooltip>Train Rutheni and Senones allies.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
-    <Icon>structures/mercenary_camp.png</Icon>
+    <Icon>structures/cisalpine_camp.png</Icon>
   </Identity>
   <Loot>
     <wood>20</wood>

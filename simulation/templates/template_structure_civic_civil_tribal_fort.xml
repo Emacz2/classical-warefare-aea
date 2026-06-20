@@ -3,40 +3,10 @@
 <Identity>
     <GenericName>Tribal Village</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
-    <Tooltip>Build in neutral territory. Acquire small tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
+    <Tooltip>Fortify your Village, increase defenses (+5 Crush and +7.5 Hack resistance), garrison capacity (10) and populaton bonus (10). Healthy and Capture points increased 25%.</Tooltip>
     <Classes datatype="tokens">TribalVillage</Classes>
     <VisibleClasses datatype="tokens">Defensive TribalVillage FarmBlocker</VisibleClasses>
   </Identity>
-  <AlertRaiser>
-    <List datatype="tokens">Civilian</List>
-    <RaiseAlertRange>120</RaiseAlertRange>
-    <EndOfAlertRange>180</EndOfAlertRange>
-    <SearchRange>70</SearchRange>
-  </AlertRaiser>
-  <Attack>
-    <Ranged>
-      <AttackName>Bow</AttackName>
-      <Damage>
-        <Pierce>3</Pierce>
-      </Damage>
-      <MaxRange>60</MaxRange>
-      <PrepareTime>400</PrepareTime>
-      <RepeatTime>2000</RepeatTime>
-      <Projectile>
-        <Speed>100</Speed>
-        <Spread>2</Spread>
-        <Gravity>50</Gravity>
-        <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="0"/>
-      </Projectile>
-      <PreferredClasses datatype="tokens">Human</PreferredClasses>
-      <RangeOverlay>
-        <LineTexture>outline_border.png</LineTexture>
-        <LineTextureMask>outline_border_mask.png</LineTextureMask>
-        <LineThickness>0.175</LineThickness>
-      </RangeOverlay>
-    </Ranged>
-  </Attack>
   <Resistance>
     <Entity>
       <Damage>
@@ -45,81 +15,28 @@
       </Damage>
     </Entity>
   </Resistance> 
-  <BuildingAI>
-    <DefaultArrowCount>8</DefaultArrowCount>
-    <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
-    <GarrisonArrowClasses>Soldier</GarrisonArrowClasses>
-  </BuildingAI>
   <Capturable>
-    <CapturePoints op="mul">4</CapturePoints>
-    <RegenRate>9</RegenRate>
+    <CapturePoints op="mul">1.25</CapturePoints>
   </Capturable>
   <GarrisonHolder>
-    <Max>25</Max>
+    <Max op="add">10</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Support Infantry Cavalry Serf</List>
+    <List datatype="tokens">Support Infantry Cavalry</List>
     <BuffHeal>1</BuffHeal>
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>
-    <Max op="add">1000</Max>
+    <Max op="mul">1.25</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
-   <Researcher>
-    <Technologies datatype="tokens">
-      phase_town_{civ}
-      phase_city_{civ}
-      unlock_shared_los
-      javelineer_tradition
-      unlock_spies
-      iber_females
-      spy_counter
-      tower_murderholes
-      fort_garrison
-      fort_range
-    </Technologies>
-  </Researcher>
     <Population>
-    <Bonus>20</Bonus>
+    <Bonus op="add">10</Bonus>
   </Population>
   <ProductionQueue/>
-   <TerritoryInfluence>
-    <Root>true</Root>
-    <Radius>90</Radius>
-    <Weight>10000</Weight>
-  </TerritoryInfluence>
-  <Trainer>
-    <BatchTimeModifier>0.8</BatchTimeModifier>
-    <Entities datatype="tokens">
-      units/{civ}/infantry_spearman_a
-      units/{civ}/infantry_maceman_a
-      units/{civ}/infantry_axeman_a
-      units/{civ}/infantry_swordsman_a
-      units/{civ}/infantry_javelineer_a
-      units/{civ}/infantry_slinger_a
-      units/{civ}/infantry_archer_a
-      units/{civ}/champion_infantry_spearman
-      units/{civ}/champion_infantry_pikeman
-      units/{civ}/champion_infantry_maceman
-      units/{civ}/champion_infantry_axeman
-      units/{civ}/champion_infantry_swordsman
-    </Entities>
-  </Trainer>
   <Vision>
-    <Range>75</Range>
+    <Range op="add">15</Range>
   </Vision>
-  <Minimap>
-    <Type>structure</Type>
-    <Icon size="16.0">civil_centre.png</Icon>
-  </Minimap>
-  <Obstruction>
-    <Static depth="30.0" width="30.0"/>
-  </Obstruction>
-  <Footprint>
-    <Square depth="32.0" width="32.0"/>
-    <Height>8.0</Height>
-  </Footprint>
   <Sound>
     <SoundGroups>
       <select>interface/select/building/sel_civ_center.xml</select>

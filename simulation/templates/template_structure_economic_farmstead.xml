@@ -6,9 +6,6 @@
     <EndOfAlertRange>100</EndOfAlertRange>
     <SearchRange>100</SearchRange>
   </AlertRaiser>
-  <Capturable>
-    <CapturePoints>300</CapturePoints>
-  </Capturable>
   <Cost>
     <BuildTime>40</BuildTime>
     <Resources>
@@ -18,10 +15,6 @@
   <Footprint>
     <Height>8.0</Height>
   </Footprint>
-  <Health>
-    <Max>900</Max>
-    <SpawnEntityOnDeath>decay|rubble/rubble_stone_4x4</SpawnEntityOnDeath>
-  </Health>
   <Identity>
     <GenericName>Farmstead</GenericName>
     <SelectionGroupName>template_structure_economic_farmstead</SelectionGroupName>

@@ -18,6 +18,9 @@
     <Square width="33.0" depth="29.0"/>
     <Height>8.0</Height>
   </Footprint>
+  <Capturable>
+    <CapturePoints>1000</CapturePoints>
+  </Capturable>
   <Health>
     <Max>1500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_5x5</SpawnEntityOnDeath>

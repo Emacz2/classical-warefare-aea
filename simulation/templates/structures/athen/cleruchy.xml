@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_civil_city_state">
   <Identity>
-    <Civ>Athen</Civ>
+    <Civ>athen</Civ>
     <SpecificName>Cleruchy</SpecificName>
     <Classes datatype="tokens">CivSpecific</Classes>
   </Identity>

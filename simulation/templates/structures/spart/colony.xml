@@ -5,7 +5,6 @@
     <GenericName>Perioikoi Settlement</GenericName>
     <Classes datatype="tokens">PerioikoiTown</Classes>
     <VisibleClasses datatype="tokens">Town</VisibleClasses>
-    <Icon>structures/perioikoi_town.png</Icon>
       <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
