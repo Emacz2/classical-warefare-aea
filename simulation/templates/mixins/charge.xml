@@ -13,6 +13,7 @@
     </Melee>
   </Attack>
   <Identity>
+   <Classes datatype="tokens">Charge</Classes>
     <GenericName>Charge unit</GenericName>
   </Identity>
 </Entity>

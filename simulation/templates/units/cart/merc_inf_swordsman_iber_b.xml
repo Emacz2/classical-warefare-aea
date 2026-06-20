@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_inf|shield_medium|armor_heavy|sword_long|template_unit_infantry_melee_swordsman">
+<Entity parent="allied_inf|shield_large|armor_heavy|sword_long|shock|template_unit_infantry_melee_swordsman">
  <Builder>
     <Entities datatype="tokens">
       structures/cart/super_dock

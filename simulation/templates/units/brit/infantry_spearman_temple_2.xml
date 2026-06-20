@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/brit/infantry_spearman_temple">
+<Entity parent="shock|units/brit/infantry_spearman_temple">
 <Builder disable=""/>
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
-    <Acceleration op="mul">1.15</Acceleration>
-  </UnitMotion>
-    <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">-1</Hack>
-        <Pierce op="add">-1</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/britons/infantry_spearman_temple_2.xml</Actor>
