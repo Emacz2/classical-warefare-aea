@@ -688,9 +688,13 @@ Attack.prototype.PerformAttack = function(type, target)
 		"target": target,
 	};
 
+	if (type == "Melee") {
+		const r = Math.max(0, 1 + 0.2 * randomNormal2D()[0]);
+		for (const damageType in data.attackData.Damage)
+			data.attackData.Damage[damageType] *= r;
+	}
 	// const cmpUnitAI = Engine.QueryInterface(this.entity, IID_UnitAI);
 	// const cmpIdentity = Engine.QueryInterface(this.entity, IID_Identity);
-	// if (cmpIdentity.GetCiv() == "sele")
 	// warn(`${cmpIdentity.GetName()} ${this.entity} ${cmpUnitAI.GetCurrentState()} ${JSON.stringify(data.attackData.Damage)}`)
 
 	let delay = +(this.template[type].EffectDelay || 0);
