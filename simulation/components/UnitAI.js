@@ -7042,7 +7042,7 @@ UnitAI.prototype.CallMemberChargeAttack = function(data, resetFinishedEntities =
 	let maxBully = 0;
 	for (const member of members) {
 		const cmpAttack = Engine.QueryInterface(member, IID_Attack);
-		maxBully += 1 / (cmpAttack.template.Melee.Charge.BullyRatio || 1);
+		maxBully += 1 / (cmpAttack.template.Melee?.Charge?.BullyRatio || 20);
 	}
 	const ents = new Set(PositionHelper.EntitiesNearPoint(
 		targetPosition,
@@ -7125,16 +7125,14 @@ UnitAI.prototype.CallMemberChargeAttack = function(data, resetFinishedEntities =
 		const bully = getBully(ent);
 		let evenly = bully / totalBully * maxBully;
 		totalBully -= bully;
-		const xs = [];
 		while (evenly > 0 && members.length > 0) {
 			const cmpUnitAI = Engine.QueryInterface(members[0], IID_UnitAI);
 			if (cmpUnitAI["ChargeAttack"].apply(cmpUnitAI, [ent, data.allowCapture, false]))
 				result = true;
 			const cmpAttack = Engine.QueryInterface(members[0], IID_Attack);
-			const bullyRatio = 1 / (cmpAttack.template.Melee.Charge.BullyRatio || 1);
+			const bullyRatio = 1 / (cmpAttack.template.Melee?.Charge?.BullyRatio || 20);
 			evenly -= bullyRatio;
 			maxBully -= bullyRatio;
-			xs.push(members[0]);
 			members.shift();
 		}
 		if (members.length == 0)
