@@ -6,6 +6,7 @@
       <AttackName>Trunk</AttackName>
       <Damage>
         <Hack>25</Hack>
+        <Pierce>0</Pierce>
         <Crush>40</Crush>
       </Damage>
       <Splash>
@@ -25,6 +26,19 @@
           <Multiplier>1.25</Multiplier>
         </BonusMelee>
       </Bonuses>
+      <Charge>
+        <Damage>
+          <Hack>5</Hack>
+          <Pierce>5</Pierce>
+          <Crush>5</Crush>
+        </Damage>
+        <Splash>
+          <Damage>
+            <Crush>5</Crush>
+          </Damage>
+        </Splash>
+        <BullyRatio>1</BullyRatio>
+      </Charge>
       <PreferredClasses datatype="tokens">!Ship</PreferredClasses>
     </Melee>
   </Attack>

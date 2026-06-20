@@ -479,8 +479,14 @@ UnitAI.prototype.UnitFsmSpec = {
 			}
 
 			// Cancel any current packing order.
-			if (this.EnsureCorrectPackStateForAttack(false))
-				this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
+			if (this.EnsureCorrectPackStateForAttack(false)) {
+				const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+				if (cmpAttack && cmpAttack.template.Melee?.Charge)
+					this.SetNextState("INDIVIDUAL.COMBAT.CHARGEATTACKING");
+				else
+					this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
+			}
+
 
 			return ACCEPT_ORDER;
 		}
@@ -497,8 +503,8 @@ UnitAI.prototype.UnitFsmSpec = {
 
 		// If we're currently packing/unpacking, make sure we are packed, so we can move.
 		if (this.EnsureCorrectPackStateForAttack(true)) {
-			const cmpIdentity = Engine.QueryInterface(this.entity, IID_Identity);
-			if (cmpIdentity && cmpIdentity.HasClass("Melee"))
+			const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+			if (cmpAttack && cmpAttack.template.Melee?.Charge)
 				this.SetNextState("INDIVIDUAL.COMBAT.CHARGING");
 			else
 				this.SetNextState("INDIVIDUAL.COMBAT.APPROACHING");
@@ -840,7 +846,7 @@ UnitAI.prototype.UnitFsmSpec = {
 				}
 				return this.FinishOrder();
 			}
-			this.CallMemberFunction("ChargeAttack", [target, msg.data.allowCapture, false]);
+			this.CallMemberChargeAttack(msg.data);
 			const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
 			if (cmpAttack && cmpAttack.CanAttackAsFormation())
 				this.SetNextState("COMBAT.ATTACKING");
@@ -1352,7 +1358,7 @@ UnitAI.prototype.UnitFsmSpec = {
 					if (cmpTargetUnitAI && cmpTargetUnitAI.IsFormationMember())
 						target = cmpTargetUnitAI.GetFormationController();
 					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-					this.CallMemberFunction("ChargeAttack", [target, this.order.data.allowCapture, false]);
+					this.CallMemberChargeAttack(this.order.data);
 					if (cmpAttack.CanAttackAsFormation())
 						this.SetNextState("COMBAT.ATTACKING");
 					else
@@ -1367,7 +1373,7 @@ UnitAI.prototype.UnitFsmSpec = {
 					if (cmpTargetUnitAI && cmpTargetUnitAI.IsFormationMember())
 						target = cmpTargetUnitAI.GetFormationController();
 					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-					this.CallMemberFunction("ChargeAttack", [target, this.order.data.allowCapture, false]);
+					this.CallMemberChargeAttack(this.order.data);
 					if (cmpAttack.CanAttackAsFormation())
 						this.SetNextState("COMBAT.ATTACKING");
 					else
@@ -2273,17 +2279,8 @@ UnitAI.prototype.UnitFsmSpec = {
 				"MovementUpdate": function(msg) {
 					if (msg.likelyFailure)
 					{
-						// This also handles hunting.
-						if (this.orderQueue.length > 1)
-						{
-							this.FinishOrder();
+						if (this.FindChargeAndFightTargets())
 							return;
-						}
-						else if (!this.order.data.force || !this.order.data.lastPos)
-						{
-							this.SetNextState("COMBAT.FINDINGNEWTARGET");
-							return;
-						}
 						// If the order was forced, try moving to the target position,
 						// under the assumption that this is desirable if the target
 						// was somewhat far away - we'll likely end up closer to where
@@ -2303,7 +2300,7 @@ UnitAI.prototype.UnitFsmSpec = {
 							this.PushOrderFront("Unpack", { "force": true });
 							return;
 						}
-						this.SetNextState("ATTACKING");
+						this.SetNextState("CHARGEATTACKING");
 					}
 					else if (msg.likelySuccess)
 						// Try moving again,
@@ -2407,6 +2404,115 @@ UnitAI.prototype.UnitFsmSpec = {
 						this.order.data.target != msg.data.attacker && this.GetBestAttackAgainst(msg.data.attacker, true) != "Capture")
 						this.RespondToTargetedEntities([msg.data.attacker]);
 				}
+			},
+
+			// Classical Warfare AEA
+			// Copied from "ATTACKING"
+			"CHARGEATTACKING": {
+				"enter": function() {
+					let target = this.order.data.target;
+					const cmpFormation = Engine.QueryInterface(target, IID_Formation);
+					if (cmpFormation)
+					{
+						this.order.data.formationTarget = target;
+						target = cmpFormation.GetClosestMember(this.entity);
+						this.order.data.target = target;
+					}
+
+					this.shouldCheer = false;
+
+					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+					if (!cmpAttack)
+					{
+						this.FinishOrder();
+						return true;
+					}
+
+					if (!this.CheckTargetAttackRange(target, this.order.data.attackType))
+					{
+						if (this.CanPack())
+						{
+							this.PushOrderFront("Pack", { "force": true });
+							return true;
+						}
+
+						this.ProcessMessage("OutOfRange");
+						return true;
+					}
+
+					if (!this.formationAnimationVariant)
+						this.SetAnimationVariant("combat");
+
+					this.FaceTowardsTarget(this.order.data.target);
+
+					this.RememberTargetPosition();
+					if (this.order.data.hunting && this.orderQueue.length > 1 && this.orderQueue[1].type === "Gather")
+						this.RememberTargetPosition(this.orderQueue[1].data);
+
+					if (!cmpAttack.StartChargeAttacking(this.order.data.target, this.order.data.attackType, IID_UnitAI, this.order.data.force))
+					{
+						this.ProcessMessage("TargetInvalidated");
+						return true;
+					}
+
+					const cmpBuildingAI = Engine.QueryInterface(this.entity, IID_BuildingAI);
+					if (cmpBuildingAI)
+					{
+						cmpBuildingAI.SetUnitAITarget(this.order.data.target);
+						return false;
+					}
+
+					const cmpUnitAI = Engine.QueryInterface(this.order.data.target, IID_UnitAI);
+
+					// Units with no cheering time do not cheer.
+					this.shouldCheer = cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal()) && this.cheeringTime > 0;
+
+					return false;
+				},
+
+				"leave": function() {
+					const cmpBuildingAI = Engine.QueryInterface(this.entity, IID_BuildingAI);
+					if (cmpBuildingAI)
+						cmpBuildingAI.SetUnitAITarget(0);
+					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+					if (cmpAttack)
+						cmpAttack.StopAttacking();
+				},
+
+				"OutOfRange": function() {
+					if (this.order.data.chargeAttack && this.FindChargeAndFightTargets())
+						return;
+					if (this.ShouldChaseTargetedEntity(this.order.data.target, this.order.data.force))
+					{
+						if (this.CanPack())
+						{
+							this.PushOrderFront("Pack", { "force": true });
+							return;
+						}
+						this.SetNextState("CHASING");
+						return;
+					}
+					this.SetNextState("FINDINGNEWTARGET");
+				},
+
+				"TargetInvalidated": function() {
+					if (this.order.data.chargeAttack && this.FindChargeAndFightTargets())
+						return;
+					this.SetNextState("FINDINGNEWTARGET");
+				},
+
+				"Attacked": function(msg) {
+					if (this.order.data.chargeAttack && this.FindChargeAndFightTargets())
+						return;
+					if (this.order.data.attackType == "Capture" && (this.GetStance().targetAttackersAlways || !this.order.data.force) &&
+						this.order.data.target != msg.data.attacker && this.GetBestAttackAgainst(msg.data.attacker, true) != "Capture")
+						this.RespondToTargetedEntities([msg.data.attacker]);
+				},
+
+				"ChargeAttacked": function() {
+					delete this.order.data.chargeAttack;
+				}
+
 			},
 
 			"FINDINGNEWTARGET": {
@@ -5766,11 +5872,12 @@ UnitAI.prototype.ChargeAttack = function(target, allowCapture = this.DEFAULT_CAP
 		"target": target,
 		"force": true,
 		"allowCapture": allowCapture,
+		"chargeAttack": true
 	};
 
 	this.RememberTargetPosition(order);
 
-	if (this.order && this.order.type == "Attack" &&
+	if (this.order && this.order.type == "ChargeAttack" &&
 		this.order.data &&
 		this.order.data.target === order.target &&
 		this.order.data.allowCapture === order.allowCapture)
@@ -6336,6 +6443,95 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 	return false;
 };
 
+// Classical Warfare AEA
+// Copied from "UnitAI.prototype.FindWalkAndFightTargets"
+UnitAI.prototype.FindChargeAndFightTargets = function()
+{
+	if (this.IsFormationController())
+		return this.CallMemberFunction("FindChargeAndFightTargets", null);
+
+	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+
+	let entities;
+	if (!this.losAttackRangeQuery || !this.GetStance().targetVisibleEnemies || !cmpAttack)
+		entities = [];
+	else
+	{
+		const cmpRangeManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_RangeManager);
+		entities = cmpRangeManager.ResetActiveQuery(this.losAttackRangeQuery);
+	}
+
+	const attackfilter = e => {
+		if (this?.order?.data?.targetClasses)
+		{
+			const cmpIdentity = Engine.QueryInterface(e, IID_Identity);
+			const targetClasses = this.order.data.targetClasses;
+			if (cmpIdentity && targetClasses.attack &&
+				!MatchesClassList(cmpIdentity.GetClassesList(), targetClasses.attack))
+				return false;
+			if (cmpIdentity && targetClasses.avoid &&
+				MatchesClassList(cmpIdentity.GetClassesList(), targetClasses.avoid))
+				return false;
+			// Only used by the AIs to prevent some choices of targets
+			if (targetClasses.vetoEntities && targetClasses.vetoEntities[e])
+				return false;
+		}
+		const cmpOwnership = Engine.QueryInterface(e, IID_Ownership);
+		if (cmpOwnership && cmpOwnership.GetOwner() > 0)
+			return true;
+		const cmpUnitAI = Engine.QueryInterface(e, IID_UnitAI);
+		return cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal());
+	};
+
+	const attack = target => {
+		const order = {
+			"target": target,
+			"force": true,
+			"allowCapture": this.order?.data?.allowCapture || this.DEFAULT_CAPTURE,
+			"chargeAttack": true
+		};
+		if (this.IsFormationMember())
+			this.ReplaceOrder("ChargeAttack", order);
+		else
+			this.PushOrderFront("ChargeAttack", order);
+	};
+
+	const prefs = {};
+	let bestPref;
+	const targets = [];
+	let pref;
+	for (const v of entities)
+	{
+		if (this.CanAttack(v) && attackfilter(v))
+		{
+			pref = cmpAttack.GetPreference(v);
+			if (pref === 0)
+			{
+				attack(v);
+				return true;
+			}
+			targets.push(v);
+		}
+		prefs[v] = pref;
+		if (pref !== undefined && (bestPref === undefined || pref < bestPref))
+			bestPref = pref;
+	}
+
+	for (const targ of targets)
+	{
+		if (prefs[targ] !== bestPref)
+			continue;
+		attack(targ);
+		return true;
+	}
+
+	// healers on a walk-and-fight order should heal injured units
+	if (this.IsHealer())
+		return this.FindNewHealTargets();
+
+	return false;
+};
+
 UnitAI.prototype.GetQueryRange = function(iid)
 {
 	const ret = { "min": 0, "max": 0 };
@@ -6824,6 +7020,126 @@ UnitAI.prototype.CallMemberFunction = function(funcname, args, resetFinishedEnti
 		if (cmpUnitAI[funcname].apply(cmpUnitAI, args))
 			result = true;
 	});
+	return result;
+};
+
+// Classical Warfare AEA
+// Copied from "UnitAI.prototype.CallMemberFunction"
+UnitAI.prototype.CallMemberChargeAttack = function(data, resetFinishedEntities = true)
+{
+	const cmpFormation = Engine.QueryInterface(this.entity, IID_Formation);
+	if (!cmpFormation)
+		return false;
+
+	if (resetFinishedEntities)
+		cmpFormation.ResetFinishedEntities();
+
+	const cmpTargetPosition = Engine.QueryInterface(data.target, IID_Position);
+	const targetPosition = cmpTargetPosition.GetPosition2D();
+	const cmpOwnership = Engine.QueryInterface(this.entity, IID_Ownership);
+	const attackerOwner = cmpOwnership.GetOwner();
+	const members = cmpFormation.GetMembers();
+	let maxBully = 0;
+	for (const member of members) {
+		const cmpAttack = Engine.QueryInterface(member, IID_Attack);
+		maxBully += 1 / (cmpAttack.template.Melee.Charge.BullyRatio || 1);
+	}
+	const ents = new Set(PositionHelper.EntitiesNearPoint(
+		targetPosition,
+		cmpFormation.GetSize().width * 3,
+		AttackHelper.GetPlayersToDamage(attackerOwner, false)).filter(e => {
+			const canAttack = members.every(member => {
+				const cmpAttack = Engine.QueryInterface(member, IID_Attack);
+				return cmpAttack.CanAttack(e);
+			});
+			if (!canAttack)
+				return false;
+			const cmpOwnership = Engine.QueryInterface(e, IID_Ownership);
+			if (cmpOwnership && cmpOwnership.GetOwner() > 0)
+			    return true;
+			const cmpUnitAI = Engine.QueryInterface(e, IID_UnitAI);
+			return cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal());
+		}));
+	const getBully = e => {
+		const cmpIdentity = Engine.QueryInterface(e, IID_Identity);
+		if (cmpIdentity && cmpIdentity.HasClass("Infantry"))
+			return 1;
+		if (cmpIdentity && cmpIdentity.HasClass("Cavalry"))
+			return 2;
+		if (cmpIdentity && cmpIdentity.HasClass("Elephant"))
+			return 10;
+		if (cmpIdentity && cmpIdentity.HasClass("Siege"))
+			return 10;
+		return Infinity;
+	};
+	ents.delete(data.target);
+	const closestEnts = [data.target];
+	let totalBully = getBully(data.target);
+	const formationDists = new Map();
+	const dists = new Map();
+	for (const ent of ents) {
+		const cmpPosition = Engine.QueryInterface(ent, IID_Position);
+		const pos = cmpPosition.GetPosition2D();
+		let dist = Infinity;
+		for (const member of members) {
+			const cmpMemberPosition = Engine.QueryInterface(member, IID_Position);
+			const memberPosition = cmpMemberPosition.GetPosition2D();
+			const d = memberPosition.distanceToSquared(pos);
+			dist = Math.min(dist, d);
+		}
+		formationDists.set(ent, dist);
+		dists.set(ent, Infinity);
+	}
+	const updateDists = target => {
+		const cmpTargetPosition = Engine.QueryInterface(target, IID_Position);
+		const targetPosition = cmpTargetPosition.GetPosition2D();
+		for (const ent of ents) {
+			const cmpPosition = Engine.QueryInterface(ent, IID_Position);
+			const pos = cmpPosition.GetPosition2D();
+			const dist = targetPosition.distanceToSquared(pos);
+			dists.set(ent, Math.min(dists.get(ent), dist));
+		}
+	};
+	updateDists(data.target);
+	while (ents.size > 0 && totalBully < maxBully) {
+		let closestEnt = [null, Infinity];
+		for (const ent of ents) {
+			const dist = formationDists.get(ent) + dists.get(ent);
+			if (dist < closestEnt[1])
+				closestEnt = [ent, dist];
+		}
+		ents.delete(closestEnt[0]);
+		closestEnts.push(closestEnt[0]);
+		updateDists(closestEnt[0]);
+		totalBully += getBully(closestEnt[0]);
+	}
+	let result = false;
+	for (const [i, ent] of closestEnts.entries()) {
+		const cmpPosition = Engine.QueryInterface(ent, IID_Position);
+		const pos = cmpPosition.GetPosition2D();
+		members.sort((a, b) => {
+			const aPos = Engine.QueryInterface(a, IID_Position).GetPosition2D();
+			const bPos = Engine.QueryInterface(b, IID_Position).GetPosition2D();
+			return aPos.distanceToSquared(pos) - bPos.distanceToSquared(pos);
+		});
+		const bully = getBully(ent);
+		let evenly = bully / totalBully * maxBully;
+		totalBully -= bully;
+		const xs = [];
+		while (evenly > 0 && members.length > 0) {
+			const cmpUnitAI = Engine.QueryInterface(members[0], IID_UnitAI);
+			if (cmpUnitAI["ChargeAttack"].apply(cmpUnitAI, [ent, data.allowCapture, false]))
+				result = true;
+			const cmpAttack = Engine.QueryInterface(members[0], IID_Attack);
+			const bullyRatio = 1 / (cmpAttack.template.Melee.Charge.BullyRatio || 1);
+			evenly -= bullyRatio;
+			maxBully -= bullyRatio;
+			xs.push(members[0]);
+			members.shift();
+		}
+		if (members.length == 0)
+			break;
+	}
 	return result;
 };
 
