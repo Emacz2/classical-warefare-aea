@@ -2,7 +2,7 @@
 <Entity parent="shield_medium|armor_medium|charge|template_unit_champion_infantry_axeman">
   <Identity>
     <Civ>germ</Civ>
-    <GenericName>Cimbri Raider</GenericName>
+    <GenericName>Cimbri Warband</GenericName>
     <SpecificName>Slōgijanōz</SpecificName>
     <VisibleClasses datatype="tokens">Guerilla</VisibleClasses>
     <Icon>units/germ/champion_infantry_axeman.png</Icon>
