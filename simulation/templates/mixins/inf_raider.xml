@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+    <Attack>
+   <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture op="add">0.5</Capture>
+    </Capture>
+  </Attack>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <RunMultiplier op="mul">0.9</RunMultiplier>
+  </UnitMotion>
+  <Identity>
+    <GenericName>Infantry Raider</GenericName>
+    <Tooltip>Infantry Raiders 10% faster walk speed and +0.5 capture attack but 10% slower run speed</Tooltip>
+  </Identity>
+</Entity>

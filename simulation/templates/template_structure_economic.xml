@@ -4,6 +4,13 @@
     <GenericName>Economic Structure</GenericName>
     <VisibleClasses datatype="tokens">Economic</VisibleClasses>
   </Identity>
+   <Capturable>
+    <CapturePoints>500</CapturePoints>
+  </Capturable>
+    <Health>
+    <Max>750</Max>
+    <SpawnEntityOnDeath>decay|rubble/rubble_stone_4x4</SpawnEntityOnDeath>
+  </Health>
   <Resistance>
     <Entity>
       <Damage>

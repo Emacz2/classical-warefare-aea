@@ -56,15 +56,15 @@
     <GarrisonArrowClasses>Soldier</GarrisonArrowClasses>
   </BuildingAI>
   <Capturable>
-    <CapturePoints op="mul">8</CapturePoints>
+    <CapturePoints>4500</CapturePoints>
     <RegenRate>10.0</RegenRate>
   </Capturable>
   <Cost>
     <BuildTime>510</BuildTime>
     <Resources>
-      <metal>150</metal>
-      <wood>400</wood>
-      <stone>600</stone>
+      <metal>250</metal>
+      <wood>250</wood>
+      <stone>750</stone>
     </Resources>
   </Cost>
   <Footprint>
@@ -79,10 +79,10 @@
     <BuffHeal>1</BuffHeal>
   </GarrisonHolder>
 	  <Population>
-    <Bonus>25</Bonus>
+    <Bonus>35</Bonus>
     </Population>
   <Health>
-    <Max>4000</Max>
+    <Max>4500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
   <Identity>
@@ -156,7 +156,7 @@
   </TerritoryDecay>
   <TerritoryInfluence>
     <Root>true</Root>
-    <Radius>25</Radius>
+    <Radius>60</Radius>
     <Weight>10000</Weight>
     </TerritoryInfluence>
   <Trainer>

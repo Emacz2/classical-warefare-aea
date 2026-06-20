@@ -12,16 +12,20 @@
     <DefaultArrowCount>1</DefaultArrowCount>
   </BuildingAI>
     <Cost>
-    <BuildTime>300</BuildTime>
+    <BuildTime>360</BuildTime>
     <Resources>
       <food>100</food>
-      <wood>250</wood>
-      <stone>250</stone>
+      <wood>300</wood>
+      <stone>300</stone>
       <metal>100</metal>
     </Resources>
   </Cost>
+   <Capturable>
+    <CapturePoints>3000</CapturePoints>
+    <RegenRate>5</RegenRate>
+  </Capturable>
   <Health>
-    <Max>2000</Max>
+    <Max>3000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_5x5</SpawnEntityOnDeath>
   </Health>
   <Identity>
@@ -66,7 +70,7 @@
   </Sound>
  <TerritoryInfluence>
     <Root>true</Root>
-    <Radius>90</Radius>
+    <Radius>105</Radius>
     <Weight>10000</Weight>
   </TerritoryInfluence>
 </Entity>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/gaul/infantry_senones_swordsman_b">
+  <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
+  <Promotion>
+    <Entity>units/gaul/senones_swordsman_e</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/gauls/senones_swordsman_b.xml</Actor>
+  </VisualActor>
+  <ResourceGatherer disable=""/>
+</Entity>

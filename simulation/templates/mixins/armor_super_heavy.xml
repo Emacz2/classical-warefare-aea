@@ -3,17 +3,17 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">2</Crush>
-      <Hack op="add">2</Hack>
-      <Pierce op="add">4</Pierce>
+      <Crush op="add">2.5</Crush>
+      <Hack op="add">3</Hack>
+      <Pierce op="add">3</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
     <GenericName>Super Heavy Armor</GenericName>
     <VisibleClasses datatype="tokens">Armored</VisibleClasses>
-    <Tooltip>+4 Pierce and +2 Crush/Hack resistance -6% slower walk speed</Tooltip>
-    <History>.</History>
+    <Tooltip>+3 Hack/Pierce and +2.5 Crush resistance but -6% slower walk speed</Tooltip>
+    <History>Elite mail, reinforced lamellar, royal guards</History>
   </Identity>
   <UnitMotion>
     <WalkSpeed op="mul">0.94</WalkSpeed>

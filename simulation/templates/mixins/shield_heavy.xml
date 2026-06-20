@@ -3,18 +3,18 @@
    <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">2</Crush>
-      <Hack op="add">1.5</Hack>
-      <Pierce op="add">3</Pierce>
+      <Crush op="add">2.5</Crush>
+      <Hack op="add">3</Hack>
+      <Pierce op="add">4.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
-    <GenericName>Heavy Shield</GenericName>
-    <Tooltip>+3 Pierce, +2 Crush and +1.5 Hack resistance but -4% walk speed</Tooltip>
-    <History>Thureos; Macedonian/Successor oval hoplite variants; Large Roman oval/parma variants</History>
+    <GenericName>Heavy Formation Shields</GenericName>
+    <Tooltip>+4.5 Pierce +3 Hack and + 2.5 Crush resistance but -6% walk speed</Tooltip>
+    <History>Hoplon, Aspis, Scutum, Sacred Band Shield</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <WalkSpeed op="mul">0.94</WalkSpeed>
   </UnitMotion>
 </Entity>

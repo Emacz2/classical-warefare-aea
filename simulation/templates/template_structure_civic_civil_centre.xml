@@ -71,7 +71,7 @@
     <RegenRate>7.5</RegenRate>
   </Capturable>
   <Cost>
-    <BuildTime>500</BuildTime>
+    <BuildTime>480</BuildTime>
     <Resources>
       <food>150</food>
       <wood>350</wood>
@@ -88,7 +88,7 @@
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>
-    <Max>3000</Max>
+    <Max>4000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
    <Researcher>

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="civ/athen|shield_light|template_unit_infantry_ranged_javelineer">
+<Builder>
+  <Entities datatype="tokens">
+      structures/athen/cleruchy
+  </Entities>
+</Builder>
   <Identity>
     <SelectionGroupName>units/athen/infantry_javelineer_b</SelectionGroupName>
     <GenericName>Athenian Javelineer</GenericName>

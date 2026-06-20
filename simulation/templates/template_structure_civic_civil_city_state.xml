@@ -5,7 +5,11 @@
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Build in neutral territory. Acquire small tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
     <Classes datatype="tokens">Polis</Classes>
+    <Icon>structures/polis.png</Icon>
     <VisibleClasses datatype="tokens">Defensive Polis FarmBlocker</VisibleClasses>
+        <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
   </Identity>
   <AlertRaiser>
     <List datatype="tokens">Civilian</List>
@@ -57,7 +61,7 @@
     <Category>Polis</Category>
     <Distance>
       <FromClass>Polis</FromClass>
-      <MinDistance>75</MinDistance>
+      <MinDistance>90</MinDistance>
     </Distance>
   </BuildRestrictions>
   <BuildingAI>
@@ -66,11 +70,11 @@
     <GarrisonArrowClasses>Soldier</GarrisonArrowClasses>
   </BuildingAI>
   <Capturable>
-    <CapturePoints>2000</CapturePoints>
+    <CapturePoints>2500</CapturePoints>
     <RegenRate>5</RegenRate>
   </Capturable>
   <Cost>
-    <BuildTime>240</BuildTime>
+    <BuildTime>250</BuildTime>
     <Resources>
       <food>100</food>
       <wood>250</wood>
@@ -79,15 +83,15 @@
     </Resources>
   </Cost>
   <GarrisonHolder>
-    <Max>20</Max>
+    <Max>15</Max>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Support Infantry Cavalry Serf</List>
+    <List datatype="tokens">Support Infantry Cavalry</List>
     <BuffHeal>1</BuffHeal>
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>
-    <Max>2250</Max>
+    <Max>2500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
    <Researcher>
@@ -96,7 +100,7 @@
     </Technologies>
   </Researcher>
     <Population>
-    <Bonus>10</Bonus>
+    <Bonus>15</Bonus>
   </Population>
   <ProductionQueue/>
   <ResourceDropsite>
@@ -105,13 +109,19 @@
   </ResourceDropsite>
    <TerritoryInfluence>
     <Root>true</Root>
-    <Radius>75</Radius>
+    <Radius>90</Radius>
     <Weight>10000</Weight>
   </TerritoryInfluence>
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_a
+      units/{civ}/infantry_maceman_a
+      units/{civ}/infantry_axeman_a
+      units/{civ}/infantry_swordsman_a
+      units/{civ}/infantry_javelineer_a
+      units/{civ}/infantry_slinger_a
+      units/{civ}/infantry_archer_a
     </Entities>
   </Trainer>
   <Vision>

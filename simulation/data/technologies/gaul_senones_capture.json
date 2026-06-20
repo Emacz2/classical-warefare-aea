@@ -1,0 +1,21 @@
+{
+	"genericName": "Sennones capture techniques",
+	
+	"description": "Learn how to quickly capture structures from the Sennones.",
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "gaul" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "metalworker.png",
+	"researchTime": 60,
+	"tooltip": "Infantry +1 capture attack.",
+	"modifications": [
+		{ "value": "Attack/Capture/Capture", "add": 1  }
+
+	],
+	"affects": ["Infantry"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

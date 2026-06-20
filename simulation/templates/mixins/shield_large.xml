@@ -5,15 +5,14 @@
       <Damage>
       <Crush op="add">1.5</Crush>
       <Hack op="add">2</Hack>
-      <Pierce op="add">2</Pierce>
+      <Pierce op="add">4</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
-    <GenericName>Heavy Armor</GenericName>
-     <VisibleClasses datatype="tokens">Armored</VisibleClasses>
-    <Tooltip>+2 Hack/Pierce Resistance +1.5 Crush but -4% walk speed</Tooltip>
-    <History>Mail shirt, heavy scale, lamellar</History>
+    <GenericName>Large Oval Shield</GenericName>
+    <Tooltip>+4 Pierce, +2 Hack and +1.5 Crush resistance but -4% walk speed</Tooltip>
+    <History>hureos, Galatian Oval, Hellenistic Oval</History>
   </Identity>
   <UnitMotion>
     <WalkSpeed op="mul">0.96</WalkSpeed>

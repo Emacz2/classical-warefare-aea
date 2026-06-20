@@ -4,7 +4,7 @@
     <Rank>Advanced</Rank>
   </Identity>
   <Promotion>
-    <Entity>units/gaul/infantry_rutheni_archer_e</Entity>
+    <Entity>units/gaul/infantry_ruteni_archer_3</Entity>
   </Promotion>
    <UnitMotion>
     <WalkSpeed op="mul">1.05</WalkSpeed>

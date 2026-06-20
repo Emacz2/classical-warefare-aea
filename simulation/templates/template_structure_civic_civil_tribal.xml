@@ -57,7 +57,7 @@
     <Category>TribalVillage</Category>
     <Distance>
       <FromClass>TribalVillage</FromClass>
-      <MinDistance>75</MinDistance>
+      <MinDistance>80</MinDistance>
     </Distance>
   </BuildRestrictions>
   <BuildingAI>
@@ -66,15 +66,15 @@
     <GarrisonArrowClasses>Soldier</GarrisonArrowClasses>
   </BuildingAI>
   <Capturable>
-    <CapturePoints>2000</CapturePoints>
+    <CapturePoints>2500</CapturePoints>
     <RegenRate>5</RegenRate>
   </Capturable>
   <Cost>
-    <BuildTime>300</BuildTime>
+    <BuildTime>250</BuildTime>
     <Resources>
       <food>100</food>
       <wood>300</wood>
-      <stone>50</stone>
+      <stone>100</stone>
       <metal>50</metal>
     </Resources>
   </Cost>
@@ -92,12 +92,9 @@
   </Health>
    <Researcher>
     <Technologies datatype="tokens">
-      phase_town_{civ}
-      phase_city_{civ}
       unlock_shared_los
       javelineer_tradition
       unlock_spies
-      iber_females
       spy_counter
     </Technologies>
   </Researcher>
@@ -111,7 +108,7 @@
   </ResourceDropsite>
    <TerritoryInfluence>
     <Root>true</Root>
-    <Radius>60</Radius>
+    <Radius>80</Radius>
     <Weight>10000</Weight>
   </TerritoryInfluence>
   <Trainer>
