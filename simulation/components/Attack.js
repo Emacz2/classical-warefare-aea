@@ -205,6 +205,8 @@ Attack.prototype.Schema =
 				"<optional>" +
 					"<element name='Charge'>" +
 						"<interleave>" +
+							"<element name='MinRange'><ref name='nonNegativeDecimal'/></element>" +
+							"<element name='MaxRange'><ref name='nonNegativeDecimal'/></element>" +
 							"<optional>" +
 								"<element name='Damage'>" +
 									"<oneOrMore>" +
@@ -228,7 +230,14 @@ Attack.prototype.Schema =
 								"</element>" +
 							"</optional>" +
 							"<optional>" +
-								"<element name='BullyRatio'><ref name='nonNegativeDecimal'/></element>" +
+								"<element name='Resistance'>" +
+									"<oneOrMore>" +
+										"<element a:help='One or more elements describing damage types'>" +
+											"<anyName/>" +
+											"<ref name='decimal' />" +
+										"</element>" +
+									"</oneOrMore>" +
+								"</element>" +
 							"</optional>" +
 						"</interleave>" +
 					"</element>" +
@@ -511,7 +520,7 @@ Attack.prototype.RepeatRangeCheck = function(type) {
  *
  * @return {boolean} - Whether we started attacking.
  */
-Attack.prototype.StartAttacking = function(target, type, callerIID, force)
+Attack.prototype.StartAttacking = function(target, type, charging, callerIID, force)
 {
 	if (this.target)
 		this.StopAttacking();
@@ -560,6 +569,7 @@ Attack.prototype.StartAttacking = function(target, type, callerIID, force)
 	// If using a non-default prepare time, re-sync the animation when the timer runs.
 	this.resyncAnimation = prepare != timings.prepare;
 	this.target = target;
+	this.charging = charging;
 	this.callerIID = callerIID;
 	this.force = force;
 	this.timer = cmpTimer.SetInterval(this.entity, IID_Attack, "Attack", prepare, timings.repeat, type);
@@ -623,9 +633,28 @@ Attack.prototype.Attack = function(type, lateness)
 	const cmpTimer = Engine.QueryInterface(SYSTEM_ENTITY, IID_Timer);
 	this.lastAttacked = cmpTimer.GetTime() - lateness;
 
+	const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+	if (this.charging) {
+		const charge = this.template.Melee.Charge;
+		const o = {};
+		const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
+		f("Attack/Melee/Damage/Hack", charge.Damage?.Hack);
+		f("Attack/Melee/Damage/Pierce", charge.Damage?.Pierce);
+		f("Attack/Melee/Damage/Crush", charge.Damage?.Crush);
+		f("Attack/Melee/Splash/Damage/Hack", charge.Splash?.Damage?.Hack);
+		f("Attack/Melee/Splash/Damage/Pierce", charge.Splash?.Damage?.Pierce);
+		f("Attack/Melee/Splash/Damage/Crush", charge.Splash?.Damage?.Crush);
+		cmpModifiersManager.AddModifiers("Charge Attack", o, this.entity);
+	}
+
 	// BuildingAI has its own attack routine.
 	if (!Engine.QueryInterface(this.entity, IID_BuildingAI))
 		this.PerformAttack(type, this.target);
+
+	if (this.charging) {
+		cmpModifiersManager.RemoveAllModifiers("Charge Attack", this.entity);
+		delete this.charging;
+	}
 
 	if (!this.target)
 		return;
@@ -688,14 +717,16 @@ Attack.prototype.PerformAttack = function(type, target)
 		"target": target,
 	};
 
+	if (this.charging) {
+		// const cmpIdentity = Engine.QueryInterface(this.entity, IID_Identity);
+		// warn(`${cmpIdentity.GetName()} ${this.entity} charge attack ${JSON.stringify(data.attackData.Damage)}`)
+	}
+
 	if (type == "Melee") {
 		const r = Math.max(0, 1 + 0.2 * randomNormal2D()[0]);
 		for (const damageType in data.attackData.Damage)
 			data.attackData.Damage[damageType] *= r;
 	}
-	// const cmpUnitAI = Engine.QueryInterface(this.entity, IID_UnitAI);
-	// const cmpIdentity = Engine.QueryInterface(this.entity, IID_Identity);
-	// warn(`${cmpIdentity.GetName()} ${this.entity} ${cmpUnitAI.GetCurrentState()} ${JSON.stringify(data.attackData.Damage)}`)
 
 	let delay = +(this.template[type].EffectDelay || 0);
 
@@ -804,137 +835,6 @@ Attack.prototype.PerformAttack = function(type, target)
 	}
 	else
 		Engine.QueryInterface(SYSTEM_ENTITY, IID_DelayedDamage).Hit(data, 0);
-};
-
-// Classical Warfare AEA
-// Copied from "Attack.prototype.StartAttacking"
-Attack.prototype.StartChargeAttacking = function(target, type, callerIID, force)
-{
-	if (this.target)
-		this.StopAttacking();
-
-	if (!this.CanAttack(target, [type]))
-		return false;
-
-	const cmpResistance = QueryMiragedInterface(target, IID_Resistance);
-	if (!cmpResistance || !cmpResistance.AddAttacker(this.entity))
-		return false;
-
-	const timings = this.GetTimers(type);
-	const cmpTimer = Engine.QueryInterface(SYSTEM_ENTITY, IID_Timer);
-
-	// If the repeat time since the last attack hasn't elapsed,
-	// delay the action to avoid attacking too fast.
-	let prepare = timings.prepare;
-	if (this.lastAttacked)
-	{
-		const repeatLeft = this.lastAttacked + timings.repeat - cmpTimer.GetTime();
-		prepare = Math.max(prepare, repeatLeft);
-	}
-
-	const cmpVisual = Engine.QueryInterface(this.entity, IID_Visual);
-	if (cmpVisual)
-	{
-		cmpVisual.SelectAnimation("attack_" + type.toLowerCase(), false, 1.0);
-		cmpVisual.SetAnimationSyncRepeat(timings.repeat);
-		cmpVisual.SetAnimationSyncOffset(prepare);
-	}
-
-	// Find the number of range checks needed during repeat time.
-	const numCheck = Math.ceil(timings.repeat / 1000);
-
-	// Calculate the timing offset to be half the check repeat time.
-	const repeatPerCheck = timings.repeat / numCheck;
-	const offset = repeatPerCheck / 2;
-
-	// Set the startpoint to be the prepare time plus any remaining time not evenly divisible by the offset.
-	let checkStart = timings.prepare + ((prepare - timings.prepare) % offset);
-
-	// Add an offset to the start time if we are not already offset.
-	if ((prepare - checkStart) % repeatPerCheck === 0)
-		checkStart += offset;
-
-	// If using a non-default prepare time, re-sync the animation when the timer runs.
-	this.resyncAnimation = prepare != timings.prepare;
-	this.target = target;
-	this.callerIID = callerIID;
-	this.force = force;
-	this.chargeAttack = true;
-	this.timer = cmpTimer.SetInterval(this.entity, IID_Attack, "ChargeAttack", prepare, timings.repeat, type);
-	this.checkTimer = cmpTimer.SetInterval(this.entity, IID_Attack, "RepeatRangeCheck", checkStart, repeatPerCheck, type);
-	return true;
-};
-
-// Classical Warfare AEA
-// Copied from "Attack.prototype.Attack"
-Attack.prototype.ChargeAttack = function(type, lateness)
-{
-	if (!this.CanAttack(this.target, [type]))
-	{
-		this.StopAttacking("TargetInvalidated");
-		return;
-	}
-
-	// ToDo: Enable entities to keep facing a target.
-	Engine.QueryInterface(this.entity, IID_UnitAI)?.FaceTowardsTarget(this.target);
-
-	const cmpTimer = Engine.QueryInterface(SYSTEM_ENTITY, IID_Timer);
-	this.lastAttacked = cmpTimer.GetTime() - lateness;
-
-	const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
-	if (this.chargeAttack) {
-		const charge = this.template.Melee.Charge;
-		const o = {};
-		const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
-		f("Attack/Melee/Damage/Hack", charge.Damage?.Hack);
-		f("Attack/Melee/Damage/Pierce", charge.Damage?.Pierce);
-		f("Attack/Melee/Damage/Crush", charge.Damage?.Crush);
-		f("Attack/Melee/Splash/Damage/Hack", charge.Splash?.Damage?.Hack);
-		f("Attack/Melee/Splash/Damage/Pierce", charge.Splash?.Damage?.Pierce);
-		f("Attack/Melee/Splash/Damage/Crush", charge.Splash?.Damage?.Crush);
-		cmpModifiersManager.AddModifiers("Charge Attack", o, this.entity);
-	}
-
-	// BuildingAI has its own attack routine.
-	if (!Engine.QueryInterface(this.entity, IID_BuildingAI))
-		this.PerformAttack(type, this.target);
-
-	if (this.chargeAttack) {
-		cmpModifiersManager.RemoveAllModifiers("Charge Attack", this.entity);
-		delete this.chargeAttack;
-		const component = Engine.QueryInterface(this.entity, this.callerIID);
-		if (component)
-			component.ProcessMessage("ChargeAttacked", null);
-	}
-
-	if (!this.target)
-		return;
-
-	// We check the range after the attack to facilitate chasing.
-	if (!this.IsTargetInRange(this.target, type))
-	{
-		this.StopAttacking("OutOfRange");
-		return;
-	}
-
-	// If a low preference unit is attacked without player direction, check for higher preference.
-	if (this.GetPreference(this.target) === undefined && !this.force)
-	{
-		this.StopAttacking("TargetInvalidated");
-		return;
-	}
-
-	if (this.resyncAnimation)
-	{
-		const cmpVisual = Engine.QueryInterface(this.entity, IID_Visual);
-		if (cmpVisual)
-		{
-			const repeat = this.GetTimers(type).repeat;
-			cmpVisual.SetAnimationSyncRepeat(repeat);
-			cmpVisual.SetAnimationSyncOffset(repeat);
-		}
-		delete this.resyncAnimation;
-	}
 };
 
 /**

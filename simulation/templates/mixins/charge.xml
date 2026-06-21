@@ -2,13 +2,22 @@
 <Entity>
    <Attack>
     <Melee>
+      <Damage>
+        <Crush>0</Crush>
+      </Damage>
       <Charge>
         <Damage>
           <Hack>5</Hack>
           <Pierce>5</Pierce>
           <Crush>5</Crush>
         </Damage>
-        <BullyRatio>3</BullyRatio>
+        <Resistance>
+          <Hack>-1</Hack>
+          <Pierce>-1</Pierce>
+          <Crush>-1</Crush>
+        </Resistance>
+        <MinRange>15</MinRange>
+        <MaxRange>20</MaxRange>
       </Charge>
     </Melee>
   </Attack>
