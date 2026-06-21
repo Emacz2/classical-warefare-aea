@@ -1,0 +1,30 @@
+{
+	"genericName": "",
+	"specificName": {
+		"mace": "Spolas",
+		"ptol": "Spolas",
+		"sele": "Spolas"
+	},
+	"description": ".",
+	"cost": {
+		"food": 200,
+		"metal": 200
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" }
+		
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "armor_leather.png",
+	"researchTime": 20,
+	"tooltip": "upgrade all melee soldiers with 1 of each resistance.",
+	"modifications": [
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 }
+	],
+	"affects": ["Soldier Melee !Mercenary !Elephant"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

@@ -1,0 +1,24 @@
+{
+	"genericName": "",
+	"cost": {
+		"wood": 200,
+		"metal": 100
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" }
+		
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "shields_generic_wood.png",
+	"researchTime": 20,
+	"tooltip": "Upgrade all Ranged soldiers with +0.5 of each resistance.",
+	"modifications": [
+		{ "value": "Resistance/Entity/Damage/Cruch", "add": 0.5 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 }
+	],
+	"affects": ["Soldier Ranged !Mercenary !Elephant"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

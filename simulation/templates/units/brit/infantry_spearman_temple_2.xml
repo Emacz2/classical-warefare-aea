@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shock|units/brit/infantry_spearman_temple">
+<Entity parent="inf_shock|units/brit/infantry_spearman_temple">
 <Builder disable=""/>
   <Identity>
     <Rank>Elite</Rank>

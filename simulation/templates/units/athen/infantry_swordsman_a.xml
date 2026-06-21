@@ -2,7 +2,6 @@
 <Entity parent="units/athen/infantry_swordsman_b">
   <Identity>
     <Rank>Advanced</Rank>
-    <Icon>units/athen/champion_marine.png</Icon>
   </Identity>
   <Promotion>
     <Entity>units/athen/infantry_swordsman_e</Entity>
