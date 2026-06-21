@@ -1680,7 +1680,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 			"LosAttackRangeUpdate": function(msg) {
 				if (this.isIdle && msg && msg.data && msg.data.added && msg.data.added.length && this.GetStance().targetVisibleEnemies)
-					this.AttackRandomEntityInRange(msg.data.added);
+					this.AttackEntitiesByPreference(msg.data.added);
 			},
 
 			"Timer": function(msg) {
@@ -1976,7 +1976,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 				"LosAttackRangeUpdate": function(msg) {
 					if (this.GetStance().targetVisibleEnemies)
-						this.AttackRandomEntityInRange(msg.data.added);
+						this.AttackEntitiesByPreference(msg.data.added);
 				},
 
 				"Timer": function(msg) {
@@ -3386,7 +3386,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 			"LosAttackRangeUpdate": function(msg) {
 				if (msg && msg.data && msg.data.added && msg.data.added.length && this.GetStance().targetVisibleEnemies)
-					this.AttackRandomEntityInRange(msg.data.added);
+					this.AttackEntitiesByPreference(msg.data.added);
 			},
 
 			"Timer": function(msg) {
@@ -6078,14 +6078,7 @@ UnitAI.prototype.FindNewTargets = function()
 		return false;
 
 	const cmpRangeManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_RangeManager);
-	const ents = cmpRangeManager.ResetActiveQuery(this.losAttackRangeQuery);
-
-	// Melee units pick the closest target; ranged use random selection.
-	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-	if (cmpAttack && cmpAttack.GetAttackTypes().every(t => t === "Melee"))
-		return this.AttackClosestEntityInRange(ents);
-
-	return this.AttackRandomEntityInRange(ents);
+	return this.AttackEntitiesByPreference(cmpRangeManager.ResetActiveQuery(this.losAttackRangeQuery));
 };
 
 UnitAI.prototype.FindWalkAndFightTargets = function()
@@ -6138,32 +6131,27 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 			this.PushOrderFront("Attack", order);
 	};
 
-	const prefs = {};
-	let bestPref;
-	const targets = [];
-	let pref;
-	for (const v of entities)
+	const entsByPreferences = [];
+	for (const ent of entities)
 	{
-		if (this.CanAttack(v) && attackfilter(v))
-		{
-			pref = cmpAttack.GetPreference(v);
-			if (pref === 0)
-			{
-				attack(v);
-				return true;
-			}
-			targets.push(v);
-		}
-		prefs[v] = pref;
-		if (pref !== undefined && (bestPref === undefined || pref < bestPref))
-			bestPref = pref;
-	}
-
-	for (const targ of targets)
-	{
-		if (prefs[targ] !== bestPref)
+		if (!this.CanAttack(ent))
 			continue;
-		attack(targ);
+		if (!attackfilter(ent))
+			continue;
+		const pref = cmpAttack.GetPreference(ent);
+		const type = cmpAttack.GetBestAttackAgainst(ent, false);
+		const inRange = this.CheckTargetAttackRange(ent, type);
+		const dist = PositionHelper.DistanceBetweenEntities(this.entity, ent);
+		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, dist, ent]);
+	}
+	shuffleArray(entsByPreferences);
+	entsByPreferences.sort((a, b) => {
+		if (a[0] != b[0]) return a[0] - b[0];
+		if (a[1] != b[1]) return b[1] - a[1];
+		return a[2] - b[2];
+	});
+	if (entsByPreferences.length) {
+		attack(entsByPreferences[0][3]);
 		return true;
 	}
 
@@ -6501,85 +6489,6 @@ UnitAI.prototype.GetFacePointAfterMove = function()
 	return cmpUnitMotion && cmpUnitMotion.GetFacePointAfterMove();
 };
 
-/**
- * Attack a random valid target from the given entities.
- * Used by LosAttackRangeUpdate call sites so units spread
- * attacks unpredictably rather than always converging on
- * the same preference-ordered target.
- */
-UnitAI.prototype.AttackRandomEntityInRange = function(ents)
-{
-	if (!ents.length)
-		return false;
-
-	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-	if (!cmpAttack)
-		return false;
-
-	const validEnts = ents.filter(e => {
-		if (!cmpAttack.CanAttack(e))
-			return false;
-		const cmpOwnership = Engine.QueryInterface(e, IID_Ownership);
-		if (cmpOwnership && cmpOwnership.GetOwner() > 0)
-			return true;
-		const cmpUnitAI = Engine.QueryInterface(e, IID_UnitAI);
-		return cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal());
-	});
-
-	if (!validEnts.length)
-		return false;
-
-	const target = validEnts[randIntExclusive(0, validEnts.length)];
-	return this.RespondToTargetedEntities([target]);
-};
-
-/**
- * Find and attack the closest valid enemy within attack range.
- * Used by melee units to pick a reachable target rather than
- * waiting on a blocked one.
- */
-UnitAI.prototype.AttackClosestEntityInRange = function(ents)
-{
-	if (!ents.length)
-		return false;
-
-	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-	if (!cmpAttack)
-		return false;
-
-	const cmpPosition = Engine.QueryInterface(this.entity, IID_Position);
-	if (!cmpPosition || !cmpPosition.IsInWorld())
-		return false;
-
-	const selfPos = cmpPosition.GetPosition2D();
-
-	// Filter to valid targets then sort by distance
-	const validEnts = ents
-		.filter(e => {
-			if (!cmpAttack.CanAttack(e))
-				return false;
-			const cmpOwnership = Engine.QueryInterface(e, IID_Ownership);
-			if (cmpOwnership && cmpOwnership.GetOwner() > 0)
-				return true;
-			const cmpUnitAI = Engine.QueryInterface(e, IID_UnitAI);
-			return cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal());
-		})
-		.sort((a, b) => {
-			const posA = Engine.QueryInterface(a, IID_Position)?.GetPosition2D();
-			const posB = Engine.QueryInterface(b, IID_Position)?.GetPosition2D();
-			if (!posA) return 1;
-			if (!posB) return -1;
-			const distA = (posA.x - selfPos.x) ** 2 + (posA.y - selfPos.y) ** 2;
-			const distB = (posB.x - selfPos.x) ** 2 + (posB.y - selfPos.y) ** 2;
-			return distA - distB;
-		});
-
-	if (!validEnts.length)
-		return false;
-
-	return this.RespondToTargetedEntities([validEnts[0]]);
-};
-
 UnitAI.prototype.AttackEntitiesByPreference = function(ents)
 {
 	if (!ents.length)
@@ -6601,42 +6510,24 @@ UnitAI.prototype.AttackEntitiesByPreference = function(ents)
 		return cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal());
 	};
 
-	const entsByPreferences = {};
-	const preferences = [];
-	const entsWithoutPref = [];
+	const entsByPreferences = [];
 	for (const ent of ents)
 	{
 		if (!attackfilter(ent))
 			continue;
 		const pref = cmpAttack.GetPreference(ent);
-		// If we match our best preference, we can try responding right away.
-		// This makes some common cases fast, like most soldiers having 'Human' as best preference,
-		// or ships having 'Ship'. And if there are no such targets, this doesn't do much more work.
-		if (pref === 0)
-		{
-			if (this.RespondToTargetedEntities([ent]))
-				return true;
-		}
-		else if (pref === null || pref === undefined)
-			entsWithoutPref.push(ent);
-		else if (!entsByPreferences[pref])
-		{
-			preferences.push(pref);
-			entsByPreferences[pref] = [ent];
-		}
-		else
-			entsByPreferences[pref].push(ent);
+		const type = cmpAttack.GetBestAttackAgainst(ent, false);
+		const inRange = this.CheckTargetAttackRange(ent, type);
+		const dist = PositionHelper.DistanceBetweenEntities(this.entity, ent);
+		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, dist, ent]);
 	}
-
-	if (preferences.length)
-	{
-		preferences.sort((a, b) => a - b);
-		for (const pref of preferences)
-			if (this.RespondToTargetedEntities(entsByPreferences[pref]))
-				return true;
-	}
-
-	return this.RespondToTargetedEntities(entsWithoutPref);
+	shuffleArray(entsByPreferences);
+	entsByPreferences.sort((a, b) => {
+		if (a[0] != b[0]) return a[0] - b[0];
+		if (a[1] != b[1]) return b[1] - a[1];
+		return a[2] - b[2];
+	});
+	return this.RespondToTargetedEntities(entsByPreferences.map(x => x[3]));
 };
 
 /**
