@@ -71,6 +71,7 @@
         </Damage>
       </Entity>
     </Resistance>
+    <SpeedMultiplier>0.8</SpeedMultiplier>
   </Formation>
   <FormationAttack>
     <CanAttackAsFormation>false</CanAttackAsFormation>
