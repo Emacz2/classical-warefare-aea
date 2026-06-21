@@ -2099,7 +2099,7 @@ UnitAI.prototype.UnitFsmSpec = {
 					if (!this.formationAnimationVariant)
 						this.SetAnimationVariant("combat");
 
-					this.StartTimer(200, 0);
+					this.StartTimer(0, 200);
 					return false;
 				},
 
