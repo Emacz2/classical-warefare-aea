@@ -2088,19 +2088,15 @@ UnitAI.prototype.UnitFsmSpec = {
 					if (!this.formationAnimationVariant)
 						this.SetAnimationVariant("combat");
 
-					if (!this.order.data.charging && this.CheckTargetChargeRange(this.order.data.target, this.order.data.attackType))
-					{
-						this.order.data.charging = true;
-						this.Run();
-					}
-
-					this.StartTimer(200, 200);
+					this.StartTimer(200, 0);
 					return false;
 				},
 
 				"leave": function() {
 					this.StopMoving();
 					this.StopTimer();
+					const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+					cmpModifiersManager.RemoveAllModifiers("Charge Resistance", this.entity);
 				},
 
 				"Timer": function(msg) {
@@ -2108,6 +2104,15 @@ UnitAI.prototype.UnitFsmSpec = {
 					{
 						this.order.data.charging = true;
 						this.Run();
+						const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+						const charge = cmpAttack.template.Melee.Charge;
+						const o = {};
+						const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
+						f("Resistance/Entity/Damage/Hack", charge.Resistance?.Hack);
+						f("Resistance/Entity/Damage/Pierce", charge.Resistance?.Pierce);
+						f("Resistance/Entity/Damage/Crush", charge.Resistance?.Crush);
+						const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+						cmpModifiersManager.AddModifiers("Charge Resistance", o, this.entity);
 					}
 
 					if (this.ShouldAbandonChase(this.order.data.target, this.order.data.force, IID_Attack, this.order.data.attackType))

@@ -11,6 +11,11 @@
           <Pierce>5</Pierce>
           <Crush>5</Crush>
         </Damage>
+        <Resistance>
+          <Hack>-1</Hack>
+          <Pierce>-1</Pierce>
+          <Crush>-1</Crush>
+        </Resistance>
         <MinRange>15</MinRange>
         <MaxRange>20</MaxRange>
       </Charge>

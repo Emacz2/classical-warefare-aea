@@ -229,6 +229,16 @@ Attack.prototype.Schema =
 									"</element>" +
 								"</element>" +
 							"</optional>" +
+							"<optional>" +
+								"<element name='Resistance'>" +
+									"<oneOrMore>" +
+										"<element a:help='One or more elements describing damage types'>" +
+											"<anyName/>" +
+											"<ref name='decimal' />" +
+										"</element>" +
+									"</oneOrMore>" +
+								"</element>" +
+							"</optional>" +
 						"</interleave>" +
 					"</element>" +
 				"</optional>" +
