@@ -6142,7 +6142,9 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 		const type = cmpAttack.GetBestAttackAgainst(ent, false);
 		const inRange = this.CheckTargetAttackRange(ent, type);
 		const dist = PositionHelper.DistanceBetweenEntities(this.entity, ent);
-		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, dist, ent]);
+		const range = cmpAttack.GetRange(type);
+		const diff = Math.max(0, range.min - dist, dist - range.max);
+		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, diff, ent]);
 	}
 	shuffleArray(entsByPreferences);
 	entsByPreferences.sort((a, b) => {
@@ -6519,7 +6521,9 @@ UnitAI.prototype.AttackEntitiesByPreference = function(ents)
 		const type = cmpAttack.GetBestAttackAgainst(ent, false);
 		const inRange = this.CheckTargetAttackRange(ent, type);
 		const dist = PositionHelper.DistanceBetweenEntities(this.entity, ent);
-		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, dist, ent]);
+		const range = cmpAttack.GetRange(type);
+		const diff = Math.max(0, range.min - dist, dist - range.max);
+		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, diff, ent]);
 	}
 	shuffleArray(entsByPreferences);
 	entsByPreferences.sort((a, b) => {
