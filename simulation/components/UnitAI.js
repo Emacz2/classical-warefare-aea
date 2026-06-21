@@ -1451,6 +1451,14 @@ UnitAI.prototype.UnitFsmSpec = {
 					this.SetAnimationVariant(this.formationAnimationVariant);
 				else
 					this.SetDefaultAnimationVariant();
+
+				const o = {};
+				const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
+				f("Resistance/Entity/Damage/Hack", cmpFormation.template.Resistance?.Entity?.Damage?.Hack);
+				f("Resistance/Entity/Damage/Pierce", cmpFormation.template.Resistance?.Entity?.Damage?.Pierce);
+				f("Resistance/Entity/Damage/Crush", cmpFormation.template.Resistance?.Entity?.Damage?.Crush);
+				const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+				cmpModifiersManager.AddModifiers("Formation Bonus", o, this.entity);
 			}
 			return false;
 		},
@@ -1458,6 +1466,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		"leave": function() {
 			this.SetDefaultAnimationVariant();
 			this.formationAnimationVariant = undefined;
+
+			const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+			cmpModifiersManager.RemoveAllModifiers("Formation Bonus", this.entity);
 		},
 
 		"IDLE": "INDIVIDUAL.IDLE",
