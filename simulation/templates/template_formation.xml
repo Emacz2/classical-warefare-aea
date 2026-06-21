@@ -62,7 +62,6 @@
     <CanGuard>true</CanGuard>
     <CanPatrol>true</CanPatrol>
     <PatrolWaitTime>2</PatrolWaitTime>
-    <ChargeDistance>40</ChargeDistance>
   </UnitAI>
   <UnitMotion>
     <FormationController>true</FormationController>
