@@ -37,9 +37,19 @@
   <StatusBars>
     <HeightOffset>7.0</HeightOffset>
   </StatusBars>
-  <UnitMotion>
-    <WalkSpeed>8.7</WalkSpeed>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.60</WalkSpeed>
+    <RunMultiplier op="mul">1.8</RunMultiplier>
   </UnitMotion>
+     <Resistance>
+    <Entity>
+      <Damage>
+      <Crush>10</Crush>
+      <Hack>10</Hack>
+      <Pierce>10</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <UnitAI>
     <Formations datatype="tokens">
       special/formations/wedge
