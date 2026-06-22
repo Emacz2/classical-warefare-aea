@@ -6,5 +6,6 @@
   </UnitMotion>
   <Identity>
     <GenericName>Schock Infantry</GenericName>
+    <Tooltip>Gain 15% walk speed and 20% accleration</Tooltip>
   </Identity>
 </Entity>

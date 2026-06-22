@@ -12,6 +12,6 @@
   </UnitMotion>
   <Identity>
     <GenericName>Infantry Raider</GenericName>
-    <Tooltip>Infantry Raiders 20% faster walk speed and +0.5 capture attack but 5% slower run speed</Tooltip>
+    <Tooltip>Raiders 20% faster walk speed and +0.5 capture attack but 5% slower run speed</Tooltip>
   </Identity>
 </Entity>
