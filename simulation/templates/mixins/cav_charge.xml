@@ -4,15 +4,15 @@
     <Melee>
       <Charge>
         <Damage>
-          <Crush>10</Crush>
+          <Crush>20</Crush>
         </Damage>
         <Resistance>
           <Hack>-1</Hack>
-          <Pierce>-1</Pierce>
+          <Pierce>-2</Pierce>
           <Crush>-1</Crush>
         </Resistance>
-        <MinRange>12.5</MinRange>
-        <MaxRange>20</MaxRange>
+        <MinRange>15</MinRange>
+        <MaxRange>25</MaxRange>
       </Charge>
     </Melee>
   </Attack>

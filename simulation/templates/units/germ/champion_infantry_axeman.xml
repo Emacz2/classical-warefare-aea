@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_medium|armor_medium|charge|template_unit_champion_infantry_axeman">
+<Entity parent="shield_medium|armor_medium|inf_charge|inf_shock|template_unit_champion_infantry_axeman">
   <Identity>
     <Civ>germ</Civ>
     <GenericName>Cimbri Warband</GenericName>
@@ -7,9 +7,6 @@
     <VisibleClasses datatype="tokens">Guerilla</VisibleClasses>
     <Icon>units/germ/champion_infantry_axeman.png</Icon>
   </Identity>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
-  </UnitMotion>
   <VisualActor>
     <Actor>units/germans/infantry_axeman_c.xml</Actor>
   </VisualActor>

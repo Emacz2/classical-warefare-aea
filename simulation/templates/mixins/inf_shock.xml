@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
    <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <WalkSpeed op="mul">1.15</WalkSpeed>
     <Acceleration op="mul">1.2</Acceleration>
   </UnitMotion>
   <Identity>

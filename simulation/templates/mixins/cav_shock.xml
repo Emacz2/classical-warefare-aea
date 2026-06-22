@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
- <Attack>
-    <Melee>
-      <AttackName>Lance</AttackName>
-      <Splash>
-        <Shape>Circular</Shape>
-        <Range>1.5</Range>
-        <FriendlyFire>false</FriendlyFire>
-        <Damage>
-          <Crush>5</Crush>
-        </Damage>
-      </Splash>
-    </Melee>
-  </Attack>
-   <UnitMotion>
-    <Acceleration op="mul">1.2</Acceleration>
+  <UnitMotion>
+    <WalkSpeed op="mul">1.10</WalkSpeed>
+    <Acceleration op="mul">1.5</Acceleration>
   </UnitMotion>
   <Identity>
-    <GenericName>Shock Cavalry</GenericName>
+    <GenericName>Schock Cavalry</GenericName>
   </Identity>
 </Entity>
