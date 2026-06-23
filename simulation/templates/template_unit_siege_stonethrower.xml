@@ -13,7 +13,7 @@
       <Bonuses>
         <BonusMelee>
           <Classes>Structure</Classes>
-          <Multiplier>3</Multiplier>
+          <Multiplier>3.25</Multiplier>
         </BonusMelee>
       </Bonuses>
       <Projectile>
@@ -73,7 +73,7 @@
   <Identity>
     <VisibleClasses datatype="tokens">Ranged StoneThrower</VisibleClasses>
     <GenericName>Siege Catapult</GenericName>
-    <Tooltip>3x dmg vs structures</Tooltip>
+    <Tooltip>3.25x dmg vs structures</Tooltip>
       <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
