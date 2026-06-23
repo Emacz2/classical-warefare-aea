@@ -12,7 +12,11 @@
    <UnitMotion>
     <WalkSpeed op="mul">1.45</WalkSpeed>
     <RunMultiplier op="mul">1.7</RunMultiplier>
+    <Acceleration op="mul">1.10</Acceleration>
   </UnitMotion>
+   <Position>
+    <TurnRate>8</TurnRate>
+  </Position>
  <Identity>
     <GenericName>Medium Armored Cavalary</GenericName>
      <VisibleClasses datatype="tokens">Medium Cavalry</VisibleClasses>

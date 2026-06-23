@@ -13,6 +13,9 @@
     <WalkSpeed op="mul">1.30</WalkSpeed>
     <RunMultiplier op="mul">1.6</RunMultiplier>
   </UnitMotion>
+   <Position>
+    <TurnRate>5</TurnRate>
+  </Position>
  <Identity>
     <GenericName>Heavily Armored Cavalary</GenericName>
      <VisibleClasses datatype="tokens">Heavy Cavalry</VisibleClasses>

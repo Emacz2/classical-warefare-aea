@@ -2,7 +2,7 @@
 <Entity>
   <UnitMotion>
     <WalkSpeed op="mul">1.10</WalkSpeed>
-    <Acceleration op="mul">1.5</Acceleration>
+    <Acceleration op="mul">1.25</Acceleration>
   </UnitMotion>
   <Identity>
     <GenericName>Schock Cavalry</GenericName>
