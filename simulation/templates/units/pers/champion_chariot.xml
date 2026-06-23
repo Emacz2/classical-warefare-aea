@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="chariot|template_unit_champion_cavalry_archer">
+<Entity parent="chariot|cav_heavy|template_unit_champion_cavalry_archer_chariot">
   <Auras datatype="tokens">
     units/scythe_1
   </Auras>
