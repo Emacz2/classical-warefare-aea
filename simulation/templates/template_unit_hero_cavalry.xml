@@ -17,7 +17,7 @@
     <GenericName>Hero Cavalry</GenericName>
   </Identity>
   <Position>
-    <TurnRate>5</TurnRate>
+    <TurnRate>10</TurnRate>
   </Position>
   <Selectable>
     <Overlay>
@@ -38,8 +38,8 @@
     <HeightOffset>7.0</HeightOffset>
   </StatusBars>
    <UnitMotion>
-    <WalkSpeed op="mul">1.60</WalkSpeed>
-    <RunMultiplier op="mul">1.8</RunMultiplier>
+    <WalkSpeed>13.7</WalkSpeed>
+    <RunMultiplier op="mul">2</RunMultiplier>
   </UnitMotion>
      <Resistance>
     <Entity>
