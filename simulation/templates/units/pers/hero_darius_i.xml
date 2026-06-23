@@ -7,9 +7,6 @@
     <Square width="11.0" depth="11.0"/>
     <Height>6.0</Height>
   </Footprint>
-   <Health>
-    <Max>750</Max>
-  </Health>
   <Identity>
     <Civ>pers</Civ>
     <Lang>persian</Lang>

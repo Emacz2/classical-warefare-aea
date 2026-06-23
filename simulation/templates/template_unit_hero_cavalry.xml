@@ -41,15 +41,6 @@
     <WalkSpeed>13.7</WalkSpeed>
     <RunMultiplier op="mul">2</RunMultiplier>
   </UnitMotion>
-     <Resistance>
-    <Entity>
-      <Damage>
-      <Crush>10</Crush>
-      <Hack>10</Hack>
-      <Pierce>10</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <UnitAI>
     <Formations datatype="tokens">
       special/formations/wedge

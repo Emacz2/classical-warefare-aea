@@ -9,9 +9,6 @@
       </Damage>
     </Entity>
   </Resistance>
-    <Health>
-    <Max>250</Max>
-  </Health>
    <Cost>
     <Population>2</Population>
     <BuildTime>30</BuildTime>

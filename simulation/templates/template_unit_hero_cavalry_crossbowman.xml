@@ -11,7 +11,7 @@
       <RepeatTime>3000</RepeatTime>
       <Projectile>
         <Speed>175</Speed>
-        <Spread>0.5</Spread>
+        <Spread>0.8</Spread>
         <Gravity>30</Gravity>
         <FriendlyFire>false</FriendlyFire>
         <LaunchPoint y="3"/>
@@ -34,8 +34,4 @@
       special/formations/skirmish
     </Formations>
   </UnitAI>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.9</WalkSpeed>
-    <Acceleration op="mul">0.9</Acceleration>
-  </UnitMotion>
 </Entity>
