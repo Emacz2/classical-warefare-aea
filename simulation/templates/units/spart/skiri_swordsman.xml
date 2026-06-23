@@ -33,11 +33,11 @@
     </Skiri_sword>
   </Upgrade>
   <TrainingRestrictions>
-  <Category>Skirítēs</Category>
+  <Category>Skiri</Category>
   </TrainingRestrictions>
-  <UnitMotion>
-    <WalkSpeed>12</WalkSpeed>
-    <RunMultiplier>1</RunMultiplier>
+ <UnitMotion>
+    <WalkSpeed op="mul">1.2</WalkSpeed>
+    <RunMultiplier op="mul">0.95</RunMultiplier>
   </UnitMotion>
   <Vision>
     <Range>75</Range>

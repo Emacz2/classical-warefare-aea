@@ -11,14 +11,6 @@
       -structures/{civ}/wallset_stone
     </Entities>
   </Builder>
-   <Cost>
-     <Resources>
-      <food>90</food>
-      <metal>0</metal>
-      <wood>30</wood>
-      <stone>0</stone>
-    </Resources>
-  </Cost>
  <Health>
     <Max>200</Max>
     <IdleRegenRate>0.25</IdleRegenRate>
@@ -42,8 +34,11 @@
       <Time>8</Time>
     </Skiri_sword>
   </Upgrade>
-  <TrainingRestrictions>
-  <Category>Skirítēs</Category>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
+  </UnitMotion>
+ <TrainingRestrictions>
+  <Category>Skiri</Category>
   </TrainingRestrictions>
  <Vision>
     <Range>75</Range>

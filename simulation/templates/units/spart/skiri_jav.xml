@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="allied_inf|shield_light|armor_light|template_unit_infantry_ranged_javelineer">
  <Builder disable=""/>
- <Cost>
-     <Resources>
-      <food>100</food>
-      <metal>0</metal>
-      <wood>40</wood>
-      <stone>0</stone>
-    </Resources>
-  </Cost>
   <Health>
     <Max>175</Max>
     <RegenRate>-0.5</RegenRate>
@@ -34,9 +26,13 @@
       <Time>4</Time>
     </Skiri_thrust>
   </Upgrade>
-  <TrainingRestrictions>
-  <Category>Skirítēs</Category>
+ <TrainingRestrictions>
+  <Category>Skiri</Category>
   </TrainingRestrictions>
+   <UnitMotion>
+    <WalkSpeed op="mul">1.2</WalkSpeed>
+    <RunMultiplier op="mul">0.95</RunMultiplier>
+  </UnitMotion>
  <Vision>
     <Range>80</Range>
   </Vision>
