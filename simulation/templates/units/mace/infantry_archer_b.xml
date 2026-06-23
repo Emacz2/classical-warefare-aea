@@ -11,9 +11,7 @@
     <SelectionGroupName>units/mace/infantry_archer_b</SelectionGroupName>
     <Icon>units/han/infantry_archer.png</Icon>
   </Identity>
-  <Promotion>
-    <Entity>units/mace/infantry_archer_a</Entity>
-  </Promotion>
+ <Promotion disable=""/>
   <VisualActor>
     <Actor>units/persians/infantry_archer_b.xml</Actor>
   </VisualActor>
