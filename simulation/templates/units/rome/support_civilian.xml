@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_support_civilian|roman">
+<Entity parent="template_unit_support_civilian">
   <Builder>
     <Entities datatype="tokens">
       structures/rome/army_camp
@@ -13,6 +13,7 @@
     <Lang>latin</Lang>
     <GenericName>Plebeian</GenericName>
     <SpecificName>Plebeius</SpecificName>
+     <VisibleClasses datatype="tokens">Roman</VisibleClasses>
     <Icon>units/athen/support_civilian.png</Icon>
   </Identity>
   <VisualActor>
