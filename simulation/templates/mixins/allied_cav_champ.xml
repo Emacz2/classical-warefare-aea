@@ -1,41 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
   <Cost>
-    <BuildTime op="mul">1</BuildTime>
+    <BuildTime op="mul">1.2</BuildTime>
      <Resources>
-      <food>250</food>
-      <metal>100</metal>
+      <food>450</food>
+      <metal>0</metal>
       <wood>0</wood>
       <stone>0</stone>
     </Resources>
   </Cost>
-  <Attack>
-   <Capture>
-      <AttackName>Capture</AttackName>
-      <Capture>2.0</Capture>
-      <MaxRange>4</MaxRange>
-      <RepeatTime>1000</RepeatTime>
-    </Capture>
-     <Melee merge="">
-	<Damage>
-	  <Hack op="mul">1.1</Hack>
-    <Pierce op="mul">1.1</Pierce>
-    <Crush op="mul">1.0</Crush>
-  </Damage>
-  </Melee>
-  <Ranged merge="">
-	<Damage>
-	  <Hack op="mul">1.05</Hack>
-      <Pierce op="mul">1.05</Pierce>
-      <Crush op="mul">1.05</Crush>
-    </Damage>
-      <Projectile>
-        <Spread op="mul">0.9</Spread>
-    </Projectile>
-  </Ranged>
-</Attack>
   <Identity>
     <VisibleClasses datatype="tokens">Allied</VisibleClasses>
+    <Tooltip>Allied Champion Cavalry 20% more train time but resource cost is converted to 100% food</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

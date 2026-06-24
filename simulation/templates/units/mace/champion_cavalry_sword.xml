@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="macedonian|cav_heavy|template_unit_champion_cavalry_swordsman">
+<Entity parent="macedonian|cav_shock|cav_heavy|template_unit_champion_cavalry_swordsman">
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>
@@ -8,7 +8,7 @@
     <Icon>units/mace/champion_cavalry.png</Icon>
     <SelectionGroupName>units/mace/champion_cavalry</SelectionGroupName>
     <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
-    <Tooltip>Slowly regenerate health over time 2hp every 4 seconds and 10% more acceleration</Tooltip>
+    <Tooltip></Tooltip>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>

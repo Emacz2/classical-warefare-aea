@@ -8,7 +8,7 @@
     <Icon>units/mace/champion_cavalry.png</Icon>
     <SelectionGroupName>units/mace/champion_cavalry</SelectionGroupName>
     <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
-     <Tooltip>Companion Cavalry have about 10% dmg increase (10% from civ bonus). They slowly regenerate health over time 2hp every 4 seconds and 10% more acceleration</Tooltip>
+     <Tooltip></Tooltip>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
