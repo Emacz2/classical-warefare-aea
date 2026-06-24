@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Identity>
+    <VisibleClasses datatype="tokens">Kushite</VisibleClasses>
+    <Tooltip>A true citizen of the Kushite Kingdom.</Tooltip>
+  </Identity>
+</Entity>

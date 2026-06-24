@@ -40,9 +40,12 @@
       soldier_attack_melee_03
       tribal_soldier_attack_melee_01
       tribal_soldier_attack_melee_02
-      city_state_attack_melee_01
-      city_state_attack_melee_02
-      city_state_attack_melee_03
+      citystate/city_state_attack_melee_01
+      citystate/city_state_attack_melee_02
+      citystate/city_state_attack_melee_03
+      citystate/city_state_attack_ranged_01
+      citystate/city_state_attack_ranged_02
+      citystate/city_state_attack_ranged_03
       soldier_attack_ranged_01
       soldier_attack_ranged_02
       soldier_attack_ranged_03
