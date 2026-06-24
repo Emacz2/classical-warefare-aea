@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="roman|template_unit_support_civilian">
+  <Builder>
+    <Entities datatype="tokens">
+      structures/rome/army_camp
+      structures/rome/temple_vesta
+      structures/rome/temple_mars
+      structures/rome/tower_artillery
+    </Entities>
+  </Builder>
+  <Identity>
+    <Civ>rome</Civ>
+    <Lang>latin</Lang>
+    <GenericName>Plebeian</GenericName>
+    <SpecificName>Plebeius</SpecificName>
+    <Icon>units/athen/support_civilian.png</Icon>
+  </Identity>
+  <VisualActor>
+    <Actor>units/romans/citizen_{phenotype}.xml</Actor>
+  </VisualActor>
+</Entity>
