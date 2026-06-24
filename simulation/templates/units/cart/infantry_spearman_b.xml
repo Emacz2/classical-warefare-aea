@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="hoplite|shield_heavy|armor_medium|template_unit_infantry_melee_spearman">
+<Entity parent="carth|hoplite|shield_heavy|armor_medium|template_unit_infantry_melee_spearman">
  <Builder>
     <Entities datatype="tokens">
       structures/cart/super_dock
@@ -12,7 +12,7 @@
   <Identity>
     <Civ>cart</Civ>
     <SelectionGroupName>units/cart/infantry_spearman_b</SelectionGroupName>
-    <GenericName>Liby-Phoenicians Hoplite</GenericName>
+    <GenericName>Punic Hoplite</GenericName>
     <SpecificName>Sǝḫīr Ḥanīt</SpecificName>
     <Icon>units/cart/infantry_spearman.png</Icon>
   </Identity>

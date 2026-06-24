@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_javelineer">
+<Entity parent="carth|template_unit_infantry_ranged_javelineer">
  <Builder>
     <Entities datatype="tokens">
       structures/cart/super_dock
@@ -12,7 +12,7 @@
   <Identity>
     <Civ>cart</Civ>
     <SelectionGroupName>units/cart/infantry_javelineer_b</SelectionGroupName>
-    <GenericName>Liby-Phoenicians Javelineer</GenericName>
+    <GenericName>Punic Javelineer</GenericName>
     <SpecificName>Sǝḫīr Zērōm</SpecificName>
     <Icon>units/cart/inf_jav.png</Icon>
   </Identity>

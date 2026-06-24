@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_ranged_slinger">
+<Entity parent="carth|template_unit_infantry_ranged_slinger">
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Liby-Phoenicians slinger</GenericName>
+    <GenericName>Punic slinger</GenericName>
     <SpecificName>Qallāʿ Ḥanīt</SpecificName>
     <SelectionGroupName>units/cart/infantry_slinger_b</SelectionGroupName>
     <Requirements>
