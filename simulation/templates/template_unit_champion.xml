@@ -11,7 +11,7 @@
   </Attack>
   <Identity>
     <Classes datatype="tokens">Human</Classes>
-    <VisibleClasses datatype="tokens">Soldier Citizen Champion</VisibleClasses>
+    <VisibleClasses datatype="tokens">Soldier Champion</VisibleClasses>
     <GenericName>Champion Unit</GenericName>
   </Identity>
   <Position>
