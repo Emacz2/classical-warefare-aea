@@ -8,9 +8,6 @@
     <Square depth="10.0" width="10.0"/>
     <Height>5.0</Height>
   </Footprint>
-  <Health>
-    <Max>600</Max>
-  </Health>
   <Identity>
     <Civ>han</Civ>
     <SpecificName>Wèi Qīng</SpecificName>

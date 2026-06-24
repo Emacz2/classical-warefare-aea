@@ -2,21 +2,16 @@
 <Entity>
    <Attack>
     <Melee>
-      <Damage>
-        <Crush>0</Crush>
-      </Damage>
       <Charge>
         <Damage>
-          <Hack>5</Hack>
-          <Pierce>5</Pierce>
-          <Crush>5</Crush>
+          <Crush>10</Crush>
         </Damage>
         <Resistance>
           <Hack>-1</Hack>
           <Pierce>-1</Pierce>
           <Crush>-1</Crush>
         </Resistance>
-        <MinRange>15</MinRange>
+        <MinRange>12.5</MinRange>
         <MaxRange>20</MaxRange>
       </Charge>
     </Melee>
@@ -24,5 +19,6 @@
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
     <GenericName>Charge unit</GenericName>
+    <Tooltip>Charge the enemy and do intiial +10 Crush and 2.5 Hack/Pierce dmg but lose 1 of each restiance while charging</Tooltip>
   </Identity>
 </Entity>

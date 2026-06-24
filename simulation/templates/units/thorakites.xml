@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_large|armor_heavy|charge|template_unit_champion_infantry_swordsman">
+<Entity parent="shield_large|armor_heavy|inf_charge|template_unit_champion_infantry_swordsman">
   <Identity>
     <Lang>greek</Lang>
     <GenericName>Armored Swordsman</GenericName>

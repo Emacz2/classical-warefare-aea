@@ -11,7 +11,7 @@
     <Max>800</Max>
   </Health>
     <Loot>
-    <xp>800</xp>
+    <xp>400</xp>
   </Loot>
   <Position>
     <Anchor>upright</Anchor>
@@ -19,8 +19,8 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush>7</Crush> 
-        <Hack>7</Hack>
+        <Crush>8</Crush> 
+        <Hack>8</Hack>
         <Pierce>8</Pierce>
       </Damage>
     </Entity>

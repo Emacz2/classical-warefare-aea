@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+   <Attack>
+    <Melee>
+      <Charge>
+        <Damage>
+          <Crush>20</Crush>
+        </Damage>
+        <Resistance>
+          <Hack>-1</Hack>
+          <Pierce>-2</Pierce>
+          <Crush>-1</Crush>
+        </Resistance>
+        <MinRange>15</MinRange>
+        <MaxRange>25</MaxRange>
+      </Charge>
+    </Melee>
+  </Attack>
+  <Identity>
+   <Classes datatype="tokens">Charge</Classes>
+    <GenericName>Charge unit</GenericName>
+    <Tooltip>Charge the enemy and do intiial +10 Crush and 2.5 Hack/Pierce dmg but lose 1 of each restiance while charging</Tooltip>
+  </Identity>
+</Entity>

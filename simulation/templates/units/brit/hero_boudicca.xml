@@ -8,18 +8,6 @@
     <Square width="5.0" depth="10.0"/>
     <Height>6.0</Height>
   </Footprint>
-  <Cost>
-    <Population>0</Population>
-    <BuildTime>50</BuildTime>
-    <Resources>
-      <food>300</food>
-      <wood>200</wood>
-      <metal>250</metal>
-    </Resources>
-  </Cost>
-  <Health>
-    <Max>750</Max>
-  </Health>
   <Identity>
     <Civ>brit</Civ>
     <Phenotype>female</Phenotype>

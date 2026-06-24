@@ -25,22 +25,11 @@
       <metal>20</metal>
     </Resources>
   </Cost>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <GenericName>Cavalry Swordsman</GenericName>
     <VisibleClasses datatype="tokens">Swordsman</VisibleClasses>
     <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
   </Identity>
-   <UnitMotion>
-    <WalkSpeed op="mul">1.05</WalkSpeed>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>

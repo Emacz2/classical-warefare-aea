@@ -18,5 +18,9 @@
    <UnitMotion>
     <WalkSpeed op="mul">1.60</WalkSpeed>
     <RunMultiplier op="mul">1.8</RunMultiplier>
+    <Acceleration op="mul">1.2</Acceleration>
   </UnitMotion>
+   <Position>
+    <TurnRate>10</TurnRate>
+  </Position>
 </Entity>

@@ -7,8 +7,9 @@
     <xp>75</xp>
   </Loot>
   <UnitMotion>
+    <WalkSpeed op="mul">1.15</WalkSpeed>
     <RunMultiplier op="mul">1.1</RunMultiplier>
-    <Acceleration op="mul">1.1</Acceleration>
+    <Acceleration op="mul">1.05</Acceleration>
   </UnitMotion>
   <Identity>
     <Rank>Elite</Rank>

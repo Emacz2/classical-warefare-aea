@@ -3,6 +3,8 @@
   <Formation>
     <RequiredMemberCount>10</RequiredMemberCount>
     <DisabledTooltip>Infantry Hoplites only, requires at least 10.</DisabledTooltip>
+    <MaxTurningAngle>0.785</MaxTurningAngle>
+    <SpeedMultiplier>0.8</SpeedMultiplier>
     <UnitSeparationWidthMultiplier>0.6</UnitSeparationWidthMultiplier>
     <UnitSeparationDepthMultiplier>0.6</UnitSeparationDepthMultiplier>
     <WidthDepthRatio>4</WidthDepthRatio>
@@ -15,25 +17,22 @@
       2..2,1..-1: phalanx_mid;
       3..-1,1..-1: phalanx_back
     </AnimationVariants>
+        <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">1;5</Hack>
+        <Pierce op="add">1.5</Pierce>
+        <Crush op="add">0.5</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
   </Formation>
   <FormationAttack>
     <CanAttackAsFormation>false</CanAttackAsFormation>
   </FormationAttack>
-    <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">1.5</Hack>
-        <Pierce op="add">1</Pierce>
-        <Crush op="add">1</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
-    <UnitMotion>
-    <WalkSpeed op="mul">0.90</WalkSpeed>
-  </UnitMotion>
   <Identity>
     <GenericName>Phalanx</GenericName>
     <Icon>formations/phalanx.png</Icon>
-    <Tooltip>Compact formation of Infantry Hoplites creating a shield wall.</Tooltip>
+    <Tooltip>Compact formation of Infantry Hoplites creating a shield wall. + 1.5 Hack/Pierce and +0.5 Crush resitances but lose 20% speed</Tooltip>
   </Identity>
 </Entity>

@@ -7,11 +7,11 @@
     </Capture>
   </Attack>
    <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
-    <RunMultiplier op="mul">0.9</RunMultiplier>
+    <WalkSpeed op="mul">1.2</WalkSpeed>
+    <RunMultiplier op="mul">0.95</RunMultiplier>
   </UnitMotion>
   <Identity>
     <GenericName>Infantry Raider</GenericName>
-    <Tooltip>Infantry Raiders 10% faster walk speed and +0.5 capture attack but 10% slower run speed</Tooltip>
+    <Tooltip>Raiders 20% faster walk speed and +0.5 capture attack but 5% slower run speed</Tooltip>
   </Identity>
 </Entity>

@@ -21,9 +21,6 @@
     <GenericName>Cataphract Cavalry</GenericName>
     <VisibleClasses datatype="tokens">Cataphract</VisibleClasses>
   </Identity>
-  <Position>
-    <TurnRate op="mul">0.8</TurnRate>
-  </Position>
   <Resistance>
     <Entity>
       <Damage>
@@ -34,7 +31,7 @@
     </Entity>
   </Resistance>
   <UnitMotion>
-    <WalkSpeed op="mul">0.90</WalkSpeed>
+    <WalkSpeed op="mul">0.95</WalkSpeed>
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
 </Entity>

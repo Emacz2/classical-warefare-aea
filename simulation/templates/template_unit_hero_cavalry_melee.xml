@@ -11,17 +11,17 @@
     <Max>900</Max>
   </Health>
     <Loot>
-    <xp>900</xp>
+    <xp>450</xp>
   </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
-  <Resistance>
+    <Resistance>
     <Entity>
       <Damage>
-        <Crush>10</Crush> 
-        <Hack>12</Hack>
-        <Pierce>13</Pierce>
+      <Crush>10</Crush>
+      <Hack>10</Hack>
+      <Pierce>10</Pierce>
       </Damage>
     </Entity>
   </Resistance>
