@@ -2,6 +2,6 @@
 <Entity>
   <Identity>
     <VisibleClasses datatype="tokens">Roman</VisibleClasses>
-    <Tooltip>A true citizen of rome.</Tooltip>
+    <Tooltip>A true citizen of Rome.</Tooltip>
   </Identity>
 </Entity>

@@ -78,13 +78,10 @@
         <Market>5</Market>
       </LandTrader>
       <HelotM>
-        <Champion>1</Champion>
+        <Spartan>2</Spartan>
       </HelotM>
       <HelotM>
         <Perioikoi>1</Perioikoi>
-      </HelotM>
-       <HelotM>
-        <SpartW>1</SpartW>
       </HelotM>
       <Juggernaut>
         <PtolemyIV>4</PtolemyIV>

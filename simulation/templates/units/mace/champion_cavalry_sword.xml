@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="cav_heavy|template_unit_champion_cavalry_swordsman">
+<Entity parent="macedonian|cav_heavy|template_unit_champion_cavalry_swordsman">
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>
@@ -13,9 +13,6 @@
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
-  <Health>
-    <RegenRate>0.5</RegenRate>
-  </Health> 
   <Upgrade>
     <Spear>
       <Entity>units/mace/champion_cavalry</Entity>
@@ -24,9 +21,6 @@
       <Time>4</Time>
     </Spear>
   </Upgrade>
-  <UnitMotion>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <VisualActor>
     <Actor>units/macedonians/cavalry_sword_c_m.xml</Actor>
   </VisualActor>

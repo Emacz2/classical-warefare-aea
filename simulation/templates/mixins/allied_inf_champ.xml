@@ -3,14 +3,14 @@
   <Cost>
     <BuildTime op="mul">1.2</BuildTime>
      <Resources>
-      <food>90</food>
+      <food>225</food>
       <metal>0</metal>
       <wood>0</wood>
       <stone>0</stone>
     </Resources>
   </Cost>
   <Identity>
-    <VisibleClasses datatype="tokens">Allied -Citizen</VisibleClasses>
+    <VisibleClasses datatype="tokens">Allied</VisibleClasses>
     <Tooltip>Allied troops 20% more train time but 10% less resources and all of it is food</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>

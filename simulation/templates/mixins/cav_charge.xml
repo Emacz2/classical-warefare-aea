@@ -19,6 +19,6 @@
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
     <GenericName>Charge unit</GenericName>
-    <Tooltip>Charge the enemy and do intiial +10 Crush and 2.5 Hack/Pierce dmg but lose 1 of each restiance while charging</Tooltip>
+    <Tooltip>Charge the enemy and do intiial +20 Crush and 2.5 Hack/Pierce dmg but lose 1 of each restiance while charging</Tooltip>
   </Identity>
 </Entity>
