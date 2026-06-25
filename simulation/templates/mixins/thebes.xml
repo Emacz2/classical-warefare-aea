@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Identity>
+    <VisibleClasses datatype="tokens">Theban</VisibleClasses>
+    <Tooltip>A true citizen of Thebes.</Tooltip>
+  </Identity>
+</Entity>
