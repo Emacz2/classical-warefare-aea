@@ -36,8 +36,8 @@
   <Category>Skiri</Category>
   </TrainingRestrictions>
  <UnitMotion>
-    <WalkSpeed op="mul">1.2</WalkSpeed>
-    <RunMultiplier op="mul">0.95</RunMultiplier>
+    <WalkSpeed op="mul">1.25</WalkSpeed>
+    <RunMultiplier op="mul">0.90</RunMultiplier>
   </UnitMotion>
   <Vision>
     <Range>75</Range>

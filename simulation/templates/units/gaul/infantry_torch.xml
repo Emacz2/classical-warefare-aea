@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="armor_light|template_unit_infantry_melee_firetorch">
+<Entity parent="gaul|armor_light|template_unit_infantry_melee_firetorch">
   <Builder>
     <Entities datatype="tokens">
       structures/gaul/assembly

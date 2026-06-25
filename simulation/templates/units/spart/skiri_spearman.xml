@@ -35,7 +35,8 @@
     </Skiri_sword>
   </Upgrade>
    <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <WalkSpeed op="mul">1.15</WalkSpeed>
+    <RunMultiplier op="mul">0.95</RunMultiplier>
   </UnitMotion>
  <TrainingRestrictions>
   <Category>Skiri</Category>
