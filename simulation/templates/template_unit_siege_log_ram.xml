@@ -60,7 +60,9 @@
       <attack_melee>attack/siege/ram_attack.xml</attack_melee>
     </SoundGroups>
   </Sound>
-  <UnitMotion>
+   <UnitMotion>
+    <WalkSpeed op="mul">0.8</WalkSpeed>
+    <Acceleration op="mul">0.75</Acceleration>
   </UnitMotion>
   <Vision>
     <Range>60</Range>

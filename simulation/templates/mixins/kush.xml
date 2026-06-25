@@ -2,6 +2,6 @@
 <Entity>
   <Identity>
     <VisibleClasses datatype="tokens">Kushite</VisibleClasses>
-    <Tooltip>A true citizen of the Kushite Kingdom.</Tooltip>
+    <Tooltip>A core member of the Kingdom of Kush.</Tooltip>
   </Identity>
 </Entity>

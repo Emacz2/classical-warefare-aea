@@ -2,6 +2,6 @@
 <Entity>
   <Identity>
     <VisibleClasses datatype="tokens">Mauryan</VisibleClasses>
-    <Tooltip>A true citizen the Mauryan Empire.</Tooltip>
+    <Tooltip>A core member of the Mauryan Empire.</Tooltip>
   </Identity>
 </Entity>

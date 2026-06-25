@@ -2,6 +2,6 @@
 <Entity>
   <Identity>
     <VisibleClasses datatype="tokens">Punic</VisibleClasses>
-    <Tooltip>A true citizen of Carthage.</Tooltip>
+    <Tooltip>A core member of the Punic people.</Tooltip>
   </Identity>
 </Entity>

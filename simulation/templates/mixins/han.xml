@@ -2,6 +2,6 @@
 <Entity>
   <Identity>
     <VisibleClasses datatype="tokens">Han</VisibleClasses>
-    <Tooltip>A true citizen Of the Han Dynasty.</Tooltip>
+    <Tooltip>A core member of the Han Empire.</Tooltip>
   </Identity>
 </Entity>

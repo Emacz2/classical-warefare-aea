@@ -2,6 +2,6 @@
 <Entity>
   <Identity>
     <VisibleClasses datatype="tokens">Gaul</VisibleClasses>
-    <Tooltip>A core member of the Gaul civilization.</Tooltip>
+    <Tooltip>A core member of the Gaulish tribes.</Tooltip>
   </Identity>
 </Entity>

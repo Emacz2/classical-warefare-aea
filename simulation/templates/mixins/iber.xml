@@ -2,6 +2,6 @@
 <Entity>
   <Identity>
     <VisibleClasses datatype="tokens">Iberian</VisibleClasses>
-    <Tooltip>A true citizen of Iberia.</Tooltip>
+    <Tooltip>A core member of the Iberian peoples.</Tooltip>
   </Identity>
 </Entity>

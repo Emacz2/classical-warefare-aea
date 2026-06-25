@@ -2,6 +2,6 @@
 <Entity>
   <Identity>
     <VisibleClasses datatype="tokens">Persian</VisibleClasses>
-    <Tooltip>A true citizen of Persia.</Tooltip>
+    <Tooltip>A core member of the Persian people.</Tooltip>
   </Identity>
 </Entity>
