@@ -18,7 +18,7 @@
     </Capture>
 </Attack>
   <Identity>
-    <VisibleClasses datatype="tokens">Auxiliary -Citizen</VisibleClasses>
+    <VisibleClasses datatype="tokens">Auxiliary</VisibleClasses>
     <Tooltip>Auxillary troops only cost food, but 20% more train time than normal citzen soldiers</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
