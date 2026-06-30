@@ -2,7 +2,7 @@
 <Entity parent="template_structure_civic_civil_city_state">
  <Identity>
     <Civ>theb</Civ>
-    <SpecificName>League City</SpecificName>
+    <SpecificName>Boeotian Settlement</SpecificName>
     <Classes datatype="tokens">CivSpecific</Classes>
   </Identity>
   <Footprint>

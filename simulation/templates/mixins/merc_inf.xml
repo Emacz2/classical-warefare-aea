@@ -42,5 +42,6 @@
     <Tooltip>Merc Infantry have only 1 capture attack. Melee +10% dmg, Ranged +5% dmg and 10% more accurate than than CS equivalent. They train 20% faster than CS but do not promote or recieve forge/fortress techs.</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
+  <Builder disable=""/>
 </Entity>
 

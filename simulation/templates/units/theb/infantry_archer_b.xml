@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="thebe|template_unit_infantry_ranged_archer_simple">
+  <Builder>
+  <Entities datatype="tokens">
+      structures/theb/boeotian_settlement
+  </Entities>
+</Builder>
   <Identity>
     <Civ>theb</Civ>
     <Lang>greek</Lang>
