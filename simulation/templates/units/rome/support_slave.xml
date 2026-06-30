@@ -11,6 +11,7 @@
   <Identity>
     <Civ>rome</Civ>
     <GenericName>War Captive</GenericName>
+    <SpecificName>Captivus</SpecificName>
     <Icon>units/global/slave.png</Icon>
   </Identity>
   <VisualActor>

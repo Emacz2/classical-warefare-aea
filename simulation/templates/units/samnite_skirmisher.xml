@@ -2,6 +2,7 @@
 <Entity parent="shield_light|template_unit_infantry_ranged_javelineer">
   <Identity>
     <GenericName>Samnite Skirmisher</GenericName>
+      <SpecificName>Vēles Samnītis</SpecificName>
     <Icon>units/samn/skirmisher.png</Icon>
   </Identity>
   <Promotion disable=""/>

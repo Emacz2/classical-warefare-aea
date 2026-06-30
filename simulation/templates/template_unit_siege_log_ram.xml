@@ -34,7 +34,7 @@
     <Max>250</Max>
   </Health>
   <Identity>
-    <GenericName>Battering Ram</GenericName>
+    <GenericName>Log Ram</GenericName>
     <Tooltip>Cannot attack Fields or Organic Units. 3 x dmg vs structures</Tooltip>
     <VisibleClasses datatype="tokens">Melee Ram</VisibleClasses>
   </Identity>

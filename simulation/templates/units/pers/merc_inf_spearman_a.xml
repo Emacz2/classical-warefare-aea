@@ -4,7 +4,6 @@
     <Rank>Advanced</Rank>
     <Lang>greek</Lang>
   </Identity>
-
  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/thebans/infantry_spearman_b.xml</Actor>

@@ -9,6 +9,8 @@
     <Civ>mace</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/mace/infantry_archer_b</SelectionGroupName>
+     <GenericName>Macedonian Conscripted Archer</GenericName>
+    <SpecificName>Toxótēs Makedonikós</SpecificName>
     <Icon>units/han/infantry_archer.png</Icon>
   </Identity>
  <Promotion disable=""/>

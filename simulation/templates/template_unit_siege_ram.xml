@@ -42,7 +42,7 @@
     <Max>300</Max>
   </Health>
   <Identity>
-    <GenericName>Battering Ram</GenericName>
+    <GenericName>Basuc Siege Battering Ram</GenericName>
     <Tooltip>Cannot attack Fields or Organic Units. 3 x dmg vs structures</Tooltip>
     <VisibleClasses datatype="tokens">Melee Ram</VisibleClasses>
   </Identity>

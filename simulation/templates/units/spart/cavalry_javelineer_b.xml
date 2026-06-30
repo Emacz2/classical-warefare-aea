@@ -5,6 +5,7 @@
     <Lang>greek</Lang>
     <SelectionGroupName>units/spart/cavalry_javelineer_b</SelectionGroupName>
     <GenericName>Olynthian Allied Light-Javelineer Cavalry</GenericName>
+    <SpecificName>Akontistḗs Olynthiakós</SpecificName>
     <Icon>units/spart/cavalry_javelinist.png</Icon>
       <History>Sparta, known for its focus on hoplite infantry, had a relatively limited cavalry force. Spartan cavalry was often considered less effective compared to other Greek city-states. Melee Cavalry can't upgrade rank. Total Cavalry force limited to 40</History>
        <Requirements>

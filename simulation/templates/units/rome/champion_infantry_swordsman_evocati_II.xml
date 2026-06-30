@@ -12,7 +12,8 @@
     <Max op="add">25</Max>
   </Health>
   <Identity>
-    <GenericName>Evocati II</GenericName>
+    <GenericName>Champion Swordsman II</GenericName>
+    <SpecificName>Evocatus</SpecificName>
     <Rank>Elite</Rank>
     <Icon>units/rome/champion_legion_imperial.png</Icon>
   </Identity>

@@ -5,7 +5,7 @@
     <Lang>greek</Lang>
     <SelectionGroupName>units/rome/aux_archer</SelectionGroupName>
     <GenericName>Cretan Mercenary Archer</GenericName>
-    <SpecificName>Toxótēs Krētikós</SpecificName>
+    <SpecificName>Sagittarius Auxiliarius</SpecificName>
     <Icon>units/mace/infantry_archer.png</Icon>
     <Requirements>
       <Techs datatype="tokens">roman_reforms</Techs>

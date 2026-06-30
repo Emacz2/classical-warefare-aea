@@ -10,6 +10,7 @@
     <Lang>greek</Lang>
     <SelectionGroupName>units/pers/merc_spearman_b</SelectionGroupName>
     <GenericName>Greek Hoplite Mercanary</GenericName>
+    <SpecificName>Hoplítēs Misthophóros</SpecificName>
     <Icon>units/theb/theb_hoplite_merc.png</Icon>
   </Identity>
  <Promotion disable=""/>

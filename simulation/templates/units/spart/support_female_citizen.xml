@@ -16,6 +16,7 @@
     <Civ>spart</Civ>
     <Lang>greek</Lang>
     <GenericName>Spartan Woman</GenericName>
+    <SpecificName>Gynḗ Spartiatís</SpecificName>
     <VisibleClasses datatype="tokens">-Builder -Worker SpartW</VisibleClasses>
     <SelectionGroupName>units/spart/support_female_citizen</SelectionGroupName>
     <Icon>units/spart/female_citizen.png</Icon>

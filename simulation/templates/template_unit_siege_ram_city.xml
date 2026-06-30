@@ -43,7 +43,7 @@
     <Max>400</Max>
   </Health>
   <Identity>
-    <GenericName>Battering Ram</GenericName>
+    <GenericName>Fortified Siege Battering Ram</GenericName>
     <Tooltip>Cannot attack Fields or Organic Units.3x dmg vs structures</Tooltip>
     <VisibleClasses datatype="tokens">Melee Ram</VisibleClasses>
      <Requirements>

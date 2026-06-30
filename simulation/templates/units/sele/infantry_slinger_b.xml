@@ -5,6 +5,7 @@
     <Lang>greek</Lang>
     <SelectionGroupName>units/sele/infantry_slinger_b</SelectionGroupName>
     <GenericName>Greek Psiloi Slinger</GenericName>
+    <SpecificName>Psilòs Sphendonḗtēs</SpecificName>
     <Icon>units/sele/inf_slinger.png</Icon>
     <Requirements>
       <Techs datatype="tokens">unlock_slingers</Techs>
