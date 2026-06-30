@@ -12,7 +12,7 @@
   </Attack>
   <UnitMotion>
   <WalkSpeed op="mul">1.03</WalkSpeed>
-  <Acceleration op="add">+3</Acceleration>
+  <Acceleration op="add">3</Acceleration>
   </UnitMotion>
   <Identity>
     <GenericName>Short spear</GenericName>
