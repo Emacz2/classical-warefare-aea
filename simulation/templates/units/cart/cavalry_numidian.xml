@@ -2,6 +2,7 @@
 <Entity parent="allied_cav|cav_light|units/numidian_cavalry">
   <Identity>
     <GenericName>Allied Numidian Light Javelineer Cavalry</GenericName>
+    <SpecificName>Numidae Iaculatores</SpecificName>
     <Icon>units/special/num_cav_merc.png</Icon>
   </Identity>
   <VisualActor>
