@@ -3,7 +3,7 @@
   <Attack>
     <Melee>
     <Damage>
-	  <Hack op="mul">0</Hack>
+	  <Hack op="mul">0.4</Hack>
     <Pierce op="mul">0.8</Pierce>
   </Damage>
       <MaxRange op="add">-0.5</MaxRange>
@@ -16,6 +16,6 @@
   </UnitMotion>
   <Identity>
     <GenericName>Thrusting spearman</GenericName>
-    <Tooltip>7 tenths of a second faster repeat time and 8% faster walk speed but -0.5 range, only pierce dmg, 80% of regular spear</Tooltip>
+    <Tooltip>7 tenths of a second faster repeat time and 8% faster walk speed but -0.5 range, but 80% peirce and 10% hack dmg of regular spear</Tooltip>
   </Identity>
 </Entity>
