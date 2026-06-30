@@ -6,9 +6,6 @@
     <SpecificName>Gaesatae</SpecificName>
     <Icon>units/gaul/champion_fanatic.png</Icon>
   </Identity>
-   <Health>
-    <Max op="add">25</Max>
-  </Health>
      <Resistance>
     <Entity>
       <Damage>
