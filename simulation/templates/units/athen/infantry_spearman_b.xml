@@ -10,6 +10,8 @@
     <GenericName>Athenian Hoplite</GenericName>
     <SpecificName>Hoplítēs Athēnaîos</SpecificName>
     <Icon>units/athen/infantry_spearman.png</Icon>
+    <Tooltip>Core citizen heavy infantry forming the backbone of the Athenian phalanx. Strengths: Excels in disciplined spear combat and holding the battle line. Weaknesses: Vulnerable to missiles and attacks on the flank.</Tooltip>
+    <History>Wealthier citizens equipped themselves with the hoplon and spear, fighting in close-order formation.</History>
   </Identity>
   <Promotion>
     <Entity>units/athen/infantry_spearman_a</Entity>

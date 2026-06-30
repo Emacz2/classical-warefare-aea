@@ -9,6 +9,8 @@
     <SelectionGroupName>units/athen/infantry_javelineer_b</SelectionGroupName>
     <GenericName>Athenian Javelineer</GenericName>
     <SpecificName>Akontistḗs</SpecificName>
+    <Tooltip>Mobile citizen skirmisher used to harass enemy formations before melee. Strengths: High mobility and effective against lightly protected targets. Weaknesses: Poor staying power in close combat.</Tooltip>
+    <History> Light troops carried several javelins and relied on speed rather than armor.</History>
     <Icon>units/athen/infantry_jav.png</Icon>
   </Identity>
   <Promotion>

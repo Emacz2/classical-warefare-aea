@@ -12,6 +12,8 @@
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
+    <Tooltip>Naval infantry trained for amphibious assaults and fighting aboard ships. Strengths: Versatile in close quarters and coastal operations. Weaknesses: Smaller shields and lighter equipment than hoplites.</Tooltip>
+    <History>Marines served aboard the Athenian fleet, supporting the city's maritime dominance.</History>
   </Identity>
   <Promotion>
     <Entity>units/athen/infantry_swordsman_a</Entity>

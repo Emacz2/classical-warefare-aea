@@ -13,6 +13,8 @@
     <Requirements>
       <Techs datatype="tokens">unlock_slingers</Techs>
     </Requirements>
+     <Tooltip>Levy missile infantry providing inexpensive ranged support. Strengths: Long harassment range and low cost. Weaknesses: Minimal protection and weak melee ability.</Tooltip>
+    <History> Militia slingers supplemented citizen armies during extended campaigns.</History>
   </Identity>
   <Promotion>
     <Entity>units/athen/infantry_slinger_a</Entity>

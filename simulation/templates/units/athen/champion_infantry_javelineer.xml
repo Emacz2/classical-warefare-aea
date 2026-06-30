@@ -11,6 +11,8 @@
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
+    <Tooltip>Champion skirmisher capable of disrupting enemy formations before withdrawal. Strengths: Accurate volleys and excellent mobility. Weaknesses: Cannot withstand prolonged melee.</Tooltip>
+    <History>Veteran javelineers combined experience with disciplined battlefield tactics.</History>
   </Identity>
  <Promotion disable=""/>
   <VisualActor>
