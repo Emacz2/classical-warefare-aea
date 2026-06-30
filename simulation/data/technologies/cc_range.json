@@ -15,6 +15,6 @@
 		{ "value": "Vision/Range","add": 10 }
 	
 	],
-	"affects": ["CivCentre"],
+	"affects": ["CivCentre", "Agora", "TribalCenter"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

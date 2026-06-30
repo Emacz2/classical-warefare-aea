@@ -8,6 +8,15 @@
     <SelectionGroupName>units/theb/cavalry_spearman_b</SelectionGroupName>
     <Icon>units/theb/cavalry_spearman.png</Icon>
   </Identity>
+    <Cost>
+    <BuildTime op="mul">1.2</BuildTime>
+     <Resources>
+      <food>150</food>
+      <metal>0</metal>
+      <wood>0</wood>
+      <stone>0</stone>
+    </Resources>
+  </Cost>
  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/spartans/cavalry_spearman_b_m.xml</Actor>
