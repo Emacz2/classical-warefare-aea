@@ -19,8 +19,8 @@
   </Attack>
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Iberian Allied Heavy Swordsman</GenericName>
-    <SpecificName>Seḫīr Romaḥ</SpecificName>
+    <GenericName>Iberian Allied Nobel Swordsman</GenericName>
+    <SpecificName></SpecificName>
     <SelectionGroupName>units/cart/merc_inf_iber_sword_b</SelectionGroupName>
     <Icon>units/cart/infantry_swordsman.png</Icon>
   </Identity>
