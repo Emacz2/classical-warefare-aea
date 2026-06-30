@@ -29,7 +29,7 @@
     </Entity>
   </Resistance>
     <UnitMotion>
-    <WalkSpeed>8.7</WalkSpeed>
+    <WalkSpeed op="add">0.2</WalkSpeed>
   </UnitMotion>
   <Selectable>
     <Overlay>

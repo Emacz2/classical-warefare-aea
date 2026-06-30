@@ -38,7 +38,7 @@
     <HeightOffset>7.0</HeightOffset>
   </StatusBars>
    <UnitMotion>
-    <WalkSpeed>13.9</WalkSpeed>
+    <WalkSpeed>14</WalkSpeed>
     <RunMultiplier op="mul">2</RunMultiplier>
   </UnitMotion>
   <UnitAI>
