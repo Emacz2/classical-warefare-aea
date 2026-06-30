@@ -4,7 +4,7 @@
     <Rank>Elite</Rank>
       <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/infantry_slinger_b</SelectionGroupName>
-    <GenericName>Judean Slinger with lead bullet amo</GenericName>
+    <GenericName>Judean Slinger (Lead Bullets)</GenericName>
     <SpecificName>Hebraikós Sphendonḗtēs</SpecificName>
     <Icon>units/ptol/judean_slinger.png</Icon>
   </Identity>

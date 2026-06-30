@@ -11,7 +11,7 @@
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/infantry_archer_b</SelectionGroupName>
-    <GenericName>Ptolemaic archer</GenericName>
+    <GenericName>Ptolemaic Archer</GenericName>
     <SpecificName>Toxótēs</SpecificName>
     <Icon>units/ptol/inf_archer.png</Icon>
   </Identity>

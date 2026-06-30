@@ -18,6 +18,8 @@
   <Identity>
     <Civ>sele</Civ>
     <SelectionGroupName>units/sele/tureos_skirmisher</SelectionGroupName>
+    <GenericName>Thureophoros Skirmisher</GenericName>
+    <SpecificName>Thureophóros</SpecificName>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>

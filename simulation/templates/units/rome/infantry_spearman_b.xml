@@ -18,7 +18,7 @@
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SelectionGroupName>units/rome/infantry_spearman_b</SelectionGroupName>
-    <GenericName>Roman Spearmen</GenericName>
+    <GenericName>Roman Spearman</GenericName>
     <SpecificName>Hastātus</SpecificName>
     <Icon>units/rome/infantry_spearman.png</Icon>
     <Tooltip>Elite rank Spearmen can be promoted to champion Centurions.</Tooltip>

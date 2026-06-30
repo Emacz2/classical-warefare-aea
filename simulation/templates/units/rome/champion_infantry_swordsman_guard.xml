@@ -12,7 +12,7 @@
     <Max op="add">50</Max>
   </Health>
   <Identity>
-    <GenericName>Emperial Guard Infantry</GenericName>
+    <GenericName>Imperial Guard Infantry</GenericName>
     <SpecificName>Praetorianus</SpecificName>
     <VisibleClasses datatype="tokens">Praetorian Guard Rōmānī</VisibleClasses>
     <Icon>units/rome/champion_legion_centurio.png</Icon>

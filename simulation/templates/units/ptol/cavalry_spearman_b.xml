@@ -3,7 +3,7 @@
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Greek Mercanary Spear Cavalry</GenericName>
+    <GenericName>Greek Mercenary Spear Cavalry</GenericName>
     <SpecificName>Hippeús Symmakhikós</SpecificName>
     <Icon>units/spart/cavalry_spearman.png</Icon>
   </Identity>

@@ -18,7 +18,7 @@
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>
-    <GenericName>Thracian Peltast sword</GenericName>
+    <GenericName>Thracian Peltast Swordsman</GenericName>
     <Icon>units/special/pelt_sword.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>

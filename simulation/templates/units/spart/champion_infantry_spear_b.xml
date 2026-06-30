@@ -28,7 +28,7 @@
     <Civ>spart</Civ>
     <Lang>greek</Lang>
     <Rank>Basic</Rank>
-    <GenericName>Young Hoplite Spartan</GenericName>
+    <GenericName>Young Spartan Hoplite</GenericName>
     <SpecificName>Paidiskoi</SpecificName>
     <VisibleClasses datatype="tokens">Free</VisibleClasses>
     <Icon>units/spart/champ_spear_b.png</Icon>

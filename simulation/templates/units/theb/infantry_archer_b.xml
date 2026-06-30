@@ -8,7 +8,7 @@
   <Identity>
     <Civ>theb</Civ>
     <Lang>greek</Lang>
-    <GenericName>Greek Archer</GenericName>
+    <GenericName>Theban Archer</GenericName>
     <SpecificName>Toxotēs</SpecificName>
     <Icon>units/theb/infantry_archer.png</Icon>
 	<SelectionGroupName>units/theb/infantry_archer_b</SelectionGroupName>

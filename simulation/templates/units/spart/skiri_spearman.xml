@@ -19,7 +19,7 @@
     <Rank>Advanced</Rank>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
-    <GenericName>Elite Skiritai Vanguard Spear</GenericName>
+    <GenericName>Advanced Skiritai Vanguard Spearman</GenericName>
     <SpecificName>Ékdromos Skirítēs</SpecificName>
     <VisibleClasses datatype="tokens">Switch Skirítēs</VisibleClasses>
     <Tooltip>While acting as Vanguard spearman, speed is 10.0, and builder is enabled.  While idle health regenerates 1 HP every 4 seconds. Can switch to scout mode with a sword. Restricted to 20 Skirítēs total</Tooltip>
