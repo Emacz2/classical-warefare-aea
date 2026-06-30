@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="brit|cav_light|cav_spear_shield|template_unit_cavalry_melee_spearman">
+<Entity parent="brit|cav_medium|cav_spear_shield|template_unit_cavalry_melee_spearman">
   <Identity>
     <Civ>brit</Civ>
     <SelectionGroupName>units/brit/cavalry_spearman_b</SelectionGroupName>
+     <GenericName>Noble Spear Cavalry</GenericName>
     <SpecificName>Eporedos</SpecificName>
-    <GenericName>Noble Spear Cavalry</GenericName>
     <Icon>units/brit/cavalry_swordsman.png</Icon>
   </Identity>
   <Promotion>

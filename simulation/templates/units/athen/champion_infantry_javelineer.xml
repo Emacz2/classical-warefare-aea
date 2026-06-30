@@ -3,7 +3,7 @@
   <Identity>
     <Civ>athen</Civ>
     <Lang>greek</Lang>
-    <GenericName>Champion Javelineer</GenericName>
+    <GenericName>Champion Peltast</GenericName>
     <SpecificName>Epílektoi Peltastaí</SpecificName>
     <SelectionGroupName>units/athen/champion_infantry_javelineer</SelectionGroupName>
     <VisibleClasses datatype="tokens">Ranged</VisibleClasses>

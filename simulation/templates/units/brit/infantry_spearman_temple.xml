@@ -9,8 +9,7 @@
   <Identity>
     <Civ>brit</Civ>
     <SelectionGroupName>units/brit/infantry_spearman_b</SelectionGroupName>
-    <GenericName>Brythonic Thrusting Spearman</GenericName>
-    <SpecificName>Gaisatos</SpecificName>
+    <GenericName>Brythonic Assault Spearman</GenericName>
     <Icon>units/brit/thrust_spear.png</Icon>
     <Rank>Advanced</Rank>
   </Identity>

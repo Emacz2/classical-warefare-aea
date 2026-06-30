@@ -13,6 +13,9 @@
      <Classes datatype="tokens">-CivCentre TribalCenter</Classes>
     <VisibleClasses datatype="tokens">-CivilCentre TribalCenter Defensive FarmBlocker</VisibleClasses>
   </Identity>
+   <BuildRestrictions>
+    <Category>TribalCenter</Category>
+  </BuildRestrictions>
   <Obstruction>
     <Static width="25.0" depth="25.0"/>
   </Obstruction>
