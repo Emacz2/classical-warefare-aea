@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="iber|heavy_jav|shield_light|armor_medium|template_unit_champion_infantry_javelineer">
+<Entity parent="iber|heavy_jav|shield_medium|armor_medium|template_unit_champion_infantry_javelineer">
   <Cost>
     <Resources>
       <food>150</food> 
