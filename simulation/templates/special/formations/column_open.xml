@@ -10,6 +10,6 @@
   <Identity>
     <GenericName>Column Open</GenericName>
     <Icon>formations/column_open.png</Icon>
-    <Tooltip>Dispersed formation for open field crossings; +10% faster movement.</Tooltip>
+    <Tooltip>Dispersed formation rapid for open field crossings while maintaining visability; +10% faster movement.</Tooltip>
   </Identity>
 </Entity>
