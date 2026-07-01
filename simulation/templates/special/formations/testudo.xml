@@ -6,7 +6,7 @@
     <SortingClasses>Hero Champion Elite Advanced Basic</SortingClasses>
     <FormationShape>square</FormationShape>
     <MaxTurningAngle>0.785</MaxTurningAngle>
-    <SpeedMultiplier>0.6</SpeedMultiplier>
+    <SpeedMultiplier>0.4</SpeedMultiplier>
     <UnitSeparationWidthMultiplier>0.5</UnitSeparationWidthMultiplier>
     <UnitSeparationDepthMultiplier>0.4</UnitSeparationDepthMultiplier>
     <SortingOrder>fillFromTheSides</SortingOrder>
@@ -67,7 +67,7 @@
       <Entity>
         <Damage>
           <Hack>1</Hack>
-          <Pierce>3</Pierce>
+          <Pierce>4</Pierce>
           <Crush>1</Crush>
         </Damage>
       </Entity>
@@ -79,6 +79,6 @@
   <Identity>
     <GenericName>Testudo</GenericName>
     <Icon>formations/testudo.png</Icon>
-    <Tooltip>Compact formation of Melee Infantry creating a shield shell. + 3 Pierce and +1 Crush/Hack resitances but lose 40% speed</Tooltip>
+    <Tooltip>Compact formation of Melee Infantry creating a shield shell. + 4 Pierce and +1 Crush/Hack resitances movement speed reduced by 60% speed</Tooltip>
   </Identity>
 </Entity>
