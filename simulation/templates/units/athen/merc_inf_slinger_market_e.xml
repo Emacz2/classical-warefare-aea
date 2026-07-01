@@ -7,7 +7,7 @@
   <Upgrade>
     <Lead>
       <Entity>units/athen/merc_inf_slinger_lead</Entity>
-      <Tooltip>Switch to lead bullet Balearic Slinger</Tooltip>
+      <Tooltip>Switch to lead bullet</Tooltip>
       <Cost>
         <metal>10</metal>
       </Cost>

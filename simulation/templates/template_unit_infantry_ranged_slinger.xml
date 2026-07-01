@@ -11,6 +11,13 @@
       <MinRange>5</MinRange>
       <PrepareTime>500</PrepareTime>
       <RepeatTime>1200</RepeatTime>
+      <Bonuses>
+        <BonusStructure>
+          <Classes>Structure Siege</Classes>
+          <Multiplier>0.5</Multiplier>
+        </BonusStructure>
+      </Bonuses>
+      <PreferredClasses datatype="tokens">Human</PreferredClasses>
       <Projectile>
         <Speed>125</Speed>
         <Spread>3.7</Spread>
