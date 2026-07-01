@@ -6,7 +6,8 @@
   <Attack>
     <Ranged>
     <Damage>
-      <Pierce op="mul">1.15</Pierce>
+      <Crush op="add">0.5</Crush>
+      <Pierce op="add">1</Pierce>
     </Damage>
       <MaxRange op="add">+6</MaxRange>
       <RepeatTime op="add">300</RepeatTime>
