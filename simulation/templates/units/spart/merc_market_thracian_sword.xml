@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="merc_inf_market|merc_inf|units/thracian_peltast_sword">
-  <Builder>
-    <Entities datatype="tokens">
-      structures/spart/camp
-      structures/spart/tent_helot
-      structures/spart/gerousia
-      structures/spart/syssiton
-      structures/spart/colony
-      -structures/wallset_palisade
-      -structures/{civ}/wallset_stone
-    </Entities>
-  </Builder>
   <Upgrade>
     <Peltast_Jav>
       <Entity>units/spart/merc_market_thracian_peltast</Entity>

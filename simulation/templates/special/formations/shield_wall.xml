@@ -5,7 +5,7 @@
     <DisabledTooltip>Infantry Spearmen only, requires at least 10.</DisabledTooltip>
     <UnitSeparationWidthMultiplier>0.6</UnitSeparationWidthMultiplier>
     <UnitSeparationDepthMultiplier>0.6</UnitSeparationDepthMultiplier>
-    <SpeedMultiplier>0.4</SpeedMultiplier>
+    <SpeedMultiplier>0.6</SpeedMultiplier>
     <WidthDepthRatio>4</WidthDepthRatio>
     <ShiftRows>true</ShiftRows>
     <MinColumns>5</MinColumns>
