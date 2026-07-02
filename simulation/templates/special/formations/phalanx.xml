@@ -19,7 +19,7 @@
     </AnimationVariants>
     <ResistanceAdd>
       <Hack>1.5</Hack>
-      <Pierce>100.5</Pierce>
+      <Pierce>1.5</Pierce>
       <Crush>0.5</Crush>
     </ResistanceAdd>
   </Formation>
