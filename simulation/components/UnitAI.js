@@ -60,6 +60,56 @@ UnitAI.prototype.Schema =
 				"<ref name='positiveDecimal'/>" +
 			"</element>"+
 		"</interleave>" +
+	"</optional>" +
+	"<optional>" +
+		"<element name='Charge'>" +
+			"<interleave>" +
+				"<element name='MinRange'><ref name='nonNegativeDecimal'/></element>" +
+				"<element name='MaxRange'><ref name='nonNegativeDecimal'/></element>" +
+				AttackHelper.BuildAttackEffectsSchema() +
+				"<optional>" +
+					"<element name='Splash'>" +
+						"<interleave>" +
+							"<element name='Shape' a:help='Shape of the splash damage, can be circular or linear'><text/></element>" +
+							"<element name='Range' a:help='Size of the area affected by the splash'><ref name='nonNegativeDecimal'/></element>" +
+							"<element name='FriendlyFire' a:help='Whether the splash damage can hurt non enemy units'><data type='boolean'/></element>" +
+							AttackHelper.BuildAttackEffectsSchema() +
+						"</interleave>" +
+					"</element>" +
+				"</optional>" +
+				"<optional>" +
+					"<element name='ResistanceAdd'>" +
+						"<oneOrMore>" +
+							"<element a:help='One or more elements describing damage types'>" +
+								"<anyName/>" +
+								"<ref name='decimal' />" +
+							"</element>" +
+						"</oneOrMore>" +
+					"</element>" +
+				"</optional>" +
+			"</interleave>" +
+		"</element>" +
+	"</optional>" +
+	"<optional>" +
+		"<element name='Brace'>" +
+			"<interleave>" +
+				"<optional>" +
+					"<element name='ResistanceAdd'>" +
+						"<oneOrMore>" +
+							"<element a:help='Resistance against any number of damage types affecting health.'>" +
+								"<anyName/>" +
+								"<ref name='positiveDecimal'/>" +
+							"</element>" +
+						"</oneOrMore>" +
+					"</element>" +
+				"</optional>" +
+				"<optional>" +
+					"<element name='AttackMul'>" +
+						"<ref name='positiveDecimal'/>" +
+					"</element>" +
+				"</optional>" +
+			"</interleave>" +
+		"</element>" +
 	"</optional>";
 
 // Unit stances.
@@ -1454,9 +1504,9 @@ UnitAI.prototype.UnitFsmSpec = {
 
 				const o = {};
 				const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
-				f("Resistance/Entity/Damage/Hack", cmpFormation.template.Resistance?.Entity?.Damage?.Hack);
-				f("Resistance/Entity/Damage/Pierce", cmpFormation.template.Resistance?.Entity?.Damage?.Pierce);
-				f("Resistance/Entity/Damage/Crush", cmpFormation.template.Resistance?.Entity?.Damage?.Crush);
+				f("Resistance/Entity/Damage/Hack", cmpFormation.template.ResistanceAdd?.Hack);
+				f("Resistance/Entity/Damage/Pierce", cmpFormation.template.ResistanceAdd?.Pierce);
+				f("Resistance/Entity/Damage/Crush", cmpFormation.template.ResistanceAdd?.Crush);
 				const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
 				cmpModifiersManager.AddModifiers("Formation Bonus", o, this.entity);
 			}
@@ -2106,24 +2156,55 @@ UnitAI.prototype.UnitFsmSpec = {
 				"leave": function() {
 					this.StopMoving();
 					this.StopTimer();
+
 					const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
-					cmpModifiersManager.RemoveAllModifiers("Charge Resistance", this.entity);
+					if (cmpModifiersManager.HasAnyModifier("Charge Resistance", this.entity))
+					{
+						cmpModifiersManager.RemoveAllModifiers("Charge Resistance", this.entity);
+						const cmpPosition = Engine.QueryInterface(this.entity, IID_Position);
+						if (!cmpPosition || !cmpPosition.IsInWorld())
+							return;
+						const selfPosition = cmpPosition.GetPosition();
+						const cmpTargetPosition = Engine.QueryInterface(this.order.data.target, IID_Position);
+						if (!cmpTargetPosition || !cmpTargetPosition.IsInWorld())
+							return;
+						const targetPosition = cmpTargetPosition.GetPosition();
+						const template = this.template.Charge;
+						const attackData = AttackHelper.GetAttackEffectsData("Attack/Melee", template, this.entity);
+						let splashData = undefined;
+						if (template.Splash)
+							splashData = {
+								"attackData": AttackHelper.GetAttackEffectsData("Attack/Melee/Splash", template.Splash, this.entity),
+								"friendlyFire": template.Splash.FriendlyFire == "true",
+								"radius": ApplyValueModificationsToEntity("Attack/Melee/Splash/Range", +template.Splash.Range, this.entity),
+								"shape": template.Splash.Shape,
+							}
+						Engine.QueryInterface(SYSTEM_ENTITY, IID_DelayedDamage).Hit({
+							"type": this.order.data.attackType,
+							"attackData": attackData,
+							"splash": splashData,
+							"attacker": this.entity,
+							"attackerOwner": Engine.QueryInterface(this.entity, IID_Ownership).GetOwner(),
+							"target": this.order.data.target,
+							"position": targetPosition,
+							"direction": Vector3D.sub(targetPosition, selfPosition),
+						}, 0);
+					}
 				},
 
 				"Timer": function(msg) {
-					if (!this.order.data.charging && this.CheckTargetChargeRange(this.order.data.target, this.order.data.attackType))
+					const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+					if (!cmpModifiersManager.HasAnyModifier("Charge Resistance", this.entity) &&
+					    this.CheckTargetChargeRange(this.order.data.target, this.order.data.attackType))
 					{
-						this.order.data.charging = true;
-						this.Run();
-						const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-						const charge = cmpAttack.template.Melee.Charge;
+						const charge = this.template.Charge;
 						const o = {};
 						const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
-						f("Resistance/Entity/Damage/Hack", charge.Resistance?.Hack);
-						f("Resistance/Entity/Damage/Pierce", charge.Resistance?.Pierce);
-						f("Resistance/Entity/Damage/Crush", charge.Resistance?.Crush);
-						const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+						f("Resistance/Entity/Damage/Hack", charge.ResistanceAdd?.Hack);
+						f("Resistance/Entity/Damage/Pierce", charge.ResistanceAdd?.Pierce);
+						f("Resistance/Entity/Damage/Crush", charge.ResistanceAdd?.Crush);
 						cmpModifiersManager.AddModifiers("Charge Resistance", o, this.entity);
+						this.Run();
 					}
 
 					if (this.ShouldAbandonChase(this.order.data.target, this.order.data.force, IID_Attack, this.order.data.attackType))
@@ -2226,7 +2307,7 @@ UnitAI.prototype.UnitFsmSpec = {
 					if (this.order.data.hunting && this.orderQueue.length > 1 && this.orderQueue[1].type === "Gather")
 						this.RememberTargetPosition(this.orderQueue[1].data);
 
-					if (!cmpAttack.StartAttacking(this.order.data.target, this.order.data.attackType, this.order.data.charging, IID_UnitAI, this.order.data.force))
+					if (!cmpAttack.StartAttacking(this.order.data.target, this.order.data.attackType, IID_UnitAI, this.order.data.force))
 					{
 						this.ProcessMessage("TargetInvalidated");
 						return true;
@@ -4922,15 +5003,14 @@ UnitAI.prototype.CheckTargetChargeRange = function(target, type)
 	if (type != "Melee")
 		return false;
 
-	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-	if (!cmpAttack || !cmpAttack.template.Melee?.Charge)
+	if (!this.template.Charge)
 		return false;
 
-	let max = +cmpAttack.template.Melee.Charge.MaxRange;
-	max = ApplyValueModificationsToEntity("Attack/Melee/Charge/MaxRange", max, this.entity);
+	let max = +this.template.Charge.MaxRange;
+	max = ApplyValueModificationsToEntity("UnitAI/Charge/MaxRange", max, this.entity);
 
-	let min = +cmpAttack.template.Melee.Charge.MinRange;
-	min = ApplyValueModificationsToEntity("Attack/Melee/Charge/MinRange", min, this.entity);
+	let min = +this.template.Charge.MinRange;
+	min = ApplyValueModificationsToEntity("UnitAI/Charge/MinRange", min, this.entity);
 
 	return this.CheckTargetRangeExplicit(target, min, max);
 };
@@ -6004,6 +6084,35 @@ UnitAI.prototype.SetStance = function(stance)
 {
 	if (g_Stances[stance])
 	{
+		if (this.template.Brace)
+		{
+			if (g_Stances[this.stance]?.respondStandGround && !g_Stances[stance].respondStandGround)
+			{
+				const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+				cmpModifiersManager.RemoveAllModifiers("Brace Bonus", this.entity);
+				this.SetMobile();
+			}
+			if (!g_Stances[this.stance]?.respondStandGround && g_Stances[stance].respondStandGround)
+			{
+				const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+				const brace = this.template.Brace;
+				const o = {};
+				const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "multiply": +v }]; };
+				const g = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
+				f("Attack/Melee/Damage/Hack", brace.AttackMul);
+				f("Attack/Melee/Damage/Pierce", brace.AttackMul);
+				f("Attack/Melee/Damage/Crush", brace.AttackMul);
+				f("Attack/Melee/Splash/Damage/Hack", brace.AttackMul);
+				f("Attack/Melee/Splash/Damage/Pierce", brace.AttackMul);
+				f("Attack/Melee/Splash/Damage/Crush", brace.AttackMul);
+				g("Resistance/Entity/Damage/Hack", brace.ResistanceAdd?.Hack);
+				g("Resistance/Entity/Damage/Pierce", brace.ResistanceAdd?.Pierce);
+				g("Resistance/Entity/Damage/Crush", brace.ResistanceAdd?.Crush);
+				cmpModifiersManager.AddModifiers("Brace Bonus", o, this.entity);
+				this.SetImmobile();
+			}
+		}
+
 		this.stance = stance;
 		Engine.PostMessage(this.entity, MT_UnitStanceChanged, { "to": this.stance });
 	}

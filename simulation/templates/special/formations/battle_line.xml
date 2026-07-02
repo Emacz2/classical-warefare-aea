@@ -8,13 +8,9 @@
     <MaxColumns>8</MaxColumns>
     <MaxRows>4</MaxRows>
     <WidthDepthRatio>2</WidthDepthRatio>
-           <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-      </Damage>
-    </Entity>
-  </Resistance>
+    <ResistanceAdd>
+      <Hack>0.5</Hack>
+    </ResistanceAdd>
   </Formation>
   <Identity>
     <GenericName>Battle Line</GenericName>

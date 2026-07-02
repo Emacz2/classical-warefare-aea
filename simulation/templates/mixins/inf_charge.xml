@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-   <Attack>
-    <Melee>
-      <Charge>
+  <UnitAI>
+    <Charge>
+      <Damage>
+        <Crush>10</Crush>
+      </Damage>
+      <Splash>
+        <Shape>Circular</Shape>
+        <Range>2.5</Range>
+        <FriendlyFire>false</FriendlyFire>
         <Damage>
-          <Crush>10</Crush>
+          <Crush>3</Crush>
         </Damage>
-        <Resistance>
-          <Hack>-1</Hack>
-          <Pierce>-1</Pierce>
-          <Crush>-1</Crush>
-        </Resistance>
-        <MinRange>12.5</MinRange>
-        <MaxRange>20</MaxRange>
-      </Charge>
-    </Melee>
-  </Attack>
+      </Splash>
+      <ResistanceAdd>
+        <Hack>-1</Hack>
+        <Pierce>-1</Pierce>
+        <Crush>-1</Crush>
+      </ResistanceAdd>
+      <MinRange>12.5</MinRange>
+      <MaxRange>20</MaxRange>
+    </Charge>
+  </UnitAI>
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
     <GenericName>Charge unit</GenericName>
