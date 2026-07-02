@@ -31,7 +31,7 @@
   </Loot>
   <UnitMotion>
     <WalkSpeed op="mul">0.96</WalkSpeed>
-    <RunMultiplier op="mul">1.45</RunMultiplier>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

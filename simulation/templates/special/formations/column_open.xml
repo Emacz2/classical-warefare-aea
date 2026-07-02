@@ -5,11 +5,11 @@
     <UnitSeparationWidthMultiplier>2</UnitSeparationWidthMultiplier>
     <MaxColumns>2</MaxColumns>
     <MinColumns>2</MinColumns>
-    <SpeedMultiplier>1.10</SpeedMultiplier>
+    <SpeedMultiplier>1.15</SpeedMultiplier>
   </Formation>
   <Identity>
     <GenericName>Column Open</GenericName>
     <Icon>formations/column_open.png</Icon>
-    <Tooltip>Dispersed formation rapid for open field crossings while maintaining visability; +10% faster movement.</Tooltip>
+    <Tooltip>Dispersed formation rapid for open field crossings while maintaining visability; +15% faster movement</Tooltip>
   </Identity>
 </Entity>

@@ -4,8 +4,8 @@
     <Melee>
       <AttackName>Spear</AttackName>
        <Damage>
-        <Hack>7.5</Hack>
-        <Pierce>20.3</Pierce>
+        <Hack>7</Hack>
+        <Pierce>19.5</Pierce>
       </Damage>
       <MaxRange>4.5</MaxRange>
       <MinRange>1</MinRange>
@@ -14,7 +14,7 @@
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2</Multiplier>
+          <Multiplier>1.5</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -22,7 +22,7 @@
   </Attack>
   <Identity>
     <GenericName>Champion Spearman</GenericName>
-    <Tooltip>Counters: 2 × vs Cavalry.</Tooltip>
+    <Tooltip>Counters: 1.5 × vs Cavalry.</Tooltip>
     <Classes datatype="tokens">Polearm</Classes>
     <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
@@ -33,7 +33,7 @@
   </Sound>
  <UnitMotion>
     <WalkSpeed op="mul">0.96</WalkSpeed>
-    <RunMultiplier op="mul">1.45</RunMultiplier>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
   </UnitMotion>
   <UnitAI>
     <Formations datatype="tokens">

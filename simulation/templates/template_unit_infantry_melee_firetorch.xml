@@ -34,6 +34,9 @@
     <GenericName>Infantry Torchman</GenericName>
     <VisibleClasses datatype="tokens">Torchman</VisibleClasses>
   </Identity>
+  <UnitMotion>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
+  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>

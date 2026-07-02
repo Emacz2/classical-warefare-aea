@@ -8,6 +8,7 @@
     <MaxColumns>8</MaxColumns>
     <MaxRows>4</MaxRows>
     <WidthDepthRatio>2</WidthDepthRatio>
+    <SpeedMultiplier>0.95</SpeedMultiplier>
     <ResistanceAdd>
       <Hack>0.5</Hack>
     </ResistanceAdd>
@@ -15,6 +16,6 @@
   <Identity>
     <GenericName>Battle Line</GenericName>
     <Icon>formations/battle_line.png</Icon>
-    <Tooltip>Common formation for frontal attacks; slight cohesion bonus, + 0.5 Hack resistance.</Tooltip>
+    <Tooltip>Common formation for frontal attacks; slight cohesion bonus,  +0.5 Hack resistance but -5% movement mutiplier.</Tooltip>
   </Identity>
 </Entity>

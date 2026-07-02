@@ -16,8 +16,8 @@
     <History>.</History>
   </Identity>
    <UnitMotion>
-    <WalkSpeed op="mul">1.60</WalkSpeed>
-    <RunMultiplier op="mul">1.8</RunMultiplier>
+    <WalkSpeed op="mul">1.6</WalkSpeed>
+    <RunMultiplier op="mul">1.7</RunMultiplier>
     <Acceleration op="mul">1.2</Acceleration>
   </UnitMotion>
    <Position>

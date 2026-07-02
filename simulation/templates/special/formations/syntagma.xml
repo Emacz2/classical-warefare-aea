@@ -8,6 +8,7 @@
     <UnitSeparationWidthMultiplier>0.86</UnitSeparationWidthMultiplier>
     <UnitSeparationDepthMultiplier>0.55</UnitSeparationDepthMultiplier>
     <WidthDepthRatio>1</WidthDepthRatio>
+    <SpeedMultiplier>0.7</SpeedMultiplier>
     <ShiftRows>true</ShiftRows>
     <MinColumns>4</MinColumns>
     <MaxColumns>8</MaxColumns>
@@ -21,6 +22,11 @@
       7...-1,1..-1: syntagma_back
     </AnimationVariants>
     <Sloppiness>0.15</Sloppiness>
+       <ResistanceAdd>
+      <Hack>1</Hack>
+      <Pierce>1.5</Pierce>
+      <Crush>0.5</Crush>
+    </ResistanceAdd>
   </Formation>
   <FormationAttack>
     <CanAttackAsFormation>false</CanAttackAsFormation>
@@ -28,6 +34,6 @@
   <Identity>
     <GenericName>Syntagma</GenericName>
     <Icon>formations/syntagma.png</Icon>
-    <Tooltip>Compact formation of Infantry Pikemen creating a defensive wall.</Tooltip>
+    <Tooltip>Compact formation of Infantry Pikemen creating a defensive wall. Gain +1 Hack, 1.5 Pierce and 0.5 Crush resistance but movement speed reduced by 30%</Tooltip>
   </Identity>
 </Entity>

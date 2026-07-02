@@ -3,6 +3,7 @@
   <Formation>
     <FormationShape>special</FormationShape>
     <MaxTurningAngle>0</MaxTurningAngle>
+    <SpeedMultiplier>1.1</SpeedMultiplier>
   </Formation>
   <Identity>
     <GenericName>Scatter</GenericName>

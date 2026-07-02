@@ -5,11 +5,14 @@
     <UnitSeparationDepthMultiplier>1.0</UnitSeparationDepthMultiplier>
     <MinColumns>3</MinColumns>
     <MaxColumns>3</MaxColumns>
-     <SpeedMultiplier>1.15</SpeedMultiplier>
+     <SpeedMultiplier>1.1</SpeedMultiplier>
+      <ResistanceAdd>
+      <Hack>0.5</Hack>
+    </ResistanceAdd>
   </Formation>
   <Identity>
     <GenericName>Forced March</GenericName>
     <Icon>formations/column_closed.png</Icon>
-    <Tooltip>Closed column formation for risky movements; +15% faster movement.</Tooltip>
+    <Tooltip>Closed column formation for risky movements; +10% faster movement and + 0.5 Hack</Tooltip>
   </Identity>
 </Entity>
