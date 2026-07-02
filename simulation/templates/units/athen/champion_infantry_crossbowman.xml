@@ -2,11 +2,11 @@
 <Entity parent="civ/athen|athenian|gastraphetes|armor_light|template_unit_champion_infantry_crossbowman">
   <Identity>
     <Lang>greek</Lang>
+    <Civ>athen</Civ>
     <GenericName>Champion Infantry Crossbowman</GenericName>
     <SpecificName>Gastraphetophoros</SpecificName>
     <Icon>units/mace/champion_infantry_crossbowman.png</Icon>
     <Tooltip></Tooltip>
-    <BattlefieldRole>Specialized infantry unit fulfilling its historical battlefield role.</BattlefieldRole>
     <History>Equipment and training reflect its intended tactical purpose.</History>
   </Identity>
   <VisualActor>
