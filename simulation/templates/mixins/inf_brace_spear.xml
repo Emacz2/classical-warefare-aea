@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <UnitAI>
+    <Brace>
+      <ResistanceAdd>
+        <Hack>0.5</Hack>
+        <Pierce>0.5</Pierce>
+      </ResistanceAdd>
+      <AttackMul>1.25</AttackMul>
+    </Brace>
+  </UnitAI>
+    <Identity>
+    <Tooltip>Add 25% damage and 0.5 Hack/Pierce resistance by setting spearmn to "brace".</Tooltip>
+  </Identity>
+</Entity>
