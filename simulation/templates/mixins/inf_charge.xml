@@ -3,11 +3,11 @@
   <UnitAI>
     <Charge>
       <Damage>
-        <Crush>10</Crush>
+        <Crush>12</Crush>
       </Damage>
       <Splash>
         <Shape>Circular</Shape>
-        <Range>2.5</Range>
+        <Range>1.5</Range>
         <FriendlyFire>false</FriendlyFire>
         <Damage>
           <Crush>3</Crush>
@@ -25,6 +25,6 @@
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
     <GenericName>Charge unit</GenericName>
-    <Tooltip>Charge the enemy and do intiial +10 Crush and 2.5 Hack/Pierce dmg but lose 1 of each restiance while charging</Tooltip>
+    <Tooltip>Charge the enemy and do intiial +12 Crush +3 Crush splash dmg over 1.5m but lose 1 of each restiance while charging</Tooltip>
   </Identity>
 </Entity>
