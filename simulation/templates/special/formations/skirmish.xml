@@ -8,7 +8,7 @@
     <MinColumns>3</MinColumns>
     <SpeedMultiplier>1.05</SpeedMultiplier>
      <ResistanceAdd>
-      <Hack>-0.5</Hack>
+      <Pierce>1</Pierce>
     </ResistanceAdd>
   </Formation>
   <FormationAttack>
@@ -17,6 +17,6 @@
   <Identity>
     <GenericName>Skirmish</GenericName>
     <Icon>formations/skirmish.png</Icon>
-    <Tooltip>Dispersed formation for reconnaissance, ambushes or hit-and-run. Movement speed increased by 5% but -0.5 Hack resistance</Tooltip>
+    <Tooltip>Dispersed formation for reconnaissance, ambushes or hit-and-run. movement mutiplier increased by 5% and +1 Pierce resistance</Tooltip>
   </Identity>
 </Entity>

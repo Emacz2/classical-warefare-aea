@@ -4,15 +4,16 @@
     <MinColumns>3</MinColumns>
     <WidthDepthRatio>4</WidthDepthRatio>
     <Sloppiness>0.25</Sloppiness>
-     <SpeedMultiplier>0.95</SpeedMultiplier>
+     <SpeedMultiplier>0.90</SpeedMultiplier>
       <ResistanceAdd>
-      <Crush>0.5</Crush>
-      <Hack>0.5</Hack>
+      <Crush>1</Crush>
+      <Hack>1</Hack>
+      <Pierce>0.5</Pierce>
     </ResistanceAdd>
   </Formation>
   <Identity>
     <GenericName>Close Order</GenericName>
     <Icon>formations/line_closed.png</Icon>
-    <Tooltip>Flexible closed line formation. +0.5 Crush/Hack resistance but -5% movement mutiplier.</Tooltip>
+    <Tooltip>Flexible closed line formation. +1 Crush/Hack and +0.5 Pierce resistance but -105% movement mutiplier.</Tooltip>
   </Identity>
 </Entity>

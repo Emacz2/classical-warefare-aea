@@ -5,8 +5,12 @@
     <MaxTurningAngle>0</MaxTurningAngle>
     <SpeedMultiplier>1.1</SpeedMultiplier>
   </Formation>
+  <ResistanceAdd>
+      <Pierce>0.5</Pierce>
+    </ResistanceAdd>
   <Identity>
     <GenericName>Scatter</GenericName>
     <Icon>formations/scatter.png</Icon>
+    <Tooltip>Quickly spread out. Gain 10% movement mutiplier and +0.5 Pierce resistance</Tooltip>
   </Identity>
 </Entity>
