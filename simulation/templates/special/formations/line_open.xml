@@ -9,7 +9,7 @@
      <ResistanceAdd>
       <Crush>0.5</Crush>
       <Hack>0.5</Hack>
-      <Pierce>0.5</Piercec>
+      <Pierce>0.5</Pierce>
     </ResistanceAdd>
   </Formation>
   <Identity>
