@@ -202,46 +202,6 @@ Attack.prototype.Schema =
 						"</interleave>" +
 					"</element>" +
 				"</optional>" +
-				"<optional>" +
-					"<element name='Charge'>" +
-						"<interleave>" +
-							"<element name='MinRange'><ref name='nonNegativeDecimal'/></element>" +
-							"<element name='MaxRange'><ref name='nonNegativeDecimal'/></element>" +
-							"<optional>" +
-								"<element name='Damage'>" +
-									"<oneOrMore>" +
-										"<element a:help='One or more elements describing damage types'>" +
-											"<anyName/>" +
-											"<ref name='nonNegativeDecimal' />" +
-										"</element>" +
-									"</oneOrMore>" +
-								"</element>" +
-							"</optional>" +
-							"<optional>" +
-								"<element name='Splash'>" +
-									"<element name='Damage'>" +
-										"<oneOrMore>" +
-											"<element a:help='One or more elements describing damage types'>" +
-												"<anyName/>" +
-												"<ref name='nonNegativeDecimal' />" +
-											"</element>" +
-										"</oneOrMore>" +
-									"</element>" +
-								"</element>" +
-							"</optional>" +
-							"<optional>" +
-								"<element name='Resistance'>" +
-									"<oneOrMore>" +
-										"<element a:help='One or more elements describing damage types'>" +
-											"<anyName/>" +
-											"<ref name='decimal' />" +
-										"</element>" +
-									"</oneOrMore>" +
-								"</element>" +
-							"</optional>" +
-						"</interleave>" +
-					"</element>" +
-				"</optional>" +
 				Attack.prototype.preferredClassesSchema +
 				Attack.prototype.restrictedClassesSchema +
 			"</interleave>" +
@@ -520,7 +480,7 @@ Attack.prototype.RepeatRangeCheck = function(type) {
  *
  * @return {boolean} - Whether we started attacking.
  */
-Attack.prototype.StartAttacking = function(target, type, charging, callerIID, force)
+Attack.prototype.StartAttacking = function(target, type, callerIID, force)
 {
 	if (this.target)
 		this.StopAttacking();
@@ -569,7 +529,6 @@ Attack.prototype.StartAttacking = function(target, type, charging, callerIID, fo
 	// If using a non-default prepare time, re-sync the animation when the timer runs.
 	this.resyncAnimation = prepare != timings.prepare;
 	this.target = target;
-	this.charging = charging;
 	this.callerIID = callerIID;
 	this.force = force;
 	this.timer = cmpTimer.SetInterval(this.entity, IID_Attack, "Attack", prepare, timings.repeat, type);
@@ -633,28 +592,9 @@ Attack.prototype.Attack = function(type, lateness)
 	const cmpTimer = Engine.QueryInterface(SYSTEM_ENTITY, IID_Timer);
 	this.lastAttacked = cmpTimer.GetTime() - lateness;
 
-	const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
-	if (this.charging) {
-		const charge = this.template.Melee.Charge;
-		const o = {};
-		const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
-		f("Attack/Melee/Damage/Hack", charge.Damage?.Hack);
-		f("Attack/Melee/Damage/Pierce", charge.Damage?.Pierce);
-		f("Attack/Melee/Damage/Crush", charge.Damage?.Crush);
-		f("Attack/Melee/Splash/Damage/Hack", charge.Splash?.Damage?.Hack);
-		f("Attack/Melee/Splash/Damage/Pierce", charge.Splash?.Damage?.Pierce);
-		f("Attack/Melee/Splash/Damage/Crush", charge.Splash?.Damage?.Crush);
-		cmpModifiersManager.AddModifiers("Charge Attack", o, this.entity);
-	}
-
 	// BuildingAI has its own attack routine.
 	if (!Engine.QueryInterface(this.entity, IID_BuildingAI))
 		this.PerformAttack(type, this.target);
-
-	if (this.charging) {
-		cmpModifiersManager.RemoveAllModifiers("Charge Attack", this.entity);
-		delete this.charging;
-	}
 
 	if (!this.target)
 		return;
@@ -717,11 +657,7 @@ Attack.prototype.PerformAttack = function(type, target)
 		"target": target,
 	};
 
-	if (this.charging) {
-		// const cmpIdentity = Engine.QueryInterface(this.entity, IID_Identity);
-		// warn(`${cmpIdentity.GetName()} ${this.entity} charge attack ${JSON.stringify(data.attackData.Damage)}`)
-	}
-
+	// Classical Warfare AEA randomize melee damage
 	if (type == "Melee") {
 		const r = Math.max(0, 1 + 0.2 * randomNormal2D()[0]);
 		for (const damageType in data.attackData.Damage)

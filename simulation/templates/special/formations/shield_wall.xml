@@ -16,15 +16,11 @@
       2..2,1..-1: phalanx_mid;
       3..-1,1..-1: phalanx_back
     </AnimationVariants>
-    <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">3</Hack>
-        <Pierce op="add">2</Pierce>
-        <Crush op="add">2</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
+    <ResistanceAdd>
+      <Hack>3</Hack>
+      <Pierce>2</Pierce>
+      <Crush>2</Crush>
+    </ResistanceAdd>
     <Sloppiness>0.5</Sloppiness>
   </Formation>
   <FormationAttack>

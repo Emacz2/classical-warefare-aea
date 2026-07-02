@@ -63,15 +63,11 @@
       16..16,2..7: testudo_top;
       16..16,1..1: testudo_left
     </AnimationVariants>
-    <Resistance>
-      <Entity>
-        <Damage>
-          <Hack>1</Hack>
-          <Pierce>4</Pierce>
-          <Crush>1</Crush>
-        </Damage>
-      </Entity>
-    </Resistance>
+    <ResistanceAdd>
+      <Hack>1</Hack>
+      <Pierce>4</Pierce>
+      <Crush>1</Crush>
+    </ResistanceAdd>
   </Formation>
   <FormationAttack>
     <CanAttackAsFormation>false</CanAttackAsFormation>

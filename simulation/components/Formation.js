@@ -77,21 +77,13 @@ Formation.prototype.Schema =
 		"<text a:help='example text: &#x201C;1..1,1..-1:animationVariant1;2..2,1..-1;animationVariant2&#x201D;, this will set animationVariant1 for the first row, and animation2 for the second row. The first part of the numbers (1..1 and 2..2) means the row range. Every row between (and including) those values will switch animationvariants. The second part of the numbers (1..-1) denote the columns inside those rows that will be affected. Note that in both cases, you can use -1 for the last row/column, -2 for the second to last, etc.'/>" +
 	"</element>" +
 	"<optional>" +
-		"<element name='Resistance'>" +
-			"<element name='Entity'>" +
-				"<interleave>" +
-					"<optional>" +
-						"<element name='Damage'>" +
-							"<oneOrMore>" +
-								"<element a:help='Resistance against any number of damage types affecting health.'>" +
-									"<anyName/>" +
-									"<ref name='nonNegativeDecimal'/>" +
-								"</element>" +
-							"</oneOrMore>" +
-						"</element>" +
-					"</optional>" +
-				"</interleave>" +
-			"</element>" +
+		"<element name='ResistanceAdd'>" +
+			"<oneOrMore>" +
+				"<element a:help='Resistance against any number of damage types affecting health.'>" +
+					"<anyName/>" +
+					"<ref name='decimal'/>" +
+				"</element>" +
+			"</oneOrMore>" +
 		"</element>" +
 	"</optional>";
 
