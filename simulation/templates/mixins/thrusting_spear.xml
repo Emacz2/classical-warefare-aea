@@ -7,15 +7,15 @@
     <Pierce op="mul">0.8</Pierce>
   </Damage>
       <MaxRange op="add">-0.5</MaxRange>
-      <RepeatTime op="add">-700</RepeatTime>
+      <RepeatTime op="add">-500</RepeatTime>
     </Melee>
   </Attack>
   <UnitMotion>
-  <WalkSpeed op="mul">1.08</WalkSpeed>
+  <WalkSpeed op="mul">1.05</WalkSpeed>
   <Acceleration op="add">5</Acceleration>
   </UnitMotion>
   <Identity>
     <GenericName>Thrusting spearman</GenericName>
-    <Tooltip>7 tenths of a second faster repeat time and 8% faster walk speed but -0.5 range, but 80% peirce and 10% hack dmg of regular spear</Tooltip>
+    <Tooltip>5 tenths of a second faster repeat time and 8% faster walk speed but -0.5 range, but 80% peirce and 10% hack dmg of regular spear</Tooltip>
   </Identity>
 </Entity>
