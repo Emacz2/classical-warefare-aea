@@ -4,7 +4,7 @@
 		"wood": 250,
 		"metal": 150
 	},
-	"supersedes": "city_state_attack_ranged_01",
+	"supersedes": "citystate/city_state_attack_ranged_01",
 	"requirements": {
 		"all": [
 			{ "tech": "phase_town" },

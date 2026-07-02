@@ -5,7 +5,7 @@
       <AttackName>Sling</AttackName>
       <Damage>
         <Crush>5</Crush>
-        <Pierce>2</Pierce>
+        <Pierce>2.1</Pierce>
       </Damage>
       <MaxRange>50</MaxRange>
       <MinRange>5</MinRange>

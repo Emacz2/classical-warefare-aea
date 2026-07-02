@@ -19,5 +19,5 @@
 		{ "value": "Atacck/Ranged/Damage/Crush", "multiply": 1.25 }
 	
 	],
-	"affects": ["Elite Melee Mercenary"]
+	"affects": ["Elite Mercenary"]
 }
