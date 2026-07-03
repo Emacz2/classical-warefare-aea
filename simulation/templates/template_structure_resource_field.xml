@@ -25,7 +25,7 @@
     <Territory>own</Territory>
     <Distance>
       <FromClass>FarmBlocker</FromClass>
-      <MinDistance>60</MinDistance>
+      <MinDistance>45</MinDistance>
     </Distance>
   </BuildRestrictions>
   <Loot>
