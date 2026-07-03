@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-  <Attack>
-    <Ranged>
-    <MinRange>10</MinRange>
-  </Ranged>
-</Attack>
  <UnitMotion>
   <WalkSpeed op="mul">1.1</WalkSpeed>
  </UnitMotion>
@@ -13,7 +8,7 @@
     <GenericName>Sythian Archer</GenericName>
     <SpecificName>Toxótēs Syrías</SpecificName>
     <Icon>units/sele/infantry_archer.png</Icon>
-    <Tooltip>Sythian archers; 10% more walk speed</Tooltip>
+    <Tooltip>Scythian archers; 10% more walk speed</Tooltip>
   <ResourceGatherer disable=""/>
   </Identity>
 </Entity>

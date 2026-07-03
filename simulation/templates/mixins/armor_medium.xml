@@ -11,7 +11,7 @@
   </Resistance>
  <Identity>
     <GenericName>Medium Armor</GenericName>
-    <Tooltip>+1.5 Hack and +1 Crush/Pierce ressitance but -3% walk speed</Tooltip>
+    <Tooltip>+1.5 Hack and +1 Crush/Pierce resistance but -3% walk speed</Tooltip>
     <History>Linothorax, scale vest, muscle cuirass</History>
   </Identity>
   <UnitMotion>

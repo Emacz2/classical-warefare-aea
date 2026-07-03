@@ -4,13 +4,13 @@
     <Entity>
       <Damage>
       <Crush op="add">0.5</Crush>
-      <Hack op="add">0</Hack>
+      <Hack op="add">0.5</Hack>
       <Pierce op="add">4.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
  <Identity>
-    <GenericName>Missle Shield</GenericName>
+    <GenericName>Missile Shield</GenericName>
     <Tooltip>+4.5 Pierce and +0.5 Crush/Hack resistance but -5% walk speed</Tooltip>
     <History>Sparabara, Gerrhon, Persian Wall Shield</History>
   </Identity>

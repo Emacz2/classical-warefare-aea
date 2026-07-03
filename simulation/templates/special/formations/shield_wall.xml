@@ -29,6 +29,6 @@
   <Identity>
     <GenericName>Shield Wall</GenericName>
     <Icon>formations/phalanx.png</Icon>
-    <Tooltip>Compact formation of Infantry Spearmen creating a shield wall. Increases resitances; +2 Hack/Pierce resistance and + 1 Crush resitanace but movement multiplier reduced by 35%</Tooltip>
+    <Tooltip>Compact formation of Infantry Spearmen creating a shield wall; +2 Hack/Pierce and + 1 Crush resistance  but movement multiplier reduced by 35%</Tooltip>
   </Identity>
 </Entity>
