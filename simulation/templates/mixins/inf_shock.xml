@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
    <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
-    <Acceleration op="mul">1.2</Acceleration>
+    <Acceleration op="mul">1.25</Acceleration>
   </UnitMotion>
   <Identity>
     <GenericName>Schock Infantry</GenericName>
-    <Tooltip>Gain 15% walk speed and 20% accleration</Tooltip>
+    <Tooltip>Shock infantry 25% more acceleration</Tooltip>
   </Identity>
 </Entity>

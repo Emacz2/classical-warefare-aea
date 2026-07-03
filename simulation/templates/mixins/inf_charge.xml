@@ -3,14 +3,14 @@
   <UnitAI>
     <Charge>
       <Damage>
-        <Crush>12</Crush>
+        <Crush>12.5</Crush>
       </Damage>
       <Splash>
         <Shape>Circular</Shape>
         <Range>1.5</Range>
         <FriendlyFire>false</FriendlyFire>
         <Damage>
-          <Crush>3</Crush>
+          <Crush>6</Crush>
         </Damage>
       </Splash>
       <ResistanceAdd>
@@ -25,6 +25,6 @@
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
     <GenericName>Charge unit</GenericName>
-    <Tooltip>Charge the enemy and do intiial +12 Crush +3 Crush splash dmg over 1.5m but lose 1 of each restiance while charging</Tooltip>
+    <Tooltip>Performs a devastating charge (Runs) when engaging from range. Deals +12 Crush damage (+3 splash) but temporarily loses 1 Hack, Pierce and Crush resistance while charging</Tooltip>
   </Identity>
 </Entity>
