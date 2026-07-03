@@ -3,8 +3,7 @@
   <Attack>
     <Melee>
     <Damage>
-	  <Hack op="mul">0.4</Hack>
-    <Pierce op="mul">0.8</Pierce>
+	  <Hack op="mul">0.25</Hack>
   </Damage>
       <MaxRange op="add">-0.5</MaxRange>
       <RepeatTime op="add">-500</RepeatTime>
