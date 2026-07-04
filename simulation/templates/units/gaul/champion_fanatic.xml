@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_inf_champ|shield_large|spear_long|inf_shock|inf_charge|template_unit_champion_infantry_spearman">
+<Entity parent="allied_inf_champ|shield_large|spear_long|inf_shock|template_unit_champion_infantry_spearman">
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Naked Fanatic</GenericName>

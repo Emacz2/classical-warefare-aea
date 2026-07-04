@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="gaul|template_unit_hero_cavalry_swordsman">
+<Entity parent="gaul|cav_charge|template_unit_hero_cavalry_swordsman">
   <Auras datatype="tokens">
     units/heroes/gaul_hero_ambiorix
     units/heroes/gaul_hero_ambiorix2
