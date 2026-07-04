@@ -473,6 +473,10 @@ Attack.prototype.RepeatRangeCheck = function(type) {
 		this.StopAttacking("OutOfRange");
 };
 
+Attack.prototype.ChargeRepeatTimeBonusEnd = function() {
+	this.StopAttacking("ChargeRepeatTimeBonusEnd");
+};
+
 /**
  * @param {number} target - The target to attack.
  * @param {string} type - The type of attack to use.
@@ -533,6 +537,12 @@ Attack.prototype.StartAttacking = function(target, type, callerIID, force)
 	this.force = force;
 	this.timer = cmpTimer.SetInterval(this.entity, IID_Attack, "Attack", prepare, timings.repeat, type);
 	this.checkTimer = cmpTimer.SetInterval(this.entity, IID_Attack, "RepeatRangeCheck", checkStart, repeatPerCheck, type);
+	const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+	if (cmpModifiersManager.HasAnyModifier("Charge RepeatTimeBonus", this.entity))
+	{
+		const cmpUnitAI = Engine.QueryInterface(this.entity, IID_UnitAI);
+		cmpTimer.SetTimeout(this.entity, IID_Attack, "ChargeRepeatTimeBonusEnd", cmpUnitAI.template.Charge.RepeatTimeBonus.Duration);
+	}
 	return true;
 };
 
