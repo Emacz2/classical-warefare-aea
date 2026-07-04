@@ -2147,6 +2147,10 @@ UnitAI.prototype.UnitFsmSpec = {
 			},
 
 			"Attacked": function(msg) {
+				const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+				if (cmpModifiersManager.HasAnyModifier("Charge RepeatTimeBonus", this.entity))
+					return;
+
 				// If we're already in combat mode, ignore anyone else who's attacking us
 				// unless it's a melee attack since they may be blocking our way to the target
 				if (msg.data.type == "Melee" && (this.GetStance().targetAttackersAlways || !this.order.data.force))
