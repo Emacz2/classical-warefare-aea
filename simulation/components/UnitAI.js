@@ -66,15 +66,19 @@ UnitAI.prototype.Schema =
 			"<interleave>" +
 				"<element name='MinRange'><ref name='nonNegativeDecimal'/></element>" +
 				"<element name='MaxRange'><ref name='nonNegativeDecimal'/></element>" +
-				AttackHelper.BuildAttackEffectsSchema() +
 				"<optional>" +
-					"<element name='Splash'>" +
-						"<interleave>" +
-							"<element name='Shape' a:help='Shape of the splash damage, can be circular or linear'><text/></element>" +
-							"<element name='Range' a:help='Size of the area affected by the splash'><ref name='nonNegativeDecimal'/></element>" +
-							"<element name='FriendlyFire' a:help='Whether the splash damage can hurt non enemy units'><data type='boolean'/></element>" +
-							AttackHelper.BuildAttackEffectsSchema() +
-						"</interleave>" +
+					"<element name='Shock'>" +
+						AttackHelper.BuildAttackEffectsSchema() +
+						"<optional>" +
+							"<element name='Splash'>" +
+								"<interleave>" +
+									"<element name='Shape' a:help='Shape of the splash damage, can be circular or linear'><text/></element>" +
+									"<element name='Range' a:help='Size of the area affected by the splash'><ref name='nonNegativeDecimal'/></element>" +
+									"<element name='FriendlyFire' a:help='Whether the splash damage can hurt non enemy units'><data type='boolean'/></element>" +
+									AttackHelper.BuildAttackEffectsSchema() +
+								"</interleave>" +
+							"</element>" +
+						"</optional>" +
 					"</element>" +
 				"</optional>" +
 				"<optional>" +
@@ -85,6 +89,22 @@ UnitAI.prototype.Schema =
 								"<ref name='decimal' />" +
 							"</element>" +
 						"</oneOrMore>" +
+					"</element>" +
+				"</optional>" +
+				"<optional>" +
+					"<element name='RepeatTimeBonus'>" +
+						"<interleave>" +
+							"<optional>" +
+								"<element name='Multiplier'>" +
+									"<ref name='positiveDecimal' />" +
+								"</element>" +
+							"</optional>" +
+							"<optional>" +
+								"<element name='Duration'>" +
+									"<ref name='positiveDecimal' />" +
+								"</element>" +
+							"</optional>" +
+						"</interleave>" +
 					"</element>" +
 				"</optional>" +
 			"</interleave>" +
@@ -2127,6 +2147,10 @@ UnitAI.prototype.UnitFsmSpec = {
 			},
 
 			"Attacked": function(msg) {
+				const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+				if (cmpModifiersManager.HasAnyModifier("Charge RepeatTimeBonus", this.entity))
+					return;
+
 				// If we're already in combat mode, ignore anyone else who's attacking us
 				// unless it's a melee attack since they may be blocking our way to the target
 				if (msg.data.type == "Melee" && (this.GetStance().targetAttackersAlways || !this.order.data.force))
@@ -2158,52 +2182,59 @@ UnitAI.prototype.UnitFsmSpec = {
 					this.StopTimer();
 
 					const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
-					if (cmpModifiersManager.HasAnyModifier("Charge Resistance", this.entity))
-					{
-						cmpModifiersManager.RemoveAllModifiers("Charge Resistance", this.entity);
-						const cmpPosition = Engine.QueryInterface(this.entity, IID_Position);
-						if (!cmpPosition || !cmpPosition.IsInWorld())
-							return;
-						const selfPosition = cmpPosition.GetPosition();
-						const cmpTargetPosition = Engine.QueryInterface(this.order.data.target, IID_Position);
-						if (!cmpTargetPosition || !cmpTargetPosition.IsInWorld())
-							return;
-						const targetPosition = cmpTargetPosition.GetPosition();
-						const template = this.template.Charge;
-						const attackData = AttackHelper.GetAttackEffectsData("Attack/Melee", template, this.entity);
-						let splashData = undefined;
-						if (template.Splash)
-							splashData = {
-								"attackData": AttackHelper.GetAttackEffectsData("Attack/Melee/Splash", template.Splash, this.entity),
-								"friendlyFire": template.Splash.FriendlyFire == "true",
-								"radius": ApplyValueModificationsToEntity("Attack/Melee/Splash/Range", +template.Splash.Range, this.entity),
-								"shape": template.Splash.Shape,
-							}
-						Engine.QueryInterface(SYSTEM_ENTITY, IID_DelayedDamage).Hit({
-							"type": this.order.data.attackType,
-							"attackData": attackData,
-							"splash": splashData,
-							"attacker": this.entity,
-							"attackerOwner": Engine.QueryInterface(this.entity, IID_Ownership).GetOwner(),
-							"target": this.order.data.target,
-							"position": targetPosition,
-							"direction": Vector3D.sub(targetPosition, selfPosition),
-						}, 0);
-					}
+					if (!cmpModifiersManager.HasAnyModifier("Charge ResistanceAdd", this.entity))
+						return;
+					cmpModifiersManager.RemoveAllModifiers("Charge ResistanceAdd", this.entity);
+					const template = this.template.Charge.Shock;
+					if (!template)
+						return;
+					const cmpPosition = Engine.QueryInterface(this.entity, IID_Position);
+					if (!cmpPosition || !cmpPosition.IsInWorld())
+						return;
+					const selfPosition = cmpPosition.GetPosition();
+					const cmpTargetPosition = Engine.QueryInterface(this.order.data.target, IID_Position);
+					if (!cmpTargetPosition || !cmpTargetPosition.IsInWorld())
+						return;
+					const targetPosition = cmpTargetPosition.GetPosition();
+					const attackData = AttackHelper.GetAttackEffectsData("Attack/Melee", template, this.entity);
+					let splashData = undefined;
+					if (template.Splash)
+						splashData = {
+							"attackData": AttackHelper.GetAttackEffectsData("Attack/Melee/Splash", template.Splash, this.entity),
+							"friendlyFire": template.Splash.FriendlyFire == "true",
+							"radius": ApplyValueModificationsToEntity("Attack/Melee/Splash/Range", +template.Splash.Range, this.entity),
+							"shape": template.Splash.Shape,
+						}
+					Engine.QueryInterface(SYSTEM_ENTITY, IID_DelayedDamage).Hit({
+						"type": this.order.data.attackType,
+						"attackData": attackData,
+						"splash": splashData,
+						"attacker": this.entity,
+						"attackerOwner": Engine.QueryInterface(this.entity, IID_Ownership).GetOwner(),
+						"target": this.order.data.target,
+						"position": targetPosition,
+						"direction": Vector3D.sub(targetPosition, selfPosition),
+					}, 0);
 				},
 
 				"Timer": function(msg) {
 					const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
-					if (!cmpModifiersManager.HasAnyModifier("Charge Resistance", this.entity) &&
+					if (!cmpModifiersManager.HasAnyModifier("Charge ResistanceAdd", this.entity) &&
 					    this.CheckTargetChargeRange(this.order.data.target, this.order.data.attackType))
 					{
-						const charge = this.template.Charge;
+						const template = this.template.Charge;
 						const o = {};
 						const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
-						f("Resistance/Entity/Damage/Hack", charge.ResistanceAdd?.Hack);
-						f("Resistance/Entity/Damage/Pierce", charge.ResistanceAdd?.Pierce);
-						f("Resistance/Entity/Damage/Crush", charge.ResistanceAdd?.Crush);
-						cmpModifiersManager.AddModifiers("Charge Resistance", o, this.entity);
+						f("Resistance/Entity/Damage/Hack", template.ResistanceAdd?.Hack);
+						f("Resistance/Entity/Damage/Pierce", template.ResistanceAdd?.Pierce);
+						f("Resistance/Entity/Damage/Crush", template.ResistanceAdd?.Crush);
+						cmpModifiersManager.AddModifiers("Charge ResistanceAdd", o, this.entity);
+
+						const p = {};
+						const g = (s, v) => { if (v) p[s] = [{ "affects": ["Soldier"], "multiply": +v }]; };
+						g("Attack/Melee/RepeatTime", template.RepeatTimeBonus?.Multiplier);
+						cmpModifiersManager.AddModifiers("Charge RepeatTimeBonus", p, this.entity);
+
 						this.Run();
 					}
 
@@ -2335,6 +2366,9 @@ UnitAI.prototype.UnitFsmSpec = {
 					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
 					if (cmpAttack)
 						cmpAttack.StopAttacking();
+
+					const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+					cmpModifiersManager.RemoveAllModifiers("Charge RepeatTimeBonus", this.entity);
 				},
 
 				"OutOfRange": function() {
@@ -2353,6 +2387,14 @@ UnitAI.prototype.UnitFsmSpec = {
 
 				"TargetInvalidated": function() {
 					this.SetNextState("FINDINGNEWTARGET");
+				},
+
+				"ChargeRepeatTimeBonusEnd": function() {
+					const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+					cmpModifiersManager.RemoveAllModifiers("Charge RepeatTimeBonus", this.entity);
+					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+					if (!cmpAttack.StartAttacking(this.order.data.target, this.order.data.attackType, IID_UnitAI, this.order.data.force))
+						this.SetNextState("FINDINGNEWTARGET");
 				},
 
 				"Attacked": function(msg) {

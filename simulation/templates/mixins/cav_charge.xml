@@ -2,17 +2,19 @@
 <Entity>
   <UnitAI>
     <Charge>
-      <Damage>
-        <Crush>25</Crush>
-      </Damage>
-      <Splash>
-        <Shape>Circular</Shape>
-        <Range>2</Range>
-        <FriendlyFire>false</FriendlyFire>
+      <Shock>
         <Damage>
-          <Crush>12</Crush>
+          <Crush>25</Crush>
         </Damage>
-      </Splash>
+        <Splash>
+          <Shape>Circular</Shape>
+          <Range>2</Range>
+          <FriendlyFire>false</FriendlyFire>
+          <Damage>
+            <Crush>12</Crush>
+          </Damage>
+        </Splash>
+      </Shock>
       <ResistanceAdd>
         <Hack>-1</Hack>
         <Pierce>-1</Pierce>

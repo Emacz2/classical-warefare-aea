@@ -2,17 +2,23 @@
 <Entity>
   <UnitAI>
     <Charge>
-      <Damage>
-        <Crush>12.5</Crush>
-      </Damage>
-      <Splash>
-        <Shape>Circular</Shape>
-        <Range>1.5</Range>
-        <FriendlyFire>false</FriendlyFire>
+      <Shock>
         <Damage>
-          <Crush>6</Crush>
+          <Crush>12.5</Crush>
         </Damage>
-      </Splash>
+        <Splash>
+          <Shape>Circular</Shape>
+          <Range>1.5</Range>
+          <FriendlyFire>false</FriendlyFire>
+          <Damage>
+            <Crush>6</Crush>
+          </Damage>
+        </Splash>
+      </Shock>
+      <RepeatTimeBonus>
+        <Multiplier>0.01</Multiplier>
+        <Duration>5</Duration>
+      </RepeatTimeBonus>
       <ResistanceAdd>
         <Hack>-1</Hack>
         <Pierce>-1</Pierce>
