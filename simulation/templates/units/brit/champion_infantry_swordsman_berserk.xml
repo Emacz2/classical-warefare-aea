@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="brit|sword_long|inf_charge|template_unit_champion_infantry_swordsman">
+<Entity parent="brit|sword_long|inf_shock|template_unit_champion_infantry_swordsman">
   <Identity>
     <Civ>brit</Civ>
     <GenericName>Brythonic Champion Bezerk mode</GenericName>
@@ -31,8 +31,8 @@
     </Berserker_Rage>
   </Upgrade>
 <UnitMotion>
-    <WalkSpeed op="mul">1.25</WalkSpeed>
-    <Acceleration op="mul">1.5</Acceleration>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <Acceleration op="mul">1.25</Acceleration>
   </UnitMotion>
   <VisualActor>
     <Actor>units/britons/infantry_swordsman_berserk.xml</Actor>

@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-  <UnitMotion>
-    <Acceleration op="mul">1.35</Acceleration>
+  <UnitAI>
+    <Charge>
+      <Shock>
+        <Damage>
+          <Crush>25</Crush>
+        </Damage>
+        <Splash>
+          <Shape>Circular</Shape>
+          <Range>2</Range>
+          <FriendlyFire>false</FriendlyFire>
+          <Damage>
+            <Crush>12</Crush>
+          </Damage>
+        </Splash>
+      </Shock>
+      <ResistanceAdd>
+        <Pierce>-2</Pierce>
+      </ResistanceAdd>
+      <MinRange>15</MinRange>
+      <MaxRange>25</MaxRange>
+    </Charge>
+  </UnitAI>
+   </UnitAI>
+    <UnitMotion>
+    <Acceleration op="mul">1.25</Acceleration>
+    <RunMultiplier op="mul">1.15</RunMultiplier>
   </UnitMotion>
   <Identity>
-    <GenericName>Schock Cavalry</GenericName>
-    <Tooltip>Shock Cavalru 35% more acceleration</Tooltip>
+   <Classes datatype="tokens">Charge</Classes>
+    <GenericName>Shock Cavalry</GenericName>
+    <Tooltip>A shock charge. Charges (25% faster accleration and 15% faster Run) into combat, delivering a powerful mounted impact on first contact (+25 Crush dmg, +12 crush splash dmg) before continuing normal melee. Temporarily loses 2 Pierc resistance while charging</Tooltip>
   </Identity>
 </Entity>
+
