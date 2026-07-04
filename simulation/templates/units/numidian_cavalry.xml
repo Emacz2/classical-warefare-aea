@@ -17,10 +17,6 @@
       <RepeatTime op="add">-300</RepeatTime>
     </Ranged>
   </Attack>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.1</WalkSpeed>
-    <Acceleration op="add">10</Acceleration>
-  </UnitMotion>
   <Identity>
     <Rank>Elite</Rank>
     <GenericName>Numidian Light Javelineer Cavalry</GenericName>
@@ -30,6 +26,11 @@
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
+    <UnitMotion>
+    <WalkSpeed op="mul">1.15</WalkSpeed>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
+    <Acceleration op="mul">1.1</Acceleration>
+  </UnitMotion>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/carthaginians/champion_cavalry_numidian_c_m.xml</Actor>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_cav|cav_light|units/numidian_cavalry">
+<Entity parent="allied_cav|units/numidian_cavalry">
   <Identity>
     <GenericName>Allied Numidian Light Javelineer Cavalry</GenericName>
     <SpecificName>Numidae Iaculatores</SpecificName>

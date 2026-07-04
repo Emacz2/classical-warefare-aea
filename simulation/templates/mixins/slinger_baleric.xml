@@ -6,8 +6,8 @@
   <Attack>
     <Ranged>
      <Damage>
-      <Crush op="mul">1.2</Crush>
-      <Pierce op="mul">1.2</Pierce>
+      <Crush op="mul">1.25</Crush>
+      <Pierce op="mul">1.25</Pierce>
     </Damage>
       <MaxRange op="add">+2</MaxRange>
       <RepeatTime op="add">200</RepeatTime>
@@ -20,7 +20,7 @@
     <GenericName>Balearic Slinger</GenericName>
     <SpecificName>Qallāʿ Ibušimi</SpecificName>
     <Icon>units/cart/infantry_slinger.png</Icon>
-    <Tooltip>Balleric slingers 20% damage, +2 range and 10% more accurate but two tenths of a second slower repeat time and +25% train time.</Tooltip>
+    <Tooltip>Balleric slingers 25% damage, +2 range and 10% more accurate but two tenths of a second slower repeat time and +25% train time.</Tooltip>
     <History>The Balearic slingers, indigenous to the Balearic Islands, were warriors from ancient times famed for their mastery in the art of using the sling;</History>
   </Identity>
   <ResourceGatherer disable=""/>
