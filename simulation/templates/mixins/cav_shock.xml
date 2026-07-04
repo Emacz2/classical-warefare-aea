@@ -28,6 +28,7 @@
   </UnitMotion>
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
+   <VisibleClasses datatype="tokens">Shock</VisibleClasses>
     <GenericName>Shock Cavalry</GenericName>
     <Tooltip>A shock charge. Charges (25% faster acceleration and 15% faster Run) into combat, delivering a powerful mounted impact on first contact (+25 Crush dmg, +12 crush splash dmg) before continuing normal melee. Temporarily loses 2 Pierce resistance while charging</Tooltip>
   </Identity>
