@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="thebe|cav_medium|template_unit_cavalry_melee_swordsman">
+<Entity parent="thebe|cav_charge|cav_medium|template_unit_cavalry_melee_swordsman">
   <Identity>
     <Civ>theb</Civ>
     <Lang>greek</Lang>
