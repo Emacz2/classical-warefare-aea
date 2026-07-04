@@ -15,7 +15,7 @@
   </UnitMotion>
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
-   
+    <VisibleClasses datatype="tokens">Charge</VisibleClasses>
     <Tooltip>Rapidly advances (15% faster accleration and 10% faster run) into combat when engaging from range but is temporarily more vulnerable to missile fire (-1 pierce Resistance.)</Tooltip>
   </Identity>
 </Entity>
