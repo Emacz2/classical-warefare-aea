@@ -10,8 +10,8 @@
     </Entity>
   </Resistance>
     <UnitMotion>
-    <WalkSpeed op="mul">1.30</WalkSpeed>
-    <RunMultiplier op="mul">1.6</RunMultiplier>
+    <WalkSpeed op="mul">1.3</WalkSpeed>
+    <RunMultiplier op="mul">1.5</RunMultiplier>
   </UnitMotion>
    <Position>
     <TurnRate>5</TurnRate>

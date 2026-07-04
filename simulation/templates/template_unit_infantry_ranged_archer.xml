@@ -32,7 +32,7 @@
   </Identity>
 <UnitMotion>
     <WalkSpeed op="mul">1.02</WalkSpeed>
-    <RunMultiplier op="mul">1.55</RunMultiplier>
+    <RunMultiplier op="mul">1.15</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

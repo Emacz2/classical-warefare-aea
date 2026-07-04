@@ -12,8 +12,8 @@
       <RepeatTime>1000</RepeatTime>
       <Bonuses>
         <BonusMelee>
-          <Classes>Ranged Infantry</Classes>
-          <Multiplier>1.5</Multiplier>
+          <Classes>Polearm Infantry</Classes>
+          <Multiplier>1.25</Multiplier>
         </BonusMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -27,12 +27,12 @@
   </Cost>
   <Identity>
     <VisibleClasses datatype="tokens">Swordsman</VisibleClasses>
-    <Tooltip>Counters: 1.2× vs Polearm Infantry.</Tooltip>
+    <Tooltip>Counters: 1.25× vs Polearm Infantry.</Tooltip>
     <GenericName>Swordsman</GenericName>
   </Identity>
   <UnitMotion>
     <WalkSpeed op="mul">0.96</WalkSpeed>
-    <RunMultiplier op="mul">1.45</RunMultiplier>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

@@ -7,10 +7,16 @@
     <MaxTurningAngle>0.785</MaxTurningAngle>
     <SortingClasses>Melee Ranged</SortingClasses>
     <SortingOrder>fillToTheCenter</SortingOrder>
+    <SpeedMultiplier>0.85</SpeedMultiplier>
+     <ResistanceAdd>
+      <Hack>1</Hack>
+      <Pierce>1</Pierce>
+      <Crush>1</Crush>
+    </ResistanceAdd>
   </Formation>
   <Identity>
     <GenericName>Box</GenericName>
     <Icon>formations/box.png</Icon>
-    <Tooltip>Square formation to protect all sides.</Tooltip>
+    <Tooltip>Square formation to protect all sides. Gain +1 of each resistance but movement multiplier reduced by 15%</Tooltip>
   </Identity>
 </Entity>

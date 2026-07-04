@@ -4,20 +4,20 @@
     <Charge>
       <Shock>
         <Damage>
-          <Crush>20</Crush>
+          <Crush>25</Crush>
         </Damage>
         <Splash>
           <Shape>Circular</Shape>
-          <Range>2.5</Range>
+          <Range>2</Range>
           <FriendlyFire>false</FriendlyFire>
           <Damage>
-            <Crush>3</Crush>
+            <Crush>12</Crush>
           </Damage>
         </Splash>
       </Shock>
       <ResistanceAdd>
         <Hack>-1</Hack>
-        <Pierce>-2</Pierce>
+        <Pierce>-1</Pierce>
         <Crush>-1</Crush>
       </ResistanceAdd>
       <MinRange>15</MinRange>
@@ -27,6 +27,6 @@
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
     <GenericName>Charge unit</GenericName>
-    <Tooltip>Charge the enemy and do intiial +20 Crush and 2.5 Hack/Pierce dmg but lose 1 of each restiance while charging</Tooltip>
+    <Tooltip>Performs a devastating charge (Runs) when engaging from range. Deals +25 Crush damage (+12 splash) but temporarily loses 1 of each resistance while charging</Tooltip>
   </Identity>
 </Entity>

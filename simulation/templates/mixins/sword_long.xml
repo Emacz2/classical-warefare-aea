@@ -17,8 +17,8 @@
     </Resources>
   </Cost>
   <UnitMotion>
-  <WalkSpeed op="mul">0.99</WalkSpeed>
-  <Acceleration op="add">-1</Acceleration>
+ <WalkSpeed op="mul">0.98</WalkSpeed>
+  <Acceleration op="add">-2</Acceleration>
   </UnitMotion>
   <Identity>
     <GenericName>Long sword</GenericName>

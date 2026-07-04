@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_melee">
+<Entity parent="template_unit_infantry_melee|inf_brace_pike">
   <Attack>
     <Melee>
       <AttackName>Pike</AttackName>
       <Damage>
         <Hack>5</Hack>
-        <Pierce>14</Pierce>
+        <Pierce>13</Pierce>
       </Damage>
       <MaxRange>10</MaxRange>
       <MinRange>2</MinRange>
@@ -14,7 +14,7 @@
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>3</Multiplier>
+          <Multiplier>2.5</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
@@ -29,7 +29,7 @@
   </Cost>
   <Identity>
     <GenericName>Pikeman</GenericName>
-    <Tooltip>Counters: 3 vs Cavalry.</Tooltip>
+    <Tooltip>Counters: 2.5 vs Cavalry.</Tooltip>
     <Classes datatype="tokens">Polearm</Classes>
     <VisibleClasses datatype="tokens">Pikeman</VisibleClasses>
   </Identity>
@@ -45,6 +45,6 @@
   </UnitAI>
 <UnitMotion>
     <WalkSpeed op="mul">0.92</WalkSpeed>
-    <RunMultiplier op="mul">1.35</RunMultiplier>
+    <RunMultiplier op="mul">1.05</RunMultiplier>
   </UnitMotion>
 </Entity>

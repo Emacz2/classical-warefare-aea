@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_infantry_melee|brace">
+<Entity parent="template_unit_infantry_melee|inf_brace_spear">
   <Attack>
     <Melee>
       <AttackName>Spear</AttackName>
       <Damage>
         <Hack>5</Hack>
-        <Pierce>13.5</Pierce>
+        <Pierce>12</Pierce>
       </Damage>
       <MaxRange>4.5</MaxRange>
       <MinRange>1</MinRange>
@@ -14,7 +14,7 @@
       <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2</Multiplier>
+          <Multiplier>1.5</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
@@ -27,13 +27,13 @@
   </Cost>
   <Identity>
     <GenericName>Spearman</GenericName>
-    <Tooltip>Counters: 2× vs Cavalry.</Tooltip>
+    <Tooltip>Counters: 1.5× vs Cavalry.</Tooltip>
     <Classes datatype="tokens">Polearm</Classes>
     <VisibleClasses datatype="tokens">Spearman</VisibleClasses>
   </Identity>
  <UnitMotion>
     <WalkSpeed op="mul">0.96</WalkSpeed>
-    <RunMultiplier op="mul">1.45</RunMultiplier>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

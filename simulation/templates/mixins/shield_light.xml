@@ -14,7 +14,7 @@
   </UnitMotion>
  <Identity>
     <GenericName>Light skirmishing shields</GenericName>
-    <Tooltip>+1.5 Pierce and +0.5 Crush/Hack resitance but -2% walk speed</Tooltip>
+    <Tooltip>+1.5 Pierce and +0.5 Crush/Hack resistance but -2% walk speed</Tooltip>
     <History>Noba hide, small wicker buckler, small Mauryan shield, very light pelte, small gerrhon.</History>
   </Identity>
 </Entity>

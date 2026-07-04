@@ -6,6 +6,10 @@
     <UnitSeparationWidthMultiplier>2</UnitSeparationWidthMultiplier>
     <MaxRows>2</MaxRows>
     <MinColumns>3</MinColumns>
+    <SpeedMultiplier>1.05</SpeedMultiplier>
+     <ResistanceAdd>
+      <Pierce>1</Pierce>
+    </ResistanceAdd>
   </Formation>
   <FormationAttack>
     <CanAttackAsFormation>false</CanAttackAsFormation>
@@ -13,6 +17,6 @@
   <Identity>
     <GenericName>Skirmish</GenericName>
     <Icon>formations/skirmish.png</Icon>
-    <Tooltip>Dispersed formation for reconnaissance, ambushes or hit-and-run.</Tooltip>
+    <Tooltip>Dispersed formation for reconnaissance, ambushes or hit-and-run. movement mutiplier increased by 5% and +1 Pierce resistance</Tooltip>
   </Identity>
 </Entity>

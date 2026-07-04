@@ -15,7 +15,7 @@
 	"researchTime": 20,
 	"tooltip": "Upgrade all Ranged soldiers with +0.5 of each resistance.",
 	"modifications": [
-		{ "value": "Resistance/Entity/Damage/Cruch", "add": 0.5 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5 },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 }
 	],

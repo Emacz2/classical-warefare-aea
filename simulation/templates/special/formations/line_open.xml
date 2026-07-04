@@ -6,10 +6,15 @@
     <WidthDepthRatio>4</WidthDepthRatio>
     <MinColumns>3</MinColumns>
     <Sloppiness>0.5</Sloppiness>
+     <ResistanceAdd>
+      <Crush>0.5</Crush>
+      <Hack>0.5</Hack>
+      <Pierce>0.5</Pierce>
+    </ResistanceAdd>
   </Formation>
   <Identity>
     <GenericName>Open Order</GenericName>
     <Icon>formations/line_open.png</Icon>
-    <Tooltip>Dispersed formation for open field combat.</Tooltip>
+    <Tooltip>Dispersed formation for open field combat. Gain +0.5 of each resistance</Tooltip>
   </Identity>
 </Entity>

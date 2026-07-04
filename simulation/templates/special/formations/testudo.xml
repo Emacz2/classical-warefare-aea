@@ -75,6 +75,6 @@
   <Identity>
     <GenericName>Testudo</GenericName>
     <Icon>formations/testudo.png</Icon>
-    <Tooltip>Compact formation of Melee Infantry creating a shield shell. + 4 Pierce and +1 Crush/Hack resitances movement speed reduced by 60% speed</Tooltip>
+    <Tooltip>Compact formation of Melee Infantry creating a shield shell. + 4 Pierce and +1 Crush/Hack resistance but movement speed reduced by 60% speed</Tooltip>
   </Identity>
 </Entity>

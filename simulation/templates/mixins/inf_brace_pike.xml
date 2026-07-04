@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <UnitAI>
+    <Brace>
+      <AttackMul>1.5</AttackMul>
+    </Brace>
+  </UnitAI>
+      <Identity>
+    <Tooltip>Add 50% damage by setting pikeman to "brace".</Tooltip>
+  </Identity>
+</Entity>

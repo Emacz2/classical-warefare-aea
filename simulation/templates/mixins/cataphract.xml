@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-  <Attack>
-    <Melee>
-      <Splash>
-        <Shape>Circular</Shape>
-        <Range>2</Range>
-        <FriendlyFire>false</FriendlyFire>
-        <Damage>
-          <Crush>7.5</Crush>
-        </Damage>
-      </Splash>
-    </Melee>
-  </Attack>
   <Cost>
     <Resources>
-      <metal op="add">10</metal>
+      <metal op="add">25</metal>
     </Resources>
   </Cost>
   <Identity>
@@ -32,6 +20,5 @@
   </Resistance>
   <UnitMotion>
     <WalkSpeed op="mul">0.95</WalkSpeed>
-    <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
 </Entity>

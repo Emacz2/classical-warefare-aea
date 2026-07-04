@@ -11,8 +11,8 @@
   </Resistance>
    <UnitMotion>
     <WalkSpeed op="mul">1.45</WalkSpeed>
-    <RunMultiplier op="mul">1.7</RunMultiplier>
-    <Acceleration op="mul">1.10</Acceleration>
+    <RunMultiplier op="mul">1.6</RunMultiplier>
+    <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
    <Position>
     <TurnRate>8</TurnRate>
