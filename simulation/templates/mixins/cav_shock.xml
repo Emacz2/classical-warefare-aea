@@ -22,7 +22,6 @@
       <MaxRange>25</MaxRange>
     </Charge>
   </UnitAI>
-   </UnitAI>
     <UnitMotion>
     <Acceleration op="mul">1.25</Acceleration>
     <RunMultiplier op="mul">1.15</RunMultiplier>
