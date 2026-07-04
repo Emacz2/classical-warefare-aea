@@ -5,6 +5,7 @@
      <Damage>
         <Hack op="add">1</Hack>
         <Pierce op="add">0.5</Pierce>
+      </Damage>
     </Melee>
   </Attack>
   <Identity>
