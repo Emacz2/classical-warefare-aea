@@ -35,7 +35,7 @@
     <VisibleClasses datatype="tokens">Torchman</VisibleClasses>
   </Identity>
   <UnitMotion>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
+    <RunMultiplier op="mul">1.45</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

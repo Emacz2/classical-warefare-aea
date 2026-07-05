@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_cav_champ|cataphract|cav_heavy|template_unit_champion_cavalry_lancer">
+<Entity parent="allied_cav_champ|cav_shock|cataphract|cav_heavy|template_unit_champion_cavalry_lancer">
   <Identity>
     <Civ>pers</Civ>
     <Lang>persian</Lang>

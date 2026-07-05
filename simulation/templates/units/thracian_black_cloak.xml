@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="sword_long|inf_shock|armor_medium|template_unit_infantry_melee_swordsman">
+<Attack>
+    <Melee>
+     <Damage>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Melee>
+  </Attack>
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>

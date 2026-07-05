@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="macedonian|cav_charge|cav_shock|cav_heavy|template_unit_champion_cavalry_lancer">
+<Entity parent="macedonian|cav_shock|cav_heavy|template_unit_champion_cavalry_lancer">
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>

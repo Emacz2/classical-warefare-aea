@@ -10,7 +10,7 @@
    <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2.5</Multiplier>
+          <Multiplier>3</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PrepareTime>0</PrepareTime>
@@ -27,12 +27,12 @@
  <Identity>
     <GenericName>Pursuit Cavalry</GenericName>
      <VisibleClasses datatype="tokens">Pursuit Cavalry</VisibleClasses>
-    <Tooltip>only 0.5 of Hack and Pierce resistance but the fastest/best riders for scouting and pursuing enemy cav. 1.65 walk 2.0 run multiplier and 2.5x dmg against cav</Tooltip>
+    <Tooltip>only 0.5 of Hack and Pierce resistance but the fastest/best riders for scouting and pursuing enemy cav. 1.7 walk 1.9 run multiplier and 3x dmg against cav</Tooltip>
     <History>.</History>
   </Identity>
    <UnitMotion>
-    <WalkSpeed op="mul">1.65</WalkSpeed>
-    <RunMultiplier op="mul">1.8</RunMultiplier>
+    <WalkSpeed op="mul">1.7</WalkSpeed>
+    <RunMultiplier op="mul">1.9</RunMultiplier>
     <Acceleration op="mul">1.25</Acceleration>
   </UnitMotion>
    <Position>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="roman|sword_short|shield_heavy|armor_heavy|template_unit_champion_infantry_swordsman">
+<Entity parent="roman|inf_shock|sword_short|shield_heavy|armor_heavy|template_unit_champion_infantry_swordsman">
   <Auras datatype="tokens">
     units/centurion
     units/centurion_2

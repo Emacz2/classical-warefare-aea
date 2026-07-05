@@ -20,6 +20,9 @@
       </Damage>
     </Entity>
   </Resistance>
+    <UnitMotion>
+    <RunMultiplier>1.4</RunMultiplier>
+  </UnitMotion>
   <Sound>
     <SoundGroups>
       <order_garrison>voice/{lang}/civ/civ_{phenotype}_garrison.xml</order_garrison>

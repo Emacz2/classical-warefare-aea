@@ -2,12 +2,24 @@
 <Entity>
 <Cost>
     <BuildTime op="mul">1.25</BuildTime>
+      <Resources>
+      <metal>60</metal>
+      <food>25</food>
+      <wood>0</wood>
+      <stone>0</stone>
+    </Resources>
 </Cost>
   <Attack>
+   <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture>1.0</Capture>
+      <MaxRange>3</MaxRange>
+      <RepeatTime>1000</RepeatTime>
+    </Capture>
     <Ranged>
      <Damage>
-      <Crush op="mul">1.2</Crush>
-      <Pierce op="mul">1.2</Pierce>
+      <Crush op="mul">1.25</Crush>
+      <Pierce op="mul">1.25</Pierce>
     </Damage>
       <MaxRange op="add">+2</MaxRange>
       <RepeatTime op="add">200</RepeatTime>
@@ -19,8 +31,9 @@
   <Identity>
     <GenericName>Balearic Slinger</GenericName>
     <SpecificName>Qallāʿ Ibušimi</SpecificName>
+     <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Icon>units/cart/infantry_slinger.png</Icon>
-    <Tooltip>Balleric slingers 20% damage, +2 range and 10% more accurate but two tenths of a second slower repeat time and +25% train time.</Tooltip>
+    <Tooltip>Balleric slingers 25% damage, +2 range and 10% more accurate but two tenths of a second slower repeat time and +25% train time.</Tooltip>
     <History>The Balearic slingers, indigenous to the Balearic Islands, were warriors from ancient times famed for their mastery in the art of using the sling;</History>
   </Identity>
   <ResourceGatherer disable=""/>

@@ -23,9 +23,9 @@
     <GenericName>Champion Infantry Maceman</GenericName>
     <VisibleClasses datatype="tokens">Melee Maceman</VisibleClasses>
   </Identity>
-   <UnitMotion>
+    <UnitMotion>
     <WalkSpeed op="mul">0.96</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
+    <RunMultiplier op="mul">1.45</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

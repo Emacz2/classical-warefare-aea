@@ -4,9 +4,6 @@
     <GenericName>Melee Cavalry</GenericName>
     <VisibleClasses datatype="tokens">Melee</VisibleClasses>
   </Identity>
-  <Cost>
-    <BuildTime>18</BuildTime>
-  </Cost>
   <Health>
     <Max>250</Max>
   </Health>

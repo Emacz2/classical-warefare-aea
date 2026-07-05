@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
+  <UnitAI>
+    <Charge>
+      <RepeatTimeBonus>
+        <Multiplier>0.9</Multiplier>
+        <Duration>5</Duration>
+      </RepeatTimeBonus>
+      <ResistanceAdd>
+        <Pierce>-1</Pierce>
+      </ResistanceAdd>
+      <MinRange>12.5</MinRange>
+      <MaxRange>20</MaxRange>
+    </Charge>
+  </UnitAI>
    <UnitMotion>
-    <Acceleration op="mul">1.25</Acceleration>
+    <Acceleration op="mul">1.15</Acceleration>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
   </UnitMotion>
   <Identity>
-    <GenericName>Schock Infantry</GenericName>
-    <Tooltip>Shock infantry 25% more acceleration</Tooltip>
+   <Classes datatype="tokens">Charge</Classes>
+   <VisibleClasses datatype="tokens">Shock</VisibleClasses>
+    <GenericName>Shock Infantry</GenericName>
+    <Tooltip>A shock assault. Charges (15% faster accleration and 10% faster Run) into combat and gains an initial combat advantage (+10% attack speed for 5 seconds) representing the violence of the opening assault but temporarily loses 1 Peirce resistance.</Tooltip>
   </Identity>
 </Entity>
+

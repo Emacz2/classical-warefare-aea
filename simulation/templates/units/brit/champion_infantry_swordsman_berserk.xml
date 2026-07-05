@@ -31,8 +31,8 @@
     </Berserker_Rage>
   </Upgrade>
 <UnitMotion>
-    <WalkSpeed op="mul">1.25</WalkSpeed>
-    <Acceleration op="mul">1.5</Acceleration>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <Acceleration op="mul">1.25</Acceleration>
   </UnitMotion>
   <VisualActor>
     <Actor>units/britons/infantry_swordsman_berserk.xml</Actor>

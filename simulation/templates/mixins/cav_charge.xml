@@ -2,31 +2,20 @@
 <Entity>
   <UnitAI>
     <Charge>
-      <Shock>
-        <Damage>
-          <Crush>25</Crush>
-        </Damage>
-        <Splash>
-          <Shape>Circular</Shape>
-          <Range>2</Range>
-          <FriendlyFire>false</FriendlyFire>
-          <Damage>
-            <Crush>12</Crush>
-          </Damage>
-        </Splash>
-      </Shock>
-      <ResistanceAdd>
-        <Hack>-1</Hack>
-        <Pierce>-1</Pierce>
-        <Crush>-1</Crush>
+       <ResistanceAdd>
+        <Pierce>-2</Pierce>
       </ResistanceAdd>
       <MinRange>15</MinRange>
       <MaxRange>25</MaxRange>
     </Charge>
   </UnitAI>
+    <UnitMotion>
+    <Acceleration op="mul">1.25</Acceleration>
+    <RunMultiplier op="mul">1.15</RunMultiplier>
+  </UnitMotion>
   <Identity>
    <Classes datatype="tokens">Charge</Classes>
-    <GenericName>Charge unit</GenericName>
-    <Tooltip>Performs a devastating charge (Runs) when engaging from range. Deals +25 Crush damage (+12 splash) but temporarily loses 1 of each resistance while charging</Tooltip>
+   <VisibleClasses datatype="tokens">Charge</VisibleClasses>
+    <Tooltip>Rapidly advances (25% faster acceleration and 15% faster run) into combat when engaging from range but is temporarily more vulnerable to missile fire (-2 pierce Resistance.)</Tooltip>
   </Identity>
 </Entity>

@@ -4,9 +4,6 @@
   <VisibleClasses datatype="tokens">Ranged</VisibleClasses>
     <GenericName>Champion Ranged Cavalry</GenericName>
   </Identity>
-    <Cost>
-    <BuildTime>24</BuildTime>
-  </Cost>
    <Health>
     <Max>225</Max>
   </Health>

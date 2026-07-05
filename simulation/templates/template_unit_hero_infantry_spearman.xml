@@ -35,7 +35,8 @@
       special/formations/testudo
     </Formations>
   </UnitAI>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.97</WalkSpeed>
+ <UnitMotion>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <RunMultiplier op="mul">1.45</RunMultiplier>
   </UnitMotion>
 </Entity>

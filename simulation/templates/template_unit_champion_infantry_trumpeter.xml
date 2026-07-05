@@ -29,9 +29,9 @@
     <wood>10</wood>
     <metal>7</metal>
   </Loot>
-  <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
+   <UnitMotion>
+    <WalkSpeed op="mul">0.98</WalkSpeed>
+    <RunMultiplier op="mul">1.45</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

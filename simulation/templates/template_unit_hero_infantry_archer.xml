@@ -2,7 +2,7 @@
 <Entity parent="template_unit_hero_infantry_ranged">
   <Attack>
     <Ranged>
-      <AttackName>Bow</AttackName>
+       <AttackName>CompositeBow</AttackName>
       <Damage>
         <Pierce>15</Pierce>
       </Damage>
@@ -35,8 +35,8 @@
       special/formations/skirmish
     </Formations>
   </UnitAI>
-  <UnitMotion>
-    <WalkSpeed op="mul">1.04</WalkSpeed>
-    <Acceleration op="add">2.5</Acceleration>
+ <UnitMotion>
+    <WalkSpeed op="mul">1.02</WalkSpeed>
+    <RunMultiplier op="mul">1.55</RunMultiplier>
   </UnitMotion>
 </Entity>

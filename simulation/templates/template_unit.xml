@@ -125,7 +125,7 @@
     <FormationController>false</FormationController>
     <PassabilityClass>default</PassabilityClass>
     <WalkSpeed>8.8</WalkSpeed>
-    <RunMultiplier>1.3</RunMultiplier>
+    <RunMultiplier>1</RunMultiplier>
     <InstantTurnAngle>1.5</InstantTurnAngle>
     <Acceleration>35</Acceleration>
     <Weight>10</Weight>
