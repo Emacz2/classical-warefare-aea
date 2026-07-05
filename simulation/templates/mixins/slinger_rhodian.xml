@@ -2,12 +2,24 @@
 <Entity>
 <Cost>
     <BuildTime op="mul">1.25</BuildTime>
+      <Resources>
+      <metal>60</metal>
+      <food>25</food>
+      <wood>0</wood>
+      <stone>0</stone>
+    </Resources>
 </Cost>
   <Attack>
+   <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture>1.0</Capture>
+      <MaxRange>3</MaxRange>
+      <RepeatTime>1000</RepeatTime>
+    </Capture>
     <Ranged>
     <Damage>
       <Crush op="mul">1.15</Crush>
-      <Pierce op="mul">1.15</Pierce>
+      <Pierce op="mul">1.20</Pierce>
     </Damage>
       <MaxRange op="add">+6</MaxRange>
       <RepeatTime op="add">200</RepeatTime>
@@ -20,8 +32,9 @@
     <Lang>greek</Lang>
     <GenericName>Rhodian Slinger</GenericName>
     <SpecificName>Sphendonḗtēs Rhódios</SpecificName>
+     <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Icon>units/mace/infantry_slinger.png</Icon>
-    <Tooltip>Professional slinger delivering accurate, high-impact missile fire. (+15% damage, +6 range and 20% more accurate but 2 tenths of a second slower repeat time and +25% train time) Strengths: Superior range and armor penetration with lead shot. Weaknesses: Limited effectiveness once engaged in melee.</Tooltip>
+    <Tooltip>Professional slinger delivering accurate, high-impact missile fire. (+20% Pierce +15% Crush DMG, +6 range and 20% more accurate but 2 tenths of a second slower repeat time and +25% train time) Strengths: Superior range and armor penetration with lead shot. Weaknesses: Limited effectiveness once engaged in melee.</Tooltip>
     <History>Rhodian slingers were renowned in the ancient world for their exceptional skill and effectiveness in using the sling as a projectile weapon</History>
   </Identity>
   <ResourceGatherer disable=""/>

@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
+ <Cost>
+    <BuildTime op="mul">1.1</BuildTime>
+     <Resources>
+      <metal>60</metal>
+      <food>25</food>
+      <wood>0</wood>
+      <stone>0</stone>
+    </Resources>
+  </Cost>
    <Attack>
+   <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture>1.0</Capture>
+      <MaxRange>3</MaxRange>
+      <RepeatTime>1000</RepeatTime>
+    </Capture>
     <Ranged>
       <RepeatTime op="add">-100</RepeatTime>
       <Projectile>
@@ -21,6 +36,7 @@
   <Identity>
     <Lang>greek</Lang>
     <GenericName>Cretan Mercenary Archer</GenericName>
+    <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <SpecificName>Toxótēs Krētikós</SpecificName>
     <Icon>units/mace/infantry_archer.png</Icon>
     <Tooltip>Elite mercenary archer renowned for exceptional accuracy and rapid fire. (10% faster repeat time and 25% more accurate. Additionly they have +1.5 Pierace and +1 Crush/Hack resistance.) Strengths: Highly effective against lightly armored troops at range. Weaknesses: Requires protection from cavalry and melee infantry.</Tooltip>
