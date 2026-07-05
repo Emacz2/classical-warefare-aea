@@ -2180,41 +2180,6 @@ UnitAI.prototype.UnitFsmSpec = {
 				"leave": function() {
 					this.StopMoving();
 					this.StopTimer();
-
-					const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
-					if (!cmpModifiersManager.HasAnyModifier("Charge ResistanceAdd", this.entity))
-						return;
-					cmpModifiersManager.RemoveAllModifiers("Charge ResistanceAdd", this.entity);
-					const template = this.template.Charge.Shock;
-					if (!template)
-						return;
-					const cmpPosition = Engine.QueryInterface(this.entity, IID_Position);
-					if (!cmpPosition || !cmpPosition.IsInWorld())
-						return;
-					const selfPosition = cmpPosition.GetPosition();
-					const cmpTargetPosition = Engine.QueryInterface(this.order.data.target, IID_Position);
-					if (!cmpTargetPosition || !cmpTargetPosition.IsInWorld())
-						return;
-					const targetPosition = cmpTargetPosition.GetPosition();
-					const attackData = AttackHelper.GetAttackEffectsData("Attack/Melee", template, this.entity);
-					let splashData = undefined;
-					if (template.Splash)
-						splashData = {
-							"attackData": AttackHelper.GetAttackEffectsData("Attack/Melee/Splash", template.Splash, this.entity),
-							"friendlyFire": template.Splash.FriendlyFire == "true",
-							"radius": ApplyValueModificationsToEntity("Attack/Melee/Splash/Range", +template.Splash.Range, this.entity),
-							"shape": template.Splash.Shape,
-						}
-					Engine.QueryInterface(SYSTEM_ENTITY, IID_DelayedDamage).Hit({
-						"type": this.order.data.attackType,
-						"attackData": attackData,
-						"splash": splashData,
-						"attacker": this.entity,
-						"attackerOwner": Engine.QueryInterface(this.entity, IID_Ownership).GetOwner(),
-						"target": this.order.data.target,
-						"position": targetPosition,
-						"direction": Vector3D.sub(targetPosition, selfPosition),
-					}, 0);
 				},
 
 				"Timer": function(msg) {
@@ -2288,6 +2253,41 @@ UnitAI.prototype.UnitFsmSpec = {
 							return;
 						}
 						this.SetNextState("ATTACKING");
+
+						const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
+						if (!cmpModifiersManager.HasAnyModifier("Charge ResistanceAdd", this.entity))
+							return;
+						cmpModifiersManager.RemoveAllModifiers("Charge ResistanceAdd", this.entity);
+						const template = this.template.Charge.Shock;
+						if (!template)
+							return;
+						const cmpPosition = Engine.QueryInterface(this.entity, IID_Position);
+						if (!cmpPosition || !cmpPosition.IsInWorld())
+							return;
+						const selfPosition = cmpPosition.GetPosition();
+						const cmpTargetPosition = Engine.QueryInterface(this.order.data.target, IID_Position);
+						if (!cmpTargetPosition || !cmpTargetPosition.IsInWorld())
+							return;
+						const targetPosition = cmpTargetPosition.GetPosition();
+						const attackData = AttackHelper.GetAttackEffectsData("Attack/Melee", template, this.entity);
+						let splashData = undefined;
+						if (template.Splash)
+							splashData = {
+								"attackData": AttackHelper.GetAttackEffectsData("Attack/Melee/Splash", template.Splash, this.entity),
+								"friendlyFire": template.Splash.FriendlyFire == "true",
+								"radius": ApplyValueModificationsToEntity("Attack/Melee/Splash/Range", +template.Splash.Range, this.entity),
+								"shape": template.Splash.Shape,
+							}
+						Engine.QueryInterface(SYSTEM_ENTITY, IID_DelayedDamage).Hit({
+							"type": this.order.data.attackType,
+							"attackData": attackData,
+							"splash": splashData,
+							"attacker": this.entity,
+							"attackerOwner": Engine.QueryInterface(this.entity, IID_Ownership).GetOwner(),
+							"target": this.order.data.target,
+							"position": targetPosition,
+							"direction": Vector3D.sub(targetPosition, selfPosition),
+						}, 0);
 					}
 					else if (msg.likelySuccess)
 						// Try moving again,
