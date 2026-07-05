@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="civ/athen|slinger_rhodian|merc_inf_market|merc_inf|template_unit_infantry_ranged_slinger_lead">
+<Entity parent="civ/athen|slinger_baleric|template_unit_infantry_ranged_slinger_lead">
  <Identity>
     <Rank>Elite</Rank>
-    <SelectionGroupName>units/athen/merc_inf_slinger_lead</SelectionGroupName>
+    <SelectionGroupName>units/rome/merc_inf_slinger_lead</SelectionGroupName>
   </Identity>
     <Upgrade>
     <Stone>
-      <Entity>units/athen/merc_inf_slinger_market_e</Entity>
-      <Tooltip>Switch to lead bullet Balearic Slinger</Tooltip>
+      <Entity>units/rome/merc_inf_slinger_market_e</Entity>
+      <Tooltip>Switch to stone amunition</Tooltip>
       <Cost>
         <stone>10</stone>
       </Cost>
