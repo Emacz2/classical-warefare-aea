@@ -9,7 +9,7 @@
   </Footprint>
   <Identity>
     <Civ>han</Civ>
-    <GenericName>Imperial War Chariot</GenericName>
+    <GenericName>Imperial Guard Chariot</GenericName>
     <SpecificName>Zhanche</SpecificName>
     <Icon>units/han/chariot.png</Icon>
    <Requirements>

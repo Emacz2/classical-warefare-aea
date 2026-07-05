@@ -9,7 +9,7 @@
   </Cost>
   <Identity>
     <Civ>iber</Civ>
-    <GenericName>Heavy Javelineer</GenericName>
+    <GenericName>Noble Heavy Javelineer</GenericName>
     <SpecificName>Oinezko Arker Soliferreum</SpecificName>
     <SelectionGroupName>units/rome/champion_infantry_javelineer</SelectionGroupName>
     <VisibleClasses datatype="tokens">Ranged</VisibleClasses>

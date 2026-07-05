@@ -2,7 +2,7 @@
 <Entity parent="maury|armor_heavy|shield_medium|inf_shock|template_unit_champion_infantry_maceman">
   <Identity>
     <Civ>maur</Civ>
-    <GenericName>gada warrior</GenericName>
+    <GenericName>Noble Maceman</GenericName>
     <SpecificName>Yōddha</SpecificName>
     <SelectionGroupName>units/maur/champion_infantry</SelectionGroupName>
     <Icon>units/maur/champion_maceman.png</Icon>

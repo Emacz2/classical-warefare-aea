@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="iber|inf_shock|shield_light|armor_light|sword_long|template_unit_champion_infantry_swordsman">
-  <Attack>
-    <Melee>
-      <AttackName context="Name of an attack using a single-edged sword.">Sword</AttackName>
-    </Melee>
-  </Attack>
   <Identity>
     <Civ>iber</Civ>
-    <GenericName>Light Infantry Swordsman</GenericName>
+    <GenericName>Noble Light Infantry Swordsman</GenericName>
     <SpecificName>Oinezko Ezpatari Arker</SpecificName>
     <Icon>units/iber/iber_champ_sword2.png</Icon>
     <Requirements>

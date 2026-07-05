@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="sele|units/thorakites">
+<Entity parent="shield_large|armor_heavy|inf_charge|template_unit_champion_infantry_swordsman">
   <Identity>
     <Civ>sele</Civ>
     <Lang>greek</Lang>
