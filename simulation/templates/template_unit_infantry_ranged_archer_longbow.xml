@@ -31,7 +31,7 @@
     <GenericName>Longbow Archer</GenericName>
   </Identity>
   <UnitMotion>
-    <RunMultiplier op="mul">1.15</RunMultiplier>
+    <RunMultiplier op="mul">1.5</RunMultiplier>
   </UnitMotion>
   <Sound>
     <SoundGroups>

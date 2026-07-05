@@ -24,14 +24,10 @@
     <VisibleClasses datatype="tokens">Melee Axeman</VisibleClasses>
     <GenericName>Hero Axeman</GenericName>
   </Identity>
-    <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">0.5</Hack>
-        <Pierce op="add">-0.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
+   <UnitMotion>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <RunMultiplier op="mul">1.45</RunMultiplier>
+  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>
