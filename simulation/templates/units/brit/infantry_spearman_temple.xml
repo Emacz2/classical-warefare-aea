@@ -8,7 +8,7 @@
 </Builder>
   <Identity>
     <Civ>brit</Civ>
-    <SelectionGroupName>units/brit/infantry_spearman_b</SelectionGroupName>
+    <SelectionGroupName>units/brit/infantry_spearman_temple</SelectionGroupName>
     <GenericName>Brythonic Assault Spearman</GenericName>
     <Icon>units/brit/thrust_spear.png</Icon>
     <Rank>Advanced</Rank>

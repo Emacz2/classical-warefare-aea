@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="archer_cretan|merc_inf|template_unit_infantry_ranged_archer">
+<Entity parent="merc_inf_market|archer_cretan|template_unit_infantry_ranged_archer">
   <Identity>
     <Civ>ptol</Civ>
-    <SelectionGroupName>units/ptol/infantry_archer_b</SelectionGroupName>
+    <SelectionGroupName>units/ptol/merc_inf_archer_b</SelectionGroupName>
   </Identity>
 <Promotion disable=""/>
   <VisualActor>
