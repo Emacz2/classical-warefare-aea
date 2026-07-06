@@ -107,8 +107,8 @@
         </Burning>
       </ApplyStatus>
       <Damage>
-        <Hack>5</Hack>
-        <Pierce>20</Pierce>
+        <Hack>10</Hack>
+        <Pierce>30</Pierce>
         <Crush>5</Crush>
       </Damage>
     </Entity>
@@ -121,7 +121,7 @@
       </ApplyStatus>
       <Damage>
         <Hack>1</Hack>
-        <Pierce>10</Pierce>
+        <Pierce>20</Pierce>
         <Crush>1</Crush>
       </Damage>
     </Foundation>

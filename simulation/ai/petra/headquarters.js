@@ -434,25 +434,7 @@ Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 	// and adapt the batch size of the first and second queued workers to the present population
 	// to ease a possible recovery if our population was drastically reduced by an attack
 	// (need to go up to second queued as it is accounted in queueManager)
-	let size = numberOfWorkers < 12 ? 1 : Math.min(5, Math.ceil(numberOfWorkers / 10));
-
-	// CWA Expert: batch-train workers earlier.
-	// In CWA, civilians are much more important to the economy, and small early batches
-	// are usually more efficient than training the same number one at a time.
-	// Keep the first few workers single-file so the opening is not starved, then move to
-	// batches of 3, growing toward Petra's normal max batch size later.
-	if (this.Config.difficulty >= difficulty.EXPERT)
-	{
-		if (numberOfWorkers >= 8 && numberOfWorkers < 25)
-			size = 3;
-		else if (numberOfWorkers >= 25)
-			size = Math.max(3, Math.min(5, Math.ceil(numberOfWorkers / 12)));
-
-		// Do not let batching itself cause a population block.
-		const freeSlots = gameState.getPopulationLimit() - gameState.getPopulation() - numberInTraining;
-		if (freeSlots > 0)
-			size = Math.min(size, freeSlots);
-	}
+	const size = numberOfWorkers < 12 ? 1 : Math.min(5, Math.ceil(numberOfWorkers / 10));
 	if (queues.villager.plans[0])
 	{
 		queues.villager.plans[0].number = Math.min(queues.villager.plans[0].number, size);
@@ -1345,10 +1327,8 @@ Headquarters.prototype.buildMarket = function(gameState, queues)
 /** Build a farmstead */
 Headquarters.prototype.buildFarmstead = function(gameState, queues)
 {
-	// Standard Petra only builds one farmstead for the time being ("DropsiteFood" does not refer to CCs).
-	// CWA Expert is allowed to add another farmstead if a separate berry/food hub is walking too far.
-	if (this.Config.difficulty < difficulty.EXPERT &&
-	    gameState.getOwnEntitiesByClass("Farmstead", true).hasEntities())
+	// Only build one farmstead for the time being ("DropsiteFood" does not refer to CCs)
+	if (gameState.getOwnEntitiesByClass("Farmstead", true).hasEntities())
 		return;
 	// Wait to have at least one dropsite and house before the farmstead
 	if (!gameState.getOwnEntitiesByClass("Storehouse", true).hasEntities())
@@ -1814,11 +1794,7 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	}
 	const expert = this.Config.difficulty >= difficulty.EXPERT;
 	const infantryProductionBusy = !expert || !infantryTrainers || busyInfantryTrainers >= infantryTrainers || accountedPop > 105;
-	let allowEarlyStable = !expert || gameState.getPlayerCiv() != "athen" || this.currentPhase >= 3 || accountedPop > 110 || busyInfantryTrainers >= 2;
-	// CWA Expert: Athens is infantry/economy focused and should not rush a Stable unless its
-	// infantry production is already established or the game is much later.
-	if (expert && gameState.getPlayerCiv() == "athen")
-		allowEarlyStable = accountedPop > 135 || (this.currentPhase >= 3 && accountedPop > 115 && busyInfantryTrainers >= 2);
+	const allowEarlyStable = !expert || gameState.getPlayerCiv() != "athen" || this.currentPhase >= 3 || accountedPop > 110 || busyInfantryTrainers >= 2;
 
 	if (accountedPop > this.Config.Military.popForBarracks1 ||
 	    this.phasing == 2 && gameState.getOwnStructures().filter(filters.byClass("Village")).length < 5)
