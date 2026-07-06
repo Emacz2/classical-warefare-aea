@@ -514,15 +514,19 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 		// TODO  add also a test on remaining resources.
 		const total = this.gatherers[type].used + this.gatherers[type].lost;
 		const expert = this.Config.difficulty >= difficulty.EXPERT;
-		const minSamples = expert ? (type == "wood" ? 45 : 30) : (type == "wood" ? 150 : 60);
+		let minSamples = type == "wood" ? 150 : 60;
+		if (expert)
+			minSamples = type == "wood" ? 30 : 12;
 		if (total > minSamples)
 		{
 			const ratio = this.gatherers[type].lost / total;
-			const lostRatioTrigger = expert ? 0.08 : 0.15;
+			let lostRatioTrigger = 0.15;
+			if (expert)
+				lostRatioTrigger = type == "wood" ? 0.08 : 0.05;
 			if (ratio > lostRatioTrigger)
 			{
 				const newDP = this.findBestDropsiteAndLocation(gameState, type);
-				const qualityTrigger = expert ? 30 : 50;
+				const qualityTrigger = expert ? (type == "wood" ? 30 : 20) : 50;
 				if (newDP.quality > qualityTrigger && gameState.ai.HQ.canBuild(gameState, newDP.templateName))
 				{
 					queues.dropsites.addPlan(new ConstructionPlan(gameState, newDP.templateName,
