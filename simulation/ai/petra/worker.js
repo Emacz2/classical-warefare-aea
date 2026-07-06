@@ -3,6 +3,7 @@ import { SquareVectorDistance, aiWarn } from "simulation/ai/common-api/utils.js"
 import { allowCapture, gatherTreasure, getBuiltEntity, getLandAccess, getSeaAccess, isFastMoving,
 	isSupplyFull, returnResources } from "simulation/ai/petra/entityExtend.js";
 import { TransportPlan } from "simulation/ai/petra/transportPlan.js";
+import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 
 /**
  * This class makes a worker do as instructed by the economy manager
@@ -506,8 +507,10 @@ Worker.prototype.startGathering = function(gameState)
 			if (supplies[i].ent.resourceSupplyType().specific != "grain" && nbGatherers > 0 &&
 			    supplies[i].ent.resourceSupplyAmount()/(1+nbGatherers) < 30)
 				continue;
-			// not in ennemy territory
+			// not in enemy territory; Expert also avoids neutral food during the opening economy.
 			const territoryOwner = gameState.ai.HQ.territoryMap.getOwner(supplies[i].ent.position());
+			if (gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && resource == "food" && territoryOwner != PlayerID)
+				continue;
 			if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))  // player is its own ally
 				continue;
 			worker.base.AddTCGatherer(supplies[i].id);

@@ -717,6 +717,34 @@ BaseManager.prototype.reassignIdleWorkers = function(gameState, idleWorkers)
 
 		if (ent.hasClass("Worker"))
 		{
+			// Expert opening role split:
+			// - food-capable cavalry/fast units take chickens and hunt,
+			// - civilians/women take berries/food,
+			// - citizen-soldier men take wood.
+			if (this.Config.difficulty >= difficulty.EXPERT &&
+			    (gameState.ai.elapsedTime < 240 || gameState.getPopulation() < 25))
+			{
+				if (isFastMoving(ent) && ent.canGather("food") && ent.canAttackClass("Animal"))
+				{
+					ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_HUNTER);
+					continue;
+				}
+				if (ent.hasClass("Civilian") && ent.canGather("food"))
+				{
+					ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
+					ent.setMetadata(PlayerID, "gather-type", "food");
+					this.basesManager.AddTCResGatherer("food");
+					continue;
+				}
+				if (ent.canGather("wood"))
+				{
+					ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
+					ent.setMetadata(PlayerID, "gather-type", "wood");
+					this.basesManager.AddTCResGatherer("wood");
+					continue;
+				}
+			}
+
 			// Just emergency repairing here. It is better managed in assignToFoundations
 			if (ent.isBuilder() && this.anchor && this.anchor.needsRepair() &&
 				gameState.getOwnEntitiesByMetadata("target-foundation", this.anchor.id()).length < 2)
