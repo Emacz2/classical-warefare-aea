@@ -481,54 +481,7 @@ Worker.prototype.startGathering = function(gameState)
 	if (resource == "food" && this.startHunting(gameState))
 		return true;
 
-	const hasDropsiteWithinDistance = function(supplyPosition, supplyAccess, resourceType, distSquare) {
-		const dropsites = gameState.playerData.hasSharedDropsites ?
-			gameState.getAnyDropsites(resourceType) : gameState.getOwnDropsites(resourceType);
-		for (const dropsite of dropsites.values())
-		{
-			if (!dropsite.position())
-				continue;
-			const owner = dropsite.owner();
-			if (owner != PlayerID && (!dropsite.isSharedDropsite() || !gameState.isPlayerMutualAlly(owner)))
-				continue;
-			if (supplyAccess != getLandAccess(gameState, dropsite))
-				continue;
-			if (SquareVectorDistance(supplyPosition, dropsite.position()) < distSquare)
-				return true;
-		}
-		return false;
-	};
-
-
-	const foodSupplyCloseEnough = function(supply) {
-		if (resource != "food")
-			return true;
-		const type = supply.resourceSupplyType();
-		if (!type || type.specific == "grain")
-			return true;
-		// Natural food is only better than fields when the walk is short.  This keeps
-		// berry gatherers within about one field-length of a food dropsite.
-		return hasDropsiteWithinDistance(supply.position(), getLandAccess(gameState, supply), "food", 625);
-	};
-
-	const isSafeEconomySupply = function(worker, supply, resourceType, allowBorderNeutral) {
-		if (!supply.position())
-			return false;
-		const territoryOwner = gameState.ai.HQ.territoryMap.getOwner(supply.position());
-		if (territoryOwner == PlayerID || (territoryOwner != 0 && gameState.isPlayerMutualAlly(territoryOwner)))
-			return true;
-		if (territoryOwner != 0)
-			return false;
-		// CWA: do not let workers walk into the middle of the map for neutral resources.
-		// A neutral resource is only acceptable when it sits just outside our border and
-		// already has a close owned/allied dropsite. Larger neutral resource groups should
-		// be handled by expansion planning first, then gathered after territory is claimed.
-		if (!allowBorderNeutral)
-			return false;
-		return hasDropsiteWithinDistance(supply.position(), getLandAccess(gameState, supply), resourceType, 3600);
-	};
-
-	const findSupply = function(worker, supplies, allowBorderNeutral = false) {
+	const findSupply = function(worker, supplies) {
 		const ent = worker.ent;
 		let ret = false;
 		const gatherRates = ent.resourceGatherRates();
@@ -553,13 +506,9 @@ Worker.prototype.startGathering = function(gameState)
 			if (supplies[i].ent.resourceSupplyType().specific != "grain" && nbGatherers > 0 &&
 			    supplies[i].ent.resourceSupplyAmount()/(1+nbGatherers) < 30)
 				continue;
-			// CWA: prefer claimed economy.  Do not assign workers to neutral/enemy resources
-			// unless they are very close border resources already covered by a dropsite.
-			if (!isSafeEconomySupply(worker, supplies[i].ent, resource, allowBorderNeutral))
-				continue;
-			// CWA: do not walk across the base for berries/fruit when fields can be built
-			// beside the farmstead instead.
-			if (!foodSupplyCloseEnough(supplies[i].ent))
+			// not in ennemy territory
+			const territoryOwner = gameState.ai.HQ.territoryMap.getOwner(supplies[i].ent.position());
+			if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))  // player is its own ally
 				continue;
 			worker.base.AddTCGatherer(supplies[i].id);
 			ent.setMetadata(PlayerID, "supply", supplies[i].id);
@@ -575,7 +524,7 @@ Worker.prototype.startGathering = function(gameState)
 	// first look in our own base if accessible from our present position
 	if (this.baseAccess == this.entAccess)
 	{
-		supply = findSupply(this, this.base.dropsiteSupplies[resource].nearby, true);
+		supply = findSupply(this, this.base.dropsiteSupplies[resource].nearby);
 		if (supply)
 		{
 			this.ent.gather(supply);
@@ -612,7 +561,7 @@ Worker.prototype.startGathering = function(gameState)
 			continue;
 		if (base.accessIndex != this.entAccess)
 			continue;
-		supply = findSupply(this, base.dropsiteSupplies[resource].nearby, true);
+		supply = findSupply(this, base.dropsiteSupplies[resource].nearby);
 		if (supply)
 		{
 			this.ent.setMetadata(PlayerID, "base", base.ID);
@@ -685,7 +634,7 @@ Worker.prototype.startGathering = function(gameState)
 	{
 		if (base.accessIndex == this.entAccess)
 			continue;
-		supply = findSupply(this, base.dropsiteSupplies[resource].nearby, true);
+		supply = findSupply(this, base.dropsiteSupplies[resource].nearby);
 		if (supply && navalManager.requireTransport(gameState, this.ent, this.entAccess, base.accessIndex, supply.position()))
 		{
 			if (base.ID != this.baseID)
@@ -888,24 +837,18 @@ Worker.prototype.startHunting = function(gameState, position)
 		if (!entIsFastMoving && dist > 25000)
 			continue;
 
-		// CWA: avoid unclaimed hunting trips.  Hunting in neutral territory is allowed
-		// only for close border food already covered by a nearby dropsite; otherwise the
-		// AI should expand first rather than sending workers across the map.
+		// Avoid enemy territory.
 		const territoryOwner = gameState.ai.HQ.territoryMap.getOwner(supply.position());
-		if (territoryOwner != PlayerID && (territoryOwner == 0 || !gameState.isPlayerMutualAlly(territoryOwner)))
-		{
-			if (territoryOwner != 0)
-				continue;
-			const borderHuntDistanceSquare = entIsFastMoving ? 10000 : (canFlee ? 3600 : 6400);
-			if (!hasFoodDropsiteWithinDistance(supply.position(), supplyAccess, borderHuntDistanceSquare))
-				continue;
-		}
+		if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))  // Player is its own ally.
+			continue;
 		// And if in ally territory, don't hunt this ally's cattle.
 		if (territoryOwner != 0 && territoryOwner != PlayerID && supply.owner() == territoryOwner)
 			continue;
 
-		// Only hunt far from dropsite when it is still genuinely close to our food economy.
-		const distanceSquare = entIsFastMoving ? 20000 : (canFlee ? 7000 : 12000);
+		// Only FastMoving should hunt far from dropsite (specially for non-Domestic animals which flee).
+		if (!entIsFastMoving && canFlee && territoryOwner == 0)
+			continue;
+		const distanceSquare = entIsFastMoving ? 35000 : (canFlee ? 7000 : 12000);
 		if (!hasFoodDropsiteWithinDistance(supply.position(), supplyAccess, distanceSquare))
 			continue;
 

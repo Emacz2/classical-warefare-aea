@@ -6,5 +6,4 @@ export let EASY = 2;
 export let MEDIUM = 3;
 export let HARD = 4;
 export let VERY_HARD = 5;
-export let EXPERT = 6;
 /* eslint-enable prefer-const */

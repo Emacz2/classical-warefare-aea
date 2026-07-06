@@ -915,20 +915,6 @@ ConstructionPlan.prototype.isGo = function(gameState)
 				freeSlots += template.getPopulationBonus();
 		}
 
-		if (gameState.ai.Config.difficulty >= 6)
-		{
-			// Expert starts houses earlier so production queues do not stall.
-			if (gameState.ai.HQ.saveResources)
-				return freeSlots <= 14;
-			if (gameState.getPopulation() > 80)
-				return freeSlots <= 30;
-			if (gameState.getPopulation() > 55)
-				return freeSlots <= 26;
-			if (gameState.getPopulation() > 30)
-				return freeSlots <= 20;
-			return freeSlots <= 14;
-		}
-
 		if (gameState.ai.HQ.saveResources)
 			return freeSlots <= 10;
 		if (gameState.getPopulation() > 55)

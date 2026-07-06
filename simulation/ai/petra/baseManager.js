@@ -31,11 +31,9 @@ export function BaseManager(gameState, basesManager)
 	this.anchorId = undefined;
 	this.accessIndex = undefined;
 
-	// Maximum distance (from any dropsite) to look for resources.
-	// 3 areas are used: from 0 to max/4, from max/4 to max/2 and from max/2 to max.
-	// Expert uses a slightly tighter radius so workers are less willing to accept
-	// very long walks instead of encouraging new dropsites.
-	this.maxDistResourceSquare = this.Config.difficulty >= difficulty.EXPERT ? 320*320 : 360*360;
+	// Maximum distance (from any dropsite) to look for resources
+	// 3 areas are used: from 0 to max/4, from max/4 to max/2 and from max/2 to max
+	this.maxDistResourceSquare = 360*360;
 
 	this.constructing = false;
 	// Defenders to train in this cc when its construction is finished
@@ -357,12 +355,6 @@ BaseManager.prototype.findBestDropsiteLocation = function(gameState, resource, t
 
 	const droppableResources = template.resourceDropsiteTypes();
 
-	// Some generic resources, especially food, may not have a shared resource map.
-	// In that case this generic dropsite-map logic cannot be used safely.
-	// Food/farmstead placement is handled separately by Headquarters.
-	if (!gameState.sharedScript.resourceMaps[resource])
-		return { "quality": 0, "pos": [0, 0] };
-
 	for (const j of this.territoryIndices)
 	{
 		const i = territoryMap.getNonObstructedTile(j, radius, obstructions);
@@ -448,11 +440,9 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 				const numQueue = queues.field.countQueuedUnits();
 
 				// TODO  if not yet farms, add a check on time used/lost and build farmstead if needed
-				if (numFarms + numQueue == 0)	// starting game, rely on close fruits as long as we have enough of them
+				if (numFarms + numQueue == 0)	// starting game, rely on fruits as long as we have enough of them
 				{
-					// CWA: begin farms a little earlier.  A few farms around a good farmstead
-					// are cheaper than sending food gatherers on long berry walks.
-					if (count < 900)
+					if (count < 600)
 					{
 						queues.field.addPlan(new ConstructionPlan(gameState,
 							"structures/{civ}/field", { "favoredBase": this.ID }));
@@ -464,7 +454,7 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					const numFound = gameState.getOwnFoundations().filter(filters.byClass("Field"))
 						.length;
 					let goal = this.Config.Economy.provisionFields;
-					if (gameState.ai.HQ.saveResources || gameState.ai.HQ.saveSpace || count > 500 || numFarms > 5)
+					if (gameState.ai.HQ.saveResources || gameState.ai.HQ.saveSpace || count > 300 || numFarms > 5)
 						goal = Math.max(goal-1, 1);
 					if (numFound + numQueue < goal)
 					{
@@ -515,21 +505,13 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 		}
 		// TODO  add also a test on remaining resources.
 		const total = this.gatherers[type].used + this.gatherers[type].lost;
-		const expert = this.Config.difficulty >= difficulty.EXPERT;
-		let minSamples = type == "wood" ? 150 : 60;
-		if (expert)
-			minSamples = type == "wood" ? 30 : 12;
-		if (total > minSamples)
+		if (total > 150 || total > 60 && type != "wood")
 		{
 			const ratio = this.gatherers[type].lost / total;
-			let lostRatioTrigger = 0.15;
-			if (expert)
-				lostRatioTrigger = type == "wood" ? 0.08 : 0.05;
-			if (ratio > lostRatioTrigger)
+			if (ratio > 0.15)
 			{
 				const newDP = this.findBestDropsiteAndLocation(gameState, type);
-				const qualityTrigger = expert ? (type == "wood" ? 30 : 20) : 50;
-				if (newDP.quality > qualityTrigger && gameState.ai.HQ.canBuild(gameState, newDP.templateName))
+				if (newDP.quality > 50 && gameState.ai.HQ.canBuild(gameState, newDP.templateName))
 				{
 					queues.dropsites.addPlan(new ConstructionPlan(gameState, newDP.templateName,
 						{ "base": this.ID, "type": type }, newDP.pos));
@@ -540,9 +522,8 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 				{
 					// No good dropsite, try to build a new base if no base already planned,
 					// and if not possible, be less strict on dropsite quality.
-					const fallbackQuality = expert ? Math.min(15, qualityTrigger*lostRatioTrigger/ratio) : Math.min(25, 50*0.15/ratio);
 					if ((!gameState.ai.HQ.canExpand || !gameState.ai.HQ.buildNewBase(gameState, queues, type)) &&
-						newDP.quality > fallbackQuality &&
+						newDP.quality > Math.min(25, 50*0.15/ratio) &&
 						gameState.ai.HQ.canBuild(gameState, newDP.templateName))
 					{
 						queues.dropsites.addPlan(new ConstructionPlan(gameState,
@@ -551,7 +532,7 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					}
 				}
 			}
-			this.gatherers[type].nextCheck = gameState.ai.playedTurn + (expert ? 10 : 20);
+			this.gatherers[type].nextCheck = gameState.ai.playedTurn + 20;
 			this.gatherers[type].used = 0;
 			this.gatherers[type].lost = 0;
 		}
