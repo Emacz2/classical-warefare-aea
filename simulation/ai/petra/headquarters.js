@@ -1580,7 +1580,7 @@ Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 	const popBonus = gameState.getTemplate(house).getPopulationBonus();
 	const freeSlots = gameState.getPopulationLimit() + HouseNb*popBonus - this.getAccountedPopulation(gameState);
 	let priority;
-	if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 14 && !this.buildManager.isUnbuildable(gameState, house))
+	if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 18 && !this.buildManager.isUnbuildable(gameState, house))
 	{
 		// Expert should rarely stall production from being housed.
 		// If a planned house is waiting for the normal "houseNeeded" trigger, release it early.
@@ -1589,7 +1589,7 @@ Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 				plan.goRequirement = undefined;
 		priority = 4 * this.Config.priorities.house;
 	}
-	else if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 24)
+	else if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 28)
 		priority = 2 * this.Config.priorities.house;
 	else if (freeSlots < 5)
 	{
@@ -1765,7 +1765,7 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	{
 		const freeSlots = gameState.getPopulationLimit() - this.getAccountedPopulation(gameState);
 		// Do not let an early barracks/range/stable consume resources while housing is urgent.
-		if (freeSlots < 12 && queues.house.length())
+		if (freeSlots < 18 && queues.house.length())
 			return;
 	}
 
@@ -1781,7 +1781,22 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	const stableTemplate = this.canBuild(gameState, "structures/{civ}/stable") ? "structures/{civ}/stable" : undefined;
 	const numStables = gameState.getOwnEntitiesByClass("Stable", true).length;
 
-	if (this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks1 ||
+	const accountedPop = this.getAccountedPopulation(gameState);
+	let infantryTrainers = 0;
+	let busyInfantryTrainers = 0;
+	for (const ent of gameState.getOwnTrainingFacilities().values())
+	{
+		if (!ent.hasClass("Barracks") && !ent.hasClass("Range"))
+			continue;
+		++infantryTrainers;
+		if (ent.trainingQueue && ent.trainingQueue().length)
+			++busyInfantryTrainers;
+	}
+	const expert = this.Config.difficulty >= difficulty.EXPERT;
+	const infantryProductionBusy = !expert || !infantryTrainers || busyInfantryTrainers >= infantryTrainers || accountedPop > 105;
+	const allowEarlyStable = !expert || gameState.getPlayerCiv() != "athen" || this.currentPhase >= 3 || accountedPop > 110 || busyInfantryTrainers >= 2;
+
+	if (accountedPop > this.Config.Military.popForBarracks1 ||
 	    this.phasing == 2 && gameState.getOwnStructures().filter(filters.byClass("Village")).length < 5)
 	{
 		// First barracks/range and stable.
@@ -1797,14 +1812,14 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 				return;
 			}
 		}
-		if (numStables == 0 && stableTemplate && this.getAccountedPopulation(gameState) > this.Config.Military.popForStable1)
+		if (numStables == 0 && stableTemplate && allowEarlyStable && accountedPop > this.Config.Military.popForStable1)
 		{
 			queues.militaryBuilding.addPlan(new ConstructionPlan(gameState, stableTemplate, { "militaryBase": true }));
 			return;
 		}
 
 		// Second barracks/range and stable.
-		if (numBarracks + numRanges == 1 && this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks2)
+		if (numBarracks + numRanges == 1 && infantryProductionBusy && accountedPop > this.Config.Military.popForBarracks2)
 		{
 			const template = numBarracks == 0 ? (barracksTemplate || rangeTemplate) : (rangeTemplate || barracksTemplate);
 			if (template)
@@ -1813,14 +1828,14 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 				return;
 			}
 		}
-		if (numStables == 1 && stableTemplate && this.getAccountedPopulation(gameState) > this.Config.Military.popForStable2)
+		if (numStables == 1 && stableTemplate && allowEarlyStable && accountedPop > this.Config.Military.popForStable2)
 		{
 			queues.militaryBuilding.addPlan(new ConstructionPlan(gameState, stableTemplate, { "militaryBase": true }));
 			return;
 		}
 
 		// Third barracks/range and stable, if needed.
-		if (numBarracks + numRanges + numStables == 2 && this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks2 + 30)
+		if (numBarracks + numRanges + numStables == 2 && infantryProductionBusy && accountedPop > this.Config.Military.popForBarracks2 + 30)
 		{
 			const template = barracksTemplate || stableTemplate || rangeTemplate;
 			if (template)
@@ -1849,7 +1864,7 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 		return;
 	}
 
-	if (this.getAccountedPopulation(gameState) < 80 || !this.bAdvanced.length)
+	if (accountedPop < 80 || !this.bAdvanced.length)
 		return;
 
 	// Build advanced military buildings
@@ -1857,7 +1872,7 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	for (const advanced of this.bAdvanced)
 		nAdvanced += gameState.countEntitiesAndQueuedByType(advanced, true);
 
-	if (!nAdvanced || nAdvanced < this.bAdvanced.length && this.getAccountedPopulation(gameState) > 110)
+	if (!nAdvanced || nAdvanced < this.bAdvanced.length && accountedPop > 110)
 	{
 		for (const advanced of this.bAdvanced)
 		{
