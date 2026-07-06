@@ -8,8 +8,8 @@
     <Entity>
       <Damage>
         <Crush>5</Crush>
-        <Hack>30</Hack>
-        <Pierce>35</Pierce>
+        <Hack>25</Hack>
+        <Pierce>30</Pierce>
       </Damage>
        <ApplyStatus>
         <Burning>

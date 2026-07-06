@@ -49,7 +49,7 @@
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_2x2</SpawnEntityOnDeath>
   </Health>
   <Capturable> 
-    <GarrisonRegenRate>1.5</GarrisonRegenRate>
+    <GarrisonRegenRate>2</GarrisonRegenRate>
   </Capturable>
   <Identity>
     <GenericName>Tower</GenericName>

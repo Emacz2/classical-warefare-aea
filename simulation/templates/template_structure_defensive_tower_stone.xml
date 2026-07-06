@@ -29,6 +29,15 @@
   <Health>
     <Max>1200</Max>
   </Health>
+    <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">5</Crush>
+        <Hack op="add">5</Hack>
+        <Pierce op="add">10</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Identity>
     <GenericName>Stone Tower</GenericName>
     <SelectionGroupName>template_structure_defensive_tower_stone</SelectionGroupName>
