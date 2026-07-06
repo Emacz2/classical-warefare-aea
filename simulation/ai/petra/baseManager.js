@@ -448,9 +448,11 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 				const numQueue = queues.field.countQueuedUnits();
 
 				// TODO  if not yet farms, add a check on time used/lost and build farmstead if needed
-				if (numFarms + numQueue == 0)	// starting game, rely on fruits as long as we have enough of them
+				if (numFarms + numQueue == 0)	// starting game, rely on close fruits as long as we have enough of them
 				{
-					if (count < 600)
+					// CWA: begin farms a little earlier.  A few farms around a good farmstead
+					// are cheaper than sending food gatherers on long berry walks.
+					if (count < 900)
 					{
 						queues.field.addPlan(new ConstructionPlan(gameState,
 							"structures/{civ}/field", { "favoredBase": this.ID }));
@@ -462,7 +464,7 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					const numFound = gameState.getOwnFoundations().filter(filters.byClass("Field"))
 						.length;
 					let goal = this.Config.Economy.provisionFields;
-					if (gameState.ai.HQ.saveResources || gameState.ai.HQ.saveSpace || count > 300 || numFarms > 5)
+					if (gameState.ai.HQ.saveResources || gameState.ai.HQ.saveSpace || count > 500 || numFarms > 5)
 						goal = Math.max(goal-1, 1);
 					if (numFound + numQueue < goal)
 					{

@@ -1346,8 +1346,8 @@ Headquarters.prototype.buildMarket = function(gameState, queues)
 Headquarters.prototype.buildFarmstead = function(gameState, queues)
 {
 	// Standard Petra only builds one farmstead for the time being ("DropsiteFood" does not refer to CCs).
-	// CWA Expert is allowed to add another farmstead if a separate berry/food hub is walking too far.
-	if (this.Config.difficulty < difficulty.EXPERT &&
+	// CWA Very Hard/Expert may add more, but only one per real berry/food district.
+	if (this.Config.difficulty < difficulty.VERY_HARD &&
 	    gameState.getOwnEntitiesByClass("Farmstead", true).hasEntities())
 		return;
 	// Wait to have at least one dropsite and house before the farmstead
@@ -1360,24 +1360,39 @@ Headquarters.prototype.buildFarmstead = function(gameState, queues)
 	if (!this.canBuild(gameState, "structures/{civ}/farmstead"))
 		return;
 
-	// Expert: build the first farmstead only when it has a useful food patch to serve.
-	// Do not use resourceMaps for food: Petra does not always build a generic food map,
-	// which caused errors when trying to treat food like wood/stone/metal.
-	if (this.Config.difficulty >= difficulty.EXPERT)
+	// CWA: farmsteads are agricultural hubs, not one-off berry shacks.
+	// Build at most one per berry/bush patch and make sure a new hub is large,
+	// separated from existing food dropsites, and not too early to pay back.
+	if (this.Config.difficulty >= difficulty.VERY_HARD)
 	{
+		const currentPhase = gameState.currentPhase();
+		const numFarmsteads = gameState.getOwnEntitiesByClass("Farmstead", true).length;
+		const maxFarmsteads = currentPhase < 2 ? 1 : currentPhase < 3 ? 2 : 4;
+		if (numFarmsteads >= maxFarmsteads)
+			return;
+
 		let best = { "score": 0, "pos": undefined, "base": undefined };
 		const foodDropsites = gameState.getOwnDropsites("food").toEntityArray();
+		// One farmstead should cover one compact patch.  Keep the patch radius tight so
+		// workers do not walk more than roughly one field-length for berries.
+		const minExistingDropsiteDist = currentPhase < 3 ? 2500 : 2025; // 50m town, 45m city.
+		const clusterRadius = 900; // 30m: compact berry/bush patch only.
+		const maxSupplyToCenterDist = 625; // 25m: reject centers that still leave long food walks.
+		const minClusterFood = currentPhase < 2 ? 600 : 500;
 
 		for (const base of this.baseManagers())
 		{
 			if (!base.anchor || !base.anchor.position() || !base.dropsiteSupplies.food)
 				continue;
 
+			const foodSupplies = [];
+			const checked = {};
 			const supplies = base.dropsiteSupplies.food.nearby.concat(base.dropsiteSupplies.food.medium);
 			for (const supply of supplies)
 			{
-				if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position())
+				if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position() || checked[supply.id])
 					continue;
+				checked[supply.id] = true;
 
 				const type = supply.ent.resourceSupplyType();
 				if (!type || type.generic != "food" || type.specific == "grain")
@@ -1391,43 +1406,76 @@ Headquarters.prototype.buildFarmstead = function(gameState, queues)
 				if (owner != 0 && owner != PlayerID && !gameState.isPlayerAlly(owner))
 					continue;
 
-				let nearestDPDist = Math.min();
+				foodSupplies.push({
+					"id": supply.id,
+					"ent": supply.ent,
+					"pos": pos,
+					"amount": Math.max(0, supply.ent.resourceSupplyAmount())
+				});
+			}
+
+			for (const supply of foodSupplies)
+			{
+				let score = 0;
+				let weightedX = 0;
+				let weightedZ = 0;
+				let objects = 0;
+
+				for (const other of foodSupplies)
+				{
+					if (SquareVectorDistance(supply.pos, other.pos) > clusterRadius)
+						continue;
+					const amount = other.amount;
+					if (amount <= 0)
+						continue;
+					score += amount;
+					weightedX += other.pos[0] * amount;
+					weightedZ += other.pos[1] * amount;
+					++objects;
+				}
+
+				// Avoid building a temporary dropsite for a tiny or nearly exhausted patch.
+				if (score < minClusterFood || objects < 3)
+					continue;
+
+				const center = [weightedX / score, weightedZ / score];
+
+				// If the weighted center would still leave any member of the patch walking too far,
+				// this is not a good one-farmstead patch.  The AI should farm near the hub instead.
+				let compact = true;
+				for (const other of foodSupplies)
+				{
+					if (SquareVectorDistance(supply.pos, other.pos) > clusterRadius)
+						continue;
+					if (SquareVectorDistance(center, other.pos) > maxSupplyToCenterDist)
+					{
+						compact = false;
+						break;
+					}
+				}
+				if (!compact)
+					continue;
+
+				let covered = false;
 				for (const dropsite of foodDropsites)
 				{
 					if (!dropsite.position() || getLandAccess(gameState, dropsite) != base.accessIndex)
 						continue;
-					nearestDPDist = Math.min(nearestDPDist, SquareVectorDistance(pos, dropsite.position()));
+					if (SquareVectorDistance(center, dropsite.position()) < minExistingDropsiteDist)
+					{
+						covered = true;
+						break;
+					}
 				}
-
-				// If the patch is already close to a CC/farmstead, a new farmstead is not urgent.
-				if (nearestDPDist < 1600)
+				if (covered)
 					continue;
 
-				let score = 0;
-				let weightedX = 0;
-				let weightedZ = 0;
-				for (const other of supplies)
-				{
-					if (!other.ent || !gameState.getEntityById(other.id) || !other.ent.position())
-						continue;
-					const otherType = other.ent.resourceSupplyType();
-					if (!otherType || otherType.generic != "food" || otherType.specific == "grain")
-						continue;
-					const otherPos = other.ent.position();
-					if (SquareVectorDistance(pos, otherPos) > 1600)
-						continue;
-					const amount = Math.max(0, other.ent.resourceSupplyAmount());
-					score += amount;
-					weightedX += otherPos[0] * amount;
-					weightedZ += otherPos[1] * amount;
-				}
-
-				if (score <= best.score || score < 450)
+				if (score <= best.score)
 					continue;
 
 				best = {
 					"score": score,
-					"pos": [weightedX / score, weightedZ / score],
+					"pos": center,
 					"base": base.ID
 				};
 			}
