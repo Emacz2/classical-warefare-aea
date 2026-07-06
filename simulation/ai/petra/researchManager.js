@@ -1,5 +1,6 @@
 import { ResearchPlan } from "simulation/ai/petra/queueplanResearch.js";
 import { Worker } from "simulation/ai/petra/worker.js";
+import * as difficultyLevel from "simulation/ai/petra/difficultyLevel.js";
 
 /**
  * Manage the research
@@ -83,6 +84,7 @@ ResearchManager.prototype.researchWantedTechs = function(gameState, techs)
 	const phase1 = gameState.currentPhase() === 1;
 	const available = phase1 ? gameState.ai.queueManager.getAvailableResources(gameState) : null;
 	const numWorkers = phase1 ? gameState.getOwnEntitiesByRole(Worker.ROLE_WORKER, true).length : 0;
+	const expert = this.Config.difficulty >= difficultyLevel.EXPERT;
 	for (const tech of techs)
 	{
 		if (tech[0].indexOf("unlock_champion") == 0)
@@ -107,15 +109,21 @@ ResearchManager.prototype.researchWantedTechs = function(gameState, techs)
 			if (gameState.ai.HQ.navalMap && template.modifications[i].value === "ResourceGatherer/Rates/food.fish")
 				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };
 			else if (template.modifications[i].value === "ResourceGatherer/Rates/food.fruit")
-				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };
+				return { "name": tech[0], "increasePriority": expert || this.CostSum(template.cost) < 400 };
 			else if (template.modifications[i].value === "ResourceGatherer/Rates/food.grain")
 				return { "name": tech[0], "increasePriority": false };
 			else if (template.modifications[i].value === "ResourceGatherer/Rates/wood.tree")
-				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };
+				return { "name": tech[0], "increasePriority": expert || this.CostSum(template.cost) < 400 };
 			else if (template.modifications[i].value.startsWith("ResourceGatherer/Capacities"))
 				return { "name": tech[0], "increasePriority": false };
 			else if (template.modifications[i].value === "Attack/Ranged/MaxRange")
+			{
+				// Expert should not spend early economy on civic-center/ranged-structure attack range.
+				// Save this kind of defensive tech for later random research instead of delaying workers.
+				if (expert && gameState.currentPhase() < 3)
+					continue;
 				return { "name": tech[0], "increasePriority": false };
+			}
 		}
 	}
 	return null;
@@ -127,6 +135,7 @@ ResearchManager.prototype.researchPreferredTechs = function(gameState, techs)
 	const phase2 = gameState.currentPhase() === 2;
 	const available = phase2 ? gameState.ai.queueManager.getAvailableResources(gameState) : null;
 	const numWorkers = phase2 ? gameState.getOwnEntitiesByRole(Worker.ROLE_WORKER, true).length : 0;
+	const expert = this.Config.difficulty >= difficultyLevel.EXPERT;
 	for (const tech of techs)
 	{
 		if (!tech[1]._template.modifications)
@@ -148,7 +157,12 @@ ResearchManager.prototype.researchPreferredTechs = function(gameState, techs)
 			else if (template.modifications[i].value === "ResourceGatherer/Rates/metal.ore")
 				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };
 			else if (template.modifications[i].value === "BuildingAI/DefaultArrowCount")
+			{
+				// Expert should not rush civic-center/structure arrow tech while its economy is still booming.
+				if (expert && gameState.currentPhase() < 3)
+					continue;
 				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };
+			}
 			else if (template.modifications[i].value === "Health/RegenRate")
 				return { "name": tech[0], "increasePriority": false };
 			else if (template.modifications[i].value === "Health/IdleRegenRate")
