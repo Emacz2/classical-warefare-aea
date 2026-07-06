@@ -1,0 +1,7 @@
+{
+  "name": "Petra Bot",
+  "description": "Petra is the default 0 A.D. AI bot. CWA adds an Expert difficulty focused on stronger economic decisions: earlier useful dropsites, better housing prediction, smarter farmstead placement, and improved worker growth. Resource bonuses still depend on difficulty, but Expert is intended to be challenging mainly through better decisions rather than extreme cheating.",
+  "constructor": "PetraBot",
+  "filename": "_petrabot.js",
+  "useShared": true
+}

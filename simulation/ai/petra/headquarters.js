@@ -1340,6 +1340,87 @@ Headquarters.prototype.buildFarmstead = function(gameState, queues)
 	if (!this.canBuild(gameState, "structures/{civ}/farmstead"))
 		return;
 
+	// Expert: build the first farmstead only when it has a useful food patch to serve.
+	// Do not use resourceMaps for food: Petra does not always build a generic food map,
+	// which caused errors when trying to treat food like wood/stone/metal.
+	if (this.Config.difficulty >= difficulty.EXPERT)
+	{
+		let best = { "score": 0, "pos": undefined, "base": undefined };
+		const foodDropsites = gameState.getOwnDropsites("food").toEntityArray();
+
+		for (const base of this.baseManagers())
+		{
+			if (!base.anchor || !base.anchor.position() || !base.dropsiteSupplies.food)
+				continue;
+
+			const supplies = base.dropsiteSupplies.food.nearby.concat(base.dropsiteSupplies.food.medium);
+			for (const supply of supplies)
+			{
+				if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position())
+					continue;
+
+				const type = supply.ent.resourceSupplyType();
+				if (!type || type.generic != "food" || type.specific == "grain")
+					continue;
+
+				if (getLandAccess(gameState, supply.ent) != base.accessIndex)
+					continue;
+
+				const pos = supply.ent.position();
+				const owner = this.territoryMap.getOwner(pos);
+				if (owner != 0 && owner != PlayerID && !gameState.isPlayerAlly(owner))
+					continue;
+
+				let nearestDPDist = Math.min();
+				for (const dropsite of foodDropsites)
+				{
+					if (!dropsite.position() || getLandAccess(gameState, dropsite) != base.accessIndex)
+						continue;
+					nearestDPDist = Math.min(nearestDPDist, SquareVectorDistance(pos, dropsite.position()));
+				}
+
+				// If the patch is already close to a CC/farmstead, a new farmstead is not urgent.
+				if (nearestDPDist < 1600)
+					continue;
+
+				let score = 0;
+				let weightedX = 0;
+				let weightedZ = 0;
+				for (const other of supplies)
+				{
+					if (!other.ent || !gameState.getEntityById(other.id) || !other.ent.position())
+						continue;
+					const otherType = other.ent.resourceSupplyType();
+					if (!otherType || otherType.generic != "food" || otherType.specific == "grain")
+						continue;
+					const otherPos = other.ent.position();
+					if (SquareVectorDistance(pos, otherPos) > 1600)
+						continue;
+					const amount = Math.max(0, other.ent.resourceSupplyAmount());
+					score += amount;
+					weightedX += otherPos[0] * amount;
+					weightedZ += otherPos[1] * amount;
+				}
+
+				if (score <= best.score || score < 450)
+					continue;
+
+				best = {
+					"score": score,
+					"pos": [weightedX / score, weightedZ / score],
+					"base": base.ID
+				};
+			}
+		}
+
+		if (!best.pos)
+			return;
+
+		queues.economicBuilding.addPlan(new ConstructionPlan(gameState, "structures/{civ}/farmstead",
+			{ "base": best.base, "type": "food" }, best.pos));
+		return;
+	}
+
 	queues.economicBuilding.addPlan(new ConstructionPlan(gameState, "structures/{civ}/farmstead"));
 };
 
@@ -1499,7 +1580,18 @@ Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 	const popBonus = gameState.getTemplate(house).getPopulationBonus();
 	const freeSlots = gameState.getPopulationLimit() + HouseNb*popBonus - this.getAccountedPopulation(gameState);
 	let priority;
-	if (freeSlots < 5)
+	if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 14 && !this.buildManager.isUnbuildable(gameState, house))
+	{
+		// Expert should rarely stall production from being housed.
+		// If a planned house is waiting for the normal "houseNeeded" trigger, release it early.
+		for (const plan of queues.house.plans)
+			if (plan.goRequirement == "houseNeeded")
+				plan.goRequirement = undefined;
+		priority = 4 * this.Config.priorities.house;
+	}
+	else if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 24)
+		priority = 2 * this.Config.priorities.house;
+	else if (freeSlots < 5)
 	{
 		if (this.buildManager.isUnbuildable(gameState, house))
 		{
@@ -1668,6 +1760,14 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 {
 	if (this.saveResources && !this.canBarter || queues.militaryBuilding.hasQueuedUnits())
 		return;
+
+	if (this.Config.difficulty >= difficulty.EXPERT)
+	{
+		const freeSlots = gameState.getPopulationLimit() - this.getAccountedPopulation(gameState);
+		// Do not let an early barracks/range/stable consume resources while housing is urgent.
+		if (freeSlots < 12 && queues.house.length())
+			return;
+	}
 
 	const numBarracks = gameState.getOwnEntitiesByClass("Barracks", true).length;
 	if (this.saveResources && numBarracks != 0)

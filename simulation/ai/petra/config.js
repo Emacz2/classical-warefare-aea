@@ -194,7 +194,8 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 		0.7,
 		0.6,
 		0.5,
-		0.35
+		0.35,
+		0.25
 	];
 
 	this.criticalStructureFactors = [
@@ -203,7 +204,8 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 		0.7,
 		0.6,
 		0.5,
-		0.35
+		0.35,
+		0.25
 	];
 
 	this.criticalRootFactors = [
@@ -212,7 +214,8 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 		0.67,
 		0.5,
 		0.35,
-		0.2
+		0.2,
+		0.15
 	];
 }
 
@@ -294,11 +297,36 @@ Config.prototype.setConfig = function(gameState)
 		}
 	}
 
+
+	if (this.difficulty >= difficultyLevel.EXPERT)
+	{
+		// Expert Economy Pass 1:
+		// Build a larger worker economy and reduce wasted walking by prioritizing
+		// dropsites/economic infrastructure earlier than Very Hard. This is intentionally
+		// a modest behavior/priority upgrade, not a huge cheat multiplier.
+		this.Economy.supportRatio = Math.max(this.Economy.supportRatio, 0.48);
+		this.Economy.provisionFields = Math.max(this.Economy.provisionFields, 4);
+		this.Economy.popPhase2 = Math.min(this.Economy.popPhase2, 115);
+		this.Economy.workPhase3 = Math.min(this.Economy.workPhase3, 155);
+		this.Economy.workPhase4 = Math.min(this.Economy.workPhase4, 190);
+		this.Military.popForBarracks1 = Math.min(this.Military.popForBarracks1, 28);
+		this.Military.popForBarracks2 = Math.max(this.Military.popForBarracks2, 80);
+		this.Military.popForForge = Math.min(this.Military.popForForge, 55);
+		this.Military.popForStable1 = Math.min(this.Military.popForStable1, 75);
+		this.priorities.villager = Math.max(this.priorities.villager, 900);
+		this.priorities.dropsites = Math.max(this.priorities.dropsites, 1400);
+		this.priorities.field = Math.max(this.priorities.field, 750);
+		this.priorities.economicBuilding = Math.max(this.priorities.economicBuilding, 950);
+		this.priorities.militaryBuilding = Math.max(this.priorities.militaryBuilding, 650);
+	}
+
 	const maxPop = gameState.getPopulationMax();
 	if (this.difficulty < difficultyLevel.EASY)
 		this.Economy.targetNumWorkers = Math.max(1, Math.min(40, maxPop));
 	else if (this.difficulty < difficultyLevel.MEDIUM)
 		this.Economy.targetNumWorkers = Math.max(1, Math.min(60, Math.floor(maxPop/2)));
+	else if (this.difficulty >= difficultyLevel.EXPERT)
+		this.Economy.targetNumWorkers = Math.max(1, Math.min(190, Math.floor(maxPop * 0.65)));
 	else
 		this.Economy.targetNumWorkers = Math.max(1, Math.min(120, Math.floor(maxPop/3)));
 	this.Economy.targetNumTraders = 2 + this.difficulty;
@@ -341,11 +369,11 @@ Config.prototype.setConfig = function(gameState)
 
 Config.prototype.Cheat = function(gameState)
 {
-	// Sandbox, Very Easy, Easy, Medium, Hard, Very Hard
+	// Sandbox, Very Easy, Easy, Medium, Hard, Very Hard, Expert
 	// rate apply on resource stockpiling as gathering and trading
 	// time apply on building, upgrading, packing, training and technologies
-	const rate = [ 0.42, 0.56, 0.75, 1.00, 1.25, 1.56 ];
-	const time = [ 1.40, 1.25, 1.10, 1.00, 1.00, 1.00 ];
+	const rate = [ 0.42, 0.56, 0.75, 1.00, 1.25, 1.56, 1.70 ];
+	const time = [ 1.40, 1.25, 1.10, 1.00, 1.00, 1.00, 0.95 ];
 	const AIDiff = Math.min(this.difficulty, rate.length - 1);
 	SimEngine.QueryInterface(Sim.SYSTEM_ENTITY, Sim.IID_ModifiersManager).AddModifiers("AI Bonus", {
 		"ResourceGatherer/BaseSpeed": [{ "affects": ["Unit", "Structure"], "multiply": rate[AIDiff] }],
