@@ -370,7 +370,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			// we have a barracks and we want to rush, rush.
 			const data = { "targetSize": this.rushSize[this.rushNumber] };
 			const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber,
-				AttackPlan.TYPE_RUSH, data);
+				AttackPlan.TYPE_RUSH, data, false);
 			if (!attackPlan.failed)
 			{
 				if (this.Config.debug > 1)
@@ -400,7 +400,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			const type = this.attackNumber < 2 ||
 				this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length > 0 ?
 				AttackPlan.TYPE_DEFAULT : AttackPlan.TYPE_HUGE_ATTACK;
-			const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber, type);
+			const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber, type,
+				undefined, false);
 			if (attackPlan.failed)
 				this.attackPlansEncounteredWater = true; // hack
 			else
@@ -700,7 +701,7 @@ AttackManager.prototype.raidTargetEntity = function(gameState, ent)
 {
 	const data = { "target": ent };
 	const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber,
-		AttackPlan.TYPE_RAID, data);
+		AttackPlan.TYPE_RAID, data, false);
 	if (attackPlan.failed)
 		return null;
 	if (this.Config.debug > 1)
@@ -747,7 +748,8 @@ AttackManager.prototype.switchDefenseToAttack = function(gameState, target, data
 	const attackData = data.uniqueTarget ? { "uniqueTargetId": target.id() } : undefined;
 	const pos = target.position();
 	const attackType = AttackPlan.TYPE_DEFAULT;
-	const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber, attackType, attackData);
+	const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber, attackType, attackData,
+		false);
 	if (attackPlan.failed)
 		return false;
 	this.totalNumber++;
@@ -841,7 +843,8 @@ AttackManager.prototype.Deserialize = function(gameState, data)
 		this.upcomingAttacks[key] = [];
 		for (const dataAttack of data.upcomingAttacks[key])
 		{
-			const attack = new AttackPlan(gameState, this.Config, dataAttack.properties.name);
+			const attack = new AttackPlan(gameState, this.Config, dataAttack.properties.name,
+				undefined, undefined, true);
 			attack.Deserialize(gameState, dataAttack);
 			attack.init(gameState);
 			this.upcomingAttacks[key].push(attack);
@@ -854,7 +857,8 @@ AttackManager.prototype.Deserialize = function(gameState, data)
 		this.startedAttacks[key] = [];
 		for (const dataAttack of data.startedAttacks[key])
 		{
-			const attack = new AttackPlan(gameState, this.Config, dataAttack.properties.name);
+			const attack = new AttackPlan(gameState, this.Config, dataAttack.properties.name,
+				undefined, undefined, true);
 			attack.Deserialize(gameState, dataAttack);
 			attack.init(gameState);
 			this.startedAttacks[key].push(attack);

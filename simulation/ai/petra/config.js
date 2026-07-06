@@ -18,9 +18,11 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 	this.Military = {
 		"towerLapseTime": 360,	// Time to wait between building 2 towers
 		"fortressLapseTime": 390,	// Time to wait between building 2 fortresses
-		"popForBarracks1": 25,
-		"popForBarracks2": 55,
+		"popForBarracks1": 45,
+		"popForBarracks2": 60,
 		"popForForge": 65,
+		"popForStable1": 90,
+		"popForStable2": 150,
 		"numSentryTowers": 1
 	};
 
@@ -32,8 +34,8 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 	};
 
 	this.Economy = {
-		"popPhase2": 150,	// How many units we want before aging to phase2.
-		"workPhase3": 180,	// How many workers we want before aging to phase3.
+		"popPhase2": 125,	// How many units we want before aging to phase2.
+		"workPhase3": 150,	// How many workers we want before aging to phase3.
 		"workPhase4": 200,	// How many workers we want before aging to phase4 or higher.
 		"popForDock": 25,
 		"targetNumWorkers": 60,	// dummy, will be changed later
@@ -46,122 +48,137 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 	// Note: attack settings are set directly in attack_plan.js
 	// defense
 	this.Defense =
-	{
-		"defenseRatio": { "ally": 1.4, "neutral": 1.8, "own": 2 },	// ratio of defenders/attackers.
-		"armyCompactSize": 2000,	// squared. Half-diameter of an army.
-		"armyBreakawaySize": 3500,	// squared.
-		"armyMergeSize": 1400	// squared.
-	};
+		{
+			"defenseRatio": { "ally": 1.4, "neutral": 1.8, "own": 2 },	// ratio of defenders/attackers.
+			"armyCompactSize": 2000,	// squared. Half-diameter of an army.
+			"armyBreakawaySize": 3500,	// squared.
+			"armyMergeSize": 1400	// squared.
+		};
 
 	// Additional buildings that the AI does not yet know when to build
 	// and that it will try to build on phase 3 when enough resources.
 	this.buildings =
-	{
-		"default": [],
-		"athen": [
-			"structures/{civ}/gymnasium",
-			"structures/{civ}/prytaneion",
-			"structures/{civ}/theater"
-		],
-		"brit": [],
-		"cart": [
-			"structures/{civ}/embassy_celtic",
-			"structures/{civ}/embassy_iberian",
-			"structures/{civ}/embassy_italic"
-		],
-		"gaul": [
-			"structures/{civ}/assembly"
-		],
-		"han": [
-			"structures/{civ}/academy"
-		],
-		"iber": [
-			"structures/{civ}/monument"
-		],
-		"kush": [
-			"structures/{civ}/camp_blemmye",
-			"structures/{civ}/camp_noba",
-			"structures/{civ}/pyramid_large",
-			"structures/{civ}/pyramid_small",
-			"structures/{civ}/temple_amun"
-		],
-		"mace": [
-			"structures/{civ}/theater"
-		],
-		"maur": [
-			"structures/{civ}/palace",
-			"structures/{civ}/pillar_ashoka"
-		],
-		"pers": [
-			"structures/{civ}/tachara"
-		],
-		"ptol": [
-			"structures/{civ}/library",
-			"structures/{civ}/theater"
-		],
-		"rome": [
-			"structures/{civ}/army_camp",
-			"structures/{civ}/temple_vesta"
-		],
-		"sele": [
-			"structures/{civ}/theater"
-		],
-		"spart": [
-			"structures/{civ}/syssiton",
-			"structures/{civ}/theater"
-		]
-	};
+		{
+			"default": [],
+			"athen": [
+				"structures/{civ}/gymnasium",
+				"structures/{civ}/prytaneion",
+				"structures/{civ}/theater"
+			],
+			"brit": [
+				"structures/{civ}/hill_fort"
+			],
+			"cart": [
+				"structures/{civ}/embassy_celtic",
+				"structures/{civ}/embassy_iberian",
+				"structures/{civ}/embassy_italic",
+				"structures/{civ}/numidian_camp"
+			],
+			"gaul": [
+				"structures/{civ}/assembly",
+				"structures/{civ}/celtic_coalitliton"
+			],
+			"han": [
+				"structures/{civ}/academy",
+				"structures/{civ}/ministry"
+			],
+			"iber": [
+				"structures/{civ}/hall_of_heroes",
+				"structures/{civ}/monument",
+				"structures/{civ}/silvermine"
+			],
+			"kush": [
+				"structures/{civ}/camp_blemmye",
+				"structures/{civ}/camp_noba",
+				"structures/{civ}/pyramid_large",
+				"structures/{civ}/pyramid_small",
+				"structures/{civ}/temple_amun"
+			],
+			"mace": [
+				"structures/{civ}/royal_stoa",
+				"structures/{civ}/theater"
+				
+			],
+			"maur": [
+				"structures/{civ}/palace",
+				"structures/{civ}/pillar_ashoka"
+			],
+			"pers": [
+				"structures/{civ}/tachara"
+			],
+			"ptol": [
+				"structures/{civ}/library",
+				"structures/{civ}/mercenary_camp",
+				"structures/{civ}/theater"
+			],
+			"rome": [
+				"structures/{civ}/army_camp",
+				"structures/{civ}/numidian_camp",
+				"structures/{civ}/temple_mars",
+				"structures/{civ}/temple_vesta"
+			],
+			"sele": [
+				"structures/{civ}/theater"
+			],
+			"spart": [
+				"structures/{civ}/camp",
+				"structures/{civ}/gerousia",
+				"structures/{civ}/syssiton"
+			]
+		};
 
 	this.priorities =
-	{
-		"villager": 300,      // should be slightly lower than the citizen soldier one to not get all the food
-		"citizenSoldier": 600,
-		"trader": 1,
-		"healer": 20,
-		"ships": 1,
-		"house": 250,
-		"dropsites": 950,
-		"field": 480,
-		"dock": 90,
-		"corral": 1,
-		"economicBuilding": 700,
-		"militaryBuilding": 330,
-		"defenseBuilding": 70,
-		"civilCentre": 1,
-		"majorTech": 700,
-		"minorTech": 250,
-		"wonder": 1,
-		"emergency": 1000    // used only in emergency situations, should be the highest one
-	};
+		{
+			"villager": 400,      // should be slightly lower than the citizen soldier one to not get all the food
+			"citizenSoldier": 600,
+			"trader": 1,
+			"healer": 20,
+			"ships": 1,
+			"house": 250,
+			"dropsites": 900,
+			"field": 600,
+			"dock": 90,
+			"corral": 1,
+			"economicBuilding": 700,
+			"militaryBuilding": 500,
+			"defenseBuilding": 70,
+			"civilCentre": 1,
+			"majorTech": 700,
+			"minorTech": 500,
+			"wonder": 1,
+			"emergency": 1000    // used only in emergency situations, should be the highest one
+		};
 
 	// Default personality (will be updated in setConfig)
 	this.personality =
-	{
-		"aggressive": 0.5,
-		"cooperative": 0.5,
-		"defensive": 0.5
-	};
+		{
+			"aggressive": 0.5,
+			"cooperative": 0.5,
+			"defensive": 0.5
+		};
 
 	// See QueueManager.prototype.wantedGatherRates()
 	this.queues =
-	{
-		"firstTurn": {
-			"food": 10,
-			"wood": 10,
-			"default": 0
-		},
-		"short": {
-			"food": 200,
-			"wood": 200,
-			"default": 100
-		},
-		"medium": {
-			"default": 0
-		},
-		"long": {
-			"default": 0
-		}
-	};
+		{
+			"firstTurn": {
+				"food": 20,
+				"wood": 10,
+				"default": 0
+			},
+			"short": {
+				"food": 150,
+				"wood": 100,
+				"default": 100
+			},
+			"medium": {
+				"food": 300,
+				"wood": 300,
+				"default": 0
+			},
+			"long": {
+				"default": 0
+			}
+		};
 
 	this.garrisonHealthLevel = { "low": 0.4, "medium": 0.55, "high": 0.7 };
 
@@ -177,7 +194,8 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 		0.7,
 		0.6,
 		0.5,
-		0.35
+		0.35,
+		0.25
 	];
 
 	this.criticalStructureFactors = [
@@ -186,7 +204,8 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 		0.7,
 		0.6,
 		0.5,
-		0.35
+		0.35,
+		0.25
 	];
 
 	this.criticalRootFactors = [
@@ -195,7 +214,8 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 		0.67,
 		0.5,
 		0.35,
-		0.2
+		0.2,
+		0.15
 	];
 }
 
@@ -277,11 +297,36 @@ Config.prototype.setConfig = function(gameState)
 		}
 	}
 
+
+	if (this.difficulty >= difficultyLevel.EXPERT)
+	{
+		// Expert Economy Pass 1:
+		// Build a larger worker economy and reduce wasted walking by prioritizing
+		// dropsites/economic infrastructure earlier than Very Hard. This is intentionally
+		// a modest behavior/priority upgrade, not a huge cheat multiplier.
+		this.Economy.supportRatio = Math.max(this.Economy.supportRatio, 0.48);
+		this.Economy.provisionFields = Math.max(this.Economy.provisionFields, 4);
+		this.Economy.popPhase2 = Math.min(this.Economy.popPhase2, 115);
+		this.Economy.workPhase3 = Math.min(this.Economy.workPhase3, 155);
+		this.Economy.workPhase4 = Math.min(this.Economy.workPhase4, 190);
+		this.Military.popForBarracks1 = Math.min(this.Military.popForBarracks1, 28);
+		this.Military.popForBarracks2 = Math.max(this.Military.popForBarracks2, 80);
+		this.Military.popForForge = Math.min(this.Military.popForForge, 55);
+		this.Military.popForStable1 = Math.min(this.Military.popForStable1, 75);
+		this.priorities.villager = Math.max(this.priorities.villager, 900);
+		this.priorities.dropsites = Math.max(this.priorities.dropsites, 1400);
+		this.priorities.field = Math.max(this.priorities.field, 750);
+		this.priorities.economicBuilding = Math.max(this.priorities.economicBuilding, 950);
+		this.priorities.militaryBuilding = Math.max(this.priorities.militaryBuilding, 650);
+	}
+
 	const maxPop = gameState.getPopulationMax();
 	if (this.difficulty < difficultyLevel.EASY)
 		this.Economy.targetNumWorkers = Math.max(1, Math.min(40, maxPop));
 	else if (this.difficulty < difficultyLevel.MEDIUM)
 		this.Economy.targetNumWorkers = Math.max(1, Math.min(60, Math.floor(maxPop/2)));
+	else if (this.difficulty >= difficultyLevel.EXPERT)
+		this.Economy.targetNumWorkers = Math.max(1, Math.min(190, Math.floor(maxPop * 0.65)));
 	else
 		this.Economy.targetNumWorkers = Math.max(1, Math.min(120, Math.floor(maxPop/3)));
 	this.Economy.targetNumTraders = 2 + this.difficulty;
@@ -324,11 +369,11 @@ Config.prototype.setConfig = function(gameState)
 
 Config.prototype.Cheat = function(gameState)
 {
-	// Sandbox, Very Easy, Easy, Medium, Hard, Very Hard
+	// Sandbox, Very Easy, Easy, Medium, Hard, Very Hard, Expert
 	// rate apply on resource stockpiling as gathering and trading
 	// time apply on building, upgrading, packing, training and technologies
-	const rate = [ 0.42, 0.56, 0.75, 1.00, 1.25, 1.56 ];
-	const time = [ 1.40, 1.25, 1.10, 1.00, 1.00, 1.00 ];
+	const rate = [ 0.42, 0.56, 0.75, 1.00, 1.25, 1.56, 1.70 ];
+	const time = [ 1.40, 1.25, 1.10, 1.00, 1.00, 1.00, 0.95 ];
 	const AIDiff = Math.min(this.difficulty, rate.length - 1);
 	SimEngine.QueryInterface(Sim.SYSTEM_ENTITY, Sim.IID_ModifiersManager).AddModifiers("AI Bonus", {
 		"ResourceGatherer/BaseSpeed": [{ "affects": ["Unit", "Structure"], "multiply": rate[AIDiff] }],

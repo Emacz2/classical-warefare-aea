@@ -434,7 +434,25 @@ Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 	// and adapt the batch size of the first and second queued workers to the present population
 	// to ease a possible recovery if our population was drastically reduced by an attack
 	// (need to go up to second queued as it is accounted in queueManager)
-	const size = numberOfWorkers < 12 ? 1 : Math.min(5, Math.ceil(numberOfWorkers / 10));
+	let size = numberOfWorkers < 12 ? 1 : Math.min(5, Math.ceil(numberOfWorkers / 10));
+
+	// CWA Expert: batch-train workers earlier.
+	// In CWA, civilians are much more important to the economy, and small early batches
+	// are usually more efficient than training the same number one at a time.
+	// Keep the first few workers single-file so the opening is not starved, then move to
+	// batches of 3, growing toward Petra's normal max batch size later.
+	if (this.Config.difficulty >= difficulty.EXPERT)
+	{
+		if (numberOfWorkers >= 8 && numberOfWorkers < 25)
+			size = 3;
+		else if (numberOfWorkers >= 25)
+			size = Math.max(3, Math.min(5, Math.ceil(numberOfWorkers / 12)));
+
+		// Do not let batching itself cause a population block.
+		const freeSlots = gameState.getPopulationLimit() - gameState.getPopulation() - numberInTraining;
+		if (freeSlots > 0)
+			size = Math.min(size, freeSlots);
+	}
 	if (queues.villager.plans[0])
 	{
 		queues.villager.plans[0].number = Math.min(queues.villager.plans[0].number, size);
@@ -1327,8 +1345,10 @@ Headquarters.prototype.buildMarket = function(gameState, queues)
 /** Build a farmstead */
 Headquarters.prototype.buildFarmstead = function(gameState, queues)
 {
-	// Only build one farmstead for the time being ("DropsiteFood" does not refer to CCs)
-	if (gameState.getOwnEntitiesByClass("Farmstead", true).hasEntities())
+	// Standard Petra only builds one farmstead for the time being ("DropsiteFood" does not refer to CCs).
+	// CWA Very Hard/Expert may add more, but only one per real berry/food district.
+	if (this.Config.difficulty < difficulty.VERY_HARD &&
+	    gameState.getOwnEntitiesByClass("Farmstead", true).hasEntities())
 		return;
 	// Wait to have at least one dropsite and house before the farmstead
 	if (!gameState.getOwnEntitiesByClass("Storehouse", true).hasEntities())
@@ -1339,6 +1359,135 @@ Headquarters.prototype.buildFarmstead = function(gameState, queues)
 		return;
 	if (!this.canBuild(gameState, "structures/{civ}/farmstead"))
 		return;
+
+	// CWA: farmsteads are agricultural hubs, not one-off berry shacks.
+	// Build at most one per berry/bush patch and make sure a new hub is large,
+	// separated from existing food dropsites, and not too early to pay back.
+	if (this.Config.difficulty >= difficulty.VERY_HARD)
+	{
+		const currentPhase = gameState.currentPhase();
+		const numFarmsteads = gameState.getOwnEntitiesByClass("Farmstead", true).length;
+		const maxFarmsteads = currentPhase < 2 ? 1 : currentPhase < 3 ? 2 : 4;
+		if (numFarmsteads >= maxFarmsteads)
+			return;
+
+		let best = { "score": 0, "pos": undefined, "base": undefined };
+		const foodDropsites = gameState.getOwnDropsites("food").toEntityArray();
+		// One farmstead should cover one compact patch.  Keep the patch radius tight so
+		// workers do not walk more than roughly one field-length for berries.
+		const minExistingDropsiteDist = currentPhase < 3 ? 2500 : 2025; // 50m town, 45m city.
+		const clusterRadius = 900; // 30m: compact berry/bush patch only.
+		const maxSupplyToCenterDist = 625; // 25m: reject centers that still leave long food walks.
+		const minClusterFood = currentPhase < 2 ? 600 : 500;
+
+		for (const base of this.baseManagers())
+		{
+			if (!base.anchor || !base.anchor.position() || !base.dropsiteSupplies.food)
+				continue;
+
+			const foodSupplies = [];
+			const checked = {};
+			const supplies = base.dropsiteSupplies.food.nearby.concat(base.dropsiteSupplies.food.medium);
+			for (const supply of supplies)
+			{
+				if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position() || checked[supply.id])
+					continue;
+				checked[supply.id] = true;
+
+				const type = supply.ent.resourceSupplyType();
+				if (!type || type.generic != "food" || type.specific == "grain")
+					continue;
+
+				if (getLandAccess(gameState, supply.ent) != base.accessIndex)
+					continue;
+
+				const pos = supply.ent.position();
+				const owner = this.territoryMap.getOwner(pos);
+				if (owner != 0 && owner != PlayerID && !gameState.isPlayerAlly(owner))
+					continue;
+
+				foodSupplies.push({
+					"id": supply.id,
+					"ent": supply.ent,
+					"pos": pos,
+					"amount": Math.max(0, supply.ent.resourceSupplyAmount())
+				});
+			}
+
+			for (const supply of foodSupplies)
+			{
+				let score = 0;
+				let weightedX = 0;
+				let weightedZ = 0;
+				let objects = 0;
+
+				for (const other of foodSupplies)
+				{
+					if (SquareVectorDistance(supply.pos, other.pos) > clusterRadius)
+						continue;
+					const amount = other.amount;
+					if (amount <= 0)
+						continue;
+					score += amount;
+					weightedX += other.pos[0] * amount;
+					weightedZ += other.pos[1] * amount;
+					++objects;
+				}
+
+				// Avoid building a temporary dropsite for a tiny or nearly exhausted patch.
+				if (score < minClusterFood || objects < 3)
+					continue;
+
+				const center = [weightedX / score, weightedZ / score];
+
+				// If the weighted center would still leave any member of the patch walking too far,
+				// this is not a good one-farmstead patch.  The AI should farm near the hub instead.
+				let compact = true;
+				for (const other of foodSupplies)
+				{
+					if (SquareVectorDistance(supply.pos, other.pos) > clusterRadius)
+						continue;
+					if (SquareVectorDistance(center, other.pos) > maxSupplyToCenterDist)
+					{
+						compact = false;
+						break;
+					}
+				}
+				if (!compact)
+					continue;
+
+				let covered = false;
+				for (const dropsite of foodDropsites)
+				{
+					if (!dropsite.position() || getLandAccess(gameState, dropsite) != base.accessIndex)
+						continue;
+					if (SquareVectorDistance(center, dropsite.position()) < minExistingDropsiteDist)
+					{
+						covered = true;
+						break;
+					}
+				}
+				if (covered)
+					continue;
+
+				if (score <= best.score)
+					continue;
+
+				best = {
+					"score": score,
+					"pos": center,
+					"base": base.ID
+				};
+			}
+		}
+
+		if (!best.pos)
+			return;
+
+		queues.economicBuilding.addPlan(new ConstructionPlan(gameState, "structures/{civ}/farmstead",
+			{ "base": best.base, "type": "food" }, best.pos));
+		return;
+	}
 
 	queues.economicBuilding.addPlan(new ConstructionPlan(gameState, "structures/{civ}/farmstead"));
 };
@@ -1499,7 +1648,18 @@ Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 	const popBonus = gameState.getTemplate(house).getPopulationBonus();
 	const freeSlots = gameState.getPopulationLimit() + HouseNb*popBonus - this.getAccountedPopulation(gameState);
 	let priority;
-	if (freeSlots < 5)
+	if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 18 && !this.buildManager.isUnbuildable(gameState, house))
+	{
+		// Expert should rarely stall production from being housed.
+		// If a planned house is waiting for the normal "houseNeeded" trigger, release it early.
+		for (const plan of queues.house.plans)
+			if (plan.goRequirement == "houseNeeded")
+				plan.goRequirement = undefined;
+		priority = 4 * this.Config.priorities.house;
+	}
+	else if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 28)
+		priority = 2 * this.Config.priorities.house;
+	else if (freeSlots < 5)
 	{
 		if (this.buildManager.isUnbuildable(gameState, house))
 		{
@@ -1669,6 +1829,14 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	if (this.saveResources && !this.canBarter || queues.militaryBuilding.hasQueuedUnits())
 		return;
 
+	if (this.Config.difficulty >= difficulty.EXPERT)
+	{
+		const freeSlots = gameState.getPopulationLimit() - this.getAccountedPopulation(gameState);
+		// Do not let an early barracks/range/stable consume resources while housing is urgent.
+		if (freeSlots < 18 && queues.house.length())
+			return;
+	}
+
 	const numBarracks = gameState.getOwnEntitiesByClass("Barracks", true).length;
 	if (this.saveResources && numBarracks != 0)
 		return;
@@ -1681,7 +1849,26 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	const stableTemplate = this.canBuild(gameState, "structures/{civ}/stable") ? "structures/{civ}/stable" : undefined;
 	const numStables = gameState.getOwnEntitiesByClass("Stable", true).length;
 
-	if (this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks1 ||
+	const accountedPop = this.getAccountedPopulation(gameState);
+	let infantryTrainers = 0;
+	let busyInfantryTrainers = 0;
+	for (const ent of gameState.getOwnTrainingFacilities().values())
+	{
+		if (!ent.hasClass("Barracks") && !ent.hasClass("Range"))
+			continue;
+		++infantryTrainers;
+		if (ent.trainingQueue && ent.trainingQueue().length)
+			++busyInfantryTrainers;
+	}
+	const expert = this.Config.difficulty >= difficulty.EXPERT;
+	const infantryProductionBusy = !expert || !infantryTrainers || busyInfantryTrainers >= infantryTrainers || accountedPop > 105;
+	let allowEarlyStable = !expert || gameState.getPlayerCiv() != "athen" || this.currentPhase >= 3 || accountedPop > 110 || busyInfantryTrainers >= 2;
+	// CWA Expert: Athens is infantry/economy focused and should not rush a Stable unless its
+	// infantry production is already established or the game is much later.
+	if (expert && gameState.getPlayerCiv() == "athen")
+		allowEarlyStable = accountedPop > 135 || (this.currentPhase >= 3 && accountedPop > 115 && busyInfantryTrainers >= 2);
+
+	if (accountedPop > this.Config.Military.popForBarracks1 ||
 	    this.phasing == 2 && gameState.getOwnStructures().filter(filters.byClass("Village")).length < 5)
 	{
 		// First barracks/range and stable.
@@ -1697,14 +1884,14 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 				return;
 			}
 		}
-		if (numStables == 0 && stableTemplate)
+		if (numStables == 0 && stableTemplate && allowEarlyStable && accountedPop > this.Config.Military.popForStable1)
 		{
 			queues.militaryBuilding.addPlan(new ConstructionPlan(gameState, stableTemplate, { "militaryBase": true }));
 			return;
 		}
 
 		// Second barracks/range and stable.
-		if (numBarracks + numRanges == 1 && this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks2)
+		if (numBarracks + numRanges == 1 && infantryProductionBusy && accountedPop > this.Config.Military.popForBarracks2)
 		{
 			const template = numBarracks == 0 ? (barracksTemplate || rangeTemplate) : (rangeTemplate || barracksTemplate);
 			if (template)
@@ -1713,14 +1900,14 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 				return;
 			}
 		}
-		if (numStables == 1 && stableTemplate && this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks2)
+		if (numStables == 1 && stableTemplate && allowEarlyStable && accountedPop > this.Config.Military.popForStable2)
 		{
 			queues.militaryBuilding.addPlan(new ConstructionPlan(gameState, stableTemplate, { "militaryBase": true }));
 			return;
 		}
 
 		// Third barracks/range and stable, if needed.
-		if (numBarracks + numRanges + numStables == 2 && this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks2 + 30)
+		if (numBarracks + numRanges + numStables == 2 && infantryProductionBusy && accountedPop > this.Config.Military.popForBarracks2 + 30)
 		{
 			const template = barracksTemplate || stableTemplate || rangeTemplate;
 			if (template)
@@ -1749,7 +1936,7 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 		return;
 	}
 
-	if (this.getAccountedPopulation(gameState) < 80 || !this.bAdvanced.length)
+	if (accountedPop < 80 || !this.bAdvanced.length)
 		return;
 
 	// Build advanced military buildings
@@ -1757,7 +1944,7 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	for (const advanced of this.bAdvanced)
 		nAdvanced += gameState.countEntitiesAndQueuedByType(advanced, true);
 
-	if (!nAdvanced || nAdvanced < this.bAdvanced.length && this.getAccountedPopulation(gameState) > 110)
+	if (!nAdvanced || nAdvanced < this.bAdvanced.length && accountedPop > 110)
 	{
 		for (const advanced of this.bAdvanced)
 		{
