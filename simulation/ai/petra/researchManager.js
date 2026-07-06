@@ -148,15 +148,7 @@ ResearchManager.prototype.researchPreferredTechs = function(gameState, techs)
 			else if (template.modifications[i].value === "ResourceGatherer/Rates/metal.ore")
 				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };
 			else if (template.modifications[i].value === "BuildingAI/DefaultArrowCount")
-			{
-				// CWA/Petra: Do not buy civic-center / defensive arrow upgrades just because
-				// they are available. They are useful only when our base is under real
-				// pressure or enemies are close enough that the upgrade can matter now.
-				if (!this.shouldResearchDefensiveRangeUpgrade(gameState))
-					continue;
-
 				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };
-			}
 			else if (template.modifications[i].value === "Health/RegenRate")
 				return { "name": tech[0], "increasePriority": false };
 			else if (template.modifications[i].value === "Health/IdleRegenRate")
@@ -164,57 +156,6 @@ ResearchManager.prototype.researchPreferredTechs = function(gameState, techs)
 		}
 	}
 	return null;
-};
-
-/**
- * CWA/Petra: Defensive ranged / arrow-count upgrades should be reactive, not automatic.
- *
- * Research them when the defense manager has active enemy armies near our bases or
- * when a known enemy unit is close to one of our civic centers / major dropsites.
- * Otherwise, save the resources for economy, production, and normal techs.
- */
-ResearchManager.prototype.shouldResearchDefensiveRangeUpgrade = function(gameState)
-{
-	const defenseManager = gameState.ai && gameState.ai.HQ ? gameState.ai.HQ.defenseManager : undefined;
-	if (defenseManager && defenseManager.armies)
-	{
-		for (const army of defenseManager.armies)
-		{
-			if (!army || !army.foePosition || !army.foeEntities || !army.foeEntities.length)
-				continue;
-
-			// About 90m. Close enough that a CC/tower range upgrade can matter soon.
-			if (gameState.ai.HQ && gameState.ai.HQ.baseManagers)
-				for (const base of gameState.ai.HQ.baseManagers)
-					if (base && base.position && SquareVectorDistance(base.position(), army.foePosition) < 8100)
-						return true;
-		}
-	}
-
-	const ownStructures = gameState.getOwnStructures().filter(ent =>
-		ent.position() &&
-		(ent.hasClass("CivCentre") || ent.hasClass("Fortress") || ent.hasClass("Tower")));
-	if (!ownStructures.hasEntities())
-		return false;
-
-	const enemyUnits = gameState.getEnemyUnits().filter(ent =>
-		ent.position() &&
-		!ent.hasClass("Support") &&
-		!ent.hasClass("Domestic") &&
-		ent.attackTypes() !== undefined);
-	if (!enemyUnits.hasEntities())
-		return false;
-
-	for (const structure of ownStructures.toEntityArray())
-	{
-		const pos = structure.position();
-		for (const enemy of enemyUnits.toEntityArray())
-			// About 80m from an important defensive structure.
-			if (SquareVectorDistance(pos, enemy.position()) < 6400)
-				return true;
-	}
-
-	return false;
 };
 
 ResearchManager.prototype.update = function(gameState, queues)
