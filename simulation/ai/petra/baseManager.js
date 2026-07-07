@@ -450,7 +450,25 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 				// TODO  if not yet farms, add a check on time used/lost and build farmstead if needed
 				if (numFarms + numQueue == 0)	// starting game, rely on fruits as long as we have enough of them
 				{
-					if (count < 600)
+					let farmTrigger = 600;
+					if (this.Config.difficulty >= difficulty.EXPERT)
+					{
+						let hasMilitaryProduction = false;
+						for (const ent of gameState.getOwnTrainingFacilities().values())
+						{
+							if ((ent.hasClass("Barracks") || ent.hasClass("Range")) && ent.isBuilt && ent.isBuilt())
+							{
+								hasMilitaryProduction = true;
+								break;
+							}
+						}
+						// Expert must not run out of food and then mine stone/metal while the
+						// Barracks idles. If natural food inside the base is getting low, start
+						// the farm transition before the food bank collapses.
+						if (hasMilitaryProduction && (+gameState.getResources().food || 0) < 550)
+							farmTrigger = 1000;
+					}
+					if (count < farmTrigger)
 					{
 						queues.field.addPlan(new ConstructionPlan(gameState,
 							"structures/{civ}/field", { "favoredBase": this.ID }));

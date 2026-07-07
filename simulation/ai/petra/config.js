@@ -313,13 +313,17 @@ Config.prototype.setConfig = function(gameState)
 		this.Military.popForBarracks2 = Math.max(this.Military.popForBarracks2, 80);
 		this.Military.popForForge = Math.min(this.Military.popForForge, 55);
 		this.Military.popForStable1 = Math.min(this.Military.popForStable1, 75);
-		this.priorities.villager = Math.max(this.priorities.villager, 900);
-		// Keep early dropsites useful, but do not let them outrank production.
-		this.priorities.dropsites = Math.min(Math.max(this.priorities.dropsites, 1050), 1100);
-		this.priorities.field = Math.max(this.priorities.field, 700);
-		this.priorities.economicBuilding = Math.max(this.priorities.economicBuilding, 950);
-		this.priorities.militaryBuilding = Math.max(this.priorities.militaryBuilding, 700);
-		this.priorities.citizenSoldier = Math.max(this.priorities.citizenSoldier, 1000);
+		// Expert spending order: production first, useful eco tech/buildings second,
+		// extra dropsites/fields after that. This keeps improvements cumulative while
+		// preventing idle Barracks and early house/dropsite over-spending.
+		this.priorities.villager = Math.max(this.priorities.villager, 1200);
+		this.priorities.citizenSoldier = Math.max(this.priorities.citizenSoldier, 1250);
+		this.priorities.dropsites = Math.min(Math.max(this.priorities.dropsites, 850), 950);
+		this.priorities.field = Math.max(this.priorities.field, 650);
+		this.priorities.economicBuilding = Math.max(this.priorities.economicBuilding, 900);
+		this.priorities.militaryBuilding = Math.max(this.priorities.militaryBuilding, 800);
+		this.priorities.minorTech = Math.max(this.priorities.minorTech, 850);
+		this.priorities.majorTech = Math.max(this.priorities.majorTech, 900);
 	}
 
 	const maxPop = gameState.getPopulationMax();

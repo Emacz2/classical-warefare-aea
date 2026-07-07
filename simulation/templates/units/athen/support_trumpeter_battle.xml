@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="armor_light|shield_medium|template_unit_support">
+<Entity parent="civ/athen|armor_light|shield_medium|template_unit_support">
   <Auras datatype="tokens">
     units/salpinx2
   </Auras>
   <Identity>
-    <Civ>spart</Civ>
+    <Civ>athen</Civ>
     <SpecificName>salpinx</SpecificName>
     <Icon>units/special/trumpeter_battle.png</Icon>
         <Requirements>
@@ -13,7 +13,7 @@
   </Identity>
     <Upgrade>
     <Rally_Cry>
-      <Entity>units/spart/support_trumpeter_rally</Entity>
+      <Entity>units/athen/support_trumpeter_rally</Entity>
       <Tooltip>Switch to battle cry support.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>5</Time>

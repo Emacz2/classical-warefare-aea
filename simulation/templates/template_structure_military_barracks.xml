@@ -75,6 +75,7 @@
       units/{civ}/infantry_javelineer_b
       units/{civ}/infantry_slinger_b
       units/{civ}/infantry_archer_b
+      units/{civ}/support_trumpeter_rally
     </Entities>
   </Trainer>
   <Vision>

@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="armor_light|shield_medium|template_unit_support">
   <Auras datatype="tokens">
-    units/salpinx2
+    units/salpinx
   </Auras>
+   <Cost>
+    <Population>0</Population>
+    <BuildTime>15</BuildTime>
+    <Resources>
+      <food>100</food>
+    </Resources>
+  </Cost>
+  <Health>
+    <Max>150</Max>
+  </Health>
   <Identity>
-    <Civ>spart</Civ>
+    <Civ>theb</Civ>
     <SpecificName>salpinx</SpecificName>
-    <Icon>units/special/trumpeter_battle.png</Icon>
+    <Icon>units/special/trumpeter_rally.png</Icon>
         <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
-    <Upgrade>
-    <Rally_Cry>
-      <Entity>units/spart/support_trumpeter_rally</Entity>
+  <Upgrade>
+    <Battle_Cry>
+      <Entity>units/theb/support_trumpeter_battle</Entity>
       <Tooltip>Switch to battle cry support.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>5</Time>
-    </Rally_Cry>
+    </Battle_Cry>
   </Upgrade>
     <TrainingRestrictions>
     <Category>Trumpeter</Category>

@@ -64,7 +64,7 @@
       <SacredBandInfantry>30</SacredBandInfantry>
       <SacredBandCavalry>20</SacredBandCavalry>
       <Centurion>10</Centurion>
-      <Trumpeter>10</Trumpeter>
+      <Trumpeter>5</Trumpeter>
       <Wonder>1</Wonder>
     </Limits>
     <LimitChangers>
