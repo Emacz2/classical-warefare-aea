@@ -1,5 +1,6 @@
 import { ResearchPlan } from "simulation/ai/petra/queueplanResearch.js";
 import { Worker } from "simulation/ai/petra/worker.js";
+import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 
 /**
  * Manage the research
@@ -115,7 +116,14 @@ ResearchManager.prototype.researchWantedTechs = function(gameState, techs)
 			else if (template.modifications[i].value.startsWith("ResourceGatherer/Capacities"))
 				return { "name": tech[0], "increasePriority": false };
 			else if (template.modifications[i].value === "Attack/Ranged/MaxRange")
+			{
+				// CWA Expert: do not buy Civic Center / defensive range techs in the
+				// economic opening. Spend early resources on civilians and eco techs
+				// unless this is no longer the opening.
+				if (gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && gameState.ai.elapsedTime < 600)
+					continue;
 				return { "name": tech[0], "increasePriority": false };
+			}
 		}
 	}
 	return null;

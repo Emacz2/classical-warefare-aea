@@ -314,10 +314,12 @@ Config.prototype.setConfig = function(gameState)
 		this.Military.popForForge = Math.min(this.Military.popForForge, 55);
 		this.Military.popForStable1 = Math.min(this.Military.popForStable1, 75);
 		this.priorities.villager = Math.max(this.priorities.villager, 900);
-		this.priorities.dropsites = Math.max(this.priorities.dropsites, 1400);
-		this.priorities.field = Math.max(this.priorities.field, 750);
+		// Keep early dropsites useful, but do not let them outrank production.
+		this.priorities.dropsites = Math.min(Math.max(this.priorities.dropsites, 1050), 1100);
+		this.priorities.field = Math.max(this.priorities.field, 700);
 		this.priorities.economicBuilding = Math.max(this.priorities.economicBuilding, 950);
-		this.priorities.militaryBuilding = Math.max(this.priorities.militaryBuilding, 650);
+		this.priorities.militaryBuilding = Math.max(this.priorities.militaryBuilding, 700);
+		this.priorities.citizenSoldier = Math.max(this.priorities.citizenSoldier, 1000);
 	}
 
 	const maxPop = gameState.getPopulationMax();

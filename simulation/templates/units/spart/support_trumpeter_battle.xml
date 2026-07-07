@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="armor_medium|shield_medium|template_unit_support">
+  <Auras datatype="tokens">
+    units/salpinx2
+  </Auras>
+  <Identity>
+    <Civ>spart</Civ>
+    <SpecificName>salpinx</SpecificName>
+    <Icon>units/special/trumpeter_battle.png</Icon>
+        <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
+  </Identity>
+    <Upgrade>
+    <Rally_Cry>
+      <Entity>units/spart/support_trumpeter_rally</Entity>
+      <Tooltip>Switch to battle cry support.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>5</Time>
+    </Rally_Cry>
+  </Upgrade>
+    <TrainingRestrictions>
+    <Category>Trumpeter</Category>
+    </TrainingRestrictions>
+  <VisualActor>
+    <Actor>units/gauls/infantry_carnyx_c.xml</Actor>
+  </VisualActor>
+</Entity>

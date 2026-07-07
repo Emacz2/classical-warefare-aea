@@ -430,11 +430,57 @@ Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 		}
 	});
 
-	// Anticipate the optimal batch size when this queue will start
-	// and adapt the batch size of the first and second queued workers to the present population
-	// to ease a possible recovery if our population was drastically reduced by an attack
-	// (need to go up to second queued as it is accounted in queueManager)
-	const size = numberOfWorkers < 12 ? 1 : Math.min(5, Math.ceil(numberOfWorkers / 10));
+	const numberOfQueuedSupports = queues.villager.countQueuedUnits();
+	const numberOfQueuedSoldiers = queues.citizenSoldier.countQueuedUnits();
+	const numberQueued = numberOfQueuedSupports + numberOfQueuedSoldiers;
+	const numberTotal = numberOfWorkers + numberQueued;
+
+	// Anticipate the optimal batch size when this queue will start.
+	// CWA Expert opening: prefer efficient batches, but NEVER let the CC idle
+	// waiting for a perfect batch. Also do not stack multiple villager batches in
+	// the queue: only queue the next batch when the current one is nearly done.
+	let size = numberOfWorkers < 12 ? 1 : Math.min(5, Math.ceil(numberOfWorkers / 10));
+	let expertHoldNextBatch = false;
+	if (this.Config.difficulty >= difficulty.EXPERT && numberTotal < 90)
+	{
+		let queuedPop = 0;
+		let workerTrainingRemaining = 0;
+		for (const trainer of gameState.getOwnTrainingFacilities().values())
+		{
+			const queue = trainer.trainingQueue ? trainer.trainingQueue() : (trainer._entity && trainer._entity.trainingQueue ? trainer._entity.trainingQueue : []);
+			for (const item of queue)
+			{
+				const count = +item.count || +item.number || 0;
+				queuedPop += count;
+				if (item.metadata && item.metadata.role === Worker.ROLE_WORKER && item.metadata.plan === undefined)
+					workerTrainingRemaining = Math.max(workerTrainingRemaining, +item.timeRemaining || 0);
+			}
+		}
+
+		// If a worker batch is already training and has more than ~2 seconds left,
+		// wait. This avoids queueing 3+3+3 too early while still allowing a new batch
+		// just before the CC would become idle.
+		expertHoldNextBatch = workerTrainingRemaining > 2000 || numberOfQueuedSupports > 0;
+
+		const popLimit = +gameState.getPopulationLimit() || 0;
+		const currentPop = +gameState.getPopulation() || 0;
+		const popRoom = Math.max(0, popLimit - currentPop - queuedPop);
+		let desiredBatch = numberTotal < 24 ? 3 : numberTotal < 55 ? 4 : 5;
+		let affordable = desiredBatch;
+		if (templateDef)
+		{
+			const template = gameState.getTemplate(templateDef);
+			const cost = template ? template.cost() : undefined;
+			const foodCost = cost && +cost.food ? +cost.food : 50;
+			const foodAvailable = +(gameState.getResources().food || 0);
+			affordable = Math.max(0, Math.min(desiredBatch, Math.floor(foodAvailable / foodCost)));
+		}
+		if (popRoom <= 0 || affordable <= 0)
+			expertHoldNextBatch = true;
+		else
+			size = Math.max(1, Math.min(desiredBatch, popRoom, affordable));
+	}
+
 	if (queues.villager.plans[0])
 	{
 		queues.villager.plans[0].number = Math.min(queues.villager.plans[0].number, size);
@@ -448,11 +494,6 @@ Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 			queues.citizenSoldier.plans[1].number = Math.min(queues.citizenSoldier.plans[1].number, size);
 	}
 
-	const numberOfQueuedSupports = queues.villager.countQueuedUnits();
-	const numberOfQueuedSoldiers = queues.citizenSoldier.countQueuedUnits();
-	const numberQueued = numberOfQueuedSupports + numberOfQueuedSoldiers;
-	const numberTotal = numberOfWorkers + numberQueued;
-
 	if (this.saveResources && numberTotal > this.Config.Economy.popPhase2 + 10)
 		return;
 	if (numberTotal > this.targetNumWorkers || (numberTotal >= this.Config.Economy.popPhase2 &&
@@ -460,6 +501,18 @@ Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 		return;
 	if (numberQueued > 50 || (numberOfQueuedSupports > 20 && numberOfQueuedSoldiers > 20) || numberInTraining > 15)
 		return;
+	if (this.Config.difficulty >= difficulty.EXPERT && expertHoldNextBatch)
+		return;
+
+	// CWA Expert opening: the Civic Center is an economy engine.
+	// Until the economy is large, train support civilians from the CC whenever
+	// they are available; soldiers should come later from military buildings
+	// unless another system has already queued emergency defense.
+	if (this.Config.difficulty >= difficulty.EXPERT && numberTotal < 80 && templateDef)
+	{
+		queues.villager.addPlan(new TrainingPlan(gameState, templateDef, { "role": Worker.ROLE_WORKER, "base": 0, "support": true }, size, size));
+		return;
+	}
 
 	// Choose whether we want soldiers or support units: when full pop, we aim at targetNumWorkers workers
 	// with supportRatio fraction of support units. But we want to have more support (less cost) at startup.
@@ -639,6 +692,50 @@ Headquarters.prototype.pickMostNeededResources = function(gameState, allowedReso
 	const needed = [];
 	for (const res of allowedResources)
 		needed.push({ "type": res, "wanted": wantedRates[res], "current": currentRates[res] });
+
+	// CWA Expert: keep the opening economy balanced like a strong human player.
+	// This must work BOTH directions. Earlier versions only pushed surplus food
+	// toward wood, which could leave Expert with huge wood floats and an idle
+	// Barracks.  In the first 10 minutes, keep food/wood close enough that the
+	// CC and Barracks can both keep producing.
+	if (this.Config.difficulty >= difficulty.EXPERT && gameState.ai.elapsedTime < 600)
+	{
+		const stock = gameState.getResources();
+		const foodFloat = stock.food || 0;
+		const woodFloat = stock.wood || 0;
+		const hasMilitaryProduction = gameState.getOwnTrainingFacilities().some(ent =>
+			(ent.hasClass("Barracks") || ent.hasClass("Range")) && ent.isBuilt && ent.isBuilt());
+
+		for (const need of needed)
+		{
+			// Do not drift into stone/metal while the opening food/wood engine is uneven.
+			if (need.type == "stone" || need.type == "metal")
+			{
+				if (foodFloat < 700 || woodFloat < 700)
+					need.wanted = Math.min(need.wanted, need.current);
+				continue;
+			}
+
+			// If food is overflowing relative to wood, new workers go wood.
+			if ((foodFloat > 850 && woodFloat < 650) || foodFloat > woodFloat + 550)
+			{
+				if (need.type == "food")
+					need.wanted = Math.min(need.wanted, need.current);
+				else if (need.type == "wood")
+					need.wanted = Math.max(need.wanted, need.current + 10);
+			}
+
+			// If wood is overflowing and food is low, feed the CC/Barracks.
+			if ((woodFloat > 850 && foodFloat < 650) || woodFloat > foodFloat + 550 ||
+			    hasMilitaryProduction && foodFloat < 350 && woodFloat > 500)
+			{
+				if (need.type == "wood")
+					need.wanted = Math.min(need.wanted, need.current);
+				else if (need.type == "food")
+					need.wanted = Math.max(need.wanted, need.current + 10);
+			}
+		}
+	}
 
 	needed.sort((a, b) => {
 		if (a.current < a.wanted && b.current < b.wanted)
@@ -1324,98 +1421,148 @@ Headquarters.prototype.buildMarket = function(gameState, queues)
 	queues.economicBuilding.addPlan(plan);
 };
 
+
+/**
+ * CWA Expert helper: find the best fruit/berry cluster that is not already
+ * efficiently served by an existing food dropsite. This deliberately works at
+ * patch/cluster level, not per-bush, so one patch does not attract 12+ workers.
+ */
+Headquarters.prototype.findExpertFoodClusterFarmsteadLocation = function(gameState, minScore = 300, allowNeutralNearBorder = false)
+{
+	if (this.Config.difficulty < difficulty.EXPERT)
+		return undefined;
+	if (!this.hasPotentialBase() || !this.canBuild(gameState, "structures/{civ}/farmstead"))
+		return undefined;
+
+	let best = { "score": 0, "pos": undefined, "base": undefined };
+	const foodDropsites = gameState.getOwnDropsites("food").toEntityArray();
+	const existingFarmsteads = gameState.getOwnEntitiesByClass("Farmstead", true).toEntityArray();
+	const farmsteadFoundations = gameState.getOwnFoundations().filter(filters.byClass("Farmstead")).toEntityArray();
+	for (const foundation of farmsteadFoundations)
+		foodDropsites.push(foundation);
+
+	// Expert-only: one food hub per useful patch. Count foundations too, otherwise
+	// the AI starts another Farmstead before the current one finishes.
+	if (gameState.ai.elapsedTime < 360 && existingFarmsteads.length + farmsteadFoundations.length >= 2)
+		return undefined;
+	const servedDistance = existingFarmsteads.length + farmsteadFoundations.length ? 3600 : 900;
+
+	for (const base of this.baseManagers())
+	{
+		if (!base.anchor || !base.anchor.position() || !base.dropsiteSupplies.food)
+			continue;
+
+		const supplies = base.dropsiteSupplies.food.nearby.concat(base.dropsiteSupplies.food.medium);
+		for (const supply of supplies)
+		{
+			if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position())
+				continue;
+			const type = supply.ent.resourceSupplyType();
+			if (!type || type.generic != "food" || type.specific != "fruit")
+				continue;
+			if (getLandAccess(gameState, supply.ent) != base.accessIndex)
+				continue;
+
+			const pos = supply.ent.position();
+			const owner = this.territoryMap.getOwner(pos);
+			if (owner != PlayerID)
+			{
+				if (!allowNeutralNearBorder || owner != 0 || SquareVectorDistance(pos, base.anchor.position()) > 6400)
+					continue;
+			}
+
+			let nearestDPDist = Math.min();
+			for (const dropsite of foodDropsites)
+			{
+				if (!dropsite.position() || getLandAccess(gameState, dropsite) != base.accessIndex)
+					continue;
+				nearestDPDist = Math.min(nearestDPDist, SquareVectorDistance(pos, dropsite.position()));
+			}
+
+			// Already close enough to a CC/Farmstead; do not waste 100 wood.
+			// With an existing Farmstead, use a wider spacing requirement so a second
+			// Farmstead must serve a different food source, not the same patch.
+			if (nearestDPDist < servedDistance)
+				continue;
+
+			let score = 0;
+			let weightedX = 0;
+			let weightedZ = 0;
+			let clusterGatherers = 0;
+			let clusterCount = 0;
+			for (const other of supplies)
+			{
+				if (!other.ent || !gameState.getEntityById(other.id) || !other.ent.position())
+					continue;
+				const otherType = other.ent.resourceSupplyType();
+				if (!otherType || otherType.generic != "food" || otherType.specific != "fruit")
+					continue;
+				const otherPos = other.ent.position();
+				if (SquareVectorDistance(pos, otherPos) > 900)
+					continue;
+				const otherOwner = this.territoryMap.getOwner(otherPos);
+				if (otherOwner != PlayerID && (!allowNeutralNearBorder || otherOwner != 0))
+					continue;
+
+				const amount = Math.max(0, other.ent.resourceSupplyAmount());
+				++clusterCount;
+				score += amount;
+				weightedX += otherPos[0] * amount;
+				weightedZ += otherPos[1] * amount;
+				clusterGatherers += other.ent.resourceSupplyNumGatherers();
+			}
+
+			// Prefer true berry patches.  Single fruit/apple trees are not worth a
+			// Farmstead while real berry clusters still exist.
+			if (clusterCount < 3)
+				continue;
+
+			// Prefer the next useful cluster; don't build for a nearly depleted patch.
+			if (score <= best.score || score < minScore)
+				continue;
+
+			// If it is already crowded and still has no good dropsite, this is exactly
+			// the patch that needs a Farmstead, so add a small urgency bonus.
+			if (clusterGatherers >= 6)
+				score += 150;
+
+			best = {
+				"score": score,
+				"pos": [weightedX / Math.max(1, score), weightedZ / Math.max(1, score)],
+				"base": base.ID
+			};
+		}
+	}
+
+	return best.pos ? best : undefined;
+};
+
 /** Build a farmstead */
 Headquarters.prototype.buildFarmstead = function(gameState, queues)
 {
-	// Only build one farmstead for the time being ("DropsiteFood" does not refer to CCs)
-	if (gameState.getOwnEntitiesByClass("Farmstead", true).hasEntities())
+	// Stock Petra builds only one farmstead and waits for a house first.
+	// Expert is allowed to add a second/third Farmstead for a separate useful berry
+	// cluster, but still uses strict cluster scoring below.
+	if (this.Config.difficulty < difficulty.EXPERT && gameState.getOwnEntitiesByClass("Farmstead", true).hasEntities())
 		return;
-	// Wait to have at least one dropsite and house before the farmstead
+	// Wait to have at least one wood dropsite before additional food hubs.
 	if (!gameState.getOwnEntitiesByClass("Storehouse", true).hasEntities())
 		return;
-	if (!gameState.getOwnEntitiesByClass("House", true).hasEntities())
+	if (this.Config.difficulty < difficulty.EXPERT && !gameState.getOwnEntitiesByClass("House", true).hasEntities())
 		return;
 	if (queues.economicBuilding.hasQueuedUnitsWithClass("DropsiteFood"))
 		return;
 	if (!this.canBuild(gameState, "structures/{civ}/farmstead"))
 		return;
 
-	// Expert: build the first farmstead only when it has a useful food patch to serve.
-	// Do not use resourceMaps for food: Petra does not always build a generic food map,
-	// which caused errors when trying to treat food like wood/stone/metal.
+	// Expert: add a Farmstead only for a distinct berry/fruit cluster that is not
+	// already efficiently served. Allow a very close neutral cluster only if it is
+	// near our base/border and can be claimed by this economic building.
 	if (this.Config.difficulty >= difficulty.EXPERT)
 	{
-		let best = { "score": 0, "pos": undefined, "base": undefined };
-		const foodDropsites = gameState.getOwnDropsites("food").toEntityArray();
-
-		for (const base of this.baseManagers())
-		{
-			if (!base.anchor || !base.anchor.position() || !base.dropsiteSupplies.food)
-				continue;
-
-			const supplies = base.dropsiteSupplies.food.nearby.concat(base.dropsiteSupplies.food.medium);
-			for (const supply of supplies)
-			{
-				if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position())
-					continue;
-
-				const type = supply.ent.resourceSupplyType();
-				if (!type || type.generic != "food" || type.specific == "grain")
-					continue;
-
-				if (getLandAccess(gameState, supply.ent) != base.accessIndex)
-					continue;
-
-				const pos = supply.ent.position();
-				const owner = this.territoryMap.getOwner(pos);
-				if (owner != 0 && owner != PlayerID && !gameState.isPlayerAlly(owner))
-					continue;
-
-				let nearestDPDist = Math.min();
-				for (const dropsite of foodDropsites)
-				{
-					if (!dropsite.position() || getLandAccess(gameState, dropsite) != base.accessIndex)
-						continue;
-					nearestDPDist = Math.min(nearestDPDist, SquareVectorDistance(pos, dropsite.position()));
-				}
-
-				// If the patch is already close to a CC/farmstead, a new farmstead is not urgent.
-				if (nearestDPDist < 1600)
-					continue;
-
-				let score = 0;
-				let weightedX = 0;
-				let weightedZ = 0;
-				for (const other of supplies)
-				{
-					if (!other.ent || !gameState.getEntityById(other.id) || !other.ent.position())
-						continue;
-					const otherType = other.ent.resourceSupplyType();
-					if (!otherType || otherType.generic != "food" || otherType.specific == "grain")
-						continue;
-					const otherPos = other.ent.position();
-					if (SquareVectorDistance(pos, otherPos) > 1600)
-						continue;
-					const amount = Math.max(0, other.ent.resourceSupplyAmount());
-					score += amount;
-					weightedX += otherPos[0] * amount;
-					weightedZ += otherPos[1] * amount;
-				}
-
-				if (score <= best.score || score < 450)
-					continue;
-
-				best = {
-					"score": score,
-					"pos": [weightedX / score, weightedZ / score],
-					"base": base.ID
-				};
-			}
-		}
-
-		if (!best.pos)
+		const best = this.findExpertFoodClusterFarmsteadLocation(gameState, 450, false);
+		if (!best)
 			return;
-
 		queues.economicBuilding.addPlan(new ConstructionPlan(gameState, "structures/{civ}/farmstead",
 			{ "base": best.base, "type": "food" }, best.pos));
 		return;
@@ -1507,6 +1654,20 @@ Headquarters.prototype.manageCorral = function(gameState, queues)
  */
 Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 {
+	// CWA Expert opening: do not spend early wood on houses while there is still
+	// plenty of population room. This matters for civs with larger starting caps
+	// (for example Athens/city-states starting at 30). Queue houses only when the
+	// current + training population is within 2-3 of the cap.
+	if (this.Config.difficulty >= difficulty.EXPERT && gameState.ai.elapsedTime < 360)
+	{
+		let queuedPop = 0;
+		for (const trainer of gameState.getOwnTrainingFacilities().values())
+			for (const item of trainer.trainingQueue())
+				queuedPop += item.count;
+		if (gameState.getPopulationLimit() - gameState.getPopulation() - queuedPop > 5)
+			return;
+	}
+
 	let houseTemplateString = "structures/{civ}/apartment";
 	if (!gameState.isTemplateAvailable(gameState.applyCiv(houseTemplateString)) ||
 		!this.canBuild(gameState, houseTemplateString))
@@ -1580,7 +1741,7 @@ Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 	const popBonus = gameState.getTemplate(house).getPopulationBonus();
 	const freeSlots = gameState.getPopulationLimit() + HouseNb*popBonus - this.getAccountedPopulation(gameState);
 	let priority;
-	if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 18 && !this.buildManager.isUnbuildable(gameState, house))
+	if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 14 && !this.buildManager.isUnbuildable(gameState, house))
 	{
 		// Expert should rarely stall production from being housed.
 		// If a planned house is waiting for the normal "houseNeeded" trigger, release it early.
@@ -1589,7 +1750,7 @@ Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 				plan.goRequirement = undefined;
 		priority = 4 * this.Config.priorities.house;
 	}
-	else if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 28)
+	else if (this.Config.difficulty >= difficulty.EXPERT && freeSlots < 22)
 		priority = 2 * this.Config.priorities.house;
 	else if (freeSlots < 5)
 	{
@@ -1751,6 +1912,196 @@ Headquarters.prototype.buildForge = function(gameState, queues)
 	if (this.canBuild(gameState, "structures/{civ}/forge"))
 		queues.militaryBuilding.addPlan(new ConstructionPlan(gameState, "structures/{civ}/forge"));
 };
+
+
+/**
+ * CWA Expert: if a production queue is urgent, release resources that are
+ * trapped in lower-value accounts and fund the queue immediately. Petra's
+ * queue manager can otherwise leave a finished Barracks idle while resources
+ * sit reserved for dropsites, fields, or techs.
+ */
+Headquarters.prototype.cwaExpertFundUrgentQueue = function(gameState, queueName, cost)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !gameState.ai.queueManager)
+		return;
+
+	const qm = gameState.ai.queueManager;
+	if (!qm.accounts || !qm.accounts[queueName])
+		return;
+
+	const protectedQueues = new Set(["villager", "house", "emergency", queueName]);
+	for (const res of Resources.GetCodes())
+	{
+		let target = Math.max(0, +(cost[res] || 0));
+		if (!target)
+			continue;
+
+		// First use truly unaccounted resources.
+		let available = Math.max(0, +(qm.getAvailableResources(gameState)[res] || 0));
+		let add = Math.min(available, Math.max(0, target - +(qm.accounts[queueName][res] || 0)));
+		qm.accounts[queueName][res] += add;
+
+		let shortage = Math.max(0, target - +(qm.accounts[queueName][res] || 0));
+		if (!shortage)
+			continue;
+
+		// Then steal only from non-critical queues. Do not steal from houses or the CC.
+		for (const donor in qm.accounts)
+		{
+			if (protectedQueues.has(donor))
+				continue;
+			const donorAmount = Math.max(0, +(qm.accounts[donor][res] || 0));
+			if (!donorAmount)
+				continue;
+			const moved = Math.min(donorAmount, shortage);
+			qm.accounts[donor][res] -= moved;
+			qm.accounts[queueName][res] += moved;
+			shortage -= moved;
+			if (!shortage)
+				break;
+		}
+	}
+};
+
+/**
+ * CWA Expert: keep finished infantry production buildings working.
+ * This is intentionally conservative: it does not change Very Hard or below,
+ * it does not stack long military queues, and it only adds a new batch when
+ * a Barracks/Range is idle or nearly idle.
+ */
+Headquarters.prototype.cwaExpertMaintainBarracksProduction = function(gameState, queues)
+{
+	if (this.Config.difficulty < difficulty.EXPERT)
+		return;
+
+	if (!queues.citizenSoldier)
+		return;
+
+	const resources = gameState.getResources();
+	const accountedPop = this.getAccountedPopulation(gameState);
+	const popRoom = Math.max(0, (+gameState.getPopulationLimit() || 0) - accountedPop);
+	if (popRoom <= 0)
+		return;
+
+	// If we are actively phasing, respect it. If saveResources is only causing
+	// resource banking while production buildings are idle, spend the surplus.
+	if (this.phasing)
+		return;
+	if (this.saveResources && (+resources.food || 0) < 900 && (+resources.wood || 0) < 900)
+		return;
+
+	const civ = gameState.getPlayerCiv();
+	let readyTrainer = false;
+	let bestTrainer;
+	let bestTemplate;
+	let bestTemplateCost;
+	let bestScore = -1;
+
+	for (const trainer of gameState.getOwnTrainingFacilities().values())
+	{
+		if ((!trainer.hasClass("Barracks") && !trainer.hasClass("Range")) || !trainer.isBuilt || !trainer.isBuilt())
+			continue;
+
+		const queueTime = trainer.trainingQueueTime ? +trainer.trainingQueueTime() || 0 : 0;
+		if (queueTime > 2)
+			continue;
+		readyTrainer = true;
+
+		const trainables = trainer.trainableEntities ? trainer.trainableEntities(civ) : [];
+		for (const type of trainables)
+		{
+			if (gameState.isTemplateDisabled(type))
+				continue;
+
+			const template = gameState.getTemplate(type);
+			if (!template || !template.hasClass || !template.hasClass("Infantry") || !template.hasClass("CitizenSoldier"))
+				continue;
+			if (template.hasClass("Support") || template.hasClass("Hero") || template.hasClass("Siege"))
+				continue;
+
+			const cost = template.cost ? template.cost(trainer) : {};
+			const food = +cost.food || 0;
+			const wood = +cost.wood || 0;
+			const stone = +cost.stone || 0;
+			const metal = +cost.metal || 0;
+
+			if ((+resources.food || 0) < food || (+resources.wood || 0) < wood ||
+			    (+resources.stone || 0) < stone || (+resources.metal || 0) < metal)
+				continue;
+
+			// Prefer cheap food/wood infantry early. Avoid metal/stone units unless
+			// they are the only valid option.
+			const totalCost = Math.max(1, food + wood + stone + metal);
+			let score = 1000 / totalCost;
+			if (template.hasClass("Ranged"))
+				score += 0.25;
+			if (metal > 0 || stone > 0)
+				score -= 0.5;
+
+			if (score > bestScore)
+			{
+				bestScore = score;
+				bestTrainer = trainer;
+				bestTemplate = type;
+				bestTemplateCost = cost;
+			}
+		}
+	}
+
+	if (!readyTrainer)
+		return;
+
+	// If there is already a citizen-soldier plan waiting, do not stack another.
+	// Instead make sure this queue receives resources before lower-value queues.
+	if (queues.citizenSoldier.countQueuedUnits && queues.citizenSoldier.countQueuedUnits() > 0)
+	{
+		gameState.ai.queueManager.changePriority("citizenSoldier", 2200);
+		const plan = queues.citizenSoldier.plans && queues.citizenSoldier.plans[0];
+		if (plan && plan.getCost)
+			this.cwaExpertFundUrgentQueue(gameState, "citizenSoldier", plan.getCost());
+		return;
+	}
+
+	if (!bestTrainer || !bestTemplate)
+		return;
+
+	const maxByPop = Math.max(1, Math.floor(popRoom));
+	const maxByFood = bestTemplateCost.food ? Math.floor((+resources.food || 0) / (+bestTemplateCost.food || 1)) : 5;
+	const maxByWood = bestTemplateCost.wood ? Math.floor((+resources.wood || 0) / (+bestTemplateCost.wood || 1)) : 5;
+	const maxByStone = bestTemplateCost.stone ? Math.floor((+resources.stone || 0) / (+bestTemplateCost.stone || 1)) : 5;
+	const maxByMetal = bestTemplateCost.metal ? Math.floor((+resources.metal || 0) / (+bestTemplateCost.metal || 1)) : 5;
+
+	let batch = Math.min(maxByPop, maxByFood, maxByWood, maxByStone, maxByMetal);
+
+	// Do not wait for perfect batches. A ready Barracks with resources should train now.
+	// Let high floats make bigger batches, otherwise use 1-3 units.
+	if ((+resources.food || 0) > 1000 || (+resources.wood || 0) > 1000)
+		batch = Math.min(batch, 5);
+	else if ((+resources.food || 0) > 450 || (+resources.wood || 0) > 450)
+		batch = Math.min(batch, 3);
+	else
+		batch = Math.min(batch, 2);
+
+	batch = Math.floor(+batch || 0);
+	if (batch <= 0)
+		return;
+
+	const base = bestTrainer.getMetadata ? bestTrainer.getMetadata(PlayerID, "base") : 0;
+	const plan = new TrainingPlan(
+		gameState,
+		bestTemplate,
+		{ "role": Worker.ROLE_WORKER, "base": base || 0, "trainer": bestTrainer.id() },
+		batch,
+		batch
+	);
+
+	queues.citizenSoldier.addPlan(plan);
+	gameState.ai.queueManager.changePriority("citizenSoldier", 2200);
+
+	if (plan && plan.getCost)
+		this.cwaExpertFundUrgentQueue(gameState, "citizenSoldier", plan.getCost());
+};
+
 
 /**
  * Deals with constructing military buildings (e.g. barracks, stable).
@@ -2432,6 +2783,11 @@ Headquarters.prototype.update = function(gameState, queues, events)
 	}
 
 	this.tradeManager.update(gameState, events, queues);
+
+	// CWA Expert: keep finished production buildings working every AI update.
+	// This is deliberately outside the slower construction/defense cadence so a
+	// finished Barracks does not sit idle for 30-60 seconds while resources float.
+	this.cwaExpertMaintainBarracksProduction(gameState, queues);
 
 	this.garrisonManager.update(gameState, events);
 	this.defenseManager.update(gameState, events);

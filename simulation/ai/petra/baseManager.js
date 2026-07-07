@@ -514,15 +514,40 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 		// TODO  add also a test on remaining resources.
 		const total = this.gatherers[type].used + this.gatherers[type].lost;
 		const expert = this.Config.difficulty >= difficulty.EXPERT;
-		const minSamples = expert ? (type == "wood" ? 45 : 30) : (type == "wood" ? 150 : 60);
+
+		// Expert: reuse the first wood dropsite. Do not spend 100 wood on a second
+		// Storehouse when only a few woodcutters are active or the first one is still
+		// good enough. This preserves wood for houses, barracks, civilians and techs.
+		if (expert && type == "wood" && gameState.ai.elapsedTime < 300)
+		{
+			const ownStorehouses = gameState.getOwnEntitiesByClass("Storehouse", true).length;
+			const storehouseFoundations = gameState.getOwnFoundations().filter(filters.byClass("Storehouse")).length;
+			const woodWorkers = this.gatherersByType(gameState, "wood").length;
+			const stock = gameState.getResources();
+
+			// Before 5 minutes, reuse the first Storehouse unless the wood economy is
+			// actually busy or wood is floating.  This avoids the useless second
+			// Storehouse at 2 minutes, while still allowing a forward Storehouse once
+			// trees retreat and we can afford it.
+			if (ownStorehouses + storehouseFoundations >= 1 && woodWorkers < 10 && (+stock.wood || 0) < 650)
+			{
+				this.gatherers[type].nextCheck = gameState.ai.playedTurn + 20;
+				this.gatherers[type].used = 0;
+				this.gatherers[type].lost = 0;
+				continue;
+			}
+		}
+
+		const minSamples = expert ? (type == "wood" ? 220 : 60) : (type == "wood" ? 150 : 60);
 		if (total > minSamples)
 		{
 			const ratio = this.gatherers[type].lost / total;
-			const lostRatioTrigger = expert ? 0.08 : 0.15;
+			const lostRatioTrigger = expert ? (type == "wood" ? 0.22 : 0.10) : 0.15;
 			if (ratio > lostRatioTrigger)
 			{
 				const newDP = this.findBestDropsiteAndLocation(gameState, type);
-				const qualityTrigger = expert ? 30 : 50;
+				const stock = gameState.getResources();
+				const qualityTrigger = expert ? (type == "wood" ? ((+stock.wood || 0) > 650 || gameState.ai.elapsedTime > 360 ? 70 : 95) : 35) : 50;
 				if (newDP.quality > qualityTrigger && gameState.ai.HQ.canBuild(gameState, newDP.templateName))
 				{
 					queues.dropsites.addPlan(new ConstructionPlan(gameState, newDP.templateName,
@@ -731,9 +756,11 @@ BaseManager.prototype.reassignIdleWorkers = function(gameState, idleWorkers)
 				}
 				if (ent.hasClass("Civilian") && ent.canGather("food"))
 				{
+					const stock = gameState.getResources();
+					const gatherType = ent.canGather("wood") && (stock.food || 0) > 450 && (stock.wood || 0) < 450 ? "wood" : "food";
 					ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
-					ent.setMetadata(PlayerID, "gather-type", "food");
-					this.basesManager.AddTCResGatherer("food");
+					ent.setMetadata(PlayerID, "gather-type", gatherType);
+					this.basesManager.AddTCResGatherer(gatherType);
 					continue;
 				}
 				if (ent.canGather("wood"))

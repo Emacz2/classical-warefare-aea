@@ -230,7 +230,20 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 				if (struct.resourceDropsiteTypes() && struct.resourceDropsiteTypes().indexOf("food") != -1)
 				{
 					if (template.hasClasses(["Field", "Corral"]))
-						placement.addInfluence(x, z, 80 / cellSize, 50);
+					{
+						// CWA Expert: farms should form tight farming districts around
+						// Farmsteads. Civic Centers can accept food, but fields placed
+						// far from a Farmstead cause long-term walking waste.
+						if (gameState.ai.Config.difficulty >= 6 && template.hasClass("Field"))
+						{
+							if (ent.hasClass("Farmstead"))
+								placement.addInfluence(x, z, 55 / cellSize, 90);
+							else
+								placement.addInfluence(x, z, 45 / cellSize, 10);
+						}
+						else
+							placement.addInfluence(x, z, 80 / cellSize, 50);
+					}
 					else // If this is not a field add a negative influence because we want to leave this area for fields
 						placement.addInfluence(x, z, 80 / cellSize, -20);
 				}

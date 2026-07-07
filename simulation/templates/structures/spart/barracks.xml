@@ -30,6 +30,7 @@
   <Trainer>
     <Entities datatype="tokens">
       units/{civ}/champion_infantry_spear_b
+      units/{civ}/support_trumpeter_rally
       -units/{civ}/infantry_spearman_b
     </Entities>
   </Trainer>

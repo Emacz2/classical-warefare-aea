@@ -1,14 +1,22 @@
 {
 	"type": "range",
-	"radius": 35,
-	"affects": ["Infantry"],
+	"radius": 25,
+	"affects": ["Infantry","Cavalry" ],
 	"modifications": [
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.1 }
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 },
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.1 },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.1 },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.1 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 1},
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 }
 		
 		
 	],
-	"auraName": "Inspiriational sound",
+	"auraName": "Battle Signal",
 	"showDescription": 1,
-	"auraDescription": "Infantry 10% faster movement speed +1 Hack and Pierce Resitance.",
+	"auraDescription": "Infantry and Cavalry 10% attack damage and +1 of each resistance.",
 	"overlayIcon": "art/textures/ui/session/auras/broken_sword.png"
 }

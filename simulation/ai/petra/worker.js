@@ -478,14 +478,57 @@ Worker.prototype.startGathering = function(gameState)
 
 	const resource = this.ent.getMetadata(PlayerID, "gather-type");
 
-	// If we are gathering food, try to hunt first
-	if (resource == "food" && this.startHunting(gameState))
+	// If we are gathering food, try to hunt first.
+	// CWA Expert opening: reserve chickens/hunt for cavalry/fast food gatherers.
+	// Women/civilian workers should stay on berries/farms instead of taking nearby chickens.
+	const expertOpeningFoodRole = gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT &&
+		resource == "food" && (gameState.ai.elapsedTime < 240 || gameState.getPopulation() < 25);
+	const expertCivilianBerryRole = expertOpeningFoodRole && this.ent.hasClass("Civilian") && !isFastMoving(this.ent);
+	if (resource == "food" && !expertCivilianBerryRole && this.startHunting(gameState))
 		return true;
 
 	const findSupply = function(worker, supplies) {
 		const ent = worker.ent;
 		let ret = false;
 		const gatherRates = ent.resourceGatherRates();
+
+		// Expert food order: real berry patches first, apple/single fruit trees second,
+		// farms later.  We detect whether this supply list contains an open berry patch
+		// so civilians do not walk to scattered apple trees while a 6-bush patch has room.
+		let expertOpenBerryPatchHere = false;
+		if (gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && resource == "food")
+		{
+			for (const supply of supplies)
+			{
+				if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position())
+					continue;
+				const type = supply.ent.resourceSupplyType();
+				if (!type || type.generic != "food" || type.specific != "fruit")
+					continue;
+				if (gameState.ai.HQ.territoryMap.getOwner(supply.ent.position()) != PlayerID)
+					continue;
+				let clusterCount = 0;
+				let clusterGatherers = 0;
+				for (const other of supplies)
+				{
+					if (!other.ent || !gameState.getEntityById(other.id) || !other.ent.position())
+						continue;
+					const otherType = other.ent.resourceSupplyType();
+					if (!otherType || otherType.generic != "food" || otherType.specific != "fruit")
+						continue;
+					if (SquareVectorDistance(supply.ent.position(), other.ent.position()) > 900)
+						continue;
+					++clusterCount;
+					clusterGatherers += other.ent.resourceSupplyNumGatherers() + worker.base.GetTCGatherer(other.id);
+				}
+				if (clusterCount >= 3 && clusterGatherers < 8)
+				{
+					expertOpenBerryPatchHere = true;
+					break;
+				}
+			}
+		}
+
 		for (let i = 0; i < supplies.length; ++i)
 		{
 			// exhausted resource, remove it from this list
@@ -502,9 +545,47 @@ Worker.prototype.startGathering = function(gameState)
 			const supplyType = supplies[i].ent.get("ResourceSupply/Type");
 			if (!gatherRates[supplyType])
 				continue;
+			const supplyResourceType = supplies[i].ent.resourceSupplyType();
+			// CWA Expert opening: non-fast civilians/women should not take chickens/hunt.
+			// Keep them concentrated on berries/fruit first; cavalry/fast food gatherers handle animals.
+			if (expertCivilianBerryRole && supplyResourceType.specific != "fruit" && supplyResourceType.specific != "grain")
+				continue;
 			// check if available resource is worth one additionnal gatherer (except for farms)
 			const nbGatherers = supplies[i].ent.resourceSupplyNumGatherers() + worker.base.GetTCGatherer(supplies[i].id);
-			if (supplies[i].ent.resourceSupplyType().specific != "grain" && nbGatherers > 0 &&
+			// CWA Expert: cap the whole berry/fruit patch, not each individual bush.
+			// One patch should usually have about 6-8 workers; after that, move to a
+			// second owned/claimable patch or another useful task.
+			if (gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && resource == "food" &&
+			    supplyResourceType.specific == "fruit")
+			{
+				let clusterGatherers = 0;
+				let clusterCount = 0;
+				const pos = supplies[i].ent.position();
+				for (const other of supplies)
+				{
+					if (!other.ent || !gameState.getEntityById(other.id) || !other.ent.position())
+						continue;
+					const otherType = other.ent.resourceSupplyType();
+					if (!otherType || otherType.generic != "food" || otherType.specific != "fruit")
+						continue;
+					if (SquareVectorDistance(pos, other.ent.position()) > 900)
+						continue;
+					++clusterCount;
+					clusterGatherers += other.ent.resourceSupplyNumGatherers() + worker.base.GetTCGatherer(other.id);
+				}
+				// Real berry patches support about 6-8 workers. Apple/single fruit trees are
+				// still useful natural food, but only after open berry patches are filled.
+				if (clusterCount >= 3 && clusterGatherers >= 8)
+					continue;
+				if (clusterCount < 3)
+				{
+					if (expertOpenBerryPatchHere)
+						continue;
+					if (clusterGatherers >= 2)
+						continue;
+				}
+			}
+			if (supplyResourceType.specific != "grain" && nbGatherers > 0 &&
 			    supplies[i].ent.resourceSupplyAmount()/(1+nbGatherers) < 30)
 				continue;
 			// not in enemy territory; Expert also avoids neutral food during the opening economy.
@@ -521,6 +602,69 @@ Worker.prototype.startGathering = function(gameState)
 		return ret;
 	};
 
+	const expertOwnedFruitStatus = function(worker) {
+		let remaining = 0;
+		let hasOpenPatch = false;
+		if (gameState.ai.HQ.Config.difficulty < difficulty.EXPERT || resource != "food")
+			return { "remaining": 0, "hasOpenPatch": false };
+
+		for (const base of gameState.ai.HQ.baseManagers())
+		{
+			if (base.accessIndex != worker.entAccess || !base.dropsiteSupplies.food)
+				continue;
+			const groups = [base.dropsiteSupplies.food.nearby, base.dropsiteSupplies.food.medium];
+			for (const supplies of groups)
+			{
+				for (const supply of supplies)
+				{
+					if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position())
+						continue;
+					const type = supply.ent.resourceSupplyType();
+					if (!type || type.generic != "food" || type.specific != "fruit")
+						continue;
+					if (gameState.ai.HQ.territoryMap.getOwner(supply.ent.position()) != PlayerID)
+						continue;
+
+					const amount = Math.max(0, supply.ent.resourceSupplyAmount());
+					let clusterGatherers = 0;
+					let clusterCount = 0;
+					for (const other of supplies)
+					{
+						if (!other.ent || !gameState.getEntityById(other.id) || !other.ent.position())
+							continue;
+						const otherType = other.ent.resourceSupplyType();
+						if (!otherType || otherType.generic != "food" || otherType.specific != "fruit")
+							continue;
+						if (SquareVectorDistance(supply.ent.position(), other.ent.position()) > 900)
+							continue;
+						++clusterCount;
+						clusterGatherers += other.ent.resourceSupplyNumGatherers() + base.GetTCGatherer(other.id);
+					}
+					if (clusterCount >= 3)
+					{
+						remaining += amount;
+						if (amount > 40 && clusterGatherers < 8)
+							hasOpenPatch = true;
+					}
+				}
+			}
+		}
+		return { "remaining": remaining, "hasOpenPatch": hasOpenPatch };
+	};
+
+	const expertFoodStatus = expertOwnedFruitStatus(this);
+	// CWA Expert: do not float 800-1000 food while wood is low.  Once food is
+	// comfortably banked, redirect additional generic food workers to wood unless
+	// food is urgently needed again.
+	if (gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && resource == "food" && this.ent.canGather("wood"))
+	{
+		const stock = gameState.getResources();
+		if (((stock.food || 0) > 700 && (stock.wood || 0) < 600) || (stock.food || 0) > (stock.wood || 0) + 500)
+		{
+			this.ent.setMetadata(PlayerID, "gather-type", "wood");
+			return this.startGathering(gameState);
+		}
+	}
 	const navalManager = gameState.ai.HQ.navalManager;
 	let supply;
 
@@ -533,8 +677,11 @@ Worker.prototype.startGathering = function(gameState)
 			this.ent.gather(supply);
 			return true;
 		}
-		// --> for food, try to gather from fields if any, otherwise build one if any
-		if (resource == "food")
+		// --> for food, try to gather from fields if any, otherwise build one if any.
+		// Expert delays farms while there is still meaningful berry/fruit food in
+		// owned territory. Extra food workers should move to wood rather than start
+		// farms too early.
+		if (resource == "food" && !(gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && expertFoodStatus.remaining > 300))
 		{
 			supply = this.gatherNearestField(gameState, this.baseID);
 			if (supply)
@@ -572,7 +719,7 @@ Worker.prototype.startGathering = function(gameState)
 			return true;
 		}
 	}
-	if (resource == "food")	// --> for food, try to gather from fields if any, otherwise build one if any
+	if (resource == "food" && !(gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && expertFoodStatus.remaining > 300))	// --> for food, try to gather from fields if any, otherwise build one if any
 	{
 		for (const base of gameState.ai.HQ.baseManagers())
 		{
@@ -611,6 +758,17 @@ Worker.prototype.startGathering = function(gameState)
 		}
 	}
 
+	// Expert: if owned berries still have a lot of food but every patch is already
+	// saturated, do not start farms early and do not stack 13 workers on one patch.
+	// Put the excess workers on wood until more food capacity opens or berries are
+	// close to depletion.
+	if (gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && resource == "food" &&
+	    expertFoodStatus.remaining > 300 && !expertFoodStatus.hasOpenPatch)
+	{
+		this.ent.setMetadata(PlayerID, "gather-type", "wood");
+		return this.startGathering(gameState);
+	}
+
 	// Okay may-be we haven't found any appropriate dropsite anywhere.
 	// Try to help building one if any accessible foundation available
 	const foundations = gameState.getOwnFoundations().toEntityArray();
@@ -645,7 +803,7 @@ Worker.prototype.startGathering = function(gameState)
 			return true;
 		}
 	}
-	if (resource == "food")	// --> for food, try to gather from fields if any, otherwise build one if any
+	if (resource == "food" && !(gameState.ai.HQ.Config.difficulty >= difficulty.EXPERT && expertFoodStatus.remaining > 300))	// --> for food, try to gather from fields if any, otherwise build one if any
 	{
 		for (const base of gameState.ai.HQ.baseManagers())
 		{
