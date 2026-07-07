@@ -35,7 +35,7 @@
     <Static width="13.0" depth="13.0"/>
   </Obstruction>
   <Population>
-    <Bonus op="add">14</Bonus>
+    <Bonus op="add">5</Bonus>
   </Population>
   <TerritoryDecay>
     <DecayRate op="mul">2</DecayRate>

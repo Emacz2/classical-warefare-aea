@@ -448,13 +448,6 @@ QueueManager.prototype.checkPausedQueues = function(gameState)
 
 		if (toBePaused)
 		{
-			// CWA Expert opening: allow the first Farmstead/Storehouse dropsite to start
-			// before worker recovery logic would normally unpause infrastructure.
-			if (this.Config.difficulty >= 6 && q == "dropsites" && gameState.ai.elapsedTime < 180 &&
-				this.queues[q].hasQueuedUnits())
-			{
-				toBePaused = false;
-			}
 			if (q == "field" && gameState.ai.HQ.needFarm &&
 				!gameState.getOwnStructures().filter(filters.byClass("Field")).hasEntities())
 			{

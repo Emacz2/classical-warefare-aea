@@ -107,94 +107,6 @@ Headquarters.prototype.assignStartingEntities = function(gameState)
 	}
 };
 
-
-/**
- * Expert opening helper: find a useful first Farmstead location for the starting
- * berry/fruit patch without using a generic food resource map.
- */
-Headquarters.prototype.findExpertOpeningFarmsteadLocation = function(gameState)
-{
-	if (this.Config.difficulty < difficulty.EXPERT)
-		return undefined;
-	if (!this.hasPotentialBase() || !this.canBuild(gameState, "structures/{civ}/farmstead"))
-		return undefined;
-	if (gameState.getOwnEntitiesByClass("Farmstead", true).hasEntities() ||
-		gameState.ai.queues.economicBuilding.hasQueuedUnitsWithClass("DropsiteFood"))
-		return undefined;
-
-	let best = { "score": 0, "pos": undefined, "base": undefined };
-	const foodDropsites = gameState.getOwnDropsites("food").toEntityArray();
-
-	for (const base of this.baseManagers())
-	{
-		if (!base.anchor || !base.anchor.position() || !base.dropsiteSupplies.food)
-			continue;
-
-		const supplies = base.dropsiteSupplies.food.nearby.concat(base.dropsiteSupplies.food.medium);
-		for (const supply of supplies)
-		{
-			if (!supply.ent || !gameState.getEntityById(supply.id) || !supply.ent.position())
-				continue;
-			const type = supply.ent.resourceSupplyType();
-			// Opening Farmstead is specifically for the starting berry/fruit patch.
-			// Do not place it for chickens/hunt or farms.
-			if (!type || type.generic != "food" || type.specific != "fruit")
-				continue;
-			if (getLandAccess(gameState, supply.ent) != base.accessIndex)
-				continue;
-
-			const pos = supply.ent.position();
-			// Opening food hubs should be inside our territory. Do not build for neutral map food yet.
-			if (this.territoryMap.getOwner(pos) != PlayerID)
-				continue;
-
-			let nearestDPDist = Math.min();
-			for (const dropsite of foodDropsites)
-			{
-				if (!dropsite.position() || getLandAccess(gameState, dropsite) != base.accessIndex)
-					continue;
-				nearestDPDist = Math.min(nearestDPDist, SquareVectorDistance(pos, dropsite.position()));
-			}
-
-			// Expert opening: always prefer a dedicated Farmstead for the first owned berry patch.
-			// Houses should wait until near cap; this food hub comes first.
-
-			let score = 0;
-			let weightedX = 0;
-			let weightedZ = 0;
-			for (const other of supplies)
-			{
-				if (!other.ent || !gameState.getEntityById(other.id) || !other.ent.position())
-					continue;
-				const otherType = other.ent.resourceSupplyType();
-				if (!otherType || otherType.generic != "food" || otherType.specific != "fruit")
-					continue;
-				const otherPos = other.ent.position();
-				if (this.territoryMap.getOwner(otherPos) != PlayerID)
-					continue;
-				if (SquareVectorDistance(pos, otherPos) > 1600)
-					continue;
-				const amount = Math.max(0, other.ent.resourceSupplyAmount());
-				score += amount;
-				weightedX += otherPos[0] * amount;
-				weightedZ += otherPos[1] * amount;
-			}
-
-			// Do not build a farmstead for just one tiny/soon-exhausted food object.
-			if (score <= best.score || score < 300)
-				continue;
-
-			best = {
-				"score": score,
-				"pos": [weightedX / score, weightedZ / score],
-				"base": base.ID
-			};
-		}
-	}
-
-	return best.pos ? best : undefined;
-};
-
 /**
  * determine the main land Index (or water index if none)
  * as well as the list of allowed (land andf water) regions
@@ -598,23 +510,7 @@ Headquarters.prototype.configFirstBase = function(gameState)
 		this.attackManager.setRushes(allowed);
 	}
 
-	// Expert opening: build the first Farmstead before sending women to berries.
-	// Use the dropsites queue (not economicBuilding) so the early recovery queue logic
-	// does not pause it behind houses/techs.
-	if (this.Config.difficulty >= difficulty.EXPERT)
-	{
-		const foodDP = this.findExpertOpeningFarmsteadLocation(gameState);
-		if (foodDP)
-		{
-			const templateName = "structures/{civ}/farmstead";
-			const cost = new ResourcesManager(gameState.getTemplate(gameState.applyCiv(templateName)).cost());
-			gameState.ai.queueManager.setAccounts(gameState, cost, "dropsites");
-			gameState.ai.queues.dropsites.addPlan(new ConstructionPlan(gameState,
-				templateName, { "base": foodDP.base, "type": "food" }, foodDP.pos));
-		}
-	}
-
-	// Immediately build a wood dropsite if possible.
+	// immediatly build a wood dropsite if possible.
 	if (!gameState.getOwnEntitiesByClass("DropsiteWood", true).hasEntities())
 	{
 		const newDP = this.baseManagers()[0].findBestDropsiteAndLocation(gameState, "wood");
@@ -630,10 +526,9 @@ Headquarters.prototype.configFirstBase = function(gameState)
 				gameState.ai.queueManager.setAccounts(gameState, cost, "dropsites");
 			}
 			gameState.ai.queues.dropsites.addPlan(new ConstructionPlan(gameState, newDP.templateName,
-				{ "base": this.baseManagers()[0].ID, "type": "wood" }, newDP.pos));
+				{ "base": this.baseManagers()[0].ID }, newDP.pos));
 		}
 	}
-
 	// and build immediately a corral if needed
 	if (this.needCorral)
 	{

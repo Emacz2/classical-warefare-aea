@@ -447,48 +447,10 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					.length;  // including foundations
 				const numQueue = queues.field.countQueuedUnits();
 
-				// CWA Expert: most 200-pop games do not need huge farm sprawls.
-				// Farms are infinite and consume safe base space, so cap them unless the
-				// population setting is larger.  Natural food and Barracks production still
-				// get priority, but prevent Petra from covering the town in fields.
-				let expertFarmCap = undefined;
-				if (this.Config.difficulty >= difficulty.EXPERT)
-				{
-					const popMax = +gameState.getPopulationMax() || 200;
-					expertFarmCap = 11 + Math.max(0, Math.ceil((popMax - 200) / 50)) * 2;
-				}
-				if (expertFarmCap !== undefined && numFarms + numQueue >= expertFarmCap)
-					continue;
-
 				// TODO  if not yet farms, add a check on time used/lost and build farmstead if needed
 				if (numFarms + numQueue == 0)	// starting game, rely on fruits as long as we have enough of them
 				{
-					let farmTrigger = 600;
-					if (this.Config.difficulty >= difficulty.EXPERT)
-					{
-						let hasMilitaryProduction = false;
-						for (const ent of gameState.getOwnTrainingFacilities().values())
-						{
-							if ((ent.hasClass("Barracks") || ent.hasClass("Range")) && ent.isBuilt && ent.isBuilt())
-							{
-								hasMilitaryProduction = true;
-								break;
-							}
-						}
-						// Expert must not run out of food and then mine stone/metal while the
-						// Barracks idles. If natural food inside the base is getting low, start
-						// the farm transition before the food bank collapses.
-						if (hasMilitaryProduction)
-						{
-							const stockFood = +gameState.getResources().food || 0;
-							const stockWood = +gameState.getResources().wood || 0;
-							// If the Barracks is up and food is not comfortably ahead, prepare farms
-							// before natural food actually runs out. This keeps infantry production fed.
-							if (stockFood < 700 || stockWood > stockFood + 250)
-								farmTrigger = 1400;
-						}
-					}
-					if (count < farmTrigger)
+					if (count < 600)
 					{
 						queues.field.addPlan(new ConstructionPlan(gameState,
 							"structures/{civ}/field", { "favoredBase": this.ID }));
@@ -502,8 +464,6 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					let goal = this.Config.Economy.provisionFields;
 					if (gameState.ai.HQ.saveResources || gameState.ai.HQ.saveSpace || count > 300 || numFarms > 5)
 						goal = Math.max(goal-1, 1);
-					if (expertFarmCap !== undefined)
-						goal = Math.min(goal, Math.max(1, expertFarmCap - numFarms - numQueue));
 					if (numFound + numQueue < goal)
 					{
 						queues.field.addPlan(new ConstructionPlan(gameState,
@@ -554,40 +514,15 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 		// TODO  add also a test on remaining resources.
 		const total = this.gatherers[type].used + this.gatherers[type].lost;
 		const expert = this.Config.difficulty >= difficulty.EXPERT;
-
-		// Expert: reuse the first wood dropsite. Do not spend 100 wood on a second
-		// Storehouse when only a few woodcutters are active or the first one is still
-		// good enough. This preserves wood for houses, barracks, civilians and techs.
-		if (expert && type == "wood" && gameState.ai.elapsedTime < 300)
-		{
-			const ownStorehouses = gameState.getOwnEntitiesByClass("Storehouse", true).length;
-			const storehouseFoundations = gameState.getOwnFoundations().filter(filters.byClass("Storehouse")).length;
-			const woodWorkers = this.gatherersByType(gameState, "wood").length;
-			const stock = gameState.getResources();
-
-			// Before 5 minutes, reuse the first Storehouse unless the wood economy is
-			// actually busy or wood is floating.  This avoids the useless second
-			// Storehouse at 2 minutes, while still allowing a forward Storehouse once
-			// trees retreat and we can afford it.
-			if (ownStorehouses + storehouseFoundations >= 1 && woodWorkers < 10 && (+stock.wood || 0) < 650)
-			{
-				this.gatherers[type].nextCheck = gameState.ai.playedTurn + 20;
-				this.gatherers[type].used = 0;
-				this.gatherers[type].lost = 0;
-				continue;
-			}
-		}
-
-		const minSamples = expert ? (type == "wood" ? 220 : 60) : (type == "wood" ? 150 : 60);
+		const minSamples = expert ? (type == "wood" ? 45 : 30) : (type == "wood" ? 150 : 60);
 		if (total > minSamples)
 		{
 			const ratio = this.gatherers[type].lost / total;
-			const lostRatioTrigger = expert ? (type == "wood" ? 0.22 : 0.10) : 0.15;
+			const lostRatioTrigger = expert ? 0.08 : 0.15;
 			if (ratio > lostRatioTrigger)
 			{
 				const newDP = this.findBestDropsiteAndLocation(gameState, type);
-				const stock = gameState.getResources();
-				const qualityTrigger = expert ? (type == "wood" ? ((+stock.wood || 0) > 650 || gameState.ai.elapsedTime > 360 ? 70 : 95) : 35) : 50;
+				const qualityTrigger = expert ? 30 : 50;
 				if (newDP.quality > qualityTrigger && gameState.ai.HQ.canBuild(gameState, newDP.templateName))
 				{
 					queues.dropsites.addPlan(new ConstructionPlan(gameState, newDP.templateName,
@@ -782,36 +717,6 @@ BaseManager.prototype.reassignIdleWorkers = function(gameState, idleWorkers)
 
 		if (ent.hasClass("Worker"))
 		{
-			// Expert opening role split:
-			// - food-capable cavalry/fast units take chickens and hunt,
-			// - civilians/women take berries/food,
-			// - citizen-soldier men take wood.
-			if (this.Config.difficulty >= difficulty.EXPERT &&
-			    (gameState.ai.elapsedTime < 240 || gameState.getPopulation() < 25))
-			{
-				if (isFastMoving(ent) && ent.canGather("food") && ent.canAttackClass("Animal"))
-				{
-					ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_HUNTER);
-					continue;
-				}
-				if (ent.hasClass("Civilian") && ent.canGather("food"))
-				{
-					const stock = gameState.getResources();
-					const gatherType = ent.canGather("wood") && (stock.food || 0) > 450 && (stock.wood || 0) < 450 ? "wood" : "food";
-					ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
-					ent.setMetadata(PlayerID, "gather-type", gatherType);
-					this.basesManager.AddTCResGatherer(gatherType);
-					continue;
-				}
-				if (ent.canGather("wood"))
-				{
-					ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
-					ent.setMetadata(PlayerID, "gather-type", "wood");
-					this.basesManager.AddTCResGatherer("wood");
-					continue;
-				}
-			}
-
 			// Just emergency repairing here. It is better managed in assignToFoundations
 			if (ent.isBuilder() && this.anchor && this.anchor.needsRepair() &&
 				gameState.getOwnEntitiesByMetadata("target-foundation", this.anchor.id()).length < 2)
