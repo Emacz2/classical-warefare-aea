@@ -16,6 +16,6 @@
     <Actor>units/global/slave.xml</Actor>
   </VisualActor>
   <TrainingRestrictions>
-  <Category>MaceSlave</Category>
+  <Category>EstateSlave</Category>
   </TrainingRestrictions>
 </Entity>

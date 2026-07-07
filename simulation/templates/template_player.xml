@@ -24,7 +24,7 @@
       <CivilCentre>1</CivilCentre>
       <Agora>1</Agora>
       <ConsularBodyguard>10</ConsularBodyguard>
-      <Doulos>5</Doulos>
+      <EstateSlave>5</EstateSlave>
       <Ephor>5</Ephor>
       <Gerousia>1</Gerousia>
       <Gladiator>0</Gladiator>
@@ -68,9 +68,9 @@
       <Wonder>1</Wonder>
     </Limits>
     <LimitChangers>
-      <Doulos>
-        <Market>5</Market>
-      </Doulos>
+      <EstateSlave>
+        <Estate>2</Estate>
+      </EstateSlave>
       <Gladiator>
         <Amphitheater>15</Amphitheater>
       </Gladiator>

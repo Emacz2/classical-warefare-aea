@@ -10,6 +10,9 @@
 		"all": [
 			{ "tech": "phase_town" },
 			{ "notciv": "athen" },
+			{ "notciv": "cart" },
+			{ "notciv": "mace" },
+			{ "notciv": "rome" },
 			{ "notciv": "theb" }
 			
 		]

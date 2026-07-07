@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_house_big">
-<Entity parent="template_structure_civic_house_big">
   <Capturable>
     <CapturePoints op="mul">2</CapturePoints>
   </Capturable>
@@ -26,10 +25,6 @@
     <GenericName>Estate</GenericName>
     <VisibleClasses datatype="tokens">Estate</VisibleClasses>
   </Identity>
-  <Loot>
-    <wood op="add">5</wood>
-    <stone op="add">10</stone>
-  </Loot>
   <Obstruction>
     <Static width="13.0" depth="13.0"/>
   </Obstruction>
@@ -50,6 +45,11 @@
       </ApplyStatus>
     </Entity>
   </Resistance>
+  <Trainer>
+    <Entities datatype="tokens">
+      units/{civ}/support_slave
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/romans/house.xml</Actor>
   </VisualActor>
