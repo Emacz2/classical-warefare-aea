@@ -447,6 +447,19 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					.length;  // including foundations
 				const numQueue = queues.field.countQueuedUnits();
 
+				// CWA Expert: most 200-pop games do not need huge farm sprawls.
+				// Farms are infinite and consume safe base space, so cap them unless the
+				// population setting is larger.  Natural food and Barracks production still
+				// get priority, but prevent Petra from covering the town in fields.
+				let expertFarmCap = undefined;
+				if (this.Config.difficulty >= difficulty.EXPERT)
+				{
+					const popMax = +gameState.getPopulationMax() || 200;
+					expertFarmCap = 11 + Math.max(0, Math.ceil((popMax - 200) / 50)) * 2;
+				}
+				if (expertFarmCap !== undefined && numFarms + numQueue >= expertFarmCap)
+					continue;
+
 				// TODO  if not yet farms, add a check on time used/lost and build farmstead if needed
 				if (numFarms + numQueue == 0)	// starting game, rely on fruits as long as we have enough of them
 				{
@@ -465,8 +478,15 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 						// Expert must not run out of food and then mine stone/metal while the
 						// Barracks idles. If natural food inside the base is getting low, start
 						// the farm transition before the food bank collapses.
-						if (hasMilitaryProduction && (+gameState.getResources().food || 0) < 550)
-							farmTrigger = 1000;
+						if (hasMilitaryProduction)
+						{
+							const stockFood = +gameState.getResources().food || 0;
+							const stockWood = +gameState.getResources().wood || 0;
+							// If the Barracks is up and food is not comfortably ahead, prepare farms
+							// before natural food actually runs out. This keeps infantry production fed.
+							if (stockFood < 700 || stockWood > stockFood + 250)
+								farmTrigger = 1400;
+						}
 					}
 					if (count < farmTrigger)
 					{
@@ -482,6 +502,8 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					let goal = this.Config.Economy.provisionFields;
 					if (gameState.ai.HQ.saveResources || gameState.ai.HQ.saveSpace || count > 300 || numFarms > 5)
 						goal = Math.max(goal-1, 1);
+					if (expertFarmCap !== undefined)
+						goal = Math.min(goal, Math.max(1, expertFarmCap - numFarms - numQueue));
 					if (numFound + numQueue < goal)
 					{
 						queues.field.addPlan(new ConstructionPlan(gameState,

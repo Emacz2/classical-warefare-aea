@@ -504,14 +504,63 @@ Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 	if (this.Config.difficulty >= difficulty.EXPERT && expertHoldNextBatch)
 		return;
 
-	// CWA Expert opening: the Civic Center is an economy engine.
-	// Until the economy is large, train support civilians from the CC whenever
-	// they are available; soldiers should come later from military buildings
-	// unless another system has already queued emergency defense.
-	if (this.Config.difficulty >= difficulty.EXPERT && numberTotal < 80 && templateDef)
+	// CWA Expert opening: the Civic Center is an economy engine, but a completed
+	// Barracks must not be dead wood.  Earlier Expert patches returned here until
+	// ~80 workers, which skipped Petra's normal citizenSoldier queue entirely and
+	// left the first Barracks idle.  Keep the CC on support civilians, but once a
+	// Barracks/Range exists, also feed Petra's normal citizenSoldier queue so the
+	// military building produces workers/soldiers like Very Hard, only earlier.
+	let cwaExpertHasInfantryTrainer = false;
+	let cwaExpertTrainerId = undefined;
+	if (this.Config.difficulty >= difficulty.EXPERT && numberTotal < 80)
 	{
-		queues.villager.addPlan(new TrainingPlan(gameState, templateDef, { "role": Worker.ROLE_WORKER, "base": 0, "support": true }, size, size));
-		return;
+		for (const trainer of gameState.getOwnTrainingFacilities().values())
+		{
+			if ((trainer.hasClass("Barracks") || trainer.hasClass("Range")) &&
+			    trainer.isBuilt && trainer.isBuilt())
+			{
+				cwaExpertHasInfantryTrainer = true;
+				cwaExpertTrainerId = trainer.id();
+				break;
+			}
+		}
+
+		if (cwaExpertHasInfantryTrainer && queues.citizenSoldier && !queues.citizenSoldier.hasQueuedUnits())
+		{
+			let requirements = [ ["speed", 0.5], ["costsResource", 1, "food"], ["costsResource", 0.2, "wood"], ["costsResource", -1, "stone"], ["costsResource", -1, "metal"] ];
+			let soldierTemplate = this.findBestTrainableUnit(gameState, [["CitizenSoldier", "Infantry"]], requirements);
+			if (!soldierTemplate)
+				soldierTemplate = this.findBestTrainableUnit(gameState, [["Infantry"]], requirements);
+
+			if (soldierTemplate)
+			{
+				const soldier = gameState.getTemplate(soldierTemplate);
+				const cost = soldier && soldier.cost ? soldier.cost() : {};
+				const foodCost = Math.max(1, +cost.food || 50);
+				const woodCost = Math.max(0, +cost.wood || 0);
+				const popCost = soldier && soldier._template && soldier._template.Cost ? Math.max(1, +soldier._template.Cost.Population || 1) : 1;
+				const res = gameState.getResources();
+				const popRoom = Math.max(0, (+gameState.getPopulationLimit() || 0) - this.getAccountedPopulation(gameState));
+				let soldierBatch = Math.min(3, Math.floor(popRoom / popCost));
+				soldierBatch = Math.min(soldierBatch, Math.floor((+res.food || 0) / foodCost));
+				if (woodCost)
+					soldierBatch = Math.min(soldierBatch, Math.floor((+res.wood || 0) / woodCost));
+				if (soldierBatch > 0)
+				{
+					const metadata = { "role": Worker.ROLE_WORKER, "base": 0 };
+					if (cwaExpertTrainerId !== undefined)
+						metadata.trainer = cwaExpertTrainerId;
+					this.cwaExpertFundUrgentQueue(gameState, "citizenSoldier", cost);
+					queues.citizenSoldier.addPlan(new TrainingPlan(gameState, soldierTemplate, metadata, soldierBatch, soldierBatch));
+				}
+			}
+		}
+
+		if (templateDef)
+		{
+			queues.villager.addPlan(new TrainingPlan(gameState, templateDef, { "role": Worker.ROLE_WORKER, "base": 0, "support": true }, size, size));
+			return;
+		}
 	}
 
 	// Choose whether we want soldiers or support units: when full pop, we aim at targetNumWorkers workers
@@ -715,45 +764,46 @@ Headquarters.prototype.pickMostNeededResources = function(gameState, allowedReso
 
 		for (const need of needed)
 		{
-			// Expert opening rule: do not drift into stone/metal while food/wood
-			// production buildings are not being fed. Stone/metal can wait until the
-			// food engine and Barracks are stable.
+			// Expert opening rule: do not drift into stone/metal while the food/wood
+			// economy is unstable. Citizen soldiers gather and build; stone/metal can
+			// wait until CC + Barracks production are being fed.
 			if (need.type == "stone" || need.type == "metal")
 			{
-				if (gameState.currentPhase() < 2 || foodFloat < 700 || woodFloat < 500 ||
-				    hasMilitaryProduction && foodFloat < 550)
+				if (gameState.currentPhase() < 2 || foodFloat < 850 || woodFloat < 450 ||
+				    hasMilitaryProduction && foodFloat < 900)
 					need.wanted = Math.min(need.wanted, need.current);
 				continue;
 			}
 
-			// If the Barracks exists and food is low, recover food immediately. This
-			// prevents the bad pattern: berries end -> workers wander to stone/metal ->
-			// Barracks idles because food is gone.
-			if (hasMilitaryProduction && foodFloat < 500 && woodFloat > 150)
+			// Once a Barracks exists, food is not optional. If food drops, recover it
+			// before assigning more workers to wood, stone, or metal.
+			if (hasMilitaryProduction && foodFloat < 650 && woodFloat > 100)
 			{
 				if (need.type == "wood")
 					need.wanted = Math.min(need.wanted, need.current);
 				else if (need.type == "food")
-					need.wanted = Math.max(need.wanted, need.current + 14);
+					need.wanted = Math.max(need.wanted, need.current + 35);
 				continue;
 			}
 
-			// If food is overflowing relative to wood, new workers go wood.
-			if ((foodFloat > 850 && woodFloat < 650) || foodFloat > woodFloat + 550)
+			// Keep food and wood as partners.  Do not let Expert swing from 1k food /
+			// no wood into 1k wood / no food.  Use tighter thresholds after the first
+			// Barracks because infantry consumes food continuously.
+			const drift = hasMilitaryProduction ? 300 : 450;
+			if ((foodFloat > 750 && woodFloat < 500) || foodFloat > woodFloat + drift)
 			{
 				if (need.type == "food")
 					need.wanted = Math.min(need.wanted, need.current);
 				else if (need.type == "wood")
-					need.wanted = Math.max(need.wanted, need.current + 10);
+					need.wanted = Math.max(need.wanted, need.current + 18);
 			}
 
-			// If wood is overflowing and food is low, feed the CC/Barracks.
-			if ((woodFloat > 850 && foodFloat < 650) || woodFloat > foodFloat + 550)
+			if ((woodFloat > 700 && foodFloat < 650) || woodFloat > foodFloat + drift)
 			{
 				if (need.type == "wood")
 					need.wanted = Math.min(need.wanted, need.current);
 				else if (need.type == "food")
-					need.wanted = Math.max(need.wanted, need.current + 10);
+					need.wanted = Math.max(need.wanted, need.current + 24);
 			}
 		}
 	}
@@ -1533,13 +1583,16 @@ Headquarters.prototype.findExpertFoodClusterFarmsteadLocation = function(gameSta
 				clusterGatherers += other.ent.resourceSupplyNumGatherers();
 			}
 
-			// Prefer true berry patches.  Single fruit/apple trees are not worth a
-			// Farmstead while real berry clusters still exist.
-			if (clusterCount < 3)
+			// Prefer true berry patches, but allow a useful apple/fruit-tree food hub
+			// when it is far from existing dropsites.  A lonely single tree still should
+			// not cause a Farmstead; two or more fruit trees can become a hub and later
+			// turn into the farm district.
+			const isFruitHub = clusterCount >= 2 && nearestDPDist > 1600 && score >= Math.max(220, minScore * 0.55);
+			if (clusterCount < 3 && !isFruitHub)
 				continue;
 
 			// Prefer the next useful cluster; don't build for a nearly depleted patch.
-			if (score <= best.score || score < minScore)
+			if (score <= best.score || score < (isFruitHub ? Math.max(220, minScore * 0.55) : minScore))
 				continue;
 
 			// If it is already crowded and still has no good dropsite, this is exactly
@@ -2001,48 +2054,61 @@ Headquarters.prototype.cwaExpertMaintainBarracksProduction = function(gameState,
 	if (this.Config.difficulty < difficulty.EXPERT)
 		return;
 
-	const resources = gameState.getResources();
 	const accountedPop = this.getAccountedPopulation(gameState);
 	const popRoom = Math.max(0, (+gameState.getPopulationLimit() || 0) - accountedPop);
 	if (popRoom <= 0 || this.phasing)
 		return;
 
+	const resources = gameState.getResources();
 	const civ = gameState.getPlayerCiv();
 
+	// CWA Expert v1.0.26: barracks-only hard fix.
+	// If a finished Barracks/Range exists, it must become a permanent production
+	// building.  This does not depend on attack plans, desired army size, or normal
+	// PETRA military manager decisions.  It finds a valid cheap infantry template,
+	// funds the queue if needed, and also direct-trains as a safety net.
 	for (const trainer of gameState.getOwnTrainingFacilities().values())
 	{
 		if ((!trainer.hasClass("Barracks") && !trainer.hasClass("Range")) || !trainer.isBuilt || !trainer.isBuilt())
 			continue;
 
-		// Do not stack long queues. Add the next batch only when the building is
-		// idle or almost finished with its current batch. trainingQueueTime is in
-		// milliseconds in current 0 A.D. builds.
+		const currentQueue = trainer.trainingQueue ? trainer.trainingQueue() : [];
 		const queueTime = trainer.trainingQueueTime ? +trainer.trainingQueueTime() || 0 : 0;
-		if (queueTime > 2000)
+		// Handle both possible API conventions safely: seconds or milliseconds.
+		// If there is a meaningful queue already, do not stack more.
+		if (currentQueue.length && queueTime > 2 && queueTime > 2000)
 			continue;
+
+		let trainables = trainer.trainableEntities ? trainer.trainableEntities(civ) : [];
+		if (!trainables || !trainables.length)
+		{
+			// Fallback: ask the game state for all trainable citizen infantry, then keep
+			// only those this specific building can train if possible.
+			const found = gameState.findTrainableUnits ? gameState.findTrainableUnits([["CitizenSoldier", "Infantry"]], ["Hero", "Siege", "Elephant", "Ship", "Trader", "Support"]) : [];
+			trainables = [];
+			for (const entry of found)
+				if (entry && entry[0])
+					trainables.push(entry[0]);
+		}
 
 		let bestTemplate;
 		let bestCost;
-		let bestScore = -1;
-		const trainables = trainer.trainableEntities ? trainer.trainableEntities(civ) : [];
+		let bestPop = 1;
+		let bestScore = -Infinity;
 
 		for (const type of trainables)
 		{
-			if (gameState.isTemplateDisabled(type))
+			if (!type || gameState.isTemplateDisabled(type))
 				continue;
 
 			const template = gameState.getTemplate(type);
-			if (!template || !template.hasClass)
+			if (!template || template.available && !template.available(gameState))
 				continue;
 
-			// Be tolerant of class variation between civ templates. The goal is simple:
-			// keep Barracks/Range producing real soldiers, but not heroes/siege/support.
-			const isSoldier = template.hasClass("Soldier") || template.hasClass("CitizenSoldier");
-			const isUsableInfantry = template.hasClass("Infantry") || template.hasClass("Ranged") || template.hasClass("Melee");
-			if (!isSoldier || !isUsableInfantry)
-				continue;
-			if (template.hasClass("Support") || template.hasClass("Hero") || template.hasClass("Siege") ||
-			    template.hasClass("Elephant") || template.hasClass("Ship") || template.hasClass("Trader"))
+			// Prefer real barracks infantry, but do not require exact CWA class names.
+			if (template.hasClass && (template.hasClass("Support") || template.hasClass("Hero") ||
+			    template.hasClass("Siege") || template.hasClass("Elephant") ||
+			    template.hasClass("Ship") || template.hasClass("Trader")))
 				continue;
 
 			const cost = template.cost ? template.cost(trainer) : {};
@@ -2050,61 +2116,78 @@ Headquarters.prototype.cwaExpertMaintainBarracksProduction = function(gameState,
 			const wood = +cost.wood || 0;
 			const stone = +cost.stone || 0;
 			const metal = +cost.metal || 0;
+			const pop = template._template && template._template.Cost ? (+template._template.Cost.Population || 1) : 1;
 
 			if ((+resources.food || 0) < food || (+resources.wood || 0) < wood ||
-			    (+resources.stone || 0) < stone || (+resources.metal || 0) < metal)
+			    (+resources.stone || 0) < stone || (+resources.metal || 0) < metal || popRoom < pop)
 				continue;
 
-			// Prefer cheap food/wood infantry early; avoid stone/metal units unless required.
-			const totalCost = Math.max(1, food + wood + stone + metal);
-			let score = 1000 / totalCost;
-			if (template.hasClass("Ranged"))
-				score += 0.2;
-			if (food > 0 && (+resources.food || 0) < 450)
-				score -= 0.3;
+			let score = 10000 / Math.max(1, food + wood + stone + metal);
+			if (template.hasClass && template.hasClass("CitizenSoldier"))
+				score += 100;
+			if (template.hasClass && template.hasClass("Infantry"))
+				score += 50;
+			if (template.hasClass && template.hasClass("Melee"))
+				score += 5;
 			if (metal > 0 || stone > 0)
-				score -= 0.6;
+				score -= 100;
 
 			if (score > bestScore)
 			{
 				bestScore = score;
 				bestTemplate = type;
 				bestCost = cost;
+				bestPop = pop;
 			}
 		}
 
-		if (!bestTemplate || !bestCost)
+		if (!bestTemplate)
+		{
+			// Light debug, throttled: if this still happens, the log will finally tell us
+			// the barracks was found but no affordable valid infantry template was selected.
+			if (gameState.ai.playedTurn % 30 == 0)
+				aiWarn("CWA Expert Barracks: no valid affordable infantry template; popRoom=" + popRoom +
+					" food=" + (+resources.food || 0) + " wood=" + (+resources.wood || 0) +
+					" trainables=" + uneval(trainables));
 			continue;
+		}
 
-		const maxByPop = Math.max(1, Math.floor(popRoom));
-		const maxByFood = bestCost.food ? Math.floor((+resources.food || 0) / (+bestCost.food || 1)) : 6;
-		const maxByWood = bestCost.wood ? Math.floor((+resources.wood || 0) / (+bestCost.wood || 1)) : 6;
-		const maxByStone = bestCost.stone ? Math.floor((+resources.stone || 0) / (+bestCost.stone || 1)) : 6;
-		const maxByMetal = bestCost.metal ? Math.floor((+resources.metal || 0) / (+bestCost.metal || 1)) : 6;
-
+		const maxByPop = Math.max(1, Math.floor(popRoom / Math.max(1, bestPop)));
+		const maxByFood = bestCost.food ? Math.floor((+resources.food || 0) / Math.max(1, +bestCost.food || 1)) : 6;
+		const maxByWood = bestCost.wood ? Math.floor((+resources.wood || 0) / Math.max(1, +bestCost.wood || 1)) : 6;
+		const maxByStone = bestCost.stone ? Math.floor((+resources.stone || 0) / Math.max(1, +bestCost.stone || 1)) : 6;
+		const maxByMetal = bestCost.metal ? Math.floor((+resources.metal || 0) / Math.max(1, +bestCost.metal || 1)) : 6;
 		let batch = Math.min(maxByPop, maxByFood, maxByWood, maxByStone, maxByMetal);
-		if ((+resources.food || 0) > 900 || (+resources.wood || 0) > 900)
+
+		// The important behavior: never wait for a large batch.  Train one if that is
+		// all the economy can support; use larger batches only when resources are high.
+		if ((+resources.food || 0) > 900 && (+resources.wood || 0) > 500)
 			batch = Math.min(batch, 5);
-		else if ((+resources.food || 0) > 450 || (+resources.wood || 0) > 450)
+		else if ((+resources.food || 0) > 450 && (+resources.wood || 0) > 220)
 			batch = Math.min(batch, 3);
 		else
-			batch = Math.min(batch, 2);
+			batch = Math.min(batch, 1);
 
 		batch = Math.floor(+batch || 0);
 		if (batch <= 0)
 			continue;
 
-		const base = trainer.getMetadata ? trainer.getMetadata(PlayerID, "base") : 0;
-		const metadata = { "role": Worker.ROLE_WORKER, "base": base || 0 };
+		const metadata = { "role": Worker.ROLE_WORKER, "base": trainer.getMetadata(PlayerID, "base") || 0, "trainer": trainer.id() };
 
-		// Direct training is the hard anti-idle override. Queue accounts can reserve
-		// resources for houses/dropsites/techs and leave a finished Barracks doing
-		// nothing; this forces production when the building is ready.
+		// Give the queue manager a plan too, so if direct-train is ignored by engine
+		// timing for any reason, the normal queue still has a funded order to start.
+		if (queues.citizenSoldier && !queues.citizenSoldier.hasQueuedUnits())
+		{
+			this.cwaExpertFundUrgentQueue(gameState, "citizenSoldier", bestCost);
+			queues.citizenSoldier.addPlan(new TrainingPlan(gameState, bestTemplate, metadata, batch, batch));
+		}
+
+		// Safety net: direct command.  If this succeeds, the Barracks visibly queues
+		// immediately; if it fails silently, the queued TrainingPlan above should start.
 		trainer.train(civ, bestTemplate, batch, metadata);
 		return;
 	}
 };
-
 
 /**
  * Deals with constructing military buildings (e.g. barracks, stable).

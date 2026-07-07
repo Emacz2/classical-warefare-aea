@@ -254,6 +254,22 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 						placement.addInfluence(x, z, 60 / cellSize, 40);    // houses are close to other houses
 						alreadyHasHouses = true;
 					}
+					else if (gameState.ai.Config.difficulty >= 6 && ent.hasClass("Field"))
+					{
+						// CWA Expert: once farms exist, houses should help form a loose
+						// protective ring, not fill the farmstead/farm core.  The inner
+						// negative influence keeps farm tiles clear; the outer positive
+						// influence encourages house-walls that civilians can garrison.
+						placement.addInfluence(x, z, 22 / cellSize, -55);
+						placement.addInfluence(x, z, 55 / cellSize, 28);
+					}
+					else if (gameState.ai.Config.difficulty >= 6 && ent.hasClass("Farmstead"))
+					{
+						// Leave the dropoff/future farm center open, but prefer houses near
+						// the outside of established food hubs.
+						placement.addInfluence(x, z, 28 / cellSize, -45);
+						placement.addInfluence(x, z, 70 / cellSize, 22);
+					}
 					else if (ent.hasClasses(["Gate", "!Wall"]))
 						placement.addInfluence(x, z, 60 / cellSize, -40);   // and further away from other stuffs
 				}
@@ -275,6 +291,31 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 				let value = placement.map[j] - gameState.sharedScript.resourceMaps.wood.map[j]/3;
 				if (HQ.borderMap.map[j] & mapMask.fullBorder)
 					value /= 2;	// we need space around farmstead, so disfavor map border
+				placement.set(j, value);
+			}
+		}
+
+		// CWA Expert: Barracks and houses should do double duty when possible.
+		// A Barracks built near the edge toward food can unlock the next Farmstead;
+		// houses should not randomly fill the center if they can safely extend toward
+		// useful food/wood.  Keep this as a small influence so normal placement rules
+		// still win when the resource-facing spot is obstructed or unsafe.
+		if (gameState.ai.Config.difficulty >= 6 &&
+		    ((this.metadata && this.metadata.militaryBase) || template.hasClass("House")))
+		{
+			const foodMap = gameState.sharedScript.resourceMaps.food;
+			const woodMap = gameState.sharedScript.resourceMaps.wood;
+			for (let j = 0; j < placement.map.length; ++j)
+			{
+				if (placement.map[j] <= 0)
+					continue;
+				let value = placement.map[j];
+				if (foodMap)
+					value += Math.min(45, foodMap.map[j] / 5);
+				if (woodMap && this.metadata && this.metadata.militaryBase)
+					value += Math.min(20, woodMap.map[j] / 12);
+				if (HQ.borderMap.map[j] & mapMask.border)
+					value += template.hasClass("House") ? 18 : 25;
 				placement.set(j, value);
 			}
 		}

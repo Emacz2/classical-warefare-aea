@@ -1,0 +1,21 @@
+{
+	"genericName": "Estate servants",
+	
+	"description": "Wealthy estates owned slaves.",
+	"cost": {
+		"food": 250
+		
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "notciv": "athen" },
+			{ "notciv": "theb" }
+			
+		]
+	},
+	"icon": "wives_festival.png",
+	"researchTime": 60,
+	"tooltip": "Unlock the ability to train slaves from houses.",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

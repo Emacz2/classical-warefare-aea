@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_support_slaves">
-  <Cost>
+<Cost>
     <Resources>
-      <food>40</food>
+      <food>75</food>
       <wood>0</wood>
-      <metal>10</metal>
+      <metal>0</metal>
     </Resources>
   </Cost>
   <Identity>
-    <SpecificName>Macedonian Slave</SpecificName>
+    <Civ>mace</Civ>
+    <SpecificName>Doûlos</SpecificName>
     <Icon>units/global/slave.png</Icon>
   </Identity>
   <VisualActor>

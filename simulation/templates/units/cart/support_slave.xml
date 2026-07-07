@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="civ/athen|template_unit_support_slaves">
-  <Cost>
+<Entity parent="template_unit_support_slaves">
+   <Cost>
     <Resources>
       <food>75</food>
       <wood>0</wood>
@@ -8,6 +8,7 @@
     </Resources>
   </Cost>
   <Identity>
+    <Civ>cart</Civ>
     <SpecificName>Doûlos</SpecificName>
     <Icon>units/global/slave.png</Icon>
     <Requirements>

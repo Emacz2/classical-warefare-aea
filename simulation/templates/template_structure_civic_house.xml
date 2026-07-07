@@ -82,7 +82,6 @@
   </TerritoryInfluence>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/support_female_citizen_house
       units/{civ}/support_civilian_house
     </Entities>
   </Trainer>

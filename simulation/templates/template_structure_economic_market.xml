@@ -76,7 +76,7 @@
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/support_slave
+      units/{civ}/support_slave_market
       units/{civ}/support_trader
       units/{civ}/inf_black_cloak_merc
       units/{civ}/merc_inf_swordsman_market_b
