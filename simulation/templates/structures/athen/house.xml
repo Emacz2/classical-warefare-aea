@@ -4,12 +4,19 @@
     <Civ>athen</Civ>
     <SpecificName>Oikos</SpecificName>
   </Identity>
+    <Upgrade>
+    <Apartment>
+      <Entity>structures/athen/estate</Entity>
+      <Tooltip>Upgrade to an estate, allows you to unlock and train slaves, increases popluation bonus (5) Garrison capacity (50%).</Tooltip>
+      <Cost>
+        <wood>50</wood>
+        <stone>50</stone>
+      </Cost>
+      <Variant>upgrading</Variant>
+      <Time>30</Time>
+    </Apartment>
+  </Upgrade>
   <VisualActor>
     <Actor>structures/hellenes/house.xml</Actor>
   </VisualActor>
-    <Trainer>
-    <Entities datatype="tokens">
-      units/{civ}/support_slave
-    </Entities>
-  </Trainer>
 </Entity>

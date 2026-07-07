@@ -6,7 +6,6 @@
   <Cost>
     <BuildTime>90</BuildTime>
     <Resources>
-      <wood op="add">25</wood>
       <stone op="add">50</stone>
     </Resources>
   </Cost>
@@ -50,6 +49,11 @@
       units/{civ}/support_slave
     </Entities>
   </Trainer>
+   <Researcher>
+    <Technologies datatype="tokens">
+    unlock_slaves_house
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>structures/romans/house.xml</Actor>
   </VisualActor>

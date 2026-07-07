@@ -19,7 +19,7 @@
         <stone>50</stone>
       </Cost>
       <Variant>upgrading</Variant>
-      <Time>55</Time>
+      <Time>30</Time>
     </Apartment>
   </Upgrade>
   <VisualActor>

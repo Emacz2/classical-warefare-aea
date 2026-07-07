@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_civic_house_big">
+  <Identity>
+    <Civ>athen</Civ>
+    <GenericName>Estate</GenericName>
+    <VisibleClasses datatype="tokens">Estate</VisibleClasses>
+  </Identity>
+  <VisualActor>
+    <Actor>structures/romans/house.xml</Actor>  
+  </VisualActor>
+    <Trainer>
+    <Entities datatype="tokens">
+      units/{civ}/support_slave
+    </Entities>
+  </Trainer>
+    <Researcher>
+    <Technologies datatype="tokens">
+    unlock_slaves_house
+    </Technologies>
+  </Researcher>
+</Entity>
