@@ -309,6 +309,39 @@ Config.prototype.setConfig = function(gameState)
 	this.Economy.targetNumWorkers = Math.max(this.Economy.targetNumWorkers, this.Economy.popPhase2);
 	this.Economy.workPhase3 = Math.min(this.Economy.workPhase3, this.Economy.targetNumWorkers);
 	this.Economy.workPhase4 = Math.min(this.Economy.workPhase4, this.Economy.targetNumWorkers);
+
+	// Expert economy test settings.
+	// Keep the same AI bonus as Very Hard, but make Petra boom harder and
+	// prioritize the economy more aggressively. This is intentionally guarded
+	// so Very Hard remains unchanged for direct comparison tests.
+	if (this.difficulty >= difficultyLevel.EXPERT)
+	{
+		this.Economy.targetNumWorkers = Math.max(
+			this.Economy.targetNumWorkers,
+			Math.min(170, Math.floor(maxPop * 0.58))
+		);
+		this.Economy.workPhase3 = Math.min(
+			Math.max(this.Economy.workPhase3, Math.floor(maxPop * 0.50)),
+			this.Economy.targetNumWorkers
+		);
+		this.Economy.workPhase4 = Math.min(
+			Math.max(this.Economy.workPhase4, Math.floor(maxPop * 0.55)),
+			this.Economy.targetNumWorkers
+		);
+
+		this.Economy.supportRatio = 0.45;
+		this.Economy.provisionFields = 4;
+
+		this.priorities.villager = 750;
+		this.priorities.dropsites = 1200;
+		this.priorities.field = 650;
+		this.priorities.economicBuilding = 900;
+		this.priorities.house = 450;
+
+		this.Military.popForBarracks1 = Math.min(this.Military.popForBarracks1, Math.max(12, Math.floor(maxPop * 0.08)));
+		this.Military.popForBarracks2 = Math.min(this.Military.popForBarracks2, Math.max(35, Math.floor(maxPop * 0.18)));
+	}
+
 	if (this.difficulty < difficultyLevel.EASY)
 		this.Economy.workPhase3 = Infinity;	// prevent the phasing to city phase
 

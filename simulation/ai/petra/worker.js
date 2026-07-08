@@ -1,5 +1,6 @@
 import * as filters from "simulation/ai/common-api/filters.js";
 import { SquareVectorDistance, aiWarn } from "simulation/ai/common-api/utils.js";
+import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { allowCapture, gatherTreasure, getBuiltEntity, getLandAccess, getSeaAccess, isFastMoving,
 	isSupplyFull, returnResources } from "simulation/ai/petra/entityExtend.js";
 import { TransportPlan } from "simulation/ai/petra/transportPlan.js";
@@ -38,6 +39,13 @@ Worker.prototype.update = function(gameState, ent)
 		return;
 
 	const subrole = ent.getMetadata(PlayerID, "subrole");
+
+	// Expert opening phase is enforced before Petra's normal worker reassignment.
+	// This prevents the regular economy manager from moving civilians to chickens or
+	// leaving male workers at the Civic Centre during the first 30 seconds.
+	if (gameState.ai.HQ.enforceExpertOpeningPhase &&
+	    gameState.ai.HQ.enforceExpertOpeningPhase(gameState, ent))
+		return;
 
 	// If we are waiting for a transport or we are sailing, just wait
 	if (ent.getMetadata(PlayerID, "transport") !== undefined)
@@ -458,6 +466,18 @@ Worker.prototype.retryWorking = function(gameState, subrole)
 	}
 };
 
+Worker.prototype.noteDistantGathering = function(gameState, resource)
+{
+	if (this.base.Config.difficulty < difficulty.EXPERT || resource == "food")
+		return;
+
+	// Expert treats faraway gathering as a signal that this base needs another dropsite.
+	// This accelerates BaseManager.checkResourceLevels without changing Very Hard behavior.
+	this.base.gatherers[resource].lost += 2;
+	this.base.gatherers[resource].nextCheck = Math.min(this.base.gatherers[resource].nextCheck,
+		gameState.ai.playedTurn);
+};
+
 Worker.prototype.startBuilding = function(gameState)
 {
 	const target = gameState.getEntityById(this.ent.getMetadata(PlayerID, "target-foundation"));
@@ -477,8 +497,14 @@ Worker.prototype.startGathering = function(gameState)
 
 	const resource = this.ent.getMetadata(PlayerID, "gather-type");
 
+	// During the Expert opening, civilians should stay on berries/farmstead work.
+	// Petra's default food logic prefers nearby domestic animals, which pulled women
+	// off berries around 30-45 seconds. Keep hunting restricted to cavalry here.
+	const expertOpeningNoFemaleHunt = gameState.ai.HQ.isExpertOpeningPhaseActive &&
+		gameState.ai.HQ.isExpertOpeningPhaseActive(gameState) && !this.ent.hasClass("Cavalry");
+
 	// If we are gathering food, try to hunt first
-	if (resource == "food" && this.startHunting(gameState))
+	if (resource == "food" && !expertOpeningNoFemaleHunt && this.startHunting(gameState))
 		return true;
 
 	const findSupply = function(worker, supplies) {
@@ -717,6 +743,7 @@ Worker.prototype.startGathering = function(gameState)
 			supply = findSupply(this, this.base.dropsiteSupplies[resource].faraway);
 			if (supply)
 			{
+				this.noteDistantGathering(gameState, resource);
 				this.ent.gather(supply);
 				return true;
 			}
@@ -730,6 +757,7 @@ Worker.prototype.startGathering = function(gameState)
 			supply = findSupply(this, base.dropsiteSupplies[resource].faraway);
 			if (supply)
 			{
+				this.noteDistantGathering(gameState, resource);
 				this.ent.setMetadata(PlayerID, "base", base.ID);
 				this.ent.gather(supply);
 				return true;
@@ -742,6 +770,7 @@ Worker.prototype.startGathering = function(gameState)
 			supply = findSupply(this, base.dropsiteSupplies[resource].faraway);
 			if (supply && navalManager.requireTransport(gameState, this.ent, this.entAccess, base.accessIndex, supply.position()))
 			{
+				this.noteDistantGathering(gameState, resource);
 				if (base.ID != this.baseID)
 					this.ent.setMetadata(PlayerID, "base", base.ID);
 				return true;
@@ -763,6 +792,10 @@ Worker.prototype.startGathering = function(gameState)
  */
 Worker.prototype.startHunting = function(gameState, position)
 {
+	if (gameState.ai.HQ.isExpertOpeningPhaseActive && gameState.ai.HQ.isExpertOpeningPhaseActive(gameState) &&
+	    !this.ent.hasClass("Cavalry"))
+		return false;
+
 	// First look for possible treasure if any
 	if (!position && gatherTreasure(gameState, this.ent))
 		return true;

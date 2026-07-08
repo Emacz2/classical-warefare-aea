@@ -3,10 +3,11 @@ import { ResourcesManager } from "simulation/ai/common-api/resources.js";
 import { SquareVectorDistance, aiWarn } from "simulation/ai/common-api/utils.js";
 import { Config } from "simulation/ai/petra/config.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
-import { gatherTreasure, getHolder, getLandAccess, isFastMoving } from
+import { gatherTreasure, getBuiltEntity, getHolder, getLandAccess, isFastMoving } from
 	"simulation/ai/petra/entityExtend.js";
 import { Headquarters } from "simulation/ai/petra/headquarters.js";
 import { ConstructionPlan } from "simulation/ai/petra/queueplanBuilding.js";
+import { Worker } from "simulation/ai/petra/worker.js";
 
 /**
  * Determines the strategy to adopt when starting a new game,
@@ -56,10 +57,433 @@ Headquarters.prototype.gameAnalysis = function(gameState)
 
 	// configure our first base strategy
 	if (this.hasPotentialBase())
+	{
 		this.configFirstBase(gameState);
+		this.applyExpertEconomyRules(gameState);
+	}
 
 	return true;
 };
+
+
+
+
+/**
+ * Expert economy rules are incremental behavior improvements layered on top of Petra.
+ *
+ * Opening redesign: Petra still owns normal worker execution, but Expert owns the
+ * opening jobs.  We assign stable jobs, then every update enforces only those jobs:
+ *   - cavalry hunts chickens;
+ *   - starting civilians build/gather at the berry farmstead;
+ *   - starting men build the wood storehouse, then chop that woodline;
+ *   - newly trained civilians follow the requested batch pattern.
+ */
+Headquarters.prototype.applyExpertEconomyRules = function(gameState)
+{
+	if (!this.isExpertOpeningPhaseActive(gameState))
+		return;
+
+	this.ensureExpertOpeningPlan(gameState);
+	this.ensureExpertOpeningWoodDropsite(gameState);
+	this.ensureExpertOpeningFoodDropsite(gameState);
+	this.assignExpertOpeningWorkers(gameState);
+};
+
+Headquarters.prototype.isExpertOpeningPhaseActive = function(gameState)
+{
+	// Keep the opening lock active long enough for both first dropsites to finish,
+	// but do not let it drag Petra into an early-midgame script.
+	return this.Config.difficulty >= difficulty.EXPERT && gameState.ai.elapsedTime <= 60;
+};
+
+Headquarters.prototype.ensureExpertOpeningPlan = function(gameState)
+{
+	if (this.expertOpeningPlanReady)
+		return;
+
+	this.expertOpeningPlanReady = true;
+	this.expertOpeningNewFemaleCount = 0;
+
+	const base = this.baseManagers()[0];
+	if (!base)
+		return;
+
+	const men = [];
+	const women = [];
+	const cavalry = [];
+
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!this.isExpertOpeningEconomyUnit(ent))
+			continue;
+
+		this.claimExpertOpeningWorker(gameState, base, ent);
+
+		if (ent.hasClass("Cavalry") && ent.canGather("food") && ent.canAttackClass("Animal"))
+			cavalry.push(ent);
+		else if (ent.hasClass("Civilian") && ent.canGather("food"))
+			women.push(ent);
+		else if (!ent.hasClass("Cavalry") && (ent.canGather("wood") || ent.isBuilder()))
+			men.push(ent);
+	}
+
+	cavalry.sort((a, b) => a.id() - b.id());
+	women.sort((a, b) => a.id() - b.id());
+	men.sort((a, b) => a.id() - b.id());
+
+	if (cavalry.length)
+		cavalry[0].setMetadata(PlayerID, "expertOpeningJob", "chicken");
+	for (const ent of women)
+		ent.setMetadata(PlayerID, "expertOpeningJob", "berries");
+	for (const ent of men)
+		ent.setMetadata(PlayerID, "expertOpeningJob", "woodBuilder");
+};
+
+Headquarters.prototype.isExpertOpeningEconomyUnit = function(ent)
+{
+	if (!ent || !ent.position())
+		return false;
+	if (ent.hasClass("FishingBoat") || ent.hasClass("Ship"))
+		return false;
+	return ent.hasClass("Worker") || ent.hasClass("CitizenSoldier") || ent.canGather("food") ||
+		ent.canGather("wood") || ent.isBuilder();
+};
+
+Headquarters.prototype.claimExpertOpeningWorker = function(gameState, base, ent)
+{
+	ent.setMetadata(PlayerID, "role", Worker.ROLE_WORKER);
+	ent.setMetadata(PlayerID, "base", base.ID);
+	base.units.updateEnt(ent);
+	base.workers.updateEnt(ent);
+};
+
+Headquarters.prototype.ensureExpertOpeningWoodDropsite = function(gameState)
+{
+	if (!this.baseManagers().length)
+		return;
+	const base = this.baseManagers()[0];
+	const existing = this.findExpertOpeningDropsite(gameState, "wood", base);
+	if (existing && existing.position())
+	{
+		this.expertOpeningWoodPos = existing.position();
+		return;
+	}
+
+	if (gameState.ai.queues.dropsites.plans.some(plan => plan.metadata && plan.metadata.expertOpening && plan.metadata.type == "wood"))
+		return;
+
+	const newDP = base.findBestDropsiteAndLocation(gameState, "wood");
+	if (newDP.quality <= 30 || !this.canBuild(gameState, newDP.templateName))
+		return;
+
+	this.expertOpeningWoodPos = newDP.pos;
+	gameState.ai.queues.dropsites.addPlan(new ConstructionPlan(gameState, newDP.templateName,
+		{ "base": base.ID, "type": "wood", "expertOpening": true }, newDP.pos));
+};
+
+Headquarters.prototype.ensureExpertOpeningFoodDropsite = function(gameState)
+{
+	if (!this.baseManagers().length)
+		return;
+	const base = this.baseManagers()[0];
+	const existing = this.findExpertOpeningDropsite(gameState, "food", base);
+	if (existing && existing.position())
+	{
+		this.expertOpeningFoodPos = existing.position();
+		return;
+	}
+
+	if (gameState.ai.queues.dropsites.plans.some(plan => plan.metadata && plan.metadata.expertOpening && plan.metadata.type == "food"))
+		return;
+
+	const berries = this.findExpertOpeningSupply(gameState, base, "food",
+		supply => !supply.hasClasses(["Animal", "Field"]));
+	if (!berries || !berries.position())
+		return;
+
+	const templateName = "structures/{civ}/farmstead";
+	if (!this.canBuild(gameState, templateName))
+		return;
+
+	this.expertOpeningFoodPos = berries.position();
+	gameState.ai.queues.dropsites.addPlan(new ConstructionPlan(gameState, templateName,
+		{ "base": base.ID, "type": "food", "expertOpening": true }, berries.position()));
+};
+
+Headquarters.prototype.assignExpertOpeningWorkers = function(gameState)
+{
+	const base = this.baseManagers()[0];
+	if (!base)
+		return;
+
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!this.isExpertOpeningEconomyUnit(ent))
+			continue;
+
+		this.claimExpertOpeningWorker(gameState, base, ent);
+
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") === undefined)
+		{
+			if (ent.hasClass("Cavalry") && ent.canGather("food") && ent.canAttackClass("Animal"))
+				ent.setMetadata(PlayerID, "expertOpeningJob", "chicken");
+			else if (ent.hasClass("Civilian") && ent.canGather("food"))
+			{
+				++this.expertOpeningNewFemaleCount;
+				ent.setMetadata(PlayerID, "expertOpeningJob", "berries");
+			}
+			else if (!ent.hasClass("Cavalry") && (ent.canGather("wood") || ent.isBuilder()))
+				ent.setMetadata(PlayerID, "expertOpeningJob", "woodBuilder");
+		}
+
+		this.enforceExpertOpeningPhase(gameState, ent);
+	}
+};
+
+Headquarters.prototype.assignExpertOpeningIdleWorker = function(gameState, base, ent)
+{
+	if (!this.isExpertOpeningPhaseActive(gameState))
+		return false;
+	if (!this.isExpertOpeningEconomyUnit(ent))
+		return false;
+	this.ensureExpertOpeningPlan(gameState);
+	this.claimExpertOpeningWorker(gameState, base, ent);
+	if (ent.getMetadata(PlayerID, "expertOpeningJob") === undefined)
+		this.assignExpertOpeningWorkers(gameState);
+	return this.enforceExpertOpeningPhase(gameState, ent);
+};
+
+Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
+{
+	if (!this.isExpertOpeningPhaseActive(gameState))
+		return false;
+	if (!this.isExpertOpeningEconomyUnit(ent))
+		return false;
+
+	const base = this.baseManagers()[0];
+	if (!base)
+		return false;
+
+	this.ensureExpertOpeningWoodDropsite(gameState);
+	this.ensureExpertOpeningFoodDropsite(gameState);
+	this.claimExpertOpeningWorker(gameState, base, ent);
+
+	const job = ent.getMetadata(PlayerID, "expertOpeningJob");
+
+	if (job == "chicken")
+	{
+		const chicken = this.findExpertOpeningChicken(gameState, base);
+		if (!chicken)
+			return true;
+		return this.setExpertOpeningGatherTarget(gameState, base, ent, chicken,
+			Worker.SUBROLE_HUNTER, "food");
+	}
+
+	if (job == "berries")
+	{
+		const foodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
+		if (foodFoundation && ent.isBuilder())
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, foodFoundation);
+
+		const berries = this.findExpertOpeningSupplyNear(gameState, base, "food",
+			this.expertOpeningFoodPos, supply => !supply.hasClasses(["Animal", "Field"]));
+		if (!berries)
+			return true;
+		return this.setExpertOpeningGatherTarget(gameState, base, ent, berries,
+			Worker.SUBROLE_GATHERER, "food");
+	}
+
+	if (job == "woodBuilder")
+	{
+		const woodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "wood", base);
+		if (woodFoundation && ent.isBuilder())
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, woodFoundation);
+		ent.setMetadata(PlayerID, "expertOpeningJob", "wood");
+	}
+
+	if (ent.getMetadata(PlayerID, "expertOpeningJob") == "wood" && ent.canGather("wood"))
+	{
+		const wood = this.findExpertOpeningSupplyNear(gameState, base, "wood",
+			this.expertOpeningWoodPos, supply => !supply.hasClasses(["Animal", "Field"]));
+		if (!wood)
+			return true;
+		return this.setExpertOpeningGatherTarget(gameState, base, ent, wood,
+			Worker.SUBROLE_GATHERER, "wood");
+	}
+
+	return true;
+};
+
+Headquarters.prototype.setExpertOpeningBuildTarget = function(gameState, base, ent, foundation)
+{
+	if (ent.getMetadata(PlayerID, "subrole") === Worker.SUBROLE_BUILDER &&
+	    ent.getMetadata(PlayerID, "target-foundation") == foundation.id())
+	{
+		ent.repair(foundation);
+		return true;
+	}
+
+	ent.stopMoving();
+	ent.setMetadata(PlayerID, "base", base.ID);
+	ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_BUILDER);
+	ent.setMetadata(PlayerID, "target-foundation", foundation.id());
+	ent.repair(foundation);
+	return true;
+};
+
+Headquarters.prototype.setExpertOpeningGatherTarget = function(gameState, base, ent, supply, subrole, resource)
+{
+	if (ent.getMetadata(PlayerID, "subrole") === subrole &&
+	    ent.getMetadata(PlayerID, "supply") == supply.id())
+	{
+		if (subrole == Worker.SUBROLE_HUNTER || ent.isIdle())
+			ent.gather(supply);
+		return true;
+	}
+
+	const oldSupply = ent.getMetadata(PlayerID, "supply");
+	if (oldSupply && oldSupply != supply.id())
+		base.RemoveTCGatherer(oldSupply);
+
+	ent.stopMoving();
+	ent.setMetadata(PlayerID, "base", base.ID);
+	ent.setMetadata(PlayerID, "subrole", subrole);
+	ent.setMetadata(PlayerID, "gather-type", resource);
+	ent.setMetadata(PlayerID, "target-foundation", undefined);
+	ent.setMetadata(PlayerID, "supply", supply.id());
+	base.AddTCGatherer(supply.id());
+	ent.gather(supply);
+	return true;
+};
+
+Headquarters.prototype.findExpertOpeningDropsite = function(gameState, resource, base)
+{
+	let bestDropsite;
+	let bestDist = Math.min();
+	const nearPos = resource == "wood" ? this.expertOpeningWoodPos : this.expertOpeningFoodPos;
+	const basePos = nearPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+
+	const candidates = [];
+	for (const foundation of gameState.getOwnFoundations().values())
+		candidates.push(foundation);
+	for (const structure of gameState.getOwnStructures().values())
+		candidates.push(structure);
+
+	for (const ent of candidates)
+	{
+		if (!ent || !ent.position())
+			continue;
+		const built = ent.foundationProgress() === undefined ? ent : getBuiltEntity(gameState, ent);
+		if (!built || !built.resourceDropsiteTypes)
+			continue;
+		const dropsiteTypes = built.resourceDropsiteTypes();
+		if (!dropsiteTypes || dropsiteTypes.indexOf(resource) == -1)
+			continue;
+		if (getLandAccess(gameState, ent) != base.accessIndex)
+			continue;
+
+		const dist = basePos ? SquareVectorDistance(basePos, ent.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestDropsite = ent;
+		bestDist = dist;
+	}
+	return bestDropsite;
+};
+
+Headquarters.prototype.findExpertOpeningDropsiteFoundation = function(gameState, resource, base)
+{
+	let bestFoundation;
+	let bestDist = Math.min();
+	const nearPos = resource == "wood" ? this.expertOpeningWoodPos : this.expertOpeningFoodPos;
+	const basePos = nearPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+
+	for (const foundation of gameState.getOwnFoundations().values())
+	{
+		if (!foundation || !foundation.position())
+			continue;
+		const structure = getBuiltEntity(gameState, foundation);
+		if (!structure || !structure.resourceDropsiteTypes ||
+		    structure.resourceDropsiteTypes().indexOf(resource) == -1)
+			continue;
+		if (getLandAccess(gameState, foundation) != base.accessIndex)
+			continue;
+
+		const dist = basePos ? SquareVectorDistance(basePos, foundation.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestFoundation = foundation;
+		bestDist = dist;
+	}
+	return bestFoundation;
+};
+
+Headquarters.prototype.findExpertOpeningChicken = function(gameState, base)
+{
+	const resources = gameState.getHuntableSupplies();
+	if (!resources.hasEntities())
+		return undefined;
+
+	const position = base.anchor && base.anchor.position() ? base.anchor.position() : undefined;
+	let bestSupply;
+	let bestDist = Math.min();
+	for (const supply of resources.values())
+	{
+		if (!supply.position() || !supply.hasClass("Domestic"))
+			continue;
+		if (getLandAccess(gameState, supply) != base.accessIndex)
+			continue;
+		const supplyType = supply.resourceSupplyType();
+		if (!supplyType || supplyType.generic != "food")
+			continue;
+		const territoryOwner = this.territoryMap.getOwner(supply.position());
+		if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))
+			continue;
+		const dist = position ? SquareVectorDistance(position, supply.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestSupply = supply;
+		bestDist = dist;
+	}
+	return bestSupply;
+};
+
+Headquarters.prototype.findExpertOpeningSupply = function(gameState, base, resource, predicate)
+{
+	const basePos = base.anchor && base.anchor.position() ? base.anchor.position() : undefined;
+	return this.findExpertOpeningSupplyNear(gameState, base, resource, basePos, predicate);
+};
+
+Headquarters.prototype.findExpertOpeningSupplyNear = function(gameState, base, resource, nearPos, predicate)
+{
+	const supplies = gameState.getResourceSupplies(resource);
+	if (!supplies.length)
+		return undefined;
+
+	const referencePos = nearPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+	let bestSupply;
+	let bestDist = Math.min();
+	for (const supply of supplies.values())
+	{
+		if (!supply.position() || !predicate(supply))
+			continue;
+		if (getLandAccess(gameState, supply) != base.accessIndex)
+			continue;
+		const supplyType = supply.resourceSupplyType();
+		if (!supplyType || supplyType.generic != resource)
+			continue;
+		const territoryOwner = this.territoryMap.getOwner(supply.position());
+		if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))
+			continue;
+		const dist = referencePos ? SquareVectorDistance(referencePos, supply.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestSupply = supply;
+		bestDist = dist;
+	}
+	return bestSupply;
+};
+
 
 /**
  * Assign the starting entities to the different bases

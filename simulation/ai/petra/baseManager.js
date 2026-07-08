@@ -35,6 +35,10 @@ export function BaseManager(gameState, basesManager)
 	// 3 areas are used: from 0 to max/4, from max/4 to max/2 and from max/2 to max
 	this.maxDistResourceSquare = 360*360;
 
+	// Expert economy tuning: classify distant resources more strictly so workers prefer
+	// building another dropsite over long walking routes.
+	this.expertMaxDistResourceSquare = 280*280;
+
 	this.constructing = false;
 	// Defenders to train in this cc when its construction is finished
 	this.neededDefenders = this.Config.difficulty > difficulty.EASY ? 3 + 2*(this.Config.difficulty - 3) : 0;
@@ -188,7 +192,8 @@ BaseManager.prototype.assignResourceToDropsite = function(gameState, dropsite)
 	if (this.ID == this.basesManager.baselessBase().ID)
 		accessIndex = getLandAccess(gameState, dropsite);
 
-	const maxDistResourceSquare = this.maxDistResourceSquare;
+	const maxDistResourceSquare = this.Config.difficulty >= difficulty.EXPERT ?
+		this.expertMaxDistResourceSquare : this.maxDistResourceSquare;
 	for (const type of dropsite.resourceDropsiteTypes())
 	{
 		const resources = gameState.getResourceSupplies(type);
@@ -379,13 +384,17 @@ BaseManager.prototype.findBestDropsiteLocation = function(gameState, resource, t
 			if (!dpPos)
 				continue;
 			const dist = SquareVectorDistance(dpPos, pos);
-			if (dist < 3600)
+			const expertDropsites = this.Config.difficulty >= difficulty.EXPERT;
+			const minDropsiteDistance = expertDropsites ? 45 : 60;
+			const penaltyDistance = expertDropsites ? 70 : 80;
+			if (dist < minDropsiteDistance * minDropsiteDistance)
 			{
 				total = 0;
 				break;
 			}
-			else if (dist < 6400)
-				total *= (Math.sqrt(dist)-60)/20;
+			else if (dist < penaltyDistance * penaltyDistance)
+				total *= (Math.sqrt(dist) - minDropsiteDistance) /
+					(penaltyDistance - minDropsiteDistance);
 		}
 		if (total <= bestVal)
 			continue;
@@ -505,13 +514,17 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 		}
 		// TODO  add also a test on remaining resources.
 		const total = this.gatherers[type].used + this.gatherers[type].lost;
-		if (total > 150 || total > 60 && type != "wood")
+		const expertDropsites = this.Config.difficulty >= difficulty.EXPERT;
+		const totalThreshold = expertDropsites ? (type == "wood" ? 35 : 20) : (type == "wood" ? 150 : 60);
+		if (total > totalThreshold)
 		{
 			const ratio = this.gatherers[type].lost / total;
-			if (ratio > 0.15)
+			const ratioThreshold = expertDropsites ? (type == "wood" ? 0.08 : 0.10) : 0.15;
+			if (ratio > ratioThreshold)
 			{
 				const newDP = this.findBestDropsiteAndLocation(gameState, type);
-				if (newDP.quality > 50 && gameState.ai.HQ.canBuild(gameState, newDP.templateName))
+				const qualityThreshold = expertDropsites ? 28 : 50;
+				if (newDP.quality > qualityThreshold && gameState.ai.HQ.canBuild(gameState, newDP.templateName))
 				{
 					queues.dropsites.addPlan(new ConstructionPlan(gameState, newDP.templateName,
 						{ "base": this.ID, "type": type }, newDP.pos));
@@ -522,8 +535,11 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 				{
 					// No good dropsite, try to build a new base if no base already planned,
 					// and if not possible, be less strict on dropsite quality.
+					const fallbackQuality = expertDropsites ?
+						Math.min(15, qualityThreshold * ratioThreshold / ratio) :
+						Math.min(25, 50*0.15/ratio);
 					if ((!gameState.ai.HQ.canExpand || !gameState.ai.HQ.buildNewBase(gameState, queues, type)) &&
-						newDP.quality > Math.min(25, 50*0.15/ratio) &&
+						newDP.quality > fallbackQuality &&
 						gameState.ai.HQ.canBuild(gameState, newDP.templateName))
 					{
 						queues.dropsites.addPlan(new ConstructionPlan(gameState,
@@ -532,12 +548,12 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					}
 				}
 			}
-			this.gatherers[type].nextCheck = gameState.ai.playedTurn + 20;
+			this.gatherers[type].nextCheck = gameState.ai.playedTurn + (expertDropsites ? 10 : 20);
 			this.gatherers[type].used = 0;
 			this.gatherers[type].lost = 0;
 		}
 		else if (total == 0)
-			this.gatherers[type].nextCheck = gameState.ai.playedTurn + 10;
+			this.gatherers[type].nextCheck = gameState.ai.playedTurn + (expertDropsites ? 5 : 10);
 	}
 
 };
@@ -587,7 +603,9 @@ BaseManager.prototype.assignRolelessUnits = function(gameState, roleless)
 
 	for (const ent of roleless)
 	{
-		if (ent.hasClasses(["Worker", "CitizenSoldier", "FishingBoat"]))
+		if (ent.hasClasses(["Worker", "CitizenSoldier", "FishingBoat"]) ||
+		    ent.canGather && (ent.canGather("food") || ent.canGather("wood")) ||
+		    ent.isBuilder && ent.isBuilder())
 			ent.setMetadata(PlayerID, "role", Worker.ROLE_WORKER);
 		else if (ent.hasClass("Support") && ent.hasClass("Elephant"))
 			ent.setMetadata(PlayerID, "role", Worker.ROLE_WORKER);
@@ -603,7 +621,8 @@ BaseManager.prototype.setWorkersIdleByPriority = function(gameState)
 {
 	this.timeNextIdleCheck = gameState.ai.elapsedTime + 8;
 	// change resource only towards one which is more needed, and if changing will not change this order
-	let nb = 1;    // no more than 1 change per turn (otherwise we should update the rates)
+	let nb = this.Config.difficulty >= difficulty.EXPERT ? 3 : 1;
+	// Very Hard changes no more than 1 worker per turn; Expert can rebalance faster.
 	const mostNeeded = gameState.ai.HQ.pickMostNeededResources(gameState);
 	let sumWanted = 0;
 	let sumCurrent = 0;
@@ -694,6 +713,10 @@ BaseManager.prototype.reassignIdleWorkers = function(gameState, idleWorkers)
 	{
 		// Check that the worker isn't garrisoned
 		if (!ent.position())
+			continue;
+
+		if (gameState.ai.HQ.assignExpertOpeningIdleWorker &&
+		    gameState.ai.HQ.assignExpertOpeningIdleWorker(gameState, this, ent))
 			continue;
 		// Support elephant can only be builders
 		if (ent.hasClass("Support") && ent.hasClass("Elephant"))
@@ -898,6 +921,42 @@ BaseManager.prototype.assignToFoundations = function(gameState, noRepair)
 		{
 			targetNB = workers.length;
 			maxTotalBuilders = targetNB;
+		}
+
+		if (gameState.ai.HQ.isExpertOpeningPhaseActive &&
+		    gameState.ai.HQ.isExpertOpeningPhaseActive(gameState))
+		{
+			const structure = getBuiltEntity(gameState, target);
+			const dropsiteTypes = structure && structure.resourceDropsiteTypes ? structure.resourceDropsiteTypes() : undefined;
+			let wantedJob;
+			if (dropsiteTypes && dropsiteTypes.indexOf("wood") != -1 && !target.hasClass("CivCentre"))
+				wantedJob = "woodBuilder";
+			else if (dropsiteTypes && dropsiteTypes.indexOf("food") != -1 && !target.hasClass("CivCentre"))
+				wantedJob = "foodBuilder";
+
+			if (wantedJob)
+			{
+				const wantedBuilders = this.workers.filter(ent => {
+					if (!ent.position() || !ent.isBuilder())
+						return false;
+					if (ent.getMetadata(PlayerID, "expertOpeningJob") != wantedJob)
+						return false;
+					return true;
+				}).toEntityArray();
+				wantedBuilders.sort((a, b) => SquareVectorDistance(a.position(), target.position()) -
+					SquareVectorDistance(b.position(), target.position()));
+				for (const ent of wantedBuilders)
+				{
+					if (assigned >= 2)
+						break;
+					++assigned;
+					ent.stopMoving();
+					ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_BUILDER);
+					ent.setMetadata(PlayerID, "target-foundation", target.id());
+					ent.repair(target);
+				}
+				continue;
+			}
 		}
 
 		if (assigned >= targetNB)
@@ -1127,6 +1186,8 @@ BaseManager.prototype.update = function(gameState, queues, events)
 	Engine.ProfileStart("Base update - base " + this.ID);
 
 	this.checkResourceLevels(gameState, queues);
+	if (gameState.ai.HQ.applyExpertEconomyRules)
+		gameState.ai.HQ.applyExpertEconomyRules(gameState);
 	this.assignToFoundations(gameState);
 
 	if (this.constructing)

@@ -396,6 +396,50 @@ Headquarters.prototype.OnPhaseUp = function(gameState, phase)
 {
 };
 
+
+Headquarters.prototype.trainExpertOpeningWorkers = function(gameState, queues, templateDef)
+{
+	if (!this.isExpertOpeningPhaseActive || !this.isExpertOpeningPhaseActive(gameState))
+		return false;
+	if (!templateDef)
+		return true;
+
+	// Expert opening: only train civilian/support workers from the Civic Centre.
+	// Keep exactly one Petra queue plan pending, but allow the next batch to be
+	// queued while the current in-game batch is nearly done to reduce downtime.
+	if (queues.villager.hasQueuedUnits())
+		return true;
+
+	let supportInTraining = 0;
+	let supportTrainingTime = 0;
+	gameState.getOwnTrainingFacilities().forEach(ent => {
+		for (const item of ent.trainingQueue())
+		{
+			if (item.metadata && item.metadata.role === Worker.ROLE_WORKER && item.metadata.support)
+			{
+				supportInTraining += item.count;
+				supportTrainingTime += item.timeRemaining !== undefined ? item.timeRemaining : 0;
+			}
+		}
+	});
+	if (supportInTraining > 0 && supportTrainingTime > 2)
+		return true;
+
+	const trained = this.expertOpeningQueuedSupportBatches || 0;
+	let size = 2;
+	if (trained == 0)
+		size = 1;
+	else if (trained == 1)
+		size = 2;
+	else
+		size = 3;
+
+	this.expertOpeningQueuedSupportBatches = trained + 1;
+	queues.villager.addPlan(new TrainingPlan(gameState, templateDef,
+		{ "role": Worker.ROLE_WORKER, "base": 0, "support": true, "expertOpeningNewSupport": true }, size, size));
+	return true;
+};
+
 /** This code trains citizen workers, trying to keep close to a ratio of worker/soldiers */
 Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 {
@@ -403,6 +447,9 @@ Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 	const requirementsDef = [ ["costsResource", 1, "food"] ];
 	const classesDef = ["Support+Worker"];
 	const templateDef = this.findBestTrainableUnit(gameState, classesDef, requirementsDef);
+
+	if (this.trainExpertOpeningWorkers(gameState, queues, templateDef))
+		return;
 
 	// counting the workers that aren't part of a plan
 	let numberOfWorkers = 0;   // all workers
@@ -1666,6 +1713,8 @@ Headquarters.prototype.buildForge = function(gameState, queues)
  */
 Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 {
+	if (this.isExpertOpeningPhaseActive && this.isExpertOpeningPhaseActive(gameState))
+		return;
 	if (this.saveResources && !this.canBarter || queues.militaryBuilding.hasQueuedUnits())
 		return;
 
@@ -2270,10 +2319,17 @@ Headquarters.prototype.update = function(gameState, queues, events)
 	}
 	*/
 
+	if (this.applyExpertEconomyRules)
+		this.applyExpertEconomyRules(gameState);
+
 	this.checkEvents(gameState, events);
 	this.navalManager.checkEvents(gameState, queues, events);
 
-	if (this.phasing)
+	if (this.isExpertOpeningPhaseActive && this.isExpertOpeningPhaseActive(gameState))
+	{
+		// Expert opening: no phase techs or other research yet.
+	}
+	else if (this.phasing)
 		this.checkPhaseRequirements(gameState, queues);
 	else
 		this.researchManager.checkPhase(gameState, queues);
@@ -2292,7 +2348,8 @@ Headquarters.prototype.update = function(gameState, queues, events)
 		if (this.needCorral && gameState.ai.playedTurn % 4 == 3)
 			this.manageCorral(gameState, queues);
 
-		if (gameState.ai.playedTurn % 5 == 1)
+		if (!(this.isExpertOpeningPhaseActive && this.isExpertOpeningPhaseActive(gameState)) &&
+		    gameState.ai.playedTurn % 5 == 1)
 			this.researchManager.update(gameState, queues);
 	}
 
