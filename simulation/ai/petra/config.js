@@ -172,21 +172,23 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 	];
 
 	this.criticalPopulationFactors = [
-		0.8,
-		0.8,
-		0.7,
-		0.6,
-		0.5,
-		0.35
+	0.8,
+	0.8,
+	0.7,
+	0.6,
+	0.5,
+	0.35,
+	0.25
 	];
 
 	this.criticalStructureFactors = [
-		0.8,
-		0.8,
-		0.7,
-		0.6,
-		0.5,
-		0.35
+	0.8,
+	0.8,
+	0.7,
+	0.6,
+	0.5,
+	0.35,
+	0.25
 	];
 
 	this.criticalRootFactors = [
@@ -195,7 +197,8 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 		0.67,
 		0.5,
 		0.35,
-		0.2
+		0.2,
+		0.15
 	];
 }
 
