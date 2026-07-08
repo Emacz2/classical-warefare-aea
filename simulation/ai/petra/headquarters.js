@@ -10,6 +10,7 @@ import { DefenseManager } from "simulation/ai/petra/defenseManager.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { DiplomacyManager } from "simulation/ai/petra/diplomacyManager.js";
 import { EmergencyManager } from "simulation/ai/petra/emergencyManager.js";
+import { ExpertEconomyManager } from "simulation/ai/petra/expertEconomyManager.js";
 import { allowCapture, getAttackBonus, getLandAccess, getMaxStrength, isLineInsideEnemyTerritory,
 	setSeaAccess } from "simulation/ai/petra/entityExtend.js";
 import { GarrisonManager } from "simulation/ai/petra/garrisonManager.js";
@@ -73,6 +74,7 @@ export function Headquarters(config)
 	this.garrisonManager = new GarrisonManager(this.Config);
 	this.victoryManager = new VictoryManager(this.Config);
 	this.emergencyManager = new EmergencyManager(this.Config);
+	this.expertEconomyManager = new ExpertEconomyManager(this);
 
 	this.capturableTargets = new Map();
 	this.capturableTargetsTime = 0;
@@ -406,24 +408,16 @@ Headquarters.prototype.trainExpertOpeningWorkers = function(gameState, queues, t
 
 	// Expert opening: only train civilian/support workers from the Civic Centre.
 	// Keep exactly one Petra queue plan pending, but allow the next batch to be
-	// queued while the current in-game batch is nearly done to reduce downtime.
+	// queued before the current in-game batch finishes to reduce downtime.
 	if (queues.villager.hasQueuedUnits())
 		return true;
 
-	let supportInTraining = 0;
-	let supportTrainingTime = 0;
-	gameState.getOwnTrainingFacilities().forEach(ent => {
-		for (const item of ent.trainingQueue())
-		{
-			if (item.metadata && item.metadata.role === Worker.ROLE_WORKER && item.metadata.support)
-			{
-				supportInTraining += item.count;
-				supportTrainingTime += item.timeRemaining !== undefined ? item.timeRemaining : 0;
-			}
-		}
-	});
-	if (supportInTraining > 0 && supportTrainingTime > 2)
-		return true;
+	// Queue the next opening batch immediately when there is no pending villager plan.
+	// `queues.villager.hasQueuedUnits()` above prevents us from stacking multiple pending
+	// Petra plans, so keeping one plan waiting is the safest way to avoid CC idle time.
+	// We intentionally do not use trainingQueue().timeRemaining here because A28/modded
+	// queue data can be interpreted inconsistently; a pending Petra plan will begin as
+	// soon as the Civic Centre is free.
 
 	const trained = this.expertOpeningQueuedSupportBatches || 0;
 	let size = 2;
@@ -1727,7 +1721,13 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	const rangeTemplate = this.canBuild(gameState, "structures/{civ}/range") ? "structures/{civ}/range" : undefined;
 	const numRanges = gameState.getOwnEntitiesByClass("Range", true).length;
 
-	const stableTemplate = this.canBuild(gameState, "structures/{civ}/stable") ? "structures/{civ}/stable" : undefined;
+	// Expert v0.3: do not let Petra leak into an early stable while the economy
+	// opening is still trying to hit its civilian population target. We will add
+	// early stable logic back later only when Expert has a cavalry strategy or is
+	// reacting to an enemy threat.
+	const delayExpertStable = this.Config.difficulty >= difficulty.EXPERT &&
+		gameState.ai.elapsedTime < 480 && !this.defenseManager.hasEmergency;
+	const stableTemplate = !delayExpertStable && this.canBuild(gameState, "structures/{civ}/stable") ? "structures/{civ}/stable" : undefined;
 	const numStables = gameState.getOwnEntitiesByClass("Stable", true).length;
 
 	if (this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks1 ||
@@ -2320,7 +2320,7 @@ Headquarters.prototype.update = function(gameState, queues, events)
 	*/
 
 	if (this.applyExpertEconomyRules)
-		this.applyExpertEconomyRules(gameState);
+		this.applyExpertEconomyRules(gameState, queues);
 
 	this.checkEvents(gameState, events);
 	this.navalManager.checkEvents(gameState, queues, events);
@@ -2380,7 +2380,8 @@ Headquarters.prototype.update = function(gameState, queues, events)
 
 	if (gameState.ai.playedTurn % 3 == 0)
 	{
-		this.constructTrainingBuildings(gameState, queues);
+		if (!(this.isExpertOpeningPhaseActive && this.isExpertOpeningPhaseActive(gameState)))
+			this.constructTrainingBuildings(gameState, queues);
 		if (this.Config.difficulty > difficulty.SANDBOX)
 			this.buildDefenses(gameState, queues);
 	}
@@ -2507,5 +2508,6 @@ Headquarters.prototype.Deserialize = function(gameState, data)
 	this.victoryManager.Deserialize(data.victoryManager);
 
 	this.emergencyManager = new EmergencyManager(this.Config);
+	this.expertEconomyManager = new ExpertEconomyManager(this);
 	this.emergencyManager.Deserialize(data.emergencyManager);
 };

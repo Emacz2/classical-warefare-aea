@@ -495,6 +495,17 @@ BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 			continue;
 		}
 		// Non food stuff
+		// During the Expert opening, saturate the first woodline instead of
+		// reacting to early walking-loss by placing a second storehouse.
+		if (this.Config.difficulty >= difficulty.EXPERT && type == "wood" &&
+		    gameState.ai.HQ.isExpertOpeningPhaseActive &&
+		    gameState.ai.HQ.isExpertOpeningPhaseActive(gameState))
+		{
+			this.gatherers[type].nextCheck = gameState.ai.playedTurn + 10;
+			this.gatherers[type].used = 0;
+			this.gatherers[type].lost = 0;
+			continue;
+		}
 		if (!gameState.sharedScript.resourceMaps[type] || queues.dropsites.hasQueuedUnits() ||
 			gameState.getOwnFoundations().filter(filters.byClass("Storehouse")).hasEntities())
 		{
@@ -932,7 +943,7 @@ BaseManager.prototype.assignToFoundations = function(gameState, noRepair)
 			if (dropsiteTypes && dropsiteTypes.indexOf("wood") != -1 && !target.hasClass("CivCentre"))
 				wantedJob = "woodBuilder";
 			else if (dropsiteTypes && dropsiteTypes.indexOf("food") != -1 && !target.hasClass("CivCentre"))
-				wantedJob = "foodBuilder";
+				wantedJob = "berriesBuilder";
 
 			if (wantedJob)
 			{

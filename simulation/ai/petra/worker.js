@@ -497,9 +497,20 @@ Worker.prototype.startGathering = function(gameState)
 
 	const resource = this.ent.getMetadata(PlayerID, "gather-type");
 
-	// During the Expert opening, civilians should stay on berries/farmstead work.
-	// Petra's default food logic prefers nearby domestic animals, which pulled women
-	// off berries around 30-45 seconds. Keep hunting restricted to cavalry here.
+	// Expert v0.3 worker policy from the uploaded templates:
+	// civilians gather grain/fruit 2x faster than citizen soldiers, so citizen
+	// soldiers should not farm or forage unless there are literally no civilian
+	// workers available. Keep them on wood/building instead.
+	if (this.base.Config.difficulty >= difficulty.EXPERT && resource == "food" &&
+	    !this.ent.hasClass("Civilian") && !this.ent.hasClass("Cavalry"))
+	{
+		this.ent.setMetadata(PlayerID, "gather-type", "wood");
+		return this.startGathering(gameState);
+	}
+
+	// During the Expert opening, non-cavalry workers should not hunt chickens.
+	// Petra's default food logic prefers nearby domestic animals, which pulled civilians
+	// onto chickens around 60 seconds. Keep hunting restricted to cavalry here.
 	const expertOpeningNoFemaleHunt = gameState.ai.HQ.isExpertOpeningPhaseActive &&
 		gameState.ai.HQ.isExpertOpeningPhaseActive(gameState) && !this.ent.hasClass("Cavalry");
 
@@ -792,8 +803,7 @@ Worker.prototype.startGathering = function(gameState)
  */
 Worker.prototype.startHunting = function(gameState, position)
 {
-	if (gameState.ai.HQ.isExpertOpeningPhaseActive && gameState.ai.HQ.isExpertOpeningPhaseActive(gameState) &&
-	    !this.ent.hasClass("Cavalry"))
+	if (this.base.Config.difficulty >= difficulty.EXPERT && !this.ent.hasClass("Cavalry"))
 		return false;
 
 	// First look for possible treasure if any

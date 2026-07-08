@@ -123,6 +123,83 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 		return this.findDockPosition(gameState);
 
 	const HQ = gameState.ai.HQ;
+
+	if (template.hasClass("House") && this.metadata && this.metadata.expertOpeningHouse && this.position)
+	{
+		// Expert v0.2: opening houses belong at the active work area, not in
+		// Petra's normal residential cluster. Keep the first house within roughly
+		// 10m of the first storehouse, and prefer the side away from the trees so
+		// it does not block woodcutters.
+		const obstructions = createObstructionMap(gameState, 0, template);
+		const radius = Math.ceil(template.obstructionRadius().max / obstructions.cellSize);
+		const territoryMap = HQ.territoryMap;
+		const offsets = [[6,0],[-6,0],[0,6],[0,-6],[8,0],[-8,0],[0,8],[0,-8],[8,5],[8,-5],[-8,5],[-8,-5],[10,0],[-10,0],[0,10],[0,-10]];
+		let best;
+		let bestScore = -Infinity;
+		for (const off of offsets)
+		{
+			const tryPos = [this.position[0] + off[0], this.position[1] + off[1]];
+			const mapPos = territoryMap.gamePosToMapPos(tryPos);
+			if (mapPos[0] < 0 || mapPos[1] < 0 || mapPos[0] >= territoryMap.width || mapPos[1] >= territoryMap.width)
+				continue;
+			const j = mapPos[0] + mapPos[1] * territoryMap.width;
+			// Expert opening houses are anchored to the first storehouse/work area.
+			// Do not reject nearby tiles just because Petra's baseAtIndex still maps
+			// them to another internal base region.
+			if (!this.metadata.expertOpeningHouse && this.metadata.base !== undefined && HQ.baseAtIndex(j) != this.metadata.base)
+				continue;
+			const i = territoryMap.getNonObstructedTile(j, radius, obstructions);
+			if (i < 0)
+				continue;
+			const x = (i % obstructions.width + 0.5) * obstructions.cellSize;
+			const z = (Math.floor(i / obstructions.width) + 0.5) * obstructions.cellSize;
+			if (HQ.isDangerousLocation(gameState, [x, z], template.obstructionRadius().max))
+				continue;
+			let score = -SquareVectorDistance([x, z], this.position);
+			if (this.metadata.expertOpeningHouseAvoid)
+				score += 0.35 * SquareVectorDistance([x, z], this.metadata.expertOpeningHouseAvoid);
+			if (score > bestScore)
+			{
+				bestScore = score;
+				best = { "x": x, "z": z, "angle": 3*Math.PI/4, "base": this.metadata.base };
+			}
+		}
+		if (best)
+			return best;
+	}
+
+	if (template.hasClass("Field") && this.metadata && this.metadata.expertOpeningFarm && this.position)
+	{
+		// Expert farms should border a food dropsite. The field footprint is 28m,
+		// so centers about 18-24m from the farmstead put the field edge close to
+		// the dropsite while leaving enough room for placement.
+		const obstructions = createObstructionMap(gameState, 0, template);
+		const radius = Math.ceil(template.obstructionRadius().max / obstructions.cellSize);
+		const territoryMap = HQ.territoryMap;
+		const offsets = [[20,0],[-20,0],[0,20],[0,-20],[18,18],[18,-18],[-18,18],[-18,-18],[24,0],[-24,0],[0,24],[0,-24]];
+		for (const off of offsets)
+		{
+			const tryPos = [this.position[0] + off[0], this.position[1] + off[1]];
+			const mapPos = territoryMap.gamePosToMapPos(tryPos);
+			if (mapPos[0] < 0 || mapPos[1] < 0 || mapPos[0] >= territoryMap.width || mapPos[1] >= territoryMap.width)
+				continue;
+			const j = mapPos[0] + mapPos[1] * territoryMap.width;
+			// Expert opening houses are anchored to the first storehouse/work area.
+			// Do not reject nearby tiles just because Petra's baseAtIndex still maps
+			// them to another internal base region.
+			if (!this.metadata.expertOpeningHouse && this.metadata.base !== undefined && HQ.baseAtIndex(j) != this.metadata.base)
+				continue;
+			const i = territoryMap.getNonObstructedTile(j, radius, obstructions);
+			if (i < 0)
+				continue;
+			const x = (i % obstructions.width + 0.5) * obstructions.cellSize;
+			const z = (Math.floor(i / obstructions.width) + 0.5) * obstructions.cellSize;
+			if (HQ.isDangerousLocation(gameState, [x, z], template.obstructionRadius().max))
+				continue;
+			return { "x": x, "z": z, "angle": 3*Math.PI/4, "base": this.metadata.base };
+		}
+	}
+
 	if (template.hasClass("Storehouse") && this.metadata && this.metadata.base)
 	{
 		// recompute the best dropsite location in case some conditions have changed
@@ -336,9 +413,12 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 		radius = Math.ceil(template.obstructionRadius().max / obstructions.cellSize);
 
 	let bestTile;
-	if (template.hasClass("House") && !alreadyHasHouses)
+	if (template.hasClass("House") && !alreadyHasHouses &&
+	    (!this.metadata || !this.metadata.expertOpeningHouse))
 	{
-		// try to get some space to place several houses first
+		// try to get some space to place several houses first. Expert opening
+		// houses are different: they must be close to the first storehouse so
+		// citizen soldiers do not waste time walking across the territory.
 		bestTile = placement.findBestTile(3*radius, obstructions);
 		if (!bestTile.val)
 			bestTile = undefined;

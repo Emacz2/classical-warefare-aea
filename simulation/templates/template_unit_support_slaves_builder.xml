@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="builder|template_unit_support_civilian">
+ <Builder>
+    <Rate>1.25</Rate>
+  </Builder>
   <Attack>
     <Melee>
       <AttackName>Dagger</AttackName>
@@ -35,9 +38,30 @@
   <Identity>
     <GenericName>Slave</GenericName>
     <SelectionGroupName>template_unit_support_slave</SelectionGroupName>
-    <Tooltip>Same gather speed as civilians but zero pop</Tooltip>
+    <Tooltip>10% slower gather rates than civlians but 25% faster build rate.</Tooltip>
     <VisibleClasses datatype="tokens">Worker Slave -Citizen</VisibleClasses>
   </Identity>
+   <ResourceGatherer>
+    <MaxDistance>2.0</MaxDistance>
+    <BaseSpeed>1.0</BaseSpeed>
+    <Rates>
+      <food.fruit op="mul">0.9</food.fruit>
+      <food.grain op="mul">0.9</food.grain>
+      <food.meat op="mul">0.9</food.meat>
+      <wood.tree op="mul">0.9</wood.tree>
+      <wood.ruins op="mul">0.9</wood.ruins>
+      <stone.rock op="mul">0.9</stone.rock>
+      <stone.ruins op="mul">0.9</stone.ruins>
+      <metal.ore op="mul">0.9</metal.ore>
+      <metal.ruins op="mul">0.9</metal.ruins>
+    </Rates>
+    <Capacities>
+      <food>10</food>
+      <wood>10</wood>
+      <stone>10</stone>
+      <metal>10</metal>
+    </Capacities>
+  </ResourceGatherer>
   <Loot>
     <xp>10</xp>
   </Loot>
