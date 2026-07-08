@@ -2,6 +2,7 @@ import * as filters from "simulation/ai/common-api/filters.js";
 import { ResourcesManager } from "simulation/ai/common-api/resources.js";
 import { SquareVectorDistance, aiWarn } from "simulation/ai/common-api/utils.js";
 import { Config } from "simulation/ai/petra/config.js";
+import { ExpertOpeningConstants } from "simulation/ai/petra/expertEconomyManager.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { gatherTreasure, getBuiltEntity, getHolder, getLandAccess, isFastMoving } from
 	"simulation/ai/petra/entityExtend.js";
@@ -303,7 +304,7 @@ Headquarters.prototype.ensureExpertOpeningAdditionalFoodDropsites = function(gam
 	    !gameState.isResearching("gather_wicker_baskets"))
 		return;
 
-	const target = this.findExpertOpeningUnservedFruitCluster(gameState, base, 30);
+	const target = this.findExpertOpeningUnservedFruitCluster(gameState, base, ExpertOpeningConstants.farmsteadSpacing);
 	if (!target)
 		return;
 
@@ -397,14 +398,9 @@ Headquarters.prototype.ensureExpertOpeningHouse = function(gameState, queues)
 	if (!gameState.isTemplateAvailable(gameState.applyCiv(houseTemplate)) || !this.canBuild(gameState, houseTemplate))
 		return;
 
-	// The first Expert house should support the first woodline.  Petra's generic
-	// house placement may choose a faraway tile, which leaves the house foundation
-	// unbuilt while the opening wood workers are at the storehouse.
-	const houseExists = gameState.getOwnFoundations().filter(filters.byClass("House")).hasEntities() ||
-		gameState.getOwnStructures().filter(filters.byClass("House")).hasEntities();
-	if (houseExists)
-		return;
-
+	// Expert v0.3.1: every opening house should support the active work area,
+	// not just the first one.  Do not return merely because one house exists;
+	// later population houses were drifting back to Petra's generic CC layout.
 	const popBonus = gameState.getTemplate(gameState.applyCiv(houseTemplate)).getPopulationBonus();
 	const plannedPop = queues.house.length() * popBonus;
 	const freeSlots = gameState.getPopulationLimit() + plannedPop - this.getAccountedPopulation(gameState);
@@ -427,9 +423,14 @@ Headquarters.prototype.ensureExpertOpeningHouse = function(gameState, queues)
 
 	const avoidPos = this.findExpertOpeningSupplyNear(gameState, base, "wood", pos,
 		supply => !supply.hasClasses(["Animal", "Field"]));
+	const anchor = this.findExpertOpeningDropsite(gameState, "wood", base) ||
+		this.findExpertOpeningDropsiteFoundation(gameState, "wood", base);
+	const anchorRadius = anchor && anchor.obstructionRadius ? anchor.obstructionRadius().max : 0;
 	const plan = new ConstructionPlan(gameState, houseTemplate,
 		{ "base": base.ID, "expertOpeningHouse": true,
-		  "expertOpeningHouseAvoid": avoidPos && avoidPos.position() ? avoidPos.position() : undefined }, pos);
+		  "expertOpeningHouseAvoid": avoidPos && avoidPos.position() ? avoidPos.position() : undefined,
+		  "expertOpeningHouseAnchorRadius": anchorRadius,
+		  "expertOpeningHouseMaxDistance": ExpertOpeningConstants.maxHouseDistance }, pos);
 	plan.goRequirement = undefined;
 	queues.house.addPlan(plan);
 };
@@ -519,7 +520,7 @@ Headquarters.prototype.shouldExpertOpeningFarmTransition = function(gameState)
 		return false;
 
 	const remaining = this.getExpertOpeningPrimaryFruitAmount(gameState);
-	return remaining <= 0.25 * this.expertOpeningInitialPrimaryFruit;
+	return remaining <= ExpertOpeningConstants.berryTransition * this.expertOpeningInitialPrimaryFruit;
 };
 
 Headquarters.prototype.hasExpertOpeningCivilianFoodBuilder = function(gameState)
@@ -642,6 +643,7 @@ Headquarters.prototype.assignExpertOpeningWorkers = function(gameState)
 			else if (ent.hasClass("Civilian") && ent.canGather("food"))
 			{
 				const foodAssigned = this.countExpertOpeningFoodCivilians(gameState);
+				const woodAssigned = this.countExpertOpeningCivilianWoodWorkers(gameState);
 				if (foodAssigned < 8)
 				{
 					const berryBuilders = this.countExpertOpeningJob(gameState, "berriesBuilder");
@@ -650,8 +652,11 @@ Headquarters.prototype.assignExpertOpeningWorkers = function(gameState)
 					else
 						ent.setMetadata(PlayerID, "expertOpeningJob", "berries");
 				}
-				else
+				else if (!this.shouldExpertOpeningFarmTransition(gameState) &&
+				         woodAssigned < ExpertOpeningConstants.firstWoodSaturation)
 					ent.setMetadata(PlayerID, "expertOpeningJob", "wood");
+				else
+					ent.setMetadata(PlayerID, "expertOpeningJob", "farm");
 			}
 			else if (!ent.hasClass("Cavalry") && (ent.hasClass("CitizenSoldier") || ent.canGather("wood") || ent.isBuilder()))
 				ent.setMetadata(PlayerID, "expertOpeningJob", "woodBuilder");
@@ -670,6 +675,19 @@ Headquarters.prototype.countExpertOpeningFoodCivilians = function(gameState)
 			continue;
 		const job = ent.getMetadata(PlayerID, "expertOpeningJob");
 		if (job == "berries" || job == "berriesBuilder")
+			++count;
+	}
+	return count;
+};
+
+Headquarters.prototype.countExpertOpeningCivilianWoodWorkers = function(gameState)
+{
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent.position() || !ent.hasClass("Civilian"))
+			continue;
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") == "wood")
 			++count;
 	}
 	return count;
@@ -735,14 +753,41 @@ Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
 		ent.setMetadata(PlayerID, "expertOpeningJob", "berries");
 	}
 
+	if (ent.getMetadata(PlayerID, "expertOpeningJob") == "farm")
+	{
+		// After the first 15-20 civilians have helped wood, new civilians become
+		// food-production workers. They should finish/build fields and then work
+		// them immediately instead of wandering back to wood or hunting.
+		const fieldFoundation = this.findExpertOpeningFieldFoundation(gameState, base);
+		if (fieldFoundation && ent.hasClass("Civilian") && ent.isBuilder())
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, fieldFoundation);
+		const field = this.findExpertOpeningField(gameState, base, ent);
+		if (field)
+			return this.setExpertOpeningGatherTarget(gameState, base, ent, field,
+				Worker.SUBROLE_GATHERER, "food");
+		const berries = this.findExpertOpeningSupplyNear(gameState, base, "food",
+			this.expertOpeningFoodPos, supply => !supply.hasClasses(["Animal", "Field"]));
+		if (berries)
+			return this.setExpertOpeningGatherTarget(gameState, base, ent, berries,
+				Worker.SUBROLE_GATHERER, "food");
+		return true;
+	}
+
 	if (ent.getMetadata(PlayerID, "expertOpeningJob") == "berries")
 	{
-		// If Expert places an extra farmstead for a nearby fruit patch, 2-4
-		// civilians should build it before returning to fruit/fields.
+		// Existing berry workers should finish the current patch.  When the patch
+		// drops below the transition threshold, new civilians switch to the farm
+		// job, but the original berry workers do not abandon remaining fruit.
 		const foodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
 		if (foodFoundation && ent.hasClass("Civilian") && ent.isBuilder() &&
 		    gameState.getOwnEntitiesByMetadata("target-foundation", foodFoundation.id()).length < 4)
 			return this.setExpertOpeningBuildTarget(gameState, base, ent, foodFoundation);
+
+		const berries = this.findExpertOpeningSupplyNear(gameState, base, "food",
+			this.expertOpeningFoodPos, supply => !supply.hasClasses(["Animal", "Field"]));
+		if (berries)
+			return this.setExpertOpeningGatherTarget(gameState, base, ent, berries,
+				Worker.SUBROLE_GATHERER, "food");
 
 		if (this.shouldExpertOpeningFarmTransition(gameState) && ent.hasClass("Civilian"))
 		{
@@ -754,13 +799,7 @@ Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
 				return this.setExpertOpeningGatherTarget(gameState, base, ent, field,
 					Worker.SUBROLE_GATHERER, "food");
 		}
-
-		const berries = this.findExpertOpeningSupplyNear(gameState, base, "food",
-			this.expertOpeningFoodPos, supply => !supply.hasClasses(["Animal", "Field"]));
-		if (!berries)
-			return true;
-		return this.setExpertOpeningGatherTarget(gameState, base, ent, berries,
-			Worker.SUBROLE_GATHERER, "food");
+		return true;
 	}
 
 	if (job == "woodBuilder" || job == "wood")

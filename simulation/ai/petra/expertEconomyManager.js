@@ -1,5 +1,15 @@
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 
+export const ExpertOpeningConstants = {
+	maxHouseWalkTime: 4.0,          // seconds round trip
+	maxHouseDistance: 5,            // meters from active worksite / dropsite border
+	berryTransition: 0.25,          // start food transition when first fruit cluster is 25% left
+	firstWoodSaturation: 16,        // civilians sent to wood before new civilians return to food
+	farmsteadSpacing: 30,           // minimum meters between early farmsteads
+	woodlineRoundTrip: 4.0,         // seconds round trip before improving wood dropsites
+	farmMaxDistance: 2.0            // desired farm edge distance from food dropsite border
+};
+
 /**
  * ExpertEconomyManager v0.3
  *
