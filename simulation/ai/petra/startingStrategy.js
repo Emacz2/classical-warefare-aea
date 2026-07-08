@@ -544,12 +544,12 @@ Headquarters.prototype.hasExpertOpeningCivilianFoodBuilder = function(gameState)
 		if (getLandAccess(gameState, ent) != base.accessIndex)
 			continue;
 
-		// Prefer civilians already assigned to food, but also accept idle civilians.
-		// This prevents empty farm foundations while still letting Expert start
-		// the farm transition as soon as a real civilian can build and work it.
-		const gatherType = ent.getMetadata(PlayerID, "gather-type");
+		// v0.3.1 rule: do not pull current berry workers away to place farms.
+		// Only civilians already assigned to the farm transition, or truly idle
+		// civilians, are allowed to trigger a new field foundation.
+		const job = ent.getMetadata(PlayerID, "expertOpeningJob");
 		const subrole = ent.getMetadata(PlayerID, "subrole");
-		if (gatherType == "food" || subrole === Worker.SUBROLE_IDLE)
+		if (job == "farm" || subrole === Worker.SUBROLE_IDLE)
 			return true;
 	}
 
@@ -580,9 +580,13 @@ Headquarters.prototype.ensureExpertOpeningFarms = function(gameState, queues)
 	if (!this.hasExpertOpeningCivilianFoodBuilder(gameState))
 		return;
 
+	const foodDropsite = this.findExpertOpeningDropsite(gameState, "food", base) ||
+		this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
+	const farmAnchor = foodDropsite && foodDropsite.position() ? foodDropsite.position() :
+		(this.expertOpeningFoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined));
 	queues.field.addPlan(new ConstructionPlan(gameState,
 		"structures/{civ}/field", { "base": base.ID, "favoredBase": base.ID, "expertOpeningFarm": true },
-		this.expertOpeningFoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined)));
+		farmAnchor));
 	gameState.ai.HQ.needFarm = true;
 };
 
@@ -734,7 +738,18 @@ Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
 	this.ensureExpertOpeningFoodDropsite(gameState);
 	this.claimExpertOpeningWorker(gameState, base, ent);
 
-	const job = ent.getMetadata(PlayerID, "expertOpeningJob");
+	let job = ent.getMetadata(PlayerID, "expertOpeningJob");
+
+	// Do not overcrowd the starting berry bunch.  If more than 8 civilians are
+	// still marked for the same berry job, newer/extra civilians are redirected
+	// into the farm transition instead of making 10-11 workers share one patch.
+	if ((job == "berries" || job == "berriesBuilder") && ent.hasClass("Civilian") &&
+	    this.countExpertOpeningFoodCivilians(gameState) > 8 &&
+	    this.shouldExpertOpeningFarmTransition(gameState))
+	{
+		ent.setMetadata(PlayerID, "expertOpeningJob", "farm");
+		job = "farm";
+	}
 
 	if (job == "chicken")
 	{
@@ -789,16 +804,11 @@ Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
 			return this.setExpertOpeningGatherTarget(gameState, base, ent, berries,
 				Worker.SUBROLE_GATHERER, "food");
 
+		// Existing berry workers do not leave their berry area to build farms.
+		// If their local berries are gone, convert them to the farm role; otherwise
+		// they simply wait for the next tick to find fruit in the same area.
 		if (this.shouldExpertOpeningFarmTransition(gameState) && ent.hasClass("Civilian"))
-		{
-			const fieldFoundation = this.findExpertOpeningFieldFoundation(gameState, base);
-			if (fieldFoundation && ent.isBuilder())
-				return this.setExpertOpeningBuildTarget(gameState, base, ent, fieldFoundation);
-			const field = this.findExpertOpeningField(gameState, base, ent);
-			if (field)
-				return this.setExpertOpeningGatherTarget(gameState, base, ent, field,
-					Worker.SUBROLE_GATHERER, "food");
-		}
+			ent.setMetadata(PlayerID, "expertOpeningJob", "farm");
 		return true;
 	}
 

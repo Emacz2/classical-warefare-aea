@@ -126,17 +126,18 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 
 	if (template.hasClass("House") && this.metadata && this.metadata.expertOpeningHouse && this.position)
 	{
-		// Expert v0.3.1: opening houses are work-area buildings. Place them
-		// adjacent to the active storehouse, preferably on the side away from the
-		// trees, instead of letting Petra's residential layout pull them back to CC.
+		// Expert v0.3.1: opening houses are anchored to the active worksite.
+		// We search a tight ring around the actual storehouse/foundation and do
+		// not fall back to Petra's generic residential placement.  If no close tile
+		// is legal this turn, wait rather than building a far-away house.
 		const obstructions = createObstructionMap(gameState, 0, template);
 		const radius = Math.ceil(template.obstructionRadius().max / obstructions.cellSize);
 		const territoryMap = HQ.territoryMap;
 		const houseRadius = template.obstructionRadius().max;
 		const anchorRadius = this.metadata.expertOpeningHouseAnchorRadius || 0;
 		const borderGap = this.metadata.expertOpeningHouseMaxDistance || 5;
-		const baseDist = Math.max(6, anchorRadius + houseRadius + 1);
-		const maxDist = anchorRadius + houseRadius + borderGap + 3;
+		const minDist = anchorRadius + houseRadius + 0.5;
+		const maxDist = anchorRadius + houseRadius + borderGap;
 
 		let away = [1, 0];
 		if (this.metadata.expertOpeningHouseAvoid)
@@ -144,53 +145,48 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 			away = [this.position[0] - this.metadata.expertOpeningHouseAvoid[0],
 				this.position[1] - this.metadata.expertOpeningHouseAvoid[1]];
 			const len = Math.sqrt(away[0] * away[0] + away[1] * away[1]);
-			if (len > 0)
-				away = [away[0] / len, away[1] / len];
-			else
-				away = [1, 0];
+			away = len > 0 ? [away[0] / len, away[1] / len] : [1, 0];
 		}
-		const side = [-away[1], away[0]];
-		const offsets = [];
-		for (const d of [baseDist, baseDist + 2, baseDist + 4, baseDist + 6])
-		{
-			offsets.push([away[0] * d, away[1] * d]);
-			offsets.push([away[0] * d + side[0] * 4, away[1] * d + side[1] * 4]);
-			offsets.push([away[0] * d - side[0] * 4, away[1] * d - side[1] * 4]);
-		}
-		// Fallback ring if the preferred away-from-trees side is blocked.
-		for (const off of [[baseDist,0],[-baseDist,0],[0,baseDist],[0,-baseDist],
-			[baseDist,baseDist],[baseDist,-baseDist],[-baseDist,baseDist],[-baseDist,-baseDist]])
-			offsets.push(off);
+
+		const angles = [];
+		const baseAngle = Math.atan2(away[1], away[0]);
+		for (const delta of [0, Math.PI/8, -Math.PI/8, Math.PI/4, -Math.PI/4, Math.PI/2, -Math.PI/2,
+			3*Math.PI/4, -3*Math.PI/4, Math.PI])
+			angles.push(baseAngle + delta);
 
 		let best;
 		let bestScore = -Infinity;
-		for (const off of offsets)
+		for (let d = minDist; d <= maxDist + 0.01; d += 1)
 		{
-			const tryPos = [this.position[0] + off[0], this.position[1] + off[1]];
-			const mapPos = territoryMap.gamePosToMapPos(tryPos);
-			if (mapPos[0] < 0 || mapPos[1] < 0 || mapPos[0] >= territoryMap.width || mapPos[1] >= territoryMap.width)
-				continue;
-			const j = mapPos[0] + mapPos[1] * territoryMap.width;
-			const i = territoryMap.getNonObstructedTile(j, radius, obstructions);
-			if (i < 0)
-				continue;
-			const x = (i % obstructions.width + 0.5) * obstructions.cellSize;
-			const z = (Math.floor(i / obstructions.width) + 0.5) * obstructions.cellSize;
-			if (SquareVectorDistance([x, z], this.position) > maxDist * maxDist)
-				continue;
-			if (HQ.isDangerousLocation(gameState, [x, z], template.obstructionRadius().max))
-				continue;
-			let score = -SquareVectorDistance([x, z], this.position);
-			if (this.metadata.expertOpeningHouseAvoid)
-				score += 0.08 * SquareVectorDistance([x, z], this.metadata.expertOpeningHouseAvoid);
-			if (score > bestScore)
+			for (const angle of angles)
 			{
-				bestScore = score;
-				best = { "x": x, "z": z, "angle": 3*Math.PI/4, "base": this.metadata.base };
+				const tryPos = [this.position[0] + Math.cos(angle) * d,
+					this.position[1] + Math.sin(angle) * d];
+				const mapPos = territoryMap.gamePosToMapPos(tryPos);
+				if (mapPos[0] < 0 || mapPos[1] < 0 || mapPos[0] >= territoryMap.width || mapPos[1] >= territoryMap.width)
+					continue;
+				const j = mapPos[0] + mapPos[1] * territoryMap.width;
+				const i = territoryMap.getNonObstructedTile(j, radius, obstructions);
+				if (i < 0)
+					continue;
+				const x = (i % obstructions.width + 0.5) * obstructions.cellSize;
+				const z = (Math.floor(i / obstructions.width) + 0.5) * obstructions.cellSize;
+				const distSq = SquareVectorDistance([x, z], this.position);
+				if (distSq > maxDist * maxDist)
+					continue;
+				if (HQ.isDangerousLocation(gameState, [x, z], template.obstructionRadius().max))
+					continue;
+				let score = -distSq;
+				if (this.metadata.expertOpeningHouseAvoid)
+					score += 0.03 * SquareVectorDistance([x, z], this.metadata.expertOpeningHouseAvoid);
+				if (score > bestScore)
+				{
+					bestScore = score;
+					best = { "x": x, "z": z, "angle": 3*Math.PI/4, "base": this.metadata.base };
+				}
 			}
 		}
-		if (best)
-			return best;
+		return best || false;
 	}
 
 	if (template.hasClass("Field") && this.metadata && this.metadata.expertOpeningFarm && this.position)
