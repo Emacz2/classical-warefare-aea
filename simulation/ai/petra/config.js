@@ -172,23 +172,23 @@ export function Config(difficulty = difficultyLevel.MEDIUM, behavior)
 	];
 
 	this.criticalPopulationFactors = [
-	0.8,
-	0.8,
-	0.7,
-	0.6,
-	0.5,
-	0.35,
-	0.25
+		0.8,
+		0.8,
+		0.7,
+		0.6,
+		0.5,
+		0.35,
+		0.25
 	];
 
 	this.criticalStructureFactors = [
-	0.8,
-	0.8,
-	0.7,
-	0.6,
-	0.5,
-	0.35,
-	0.25
+		0.8,
+		0.8,
+		0.7,
+		0.6,
+		0.5,
+		0.35,
+		0.25
 	];
 
 	this.criticalRootFactors = [
@@ -327,11 +327,11 @@ Config.prototype.setConfig = function(gameState)
 
 Config.prototype.Cheat = function(gameState)
 {
-	// Sandbox, Very Easy, Easy, Medium, Hard, Very Hard
+	// Sandbox, Very Easy, Easy, Medium, Hard, Very Hard, Expert
 	// rate apply on resource stockpiling as gathering and trading
 	// time apply on building, upgrading, packing, training and technologies
-	const rate = [ 0.42, 0.56, 0.75, 1.00, 1.25, 1.56 ];
-	const time = [ 1.40, 1.25, 1.10, 1.00, 1.00, 1.00 ];
+	const rate = [ 0.42, 0.56, 0.75, 1.00, 1.25, 1.56, 1.56 ];
+	const time = [ 1.40, 1.25, 1.10, 1.00, 1.00, 1.00, 1.00 ];
 	const AIDiff = Math.min(this.difficulty, rate.length - 1);
 	SimEngine.QueryInterface(Sim.SYSTEM_ENTITY, Sim.IID_ModifiersManager).AddModifiers("AI Bonus", {
 		"ResourceGatherer/BaseSpeed": [{ "affects": ["Unit", "Structure"], "multiply": rate[AIDiff] }],
