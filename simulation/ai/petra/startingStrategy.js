@@ -2,11 +2,14 @@ import * as filters from "simulation/ai/common-api/filters.js";
 import { ResourcesManager } from "simulation/ai/common-api/resources.js";
 import { SquareVectorDistance, aiWarn } from "simulation/ai/common-api/utils.js";
 import { Config } from "simulation/ai/petra/config.js";
+import { ExpertOpeningConstants } from "simulation/ai/petra/expertEconomyManager.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
-import { gatherTreasure, getHolder, getLandAccess, isFastMoving } from
+import { gatherTreasure, getBuiltEntity, getHolder, getLandAccess, isFastMoving } from
 	"simulation/ai/petra/entityExtend.js";
 import { Headquarters } from "simulation/ai/petra/headquarters.js";
 import { ConstructionPlan } from "simulation/ai/petra/queueplanBuilding.js";
+import { ResearchPlan } from "simulation/ai/petra/queueplanResearch.js";
+import { Worker } from "simulation/ai/petra/worker.js";
 
 /**
  * Determines the strategy to adopt when starting a new game,
@@ -56,10 +59,1173 @@ Headquarters.prototype.gameAnalysis = function(gameState)
 
 	// configure our first base strategy
 	if (this.hasPotentialBase())
+	{
 		this.configFirstBase(gameState);
+		this.applyExpertEconomyRules(gameState);
+	}
 
 	return true;
 };
+
+
+
+
+/**
+ * Expert economy rules are incremental behavior improvements layered on top of Petra.
+ *
+ * Opening redesign: Petra still owns normal worker execution, but Expert owns the
+ * opening jobs.  We assign stable jobs, then every update enforces only those jobs:
+ *   - cavalry hunts chickens;
+ *   - starting civilians build/gather at the berry farmstead;
+ *   - starting men build the wood storehouse, then chop that woodline;
+ *   - newly trained civilians follow the requested batch pattern.
+ */
+Headquarters.prototype.applyExpertEconomyRules = function(gameState, queues)
+{
+	if (!this.isExpertOpeningPhaseActive(gameState))
+		return;
+
+	if (queues)
+	{
+		// Opening rule: no citizen-soldier training, no phase techs, and no early
+		// military-building plans. The only allowed early research is the berry/basket
+		// economy tech queued by researchExpertOpeningBerryTech below.
+		if (queues.citizenSoldier)
+			queues.citizenSoldier.empty();
+		if (queues.majorTech)
+			queues.majorTech.empty();
+		if (queues.militaryBuilding)
+			queues.militaryBuilding.empty();
+
+		// Petra's normal economy can decide that a second storehouse is useful while
+		// the Expert opening is still locked.  For the first 180 seconds, keep only our
+		// two opening dropsites: the first wood storehouse and the berry farmstead.
+		if (queues.dropsites)
+			queues.dropsites.plans = queues.dropsites.plans.filter(plan =>
+				plan.metadata && plan.metadata.expertOpening);
+
+		if (queues.minorTech && queues.minorTech.plans.length)
+		{
+			const metadata = queues.minorTech.plans[0].metadata;
+			if (!metadata || !metadata.expertOpeningBerryTech && !metadata.expertOpeningWoodTech)
+				queues.minorTech.empty();
+		}
+	}
+
+	this.ensureExpertOpeningPlan(gameState);
+	this.ensureExpertOpeningWoodDropsite(gameState);
+	this.ensureExpertOpeningFoodDropsite(gameState);
+	if (queues)
+	{
+		// Eco tech decisions come before optional expansion dropsites so Expert
+		// upgrades fruit gatherers before spending wood on a second farmstead.
+		this.researchExpertOpeningBerryTech(gameState, queues);
+		this.researchExpertOpeningWoodTech(gameState, queues);
+	}
+	this.ensureExpertOpeningAdditionalFoodDropsites(gameState, queues);
+	if (queues)
+		this.ensureExpertOpeningHouse(gameState, queues);
+	this.ensureExpertOpeningFarms(gameState, queues);
+	this.assignExpertOpeningWorkers(gameState);
+	if (this.expertEconomyManager)
+		this.expertEconomyManager.update(gameState, queues);
+};
+
+Headquarters.prototype.isExpertOpeningPhaseActive = function(gameState)
+{
+	// Keep the opening lock active through the first three minutes so cavalry can
+	// finish the chickens before Petra lets other workers hunt, and so workers
+	// continue saturating the first woodline instead of asking for a second storehouse.
+	return this.Config.difficulty >= difficulty.EXPERT && gameState.ai.elapsedTime <= 300;
+};
+
+Headquarters.prototype.ensureExpertOpeningPlan = function(gameState)
+{
+	if (this.expertOpeningPlanReady)
+		return;
+
+	this.expertOpeningPlanReady = true;
+	this.expertOpeningNewFemaleCount = 0;
+	this.expertOpeningInitialFruit = undefined;
+	this.expertOpeningInitialPrimaryFruit = undefined;
+
+	const base = this.baseManagers()[0];
+	if (!base)
+		return;
+
+	this.expertOpeningInitialFruit = this.getExpertOpeningTerritoryFruitAmount(gameState);
+
+	const civilians = [];
+	const citizenSoldiers = [];
+	const cavalry = [];
+
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!this.isExpertOpeningEconomyUnit(ent))
+			continue;
+
+		this.claimExpertOpeningWorker(gameState, base, ent);
+
+		if (ent.hasClass("Cavalry") && ent.canGather("food") && ent.canAttackClass("Animal"))
+			cavalry.push(ent);
+		else if (ent.hasClass("Civilian") && ent.canGather("food"))
+			civilians.push(ent);
+		else if (!ent.hasClass("Cavalry") && (ent.hasClass("CitizenSoldier") || ent.canGather("wood") || ent.isBuilder()))
+			citizenSoldiers.push(ent);
+	}
+
+	cavalry.sort((a, b) => a.id() - b.id());
+	civilians.sort((a, b) => a.id() - b.id());
+	citizenSoldiers.sort((a, b) => a.id() - b.id());
+
+	if (cavalry.length)
+		cavalry[0].setMetadata(PlayerID, "expertOpeningJob", "chicken");
+
+	let foodAssigned = 0;
+	for (const ent of civilians)
+	{
+		if (foodAssigned < 4)
+			ent.setMetadata(PlayerID, "expertOpeningJob", "berriesBuilder");
+		else if (foodAssigned < 8)
+			ent.setMetadata(PlayerID, "expertOpeningJob", "berries");
+		else
+			ent.setMetadata(PlayerID, "expertOpeningJob", "wood");
+		++foodAssigned;
+	}
+	for (const ent of citizenSoldiers)
+		ent.setMetadata(PlayerID, "expertOpeningJob", "woodBuilder");
+
+	this.expertOpeningFoodAssigned = foodAssigned;
+};
+
+Headquarters.prototype.isExpertOpeningEconomyUnit = function(ent)
+{
+	if (!ent || !ent.position())
+		return false;
+	if (ent.hasClass("FishingBoat") || ent.hasClass("Ship"))
+		return false;
+	return ent.hasClass("Worker") || ent.hasClass("CitizenSoldier") || ent.canGather("food") ||
+		ent.canGather("wood") || ent.isBuilder();
+};
+
+Headquarters.prototype.claimExpertOpeningWorker = function(gameState, base, ent)
+{
+	ent.setMetadata(PlayerID, "role", Worker.ROLE_WORKER);
+	ent.setMetadata(PlayerID, "base", base.ID);
+	base.units.updateEnt(ent);
+	base.workers.updateEnt(ent);
+};
+
+Headquarters.prototype.ensureExpertOpeningWoodDropsite = function(gameState)
+{
+	if (!this.baseManagers().length)
+		return;
+	const base = this.baseManagers()[0];
+	const existing = this.findExpertOpeningDropsite(gameState, "wood", base);
+	if (existing && existing.position())
+	{
+		this.expertOpeningWoodPos = existing.position();
+		return;
+	}
+
+	if (gameState.ai.queues.dropsites.plans.some(plan => plan.metadata && plan.metadata.expertOpening && plan.metadata.type == "wood"))
+		return;
+
+	// The opening wants exactly one first storehouse. Once its target position is
+	// chosen, do not queue a second storehouse during the opening even if Petra has
+	// not registered the finished structure yet.
+	if (this.expertOpeningWoodPos)
+		return;
+
+	const newDP = base.findBestDropsiteAndLocation(gameState, "wood");
+	if (newDP.quality <= 30 || !this.canBuild(gameState, newDP.templateName))
+		return;
+
+	this.expertOpeningWoodPos = newDP.pos;
+	gameState.ai.queues.dropsites.addPlan(new ConstructionPlan(gameState, newDP.templateName,
+		{ "base": base.ID, "type": "wood", "expertOpening": true }, newDP.pos));
+};
+
+Headquarters.prototype.ensureExpertOpeningFoodDropsite = function(gameState)
+{
+	if (!this.baseManagers().length)
+		return;
+	const base = this.baseManagers()[0];
+	const existing = this.findExpertOpeningDropsite(gameState, "food", base);
+	if (existing && existing.position())
+	{
+		this.expertOpeningFoodPos = existing.position();
+		return;
+	}
+
+	if (gameState.ai.queues.dropsites.plans.some(plan => plan.metadata && plan.metadata.expertOpening && plan.metadata.type == "food"))
+		return;
+
+	if (this.expertOpeningFoodPos)
+		return;
+
+	const berries = this.findExpertOpeningSupply(gameState, base, "food",
+		supply => !supply.hasClasses(["Animal", "Field"]));
+	if (!berries || !berries.position())
+		return;
+
+	const templateName = "structures/{civ}/farmstead";
+	if (!this.canBuild(gameState, templateName))
+		return;
+
+	this.expertOpeningFoodPos = berries.position();
+	this.expertOpeningInitialPrimaryFruit = this.getExpertOpeningPrimaryFruitAmount(gameState);
+	gameState.ai.queues.dropsites.addPlan(new ConstructionPlan(gameState, templateName,
+		{ "base": base.ID, "type": "food", "expertOpening": true }, berries.position()));
+};
+
+
+Headquarters.prototype.ensureExpertOpeningAdditionalFoodDropsites = function(gameState, queues)
+{
+	// Expert should not spend wood on a second/third farmstead just because it
+	// sees another fruit patch.  First use the starting farmstead and rush Wicker
+	// Baskets when there are multiple fruit clusters.  Expand to new farmsteads
+	// only when the starting fruit cluster is nearly exhausted.
+	if (!queues || !queues.dropsites || queues.dropsites.hasQueuedUnits())
+		return;
+	if (!this.shouldExpertOpeningFarmTransition(gameState))
+		return;
+	if (!this.canBuild(gameState, "structures/{civ}/farmstead"))
+		return;
+
+	const base = this.baseManagers()[0];
+	if (!base)
+		return;
+
+	// If there is more than one fruit cluster, baskets should come before the
+	// extra farmstead unless the tech is already researched or currently queued.
+	if (this.countExpertOpeningFruitClusters(gameState) >= 2 &&
+	    !gameState.isResearched("gather_wicker_baskets") &&
+	    !gameState.isResearching("gather_wicker_baskets"))
+		return;
+
+	const target = this.findExpertOpeningUnservedFruitCluster(gameState, base, ExpertOpeningConstants.farmsteadSpacing);
+	if (!target)
+		return;
+
+	queues.dropsites.addPlan(new ConstructionPlan(gameState, "structures/{civ}/farmstead",
+		{ "base": base.ID, "type": "food", "expertOpening": true, "expertExtraFoodDropsite": true },
+		target.position()));
+};
+
+Headquarters.prototype.findExpertOpeningUnservedFruitCluster = function(gameState, base, maxWalkDistance)
+{
+	const supplies = gameState.getResourceSupplies("food");
+	if (!supplies.length)
+		return undefined;
+
+	const maxDistSquare = maxWalkDistance * maxWalkDistance;
+	let bestSupply;
+	let bestAmount = 0;
+
+	for (const supply of supplies.values())
+	{
+		if (!supply.position() || supply.hasClasses(["Animal", "Field"]))
+			continue;
+		if (getLandAccess(gameState, supply) != base.accessIndex)
+			continue;
+		if (this.territoryMap.getOwner(supply.position()) != PlayerID)
+			continue;
+
+		const supplyType = supply.resourceSupplyType();
+		if (!supplyType || supplyType.generic != "food")
+			continue;
+
+		const nearest = this.getNearestExpertFoodDropsiteDistance(gameState, base, supply.position());
+		if (nearest !== undefined && nearest <= maxDistSquare)
+			continue;
+
+		const amount = supply.resourceSupplyAmount();
+		if (amount <= bestAmount)
+			continue;
+		bestSupply = supply;
+		bestAmount = amount;
+	}
+
+	return bestSupply;
+};
+
+Headquarters.prototype.getNearestExpertFoodDropsiteDistance = function(gameState, base, pos)
+{
+	let bestDist;
+	const candidates = [];
+
+	for (const foundation of gameState.getOwnFoundations().values())
+		candidates.push(foundation);
+	for (const structure of gameState.getOwnStructures().values())
+		candidates.push(structure);
+
+	for (const ent of candidates)
+	{
+		if (!ent || !ent.position())
+			continue;
+		if (getLandAccess(gameState, ent) != base.accessIndex)
+			continue;
+		const built = ent.foundationProgress() === undefined ? ent : getBuiltEntity(gameState, ent);
+		if (!built || built.hasClass && built.hasClass("CivCentre"))
+			continue;
+		if (typeof built.resourceDropsiteTypes !== "function")
+			continue;
+		const dropsiteTypes = built.resourceDropsiteTypes();
+		if (!dropsiteTypes || dropsiteTypes.indexOf("food") == -1)
+			continue;
+
+		const dist = SquareVectorDistance(pos, ent.position());
+		if (bestDist === undefined || dist < bestDist)
+			bestDist = dist;
+	}
+
+	return bestDist;
+};
+
+Headquarters.prototype.ensureExpertOpeningHouse = function(gameState, queues)
+{
+	if (!queues.house)
+		return;
+
+	const base = this.baseManagers()[0];
+	if (!base)
+		return;
+
+	const houseTemplate = gameState.isTemplateAvailable(gameState.applyCiv("structures/{civ}/apartment")) &&
+		this.canBuild(gameState, "structures/{civ}/apartment") ?
+		"structures/{civ}/apartment" : "structures/{civ}/house";
+	if (!gameState.isTemplateAvailable(gameState.applyCiv(houseTemplate)) || !this.canBuild(gameState, houseTemplate))
+		return;
+
+	// Expert v0.3.1: every opening house should support the active work area,
+	// not just the first one.  Do not return merely because one house exists;
+	// later population houses were drifting back to Petra's generic CC layout.
+	const popBonus = gameState.getTemplate(gameState.applyCiv(houseTemplate)).getPopulationBonus();
+	const plannedPop = queues.house.length() * popBonus;
+	const freeSlots = gameState.getPopulationLimit() + plannedPop - this.getAccountedPopulation(gameState);
+
+	// Queue the opening house before we are housed, but do not spam houses.
+	if (freeSlots > 6)
+		return;
+
+	const pos = this.findExpertOpeningHouseAnchorPosition(gameState, base);
+	if (!pos)
+		return;
+
+	// Replace generic house plans during the opening with one positioned near the
+	// first storehouse/woodline, then citizen soldiers will pick up that foundation.
+	queues.house.plans = queues.house.plans.filter(plan =>
+		plan.metadata && plan.metadata.expertOpeningHouse);
+
+	if (queues.house.hasQueuedUnits())
+		return;
+
+	const avoidPos = this.findExpertOpeningSupplyNear(gameState, base, "wood", pos,
+		supply => !supply.hasClasses(["Animal", "Field"]));
+	const anchor = this.findExpertOpeningDropsite(gameState, "wood", base) ||
+		this.findExpertOpeningDropsiteFoundation(gameState, "wood", base);
+	const anchorRadius = anchor && anchor.obstructionRadius ? anchor.obstructionRadius().max : 0;
+	const plan = new ConstructionPlan(gameState, houseTemplate,
+		{ "base": base.ID, "expertOpeningHouse": true,
+		  "expertOpeningHouseAvoid": avoidPos && avoidPos.position() ? avoidPos.position() : undefined,
+		  "expertOpeningHouseAnchorRadius": anchorRadius,
+		  "expertOpeningHouseMaxDistance": ExpertOpeningConstants.maxHouseDistance }, pos);
+	plan.goRequirement = undefined;
+	queues.house.addPlan(plan);
+};
+
+
+Headquarters.prototype.findExpertOpeningHouseAnchorPosition = function(gameState, base)
+{
+	// Expert v0.3.2 behavioral rule: houses are worksite support buildings.
+	// Anchor them to the actual first wood dropsite/foundation, not to the CC and
+	// not to the current average worker position.  The average worker position was
+	// unstable: when citizen soldiers were temporarily pulled to another job, house
+	// placement drifted across the base.
+	const dropsite = this.findExpertOpeningDropsite(gameState, "wood", base);
+	if (dropsite && dropsite.position())
+		return dropsite.position();
+
+	const foundation = this.findExpertOpeningDropsiteFoundation(gameState, "wood", base);
+	if (foundation && foundation.position())
+		return foundation.position();
+
+	return this.expertOpeningWoodPos || undefined;
+};
+
+Headquarters.prototype.getExpertOpeningTerritoryFruitAmount = function(gameState)
+{
+	const base = this.baseManagers()[0];
+	if (!base)
+		return 0;
+
+	let amount = 0;
+	const supplies = gameState.getResourceSupplies("food");
+	if (!supplies.length)
+		return 0;
+
+	for (const supply of supplies.values())
+	{
+		if (!supply.position() || supply.hasClasses(["Animal", "Field"]))
+			continue;
+		if (getLandAccess(gameState, supply) != base.accessIndex)
+			continue;
+		if (this.territoryMap.getOwner(supply.position()) != PlayerID)
+			continue;
+		const supplyType = supply.resourceSupplyType();
+		if (!supplyType || supplyType.generic != "food")
+			continue;
+		amount += supply.resourceSupplyAmount();
+	}
+	return amount;
+};
+
+Headquarters.prototype.getExpertOpeningPrimaryFruitAmount = function(gameState)
+{
+	const base = this.baseManagers()[0];
+	if (!base || !this.expertOpeningFoodPos)
+		return this.getExpertOpeningTerritoryFruitAmount(gameState);
+
+	let amount = 0;
+	const supplies = gameState.getResourceSupplies("food");
+	if (!supplies.length)
+		return 0;
+
+	// Count the starting berry/apple cluster served by the first farmstead.
+	// Other separated food patches are ignored for the 25% transition test so
+	// Expert does not overbuild farmsteads before the starting patch is depleted.
+	const clusterDistance = 26 * 26;
+	for (const supply of supplies.values())
+	{
+		if (!supply.position() || supply.hasClasses(["Animal", "Field"]))
+			continue;
+		if (getLandAccess(gameState, supply) != base.accessIndex)
+			continue;
+		if (this.territoryMap.getOwner(supply.position()) != PlayerID)
+			continue;
+		if (SquareVectorDistance(this.expertOpeningFoodPos, supply.position()) > clusterDistance)
+			continue;
+		const supplyType = supply.resourceSupplyType();
+		if (!supplyType || supplyType.generic != "food")
+			continue;
+		amount += supply.resourceSupplyAmount();
+	}
+	return amount;
+};
+
+Headquarters.prototype.shouldExpertOpeningFarmTransition = function(gameState)
+{
+	if (!this.expertOpeningInitialPrimaryFruit)
+		this.expertOpeningInitialPrimaryFruit = this.getExpertOpeningPrimaryFruitAmount(gameState);
+	if (!this.expertOpeningInitialPrimaryFruit)
+		return false;
+
+	const remaining = this.getExpertOpeningPrimaryFruitAmount(gameState);
+	return remaining <= ExpertOpeningConstants.berryTransition * this.expertOpeningInitialPrimaryFruit;
+};
+
+Headquarters.prototype.hasExpertOpeningCivilianFoodBuilder = function(gameState)
+{
+	const base = this.baseManagers()[0];
+	if (!base)
+		return false;
+
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position())
+			continue;
+		if (!ent.hasClass("Worker") || !ent.hasClass("Civilian"))
+			continue;
+		if (ent.hasClass("CitizenSoldier"))
+			continue;
+		if (!ent.isBuilder || !ent.isBuilder())
+			continue;
+		if (ent.getMetadata(PlayerID, "base") != base.ID)
+			continue;
+		if (getLandAccess(gameState, ent) != base.accessIndex)
+			continue;
+
+		// v0.3.1 rule: do not pull current berry workers away to place farms.
+		// Only civilians already assigned to the farm transition, or truly idle
+		// civilians, are allowed to trigger a new field foundation.
+		const job = ent.getMetadata(PlayerID, "expertOpeningJob");
+		const subrole = ent.getMetadata(PlayerID, "subrole");
+		if (job == "farm" || subrole === Worker.SUBROLE_IDLE)
+			return true;
+	}
+
+	return false;
+};
+
+
+Headquarters.prototype.ensureExpertOpeningFarms = function(gameState, queues)
+{
+	if (!queues || !queues.field || !this.shouldExpertOpeningFarmTransition(gameState))
+		return;
+	if (!this.canBuild(gameState, "structures/{civ}/field"))
+		return;
+
+	const base = this.baseManagers()[0];
+	if (!base)
+		return;
+
+	const fields = gameState.getOwnEntitiesByClass("Field", true).filter(filters.byMetadata(PlayerID, "base", base.ID)).length;
+	const foundations = gameState.getOwnFoundations().filter(filters.byClass("Field")).filter(filters.byMetadata(PlayerID, "base", base.ID)).length;
+	const queued = queues.field.countQueuedUnits();
+	const wanted = 4;
+	if (fields >= wanted || foundations + queued >= 1)
+		return;
+
+	// Expert v0.3: do not drop empty field foundations. Wait until at least one
+	// civilian food worker exists so a field can be built and worked immediately.
+	if (!this.hasExpertOpeningCivilianFoodBuilder(gameState))
+		return;
+
+	const foodDropsite = this.findExpertOpeningDropsite(gameState, "food", base) ||
+		this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
+	const farmAnchor = foodDropsite && foodDropsite.position() ? foodDropsite.position() :
+		(this.expertOpeningFoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined));
+	queues.field.addPlan(new ConstructionPlan(gameState,
+		"structures/{civ}/field", { "base": base.ID, "favoredBase": base.ID, "expertOpeningFarm": true },
+		farmAnchor));
+	gameState.ai.HQ.needFarm = true;
+};
+
+Headquarters.prototype.findExpertOpeningFieldFoundation = function(gameState, base)
+{
+	let bestFoundation;
+	let bestDist = Math.min();
+	const basePos = this.expertOpeningFoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+	// A field center is normally around 20-24m from the farmstead center when the
+	// field edge touches the dropsite area.  This cap prevents Expert food builders
+	// from crossing the base to finish unrelated/generic field foundations.
+	const maxDist = 35 * 35;
+
+	for (const foundation of gameState.getOwnFoundations().values())
+	{
+		if (!foundation || !foundation.position() || !foundation.hasClass("Field"))
+			continue;
+		if (foundation.getMetadata(PlayerID, "base") != base.ID)
+			continue;
+		if (this.getExpertOpeningFoundationBuilderCount(gameState, foundation) >= 2)
+			continue;
+		const dist = basePos ? SquareVectorDistance(basePos, foundation.position()) : 0;
+		if (basePos && dist > maxDist)
+			continue;
+		if (dist > bestDist)
+			continue;
+		bestFoundation = foundation;
+		bestDist = dist;
+	}
+	return bestFoundation;
+};
+
+Headquarters.prototype.findExpertOpeningField = function(gameState, base, ent)
+{
+	let bestField;
+	let bestDist = Math.min();
+	for (const field of gameState.getOwnEntitiesByClass("Field", true).filter(filters.isBuilt()).filter(filters.byMetadata(PlayerID, "base", base.ID)).values())
+	{
+		if (!field.position())
+			continue;
+		if (this.countExpertOpeningAssignedGatherers(gameState, field) >= ExpertOpeningConstants.maxFarmCivilians)
+			continue;
+		const dist = ent && ent.position() ? SquareVectorDistance(ent.position(), field.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestField = field;
+		bestDist = dist;
+	}
+	return bestField;
+};
+
+Headquarters.prototype.isExpertOpeningGatheringField = function(gameState, ent)
+{
+	if (!ent || ent.getMetadata(PlayerID, "subrole") !== Worker.SUBROLE_GATHERER)
+		return false;
+	const supplyId = ent.getMetadata(PlayerID, "supply");
+	if (!supplyId)
+		return false;
+	const supply = gameState.getEntityById(supplyId);
+	return !!(supply && supply.hasClass && supply.hasClass("Field"));
+};
+
+Headquarters.prototype.getExpertOpeningFoundationBuilderCount = function(gameState, foundation)
+{
+	if (!foundation)
+		return 0;
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+		if (ent.getMetadata(PlayerID, "target-foundation") == foundation.id())
+			++count;
+	return count;
+};
+
+Headquarters.prototype.countExpertOpeningAssignedGatherers = function(gameState, supply)
+{
+	if (!supply)
+		return 0;
+	let count = supply.resourceSupplyNumGatherers ? supply.resourceSupplyNumGatherers() : 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position())
+			continue;
+		if (ent.getMetadata(PlayerID, "supply") == supply.id())
+			++count;
+	}
+	return count;
+};
+
+
+Headquarters.prototype.assignExpertOpeningWorkers = function(gameState)
+{
+	const base = this.baseManagers()[0];
+	if (!base)
+		return;
+
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!this.isExpertOpeningEconomyUnit(ent))
+			continue;
+
+		this.claimExpertOpeningWorker(gameState, base, ent);
+
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") === undefined)
+		{
+			if (ent.hasClass("Cavalry") && ent.canGather("food") && ent.canAttackClass("Animal"))
+				ent.setMetadata(PlayerID, "expertOpeningJob", "chicken");
+			else if (ent.hasClass("Civilian") && ent.canGather("food"))
+			{
+				const foodAssigned = this.countExpertOpeningFoodCivilians(gameState);
+				const woodAssigned = this.countExpertOpeningCivilianWoodWorkers(gameState);
+				if (foodAssigned < 8)
+				{
+					const berryBuilders = this.countExpertOpeningJob(gameState, "berriesBuilder");
+					if (berryBuilders < 4 && this.findExpertOpeningDropsiteFoundation(gameState, "food", this.baseManagers()[0]))
+						ent.setMetadata(PlayerID, "expertOpeningJob", "berriesBuilder");
+					else
+						ent.setMetadata(PlayerID, "expertOpeningJob", "berries");
+				}
+				else if (!this.shouldExpertOpeningFarmTransition(gameState) &&
+				         woodAssigned < ExpertOpeningConstants.firstWoodSaturation)
+					ent.setMetadata(PlayerID, "expertOpeningJob", "wood");
+				else
+					ent.setMetadata(PlayerID, "expertOpeningJob", "farm");
+			}
+			else if (!ent.hasClass("Cavalry") && (ent.hasClass("CitizenSoldier") || ent.canGather("wood") || ent.isBuilder()))
+				ent.setMetadata(PlayerID, "expertOpeningJob", "woodBuilder");
+		}
+
+		this.enforceExpertOpeningPhase(gameState, ent);
+	}
+};
+
+Headquarters.prototype.countExpertOpeningFoodCivilians = function(gameState)
+{
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent.position() || !ent.hasClass("Civilian"))
+			continue;
+		const job = ent.getMetadata(PlayerID, "expertOpeningJob");
+		if (job == "berries" || job == "berriesBuilder")
+			++count;
+	}
+	return count;
+};
+
+Headquarters.prototype.countExpertOpeningCivilianWoodWorkers = function(gameState)
+{
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent.position() || !ent.hasClass("Civilian"))
+			continue;
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") == "wood")
+			++count;
+	}
+	return count;
+};
+
+Headquarters.prototype.countExpertOpeningJob = function(gameState, jobName)
+{
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent.position())
+			continue;
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") == jobName)
+			++count;
+	}
+	return count;
+};
+
+Headquarters.prototype.assignExpertOpeningIdleWorker = function(gameState, base, ent)
+{
+	if (!this.isExpertOpeningPhaseActive(gameState))
+		return false;
+	if (!this.isExpertOpeningEconomyUnit(ent))
+		return false;
+	this.ensureExpertOpeningPlan(gameState);
+	this.claimExpertOpeningWorker(gameState, base, ent);
+	if (ent.getMetadata(PlayerID, "expertOpeningJob") === undefined)
+		this.assignExpertOpeningWorkers(gameState);
+	return this.enforceExpertOpeningPhase(gameState, ent);
+};
+
+Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
+{
+	if (!this.isExpertOpeningPhaseActive(gameState))
+		return false;
+	if (!this.isExpertOpeningEconomyUnit(ent))
+		return false;
+
+	const base = this.baseManagers()[0];
+	if (!base)
+		return false;
+
+	this.ensureExpertOpeningWoodDropsite(gameState);
+	this.ensureExpertOpeningFoodDropsite(gameState);
+	this.claimExpertOpeningWorker(gameState, base, ent);
+
+	let job = ent.getMetadata(PlayerID, "expertOpeningJob");
+
+	// Expert v0.3.3: hard-cap the starting berry bunch at 8 civilians.
+	// Extra/new civilians should not pile onto the same berries.  Before the
+	// farm transition, send extras to wood until the first woodline is saturated;
+	// after that they become farm-transition workers.
+	if ((job == "berries" || job == "berriesBuilder") && ent.hasClass("Civilian") &&
+	    this.countExpertOpeningFoodCivilians(gameState) > ExpertOpeningConstants.maxBerryCivilians)
+	{
+		if (this.countExpertOpeningCivilianWoodWorkers(gameState) < ExpertOpeningConstants.firstWoodSaturation)
+			ent.setMetadata(PlayerID, "expertOpeningJob", "wood");
+		else
+			ent.setMetadata(PlayerID, "expertOpeningJob", "farm");
+		job = ent.getMetadata(PlayerID, "expertOpeningJob");
+	}
+
+	if (job == "chicken")
+	{
+		const chicken = this.findExpertOpeningChicken(gameState, base);
+		if (!chicken)
+			return true;
+		return this.setExpertOpeningGatherTarget(gameState, base, ent, chicken,
+			Worker.SUBROLE_HUNTER, "food");
+	}
+
+	if (job == "berriesBuilder")
+	{
+		const foodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
+		if (foodFoundation)
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, foodFoundation);
+		ent.setMetadata(PlayerID, "expertOpeningJob", "berries");
+	}
+
+	if (ent.getMetadata(PlayerID, "expertOpeningJob") == "farm")
+	{
+		// New/idle civilians build farms.  Civilians already working a field should
+		// not leave that field to help with the next foundation; otherwise Expert
+		// creates the "all farmers walk to the new farm" behavior seen in testing.
+		if (this.isExpertOpeningGatheringField(gameState, ent))
+			return true;
+
+		const fieldFoundation = this.findExpertOpeningFieldFoundation(gameState, base);
+		const subrole = ent.getMetadata(PlayerID, "subrole");
+		const supplyId = ent.getMetadata(PlayerID, "supply");
+		const assignedSupply = supplyId ? gameState.getEntityById(supplyId) : undefined;
+		const mayBuildField = subrole === Worker.SUBROLE_IDLE ||
+			ent.getMetadata(PlayerID, "target-foundation") == (fieldFoundation && fieldFoundation.id()) ||
+			(!assignedSupply && subrole !== Worker.SUBROLE_GATHERER) ||
+			(assignedSupply && assignedSupply.hasClass && !assignedSupply.hasClass("Field") &&
+			 (!assignedSupply.resourceSupplyAmount || assignedSupply.resourceSupplyAmount() <= 0));
+		if (fieldFoundation && mayBuildField && ent.hasClass("Civilian") && ent.isBuilder() &&
+		    this.getExpertOpeningFoundationBuilderCount(gameState, fieldFoundation) < 2)
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, fieldFoundation);
+
+		const field = this.findExpertOpeningField(gameState, base, ent);
+		if (field)
+			return this.setExpertOpeningGatherTarget(gameState, base, ent, field,
+				Worker.SUBROLE_GATHERER, "food");
+		const berries = this.findExpertOpeningSupplyNear(gameState, base, "food",
+			this.expertOpeningFoodPos, supply => !supply.hasClasses(["Animal", "Field"]));
+		if (berries)
+			return this.setExpertOpeningGatherTarget(gameState, base, ent, berries,
+				Worker.SUBROLE_GATHERER, "food");
+		return true;
+	}
+
+	if (ent.getMetadata(PlayerID, "expertOpeningJob") == "berries")
+	{
+		// Existing berry workers should finish the current patch.  When the patch
+		// drops below the transition threshold, new civilians switch to the farm
+		// job, but the original berry workers do not abandon remaining fruit.
+		const foodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
+		if (foodFoundation && ent.hasClass("Civilian") && ent.isBuilder() &&
+		    gameState.getOwnEntitiesByMetadata("target-foundation", foodFoundation.id()).length < 4)
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, foodFoundation);
+
+		const berries = this.findExpertOpeningSupplyNear(gameState, base, "food",
+			this.expertOpeningFoodPos, supply => !supply.hasClasses(["Animal", "Field"]));
+		if (berries)
+			return this.setExpertOpeningGatherTarget(gameState, base, ent, berries,
+				Worker.SUBROLE_GATHERER, "food");
+
+		// Existing berry workers do not leave their berry area to build farms.
+		// If their local berries are gone, convert them to the farm role; otherwise
+		// they simply wait for the next tick to find fruit in the same area.
+		if (this.shouldExpertOpeningFarmTransition(gameState) && ent.hasClass("Civilian"))
+			ent.setMetadata(PlayerID, "expertOpeningJob", "farm");
+		return true;
+	}
+
+	if (job == "woodBuilder" || job == "wood")
+	{
+		const woodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "wood", base);
+		// A28 unit classes vary by civ/mod.  For the Expert opening, any non-civilian,
+		// non-cavalry builder assigned to wood must finish the first storehouse before
+		// chopping.  This keeps citizen soldiers from walking back to the CC trees.
+		if (woodFoundation && !ent.hasClass("Civilian") && !ent.hasClass("Cavalry") && ent.isBuilder())
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, woodFoundation);
+
+		const houseFoundation = this.findExpertOpeningHouseFoundation(gameState, base);
+		if (houseFoundation && !ent.hasClass("Civilian") && !ent.hasClass("Cavalry") && ent.isBuilder())
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, houseFoundation);
+
+		if (job == "woodBuilder")
+			ent.setMetadata(PlayerID, "expertOpeningJob", "wood");
+	}
+
+	if (ent.getMetadata(PlayerID, "expertOpeningJob") == "wood" && ent.canGather("wood"))
+	{
+		const wood = this.findExpertOpeningSupplyNear(gameState, base, "wood",
+			this.expertOpeningWoodPos, supply => !supply.hasClasses(["Animal", "Field"]));
+		if (!wood)
+			return true;
+		return this.setExpertOpeningGatherTarget(gameState, base, ent, wood,
+			Worker.SUBROLE_GATHERER, "wood");
+	}
+
+	return true;
+};
+
+Headquarters.prototype.setExpertOpeningBuildTarget = function(gameState, base, ent, foundation)
+{
+	if (ent.getMetadata(PlayerID, "subrole") === Worker.SUBROLE_BUILDER &&
+	    ent.getMetadata(PlayerID, "target-foundation") == foundation.id())
+	{
+		ent.repair(foundation);
+		return true;
+	}
+
+	ent.stopMoving();
+	ent.setMetadata(PlayerID, "base", base.ID);
+	ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_BUILDER);
+	ent.setMetadata(PlayerID, "target-foundation", foundation.id());
+	ent.repair(foundation);
+	return true;
+};
+
+Headquarters.prototype.setExpertOpeningGatherTarget = function(gameState, base, ent, supply, subrole, resource)
+{
+	if (ent.getMetadata(PlayerID, "subrole") === subrole &&
+	    ent.getMetadata(PlayerID, "supply") == supply.id())
+	{
+		if (subrole == Worker.SUBROLE_HUNTER || ent.isIdle())
+			ent.gather(supply);
+		return true;
+	}
+
+	const oldSupply = ent.getMetadata(PlayerID, "supply");
+	if (oldSupply && oldSupply != supply.id())
+		base.RemoveTCGatherer(oldSupply);
+
+	ent.stopMoving();
+	ent.setMetadata(PlayerID, "base", base.ID);
+	ent.setMetadata(PlayerID, "subrole", subrole);
+	ent.setMetadata(PlayerID, "gather-type", resource);
+	ent.setMetadata(PlayerID, "target-foundation", undefined);
+	ent.setMetadata(PlayerID, "supply", supply.id());
+	base.AddTCGatherer(supply.id());
+	ent.gather(supply);
+	return true;
+};
+
+Headquarters.prototype.findExpertOpeningDropsite = function(gameState, resource, base)
+{
+	let bestDropsite;
+	let bestDist = Math.min();
+	const nearPos = resource == "wood" ? this.expertOpeningWoodPos : this.expertOpeningFoodPos;
+	const basePos = nearPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+
+	const candidates = [];
+	for (const foundation of gameState.getOwnFoundations().values())
+		candidates.push(foundation);
+	for (const structure of gameState.getOwnStructures().values())
+		candidates.push(structure);
+
+	for (const ent of candidates)
+	{
+		if (!ent || !ent.position())
+			continue;
+		const built = ent.foundationProgress() === undefined ? ent : getBuiltEntity(gameState, ent);
+		// Do not let the starting Civic Centre count as the Expert opening dropsite.
+		// Otherwise expertOpeningWoodPos/foodPos gets reset to the CC and workers walk
+		// back to CC-adjacent trees instead of using the new storehouse/farmstead.
+		if (!built || built.hasClass && built.hasClass("CivCentre") || ent.id && ent.id() == base.anchorId)
+			continue;
+		if (typeof built.resourceDropsiteTypes !== "function")
+			continue;
+		const dropsiteTypes = built.resourceDropsiteTypes();
+		if (!dropsiteTypes || dropsiteTypes.indexOf(resource) == -1)
+			continue;
+		if (getLandAccess(gameState, ent) != base.accessIndex)
+			continue;
+
+		const dist = basePos ? SquareVectorDistance(basePos, ent.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestDropsite = ent;
+		bestDist = dist;
+	}
+	return bestDropsite;
+};
+
+Headquarters.prototype.findExpertOpeningHouseFoundation = function(gameState, base)
+{
+	let bestFoundation;
+	let bestDist = Math.min();
+	const basePos = this.findExpertOpeningHouseAnchorPosition ?
+		this.findExpertOpeningHouseAnchorPosition(gameState, base) :
+		(this.expertOpeningWoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined));
+	const anchor = this.findExpertOpeningDropsite(gameState, "wood", base) ||
+		this.findExpertOpeningDropsiteFoundation(gameState, "wood", base);
+	const houseTemplate = gameState.applyCiv("structures/{civ}/house");
+	const houseRadius = gameState.getTemplate(houseTemplate) ?
+		gameState.getTemplate(houseTemplate).obstructionRadius().max : 4;
+	const anchorRadius = anchor && anchor.obstructionRadius ? anchor.obstructionRadius().max : 0;
+	const maxDist = (anchorRadius + houseRadius + ExpertOpeningConstants.maxHouseDistance);
+	const maxDistSq = maxDist * maxDist;
+
+	for (const foundation of gameState.getOwnFoundations().values())
+	{
+		if (!foundation || !foundation.position() || !foundation.hasClass("House"))
+			continue;
+		if (getLandAccess(gameState, foundation) != base.accessIndex)
+			continue;
+
+		const dist = basePos ? SquareVectorDistance(basePos, foundation.position()) : 0;
+		if (basePos && dist > maxDistSq)
+			continue;
+		if (dist > bestDist)
+			continue;
+		bestFoundation = foundation;
+		bestDist = dist;
+	}
+	return bestFoundation;
+};
+
+Headquarters.prototype.findExpertOpeningDropsiteFoundation = function(gameState, resource, base)
+{
+	let bestFoundation;
+	let bestDist = Math.min();
+	const nearPos = resource == "wood" ? this.expertOpeningWoodPos : this.expertOpeningFoodPos;
+	const basePos = nearPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+
+	for (const foundation of gameState.getOwnFoundations().values())
+	{
+		if (!foundation || !foundation.position())
+			continue;
+		const structure = getBuiltEntity(gameState, foundation);
+		if (!structure || typeof structure.resourceDropsiteTypes !== "function")
+			continue;
+		const dropsiteTypes = structure.resourceDropsiteTypes();
+		if (!dropsiteTypes || dropsiteTypes.indexOf(resource) == -1)
+			continue;
+		if (getLandAccess(gameState, foundation) != base.accessIndex)
+			continue;
+
+		const dist = basePos ? SquareVectorDistance(basePos, foundation.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestFoundation = foundation;
+		bestDist = dist;
+	}
+	return bestFoundation;
+};
+
+Headquarters.prototype.findExpertOpeningChicken = function(gameState, base)
+{
+	const resources = gameState.getHuntableSupplies();
+	if (!resources.hasEntities())
+		return undefined;
+
+	const position = base.anchor && base.anchor.position() ? base.anchor.position() : undefined;
+	let bestSupply;
+	let bestDist = Math.min();
+	for (const supply of resources.values())
+	{
+		if (!supply.position() || !supply.hasClass("Domestic"))
+			continue;
+		if (getLandAccess(gameState, supply) != base.accessIndex)
+			continue;
+		const supplyType = supply.resourceSupplyType();
+		if (!supplyType || supplyType.generic != "food")
+			continue;
+		const territoryOwner = this.territoryMap.getOwner(supply.position());
+		if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))
+			continue;
+		const dist = position ? SquareVectorDistance(position, supply.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestSupply = supply;
+		bestDist = dist;
+	}
+	return bestSupply;
+};
+
+Headquarters.prototype.findExpertOpeningSupply = function(gameState, base, resource, predicate)
+{
+	const basePos = base.anchor && base.anchor.position() ? base.anchor.position() : undefined;
+	return this.findExpertOpeningSupplyNear(gameState, base, resource, basePos, predicate);
+};
+
+Headquarters.prototype.findExpertOpeningSupplyNear = function(gameState, base, resource, nearPos, predicate)
+{
+	const supplies = gameState.getResourceSupplies(resource);
+	if (!supplies.length)
+		return undefined;
+
+	const referencePos = nearPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+	let bestSupply;
+	let bestDist = Math.min();
+	for (const supply of supplies.values())
+	{
+		if (!supply.position() || !predicate(supply))
+			continue;
+		if (getLandAccess(gameState, supply) != base.accessIndex)
+			continue;
+		const supplyType = supply.resourceSupplyType();
+		if (!supplyType || supplyType.generic != resource)
+			continue;
+		const territoryOwner = this.territoryMap.getOwner(supply.position());
+		// Opening rule: only cavalry may leave territory to hunt.  Civilian fruit
+		// gatherers and citizen-soldier woodcutters must use resources inside our
+		// own territory, so they do not walk out to sheep/deer or remote trees.
+		if (territoryOwner != PlayerID)
+			continue;
+		const dist = referencePos ? SquareVectorDistance(referencePos, supply.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestSupply = supply;
+		bestDist = dist;
+	}
+	return bestSupply;
+};
+
+
+Headquarters.prototype.countExpertOpeningFruitClusters = function(gameState)
+{
+	const base = this.baseManagers()[0];
+	if (!base)
+		return 0;
+
+	const clusterDistance = 45 * 45;
+	const clusters = [];
+	const supplies = gameState.getResourceSupplies("food");
+	for (const supply of supplies.values())
+	{
+		if (!supply.position() || supply.hasClasses(["Animal", "Field"]))
+			continue;
+		if (getLandAccess(gameState, supply) != base.accessIndex)
+			continue;
+		if (this.territoryMap.getOwner(supply.position()) != PlayerID)
+			continue;
+		const supplyType = supply.resourceSupplyType();
+		if (!supplyType || supplyType.generic != "food")
+			continue;
+
+		let foundCluster = false;
+		for (const pos of clusters)
+		{
+			if (SquareVectorDistance(pos, supply.position()) < clusterDistance)
+			{
+				foundCluster = true;
+				break;
+			}
+		}
+		if (!foundCluster)
+			clusters.push(supply.position());
+	}
+	return clusters.length;
+};
+
+Headquarters.prototype.researchExpertOpeningBerryTech = function(gameState, queues)
+{
+	if (!queues.minorTech || queues.minorTech.hasQueuedUnits())
+		return;
+	if (gameState.isResearched("gather_wicker_baskets") || gameState.isResearching("gather_wicker_baskets"))
+		return;
+
+	// Rush basket tech only when Expert sees multiple separated fruit patches in
+	// our starting territory.  Several bushes in the same berry patch count as one
+	// cluster, so a normal single starting berry patch does not delay the first house
+	// or Iron Axe Heads.
+	if (this.countExpertOpeningFruitClusters(gameState) < 2)
+		return;
+
+	for (const tech of gameState.findAvailableTech())
+	{
+		if (tech[0] != "gather_wicker_baskets")
+			continue;
+		const plan = new ResearchPlan(gameState, "gather_wicker_baskets", true);
+		if (!plan)
+			return;
+		plan.metadata = { "expertOpeningBerryTech": true };
+		queues.minorTech.addPlan(plan);
+		return;
+	}
+}
+
+
+Headquarters.prototype.researchExpertOpeningWoodTech = function(gameState, queues)
+{
+	if (!queues.minorTech || queues.minorTech.hasQueuedUnits())
+		return;
+	if (gameState.isResearched("gather_lumbering_ironaxes") ||
+	    gameState.isResearching("gather_lumbering_ironaxes"))
+		return;
+	// Basket tech has priority over Iron Axe Heads only when there are multiple
+	// separated fruit patches worth upgrading immediately.
+	if (this.countExpertOpeningFruitClusters(gameState) >= 2 &&
+	    !gameState.isResearched("gather_wicker_baskets") &&
+	    !gameState.isResearching("gather_wicker_baskets"))
+		return;
+
+	// Do not delay the first house: Expert only rushes Iron Axe Heads after a
+	// house has been queued, placed, or built.
+	const hasFirstHouse = gameState.getOwnFoundations().filter(filters.byClass("House")).hasEntities() ||
+		gameState.getOwnStructures().filter(filters.byClass("House")).hasEntities() ||
+		gameState.ai.queues.house && gameState.ai.queues.house.hasQueuedUnits();
+	if (!hasFirstHouse)
+		return;
+
+	for (const tech of gameState.findAvailableTech())
+	{
+		if (tech[0] != "gather_lumbering_ironaxes")
+			continue;
+		const plan = new ResearchPlan(gameState, "gather_lumbering_ironaxes", true);
+		if (!plan)
+			return;
+		plan.metadata = { "expertOpeningWoodTech": true };
+		queues.minorTech.addPlan(plan);
+		return;
+	}
+};
+
+
+;
+
 
 /**
  * Assign the starting entities to the different bases

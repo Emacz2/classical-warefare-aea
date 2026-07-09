@@ -1,5 +1,6 @@
 import * as filters from "simulation/ai/common-api/filters.js";
 import { SquareVectorDistance, aiWarn } from "simulation/ai/common-api/utils.js";
+import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { allowCapture, gatherTreasure, getBuiltEntity, getLandAccess, getSeaAccess, isFastMoving,
 	isSupplyFull, returnResources } from "simulation/ai/petra/entityExtend.js";
 import { TransportPlan } from "simulation/ai/petra/transportPlan.js";
@@ -38,6 +39,13 @@ Worker.prototype.update = function(gameState, ent)
 		return;
 
 	const subrole = ent.getMetadata(PlayerID, "subrole");
+
+	// Expert opening phase is enforced before Petra's normal worker reassignment.
+	// This prevents the regular economy manager from moving civilians to chickens or
+	// leaving male workers at the Civic Centre during the first 30 seconds.
+	if (gameState.ai.HQ.enforceExpertOpeningPhase &&
+	    gameState.ai.HQ.enforceExpertOpeningPhase(gameState, ent))
+		return;
 
 	// If we are waiting for a transport or we are sailing, just wait
 	if (ent.getMetadata(PlayerID, "transport") !== undefined)
@@ -458,6 +466,18 @@ Worker.prototype.retryWorking = function(gameState, subrole)
 	}
 };
 
+Worker.prototype.noteDistantGathering = function(gameState, resource)
+{
+	if (this.base.Config.difficulty < difficulty.EXPERT || resource == "food")
+		return;
+
+	// Expert treats faraway gathering as a signal that this base needs another dropsite.
+	// This accelerates BaseManager.checkResourceLevels without changing Very Hard behavior.
+	this.base.gatherers[resource].lost += 2;
+	this.base.gatherers[resource].nextCheck = Math.min(this.base.gatherers[resource].nextCheck,
+		gameState.ai.playedTurn);
+};
+
 Worker.prototype.startBuilding = function(gameState)
 {
 	const target = gameState.getEntityById(this.ent.getMetadata(PlayerID, "target-foundation"));
@@ -477,8 +497,25 @@ Worker.prototype.startGathering = function(gameState)
 
 	const resource = this.ent.getMetadata(PlayerID, "gather-type");
 
+	// Expert v0.3 worker policy from the uploaded templates:
+	// civilians gather grain/fruit 2x faster than citizen soldiers, so citizen
+	// soldiers should not farm or forage unless there are literally no civilian
+	// workers available. Keep them on wood/building instead.
+	if (this.base.Config.difficulty >= difficulty.EXPERT && resource == "food" &&
+	    !this.ent.hasClass("Civilian") && !this.ent.hasClass("Cavalry"))
+	{
+		this.ent.setMetadata(PlayerID, "gather-type", "wood");
+		return this.startGathering(gameState);
+	}
+
+	// During the Expert opening, non-cavalry workers should not hunt chickens.
+	// Petra's default food logic prefers nearby domestic animals, which pulled civilians
+	// onto chickens around 60 seconds. Keep hunting restricted to cavalry here.
+	const expertOpeningNoFemaleHunt = gameState.ai.HQ.isExpertOpeningPhaseActive &&
+		gameState.ai.HQ.isExpertOpeningPhaseActive(gameState) && !this.ent.hasClass("Cavalry");
+
 	// If we are gathering food, try to hunt first
-	if (resource == "food" && this.startHunting(gameState))
+	if (resource == "food" && !expertOpeningNoFemaleHunt && this.startHunting(gameState))
 		return true;
 
 	const findSupply = function(worker, supplies) {
@@ -508,6 +545,12 @@ Worker.prototype.startGathering = function(gameState)
 				continue;
 			// not in ennemy territory
 			const territoryOwner = gameState.ai.HQ.territoryMap.getOwner(supplies[i].ent.position());
+			// Expert v0.3.2: non-cavalry food workers do not leave owned territory
+			// for fruit/hunt.  If food outside territory is worth taking, Expert should
+			// expand territory or build a local dropsite first.
+			if (worker.base.Config.difficulty >= difficulty.EXPERT && resource == "food" &&
+			    !ent.hasClass("Cavalry") && territoryOwner != PlayerID)
+				continue;
 			if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))  // player is its own ally
 				continue;
 			worker.base.AddTCGatherer(supplies[i].id);
@@ -614,6 +657,20 @@ Worker.prototype.startGathering = function(gameState)
 	let shouldBuild = this.ent.isBuilder() && foundations.some(function(foundation) {
 		if (!foundation || getLandAccess(gameState, foundation) != this.entAccess)
 			return false;
+		if (this.base.Config.difficulty >= difficulty.EXPERT && foundation.hasClass("Field"))
+		{
+			// Expert policy: do not let current berry/farm workers all abandon their
+			// food source to mass-build the next field.  Only workers explicitly marked
+			// for the farm transition may help, and only up to two builders per field.
+			if (this.ent.getMetadata(PlayerID, "expertOpeningJob") != "farm")
+				return false;
+			let builders = 0;
+			for (const unit of gameState.getOwnUnits().values())
+				if (unit.getMetadata(PlayerID, "target-foundation") == foundation.id())
+					++builders;
+			if (builders >= 2)
+				return false;
+		}
 		const structure = gameState.getBuiltTemplate(foundation.templateName());
 		if (structure.resourceDropsiteTypes() && structure.resourceDropsiteTypes().indexOf(resource) != -1)
 		{
@@ -717,6 +774,7 @@ Worker.prototype.startGathering = function(gameState)
 			supply = findSupply(this, this.base.dropsiteSupplies[resource].faraway);
 			if (supply)
 			{
+				this.noteDistantGathering(gameState, resource);
 				this.ent.gather(supply);
 				return true;
 			}
@@ -730,6 +788,7 @@ Worker.prototype.startGathering = function(gameState)
 			supply = findSupply(this, base.dropsiteSupplies[resource].faraway);
 			if (supply)
 			{
+				this.noteDistantGathering(gameState, resource);
 				this.ent.setMetadata(PlayerID, "base", base.ID);
 				this.ent.gather(supply);
 				return true;
@@ -742,6 +801,7 @@ Worker.prototype.startGathering = function(gameState)
 			supply = findSupply(this, base.dropsiteSupplies[resource].faraway);
 			if (supply && navalManager.requireTransport(gameState, this.ent, this.entAccess, base.accessIndex, supply.position()))
 			{
+				this.noteDistantGathering(gameState, resource);
 				if (base.ID != this.baseID)
 					this.ent.setMetadata(PlayerID, "base", base.ID);
 				return true;
@@ -763,6 +823,9 @@ Worker.prototype.startGathering = function(gameState)
  */
 Worker.prototype.startHunting = function(gameState, position)
 {
+	if (this.base.Config.difficulty >= difficulty.EXPERT && !this.ent.hasClass("Cavalry"))
+		return false;
+
 	// First look for possible treasure if any
 	if (!position && gatherTreasure(gameState, this.ent))
 		return true;
@@ -1011,6 +1074,23 @@ Worker.prototype.buildAnyField = function(gameState, baseID)
 {
 	if (!this.ent.isBuilder())
 		return false;
+	if (this.base.Config.difficulty >= difficulty.EXPERT)
+	{
+		// Expert v0.3.3 worker-role lock: active food workers stay on their
+		// resource.  New/idle civilians may build new fields; current farmers or
+		// berry gatherers should not all walk away to mass-build the next field.
+		const supplyId = this.ent.getMetadata(PlayerID, "supply");
+		const supply = supplyId ? gameState.getEntityById(supplyId) : undefined;
+		if (supply && this.ent.getMetadata(PlayerID, "subrole") === Worker.SUBROLE_GATHERER)
+		{
+			if (supply.hasClass && supply.hasClass("Field"))
+				return false;
+			const supplyType = supply.resourceSupplyType && supply.resourceSupplyType();
+			if (supplyType && supplyType.generic == "food" &&
+			    (!supply.resourceSupplyAmount || supply.resourceSupplyAmount() > 0))
+				return false;
+		}
+	}
 	let bestFarmEnt = false;
 	let bestFarmDist = 10000000;
 	const pos = this.ent.position();
@@ -1018,9 +1098,13 @@ Worker.prototype.buildAnyField = function(gameState, baseID)
 	{
 		if (found.getMetadata(PlayerID, "base") != baseID || !found.hasClass("Field"))
 			continue;
+		if (this.base.Config.difficulty >= difficulty.EXPERT &&
+		    this.ent.getMetadata(PlayerID, "expertOpeningJob") != "farm")
+			continue;
 		const current = found.getBuildersNb();
-		if (current === undefined ||
-		    current >= gameState.getBuiltTemplate(found.templateName()).maxGatherers())
+		const maxBuilders = this.base.Config.difficulty >= difficulty.EXPERT ? 2 :
+			gameState.getBuiltTemplate(found.templateName()).maxGatherers();
+		if (current === undefined || current >= maxBuilders)
 			continue;
 		const dist = SquareVectorDistance(found.position(), pos);
 		if (dist > bestFarmDist)
