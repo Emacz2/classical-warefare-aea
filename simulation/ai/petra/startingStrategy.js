@@ -717,6 +717,37 @@ Headquarters.prototype.getExpertOpeningSortedCivilians = function(gameState)
 	return civilians;
 };
 
+
+Headquarters.prototype.findExpertOpeningBuiltDropsite = function(gameState, resource, base)
+{
+	let bestDropsite;
+	let bestDist = Math.min();
+	const nearPos = resource == "wood" ? this.expertOpeningWoodPos : this.expertOpeningFoodPos;
+	const basePos = nearPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+
+	for (const structure of gameState.getOwnStructures().values())
+	{
+		if (!structure || !structure.position())
+			continue;
+		if (structure.hasClass && structure.hasClass("CivCentre") || structure.id && structure.id() == base.anchorId)
+			continue;
+		if (typeof structure.resourceDropsiteTypes !== "function")
+			continue;
+		const dropsiteTypes = structure.resourceDropsiteTypes();
+		if (!dropsiteTypes || dropsiteTypes.indexOf(resource) == -1)
+			continue;
+		if (getLandAccess(gameState, structure) != base.accessIndex)
+			continue;
+
+		const dist = basePos ? SquareVectorDistance(basePos, structure.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestDropsite = structure;
+		bestDist = dist;
+	}
+	return bestDropsite;
+};
+
 Headquarters.prototype.countExpertOpeningCivilianRoles = function(gameState)
 {
 	const result = { "total": 0, "food": 0, "wood": 0 };
@@ -742,7 +773,7 @@ Headquarters.prototype.assignExpertOpeningFirst24CivilianRoles = function(gameSt
 	if (!base)
 		return;
 
-	const foodDropsite = this.findExpertOpeningDropsite(gameState, "food", base);
+	const foodDropsite = this.findExpertOpeningBuiltDropsite(gameState, "food", base);
 	const foodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
 
 	for (let i = 0; i < civilians.length && i < 24; ++i)
@@ -931,7 +962,7 @@ Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
 		if (foodFoundation)
 			return this.setExpertOpeningBuildTarget(gameState, base, ent, foodFoundation);
 
-		const foodDropsite = this.findExpertOpeningDropsite(gameState, "food", base);
+		const foodDropsite = this.findExpertOpeningBuiltDropsite(gameState, "food", base);
 		if (foodDropsite && foodDropsite.position && foodDropsite.position())
 		{
 			ent.setMetadata(PlayerID, "expertOpeningJob", "berries");
