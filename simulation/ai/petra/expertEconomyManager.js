@@ -58,6 +58,14 @@ ExpertEconomyManager.prototype.cleanEarlyQueues = function(gameState, queues)
 	if (queues.citizenSoldier)
 		queues.citizenSoldier.empty();
 
+	// Remove generic house plans during the Expert economy opening.  Generic Petra
+	// house plans have no expertOpeningHouse metadata and are the source of the
+	// far-away house foundations we kept seeing.  Expert houses are created by
+	// Headquarters.ensureExpertOpeningHouse() with a close worksite anchor.
+	if (queues.house && queues.house.plans.length)
+		queues.house.plans = queues.house.plans.filter(plan =>
+			plan.metadata && plan.metadata.expertOpeningHouse);
+
 	// Remove early stable plans, but keep barracks/range plans in case the normal AI
 	// has already queued one for basic defense. Stable timing will become a future
 	// cavalry-strategy rule instead of a default opening rule.

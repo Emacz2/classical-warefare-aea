@@ -545,6 +545,12 @@ Worker.prototype.startGathering = function(gameState)
 				continue;
 			// not in ennemy territory
 			const territoryOwner = gameState.ai.HQ.territoryMap.getOwner(supplies[i].ent.position());
+			// Expert v0.3.2: non-cavalry food workers do not leave owned territory
+			// for fruit/hunt.  If food outside territory is worth taking, Expert should
+			// expand territory or build a local dropsite first.
+			if (worker.base.Config.difficulty >= difficulty.EXPERT && resource == "food" &&
+			    !ent.hasClass("Cavalry") && territoryOwner != PlayerID)
+				continue;
 			if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))  // player is its own ally
 				continue;
 			worker.base.AddTCGatherer(supplies[i].id);
@@ -651,6 +657,20 @@ Worker.prototype.startGathering = function(gameState)
 	let shouldBuild = this.ent.isBuilder() && foundations.some(function(foundation) {
 		if (!foundation || getLandAccess(gameState, foundation) != this.entAccess)
 			return false;
+		if (this.base.Config.difficulty >= difficulty.EXPERT && foundation.hasClass("Field"))
+		{
+			// Expert policy: do not let current berry/farm workers all abandon their
+			// food source to mass-build the next field.  Only workers explicitly marked
+			// for the farm transition may help, and only up to two builders per field.
+			if (this.ent.getMetadata(PlayerID, "expertOpeningJob") != "farm")
+				return false;
+			let builders = 0;
+			for (const unit of gameState.getOwnUnits().values())
+				if (unit.getMetadata(PlayerID, "target-foundation") == foundation.id())
+					++builders;
+			if (builders >= 2)
+				return false;
+		}
 		const structure = gameState.getBuiltTemplate(foundation.templateName());
 		if (structure.resourceDropsiteTypes() && structure.resourceDropsiteTypes().indexOf(resource) != -1)
 		{
@@ -1054,6 +1074,17 @@ Worker.prototype.buildAnyField = function(gameState, baseID)
 {
 	if (!this.ent.isBuilder())
 		return false;
+	if (this.base.Config.difficulty >= difficulty.EXPERT)
+	{
+		// Expert v0.3.2 worker-role lock: an active farmer should keep farming.
+		// New/idle civilians may build new fields; current farmers should not all
+		// walk away to mass-build the next field foundation.
+		const supplyId = this.ent.getMetadata(PlayerID, "supply");
+		const supply = supplyId ? gameState.getEntityById(supplyId) : undefined;
+		if (supply && supply.hasClass && supply.hasClass("Field") &&
+		    this.ent.getMetadata(PlayerID, "subrole") === Worker.SUBROLE_GATHERER)
+			return false;
+	}
 	let bestFarmEnt = false;
 	let bestFarmDist = 10000000;
 	const pos = this.ent.position();
@@ -1061,9 +1092,13 @@ Worker.prototype.buildAnyField = function(gameState, baseID)
 	{
 		if (found.getMetadata(PlayerID, "base") != baseID || !found.hasClass("Field"))
 			continue;
+		if (this.base.Config.difficulty >= difficulty.EXPERT &&
+		    this.ent.getMetadata(PlayerID, "expertOpeningJob") != "farm")
+			continue;
 		const current = found.getBuildersNb();
-		if (current === undefined ||
-		    current >= gameState.getBuiltTemplate(found.templateName()).maxGatherers())
+		const maxBuilders = this.base.Config.difficulty >= difficulty.EXPERT ? 2 :
+			gameState.getBuiltTemplate(found.templateName()).maxGatherers();
+		if (current === undefined || current >= maxBuilders)
 			continue;
 		const dist = SquareVectorDistance(found.position(), pos);
 		if (dist > bestFarmDist)

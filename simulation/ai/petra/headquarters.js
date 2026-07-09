@@ -1478,6 +1478,18 @@ Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 	if (gameState.getPopulationMax() <= gameState.getPopulationLimit())
 		return;
 
+	// Expert v0.3.2: do not let Petra's generic house planner create far-away
+	// residential houses during the economy boom.  The Expert economy layer owns
+	// opening house placement and will either place a house near the active
+	// wood/storehouse worksite or wait and try again next update.
+	if (this.Config.difficulty >= difficulty.EXPERT &&
+		this.expertEconomyManager && this.expertEconomyManager.isActive(gameState) &&
+		this.ensureExpertOpeningHouse)
+	{
+		this.ensureExpertOpeningHouse(gameState, queues);
+		return;
+	}
+
 	const numPlanned = queues.house.length();
 	if (numPlanned < 3 || numPlanned < 5 && gameState.getPopulation() > 80)
 	{

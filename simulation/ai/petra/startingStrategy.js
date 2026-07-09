@@ -438,9 +438,11 @@ Headquarters.prototype.ensureExpertOpeningHouse = function(gameState, queues)
 
 Headquarters.prototype.findExpertOpeningHouseAnchorPosition = function(gameState, base)
 {
-	// Expert v0.2: houses support the active work area.  Use the actual first
-	// storehouse/foundation position when possible, and let queueplanBuilding.js
-	// place the house on the nearest buildable tile around that point.
+	// Expert v0.3.2 behavioral rule: houses are worksite support buildings.
+	// Anchor them to the actual first wood dropsite/foundation, not to the CC and
+	// not to the current average worker position.  The average worker position was
+	// unstable: when citizen soldiers were temporarily pulled to another job, house
+	// placement drifted across the base.
 	const dropsite = this.findExpertOpeningDropsite(gameState, "wood", base);
 	if (dropsite && dropsite.position())
 		return dropsite.position();
@@ -449,7 +451,7 @@ Headquarters.prototype.findExpertOpeningHouseAnchorPosition = function(gameState
 	if (foundation && foundation.position())
 		return foundation.position();
 
-	return this.expertOpeningWoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+	return this.expertOpeningWoodPos || undefined;
 };
 
 Headquarters.prototype.getExpertOpeningTerritoryFruitAmount = function(gameState)
@@ -595,13 +597,22 @@ Headquarters.prototype.findExpertOpeningFieldFoundation = function(gameState, ba
 	let bestFoundation;
 	let bestDist = Math.min();
 	const basePos = this.expertOpeningFoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+	// A field center is normally around 20-24m from the farmstead center when the
+	// field edge touches the dropsite area.  This cap prevents Expert food builders
+	// from crossing the base to finish unrelated/generic field foundations.
+	const maxDist = 35 * 35;
+
 	for (const foundation of gameState.getOwnFoundations().values())
 	{
 		if (!foundation || !foundation.position() || !foundation.hasClass("Field"))
 			continue;
 		if (foundation.getMetadata(PlayerID, "base") != base.ID)
 			continue;
+		if (this.getExpertOpeningFoundationBuilderCount(gameState, foundation) >= 2)
+			continue;
 		const dist = basePos ? SquareVectorDistance(basePos, foundation.position()) : 0;
+		if (basePos && dist > maxDist)
+			continue;
 		if (dist > bestDist)
 			continue;
 		bestFoundation = foundation;
@@ -626,6 +637,29 @@ Headquarters.prototype.findExpertOpeningField = function(gameState, base, ent)
 	}
 	return bestField;
 };
+
+Headquarters.prototype.isExpertOpeningGatheringField = function(gameState, ent)
+{
+	if (!ent || ent.getMetadata(PlayerID, "subrole") !== Worker.SUBROLE_GATHERER)
+		return false;
+	const supplyId = ent.getMetadata(PlayerID, "supply");
+	if (!supplyId)
+		return false;
+	const supply = gameState.getEntityById(supplyId);
+	return !!(supply && supply.hasClass && supply.hasClass("Field"));
+};
+
+Headquarters.prototype.getExpertOpeningFoundationBuilderCount = function(gameState, foundation)
+{
+	if (!foundation)
+		return 0;
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+		if (ent.getMetadata(PlayerID, "target-foundation") == foundation.id())
+			++count;
+	return count;
+};
+
 
 Headquarters.prototype.assignExpertOpeningWorkers = function(gameState)
 {
@@ -770,12 +804,24 @@ Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
 
 	if (ent.getMetadata(PlayerID, "expertOpeningJob") == "farm")
 	{
-		// After the first 15-20 civilians have helped wood, new civilians become
-		// food-production workers. They should finish/build fields and then work
-		// them immediately instead of wandering back to wood or hunting.
+		// New/idle civilians build farms.  Civilians already working a field should
+		// not leave that field to help with the next foundation; otherwise Expert
+		// creates the "all farmers walk to the new farm" behavior seen in testing.
+		if (this.isExpertOpeningGatheringField(gameState, ent))
+			return true;
+
 		const fieldFoundation = this.findExpertOpeningFieldFoundation(gameState, base);
-		if (fieldFoundation && ent.hasClass("Civilian") && ent.isBuilder())
+		const subrole = ent.getMetadata(PlayerID, "subrole");
+		const supplyId = ent.getMetadata(PlayerID, "supply");
+		const assignedSupply = supplyId ? gameState.getEntityById(supplyId) : undefined;
+		const mayBuildField = subrole === Worker.SUBROLE_IDLE ||
+			!assignedSupply ||
+			(assignedSupply.hasClass && !assignedSupply.hasClass("Field") &&
+			 (!assignedSupply.resourceSupplyAmount || assignedSupply.resourceSupplyAmount() <= 0));
+		if (fieldFoundation && mayBuildField && ent.hasClass("Civilian") && ent.isBuilder() &&
+		    this.getExpertOpeningFoundationBuilderCount(gameState, fieldFoundation) < 2)
 			return this.setExpertOpeningBuildTarget(gameState, base, ent, fieldFoundation);
+
 		const field = this.findExpertOpeningField(gameState, base, ent);
 		if (field)
 			return this.setExpertOpeningGatherTarget(gameState, base, ent, field,
@@ -928,7 +974,17 @@ Headquarters.prototype.findExpertOpeningHouseFoundation = function(gameState, ba
 {
 	let bestFoundation;
 	let bestDist = Math.min();
-	const basePos = this.expertOpeningWoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
+	const basePos = this.findExpertOpeningHouseAnchorPosition ?
+		this.findExpertOpeningHouseAnchorPosition(gameState, base) :
+		(this.expertOpeningWoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined));
+	const anchor = this.findExpertOpeningDropsite(gameState, "wood", base) ||
+		this.findExpertOpeningDropsiteFoundation(gameState, "wood", base);
+	const houseTemplate = gameState.applyCiv("structures/{civ}/house");
+	const houseRadius = gameState.getTemplate(houseTemplate) ?
+		gameState.getTemplate(houseTemplate).obstructionRadius().max : 4;
+	const anchorRadius = anchor && anchor.obstructionRadius ? anchor.obstructionRadius().max : 0;
+	const maxDist = (anchorRadius + houseRadius + ExpertOpeningConstants.maxHouseDistance);
+	const maxDistSq = maxDist * maxDist;
 
 	for (const foundation of gameState.getOwnFoundations().values())
 	{
@@ -938,6 +994,8 @@ Headquarters.prototype.findExpertOpeningHouseFoundation = function(gameState, ba
 			continue;
 
 		const dist = basePos ? SquareVectorDistance(basePos, foundation.position()) : 0;
+		if (basePos && dist > maxDistSq)
+			continue;
 		if (dist > bestDist)
 			continue;
 		bestFoundation = foundation;
