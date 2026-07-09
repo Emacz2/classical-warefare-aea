@@ -699,16 +699,101 @@ Headquarters.prototype.getExpertOpeningFoundationBuilderCount = function(gameSta
 };
 
 
+
+Headquarters.prototype.getExpertOpeningSortedCivilians = function(gameState)
+{
+	const civilians = [];
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position || !ent.position())
+			continue;
+		if (!ent.hasClass("Civilian") || ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry"))
+			continue;
+		if (!ent.canGather || !ent.canGather("food"))
+			continue;
+		civilians.push(ent);
+	}
+	civilians.sort((a, b) => a.id() - b.id());
+	return civilians;
+};
+
+Headquarters.prototype.countExpertOpeningCivilianRoles = function(gameState)
+{
+	const result = { "total": 0, "food": 0, "wood": 0 };
+	for (const ent of this.getExpertOpeningSortedCivilians(gameState))
+	{
+		++result.total;
+		const job = ent.getMetadata(PlayerID, "expertOpeningJob");
+		if (job == "berries" || job == "berriesBuilder")
+			++result.food;
+		else if (job == "wood")
+			++result.wood;
+	}
+	return result;
+};
+
+Headquarters.prototype.assignExpertOpeningFirst24CivilianRoles = function(gameState)
+{
+	const civilians = this.getExpertOpeningSortedCivilians(gameState);
+	if (!civilians.length)
+		return;
+
+	const base = this.baseManagers()[0];
+	if (!base)
+		return;
+
+	const foodDropsite = this.findExpertOpeningDropsite(gameState, "food", base);
+	const foodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
+
+	for (let i = 0; i < civilians.length && i < 24; ++i)
+	{
+		const ent = civilians[i];
+		this.claimExpertOpeningWorker(gameState, base, ent);
+
+		let desired;
+		if (i < 4)
+			// The first four civilians are committed to the opening farmstead until
+			// the dropsite is actually built.  They then become permanent berry
+			// gatherers for the starting food cluster.
+			desired = foodDropsite ? "berries" : "berriesBuilder";
+		else if (i < 7)
+			// Batch 1 and batch 2 join the first farmstead/berry cluster.
+			desired = "berries";
+		else
+			// Civilians 8-24 are the wood boom.  That gives 16 civilians on wood,
+			// plus the 4 starting citizen soldiers on wood/house duty.
+			desired = "wood";
+
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") != desired)
+		{
+			const oldSupply = ent.getMetadata(PlayerID, "supply");
+			if (oldSupply)
+				base.RemoveTCGatherer(oldSupply);
+			ent.setMetadata(PlayerID, "expertOpeningJob", desired);
+			ent.setMetadata(PlayerID, "expertFoodLockedSupply", undefined);
+			ent.setMetadata(PlayerID, "supply", undefined);
+			ent.setMetadata(PlayerID, "target-foundation", undefined);
+			ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_IDLE);
+		}
+	}
+};
+
 Headquarters.prototype.assignExpertOpeningWorkers = function(gameState)
 {
 	const base = this.baseManagers()[0];
 	if (!base)
 		return;
 
-	// ExpertFoodManager v0.3.4 owns civilian food roles before Petra/Expert
-	// enforcement issues orders.  This is where we stop oversaturating berries and
-	// keep active food workers locked to their current resource.
-	if (this.expertFoodManager)
+	// Expert v0.3.9: the first 24 civilians follow a deterministic opening.
+	// This prevents the food/wood managers from fighting over newly trained
+	// civilians during the first two minutes.  The opening owns them first; the
+	// adaptive managers take over after this role script is complete.
+	this.assignExpertOpeningFirst24CivilianRoles(gameState);
+
+	// Do not let the food manager rewrite the scripted first-24 sequence.  After
+	// the script is complete, the food manager resumes ownership of later
+	// civilians and longer-term transitions.
+	if (this.expertFoodManager && this.countExpertOpeningCivilianRoles(gameState).total >= 24)
 		this.expertFoodManager.update(gameState);
 
 	for (const ent of gameState.getOwnUnits().values())
