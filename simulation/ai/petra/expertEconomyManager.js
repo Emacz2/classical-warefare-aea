@@ -23,8 +23,11 @@ export function ExpertEconomyManager(HQ)
 	this.HQ = HQ;
 	this.workerTarget5Min = 75;
 	this.openingLockTime = 300;
-	this.minFoodReserve = 180;
-	this.maxEarlyWoodReserve = 550;
+	this.minFoodReserve = 150;
+	this.foodEmergencyReserve = 75;
+	this.maxEarlyWoodReserve = 500;
+	this.civilianWoodCap = 20;
+	this.totalWoodCap = 24;
 }
 
 ExpertEconomyManager.prototype.isActive = function(gameState)
@@ -103,41 +106,120 @@ ExpertEconomyManager.prototype.getOpeningResourceBias = function(gameState)
 	return "balanced";
 };
 
+
+ExpertEconomyManager.prototype.countOpeningCivilianWood = function(gameState)
+{
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position || !ent.position())
+			continue;
+		if (!ent.hasClass("Civilian") || ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry"))
+			continue;
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") == "wood")
+			++count;
+	}
+	return count;
+};
+
+ExpertEconomyManager.prototype.chooseFoodJob = function(gameState)
+{
+	const base = this.HQ.baseManagers()[0];
+	if (!base)
+		return "berries";
+
+	// If a food dropsite/farmstead foundation exists, commit new civilians to
+	// building it before letting anyone gather from that new cluster.  This is
+	// the critical rule for v0.4.5: no gathering from the second cluster until
+	// the second farmstead is finished.
+	const foodFoundation = this.HQ.findExpertOpeningDropsiteFoundation ?
+		this.HQ.findExpertOpeningDropsiteFoundation(gameState, "food", base) : undefined;
+	if (foodFoundation && (!this.HQ.getExpertOpeningFoundationBuilderCount ||
+	    this.HQ.getExpertOpeningFoundationBuilderCount(gameState, foodFoundation) < 4))
+		return "foodDropsiteBuilder";
+
+	// Prefer any currently served natural food before farming.  Earlier versions
+	// jumped to the farm role as soon as the transition threshold fired, which
+	// produced huge wood floats and a food crash.
+	if (this.HQ.findExpertOpeningAvailableNaturalFood &&
+	    this.HQ.findExpertOpeningAvailableNaturalFood(gameState, base))
+		return "berries";
+
+	if (this.HQ.shouldExpertOpeningFarmTransition && this.HQ.shouldExpertOpeningFarmTransition(gameState))
+		return "farm";
+
+	return "berries";
+};
+
+ExpertEconomyManager.prototype.chooseOpeningJobForCivilian = function(gameState)
+{
+	const roles = this.HQ.countExpertOpeningCivilianRoles ?
+		this.HQ.countExpertOpeningCivilianRoles(gameState) : { "food": 0, "wood": 0, "total": 0 };
+	const civilianWood = this.countOpeningCivilianWood(gameState);
+	const res = gameState.getResources();
+	const food = res && res.food !== undefined ? res.food : 0;
+	const wood = res && res.wood !== undefined ? res.wood : 0;
+
+	// Keep the proven opening: first 7 civilians on food, then wood until the
+	// opening wood target.
+	if (roles.food < 7)
+		return this.chooseFoodJob(gameState);
+	if (roles.total < 24 && civilianWood < 17)
+		return "wood";
+
+	// v0.4.4 resource controller: once opening wood is established, stop feeding
+	// the wood snowball.  Food shortages and wood float always force new civilians
+	// into a food job.
+	if (food < this.minFoodReserve || wood > this.maxEarlyWoodReserve || civilianWood >= this.civilianWoodCap)
+		return this.chooseFoodJob(gameState);
+
+	if (civilianWood < this.civilianWoodCap)
+		return "wood";
+
+	return this.chooseFoodJob(gameState);
+};
+
 ExpertEconomyManager.prototype.balanceOpeningCivilianJobs = function(gameState)
 {
 	if (!this.isActive(gameState))
 		return;
 
-	const bias = this.getOpeningResourceBias(gameState);
-	let woodCivs = 0;
-	for (const ent of gameState.getOwnUnits().values())
-	{
-		if (!ent || !ent.position() || !ent.hasClass("Civilian") || ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry"))
-			continue;
-		if (ent.getMetadata(PlayerID, "expertOpeningJob") == "wood")
-			++woodCivs;
-	}
+	const res = gameState.getResources();
+	const food = res && res.food !== undefined ? res.food : 0;
+	const wood = res && res.wood !== undefined ? res.wood : 0;
+	let civilianWood = this.countOpeningCivilianWood(gameState);
+	const roles = this.HQ.countExpertOpeningCivilianRoles ?
+		this.HQ.countExpertOpeningCivilianRoles(gameState) : { "food": 0, "total": 0 };
+	let foodRoles = roles.food || 0;
 
-	// If we are floating wood and starving food, stop sending new civilians to wood.
-	// Active wood workers are not yanked immediately; new/idle civilians are biased
-	// back to food so Expert recovers without oscillating every turn.
-	if (bias != "food")
+	// Normal transition cap: after the first 20 civilian wood workers, every new
+	// worker must go to food.  Emergency cap: if food collapses while wood floats,
+	// reclaim only enough wood workers to restore a sane food crew.  The previous
+	// v0.4.4 loop converted almost every wood worker to food/farm because food/wood
+	// stockpile values do not change inside the loop.
+	const emergency = food < this.foodEmergencyReserve && wood > this.maxEarlyWoodReserve;
+	const desiredFood = emergency ? 14 : (food < this.minFoodReserve && wood > this.maxEarlyWoodReserve ? 12 : 7);
+	if (!emergency && civilianWood <= this.civilianWoodCap && foodRoles >= desiredFood)
 		return;
 
-	for (const ent of gameState.getOwnUnits().values())
+	const civilians = this.HQ.getExpertOpeningSortedCivilians ? this.HQ.getExpertOpeningSortedCivilians(gameState) : [];
+	for (let i = civilians.length - 1; i >= 0; --i)
 	{
-		if (!ent || !ent.position() || !ent.hasClass("Civilian") || ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry"))
-			continue;
+		if ((civilianWood <= this.civilianWoodCap && foodRoles >= desiredFood) ||
+		    (emergency && (foodRoles >= desiredFood || civilianWood <= 17)))
+			break;
+		const ent = civilians[i];
 		if (ent.getMetadata(PlayerID, "expertOpeningJob") != "wood")
 			continue;
-		if (woodCivs <= 12)
-			break;
-		const subrole = ent.getMetadata(PlayerID, "subrole");
-		// Prefer reassigning only idle/new workers so existing productive woodcutters
-		// can drop off naturally before changing roles in a later version.
-		if (subrole !== undefined && subrole !== null)
+		// Keep the deterministic opening wood core unless food is actually crashing.
+		if (!emergency && i < 24 && civilianWood <= 17)
 			continue;
-		ent.setMetadata(PlayerID, "expertOpeningJob", undefined);
-		--woodCivs;
+		ent.setMetadata(PlayerID, "expertOpeningJob", this.chooseFoodJob(gameState));
+		ent.setMetadata(PlayerID, "expertFoodLockedSupply", undefined);
+		ent.setMetadata(PlayerID, "supply", undefined);
+		ent.setMetadata(PlayerID, "target-foundation", undefined);
+		ent.setMetadata(PlayerID, "subrole", undefined);
+		--civilianWood;
+		++foodRoles;
 	}
 };

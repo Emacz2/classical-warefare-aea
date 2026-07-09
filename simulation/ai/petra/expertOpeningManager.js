@@ -41,6 +41,11 @@ ExpertOpeningManager.prototype.update = function(gameState, queues)
 	{
 		this.HQ.researchExpertOpeningBerryTech(gameState, queues);
 		this.HQ.researchExpertOpeningWoodTech(gameState, queues);
+		// v0.4.5: OpeningManager owns food expansion during the first five
+		// minutes too.  Otherwise the first berry cluster can run dry while
+		// Petra is blocked and no one creates/finishes the second farmstead.
+		if (this.HQ.ensureExpertOpeningAdditionalFoodDropsites)
+			this.HQ.ensureExpertOpeningAdditionalFoodDropsites(gameState, queues);
 		this.HQ.ensureExpertOpeningHouse(gameState, queues);
 		this.controlCivicCentreTraining(gameState, queues);
 	}
@@ -94,9 +99,17 @@ ExpertOpeningManager.prototype.controlCivicCentreTraining = function(gameState, 
 	const roles = this.HQ.countExpertOpeningCivilianRoles ?
 		this.HQ.countExpertOpeningCivilianRoles(gameState) : { "total": 0 };
 	const food = gameState.getResources().food || 0;
-	let size = roles.total < 24 ? 3 : (food >= 600 ? 6 : food >= 425 ? 5 : food >= 250 ? 4 : 3);
+	let size;
+	if (roles.total < 24)
+		size = 3;
+	else if (food < 150)
+		// Do not drain the last food into tiny batches while the economy is trying
+		// to recover.  Queue a modest batch only when it is affordable.
+		size = food >= 100 ? 2 : 0;
+	else
+		size = food >= 700 ? 6 : food >= 450 ? 5 : food >= 250 ? 4 : 3;
 	const freeSlots = gameState.getPopulationLimit() - this.HQ.getAccountedPopulation(gameState);
-	if (freeSlots <= 0)
+	if (freeSlots <= 0 || size <= 0)
 		return;
 	size = Math.max(1, Math.min(size, freeSlots));
 
@@ -114,30 +127,14 @@ ExpertOpeningManager.prototype.assignCivilianRoles = function(gameState)
 	// treated as the source of truth.
 	this.HQ.assignExpertOpeningFirst24CivilianRoles(gameState);
 
-	let food = this.HQ.countExpertOpeningFoodCivilians(gameState);
-	let wood = this.HQ.countExpertOpeningTotalWoodWorkers(gameState);
 	for (const ent of this.HQ.getExpertOpeningSortedCivilians(gameState))
 	{
 		if (ent.getMetadata(PlayerID, "expertOpeningJob") !== undefined)
 			continue;
 
 		this.HQ.claimExpertOpeningWorker(gameState, base, ent);
-		let job;
-		if (food < this.firstFoodCivilians)
-		{
-			job = "berries";
-			++food;
-		}
-		else if (wood < this.firstWoodWorkersTotal)
-		{
-			job = "wood";
-			++wood;
-		}
-		else
-			// After the first wood target, later civilians are held as wood until the
-			// next manager deliberately opens a new food cluster. This avoids Petra
-			// sending them to distant unserved berries during the opening.
-			job = "wood";
+		const job = this.HQ.expertEconomyManager && this.HQ.expertEconomyManager.chooseOpeningJobForCivilian ?
+			this.HQ.expertEconomyManager.chooseOpeningJobForCivilian(gameState) : "wood";
 
 		ent.setMetadata(PlayerID, "expertOpeningJob", job);
 		ent.setMetadata(PlayerID, "expertFoodLockedSupply", undefined);

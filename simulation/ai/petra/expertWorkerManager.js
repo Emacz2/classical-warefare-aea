@@ -49,39 +49,20 @@ ExpertWorkerManager.prototype.update = function(gameState)
 		this.HQ.assignExpertOpeningFirst24CivilianRoles(gameState);
 
 	this.assignUnownedCivilians(gameState, base);
+	if (this.HQ.expertEconomyManager && this.HQ.expertEconomyManager.balanceOpeningCivilianJobs)
+		this.HQ.expertEconomyManager.balanceOpeningCivilianJobs(gameState);
 	this.enforceOwnedWorkers(gameState, base);
 };
 
 ExpertWorkerManager.prototype.assignUnownedCivilians = function(gameState, base)
 {
-	let food = this.HQ.countExpertOpeningFoodCivilians ?
-		this.HQ.countExpertOpeningFoodCivilians(gameState) : 0;
-	let wood = this.HQ.countExpertOpeningTotalWoodWorkers ?
-		this.HQ.countExpertOpeningTotalWoodWorkers(gameState) : 0;
-
 	for (const ent of this.HQ.getExpertOpeningSortedCivilians(gameState))
 	{
 		if (ent.getMetadata(PlayerID, "expertOpeningJob") !== undefined)
 			continue;
 
-		let job;
-		if (food < this.openingFoodCivilians)
-		{
-			job = "berries";
-			++food;
-		}
-		else if (wood < this.openingTotalWoodWorkers)
-		{
-			job = "wood";
-			++wood;
-		}
-		else if (this.HQ.shouldExpertOpeningFarmTransition && this.HQ.shouldExpertOpeningFarmTransition(gameState))
-			job = "farm";
-		else
-			// After the wood target is complete, later civilians are allowed to become
-			// food workers, but not during the scripted first-24 opening.
-			job = "berries";
-
+		const job = this.HQ.expertEconomyManager && this.HQ.expertEconomyManager.chooseOpeningJobForCivilian ?
+			this.HQ.expertEconomyManager.chooseOpeningJobForCivilian(gameState) : "wood";
 		this.claim(ent, base, job);
 	}
 };
