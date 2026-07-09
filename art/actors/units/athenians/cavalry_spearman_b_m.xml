@@ -5,7 +5,7 @@
     <variant>
       <mesh>skeletal/horse_tessalian.dae</mesh>
       <props>
-        <prop actor="units/athenians/cavalry_javelinist_b_r.xml" attachpoint="rider"/>
+        <prop actor="units/athenians/cavalry_spearman_b_r.xml" attachpoint="rider"/>
         <prop actor="props/horse/cav_rein_leather.xml" attachpoint="root"/>
       </props>
     </variant>
