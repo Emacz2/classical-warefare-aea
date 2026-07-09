@@ -10,7 +10,10 @@ import { DefenseManager } from "simulation/ai/petra/defenseManager.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { DiplomacyManager } from "simulation/ai/petra/diplomacyManager.js";
 import { EmergencyManager } from "simulation/ai/petra/emergencyManager.js";
-import { ExpertEconomyManager } from "simulation/ai/petra/expertEconomyManager.js";
+import { ExpertEconomyManager, ExpertOpeningConstants } from "simulation/ai/petra/expertEconomyManager.js";
+import { ExpertConstructionManager } from "simulation/ai/petra/expertConstructionManager.js";
+import { ExpertFoodClusterManager } from "simulation/ai/petra/expertFoodClusterManager.js";
+import { ExpertFoodManager } from "simulation/ai/petra/expertFoodManager.js";
 import { allowCapture, getAttackBonus, getLandAccess, getMaxStrength, isLineInsideEnemyTerritory,
 	setSeaAccess } from "simulation/ai/petra/entityExtend.js";
 import { GarrisonManager } from "simulation/ai/petra/garrisonManager.js";
@@ -75,6 +78,9 @@ export function Headquarters(config)
 	this.victoryManager = new VictoryManager(this.Config);
 	this.emergencyManager = new EmergencyManager(this.Config);
 	this.expertEconomyManager = new ExpertEconomyManager(this);
+	this.expertConstructionManager = new ExpertConstructionManager(this, ExpertOpeningConstants);
+	this.expertFoodClusterManager = new ExpertFoodClusterManager(this, ExpertOpeningConstants);
+	this.expertFoodManager = new ExpertFoodManager(this, ExpertOpeningConstants);
 
 	this.capturableTargets = new Map();
 	this.capturableTargetsTime = 0;
@@ -2521,5 +2527,8 @@ Headquarters.prototype.Deserialize = function(gameState, data)
 
 	this.emergencyManager = new EmergencyManager(this.Config);
 	this.expertEconomyManager = new ExpertEconomyManager(this);
+	this.expertConstructionManager = new ExpertConstructionManager(this, ExpertOpeningConstants);
+	this.expertFoodClusterManager = new ExpertFoodClusterManager(this, ExpertOpeningConstants);
+	this.expertFoodManager = new ExpertFoodManager(this, ExpertOpeningConstants);
 	this.emergencyManager.Deserialize(data.emergencyManager);
 };

@@ -3,8 +3,8 @@ import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 export const ExpertOpeningConstants = {
 	maxHouseWalkTime: 4.0,          // seconds round trip
 	maxHouseDistance: 5,            // meters from active worksite / dropsite border
-	berryTransition: 0.25,          // start food transition when first fruit cluster is 25% left
-	firstWoodSaturation: 16,        // civilians sent to wood before new civilians return to food
+	berryTransition: 0.30,          // transition planning when fruit is 30% left
+	firstWoodSaturation: 20,        // civilians sent to wood before new civilians return to food
 	farmsteadSpacing: 30,           // minimum meters between early farmsteads
 	woodlineRoundTrip: 4.0,         // seconds round trip before improving wood dropsites
 	farmMaxDistance: 2.0            // desired farm edge distance from food dropsite border
@@ -23,6 +23,8 @@ export function ExpertEconomyManager(HQ)
 	this.HQ = HQ;
 	this.workerTarget5Min = 75;
 	this.openingLockTime = 300;
+	this.minFoodReserve = 180;
+	this.maxEarlyWoodReserve = 550;
 }
 
 ExpertEconomyManager.prototype.isActive = function(gameState)
@@ -46,6 +48,7 @@ ExpertEconomyManager.prototype.update = function(gameState, queues)
 		return;
 
 	this.cleanEarlyQueues(gameState, queues);
+	this.balanceOpeningCivilianJobs(gameState);
 };
 
 ExpertEconomyManager.prototype.cleanEarlyQueues = function(gameState, queues)
@@ -73,9 +76,68 @@ ExpertEconomyManager.prototype.cleanEarlyQueues = function(gameState, queues)
 		queues.militaryBuilding.plans = queues.militaryBuilding.plans.filter(plan =>
 			!plan.type || plan.type.indexOf("/stable") == -1);
 
-	// Avoid field-foundation spam. Expert should place a farm only when civilians
-	// can immediately build and then work it. One pending/built-step at a time is
-	// safer than dropping several empty foundations.
-	if (queues.field && queues.field.plans.length > 1)
-		queues.field.plans = queues.field.plans.slice(0, 1);
+	// v0.3.5 task commitment: no field plans before the natural-food transition,
+	// and never more than one pending field plan.
+	if (queues.field && queues.field.plans.length)
+	{
+		if (this.HQ.shouldExpertOpeningFarmTransition && !this.HQ.shouldExpertOpeningFarmTransition(gameState))
+			queues.field.empty();
+		else if (queues.field.plans.length > 1)
+			queues.field.plans = queues.field.plans.slice(0, 1);
+	}
+};
+
+
+ExpertEconomyManager.prototype.getOpeningResourceBias = function(gameState)
+{
+	const res = gameState.getResources();
+	const food = res && res.food !== undefined ? res.food : 0;
+	const wood = res && res.wood !== undefined ? res.wood : 0;
+
+	if (food < this.minFoodReserve)
+		return "food";
+	if (wood > this.maxEarlyWoodReserve && food < wood * 0.6)
+		return "food";
+	if (wood < 250 && food > 250)
+		return "wood";
+	return "balanced";
+};
+
+ExpertEconomyManager.prototype.balanceOpeningCivilianJobs = function(gameState)
+{
+	if (!this.isActive(gameState))
+		return;
+
+	const bias = this.getOpeningResourceBias(gameState);
+	let woodCivs = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position() || !ent.hasClass("Civilian") || ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry"))
+			continue;
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") == "wood")
+			++woodCivs;
+	}
+
+	// If we are floating wood and starving food, stop sending new civilians to wood.
+	// Active wood workers are not yanked immediately; new/idle civilians are biased
+	// back to food so Expert recovers without oscillating every turn.
+	if (bias != "food")
+		return;
+
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position() || !ent.hasClass("Civilian") || ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry"))
+			continue;
+		if (ent.getMetadata(PlayerID, "expertOpeningJob") != "wood")
+			continue;
+		if (woodCivs <= 12)
+			break;
+		const subrole = ent.getMetadata(PlayerID, "subrole");
+		// Prefer reassigning only idle/new workers so existing productive woodcutters
+		// can drop off naturally before changing roles in a later version.
+		if (subrole !== undefined && subrole !== null)
+			continue;
+		ent.setMetadata(PlayerID, "expertOpeningJob", undefined);
+		--woodCivs;
+	}
 };
