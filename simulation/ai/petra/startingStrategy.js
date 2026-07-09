@@ -95,7 +95,8 @@ Headquarters.prototype.applyExpertEconomyRules = function(gameState, queues)
 		if (queues.majorTech)
 			queues.majorTech.empty();
 		if (queues.militaryBuilding)
-			queues.militaryBuilding.empty();
+			queues.militaryBuilding.plans = queues.militaryBuilding.plans.filter(plan =>
+				plan.metadata && plan.metadata.expertTransitionBarracks);
 
 		// Petra's normal economy can decide that a second storehouse is useful while
 		// the Expert opening is still locked.  For the first 180 seconds, keep only our
@@ -111,6 +112,13 @@ Headquarters.prototype.applyExpertEconomyRules = function(gameState, queues)
 				queues.minorTech.empty();
 		}
 	}
+
+	// v0.4.3: for the first five minutes ExpertOpeningManager owns the
+	// opening economy.  The older Expert managers remain available as helpers,
+	// but they do not independently make opening decisions while this manager
+	// is active.
+	if (this.expertOpeningManager && this.expertOpeningManager.update(gameState, queues))
+		return;
 
 	if (this.expertFoodClusterManager)
 		this.expertFoodClusterManager.update(gameState);
@@ -136,6 +144,8 @@ Headquarters.prototype.applyExpertEconomyRules = function(gameState, queues)
 	this.assignExpertOpeningWorkers(gameState);
 	if (this.expertEconomyManager)
 		this.expertEconomyManager.update(gameState, queues);
+	if (this.expertTransitionManager)
+		this.expertTransitionManager.update(gameState, queues);
 };
 
 Headquarters.prototype.isExpertOpeningPhaseActive = function(gameState)
@@ -410,27 +420,31 @@ Headquarters.prototype.ensureExpertOpeningHouse = function(gameState, queues)
 	if (!gameState.isTemplateAvailable(gameState.applyCiv(houseTemplate)) || !this.canBuild(gameState, houseTemplate))
 		return;
 
-	// Expert v0.3.1: every opening house should support the active work area,
-	// not just the first one.  Do not return merely because one house exists;
-	// later population houses were drifting back to Petra's generic CC layout.
+	// v0.4.2: Expert houses are committed construction tasks, not generic Petra
+	// population plans.  Never create a second house while an earlier Expert house
+	// is queued or still a foundation; citizen soldiers must finish the active one
+	// first.  This prevents the two-unfinished-houses pop-block regression.
+	queues.house.plans = queues.house.plans.filter(plan =>
+		plan.metadata && plan.metadata.expertOpeningHouse);
+
+	if (gameState.getOwnFoundations().filter(filters.byClass("House")).hasEntities())
+		return;
+	if (queues.house.hasQueuedUnits())
+		return;
+
 	const popBonus = gameState.getTemplate(gameState.applyCiv(houseTemplate)).getPopulationBonus();
 	const plannedPop = queues.house.length() * popBonus;
 	const freeSlots = gameState.getPopulationLimit() + plannedPop - this.getAccountedPopulation(gameState);
 
-	// Queue the opening house before we are housed, but do not spam houses.
-	if (freeSlots > 12)
+	// Opening/transition housing should be tight: build at 5 or fewer free slots.
+	// Later, when wood is floating, Expert can afford a larger buffer.
+	const res = gameState.getResources();
+	const threshold = res && res.wood > 600 ? 10 : 5;
+	if (freeSlots > threshold)
 		return;
 
 	const pos = this.findExpertOpeningHouseAnchorPosition(gameState, base);
 	if (!pos)
-		return;
-
-	// Replace generic house plans during the opening with one positioned near the
-	// first storehouse/woodline, then citizen soldiers will pick up that foundation.
-	queues.house.plans = queues.house.plans.filter(plan =>
-		plan.metadata && plan.metadata.expertOpeningHouse);
-
-	if (queues.house.hasQueuedUnits())
 		return;
 
 	const avoidPos = this.findExpertOpeningSupplyNear(gameState, base, "wood", pos,
@@ -841,7 +855,7 @@ Headquarters.prototype.assignExpertOpeningWorkers = function(gameState)
 			else if (ent.hasClass("Civilian") && ent.canGather("food"))
 			{
 				const foodAssigned = this.countExpertOpeningFoodCivilians(gameState);
-				const woodAssigned = this.countExpertOpeningCivilianWoodWorkers(gameState);
+				const woodAssigned = this.countExpertOpeningTotalWoodWorkers ? this.countExpertOpeningTotalWoodWorkers(gameState) : this.countExpertOpeningCivilianWoodWorkers(gameState);
 				const foodFoundation = this.findExpertOpeningDropsiteFoundation(gameState, "food", this.baseManagers()[0]);
 				if (foodFoundation && foodAssigned < 8)
 				{
@@ -895,6 +909,20 @@ Headquarters.prototype.countExpertOpeningCivilianWoodWorkers = function(gameStat
 		if (!ent.position() || !ent.hasClass("Civilian"))
 			continue;
 		if (ent.getMetadata(PlayerID, "expertOpeningJob") == "wood")
+			++count;
+	}
+	return count;
+};
+
+Headquarters.prototype.countExpertOpeningTotalWoodWorkers = function(gameState)
+{
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent.position())
+			continue;
+		const job = ent.getMetadata(PlayerID, "expertOpeningJob");
+		if (job == "wood" || job == "woodBuilder")
 			++count;
 	}
 	return count;
@@ -1085,8 +1113,15 @@ Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
 			return this.setExpertOpeningBuildTarget(gameState, base, ent, woodFoundation);
 
 		const houseFoundation = this.findExpertOpeningHouseFoundation(gameState, base);
-		if (houseFoundation && !ent.hasClass("Civilian") && !ent.hasClass("Cavalry") && ent.isBuilder())
+		if (houseFoundation && !ent.hasClass("Civilian") && !ent.hasClass("Cavalry") && ent.isBuilder() &&
+		    this.getExpertOpeningFoundationBuilderCount(gameState, houseFoundation) < 3)
 			return this.setExpertOpeningBuildTarget(gameState, base, ent, houseFoundation);
+
+		const barracksFoundation = this.findExpertTransitionBarracksFoundation ?
+			this.findExpertTransitionBarracksFoundation(gameState, base) : undefined;
+		if (barracksFoundation && !ent.hasClass("Civilian") && !ent.hasClass("Cavalry") && ent.isBuilder() &&
+		    this.getExpertOpeningFoundationBuilderCount(gameState, barracksFoundation) < 4)
+			return this.setExpertOpeningBuildTarget(gameState, base, ent, barracksFoundation);
 
 		if (job == "woodBuilder")
 			ent.setMetadata(PlayerID, "expertOpeningJob", "wood");
@@ -1187,6 +1222,32 @@ Headquarters.prototype.findExpertOpeningDropsite = function(gameState, resource,
 		bestDist = dist;
 	}
 	return bestDropsite;
+};
+
+Headquarters.prototype.findExpertTransitionBarracksFoundation = function(gameState, base)
+{
+	let bestFoundation;
+	let bestDist = Math.min();
+	const basePos = this.findExpertOpeningHouseAnchorPosition ?
+		this.findExpertOpeningHouseAnchorPosition(gameState, base) :
+		(this.expertOpeningWoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined));
+
+	for (const foundation of gameState.getOwnFoundations().values())
+	{
+		if (!foundation || !foundation.position())
+			continue;
+		if (!foundation.hasClass || !foundation.hasClass("Barracks"))
+			continue;
+		if (getLandAccess(gameState, foundation) != base.accessIndex)
+			continue;
+
+		const dist = basePos ? SquareVectorDistance(basePos, foundation.position()) : 0;
+		if (dist > bestDist)
+			continue;
+		bestFoundation = foundation;
+		bestDist = dist;
+	}
+	return bestFoundation;
 };
 
 Headquarters.prototype.findExpertOpeningHouseFoundation = function(gameState, base)
