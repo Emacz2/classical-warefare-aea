@@ -497,7 +497,7 @@ Headquarters.prototype.ensureExpertOpeningHouse = function(gameState, queues)
 	// Opening/transition housing should be tight: build at 5 or fewer free slots.
 	// Later, when wood is floating, Expert can afford a larger buffer.
 	const res = gameState.getResources();
-	const threshold = res && res.wood > 600 ? 10 : 5;
+	const threshold = gameState.ai.elapsedTime < 420 ? 5 : (res && res.wood > 600 ? 10 : 5);
 	if (freeSlots > threshold)
 		return;
 
@@ -680,8 +680,22 @@ Headquarters.prototype.ensureExpertOpeningFarms = function(gameState, queues)
 	const fields = gameState.getOwnEntitiesByClass("Field", true).filter(filters.byMetadata(PlayerID, "base", base.ID)).length;
 	const foundations = gameState.getOwnFoundations().filter(filters.byClass("Field")).filter(filters.byMetadata(PlayerID, "base", base.ID)).length;
 	const queued = queues.field.countQueuedUnits();
-	const wanted = 4;
-	if (fields >= wanted || foundations + queued >= 1)
+	// One committed field at a time.  Do not place the next foundation until the
+	// current field exists and at least one farmer is actually working it.
+	if (foundations > 0 || queued > 0)
+		return;
+	if (fields > 0)
+	{
+		let activeFarmers = 0;
+		for (const ent of gameState.getOwnUnits().values())
+			if (ent && ent.getMetadata(PlayerID, "expertOpeningJob") == "farm" &&
+			    ent.getMetadata(PlayerID, "supply") !== undefined)
+				++activeFarmers;
+		if (!activeFarmers)
+			return;
+	}
+	const wanted = gameState.ai.elapsedTime < 420 ? 6 : 10;
+	if (fields >= wanted)
 		return;
 
 	// Expert v0.3: do not drop empty field foundations. Wait until at least one
@@ -703,8 +717,11 @@ Headquarters.prototype.findExpertOpeningFieldFoundation = function(gameState, ba
 {
 	let bestFoundation;
 	let bestDist = Math.min();
-	const basePos = this.expertOpeningFoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined);
-	// A field center is normally around 20-24m from the farmstead center when the
+	const foodDropsite = this.findExpertOpeningDropsite(gameState, "food", base) ||
+		this.findExpertOpeningDropsiteFoundation(gameState, "food", base);
+	const basePos = foodDropsite && foodDropsite.position() ? foodDropsite.position() :
+		(this.expertOpeningFoodPos || (base.anchor && base.anchor.position() ? base.anchor.position() : undefined));
+	// A field center is normally around 20-24m from the active farmstead center when the
 	// field edge touches the dropsite area.  This cap prevents Expert food builders
 	// from crossing the base to finish unrelated/generic field foundations.
 	const maxDist = 35 * 35;
@@ -1147,7 +1164,13 @@ Headquarters.prototype.enforceExpertOpeningPhase = function(gameState, ent)
 				Worker.SUBROLE_GATHERER, "food");
 
 		if (this.shouldExpertOpeningFarmTransition(gameState) && ent.hasClass("Civilian"))
+		{
 			ent.setMetadata(PlayerID, "expertOpeningJob", "farm");
+			ent.setMetadata(PlayerID, "expertFoodLockedSupply", undefined);
+			ent.setMetadata(PlayerID, "supply", undefined);
+			ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_IDLE);
+			return this.enforceExpertOpeningPhase(gameState, ent);
+		}
 		return true;
 	}
 

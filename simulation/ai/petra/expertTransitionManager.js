@@ -1,5 +1,6 @@
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { ConstructionPlan } from "simulation/ai/petra/queueplanBuilding.js";
+import { TrainingPlan } from "simulation/ai/petra/queueplanTraining.js";
 import { Worker } from "simulation/ai/petra/worker.js";
 
 /**
@@ -19,11 +20,12 @@ export function ExpertTransitionManager(HQ, constants)
 {
 	this.HQ = HQ;
 	this.constants = constants;
-	this.transitionWindow = 360;
+	this.transitionWindow = 420;
 	this.minBarracksTime = 150; // 2:30
 	this.barracksWoodReserve = 200;
 	this.targetFoodCivilians = 7;
-	this.targetTotalWoodWorkers = 20; // civilians + citizen soldiers
+	this.targetTotalWoodWorkers = 18; // includes starting citizen soldiers
+	this.barracksDeadline = 210; // 3:30 hard deadline when affordable
 	this.startedBarracks = false;
 }
 
@@ -46,6 +48,7 @@ ExpertTransitionManager.prototype.update = function(gameState, queues)
 
 	this.assignUnownedCivilians(gameState);
 	this.queueBarracks(gameState, queues);
+	this.queueCitizenSoldiers(gameState, queues);
 };
 
 ExpertTransitionManager.prototype.countFoodCivilians = function(gameState)
@@ -71,6 +74,13 @@ ExpertTransitionManager.prototype.countTotalWoodWorkers = function(gameState)
 			continue;
 		const job = ent.getMetadata(PlayerID, "expertOpeningJob");
 		if (job == "wood" || job == "woodBuilder")
+		{
+			++count;
+			continue;
+		}
+		// Starting citizen soldiers are part of the opening wood force even when
+		// their metadata has temporarily been cleared by a completed build task.
+		if (ent.hasClass && ent.hasClass("CitizenSoldier") && !ent.hasClass("Cavalry"))
 			++count;
 	}
 	return count;
@@ -146,10 +156,12 @@ ExpertTransitionManager.prototype.queueBarracks = function(gameState, queues)
 	const res = gameState.getResources();
 	if (!res || res.wood < this.barracksWoodReserve)
 		return;
-	if (this.countTotalWoodWorkers(gameState) < this.targetTotalWoodWorkers)
+	const woodForce = this.countTotalWoodWorkers(gameState);
+	if (woodForce < this.targetTotalWoodWorkers && gameState.ai.elapsedTime < this.barracksDeadline)
 		return;
-	if (gameState.getPopulation() > 0.90 * gameState.getPopulationLimit())
-		return;
+	// Do not delay the first barracks merely because we are close to population cap.
+	// House timing is handled separately; barracks converts wood/food float into
+	// citizen-soldier production.
 
 	const barracksTemplate = this.HQ.canBuild(gameState, "structures/{civ}/barracks") ?
 		"structures/{civ}/barracks" :
@@ -164,4 +176,38 @@ ExpertTransitionManager.prototype.queueBarracks = function(gameState, queues)
 		  "militaryBase": true,
 		  "expertTransitionBarracks": true,
 		  "expertOpeningHouse": false }));
+};
+
+
+ExpertTransitionManager.prototype.queueCitizenSoldiers = function(gameState, queues)
+{
+	if (!queues || !queues.citizenSoldier)
+		return;
+	if (gameState.ai.elapsedTime < 300)
+		return;
+	if (!gameState.getOwnEntitiesByClass("Barracks", true).hasEntities())
+		return;
+
+	const res = gameState.getResources();
+	if (!res || res.food < 250)
+		return;
+
+	queues.citizenSoldier.plans = queues.citizenSoldier.plans.filter(plan =>
+		plan.metadata && plan.metadata.expertTransitionCitizenSoldier);
+	if (queues.citizenSoldier.hasQueuedUnits())
+		return;
+
+	const freeSlots = gameState.getPopulationLimit() - this.HQ.getAccountedPopulation(gameState);
+	if (freeSlots <= 0)
+		return;
+
+	const template = this.HQ.findBestTrainableUnit(gameState,
+		[["CitizenSoldier", "Infantry"]], [["costsResource", 0.5, "stone"], ["costsResource", 0.5, "metal"]]);
+	if (!template)
+		return;
+
+	let size = res.food >= 900 ? 5 : res.food >= 600 ? 4 : 3;
+	size = Math.min(size, freeSlots);
+	queues.citizenSoldier.addPlan(new TrainingPlan(gameState, template,
+		{ "role": Worker.ROLE_WORKER, "base": 0, "expertTransitionCitizenSoldier": true }, size, size));
 };

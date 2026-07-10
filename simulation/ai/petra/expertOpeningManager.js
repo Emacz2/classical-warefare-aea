@@ -15,7 +15,7 @@ export function ExpertOpeningManager(HQ, constants)
 {
 	this.HQ = HQ;
 	this.Constants = constants;
-	this.activeUntil = 300;
+	this.activeUntil = 420;
 	this.firstFoodCivilians = 7;
 	this.firstWoodWorkersTotal = constants.firstWoodSaturation || 20;
 }
@@ -46,6 +46,8 @@ ExpertOpeningManager.prototype.update = function(gameState, queues)
 		// Petra is blocked and no one creates/finishes the second farmstead.
 		if (this.HQ.ensureExpertOpeningAdditionalFoodDropsites)
 			this.HQ.ensureExpertOpeningAdditionalFoodDropsites(gameState, queues);
+		if (this.HQ.ensureExpertOpeningFarms)
+			this.HQ.ensureExpertOpeningFarms(gameState, queues);
 		this.HQ.ensureExpertOpeningHouse(gameState, queues);
 		this.controlCivicCentreTraining(gameState, queues);
 	}
@@ -61,11 +63,27 @@ ExpertOpeningManager.prototype.cleanQueues = function(gameState, queues)
 		return;
 
 	if (queues.citizenSoldier)
-		queues.citizenSoldier.empty();
+	{
+		// During the pure opening, block soldier training.  After five minutes,
+		// TransitionManager may queue Expert citizen soldiers from the first barracks.
+		if (gameState.ai.elapsedTime < 300)
+			queues.citizenSoldier.empty();
+		else
+			queues.citizenSoldier.plans = queues.citizenSoldier.plans.filter(plan =>
+				plan.metadata && plan.metadata.expertTransitionCitizenSoldier);
+	}
 	if (queues.majorTech)
 		queues.majorTech.empty();
 	if (queues.field)
-		queues.field.empty();
+	{
+		// v0.4.6: before farm transition, remove all fields. Once natural food is
+		// low, Expert owns field construction; do not delete the committed farm plan.
+		if (!this.HQ.shouldExpertOpeningFarmTransition || !this.HQ.shouldExpertOpeningFarmTransition(gameState))
+			queues.field.empty();
+		else
+			queues.field.plans = queues.field.plans.filter(plan =>
+				plan.metadata && plan.metadata.expertOpeningFarm);
+	}
 	if (queues.dropsites)
 		queues.dropsites.plans = queues.dropsites.plans.filter(plan =>
 			plan.metadata && plan.metadata.expertOpening);

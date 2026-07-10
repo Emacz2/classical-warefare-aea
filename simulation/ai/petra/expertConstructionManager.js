@@ -13,7 +13,8 @@ export function ExpertConstructionManager(HQ, constants)
 	this.HQ = HQ;
 	this.Constants = constants;
 	this.maxFoodDropsiteBuilders = 4;
-	this.maxFieldBuilders = 2;
+	this.maxFieldBuilders = 3;
+	this.maxBarracksBuilders = 4;
 }
 
 ExpertConstructionManager.prototype.isActive = function(gameState)
@@ -70,6 +71,11 @@ ExpertConstructionManager.prototype.reserveFoodBuilders = function(gameState)
 		this.HQ.findExpertOpeningFieldFoundation(gameState, base);
 	if (fieldFoundation)
 		this.reserveCiviliansForFoundation(gameState, fieldFoundation, "farmBuilder", this.maxFieldBuilders);
+
+	const barracksFoundation = this.HQ.findExpertTransitionBarracksFoundation &&
+		this.HQ.findExpertTransitionBarracksFoundation(gameState, base);
+	if (barracksFoundation)
+		this.reserveCitizenSoldiersForFoundation(gameState, barracksFoundation, this.maxBarracksBuilders);
 };
 
 ExpertConstructionManager.prototype.reserveCiviliansForFoundation = function(gameState, foundation, job, maxBuilders)
@@ -116,6 +122,37 @@ ExpertConstructionManager.prototype.reserveCiviliansForFoundation = function(gam
 		ent.setMetadata(PlayerID, "expertOpeningJob", job);
 		ent.setMetadata(PlayerID, "target-foundation", foundation.id());
 		ent.setMetadata(PlayerID, "expertFoodLockedSupply", undefined);
+		++committed;
+	}
+};
+
+
+ExpertConstructionManager.prototype.reserveCitizenSoldiersForFoundation = function(gameState, foundation, maxBuilders)
+{
+	if (!foundation || !foundation.position())
+		return;
+	let committed = this.HQ.getExpertOpeningFoundationBuilderCount ?
+		this.HQ.getExpertOpeningFoundationBuilderCount(gameState, foundation) : 0;
+	if (committed >= maxBuilders)
+		return;
+	const candidates = [];
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position || !ent.position() || !ent.hasClass || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry"))
+			continue;
+		if (!ent.isBuilder || !ent.isBuilder())
+			continue;
+		candidates.push(ent);
+	}
+	candidates.sort((a, b) => a.id() - b.id());
+	for (const ent of candidates)
+	{
+		if (committed >= maxBuilders)
+			break;
+		ent.setMetadata(PlayerID, "expertOpeningJob", "woodBuilder");
+		ent.setMetadata(PlayerID, "target-foundation", foundation.id());
+		ent.setMetadata(PlayerID, "supply", undefined);
+		ent.setMetadata(PlayerID, "subrole", undefined);
 		++committed;
 	}
 };

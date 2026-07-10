@@ -22,10 +22,11 @@ export function ExpertEconomyManager(HQ)
 {
 	this.HQ = HQ;
 	this.workerTarget5Min = 75;
-	this.openingLockTime = 300;
+	this.openingLockTime = 420;
 	this.minFoodReserve = 150;
 	this.foodEmergencyReserve = 75;
 	this.maxEarlyWoodReserve = 500;
+	this.maxTransitionFoodWorkers = 18;
 	this.civilianWoodCap = 20;
 	this.totalWoodCap = 24;
 }
@@ -170,13 +171,13 @@ ExpertEconomyManager.prototype.chooseOpeningJobForCivilian = function(gameState)
 	// v0.4.4 resource controller: once opening wood is established, stop feeding
 	// the wood snowball.  Food shortages and wood float always force new civilians
 	// into a food job.
-	if (food < this.minFoodReserve || wood > this.maxEarlyWoodReserve || civilianWood >= this.civilianWoodCap)
+	if (food < this.minFoodReserve || (wood > this.maxEarlyWoodReserve && roles.food < this.maxTransitionFoodWorkers) || civilianWood >= this.civilianWoodCap)
 		return this.chooseFoodJob(gameState);
 
 	if (civilianWood < this.civilianWoodCap)
 		return "wood";
 
-	return this.chooseFoodJob(gameState);
+	return roles.food < this.maxTransitionFoodWorkers ? this.chooseFoodJob(gameState) : "wood";
 };
 
 ExpertEconomyManager.prototype.balanceOpeningCivilianJobs = function(gameState)
@@ -198,7 +199,7 @@ ExpertEconomyManager.prototype.balanceOpeningCivilianJobs = function(gameState)
 	// v0.4.4 loop converted almost every wood worker to food/farm because food/wood
 	// stockpile values do not change inside the loop.
 	const emergency = food < this.foodEmergencyReserve && wood > this.maxEarlyWoodReserve;
-	const desiredFood = emergency ? 14 : (food < this.minFoodReserve && wood > this.maxEarlyWoodReserve ? 12 : 7);
+	const desiredFood = emergency ? 14 : (food < this.minFoodReserve && wood > this.maxEarlyWoodReserve ? 12 : (wood > 900 && food < 800 ? 16 : 7));
 	if (!emergency && civilianWood <= this.civilianWoodCap && foodRoles >= desiredFood)
 		return;
 
