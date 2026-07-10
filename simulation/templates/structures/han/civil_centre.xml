@@ -25,6 +25,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_pikeman_b
       units/{civ}/infantry_crossbowman_b
+      units/{civ}/cavalry_spearman_b
       units/{civ}/scout_tower
     </Entities>
   </Trainer>

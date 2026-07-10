@@ -6,13 +6,8 @@
     <SpecificName>Gaizazridjô</SpecificName>
     <SelectionGroupName>units/germ/cavalry_spearman_b</SelectionGroupName>
     <Icon>units/germ/cavalry_spearman.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">unlock_spearcav</Techs>
-    </Requirements>
   </Identity>
-  <Promotion>
-    <Entity>units/germ/cavalry_spearman_a</Entity>
-  </Promotion>
+<Promotion disable=""/>
   <VisualActor>
     <Actor>units/germans/cavalry_spearman_b_m.xml</Actor>
   </VisualActor>

@@ -24,6 +24,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_axeman_conscript
       units/{civ}/infantry_archer_conscript
+      units/{civ}/cavalry_spearman_b
     </Entities>
   </Trainer>
   <VisualActor>

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_cav|cav_pursuit|template_unit_cavalry_melee_spearman">
+<Entity parent="persian|cav_pursuit|template_unit_cavalry_melee_spearman">
   <Identity>
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Cappadocian Scout and Pursuit Spear Cavalry</GenericName>
-    <SpecificName>Asabāra Katpatuka</SpecificName>
+    <GenericName>Persian Light Spear Cavalry</GenericName>
+    <SpecificName>Asabāra</SpecificName>
     <Icon>units/pers/cavalry_spearman.png</Icon>
   </Identity>
-  <Promotion>
-    <Entity>units/pers/cavalry_spearman_a</Entity>
-  </Promotion>
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/persians/cavalry_spearman_b_m.xml</Actor>
   </VisualActor>
