@@ -4,5 +4,5 @@
 	"label": "classical-warfare-aea",
 	"url": "https://jeff-web-sketch.github.io/ClasicWareFareAEASite/", 
 	"description": "A more in-depth version of 0 A.D., with an emphasis on historical accuracy. New units and technologies, but a similar approach to the game. (In simple words, we think it makes the game better.)",
-	"dependencies": [ "0ad=0.28.0" ]
+	"dependencies": ["0ad=0.28.0"]
 }

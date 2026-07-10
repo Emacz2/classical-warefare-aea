@@ -38,21 +38,25 @@ export const communityButtons = [
 		}
 	},
 	{
-		"caption": translate("Report a Bug"),
+		"caption": translate("Report a Bug (base game)"),
 		"tooltip": translate("Click to visit the 0 A.D. issue tracker to report a bug, crash, or error."),
 		"size": "8 100%-112 50%-4 100%-80",
 		"onPress": () => {
 			openURL("https://gitea.wildfiregames.com/0ad/0ad/issues");
 		}
 	},
+	
+	
 	{
-		"caption": translateWithContext("Frequently Asked Questions", "FAQ"),
-		"tooltip": translate("Click to visit the Frequently Asked Questions page in your browser."),
+		"caption": translate("Report a Bug (mod)"),
+		"tooltip": translate("Click to visit the 0 A.D. forum to report errors."),
 		"size": "50%+4 100%-112 100%-8 100%-80",
 		"onPress": () => {
-			openURL("https://gitea.wildfiregames.com/0ad/0ad/wiki/FAQ");
+			openURL("https://wildfiregames.com/forum/topic/164262-classical-warfare-aea/");
 		}
 	},
+	
+	
 	{
 		"caption": translate("Translate the Game"),
 		"tooltip": translate("Click to open the 0 A.D. translate page in your browser."),
