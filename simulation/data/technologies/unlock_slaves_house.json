@@ -9,7 +9,7 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_town" },
-			{ "civ": "athen" },
+			{ "civ": "athen"},
 			{ "civ": "cart" },
 			{ "civ": "mace" },
 			{ "civ": "rome" },

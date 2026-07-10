@@ -40,6 +40,16 @@
   <TerritoryDecay>
     <DecayRate op="mul">2</DecayRate>
   </TerritoryDecay>
+    <Trainer>
+    <Entities datatype="tokens">
+      units/{civ}/support_slave
+    </Entities>
+  </Trainer>
+   <Researcher>
+    <Technologies datatype="tokens">
+    unlock_slaves_house
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <FoundationActor>structures/carthaginians/fndn_house.xml</FoundationActor>
     <Actor>structures/carthaginians/apartment.xml</Actor>

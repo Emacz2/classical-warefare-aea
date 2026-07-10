@@ -10,9 +10,12 @@
   </Builder>
   <Identity>
     <Civ>rome</Civ>
-    <GenericName>War Captive</GenericName>
+    <GenericName>Estate Severant</GenericName>
     <SpecificName>Captivus</SpecificName>
     <Icon>units/global/slave.png</Icon>
+    <Requirements>
+    <Techs datatype="tokens">unlock_slaves_house</Techs>
+    </Requirements>
   </Identity>
   <VisualActor>
     <Actor>units/global/slave.xml</Actor>
