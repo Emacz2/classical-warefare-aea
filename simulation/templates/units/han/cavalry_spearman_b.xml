@@ -3,7 +3,7 @@
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Han Scoput and Pursuit Spear Cavalry</GenericName>
+    <GenericName>Han Scout and Pursuit Spear Cavalry</GenericName>
     <SpecificName>Máo Qíbīng</SpecificName>
     <Icon>units/han/cavalry_spearman.png</Icon>
   </Identity>

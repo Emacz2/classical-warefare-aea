@@ -4,7 +4,7 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Persian Light Spear Cavalry</GenericName>
+    <GenericName>Persian pursuit and scout Spear Cavalry</GenericName>
     <SpecificName>Asabāra</SpecificName>
     <Icon>units/pers/cavalry_spearman.png</Icon>
   </Identity>

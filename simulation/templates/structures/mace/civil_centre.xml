@@ -11,6 +11,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_pikeman_conscript
       units/{civ}/infantry_archer_concsript
+      units/{civ}/cavalry_spearman_b
     </Entities>
   </Trainer>
   <VisualActor>

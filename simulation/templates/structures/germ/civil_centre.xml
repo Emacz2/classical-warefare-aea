@@ -22,8 +22,8 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
       units/{civ}/infantry_javelineer_b
+       units/{civ}/cavalry_spearman_b
       units/{civ}/support_wagon
-      units/{civ}/cavalry_spearman_b
     </Entities>
   </Trainer>
   <Researcher>

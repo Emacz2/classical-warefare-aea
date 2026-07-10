@@ -11,7 +11,7 @@
     <SpecificName>Hippeús</SpecificName>
     <Icon>units/athen/cavalry_swordsman.png</Icon>
     <Requirements>
-      <Techs datatype="tokens">unlock_swordcav</Techs>
+      <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
   <Promotion>
