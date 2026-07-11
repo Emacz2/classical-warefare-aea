@@ -21,6 +21,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
       units/{civ}/infantry_javelineer_b
+      units/{civ}/cavalry_spearman_b
       units/{civ}/city_police
     </Entities>
   </Trainer>
