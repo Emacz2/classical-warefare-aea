@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="allied_cav|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
   <Identity>
-    <Civ>spart</Civ>
+    <Civ>theb</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/spart/cavalry_javelineer_b</SelectionGroupName>
     <GenericName>Tarantine Light-Javelineer Cavalry</GenericName>
@@ -13,11 +13,8 @@
     </Requirements>
   </Identity>
   <Promotion>
-    <Entity>units/spart/cavalry_javelineer_a</Entity>
+    <Entity>units/theb/cavalry_javelineer_a</Entity>
   </Promotion>
-  <TrainingRestrictions>
-  <Category>SpartCav</Category>
-  </TrainingRestrictions>
   <VisualActor>
     <Actor>units/spartans/cavalry_javelinist_b_m.xml</Actor>
   </VisualActor>

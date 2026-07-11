@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="roman|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
+<Entity parent="cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
   <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
-    <GenericName>Companion Light-Javelineer Cavalry</GenericName>
+    <GenericName>Italian Allied Cavalry Javelineer</GenericName>
     <SpecificName>Eques Socius</SpecificName>
     <SelectionGroupName>units/rome/cavalry_javelineer_b</SelectionGroupName>
     <VisibleClasses datatype="tokens">Republic</VisibleClasses>

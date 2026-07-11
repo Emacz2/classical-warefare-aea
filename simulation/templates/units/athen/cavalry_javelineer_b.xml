@@ -3,6 +3,7 @@
   <Identity>
     <SelectionGroupName>units/athen/cavalry_javelineer_b</SelectionGroupName>
     <GenericName>Thracian Cavalry Javelineer</GenericName>
+    <SpecificName>Hippeús Thrákios</SpecificName>
     <Icon>units/athen/cavalry_javelinist.png</Icon>
      <Requirements>
       <Techs datatype="tokens">phase_town</Techs>

@@ -3,7 +3,7 @@
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/cavalry_treveri_spear_b</SelectionGroupName>
-    <SpecificName>Treveri Spear Cavalry</SpecificName>
+    <SpecificName>Treveri Allied Spear Cavalry</SpecificName>
     <Icon>units/gaul/cavalry_javelinist.png</Icon>
   </Identity>
    <Promotion>

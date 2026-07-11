@@ -24,6 +24,7 @@
       units/{civ}/support_female_citizen
       units/{civ}/helot_javelineer
       units/{civ}/helot_stone_thrower
+      units/{civ}/cavalry_spearman_p
     </Entities>
   </Trainer>
     <Promotion>

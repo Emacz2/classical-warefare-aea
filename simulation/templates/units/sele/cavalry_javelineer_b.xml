@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="sele|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
+<Entity parent="allied_cav|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
   <Identity>
     <Civ>sele</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/sele/cavalry_javelineer_b</SelectionGroupName>
-    <GenericName>Militia Mounted Light-Javelineer</GenericName>
-    <SpecificName>Hippakontistès Politès</SpecificName>
+    <GenericName>Tarantine Light-Javelineer Cavalry</GenericName>
+    <SpecificName>Hippeús Tarantînos</SpecificName>
     <Icon>units/sele/cavalry_militia.png</Icon>
   </Identity>
   <Promotion>

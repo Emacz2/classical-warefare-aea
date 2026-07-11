@@ -3,8 +3,8 @@
   <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/cavalry_javelineer_b</SelectionGroupName>
+     <GenericName>Iberian Cavalry Javelineer</GenericName>
     <SpecificName>Zaldun Txabalindari</SpecificName>
-    <GenericName>Javelineer Cavalry</GenericName>
     <Icon>units/iber/cavalry_javelinist.png</Icon>
     <Requirements>
       <Techs datatype="tokens">unlock_javcav</Techs>

@@ -3,7 +3,7 @@
   <Identity>
     <Civ>maur</Civ>
     <SelectionGroupName>units/maur/cavalry_javelineer_b</SelectionGroupName>
-    <GenericName>Indian Light-Javelineer Cavalry</GenericName>
+    <GenericName>Indian Cavalry Javelineer</GenericName>
     <SpecificName>Ashwarohi</SpecificName>
     <Icon>units/maur/cavalry_javelinist.png</Icon>
   </Identity>

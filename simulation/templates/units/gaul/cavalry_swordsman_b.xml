@@ -3,6 +3,7 @@
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/cavalry_swordsman_b</SelectionGroupName>
+    <GenericName>Gallic Sword Cavalry</GenericName>
     <SpecificName>Eporedos</SpecificName>
     <Icon>units/gaul/cavalry_swordsman.png</Icon>
     <Requirements>

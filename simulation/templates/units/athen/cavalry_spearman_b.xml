@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="civ/athen|athenian|cav_pursuit|cav_spear_shield|template_unit_cavalry_melee_spearman">
+<Entity parent="civ/athen|athenian|cav_pursuit|cav_spear_shield|thrusting_spear|template_unit_cavalry_melee_spearman">
   <Identity>
     <SelectionGroupName>units/athen/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Athenian scout and pursuit spear Cavalry</GenericName>
+    <GenericName>Athenian Scout Cavalry</GenericName>
     <SpecificName>Pródromos</SpecificName>
     <Icon>units/athen/cavalry_javelinist.png</Icon>
   </Identity>

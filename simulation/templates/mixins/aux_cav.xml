@@ -16,23 +16,6 @@
       <MaxRange>3</MaxRange>
       <RepeatTime>1000</RepeatTime>
     </Capture>
-     <Melee merge="">
-	<Damage>
-	  <Hack op="mul">1.1</Hack>
-    <Pierce op="mul">1.1</Pierce>
-    <Crush op="mul">1.1</Crush>
-  </Damage>
-  </Melee>
-  <Ranged merge="">
-	<Damage>
-	  <Hack op="mul">1.05</Hack>
-      <Pierce op="mul">1.05</Pierce>
-      <Crush op="mul">1.05</Crush>
-    </Damage>
-      <Projectile>
-        <Spread op="mul">0.9</Spread>
-    </Projectile>
-  </Ranged>
   </Attack>
   <Identity>
     <VisibleClasses datatype="tokens">Auxiliary</VisibleClasses>

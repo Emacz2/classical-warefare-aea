@@ -3,8 +3,8 @@
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/cavalry_javelineer_b</SelectionGroupName>
-    <SpecificName>Marcacos</SpecificName>
     <GenericName>Gallic Light-Javelineer Cavalry</GenericName>
+    <SpecificName>Marcacos</SpecificName>
     <Icon>units/gaul/cavalry_javelinist.png</Icon>
   </Identity>
   <Promotion>
