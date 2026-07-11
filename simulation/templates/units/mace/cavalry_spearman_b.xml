@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="macedonian|cav_pursuit|cav_spear_shield|template_unit_cavalry_melee_spearman">
+<Entity parent="allied_cav|cav_charge|cav_spear_shield|cav_medium|template_unit_cavalry_melee_spearman">
   <Identity>
-    <SelectionGroupName>units/athen/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Macedonian scout and pursuit spear Cavalry</GenericName>
-    <SpecificName>Pródromos</SpecificName>
-    <Icon>units/athen/cavalry_javelinist.png</Icon>
+    <Civ>mace</Civ>
+    <Lang>greek</Lang>
+    <SelectionGroupName>units/mace/cavalry_spearman_b</SelectionGroupName>
+    <GenericName>Thessalian Spear Cavalry</GenericName>
+    <SpecificName>Xystophóros Thessalikós</SpecificName>
+    <Icon>units/mace/cavalry_spearman.png</Icon>
   </Identity>
-<Promotion disable=""/>
+  <Promotion>
+    <Entity>units/mace/cavalry_spearman_a</Entity>
+  </Promotion>
   <VisualActor>
-    <Actor>units/athenians/cavalry_javelinist_b_m.xml</Actor>
+    <Actor>units/macedonians/cavalry_spearman_b_m.xml</Actor>
   </VisualActor>
 </Entity>

@@ -9,7 +9,7 @@
   </Obstruction>
     <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/cavalry_spearman_b_allied
+      units/{civ}/cavalry_spearman_p
     </Entities>
   </Trainer>
   <VisualActor>

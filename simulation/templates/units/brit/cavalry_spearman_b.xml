@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="brit|cav_charge|cav_medium|cav_spear_shield|template_unit_cavalry_melee_spearman">
+<Entity parent="brit|cav_pursuit|cav_spear_shield|template_unit_cavalry_melee_spearman">
   <Identity>
     <Civ>brit</Civ>
     <SelectionGroupName>units/brit/cavalry_spearman_b</SelectionGroupName>
-     <GenericName>Noble Spear Cavalry</GenericName>
+     <GenericName>Tribal scout and pursuit Cavalry</GenericName>
     <SpecificName>Eporedos</SpecificName>
     <Icon>units/brit/cavalry_swordsman.png</Icon>
   </Identity>
-  <Promotion>
-    <Entity>units/brit/cavalry_spearman_a</Entity>
-  </Promotion>
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/britons/cavalry_swordsman_b_m.xml</Actor>
   </VisualActor>

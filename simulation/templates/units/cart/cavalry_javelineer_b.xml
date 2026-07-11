@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_cav|cav_light|template_unit_cavalry_ranged_javelineer">
+<Entity parent="cav_light|cav_jav_shield|thrusting_spear|template_unit_cavalry_ranged_javelineer">
   <Identity>
     <Civ>cart</Civ>
     <SelectionGroupName>units/cart/cavalry_javelineer_b</SelectionGroupName>
-    <GenericName>Liby-Phoenician Mounted Javelineer</GenericName>
+    <GenericName>Liby-Phoenician Cavalry Javelineer</GenericName>
     <SpecificName>Ḥayyāl Raḫūv Masili</SpecificName>
     <Icon>units/cart/cavalry_javelinist.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">unlock_javcav</Techs>
-    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/cart/cavalry_javelineer_a</Entity>

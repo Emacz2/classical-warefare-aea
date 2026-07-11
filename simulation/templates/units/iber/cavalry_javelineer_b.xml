@@ -6,6 +6,9 @@
     <SpecificName>Zaldun Txabalindari</SpecificName>
     <GenericName>Javelineer Cavalry</GenericName>
     <Icon>units/iber/cavalry_javelinist.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">unlock_javcav</Techs>
+    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/iber/cavalry_javelineer_a</Entity>

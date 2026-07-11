@@ -4,12 +4,9 @@
     <Civ>kush</Civ>
     <Lang>napatan</Lang>
     <SelectionGroupName>units/kush/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Meroitic Heavy Spear Cavalry</GenericName>
+    <GenericName>Meroitic Spear Cavalry</GenericName>
     <SpecificName>Htr</SpecificName>
     <Icon>units/kush/cavalry_spearman.png</Icon>
-     <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/kush/cavalry_spearman_a</Entity>
