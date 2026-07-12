@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="macedonian|cav_pursuit|thrusting_spear|template_unit_cavalry_melee_spearman">
   <Identity>
-    <SelectionGroupName>units/athen/cavalry_spearman_b</SelectionGroupName>
+    <SelectionGroupName>units/mace/cavalry_spearman_b</SelectionGroupName>
     <GenericName>Macedonian Scout Cavalry</GenericName>
     <SpecificName>Pródromos</SpecificName>
     <Icon>units/athen/cavalry_javelinist.png</Icon>

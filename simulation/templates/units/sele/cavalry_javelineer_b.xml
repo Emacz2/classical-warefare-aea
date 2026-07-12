@@ -4,7 +4,7 @@
     <Civ>sele</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/sele/cavalry_javelineer_b</SelectionGroupName>
-    <GenericName>Tarantine Light-Javelineer Cavalry</GenericName>
+    <GenericName>Tarantine Javelineer Cavalry</GenericName>
     <SpecificName>Hippeús Tarantînos</SpecificName>
     <Icon>units/sele/cavalry_militia.png</Icon>
   </Identity>

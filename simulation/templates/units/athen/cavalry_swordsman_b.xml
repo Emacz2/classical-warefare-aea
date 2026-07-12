@@ -7,7 +7,7 @@
   </Attack>
   <Identity>
     <SelectionGroupName>units/athen/cavalry_swordsman_b</SelectionGroupName>
-    <GenericName>Athenian Sword Cavalry</GenericName>
+    <GenericName>Athenian Horse Swordsman</GenericName>
     <SpecificName>Hippeús</SpecificName>
     <Icon>units/athen/cavalry_swordsman.png</Icon>
     <Requirements>

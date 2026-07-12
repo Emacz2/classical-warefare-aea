@@ -2,7 +2,7 @@
 <Entity parent="civ/athen|allied_cav|cav_light|template_unit_cavalry_ranged_javelineer">
   <Identity>
     <SelectionGroupName>units/athen/cavalry_javelineer_b</SelectionGroupName>
-    <GenericName>Thracian Cavalry Javelineer</GenericName>
+    <GenericName>Thracian Horse Javelineer</GenericName>
     <SpecificName>Hippeús Thrákios</SpecificName>
     <Icon>units/athen/cavalry_javelinist.png</Icon>
      <Requirements>

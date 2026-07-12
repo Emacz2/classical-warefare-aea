@@ -3,8 +3,8 @@
   <Identity>
     <Civ>brit</Civ>
     <SelectionGroupName>units/brit/cavalry_javelineer_b</SelectionGroupName>
+    <GenericName>Brythonic Horse Javelineer</GenericName>
     <SpecificName>Marcacos</SpecificName>
-    <GenericName>Brythonic Light-Javelineer Cavalry</GenericName>
     <Icon>units/brit/cavalry_javelinist.png</Icon>
   </Identity>
   <Promotion>
