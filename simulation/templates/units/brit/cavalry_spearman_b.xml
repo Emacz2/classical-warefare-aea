@@ -9,6 +9,6 @@
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
-    <Actor>units/britons/cavalry_swordsman_b_m.xml</Actor>
+    <Actor>units/britons/cavalry_spearman_b_m.xml</Actor>
   </VisualActor>
 </Entity>
