@@ -35,9 +35,9 @@
   </Resistance>
   <Identity>
     <Lang>greek</Lang>
-    <GenericName>Cretan Mercenary Archer</GenericName>
-    <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
+    <GenericName>Cretan Mercenary Archer</GenericNam>
     <SpecificName>Toxótēs Krētikós</SpecificName>
+    <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Icon>units/mace/infantry_archer.png</Icon>
     <Tooltip>Elite mercenary archer renowned for exceptional accuracy and rapid fire. (10% faster repeat time and 25% more accurate. Additionly they have +1.5 Pierace and +1 Crush/Hack resistance.) Strengths: Highly effective against lightly armored troops at range. Weaknesses: Requires protection from cavalry and melee infantry.</Tooltip>
     <History>Cretan archers were among the most sought-after professional missile troops of the ancient Mediterranean.</History>

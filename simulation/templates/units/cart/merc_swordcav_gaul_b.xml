@@ -11,7 +11,7 @@
   </Attack>
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Celtic Mercenary Cavalry</GenericName>
+    <GenericName>Gallic Horse Swordsman Mercenary</GenericName>
     <SpecificName>Ḥayyāl Ḥerev Raḫūv</SpecificName>
     <SelectionGroupName>units/cart/merc_swordcav_celt</SelectionGroupName>
     <Icon>units/gaul/cavalry_swordsman.png</Icon>

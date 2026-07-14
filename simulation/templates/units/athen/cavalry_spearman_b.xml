@@ -2,7 +2,7 @@
 <Entity parent="civ/athen|athenian|cav_pursuit|cav_spear_shield|thrusting_spear|template_unit_cavalry_melee_spearman">
   <Identity>
     <SelectionGroupName>units/athen/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Athenian Scout Cavalry</GenericName>
+    <GenericName>Athenian Horse Scout</GenericName>
     <SpecificName>Pródromos</SpecificName>
     <Icon>units/athen/cavalry_javelinist.png</Icon>
   </Identity>

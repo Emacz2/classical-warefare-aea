@@ -2,7 +2,7 @@
 <Entity parent="brit|sword_long|inf_charge|template_unit_champion_infantry_swordsman">
   <Identity>
     <Civ>brit</Civ>
-    <GenericName>Brythonic Champion Bezerk mode</GenericName>
+    <GenericName>Brythonic Champion Berserk mode</GenericName>
     <SpecificName>Argos ríastrad </SpecificName>
     <Tooltip>Swing 2 swords; 50% more dmg, 1 tenth of a second faster repeat time. Add 75 HP but -1 HP every 2 seconds in Bezerk Mode. +25% faster walk speed and 50% faser acceleartion but no armor.</Tooltip>
     <Icon>units/brit/champ_berserk.png</Icon>
@@ -19,7 +19,7 @@
   </Attack>
  <Health>
     <Max op="add">75</Max>
-    <RegenRate>-0.5</RegenRate>
+    <RegenRate>-0.25</RegenRate>
     <Unhealable>true</Unhealable>
   </Health>
   <Upgrade>

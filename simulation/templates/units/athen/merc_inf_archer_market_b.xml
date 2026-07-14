@@ -3,6 +3,8 @@
   <Identity>
     <SelectionGroupName>units/athen/merc_inf_archer_b</SelectionGroupName>
     <Icon>units/mace/infantry_archer.png</Icon>
+    <GenericName>Cretan Mercenary Archer</GenericNam>
+    <SpecificName>Toxótēs Krētikós</SpecificName>
   </Identity>
 <Promotion disable=""/>
   <VisualActor>

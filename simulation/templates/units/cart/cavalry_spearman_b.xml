@@ -3,7 +3,7 @@
   <Identity>
     <Civ>cart</Civ>
     <SelectionGroupName>units/cart/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Liby-Phoenician Light Spear Cavalry</GenericName>
+    <GenericName>Liby-Phoenician Horse Spearman</GenericName>
     <SpecificName>Ḥayyāl Raḫūv Masili</SpecificName>
     <Icon>units/rome/cavalry_spearman_auxiliary.png</Icon>
   </Identity>
