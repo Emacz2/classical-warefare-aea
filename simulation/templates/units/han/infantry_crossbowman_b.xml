@@ -12,6 +12,7 @@
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/infantry_crossbowman_b</SelectionGroupName>
+    <GenericName>Han Infantry Crossbowman</GenericName>
     <SpecificName>Nǔ Shǒu</SpecificName>
     <Icon>units/han/infantry_crossbowman.png</Icon>
   </Identity>

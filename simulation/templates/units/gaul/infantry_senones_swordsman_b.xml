@@ -9,9 +9,8 @@
 <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/infantry_senones_swordsman_b</SelectionGroupName>
-    <GenericName>Senones Raider</GenericName>
+    <GenericName>Allied Senones Raider</GenericName>
     <Tooltip></Tooltip>
-    <VisibleClasses datatype="tokens">-Worker Builder</VisibleClasses>
      <Icon>units/gaul/senones_swordsman.png</Icon>
   </Identity>
   <Promotion>

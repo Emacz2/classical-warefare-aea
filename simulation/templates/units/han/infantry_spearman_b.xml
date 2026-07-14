@@ -12,6 +12,7 @@
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/infantry_spearman_b</SelectionGroupName>
+    <GenericName>Han Infantry Spearman</GenericName>
     <SpecificName>Máo Bīng</SpecificName>
     <Icon>units/han/infantry_spearman.png</Icon>
     <Requirements>

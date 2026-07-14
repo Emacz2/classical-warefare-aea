@@ -6,6 +6,7 @@
   </Auras>
   <Identity>
     <Civ>gaul</Civ>
+    <GenericName>Support Trumpeter</GenericName>
     <SpecificName>Carnucos</SpecificName>
     <Icon>units/gaul/champion_swordsman_carnyx.png</Icon>
         <Requirements>
