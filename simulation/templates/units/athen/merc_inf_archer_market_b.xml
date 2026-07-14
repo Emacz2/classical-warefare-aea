@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="civ/athen|merc_inf_market|archer_cretan|template_unit_infantry_ranged_archer">
-  <Identity>
-    <SelectionGroupName>units/athen/merc_inf_archer_b</SelectionGroupName>
-    <Icon>units/mace/infantry_archer.png</Icon>
-    <GenericName>Cretan Mercenary Archer</GenericNam>
-    <SpecificName>Toxótēs Krētikós</SpecificName>
+ <Identity>
+    <SelectionGroupName>units/athen/merc_inf_archer_market_b</SelectionGroupName>
   </Identity>
 <Promotion disable=""/>
   <VisualActor>

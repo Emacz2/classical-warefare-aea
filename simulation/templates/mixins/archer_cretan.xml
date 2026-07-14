@@ -35,7 +35,7 @@
   </Resistance>
   <Identity>
     <Lang>greek</Lang>
-    <GenericName>Cretan Mercenary Archer</GenericNam>
+    <GenericName>Cretan Mercenary Archer</GenericName>
     <SpecificName>Toxótēs Krētikós</SpecificName>
     <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Icon>units/mace/infantry_archer.png</Icon>

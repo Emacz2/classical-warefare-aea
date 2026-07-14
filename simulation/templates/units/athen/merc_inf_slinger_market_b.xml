@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="civ/athen|merc_inf_market|slinger_rhodian|template_unit_infantry_ranged_slinger_lead">
   <Identity>
-    <SelectionGroupName>units/athen/infantry_slinger_b</SelectionGroupName>
-    <GenericName>Rhodian Slinger</GenericName>
-    <SpecificName>Sphendonḗtēs Rhódios</SpecificName>
-    <Icon>units/mace/infantry_slinger.png</Icon>
+    <SelectionGroupName>units/athen/merc_inf_slinger_market_b</SelectionGroupName>
   </Identity>
 <Promotion disable=""/>
   <VisualActor>
