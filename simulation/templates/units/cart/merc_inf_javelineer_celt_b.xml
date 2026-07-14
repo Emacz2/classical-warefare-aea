@@ -10,9 +10,9 @@
   </Attack>
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Celtic Peltast</GenericName>
+    <GenericName>Gallic Javelineert</GenericName>
     <SpecificName>Sǝḫīr Kidōn</SpecificName>
-    <SelectionGroupName>units/cart/infantry_javelineer_iber_b</SelectionGroupName>
+    <SelectionGroupName>units/cart/merc_inf_javelineer_celt_b</SelectionGroupName>
     <Icon>units/cart/infantry_javelinist.png</Icon>
   </Identity>
  <Promotion disable=""/>

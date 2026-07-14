@@ -10,9 +10,9 @@
   </Attack>
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Iberian Allied Nobel Swordsman</GenericName>
+    <GenericName>Iberian Allied Noble Swordsman</GenericName>
     <SpecificName></SpecificName>
-    <SelectionGroupName>units/cart/merc_inf_iber_sword_b</SelectionGroupName>
+    <SelectionGroupName>units/cart/merc_inf_swordsman_iber_b</SelectionGroupName>
     <Icon>units/cart/infantry_swordsman.png</Icon>
   </Identity>
  <Promotion disable=""/>

@@ -13,9 +13,9 @@
   </Vision>
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Celtic Mercenary Swordsman</GenericName>
+    <GenericName>Gallic Mercenary Swordsman</GenericName>
     <SpecificName>Seḫīr Ḥerev</SpecificName>
-    <SelectionGroupName>units/cart/merc_sword_celt</SelectionGroupName>
+    <SelectionGroupName>units/cart/merc_inf_swordsman_gaul_b</SelectionGroupName>
     <Icon>units/cart/infantry_swordsman.png</Icon>
   </Identity>
  <Promotion disable=""/>
