@@ -16,7 +16,7 @@
   </Identity>
  <Promotion disable=""/>
   <VisualActor>
-    <Actor>units/spartans/infantry_jav_c.xml</Actor>
+    <Actor>units/greek/infantry_jav_c.xml</Actor>
   </VisualActor>
 </Entity>
 
