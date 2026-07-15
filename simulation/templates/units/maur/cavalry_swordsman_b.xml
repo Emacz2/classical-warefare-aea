@@ -3,7 +3,7 @@
   <Identity>
     <Civ>maur</Civ>
     <SelectionGroupName>units/maur/cavalry_swordsman_b</SelectionGroupName>
-    <GenericName>Indian Sword Cavalry</GenericName>
+    <GenericName>Mauryan Horse Swordsman</GenericName>
     <SpecificName>Aśvārohagaṇaḥ</SpecificName>
     <Icon>units/maur/cavalry_swordsman.png</Icon>
     <Requirements>

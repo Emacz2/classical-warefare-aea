@@ -46,7 +46,7 @@
 		},
 		{
 			"Template": "units/mace/infantry_pikeman_conscript",
-			"Count": 1
+			"Count": 3
 		},
 		{
 			"Template": "units/mace/infantry_archer_concsript",

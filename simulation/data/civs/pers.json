@@ -55,7 +55,7 @@
 		},
 		{
 			"Template": "units/pers/infantry_archer_conscript",
-			"Count": 2
+			"Count": 3
 		},
 		{
 			"Template": "units/pers/infantry_axeman_conscript",

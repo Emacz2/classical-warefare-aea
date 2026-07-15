@@ -3,11 +3,11 @@
   <Identity>
     <SelectionGroupName>units/mace/cavalry_spearman_b</SelectionGroupName>
     <GenericName>Macedonian Scout Cavalry</GenericName>
-    <SpecificName>Pródromos</SpecificName>
+    <SpecificName>Makedṓn Pródromos</SpecificName>
     <Icon>units/athen/cavalry_javelinist.png</Icon>
   </Identity>
 <Promotion disable=""/>
   <VisualActor>
-    <Actor>units/athenians/cavalry_javelinist_b_m.xml</Actor>
+    <Actor>units/macedonians/cavalry_spearman_p_m.xml</Actor>
   </VisualActor>
 </Entity>

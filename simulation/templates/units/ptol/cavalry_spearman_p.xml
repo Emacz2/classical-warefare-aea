@@ -3,12 +3,12 @@
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Macedonian Scout Cavalry</GenericName>
+    <GenericName>Ptolemaic Horse Scout</GenericName>
     <SpecificName>Hippeús Symmakhikós</SpecificName>
     <Icon>units/spart/cavalry_spearman.png</Icon>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
-    <Actor>units/spartans/cavalry_spearman_b_m.xml</Actor>
+      <Actor>units/macedonians/cavalry_spearman_p_m.xml</Actor>
   </VisualActor>
 </Entity>

@@ -15,7 +15,7 @@
   <Identity>
     <Civ>maur</Civ>
     <SelectionGroupName>units/maur/infantry_maceman_b</SelectionGroupName>
-    <GenericName>Indian Club</GenericName>
+    <GenericName>Mauryan Clubman</GenericName>
     <SpecificName>Gadādhara (गदाधर)</SpecificName>
     <Icon>units/maur/cs_mace.png</Icon>
   </Identity>

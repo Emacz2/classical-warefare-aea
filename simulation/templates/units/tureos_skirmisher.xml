@@ -9,7 +9,7 @@
   <Identity>
     <Rank>Elite</Rank>
     <Lang>greek</Lang>
-    <GenericName>Thureos Skirmisher</GenericName>
+    <GenericName>Thureos Javelineer</GenericName>
     <SpecificName>Thureophóros Akrobolistḗs</SpecificName>
     <Icon>units/mace/thureophoros.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>

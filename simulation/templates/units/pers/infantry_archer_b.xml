@@ -10,8 +10,7 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/infantry_archer_b</SelectionGroupName>
-    <GenericName>Sogdian Archer</GenericName>
-    <SpecificName>Θanuvaniya Suguda</SpecificName>
+    <GenericName>Persian Archer</GenericName>
     <Tooltip>Upgrade Elite Archers to Imortals</Tooltip>
     <Icon>units/pers/infantry_archer.png</Icon>
   </Identity>

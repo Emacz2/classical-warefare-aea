@@ -10,6 +10,6 @@
   </Identity>
  <Promotion disable=""/>
   <VisualActor>
-    <Actor>units/thebans/infantry_spearman_b.xml</Actor>
+    <Actor>units/greek/merc_spearman_b.xml</Actor>
   </VisualActor>
 </Entity>

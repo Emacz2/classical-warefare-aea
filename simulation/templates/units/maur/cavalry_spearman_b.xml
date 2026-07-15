@@ -3,7 +3,7 @@
   <Identity>
     <Civ>maur</Civ>
     <SelectionGroupName>units/maur/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Indian Spear cavalry</GenericName>
+    <GenericName>Mauryan Horese Spearman</GenericName>
     <SpecificName>Aśva Bhalladhara</SpecificName>
     <Icon>units/rome/cavalry_spearman_auxiliary.png</Icon>
   </Identity>

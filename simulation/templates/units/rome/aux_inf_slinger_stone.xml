@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="aux_inf|slinger_baleric|template_unit_infantry_ranged_slinger">
   <Identity>
-    <SelectionGroupName>units/rome/aux_inf_slinger_stone</SelectionGroupName>
+  <GenericName>Auxiliary Baleric Slinger</GenericName>
+  <SelectionGroupName>units/rome/aux_inf_slinger_stone</SelectionGroupName>
   <Icon>units/cart/infantry_slinger.png</Icon>
   </Identity>
     <Upgrade>

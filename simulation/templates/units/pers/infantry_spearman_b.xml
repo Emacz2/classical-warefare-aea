@@ -9,7 +9,7 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/infantry_spearman_b</SelectionGroupName>
-    <GenericName>Shield Bearer</GenericName>
+    <GenericName>Persian Spearman</GenericName>
     <SpecificName>Sparabara</SpecificName>
     <Icon>units/pers/infantry_spearman.png</Icon>
   </Identity>

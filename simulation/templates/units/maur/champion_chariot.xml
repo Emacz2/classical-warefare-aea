@@ -6,7 +6,7 @@
   </Footprint>
   <Identity>
     <Civ>maur</Civ>
-    <GenericName>Nobel Chariot</GenericName>
+    <GenericName>Noble Chariot</GenericName>
     <SpecificName>Rath</SpecificName>
     <SelectionGroupName>units/maur/champion_chariot</SelectionGroupName>
     <Icon>units/maur/champion_chariot.png</Icon>

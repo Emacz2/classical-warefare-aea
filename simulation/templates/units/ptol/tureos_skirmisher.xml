@@ -20,7 +20,4 @@
     <SelectionGroupName>units/ptol/tureos_skirmisher</SelectionGroupName>
   </Identity>
   <Promotion disable=""/>
-  <VisualActor>
-    <Actor>units/iberians/infantry_javelinist_b.xml</Actor>
-  </VisualActor>
 </Entity>

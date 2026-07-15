@@ -3,7 +3,6 @@
   <Identity>
     <SelectionGroupName>units/athen/cavalry_spearman_b</SelectionGroupName>
     <GenericName>Athenian Horse Scout</GenericName>
-    <SpecificName>Pródromos</SpecificName>
     <Icon>units/athen/cavalry_javelinist.png</Icon>
   </Identity>
 <Promotion disable=""/>

@@ -2,8 +2,6 @@
 <Entity parent="merc_inf_market|slinger_baleric|template_unit_infantry_ranged_slinger">
   <Identity>
     <Civ>rome</Civ>
-    <GenericName>Balearic Slinger</GenericName>
-    <SpecificName>Qallāʿ Ibušimi</SpecificName>
     <SelectionGroupName>units/rome/merc_inf_slinger_market_b</SelectionGroupName>
     <Icon>units/cart/infantry_slinger.png</Icon>
   </Identity>

@@ -2,7 +2,7 @@
 <Entity parent="aux_inf|units/samnite_skirmisher">
   <Identity>
     <SelectionGroupName>units/rome/aux_inf_samnite_skirmisher</SelectionGroupName>
-    <SpecificName>Samnite Skirmisher</SpecificName>
+    <SpecificName>Auxiliary Samnite Skirmisher</SpecificName>
     <Icon>units/samn/skirmisher.png</Icon>
      <Requirements>
       <Techs datatype="tokens">roman_reforms</Techs>
