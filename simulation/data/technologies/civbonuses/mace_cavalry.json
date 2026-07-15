@@ -4,7 +4,7 @@
 	"description": "The combination of Thessalian Cavalry and Companion Cavalry was one of the strongest and the first true shock cavalry in Europe.",
 	"requirements": { "civ": "mace" },
 	"icon": "sword_cavalry.png",
-	"tooltip": "Cavalry 0.5 of Hack/Pierce resistance and 10% more dmg.",
+	"tooltip": "Native cavalry gain +0.5 Hack Armor, +0.5 Pierce Armor, and +10% attack damage, excludes meranaries. ",
 	"modifications": [
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 },
