@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
 <Cost>
+    <BuildTime op="mul">0.9</BuildTime>
     <Resources>
       <wood op="add">-25</wood>
     </Resources>
   </Cost>
+    <Health>
+    <Max>200</Max>
+  </Health>
 <Attack>
-  <Melee merge="">
+  <Melee>
+  <Damage>
+	  <Hack op="mul">0.6</Hack>
+    <Pierce op="mul">0.6</Pierce>
+    <Crush op="mul">0.6</Crush>
+  </Damage>
    <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
