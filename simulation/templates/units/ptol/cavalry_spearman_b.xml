@@ -2,7 +2,6 @@
 <Entity parent="ptol|cav_charge|cav_spear_shield|cav_medium|template_unit_cavalry_melee_spearman">
   <Identity>
     <Civ>ptol</Civ>
-    <VisibleClasses datatype="tokens">Camel</VisibleClasses>
     <SelectionGroupName>units/ptol/cavalry_spearman_b</SelectionGroupName>
     <GenericName>Thessalian Spear Cavalry</GenericName>
     <SpecificName>Xystophóros Thessalikós</SpecificName>
