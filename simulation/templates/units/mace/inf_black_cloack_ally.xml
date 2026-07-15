@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_inf|units/thracian_black_cloak">
+<Entity parent="allied_inf|inf_shock|template_unit_infantry_melee_swordsman">
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>

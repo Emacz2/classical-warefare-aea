@@ -11,10 +11,12 @@
       <RepeatTime>1000</RepeatTime>
     </Capture>
      <Melee>
-     <Damage>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">0.5</Pierce>
+      <Damage>
+        <Hack op="add">2</Hack>
+        <Pierce op="add">1</Pierce>
       </Damage>
+      <MaxRange op="add">0.5</MaxRange>
+      <RepeatTime op="add">100</RepeatTime>
     </Melee>
   </Attack>
    <Identity>
@@ -24,6 +26,15 @@
     <SpecificName>Rhomphaiophoros</SpecificName>
     <Icon>units/special/pelt_sword.png</Icon>
   </Identity>
+    <Resistance>
+    <Entity>
+      <Damage>
+      <Crush op="add">1</Crush>
+      <Hack op="add">1.5</Hack>
+      <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>
   </VisualActor>
