@@ -1,6 +1,6 @@
 {
-	"genericName": "Javelin Throw ",
-	"description": ".",
+	"genericName": "Chariot Skirmishing ",
+	"description": "Experienced British charioteers perfected coordinated hit-and-run tactics, delivering more accurate volleys while harassing enemy formations.",
 	"cost": {
 		"food": 250,
 		"metal": 250
@@ -14,9 +14,10 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "archery_tradition.png",
 	"researchTime": 30,
-	"tooltip": "Chariot Javilneers +5 range.",
+	"tooltip": "Chariot Javilneers +3 range and 10% more accurate.",
 	"modifications": [
-		{ "value": "Attack/Ranged/MaxRange", "add": 5 }
+		{ "value": "Attack/Ranged/MaxRange", "add": 3 },
+		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9 }
 	],
 	"affects": ["Chariot"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"

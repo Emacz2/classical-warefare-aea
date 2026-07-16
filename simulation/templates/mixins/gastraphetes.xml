@@ -32,9 +32,11 @@
   </Cost>
   <Identity>
     <Classes datatype="tokens">Siege Bow</Classes>
+      <History>Gastraphetes ("belly-bow") was one of the earliest known mechanical projectile weapons developed in the Greek world during the Classical period. It was the technological ancestor of later torsion-powered siege engines.</History>
   </Identity>
  <UnitMotion>
     <WalkSpeed op="mul">0.9</WalkSpeed>
     <Acceleration op="mul">0.9</Acceleration>
   </UnitMotion>
 </Entity>
+
