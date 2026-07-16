@@ -8,6 +8,17 @@
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
     <Icon>structures/brit_great_hill_fort.png</Icon>
   </Identity>
+    <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/infantry_spearman_a
+      units/{civ}/infantry_swordsman
+      units/{civ}/champion_infantry_swordsman
+      units/{civ}/infantry_javelineer_a
+      units/{civ}/infantry_slinger_a
+      units/{civ}/cavalry_spearman_p
+    </Entities>
+  </Trainer>
   <Minimap>
     <Type>structure</Type>
     <Icon size="16.0">civil_centre.png</Icon>

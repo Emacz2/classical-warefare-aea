@@ -26,8 +26,9 @@
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/infantry_spearman_b
-      units/{civ}/infantry_javelineer_b
+      units/{civ}/infantry_spearman_a
+      units/{civ}/infantry_javelineer_a
+      units/{civ}/cavalry_spearman_p
     </Entities>
   </Trainer>
   <Minimap>

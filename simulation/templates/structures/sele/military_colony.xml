@@ -14,6 +14,12 @@
       pair_unlock_champions_sele
     </Technologies>
   </Researcher>
+     <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/cavalry_spearman_p
+    </Entities>
+  </Trainer>
   <Promotion>
     <Entity>structures/sele/military_colony_2</Entity>
     <RequiredXp>3000</RequiredXp>

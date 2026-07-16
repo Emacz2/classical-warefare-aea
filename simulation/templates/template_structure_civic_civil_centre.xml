@@ -125,7 +125,7 @@
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/support_civilian
-      units/{civ}/support_female_citizen
+      units/{civ}/cavalry_spearman_p
     </Entities>
   </Trainer>
   <Vision>

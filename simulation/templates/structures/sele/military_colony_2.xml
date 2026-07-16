@@ -13,6 +13,7 @@
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/inf_black_cloack_ally
+      units/{civ}/cavalry_spearman_p
     </Entities>
   </Trainer>
    <Researcher>

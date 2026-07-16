@@ -8,6 +8,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_pikeman_b
       units/{civ}/infantry_javelineer_b
+      units/{civ}/cavalry_spearman_p
       units/{civ}/hero_seleucus_i
       units/{civ}/hero_antiochus_iii
       units/{civ}/hero_antiochus_iv

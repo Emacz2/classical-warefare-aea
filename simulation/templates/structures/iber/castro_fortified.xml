@@ -5,6 +5,17 @@
     <VisibleClasses datatype="tokens">Fortified</VisibleClasses>
     <Icon>structures/casto_fort.png</Icon>
   </Identity>
+   <Trainer>
+    <Entities datatype="tokens">
+      units/{civ}/infantry_spearman_a
+      units/{civ}/infantry_swordsman_a
+      units/{civ}/champion_infantry_swordsman
+      units/{civ}/champion_infantry_swordsman2
+      units/{civ}/infantry_javelineer_a
+      units/{civ}/infantry_slinger_a
+      units/{civ}/champion_infantry_javelineer
+	</Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/germans/encampment_fortified.xml</Actor>
   </VisualActor>

@@ -74,7 +74,8 @@
     <Entities replace="" datatype="tokens">
       units/{civ}/merc_inf_spearman_b
       units/{civ}/merc_inf_archer_b
-      units/{civ}/merc_cavalry_spearman_b
+      units/{civ}/cavalry_spearman_b
+      units/{civ}/cavalry_spearman_p
     </Entities>
   </Trainer>
   <VisualActor>

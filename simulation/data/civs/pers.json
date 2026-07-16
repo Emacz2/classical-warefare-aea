@@ -62,7 +62,7 @@
 			"Count": 2
 		},
 		{
-			"Template": "units/pers/cavalry_spearman_b"
+			"Template": "units/pers/cavalry_spearman_p"
 		}
 	],
 	"AINames": [

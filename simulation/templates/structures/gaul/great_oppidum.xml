@@ -8,6 +8,14 @@
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
     <Icon>structures/oppidum_fort.png</Icon>
   </Identity>
+    <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/infantry_spearman_a
+      units/{civ}/infantry_javelineer_a
+      units/{civ}/infantry_slinger_a
+    </Entities>
+  </Trainer>
   <Minimap>
     <Type>structure</Type>
     <Icon size="16.0">civil_centre.png</Icon>

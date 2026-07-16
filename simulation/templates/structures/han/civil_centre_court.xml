@@ -35,6 +35,11 @@
   <Trainer>
     <BatchTimeModifier op="add">-0.2</BatchTimeModifier>
     <Entities datatype="tokens">
+      units/{civ}/infantry_pikeman_e
+      units/{civ}/infantry_spearman_e
+      units/{civ}/infantry_swordsman_e
+      units/{civ}/infantry_archer_e
+      units/{civ}/infantry_crossbowman_e
       units/{civ}/hero_han_xin_horse
       units/{civ}/hero_liu_bang_horse
       units/{civ}/hero_wei_qing_chariot
