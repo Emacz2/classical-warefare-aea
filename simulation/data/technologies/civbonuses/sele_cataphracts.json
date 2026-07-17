@@ -3,19 +3,9 @@
 	"autoResearch": true,
 	"description": "",
 	"icon": "agoge.png",
-	"tooltip": "Cataphracts are available in p2 but deal 10% less dmg and have 1 less Hack/Pierce resistance while costing 25% less wood in p2",
+	"tooltip": "Native Champion Cavalry becomes available in Town Phase, giving Seleucids the only Champion Cavalry p2 (Not counting Chariots).",
 	"requirements": { "civ": "sele" },
-	"modifications": [
 
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 0.9},
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 0.9},
-		{ "value": "Resistance/Entity/Damage/Hack", "add": -1 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": -1 },
-		{ "value": "Cost/BuildTime", "multiply": 0.8 },
-		{ "value": "Cost/Resources/wood", "multiply": 0.75 }
-		
-
-	],
 
 	"affects": ["Champion Cavalry"]
 	

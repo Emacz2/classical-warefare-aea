@@ -1,0 +1,20 @@
+{
+	"genericName": "Royal Cataphract Corps",
+	"description": "The Seleucid Cataphracts were among the most formidable heavy cavalry of the Hellenistic world.",
+	
+	"cost": {
+		"food": 500,
+		"metal": 250
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "sele" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "helmet_corinthian_crest.png",
+	"researchTime": 60,
+	"tooltip": "Unlock Cataphracts at the Stable.",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

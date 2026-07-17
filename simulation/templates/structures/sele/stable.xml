@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_military_stable">
+  <Identity>
+    <Civ>sele</Civ>
+    <SpecificName>Hippōn</SpecificName>
+  </Identity>
+    <Researcher>
+    <Technologies datatype="tokens">
+      royal_cataphract_corps
+    </Technologies>
+  </Researcher>
+   <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/champion_cavalry
+    </Entities>
+  </Trainer>
+  <VisualActor>
+    <Actor>structures/seleucids/stable.xml</Actor>
+    <FoundationActor>structures/fndn_7x6.xml</FoundationActor>
+  </VisualActor>
+</Entity>

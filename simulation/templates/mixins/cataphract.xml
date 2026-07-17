@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-  <Cost>
-    <Resources>
-      <metal op="add">25</metal>
-    </Resources>
-  </Cost>
+<UnitAI>
+    <Charge>
+      <Shock>
+        <Damage>
+          <Crush>30</Crush>
+        </Damage>
+        <Splash>
+          <Shape>Circular</Shape>
+          <Range>2</Range>
+          <FriendlyFire>false</FriendlyFire>
+          <Damage>
+            <Crush>15</Crush>
+          </Damage>
+        </Splash>
+      </Shock>
+      <ResistanceAdd>
+        <Pierce>-2</Pierce>
+      </ResistanceAdd>
+      <MinRange>15</MinRange>
+      <MaxRange>25</MaxRange>
+    </Charge>
+  </UnitAI>
+    <UnitMotion>
+    <Acceleration op="mul">1.25</Acceleration>
+    <RunMultiplier op="mul">1.15</RunMultiplier>
+  </UnitMotion>
   <Identity>
     <GenericName>Cataphract Cavalry</GenericName>
-    <VisibleClasses datatype="tokens">Cataphract</VisibleClasses>
+    <Classes datatype="tokens">Charge</Classes>
+    <VisibleClasses datatype="tokens">Cataphract Shock</VisibleClasses>
   </Identity>
   <Resistance>
     <Entity>

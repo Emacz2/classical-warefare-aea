@@ -1,10 +1,9 @@
 {
-	"genericName": "Heavy Plating",
+	"genericName": "Royal Armouries",
 	"description": "Seleucid military tactics revolve around a frontal attack with heavily armoured units.",
 	"cost": {
 		"food": 200,
-		"wood": 200,
-		"metal": 600
+		"wood": 200
 	},
 	"requirements": {
 		"all": [
@@ -19,13 +18,14 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "chamfron.png",
 	"researchTime": 60,
-	"tooltip": "Champions +2 Hack, +1.5 Pierce and +2.5 crush resistances, walk 5% and run 10% slower.",
+	"tooltip": "Champions +2.5 Crush/Hack,  and +2 Pierce, but 5% slower movement and +25 metal cost.",
 	"modifications": [
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1.5 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5 },
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 },
-		{ "value": "UnitMotion/RunMultiplier", "multiply": 0.9 }
+		{ "value": "UnitMotion/RunMultiplier", "multiply": 0.95 },
+		{ "value": "Cost/Resources/metal", "add": 25 }
 		
 	],
 	"affects": ["Champion"],
