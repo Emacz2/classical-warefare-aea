@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
    <Cost>
-   <BuildTime op="mul">1</BuildTime>
+   <BuildTime op="mul">0.8</BuildTime>
     <Resources>
       <metal>80</metal>
       <food>50</food> 
@@ -9,7 +9,7 @@
       <stone>0</stone>
     </Resources>
   </Cost>
-   <Attack>
+ <Attack>
    <Capture>
       <AttackName>Capture</AttackName>
       <Capture>1.0</Capture>
@@ -18,9 +18,9 @@
     </Capture>
   <Melee merge="">
 	<Damage>
-	  <Hack op="mul">1.075</Hack>
-    <Pierce op="mul">1.075</Pierce>
-    <Crush op="mul">1.075</Crush>
+	  <Hack op="mul">1.1</Hack>
+    <Pierce op="mul">1.1</Pierce>
+    <Crush op="mul">1.1</Crush>
   </Damage>
   </Melee>
   <Ranged merge="">
@@ -43,7 +43,7 @@
   </Promotion>
   <Identity>
     <VisibleClasses datatype="tokens">Mercenary</VisibleClasses>
-    <Tooltip>Merc Infantry have 1 less capture attack/range. Melee +7.5% dmg, Ranged +5% dmg and 10% more accurate than than CS equivalent. They do not gain forge techs or WTF. And have a different promotion system/stats</Tooltip>
+    <Tooltip>Merc Cavalry have only 1 capture attack. Melee +10% dmg, Ranged +5% dmg and 10% more accurate than than CS equivalent. They train 20% faster than CS but do not promote through fighting or recieve forge/fortress techs.</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

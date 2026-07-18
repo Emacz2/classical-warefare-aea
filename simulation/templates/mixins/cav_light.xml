@@ -12,7 +12,7 @@
  <Identity>
     <GenericName>Light Cavalry</GenericName>
      <VisibleClasses datatype="tokens">Light Cavalry</VisibleClasses>
-    <Tooltip>+1.5 of each resistance and 60% faster than standard unit</Tooltip>
+    <Tooltip>+1.5 of each resistance and 65% faster than standard unit</Tooltip>
     <History>.</History>
   </Identity>
    <UnitMotion>
