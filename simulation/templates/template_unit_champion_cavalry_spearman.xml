@@ -20,9 +20,6 @@
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
-   <Cost>
-    <BuildTime>27</BuildTime>
-  </Cost>
    <Health>
     <Max>325</Max>
   </Health>

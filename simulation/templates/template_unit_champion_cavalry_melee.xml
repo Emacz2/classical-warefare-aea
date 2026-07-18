@@ -22,12 +22,12 @@
       </Texture>
     </Overlay>
   </Selectable>
-     <Resistance>
+   <Resistance>
     <Entity>
       <Damage>
-      <Crush>2</Crush>
-      <Hack>2</Hack>
-      <Pierce>2</Pierce>
+      <Crush op="add">2</Crush>
+      <Hack op="add">2</Hack>
+      <Pierce op="add">2</Pierce>
       </Damage>
     </Entity>
   </Resistance>

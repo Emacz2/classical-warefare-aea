@@ -4,8 +4,8 @@
     <Melee>
       <AttackName>Spear</AttackName>
        <Damage>
-        <Hack>7</Hack>
-        <Pierce>19.5</Pierce>
+        <Hack>7.5</Hack>
+        <Pierce>19</Pierce>
       </Damage>
       <MaxRange>4.5</MaxRange>
       <MinRange>1</MinRange>

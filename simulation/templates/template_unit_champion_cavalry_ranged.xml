@@ -15,12 +15,12 @@
   <Position>
     <Anchor>upright</Anchor>
   </Position>
-     <Resistance>
+      <Resistance>
     <Entity>
       <Damage>
-      <Crush>1</Crush>
-      <Hack>1</Hack>
-      <Pierce>1</Pierce>
+      <Crush op="add">1</Crush>
+      <Hack op="add">1</Hack>
+      <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>
   </Resistance>
