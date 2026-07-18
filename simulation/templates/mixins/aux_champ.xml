@@ -2,12 +2,6 @@
 <Entity>
   <Cost>
     <BuildTime op="mul">0.9</BuildTime>
-    <Resources>
-      <food>210</food>
-      <metal>0</metal>
-      <wood>0</wood>
-      <stone>0</stone>
-    </Resources>
   </Cost>
   <Attack>
     <Capture>
@@ -33,7 +27,8 @@
   </Attack>
   <Identity>
     <VisibleClasses datatype="tokens">Auxiliary</VisibleClasses>
-    <Tooltip>Auxiliary Cavalry are professional frontier soldiers. They train 10% faster than Citizen Cavalry, cost 210 food, deal 5% more melee and ranged damage, cannot build, and retain the standard gathering abilities of their base cavalry template.</Tooltip>
+    <Tooltip>Auxiliary Champions are elite professional soldiers recruited from Rome's auxiliary forces. They train 10% faster than native Champions and deal 5% more melee and ranged damage.</Tooltip>
   </Identity>
   <Builder disable="" />
+  <ResourceGatherer disable="" />
 </Entity>

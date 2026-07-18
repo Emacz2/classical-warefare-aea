@@ -10,16 +10,14 @@
     </Resources>
   </Cost>
     <ResourceGatherer>
-    <Rates>
-      <stone.rock op="mul">0.75</stone.rock>
-      <metal.ore op="mul">0.75</metal.ore>
+   <Rates>
+      <food.fruit op="mul">0.75</food.fruit>
+      <food.grain disable=""/>
+      <food.meat op="mul">0.75</food.meat>
+      <wood.tree op="mul">0.75</wood.tree>
+      <stone.rock op="mul">0.5</stone.rock>
+      <metal.ore op="mul">0.5</metal.ore>
     </Rates>
-    <Capacities>
-      <food>10</food>
-      <wood>10</wood>
-      <stone>5</stone>
-      <metal>5</metal>
-    </Capacities>
   </ResourceGatherer>
     <Resistance>
     <Entity>
@@ -32,6 +30,6 @@
   <Identity>
     <Rank>Elite</Rank>
     <VisibleClasses datatype="tokens">Legionary</VisibleClasses>
-    <Tooltip>Roman Legionaries were the backbone of the Roman Army during the late Republic and into the Empire phase.  Javelineers gain +1 hack and 0.5 pierce resistance. Swordsman +5% hack/pierce attack and +0.5 hack resistance.  They are 25% faster at building structures and gather meat and wood 15% faster but stone and metal 25% slower and take 10% additional train time. </Tooltip>
+    <Tooltip>Roman Legionaries were the backbone of the Roman Army during the late Republic and into the Empire phase. They gain +0.5 Hack and Pierce resistance and are 25% faster builders. They take 10% addiontal train time and cost +10 metal.  Fuit, meat and wood gather rates are 25% slower, than other elite soliders.  Metal and stone is 50% slower.  And they can not farm. </Tooltip>
   </Identity>
 </Entity>

@@ -1,18 +1,29 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity>
+  <Builder>
+    <Rate>1.0</Rate>
+  </Builder>
   <Cost>
     <BuildTime op="mul">1.2</BuildTime>
-     <Resources>
+    <Resources>
       <food>90</food>
       <metal>0</metal>
       <wood>0</wood>
       <stone>0</stone>
     </Resources>
   </Cost>
+  <ResourceGatherer>
+    <Rates>
+      <food.fruit op="mul">0.75</food.fruit>
+      <food.grain disable="" />
+      <food.meat op="mul">0.75</food.meat>
+      <wood.tree op="mul">0.75</wood.tree>
+      <stone.rock op="mul">0.5</stone.rock>
+      <metal.ore op="mul">0.5</metal.ore>
+    </Rates>
+  </ResourceGatherer>
   <Identity>
     <VisibleClasses datatype="tokens">Allied -Citizen</VisibleClasses>
-    <Tooltip>Allied troops 20% more train time but 10% less resources and all of it is food</Tooltip>
+    <Tooltip>Allied troops require 20% more training time but cost only 90 food. They build normally, gather fruit, meat and wood at 75% efficiency, gather stone and metal at 50% efficiency, and cannot farm.</Tooltip>
   </Identity>
-  <ResourceGatherer disable=""/>
 </Entity>
-

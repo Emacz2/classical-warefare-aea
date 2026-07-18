@@ -20,7 +20,7 @@
  <Identity>
     <GenericName>Medium Armored Cavalary</GenericName>
      <VisibleClasses datatype="tokens">Medium Cavalry</VisibleClasses>
-    <Tooltip>+3 Hack +2.5 Pierce and +2 Crush resistance and 45% faster than standard unit.</Tooltip>
+    <Tooltip>+3 Hack +2.5 Pierce and +2 Crush resistance and 50% faster than standard unit.</Tooltip>
     <History>.</History>
   </Identity>
 </Entity>

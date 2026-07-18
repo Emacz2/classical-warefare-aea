@@ -17,9 +17,9 @@
     <TurnRate>5</TurnRate>
   </Position>
  <Identity>
-    <GenericName>Heavily Armored Cavalary</GenericName>
+    <GenericName>Heavily Armored Cavalry</GenericName>
      <VisibleClasses datatype="tokens">Heavy Cavalry</VisibleClasses>
-    <Tooltip>4.5 Hack, 4 Pierce and 3.5 Crush resistance but only 30%% faster walk speed than standard unit</Tooltip>
+    <Tooltip>4.5 Hack, 4 Pierce and 3.5 Crush resistance but only 35%% faster walk speed than standard unit</Tooltip>
     <History>.</History>
   </Identity>
 </Entity>

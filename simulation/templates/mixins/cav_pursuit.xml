@@ -36,7 +36,7 @@
  <Identity>
     <GenericName>Pursuit Cavalry</GenericName>
      <VisibleClasses datatype="tokens">Pursuit Cavalry</VisibleClasses>
-    <Tooltip>only 0.5 of Hack and Pierce resistance but the fastest/best riders for scouting and pursuing enemy cav. 1.7 walk 1.9 run multiplier and 2.5x dmg against cav</Tooltip>
+     <Tooltip>Pursuit cavalry are fastest cavalry (1.7x walk speed, 1.9x run speed and 1.25x acceleration) used for scouting and pursuing enemy cav (2.5x dmg bonus). They train 10% faster and cost -25 wood.  But they only have 0.5 Hack and Pierce resistance and 200 health</Tooltip>
     <History>.</History>
   </Identity>
    <UnitMotion>

@@ -33,7 +33,7 @@
     <SpecificName>Qallāʿ Ibušimi</SpecificName>
      <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Icon>units/cart/infantry_slinger.png</Icon>
-    <Tooltip>Balleric slingers 25% damage, +2 range and 10% more accurate but two tenths of a second slower repeat time and +25% train time.</Tooltip>
+    <Tooltip>Balearic Slinger slingers 25% damage, +2 range and 10% more accurate but two tenths of a second slower repeat time and +25% train time.</Tooltip>
     <History>The Balearic slingers, indigenous to the Balearic Islands, were warriors from ancient times famed for their mastery in the art of using the sling;</History>
   </Identity>
   <ResourceGatherer disable=""/>
