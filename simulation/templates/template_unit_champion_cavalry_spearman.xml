@@ -28,15 +28,6 @@
     <metal>30</metal>
     <wood>15</wood>
   </Loot>
-      <Resistance>
-    <Entity>
-      <Damage>
-      <Crush>2</Crush>
-      <Hack>2</Hack>
-      <Pierce>2</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
     <Tooltip>Single handed spear 1.5× vs Cavalry.</Tooltip>
