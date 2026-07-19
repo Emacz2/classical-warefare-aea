@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="han|cav_pursuit|thrusting_spear|template_unit_cavalry_melee_spearman">
+<Entity parent="han|cav_charge|cav_medium|template_unit_cavalry_melee_spearman">
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Han Horse Scout</GenericName>
+    <SpecificName>Máo Qíbīng</SpecificName>
     <Icon>units/han/cavalry_spearman.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
   </Identity>
- <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/han/cavalry_spearman_a</Entity>
+  </Promotion>
   <VisualActor>
     <Actor>units/han/cavalry_spearman_b_m.xml</Actor>
   </VisualActor>

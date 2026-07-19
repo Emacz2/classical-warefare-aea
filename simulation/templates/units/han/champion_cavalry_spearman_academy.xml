@@ -2,7 +2,7 @@
 <Entity parent="han|cav_heavy|cav_shock|template_unit_champion_cavalry_spearman">
   <Identity>
     <Civ>han</Civ>
-    <GenericName>Youzhou Cavalry</GenericName>
+    <GenericName>Youzhou Heavy Lancer</GenericName>
     <SpecificName>Yōuzhōu Tūqí</SpecificName>
     <SelectionGroupName>units/han/champion_cavalry</SelectionGroupName>
     <Icon>units/han/champion_cavalry_spearman.png</Icon>
@@ -10,6 +10,11 @@
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
+     <UnitMotion>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
+    <RunMultiplier op="mul">1.05</RunMultiplier>
+    <Acceleration op="mul">1.05</Acceleration>
+  </UnitMotion>
   <VisualActor>
     <Actor>units/han/cavalry_spearman_c_m.xml</Actor>
   </VisualActor>

@@ -42,7 +42,7 @@
     <RequiredXp>300</RequiredXp>
   </Promotion>
   <Identity>
-    <VisibleClasses datatype="tokens">Mercenary</VisibleClasses>
+   <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Tooltip>Merc Cavalry have only 1 capture attack. Melee +10% dmg, Ranged +5% dmg and 10% more accurate than than CS equivalent. They train 20% faster than CS but do not promote through fighting or recieve forge/fortress techs.</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>

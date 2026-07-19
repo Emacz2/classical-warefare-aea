@@ -2,7 +2,7 @@
 <Entity parent="macedonian|cav_pursuit|thrusting_spear|template_unit_cavalry_melee_spearman">
   <Identity>
     <SelectionGroupName>units/mace/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Macedonian Scout Cavalry</GenericName>
+    <GenericName>Macedonian Horse Scout</GenericName>
     <SpecificName>Makedṓn Pródromos</SpecificName>
     <Icon>units/athen/cavalry_javelinist.png</Icon>
   </Identity>
