@@ -10,7 +10,7 @@
   </Attack>
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Gallic Javelineert</GenericName>
+    <GenericName>Gallic Javelineer</GenericName>
     <SpecificName>Sǝḫīr Kidōn</SpecificName>
     <SelectionGroupName>units/cart/merc_inf_javelineer_celt_b</SelectionGroupName>
     <Icon>units/cart/infantry_javelinist.png</Icon>

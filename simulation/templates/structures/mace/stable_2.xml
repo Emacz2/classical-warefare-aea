@@ -7,6 +7,12 @@
   <Obstruction>
     <Static width="23.0" depth="23.0"/>
   </Obstruction>
+    <Trainer>
+   <Entities datatype="tokens">
+      -units/{civ}/cavalry_javelineer_b
+      units/{civ}/cavalry_javelineer_e
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/hellenes/stable.xml</Actor>
     <FoundationActor>structures/fndn_7x7.xml</FoundationActor>

@@ -18,7 +18,7 @@
     <TurnRate>8</TurnRate>
   </Position>
  <Identity>
-    <GenericName>Medium Armored Cavalary</GenericName>
+    <GenericName>Medium Armored Cavalry</GenericName>
      <VisibleClasses datatype="tokens">Medium Cavalry</VisibleClasses>
     <Tooltip>+3 Hack +2.5 Pierce and +2 Crush resistance and 50% faster than standard unit.</Tooltip>
     <History>.</History>

@@ -10,7 +10,7 @@
     </Resources>
   </Cost>
   <Identity>
-    <Tooltip>Purchase mercanaries from the market for the cost of metal only, -10% train time</Tooltip>
+    <Tooltip>Purchase mercenaries from the market for the cost of metal only, -10% train time</Tooltip>
   </Identity>
   <Loot>
     <metal>10</metal>

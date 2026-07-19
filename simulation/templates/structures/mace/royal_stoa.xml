@@ -3,7 +3,7 @@
   <Identity>
     <Civ>mace</Civ>
     <SpecificName>Stoa</SpecificName>
-    <Tooltip>Train Champion Cavalary and Infantry Spearman.  Upgrade Infantry to Silver Shields. Garrison champions to heal them</Tooltip>
+    <Tooltip>Train Champion Cavalry and Infantry Spearman. Garrison champions to heal them</Tooltip>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
