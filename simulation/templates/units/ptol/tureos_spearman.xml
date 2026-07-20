@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/tureos_spearman">
+<Entity parent="allied_inf|units/tureos_spearman">
  <Builder>
     <Entities datatype="tokens">
       structures/ptol/lighthouse

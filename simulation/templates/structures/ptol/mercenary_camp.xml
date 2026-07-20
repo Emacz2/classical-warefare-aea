@@ -72,10 +72,8 @@
   <TerritoryInfluence disable=""/>
  <Trainer>
     <Entities replace="" datatype="tokens">
-      units/{civ}/merc_inf_spearman_b
       units/{civ}/merc_inf_archer_b
-      units/{civ}/cavalry_spearman_b
-      units/{civ}/cavalry_spearman_p
+      units/{civ}/cavalry_javelineer_merc_b
     </Entities>
   </Trainer>
   <VisualActor>

@@ -3,7 +3,7 @@
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Thessalian Spear Cavalry</GenericName>
+    <GenericName>Thessalian Horse Spearman</GenericName>
     <SpecificName>Xystophóros Thessalikós</SpecificName>
     <Icon>units/mace/cavalry_spearman.png</Icon>
   </Identity>

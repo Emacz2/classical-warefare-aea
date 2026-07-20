@@ -24,7 +24,7 @@
     <GenericName>Thracian Black Cloak</GenericName>
     <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <SpecificName>Rhomphaiophoros</SpecificName>
-    <Icon>units/special/pelt_sword.png</Icon>
+    <Icon>units/thrac/champion_infantry_swordsman.png</Icon>
   </Identity>
     <Resistance>
     <Entity>

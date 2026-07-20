@@ -1,5 +1,5 @@
 {
-	"genericName": "Foreign mercanaries",
+	"genericName": "Foreign Mercenaries",
 	"description": ".",
 	"cost": {
 		"food": 400,
@@ -11,6 +11,7 @@
 			{ "tech": "phase_town" },
 			{
 				"any": [
+					{ "civ": "cart" },
 					{ "civ": "ptol" }
 				]
 			}
@@ -19,21 +20,24 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 40,
-	"tooltip": "Citizen Soldiers 10% melee dmg, 5% more ranged dmg +1 range, +0.5 pierce/hack armor but -10% res gathering.",
+	"tooltip": "Citizen Soldiers 15% less dmg but 10% faster resrouce gathering and mercenaries 10% more Dmg",
 	"modifications": [
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1},
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1},
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05 },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05},
-		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05 },
-		{ "value": "Attack/Ranged/MaxRange", "add": 1 },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 },
-		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.9}
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 0.85, "affects": "Citizen Infantry"  },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 0.85, "affects": "Citizen Infantry"},
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 0.85, "affects": "Citizen Infantry"},
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 0.85, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.85, "affects": "Citizen Infantry"},
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 0.85, "affects": "Citizen Infantry" },
+		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 1.1, "affects": "Citizen Infantry"},
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Mercenary"  },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Mercenary"},
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1, "affects": "Mercenary"},
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.1, "affects": "Mercenary" },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.1, "affects": "Mercenary"},
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.1, "affects": "Mercenary" }
 	
 
 	],
-	"affects": ["Citizen Infantry"],
+	
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
