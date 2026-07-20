@@ -9,7 +9,7 @@
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "Structures -10% capture points, soldiers +5% dmg (excludes Mercanaries).",
+	"tooltip": "Structures -10% capture points, soldiers +5% dmg (excludes mercenaries).",
 	"modifications": [
 		{ "value": "Capturable/CapturePoints", "multiply": 0.9, "affects": "Structure" },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Soldier !Mercenary" },

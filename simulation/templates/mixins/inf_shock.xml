@@ -21,7 +21,7 @@
    <Classes datatype="tokens">Charge</Classes>
    <VisibleClasses datatype="tokens">Shock</VisibleClasses>
     <GenericName>Shock Infantry</GenericName>
-    <Tooltip>A shock assault. Charges (15% faster accleration and 10% faster Run) into combat and gains an initial combat advantage (+10% attack speed for 5 seconds) representing the violence of the opening assault but temporarily loses 1 Peirce resistance.</Tooltip>
+    <Tooltip>A shock assault. Charges (15% fasteracceleration and 10% faster Run) into combat and gains an initial combat advantage (+10% attack speed for 5 seconds) representing the violence of the opening assault but temporarily loses 1 Pierce resistance.</Tooltip>
   </Identity>
 </Entity>
 
