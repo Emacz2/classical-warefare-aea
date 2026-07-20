@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
-  <Attack>
+<Cost>
+    <BuildTime op="mul">1.1</BuildTime>
+     <Resources>
+      <metal>60</metal>
+      <food>25</food>
+      <wood>0</wood>
+      <stone>0</stone>
+    </Resources>
+  </Cost>
+   <Attack>
+   <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture>1.0</Capture>
+      <MaxRange>3</MaxRange>
+      <RepeatTime>1000</RepeatTime>
+    </Capture>
     <Ranged>
     <Damage>
       <Pierce op="mul">1.1</Pierce>
@@ -22,8 +37,9 @@
     <Lang>greek</Lang>
     <GenericName>Syrian Archer</GenericName>
     <SpecificName>Toxótēs Syrías</SpecificName>
+    <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Icon>units/sele/infantry_archer.png</Icon>
-    <Tooltip>Syrians highly sought after mercanaries; 10% more pierce dmg, +1 Hack and +1.5 peirce resistance</Tooltip>
+    <Tooltip>Syrians highly sought after mercenaries; 10% more pierce dmg, +1 Hack and +1.5 pierce resistance</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

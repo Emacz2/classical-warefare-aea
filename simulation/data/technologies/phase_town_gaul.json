@@ -20,7 +20,7 @@
 	"replaces": ["phase_town"],
 	"icon": "town_phase.png",
 	"researchTime": 40,
-	"tooltip": "Advance to town Phase, which unlocks more structures, technologies and units, allowing you to ally with other Celtic Tribes.. Civic Centers +25% territory influence radius. Structures 0.5 capture points regeneration rate for garrisoned units.  Civic Centers 25% garrison capacity, +5 range and 2.5 of each resistance but -2% pierce dmg. Cavalry +0.5 hack/peirce resistance. ",
+	"tooltip": "Structures gain +0.5 capture regeneration rate. Citizen Infantry 5% more pierce dmg. Cavalry +0.5 Pierce resistance.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },

@@ -1,7 +1,7 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_advanced.png",
-	"tooltip": "Elite mercanaries +15% train time and +20 metal cost compared to advanced mercanaries.They gain +2 of each resistance. Melee +30% dmg, +25 Health. Ranged +10 health, 10% more accurate and 25% more dmg. ", 
+	"tooltip": "Elite mercanries +15% train time and +20 metal cost compared to advanced mercanaries. They gain +1 of each resistance. Melee +30% dmg, +25 Health. Ranged +10 Health, 10% more accurate and 25% more dmg. ", 
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.15 },
 		{ "value": "Cost/Resources/metal", "add": 20 },

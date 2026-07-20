@@ -18,7 +18,7 @@
 	"replaces": ["phase_town"],
 	"icon": "town_phase.png",
 	"researchTime": 40,
-	"tooltip": "Advance to Town Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +0.5 capture points regeneration rate for garrisoned units. Civic Centers 25% more garrison capacity, +5 range and 2.5 of each resistance but 2% less peirce dmg. Citizen Infantry train 10% faster but -.5 pierce/crush resistance. Archers shoot -125 faster but -1 range. Cavalry cost 10% less food.",
+	"tooltip": "Advance to Town Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +0.5 capture points regeneration rate for garrisoned units. Civic Centers 25% more garrison capacity, +5 range and 2.5 of each resistance but 2% less pierce dmg.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },

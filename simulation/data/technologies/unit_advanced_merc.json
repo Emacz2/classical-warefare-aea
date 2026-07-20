@@ -1,7 +1,7 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_advanced.png",
-	"tooltip": "Advanced mercanaries +15% train time and + 20 metal cost comapred to basic mercanaries.  They gain +2 of each resistance. Melee +25% dmg, +25 Health. Ranged +10 health, 10% more accurate and 20% more dmg.", 
+	"tooltip": "Advanced Mercenaries require 15% more training time and 20 additional metal than Basic Mercenaries. They gain +1 Hack, +1 Pierce, and +1 Crush Resistance. Melee units gain +25% damage and +25 Health. Ranged units gain +10 Health, 10% greater accuracy, and +20% damage.", 
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.15 },
 		{ "value": "Cost/Resources/metal", "add": 20 },

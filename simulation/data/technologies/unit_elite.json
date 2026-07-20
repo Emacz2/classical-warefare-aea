@@ -1,7 +1,7 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_elite.png",
-	"tooltip": "Elite rank take 15% longer train time and -30% gathering rates compared to advanced rank. Melee units +25 health, +0.5 peirce resistance and +10% dmg. Ranged units +15 health, and 10% morre accurate (crosswbowman do not gain accuracy)",
+	"tooltip": "Elite rank take 15% longer train time and -30% gathering rates compared to advanced rank. Melee units +25 health, +0.5 pierce resistance and +10% dmg. Ranged units +15 health, and 10% more accurate (Crossbowman do not gain accuracy)",
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.15},
 		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.7 },
