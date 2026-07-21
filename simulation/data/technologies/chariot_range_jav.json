@@ -14,7 +14,7 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "archery_tradition.png",
 	"researchTime": 30,
-	"tooltip": "Chariot Javilneers +3 range and 10% more accurate.",
+	"tooltip": "Chariot Javelineers +3 range and 10% more accurate.",
 	"modifications": [
 		{ "value": "Attack/Ranged/MaxRange", "add": 3 },
 		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9 }
