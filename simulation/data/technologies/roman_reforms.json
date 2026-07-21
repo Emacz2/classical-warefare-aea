@@ -18,6 +18,6 @@
 		{ "value": "Promotion/RequiredXp", "replace": 0 }
 	],
 	"affects": ["Republic"],
-	"tooltip": "Convert Infantry to Swordsman and Javelineers into Marian Legionaries. Unlock Onagers and Centurions. Javelineers gain +1 hack and 0.5 pierce resistance. Swordsman +1 pierce attack and +0.5 hack resistance. They can no longer gather resources but build 25% faster. Cost +10 metal but -10 wood.",
+	"tooltip": "Converts Republican infantry into Professional Legionaries. Unlocks Centurions and Onagers. Infantry become full-time soldiers: Their gather rates are significantly reduced, they cost +10 Metal but −10 Wood, build 25% faster, gain improved equipment (Javelineers switch to heavier pilums; 75% increased dmg but 20% less range, 50% longer repeat time and 2% slower walk. They also gain 2.5 Crush 3.5 Hack/Pierce resistance with better armor and shields), Swordsman gain 0.5 Crush 1 Hack and .5 Pierce through improved armor and are able to promote to First Cohert Legionary than Evocatus and finaly Principalis.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

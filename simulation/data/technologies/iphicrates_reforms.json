@@ -4,7 +4,7 @@
 	"cost": {
 		"food": 400,
 		"wood": 400,
-		"metal": 200
+		"metal": -200
 	},
 	"requirements": {
 		"all": [
@@ -15,14 +15,16 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "silvershields.png",
 	"researchTime": 30,
-	"tooltip": "Champion melee cost 10 less metal, Infantry spearman add 1.5 to range, all infantry 5% more movement, melee infantry -10% attack repeat time but -1.5 Hack and -1 Pierce Resistance.",
+	"tooltip": "Reforms the Athenian infantry after the innovations of Iphicrates. Recover 200 Metal by replacing heavy bronze equipment with lighter arms and armor. Infantry move 5% faster. Spearmen gain +1 melee range and attack 200 ms faster. Swordsmen gain +0.5 melee range and attack 50 ms faster. All melee infantry lose 1 Hack and 1 Pierce Resistance due to their lighter equipment.",
 	"modifications": [
-	{ "value": "Attack/Melee/MaxRange", "add": 1.5, "affects": "Infantry Spearman" },
+	{ "value": "Attack/Melee/MaxRange", "add": 1, "affects": "Infantry Spearman" },
+	{ "value": "Attack/Melee/MaxRange", "add": 0.5, "affects": "Infantry Swordsman" },
 	{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05, "affects": "Infantry" },
-	{ "value": "Attack/Melee/RepeatTime", "multiply": 0.9, "affects": "Infantry" },
+	{ "value": "Attack/Melee/RepeatTime", "add": -200, "affects": "Infantry Spearman" },
+	{ "value": "Attack/Melee/RepeatTime", "add": -50, "affects": "Infantry Swordsman" },
 	{ "value": "Resistance/Entity/Damage/Hack", "add": -1, "affects": "Infantry Melee" },
-	{ "value": "Resistance/Entity/Damage/Pierce", "add": -1, "affects": "Infantry Melee" },
-	{ "value": "Cost/Resources/metal", "add": -10, "affects": "Champion Melee" }
+	{ "value": "Resistance/Entity/Damage/Pierce", "add": -1, "affects": "Infantry Melee" }
+
 	],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
