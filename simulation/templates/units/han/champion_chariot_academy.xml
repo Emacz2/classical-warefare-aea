@@ -13,7 +13,7 @@
     <SpecificName>Zhanche</SpecificName>
     <Icon>units/han/chariot.png</Icon>
    <Requirements>
-      <Techs datatype="tokens">phase_empi</Techs>
+      <Techs datatype="tokens">-unlock_champion_chariots phase_empi</Techs>
     </Requirements>
   </Identity>
   <VisualActor>

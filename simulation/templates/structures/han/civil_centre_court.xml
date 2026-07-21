@@ -16,7 +16,7 @@
     <Civ>han</Civ>
     <GenericName>Imperial Court</GenericName>
     <SpecificName>Cháotíng</SpecificName>
-    <VisibleClasses datatype="tokens">Defensive ImperialCourt City</VisibleClasses>
+    <VisibleClasses datatype="tokens">Defensive ImperialCourt Empire</VisibleClasses>
     <Classes datatype="tokens">CivCentre CivSpecific</Classes>
     <Icon>structures/military_settlement.png</Icon>
     <Requirements>

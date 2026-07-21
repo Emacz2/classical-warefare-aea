@@ -39,7 +39,7 @@
       <Time>40</Time>
       <Variant>upgrading</Variant>
       <Requirements>
-        <Techs datatype="tokens">phase_city</Techs>
+        <Techs datatype="tokens">dynasty</Techs>
       </Requirements>
     </ImperialCourt>
   </Upgrade>

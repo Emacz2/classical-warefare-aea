@@ -16,18 +16,18 @@
             {
                 "entity": {
                     "class": "City",
-                    "number": 1
+                    "number": 2
                 }
             },
             {
                 "entity": {
                     "class": "Empire",
-                    "number": 2
+                    "number": 1
                 }
             }
         ]
 	},
-	"requirementsTooltip": "Requires 1 City and 2 empire buildings.",
+	"requirementsTooltip": "Requires 2 City and 1 empire buildings.",
 	"supersedes": "phase_city_han",
 	"replaces": ["phase_empi"],
 	"icon": "empire_phase.png",

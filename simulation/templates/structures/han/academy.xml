@@ -34,10 +34,6 @@
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
-     <Promotion>
-    <Entity>structures/han/academy2</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
   <Loot>
     <wood>0</wood>
     <stone>30</stone>
@@ -49,6 +45,7 @@
   <Researcher>
     <Technologies datatype="tokens">
       -barracks_batch_training
+      -barracks_batch_training2
     </Technologies>
   </Researcher>
   <Sound>
@@ -59,7 +56,7 @@
     </SoundGroups>
   </Sound>
   <Trainer>
-    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities replace="" datatype="tokens">
       units/{civ}/champion_infantry_spearman_academy
       units/{civ}/champion_infantry_crossbowman_academy

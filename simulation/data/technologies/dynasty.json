@@ -1,5 +1,5 @@
 {
-	"genericName": "First Empire",
+	"genericName": "First Emperor",
 	"description": ".",
 	
 	"requirements": {
@@ -9,11 +9,6 @@
 	},
 	"requirementsTooltip": ".",
 	"icon": "silvershields.png",
-	"researchTime": 30,
-	"modifications":[
-		{ "value": "Promotion/RequiredXp", "replace": 0 }
-	],
-	"affects": ["Academy"],
-	"tooltip": "Upgrade academies to Dynasty class, -.1 faster batch training and unlocks empire phase",
+	"tooltip": "Allows you to upgrade your CivilCenter, unlocking Han's Empire Phase",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
