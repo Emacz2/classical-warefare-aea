@@ -501,8 +501,12 @@ UnitAI.prototype.UnitFsmSpec = {
 
 			// Cancel any current packing order.
 			if (this.EnsureCorrectPackStateForAttack(false))
-				this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
-
+                        {
+                                if (this.IsFormationMember())
+				        this.SetNextState("FORMATIONMEMBER.COMBAT.ATTACKING");
+                                else
+				        this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
+                        }
 			return ACCEPT_ORDER;
 		}
 
@@ -515,6 +519,9 @@ UnitAI.prototype.UnitFsmSpec = {
 			this.PushOrderFront("Pack", { "force": true });
 			return ACCEPT_ORDER;
 		}
+
+                if (this.IsFormationMember())
+		        return this.FinishOrder();
 
 		// If we're currently packing/unpacking, make sure we are packed, so we can move.
 		if (this.EnsureCorrectPackStateForAttack(true))
@@ -857,11 +864,7 @@ UnitAI.prototype.UnitFsmSpec = {
 				return this.FinishOrder();
 			}
 			this.CallMemberFunction("Attack", [target, msg.data.allowCapture, false]);
-			const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-			if (cmpAttack && cmpAttack.CanAttackAsFormation())
-				this.SetNextState("COMBAT.ATTACKING");
-			else
-				this.SetNextState("MEMBER");
+			this.SetNextState("COMBAT.ATTACKING");
 			return ACCEPT_ORDER;
 		},
 
@@ -882,6 +885,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.Gather": function(msg) {
+			warn("CWA: No gather as formation!");
+			return this.FinishOrder();
+
 			if (this.MustKillGatherTarget(msg.data.target))
 			{
 				// The target was visible when this order was given,
@@ -934,6 +940,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.GatherNearPosition": function(msg) {
+			warn("CWA: No gather as formation!");
+			return this.FinishOrder();
+
 			// TODO: on what should we base this range?
 			if (!this.CheckPointRangeExplicit(msg.data.x, msg.data.z, 0, 20))
 			{
@@ -1001,6 +1010,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.Repair": function(msg) {
+			warn("CWA: No repair as formation!");
+			return this.FinishOrder();
+
 			// TODO: on what should we base this range?
 			if (!this.CheckTargetRangeExplicit(msg.data.target, 0, 10))
 			{
@@ -1023,6 +1035,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.ReturnResource": function(msg) {
+			warn("CWA: No return resource as formation!");
+			return this.FinishOrder();
+
 			// TODO: on what should we base this range?
 			if (!this.CheckTargetRangeExplicit(msg.data.target, 0, 10))
 			{
@@ -1363,12 +1378,7 @@ UnitAI.prototype.UnitFsmSpec = {
 					const cmpTargetUnitAI = Engine.QueryInterface(target, IID_UnitAI);
 					if (cmpTargetUnitAI && cmpTargetUnitAI.IsFormationMember())
 						target = cmpTargetUnitAI.GetFormationController();
-					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-					this.CallMemberFunction("Attack", [target, this.order.data.allowCapture, false]);
-					if (cmpAttack.CanAttackAsFormation())
-						this.SetNextState("COMBAT.ATTACKING");
-					else
-						this.SetNextState("MEMBER");
+					this.SetNextState("COMBAT.ATTACKING");
 				},
 			},
 
@@ -1524,9 +1534,13 @@ UnitAI.prototype.UnitFsmSpec = {
 
 				const o = {};
 				const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
+				const g = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "multiply": +v }]; };
 				f("Resistance/Entity/Damage/Hack", cmpFormation.template.ResistanceAdd?.Hack);
 				f("Resistance/Entity/Damage/Pierce", cmpFormation.template.ResistanceAdd?.Pierce);
 				f("Resistance/Entity/Damage/Crush", cmpFormation.template.ResistanceAdd?.Crush);
+				g("Attack/Melee/Damage/Hack", cmpFormation.template.AttackMultiply?.Melee?.Damage?.Hack);
+				g("Attack/Melee/Damage/Pierce", cmpFormation.template.AttackMultiply?.Melee?.Damage?.Pierce);
+				g("Attack/Melee/Damage/Crush", cmpFormation.template.AttackMultiply?.Melee?.Damage?.Crush);
 				const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
 				cmpModifiersManager.AddModifiers("Formation Bonus", o, this.entity);
 			}
@@ -1540,6 +1554,8 @@ UnitAI.prototype.UnitFsmSpec = {
 			const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
 			cmpModifiersManager.RemoveAllModifiers("Formation Bonus", this.entity);
 		},
+
+		"COMBAT": "INDIVIDUAL.COMBAT",
 
 		"IDLE": "INDIVIDUAL.IDLE",
 
