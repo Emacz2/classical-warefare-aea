@@ -2,7 +2,7 @@
 	"genericName": "Judean Lead slingers",
 	"description": "Judean slingers adopted other helenistc slingers used of lead bullets.",
 	"cost": {
-		"metal": 600
+		"metal": 400
 	},
 	"requirements": {
 		"all": [
@@ -13,7 +13,7 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "archery_tradition.png",
 	"researchTime": 60,
-	"tooltip": "Upgrade Judean slingers to rank3 using lead bullets.",
+	"tooltip": "The Judean contingent has adopted the superior lead glandes that became common in Hellenistic warfare.",
 	"modifications": [
 		{ "value": "Promotion/RequiredXp", "replace": 0 }
 	],

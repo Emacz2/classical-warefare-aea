@@ -1,6 +1,6 @@
 {
 	"genericName": "Krypteia",
-	"description": "Krypteia was an Agoge rite of passage, during which soldiers learned how to camouflage themselves and gained combat experience. The Spartans declared war on the Helots annually, with no problem or guilt in murdering them. During this initiation, the youths slept during the day and roamed at night, murdering any Helot they encountered along the way.",
+	"description": "The Krypteia was an Agoge rite of passage in which selected Spartan youths learned stealth, endurance, and survival while policing the helot population. Each year the ephors declared ritual war upon the helots, allowing members of the Krypteia to kill suspected rebels without religious penalty.",
 	"cost": {
 		"food": 300,
 		"metal": 300
@@ -14,15 +14,16 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "skull_swords.png",
 	"researchTime": 40,
-	"tooltip": "Champions +10% melee damage, heroes 25% but all Champions 5% more train time and helots -50% health.",
+	"tooltip": "The Krypteia produce deadlier Spartan elites at the expense of the helot population. Champion infantry deal 10% more melee damage but require 10% longer to train. Heroes deal 20% more melee damage. Helots have 25% less Health and require 10% longer to train.",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Champion" },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Champion" },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.25, "affects": "Hero" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.25, "affects": "Hero" },
-		{ "value": "Cost/BuildTime", "multiply": 1.05, "affects": "Champion" },
-		{ "value": "Health/Max", "multiply": 0.5, "affects": "HelotM" },
-		{ "value": "Health/Max", "multiply": 0.5, "affects": "HelotW" }
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.20, "affects": "Hero" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.20, "affects": "Hero" },
+		{ "value": "Cost/BuildTime", "multiply": 1.1, "affects": "Champion" },
+		{ "value": "Cost/BuildTime", "multiply": 1.1, "affects": "HelotM" },
+		{ "value": "Health/Max", "multiply": 0.75, "affects": "HelotM" }
+	
 	],
     "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

@@ -1,0 +1,32 @@
+{
+	"genericName": "Philip's Military Reforms",
+	"description": "Philip II transformed the Macedonian phalanx into a permanently trained professional force. Continuous drill, standardized equipment, and rigorous discipline forged the sarissa phalanx into one of the most formidable infantry formations of the ancient world. ",
+	"cost": {
+		"food": 400,
+		"metal": 400,
+		"wood": 200
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{
+				"any": [
+					{ "civ": "mace" }
+			
+				]
+			}
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "armor_corinthian.png",
+	"researchTime": 30,
+	"tooltip": "Citizen Pikeman -200ms attack speed, +0.5 Hack/Pierce Resitance and conscript pikeman promote to basic rank.",
+	"modifications": [
+		{ "value": "Attack/Melee/RepeatTime", "add": -200, "affects": "Citizen Pikeman"},
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5, "affects": "Citizen Pikeman" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5,"affects": "Citizen Pikeman" },
+		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Conscript Pikeman" }
+
+	],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

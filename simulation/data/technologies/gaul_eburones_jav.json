@@ -10,7 +10,7 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "metalworker.png",
 	"researchTime": 60,
-	"tooltip": "Javelineers +2 range, 5% faster walk speed and +10 vison but 5% longer train time.",
+	"tooltip": "Javelineers +2 range, 5% faster walk speed and +10 vision but 5% longer train time.",
 	"modifications": [
 		{ "value": "Attack/Ranged/MaxRange", "add": 2 },
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },

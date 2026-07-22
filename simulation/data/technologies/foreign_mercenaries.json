@@ -1,6 +1,6 @@
 {
-	"genericName": "Foreign Mercenaries",
-	"description": ".",
+	"genericName": "Mercenary Tradition",
+	"description": "Carthage and Ptolemaic Egypt drew heavily upon foreign mercenaries and military settlers to supplement their citizen forces. As professional soldiers assumed a greater share of frontline service, citizen soldiers could devote more time to agriculture, trade, and other economic duties",
 	"cost": {
 		"food": 400,
 		"metal": 200,
@@ -20,7 +20,7 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 40,
-	"tooltip": "Citizen Soldiers 15% less dmg but 10% faster resrouce gathering and mercenaries 10% more Dmg",
+	"tooltip": "Citizen Soldiers gather resources 10% faster but deal 15% less damage. Mercenaries deal 10% more damage.",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 0.85, "affects": "Citizen Infantry"  },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 0.85, "affects": "Citizen Infantry"},

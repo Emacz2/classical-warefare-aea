@@ -1,26 +1,28 @@
 {
-	"genericName": "Guerilla Skirmishers",
-	"description": "Brit soldiers often used guerilla style tatics",
+	"genericName": "Guerrilla Javelineers",
+	"description": "British and Iberian light infantry relied on ambushes, rapid movement, and hit-and-run attacks to wear down enemy forces while avoiding prolonged engagements",
 	"cost": {
-		"food": 300
+		"food": 200,
+		"Wood": 100
 		
 	},
 	"requirements": {
 		"all": [
 			{ "tech": "phase_village" },
-			{ "civ": "brit" }
+			{ "civ": "brit" },
+			{ "civ": "iber" }
 			
 		]
 	},
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "walk.png",
-	"researchTime": 45,
-	"tooltip": "Infantry Javelineers 5% faster walk, 10% faster run speed and +15 vision but 10% longer train time.",
+	"researchTime": 30,
+	"tooltip": "Infantry Javelineers move 5% faster, run 10% faster, and gain +10 Vision.",
 	"modifications": [
 	    { "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
 		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.1 },
-		{ "value": "Vision/Range", "add": 15 },
-		{ "value": "Cost/BuildTime", "multiply": 1.10 }
+		{ "value": "Vision/Range", "add": 10 }
+
 
 	],
 	"affects": ["Infantry Javelineer"],

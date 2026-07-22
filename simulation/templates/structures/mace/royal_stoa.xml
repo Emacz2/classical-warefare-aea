@@ -15,6 +15,11 @@
       units/{civ}/champion_infantry_spearman
     </Entities>
   </Trainer>
+    <Researcher>
+    <Technologies datatype="tokens">
+    philips_reforms
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>special/greek_stoa_great.xml</Actor>
   </VisualActor>
