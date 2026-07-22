@@ -3,11 +3,9 @@
 	"affects": [ "Swordsman", "Axeman" ],
 	"affectedPlayers": [ "MutualAlly" ],
 	"modifications": [
-		{
-			"value": "Cost/Resources/metal",
-			"add": -5
-		}
+		{ "value": "Cost/Resources/metal","add": -5, "affects": "Citizen"},
+		{ "value": "Cost/Resources/metal","add": -10, "affects": "Champions"}
 	],
-	"auraName": "Stolen Arms",
-	"auraDescription": "Swordsmen and Axemen of all kinds -5 metal cost."
+	"auraName": "Captured Arms",
+	"auraDescription": "Citizen Swordsmen and Axemen -5 metal cost, Champions -10."
 }

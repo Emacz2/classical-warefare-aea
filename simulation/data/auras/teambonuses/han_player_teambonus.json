@@ -7,7 +7,7 @@
 		{ "value": "Attack/Ranged/MaxRange", "add": 5 }
 		
 	],
-	"auraName": "Eperxt siege engineers",
+	"auraName": "Expert siege engineers",
 	"showDescription": 1,
 	"auraDescription": "Siege units 25% more crush dmg and ranged siege +5 max range."
 }

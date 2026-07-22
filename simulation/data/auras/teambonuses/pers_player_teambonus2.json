@@ -8,7 +8,7 @@
 		{ "value": "Cost/Resources/stone", "multiply": 0.9 },
 		{ "value": "Cost/Resources/metal", "multiply": 0.9 }
 	],
-	"auraName": "Land of the oldest hero",
+	"auraName": "King’s Companions",
 	"showDescription": 1,
 	"auraDescription": "Champions -10% resource cost."
 }

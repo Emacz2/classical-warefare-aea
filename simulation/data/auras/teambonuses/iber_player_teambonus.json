@@ -9,7 +9,7 @@
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 }
 		
 	],
-	"auraName": "Spanish silver",
+	"auraName": "Spanish Iron",
 	"showDescription": 1,
 	"auraDescription": "Swordsmen 5% more hack/pierce dmg and +0.5 Hack resistance."
 }

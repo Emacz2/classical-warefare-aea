@@ -8,7 +8,7 @@
 		{ "value": "Cost/BuildTime", "multiply": 1.05 }
 	
 	],
-	"auraName": "Suppior horses",
+	"auraName": "Superior horses",
 	"showDescription": 1,
 	"auraDescription": "Cavalry +25 more health and 5% faster walk speed but 5% longer train time."
 }

@@ -7,7 +7,7 @@
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 },
 		{ "value": "Promotion/RequiredXp", "multiply": 0.8}
 	],
-	"auraName": "Conscription",
+	"auraName": "Roman Discipline",
 	"showDescription": 1,
 	"auraDescription": "Swordsman 5% more hack dmg, +.5 pierce resistance, and 20% faster promtion ."
 }

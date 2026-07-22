@@ -4,13 +4,13 @@
 	"affects": ["Soldier"],
 	"affectedPlayers": ["Enemy"],
 	"modifications": [
-		{ "value": "Attack/Capture/Capture", "multiply": 0.95 },
+		{ "value": "Attack/Capture/Capture", "add": -0.5 },
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 },
 		{ "value": "Attack/Melee/RepeatTime", "multiply": 1.05}
 		
 	],
 	"auraName": "Intimidating Sound",
 	"showDescription": 1,
-	"auraDescription": "Enemy Soldiers 5% less capture attack, movement speed and slower attack repeat time.",
+	"auraDescription": "Enemy Soldiers-0.5 less capture attack, -5% movement speed and +5% attack repeat time.",
 	"overlayIcon": "art/textures/ui/session/auras/broken_sword.png"
 }

@@ -9,7 +9,7 @@
 		{ "value": "Researcher/TechCostMultiplier/metal", "multiply": 0.75 }
 	
 	],
-	"auraName": "Resource-Rich Economy",
+	"auraName": "Macedonian Timber and Mines",
 	"showDescription": 1,
 	"auraDescription": "Techs from storehouse cost 25% less resources"
 }
