@@ -17,6 +17,6 @@
 	"requirementsTooltip": "Unlocked in village Phase.",
 	"icon": "helmet_corinthian_bronze_old.png",
 	"researchTime": 20,
-	"tooltip": "Unlock the ability to train pikeman from baracks.",
+	"tooltip": "Unlock the ability to train pikeman from barracks.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

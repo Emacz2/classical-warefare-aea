@@ -1,7 +1,7 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_advanced.png",
-	"tooltip": "Advanced Mercenaries require 15% more training time and 20 additional metal than Basic Mercenaries. They gain +1 Hack, +1 Pierce, and +1 Crush Resistance. Melee units gain +25% damage and +25 Health. Ranged units gain +10 Health, 10% greater accuracy, and +20% damage.", 
+	"tooltip": "Advanced Mercenaries require 15% more training time and 20 additional metal than Basic Mercenaries. They gain +1of each Resistance. Melee units gain +20% damage and +25 Health. Ranged units gain +10 Health, 10% greater accuracy, and +15% damage.", 
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.15 },
 		{ "value": "Cost/Resources/metal", "add": 20 },
@@ -9,14 +9,14 @@
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 1, "affects": "!Switch" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 1, "affects": "!Switch" },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1, "affects": "!Switch"},
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.25 },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.25 },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.25 },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.2 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.2 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.2 },
 		{ "value": "Health/Max", "add": 10, "affects": "Ranged !Switch"},
 		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9 },
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.2},
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.2 },
-		{ "value": "Atacck/Ranged/Damage/Crush", "multiply": 1.2 }
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.15},
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.15 },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.15 }
 	
 	],
 	"affects": ["Advanced Mercenary", "Elite Mercenary"]

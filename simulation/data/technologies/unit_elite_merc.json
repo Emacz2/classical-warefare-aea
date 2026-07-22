@@ -1,7 +1,7 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_advanced.png",
-	"tooltip": "Elite mercanries +15% train time and +20 metal cost compared to advanced mercanaries. They gain +1 of each resistance. Melee +30% dmg, +25 Health. Ranged +10 Health, 10% more accurate and 25% more dmg. ", 
+	"tooltip": "Elite mercenaries +15% train time and +20 metal cost compared to advanced mercenaries. They gain +1 of each resistance. Melee +30% dmg, +25 Health. Ranged +10 Health, 10% more accurate and 25% more dmg. ", 
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.15 },
 		{ "value": "Cost/Resources/metal", "add": 20 },
@@ -16,7 +16,7 @@
 		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9 },
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.25},
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.25 },
-		{ "value": "Atacck/Ranged/Damage/Crush", "multiply": 1.25 }
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.25 }
 	
 	],
 	"affects": ["Elite Mercenary"]

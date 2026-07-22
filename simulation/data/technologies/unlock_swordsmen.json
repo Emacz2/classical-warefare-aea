@@ -19,6 +19,6 @@
 	"requirementsTooltip": "Unlocked in village Phase.",
 	"icon": "unlock_swordsmen.png",
 	"researchTime": 25,
-	"tooltip": "Unlock the ability to train swordman from baracks.",
+	"tooltip": "Unlock the ability to train swordsman from barracks.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

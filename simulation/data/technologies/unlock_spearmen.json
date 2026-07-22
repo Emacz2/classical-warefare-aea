@@ -17,6 +17,6 @@
 	"requirementsTooltip": "Unlocked in village Phase.",
 	"icon": "unlock_spearmen.png",
 	"researchTime": 20,
-	"tooltip": "Unlock the ability to train spearman from baracks.",
+	"tooltip": "Unlock the ability to train spearman from barracks.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

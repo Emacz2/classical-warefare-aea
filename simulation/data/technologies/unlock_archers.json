@@ -16,6 +16,6 @@
 	"requirementsTooltip": "Unlocked in Village Phase.",
 	"icon": "bow.png",
 	"researchTime": 20,
-	"tooltip": "Unlock the ability to train Archers from baracks.",
+	"tooltip": "Unlock the ability to train Archers from barracks.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
