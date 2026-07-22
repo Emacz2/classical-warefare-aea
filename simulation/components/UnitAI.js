@@ -2345,8 +2345,7 @@ UnitAI.prototype.UnitFsmSpec = {
 						return true;
 					}
 
-					if (!this.formationAnimationVariant)
-						this.SetAnimationVariant("combat");
+					this.SetAnimationVariant("combat");
 
 					this.FaceTowardsTarget(this.order.data.target);
 
