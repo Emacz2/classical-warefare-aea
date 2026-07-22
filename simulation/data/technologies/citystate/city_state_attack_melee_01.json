@@ -1,6 +1,6 @@
 {
-	"genericName": "Carburisation",
-	"description": "By adding a small amount of carbon during the iron smelting process, a stronger material, steel, can be forged.",
+	"genericName": "Hardened Blades",
+	"description": "Improved heat treatment produced stronger blades that held a sharper edge in battle.",
 	"cost": {
 		"food": 200,
 		"metal": 200

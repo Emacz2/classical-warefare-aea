@@ -1,5 +1,6 @@
 {
-	"genericName": "Armor Plating",
+	"genericName": "Horse Barding",
+	"description": "Persian armorers equipped elite warhorses with protective barding of leather, quilted cloth, mail, or scale armor. Though the additional weight slowed their advance, the extra protection greatly increased the survivability of both horse and rider.",
 	"cost": {
 		"metal": 500,
 		"food": 500

@@ -1,5 +1,6 @@
 {
-	"genericName": "Armor Plating",
+	"genericName": "Reinforced Chassis",
+	"description": "Master craftsmen strengthened chariot frames with heavier timbers, reinforced wheel hubs, and bronze fittings. These sturdier vehicles better withstood the rigors of battle, though their additional weight reduced speed.",
 	"cost": {
 		"metal": 400,
 		"food": 250

@@ -1,9 +1,9 @@
 {
-	"genericName": "Iron Weapons",
-	"description": "Using iron instead of bronze gave weapons additional power.",
+	"genericName": "Tempered Steel",
+	"description": "Carefully controlled heating and quenching created tougher, more resilient weapons that resisted chipping and breakage.",
 	"cost": {
-		"food": 300,
-		"metal": 200
+		"food": 350,
+		"metal": 250
 	},
 		"requirements": {
 		"all": [

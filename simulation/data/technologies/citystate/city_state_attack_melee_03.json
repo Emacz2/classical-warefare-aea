@@ -1,5 +1,6 @@
 {
-	"genericName": "Tempering",
+	"genericName": "Master Smithing",
+	"description": "Generations of experience and refined metallurgical techniques allowed master smiths to produce weapons of exceptional quality, balance, and lethality.",
 	"cost": {
 		"food": 500,
 		"metal": 500

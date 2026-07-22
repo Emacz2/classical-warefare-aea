@@ -1,14 +1,6 @@
 {
-	"genericName": "Side Arms",
-	"specificName": {
-		"athen": "Xiphos",
-		"mace": "Xiphos",
-		"ptol": "Xiphos",
-		"rome": "Pugio",
-		"sele": "Xiphos",
-		"spart": "Xiphos"
-	},
-	"description": "Often, a soldier would carry a secondary weapon in addition to his primary weapon of choice, to be drawn when the primary weapon has failed or been broken.",
+	"genericName": "Hardened Blades",
+	"description": "Improved heat treatment produced stronger blades that held a sharper edge in battle.",
 	"cost": {
 		"food": 200,
 		"metal": 100
