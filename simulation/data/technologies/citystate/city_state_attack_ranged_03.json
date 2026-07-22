@@ -1,5 +1,6 @@
 {
-	"genericName": "Pyramidal arrowheads",
+	"genericName": "Precision Arrowheads",
+	"description": "Master craftsmen perfected the balance, shape, and finish of military arrowheads, creating exceptionally accurate and lethal projectiles capable of striking with devastating effectiveness.",
 	"cost": {
 		"wood": 350,
 		"metal": 250
