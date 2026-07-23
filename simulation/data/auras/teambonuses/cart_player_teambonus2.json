@@ -7,9 +7,9 @@
 		{ "value": "Researcher/TechCostMultiplier/wood", "multiply": 0.75 },
 		{ "value": "Researcher/TechCostMultiplier/stone", "multiply": 0.75 },
 		{ "value": "Researcher/TechCostMultiplier/metal", "multiply": 0.75 },
-		{ "value": "Cost/BuildTime", "multiply": 0.5 }
+		{ "value": "Cost/BuildTime", "multiply": 0.5, "affects": "!Market"}
 	],
 	"auraName": "Mercantile Culture",
 	"showDescription": 1,
-	"auraDescription": "Markets and Docks build 50% faster and techs from cost 25% less resources"
+	"auraDescription": "Markets and Docks and technologies 25% less resource cost.  Docks 50% less build time."
 }

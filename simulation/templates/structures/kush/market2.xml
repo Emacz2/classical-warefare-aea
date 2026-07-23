@@ -2,14 +2,15 @@
 <Entity parent="template_structure_economic_market">
    <Identity>
     <Civ>kush</Civ>
+    <GenericName>Market lvl 2</GenericName>
     <SpecificName>Pr-sbt</SpecificName>
-    <VisibleClasses datatype="tokens">Village -Town</VisibleClasses>
+    <VisibleClasses datatype="tokens">Village -Town Two</VisibleClasses>
     <Requirements>
       <Techs datatype="tokens">-phase_town phase_village</Techs>
     </Requirements>
   </Identity>
    <Promotion>
-    <Entity>structures/kush/market_2</Entity>
+    <Entity>structures/kush/market_3</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>
   <VisualActor>

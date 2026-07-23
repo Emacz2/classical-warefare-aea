@@ -1,7 +1,7 @@
 {
     "genericName": "African Kingdoms",
     "autoResearch": true,
-    "description": "The kingdoms of Carthage and Kush prospered through long-distance trade, monumental civic construction, and the successful integration of diverse peoples into their armies. Their wealth, resilient institutions, and use of African war elephants enabled both kingdoms to project power across Africa and the Mediterranean while maintaining prosperous and enduring states.",
+    "description": "The kingdoms of Carthage and Kush prospered through long-distance trade, monumental civic construction, and the successful integration of diverse peoples into their armies. Their extensive commercial networks allowed them to establish markets early, while resilient institutions and the use of African war elephants enabled them to project power across Africa and the Mediterranean.",
     "requirements": {
         "any": [
             {
@@ -13,7 +13,7 @@
         ]
     },
     "icon": "ionic_column.png",
-    "tooltip": "Markets build 25% faster. Civic Structures +10% Health and +10% Capture Points. Allied units train 10% faster. Elephants train 10% faster.",
+    "tooltip": "Markets are available in the Village Phase and build 25% faster. Civic Structures gain +10% Health and +10% Capture Points. Allied units Mercenaries and Elephants train 10% faster.",
     "modifications": [
         {
             "value": "Cost/BuildTime",
@@ -34,6 +34,11 @@
             "value": "Cost/BuildTime",
             "multiply": 0.9,
             "affects": "Allied"
+        },
+         {
+            "value": "Cost/BuildTime",
+            "multiply": 0.9,
+            "affects": "Mercenary"
         },
         {
             "value": "Cost/BuildTime",

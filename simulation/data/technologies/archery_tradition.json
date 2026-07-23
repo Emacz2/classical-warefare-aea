@@ -1,6 +1,6 @@
 {
 	"genericName": "Archery Tradition",
-	"description": "The Indian, Iranian, and Kushite peoples had a tradition of fine archery and a penchant for using massed archers in battle.",
+	"description": "The Indian and Iranian peoples had a tradition of fine archery and a penchant for using massed archers in battle.",
 	"cost": {
 		"food": 250,
 		"metal": 150
@@ -10,7 +10,6 @@
 			{ "tech": "phase_village" },
 			{
 				"any": [
-					{ "civ": "kush" },
 					{ "civ": "maur" },
 					{ "civ": "pers" }
 				]
