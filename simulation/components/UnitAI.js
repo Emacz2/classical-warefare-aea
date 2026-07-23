@@ -501,12 +501,25 @@ UnitAI.prototype.UnitFsmSpec = {
 
 			// Cancel any current packing order.
 			if (this.EnsureCorrectPackStateForAttack(false))
-                        {
-                                if (this.IsFormationMember())
-				        this.SetNextState("FORMATIONMEMBER.COMBAT.ATTACKING");
-                                else
-				        this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
-                        }
+			{
+				if (this.IsFormationMember())
+					this.SetNextState("FORMATIONMEMBER.COMBAT.ATTACKING");
+				else
+					this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
+			}
+			return ACCEPT_ORDER;
+		}
+
+		if (this.IsFormationMember())
+		{
+			const cmpFormation = Engine.QueryInterface(this.formationController, IID_Formation);
+			const cmpFormationUnitAI = Engine.QueryInterface(this.formationController, IID_UnitAI);
+			if (!cmpFormation.AreSomeMembersAttacking() && !cmpFormationUnitAI.IsAttackingAsFormation())
+			{
+				cmpFormationUnitAI.AddOrder("Attack", { "target": msg.data.target });
+			}
+			if (this.orderQueue.length)  // TODO why need to check?
+				return this.FinishOrder();
 			return ACCEPT_ORDER;
 		}
 
@@ -519,9 +532,6 @@ UnitAI.prototype.UnitFsmSpec = {
 			this.PushOrderFront("Pack", { "force": true });
 			return ACCEPT_ORDER;
 		}
-
-                if (this.IsFormationMember())
-		        return this.FinishOrder();
 
 		// If we're currently packing/unpacking, make sure we are packed, so we can move.
 		if (this.EnsureCorrectPackStateForAttack(true))
@@ -2345,8 +2355,7 @@ UnitAI.prototype.UnitFsmSpec = {
 						return true;
 					}
 
-					if (!this.formationAnimationVariant)
-						this.SetAnimationVariant("combat");
+					this.SetAnimationVariant("combat");
 
 					this.FaceTowardsTarget(this.order.data.target);
 
@@ -2372,10 +2381,22 @@ UnitAI.prototype.UnitFsmSpec = {
 					// Units with no cheering time do not cheer.
 					this.shouldCheer = cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal()) && this.cheeringTime > 0;
 
+					if (this.IsFormationMember())
+					{
+						const cmpFormation = Engine.QueryInterface(this.formationController, IID_Formation);
+						cmpFormation.SetAttackingEntity(this.entity);
+					}
+
 					return false;
 				},
 
 				"leave": function() {
+					if (this.IsFormationMember())
+					{
+						const cmpFormation = Engine.QueryInterface(this.formationController, IID_Formation);
+						cmpFormation.UnsetAttackingEntity(this.entity);
+					}
+
 					const cmpBuildingAI = Engine.QueryInterface(this.entity, IID_BuildingAI);
 					if (cmpBuildingAI)
 						cmpBuildingAI.SetUnitAITarget(0);
