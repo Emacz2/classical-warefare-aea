@@ -1,5 +1,6 @@
 {
-	"genericName": "Heavy Armor Plating",
+	"genericName": "Reinforced Elephant Armor",
+	"description": "Advances in armor design incorporated additional layers of leather, mail, and bronze scales into elephant protection. These reinforced defenses greatly increased the resilience of war elephants while preserving their battlefield effectiveness.",
 	"cost": {
 		"metal": 400,
 		"food": 400

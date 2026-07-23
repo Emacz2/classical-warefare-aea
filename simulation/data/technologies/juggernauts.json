@@ -2,7 +2,8 @@
 	"supersedes": "dock_efficiency",
 	"genericName": "Juggernauts",
 	"specificName": {
-		"ptol": "Tessarakonterēs"
+		"ptol": "Tessarakonterēs",
+		"description": "Advances in naval engineering produced larger and more heavily reinforced siege ships capable of carrying additional crews and siege engines. Though slower and more cumbersome, these formidable vessels could endure greater punishment while delivering devastating bombardments."
 	},
 	"cost": {
 		"wood": 600,

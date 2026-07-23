@@ -1,6 +1,6 @@
 {
-	"genericName": "Master Smithing",
-	"description": "Generations of experience and refined metallurgical techniques allowed master smiths to produce weapons of exceptional quality, balance, and lethality.",
+	"genericName": "Tempered Steel",
+	"description": "Carefully controlled heating and quenching created tougher, more resilient weapons that resisted chipping and breakage.",
 	"cost": {
 		"food": 400,
 		"metal": 300

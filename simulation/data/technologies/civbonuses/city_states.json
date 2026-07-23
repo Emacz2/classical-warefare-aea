@@ -1,7 +1,7 @@
 {
 	"genericName": "City States",
 	"autoResearch": true,
-	"description": ".",
+	"description": "The independent Greek city-states were built around powerful urban centers whose citizen populations formed disciplined hoplite armies. Although their territories were relatively small, their civic institutions, military traditions, and prosperous cities made them among the most influential states of the ancient world.",
 	"requirements": {
 		"any": [
 			{ "civ": "athen" },
@@ -10,7 +10,7 @@
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "Only allowed capital (Agora/CivilCenter.) It receives 50% population bonus and 25% more health/capture points due to Hellenistic Architecture bonus. Hoplites +5% dmg and access to Hoplite reforms p1. But they have -10% maximum population",
+	"tooltip": "Greek City States may construct only a single Capital (Agora/Civil Center). The Capital supports 50% more population and benefits from Hellenistic Architecture. Hoplites deal 5% more damage and unlock Hoplite Reforms during Phase I. However, Greek City States have 10% lower maximum population.",
 	"modifications": [
 		{ "value": "Population/Bonus", "multiply": 1.5, "affects": "Agora" },
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoplite"},

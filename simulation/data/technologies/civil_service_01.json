@@ -2,7 +2,7 @@
 	"pair": "pair_unlock_civil_service_han",
 	"genericName": "Efficient Bureaucracy",
 	"specificName": { "han": "Guānliáo" },
-	"description": "",
+	"description": "A professional bureaucracy allowed the Han administration to recruit, organize, and deploy government officials with remarkable efficiency. Standardized procedures and merit-based appointments ensured capable ministers could quickly serve the needs of the empire.",
 	"cost": {
 		"food": 200,
 		"wood": 200,

@@ -1,18 +1,39 @@
 {
-	"genericName": "Hellenistic Kingdoms",
-	"autoResearch": true,
-	"description": ".",
-	"requirements": {
-		"any": [
-			{ "civ": "mace" },
-			{ "civ": "sele" },
-			{ "civ": "ptol" }
-		]
-	},
-	"icon": "ionic_column.png",
-	"tooltip": ".",
-	"modifications": [
-	
-	
-	]
+    "genericName": "Hellenistic Kingdoms",
+    "autoResearch": true,
+    "description": "The successor kingdoms of Alexander the Great combined Macedonian military traditions with the wealth and administration of the eastern empires. Their professional armies, elite officers, advanced siegecraft, and royal patronage allowed them to dominate the battlefields of the Hellenistic world.",
+
+    "requirements": {
+        "any": [
+            { "civ": "mace" },
+            { "civ": "sele" },
+            { "civ": "ptol" }
+        ]
+    },
+
+    "icon": "ionic_column.png",
+
+    "tooltip": "Military Technologies research 15% faster. Champion units train 10% faster. Siege units train 10% faster.",
+
+    "modifications": [
+
+        {
+            "value": "Researcher/TechCostMultiplier",
+            "multiply": 0.85,
+            "affects": ["Barracks","Stable", "Siegeworkshop"]
+        },
+
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.90,
+            "affects": "Champion"
+        },
+
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.90,
+            "affects": "Siege"
+        }
+
+    ]
 }

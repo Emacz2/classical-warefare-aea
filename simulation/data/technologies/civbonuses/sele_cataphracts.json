@@ -1,7 +1,7 @@
 {
 	"genericName": "Early Shock Cavalry",
 	"autoResearch": true,
-	"description": "",
+	"description": "The Seleucid Empire maintained one of the ancient world's earliest corps of heavily armored shock cavalry. Drawing upon Persian traditions and Hellenistic military reforms, these elite horsemen were fielded earlier than those of rival kingdoms, providing a decisive advantage in the opening stages of war.",
 	"icon": "agoge.png",
 	"tooltip": "Native Champion Cavalry becomes available in Town Phase, giving Seleucids the only Champion Cavalry p2 (Not counting Chariots).",
 	"requirements": { "civ": "sele" },

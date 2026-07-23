@@ -1,6 +1,6 @@
 {
-	"genericName": "Tempered Steel",
-	"description": "Carefully controlled heating and quenching created tougher, more resilient weapons that resisted chipping and breakage.",
+	"genericName": "Hardened Blades",
+	"description": "Improved heat treatment produced stronger blades that held a sharper edge in battle.",
 	"cost": {
 		"food": 350,
 		"metal": 250

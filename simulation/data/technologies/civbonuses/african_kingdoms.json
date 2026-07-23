@@ -1,18 +1,44 @@
 {
-	"genericName": "African Kingdoms",
-	"autoResearch": true,
-	"description": ".",
-	"requirements": {
-		"any": [
-			{ "civ": "athen" },
-			{ "civ": "spart" },
-			{ "civ": "theb" }
-		]
-	},
-	"icon": "ionic_column.png",
-	"tooltip": ".",
-	"modifications": [
-
-	
-	]
+    "genericName": "African Kingdoms",
+    "autoResearch": true,
+    "description": "The kingdoms of Carthage and Kush prospered through long-distance trade, monumental civic construction, and the successful integration of diverse peoples into their armies. Their wealth, resilient institutions, and use of African war elephants enabled both kingdoms to project power across Africa and the Mediterranean while maintaining prosperous and enduring states.",
+    "requirements": {
+        "any": [
+            {
+                "civ": "cart"
+            },
+            {
+                "civ": "kush"
+            }
+        ]
+    },
+    "icon": "ionic_column.png",
+    "tooltip": "Markets build 25% faster. Civic Structures +10% Health and +10% Capture Points. Allied units train 10% faster. Elephants train 10% faster.",
+    "modifications": [
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.75,
+            "affects": "Market"
+        },
+        {
+            "value": "Health/Max",
+            "multiply": 1.1,
+            "affects": "Civic"
+        },
+        {
+            "value": "Capturable/CapturePoints",
+            "multiply": 1.1,
+            "affects": "Civic"
+        },
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.9,
+            "affects": "Allied"
+        },
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.9,
+            "affects": "Elephant"
+        }
+    ]
 }

@@ -1,8 +1,8 @@
 {
 	"pair": "pair_unlock_civil_engineering_han",
 	"genericName": "Robust Architecture",
-	"specificName": { "han": "Gōngchéng" },
-	"description": "",
+	"specificName": { "han": "Jiānzhù" },
+	"description": "Refined engineering techniques, stronger foundations, and improved timber and masonry construction produced structures capable of withstanding the hardships of war and the passage of time.",
 	"cost": {
 		"food": 0,
 		"wood": 300,

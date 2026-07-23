@@ -9,11 +9,10 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "skull_swords.png",
 	"researchTime": 40,
-	"tooltip": "Healers –50% training timed -25% less food.",
+	"tooltip": "Healers –50% training time -25% less food.",
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 0.5 },
-		{ "value": "Cost/Resources/food", "multiply": 0.75 },
-		{ "value": "Loot/metal", "replace": 0 }
+		{ "value": "Cost/Resources/food", "multiply": 0.75 }
 	],
 	"affects": ["Healer"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"

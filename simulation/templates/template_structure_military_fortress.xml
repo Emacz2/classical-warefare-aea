@@ -133,12 +133,9 @@
   </Trainer>
   <Researcher>
     <Technologies datatype="tokens">
-      attack_soldiers_will
       tower_murderholes
       fort_garrison
       art_of_war
-      poison_arrows
-      poison_blades
       fort_range
       roman_reforms
     </Technologies>

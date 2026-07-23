@@ -4,14 +4,6 @@
     <Civ>pers</Civ>
     <SpecificName>Arštišta</SpecificName>
   </Identity>
-    <Researcher>
-    <Technologies datatype="tokens">
-      pers_resistance_hack
-      pers_resistance_pierce
-      pers_resistance_hack_02
-      pers_resistance_pierce_02
-    </Technologies>
-  </Researcher>
   <VisualActor>
     <Actor>structures/persians/blacksmith.xml</Actor>
   </VisualActor>

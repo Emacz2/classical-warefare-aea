@@ -1,5 +1,6 @@
 {
-	"genericName": "Trilobate arrowheads",
+	"genericName": "Forged Arrowheads",
+	"description": "Improved forging techniques allowed smiths to produce stronger, more consistent arrowheads with greater penetrating power and durability on the battlefield.",
 	"cost": {
 		"wood": 400,
 		"metal": 300
