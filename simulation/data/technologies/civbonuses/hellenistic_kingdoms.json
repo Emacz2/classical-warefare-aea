@@ -20,7 +20,7 @@
         {
             "value": "Researcher/TechCostMultiplier",
             "multiply": 0.85,
-            "affects": ["Barracks","Stable", "Siegeworkshop"]
+            "affects": "Barracks Stable Siegeworkshop"
         },
 
         {
