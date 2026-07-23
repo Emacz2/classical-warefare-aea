@@ -17,11 +17,7 @@
 
     "modifications": [
 
-        {
-            "value": "Researcher/TechCostMultiplier",
-            "multiply": 0.85,
-            "affects": ["Barracks", "Stable", "Arsenal"]
-        },
+        { "value": "Researcher/TechCostMultiplier/time", "multiply": 0.85, "affects": "Military !Forge" },
 
         {
             "value": "Cost/BuildTime",
