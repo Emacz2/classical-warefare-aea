@@ -1,19 +1,7 @@
+// Charge attack repeat time bonus for a while
 Attack.prototype.ChargeRepeatTimeBonusEnd = function()
 {
 	this.StopAttacking("ChargeRepeatTimeBonusEnd");
-};
-
-const AttackGetAttackEffectsData = Attack.prototype.GetAttackEffectsData;
-Attack.prototype.GetAttackEffectsData = function(type, splash)
-{
-	const attackData = AttackGetAttackEffectsData.apply(this, arguments);
-	if (type == "Melee")
-	{
-		const r = Math.max(0, 1 + 0.2 * randomNormal2D()[0]);
-		for (const damageType in attackData.Damage)
-			attackData.Damage[damageType] *= r;
-	}
-	return attackData;
 };
 
 const AttackStartAttacking = Attack.prototype.StartAttacking;
@@ -30,6 +18,20 @@ Attack.prototype.StartAttacking = function(target, type, callerIID, force)
 	return true;
 };
 
+// Randomize Melee attack
+const DelayedDamageHit = DelayedDamage.prototype.Hit;
+DelayedDamage.prototype.Hit = function(data, lateness)
+{
+	if (data.type == "Melee")
+	{
+		const r = Math.max(0, 1 + 0.2 * randomNormal2D()[0]);
+		for (const damageType in data.attackData.Damage)
+			data.attackData.Damage[damageType] *= r;
+	}
+	DelayedDamageHit.apply(this, arguments);
+}
+
+// Reduce range to ensure that the formation get close enough to attack
 FormationAttack.prototype.GetRange = function(target)
 {
 	var result = { "min": 0, "max": -1 };
@@ -63,6 +65,7 @@ FormationAttack.prototype.GetRange = function(target)
 	return result;
 };
 
+// Formation would approach again only when no units are still fighting
 Formation.prototype.variablesToSerialize.push("attackingEntities");
 
 Formation.prototype.SetAttackingEntity = function(ent)
