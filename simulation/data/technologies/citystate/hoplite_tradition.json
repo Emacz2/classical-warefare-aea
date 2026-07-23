@@ -19,7 +19,7 @@
 			}
 		]
 	},
-	"requirementsTooltip": "Unlocked in Town Phase.",
+	"requirementsTooltip": "Unlocked in village Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 60,
 	"tooltip": "Hoplites 20% less train time and need 20% less experience to promote. Citizens -10% food/wood cost. Champions +25 health",

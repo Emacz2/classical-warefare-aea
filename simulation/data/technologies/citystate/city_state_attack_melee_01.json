@@ -16,7 +16,7 @@
 	"requirementsTooltip": "Unlocked in village.",
 	"icon": "sword_01.png",
 	"researchTime": 20,
-	"tooltip": "Soldiers +5% melee attack damage. Hoplites gain an additional 10% ",
+	"tooltip": "Soldiers +5% melee attack damage. Hoplites gain an additional 5% ",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05 },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05 },

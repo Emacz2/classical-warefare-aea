@@ -8,7 +8,7 @@
 	"supersedes": "citystate/city_state_attack_ranged_02",
 		"requirements": {
 		"all": [
-			{ "tech": "phase_town" },
+			{ "tech": "phase_city" },
 			{ "civ": "athen" },
 			{ "civ": "spart" },
 			{ "civ": "theb" }
