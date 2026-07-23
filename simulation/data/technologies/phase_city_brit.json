@@ -31,7 +31,7 @@
 	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +0.5 capture points regeneration rate for garrisoned units. Civ Center 40% more garrison capacity, 5 more range +7.5 pierce resistance +5 Hack resistance +2.5 Crush resistance but -3% pierce dmg.  Chariots -20% train time and 3% faster movement. Druids +10 health.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre !Colony" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "CivCentre !Colony" },
 		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },

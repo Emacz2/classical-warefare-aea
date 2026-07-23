@@ -33,7 +33,7 @@
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "Trainer/BatchTimeModifier", "add": -0.1, "affects": "Stable" },
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },

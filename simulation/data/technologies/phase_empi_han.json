@@ -35,7 +35,7 @@
 	"tooltip": "Advance to the Empire Phase, which boosts max population 10% and unlocks more entities and technologies. Civic Centers +40% territory influence radius. Structures +1 capture points regeneration rate for garrisoned units.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.4, "affects": "CivCentre" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.3, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "Structure" },

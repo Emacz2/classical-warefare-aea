@@ -41,6 +41,7 @@
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "Agora" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "Agora" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "Agora" },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.2, "affects": "Champion Spearman" },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.2, "affects": "Champion Spearman" }
 	

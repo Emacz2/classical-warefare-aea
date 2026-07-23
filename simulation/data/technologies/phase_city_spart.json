@@ -41,6 +41,7 @@
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "Agora" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "Agora" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "Agora" },
 		{ "value": "Cost/BuildTime", "multiply": 1.15, "affects": "Champion" },
 		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "Perioikoi" },
 		{ "value": "Cost/BuildTime", "multiply": 0.9, "affects": "HelotM" },
