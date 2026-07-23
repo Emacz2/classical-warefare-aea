@@ -31,7 +31,8 @@
 		{ "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "Agora" },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "Agora" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "Agora" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" }
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.1, "affects": "Agora" }
 
 		
 

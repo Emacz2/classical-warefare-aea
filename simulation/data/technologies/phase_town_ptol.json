@@ -21,7 +21,7 @@
 	"tooltip": "Advance to Town Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +0.5 capture points regeneration rate for garrisoned units. Civic Centers 25% more garrison capacity, +5 range and 2.5 of each resistance but 2% less pierce dmg.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "CivCentre" },

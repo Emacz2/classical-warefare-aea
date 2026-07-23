@@ -23,6 +23,7 @@
 	"tooltip": "Structures gain +0.5 capture regeneration rate. Citizen Infantry 5% more pierce dmg. Druids +5 health.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.1, "affects": "TribalCenter" },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
