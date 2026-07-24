@@ -1,6 +1,6 @@
 {
 	"genericName": "Veteran Citizenry",
-	"description": "Citizen infantry train 10% faster, reflecting the strong military traditions of Boeotia and Thebes.",
+	"description": "Citizen infantry promote 10% faster, reflecting the strong military traditions of Boeotia and Thebes.",
 	"autoResearch": true,
 	"requirements": { "civ": "theb" },
 	"icon": "enlightenment.png",

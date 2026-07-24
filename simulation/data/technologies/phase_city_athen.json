@@ -31,7 +31,7 @@
 	"replaces": ["phase_city"],
 	"icon": "city_phase.png",
 	"researchTime": 60,
-	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +1 capture points regeneration rate for garrisoned units. Workers +15% metal gather rate.",
+	"tooltip": "Advance to City Phase, unlocking new entities and technologies. Agoras gain an additional +15% territory influence radius, +10 garrison capacity, +10 population capacity, +5 attack range, +5 Hack resistance, +7.5 Pierce resistance, and +2.5 Crush resistance. Garrisoned Structures gain an additional +2 Capture Point regeneration rate. Workers gather metal an additional 15% faster.",
 	"modifications": [
 		{ "value": "ResourceGatherer/Rates/metal.ore", "multiply": 1.15, "affects": "Worker" },
 		{ "value": "Capturable/GarrisonRegenRate", "add": 2, "affects": "Structure" },

@@ -23,7 +23,7 @@
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05 },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Hoplite" },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05,"affects": "Hoplite" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoptlite" }
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoplite" }
 		
 	],
 	"affects": ["Soldier !Mercenary !Elephant"],

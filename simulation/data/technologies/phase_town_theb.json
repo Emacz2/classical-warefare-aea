@@ -1,7 +1,7 @@
 {
 	"genericName": "Town Phase",
 	"specificName": {
-		"spart": "Kōmopolis"
+		"theb": "Kōmopolis"
 	},
 	"description": "Advances from a small village to a bustling town, ready to expand rapidly.",
 	"cost": {
@@ -23,7 +23,7 @@
 	"replaces": ["phase_town"],
 	"icon": "town_phase.png",
 	"researchTime": 40,
-	"tooltip": "Advance to Theban Town Phase, which unlocks more entities and technologies. Civic Centers +10% territory influence radius, +5 more garrison capacity/population bonus, +10 range and 2.5 of each resistance. Structures +0.5 capture points regeneration rate for garrisoned units. ",
+	"tooltip": "Advance to Town Phase, unlocking new entities and technologies. Agoras gain +10% territory influence radius, +5 garrison capacity, +5 population capacity, +10 attack range, and +2.5 Hack, Pierce, and Crush resistance. Garrisoned Structures gain +1 Capture Point regeneration rate. ",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "Agora" },

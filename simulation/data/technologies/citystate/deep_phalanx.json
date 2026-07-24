@@ -1,5 +1,5 @@
 {
-	"genericName": "Deep Phalanx",
+	"genericName": "Deepened Phalanx",
 	"description": "The deep phalanx is an ancient Greek tactical formation developed by Theban general Epaminondas at the Battle of Leuctra (371 BCE).  A deliberate break from the standard hoplite phalanx depth (8 ranks) by deepening one flank to overwhelm the enemy.",
 	
 	"requirements": {
@@ -23,4 +23,3 @@
 	"affects": ["Hoplite"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
-
