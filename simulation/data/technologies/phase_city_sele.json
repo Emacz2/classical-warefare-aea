@@ -28,7 +28,7 @@
 	"replaces": ["phase_city"],
 	"icon": "city_phase.png",
 	"researchTime": 60,
-	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +1 capture points regeneration rate for garrisoned units.",
+	"tooltip": "Advance to City Phase, unlocking new entities and technologies. Civic Centers gain an additional +20% territory influence radius, +10 garrison capacity, +10 population capacity, +5 attack range, +5 Hack Resistance, +7.5 Pierce Resistance, and +2.5 Crush Resistance, but deal 3% less Pierce damage. Garrisoned Structures gain an additional +1 Capture Point regeneration rate. ",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
@@ -39,11 +39,6 @@
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1, "affects": "Champion Cavalry Spearman" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1, "affects": "Champion Cavalry Spearman" },
-		{ "value": "Cost/Resources/wood", "add": 25, "affects": "Champion Cavalry Spearman"},
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Champion Cavalry Spearman" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Champion Cavalry Spearman"},
 		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Colony" }
 
 	

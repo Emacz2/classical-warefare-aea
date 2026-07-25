@@ -28,10 +28,8 @@
 	"replaces": ["phase_city"],
 	"icon": "city_phase.png",
 	"researchTime": 60,
-	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +1 capture points regeneration rate for garrisoned units. Decrease batch training time of units trained in Stables.",
+	"tooltip": "Advance to City Phase, unlocking new entities and technologies. Civic Centers gain an additional +20% territory influence radius, +10 garrison capacity, +10 population capacity, +5 attack range, +5 Hack Resistance, +7.5 Pierce Resistance, and +2.5 Crush Resistance, but deal an additional 3% less Pierce damage. Garrisoned Structures gain an additional +1 Capture Point regeneration rate.",
 	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "Trainer/BatchTimeModifier", "add": -0.1, "affects": "Stable" },
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },

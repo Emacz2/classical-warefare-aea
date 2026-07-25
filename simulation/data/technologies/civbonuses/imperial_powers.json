@@ -1,7 +1,7 @@
 {
 	"genericName": "Imperial Powers",
 	"autoResearch": true,
-	"description": ".",
+	"description": "Rome, Persia, Han China, and the Mauryan Empire governed vast territories through extensive administrative systems, major population centers, and networks of roads, officials, and regional authorities. As their states developed, their civic centers projected influence across increasingly large domains.",
 	"requirements": {
 		"any": [
 			{ "civ": "han" },
@@ -11,7 +11,7 @@
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "4th phase, the imperial phase. +10% max population",
+	"tooltip": "Civic Centers gain greater territory influence with each phase. Rome, Persia, and Han may advance to the Empire Phase, gaining an additional 30% territory influence and +10% maximum population.",
 	"modifications": [
 	
 	

@@ -1,7 +1,7 @@
 {
-	"genericName": "Diadochen state",
+	"genericName": "Successor Kingdoms",
 	"autoResearch": true,
-	"description": "Fighting over the remains of Alexander the Great's empire.",
+	"description": "The Ptolemaic and Seleucid dynasties combined Macedonian military traditions with the resources of vast and diverse imperial territories. Their armies were powerful, but their authority over distant populations and settlements was more vulnerable.",
 	"requirements": {
 		"any": [
 			{ "civ": "ptol" },
@@ -9,7 +9,7 @@
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "Structures -10% capture points, soldiers +5% dmg (excludes mercenaries).",
+	"tooltip": "Native and Allied units deal 5% more attack damage, but Structures have 10% fewer Capture Points.",
 	"modifications": [
 		{ "value": "Capturable/CapturePoints", "multiply": 0.9, "affects": "Structure" },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Soldier !Mercenary" },

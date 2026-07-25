@@ -2,12 +2,11 @@
 	"supersedes": "dock_efficiency",
 	"genericName": "Juggernauts",
 	"specificName": {
-		"ptol": "Tessarakonterēs",
-		"description": "Advances in naval engineering produced larger and more heavily reinforced siege ships capable of carrying additional crews and siege engines. Though slower and more cumbersome, these formidable vessels could endure greater punishment while delivering devastating bombardments."
+		"ptol": "Tessarakonterēs"
 	},
 	"cost": {
-		"wood": 600,
-		"metal": 400
+		"wood": 500,
+		"metal": 300
 	},
 	"requirements": {
 		"all": [
@@ -18,12 +17,11 @@
 	"requirementsTooltip": "Unlocked in City Phase. Requires “Shipwrights.”",
 	"icon": "juggernaut.png",
 	"researchTime": 40,
-	"tooltip": "Siege Ships +50% health, +25% more projectiles, but −25% speed.",
+	"tooltip": "Warships +25% health, but −10% speed.",
 	"modifications": [
-		{ "value": "Health/Max", "multiply": 1.5 },
-		{ "value": "Attack/Ranged/RepeatTime", "multiply": 0.75 },
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.75 }
+		{ "value": "Health/Max", "multiply": 1.25 },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.9 }
 	],
-	"affects": ["NavalSiege"],
+	"affects": ["Warship"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

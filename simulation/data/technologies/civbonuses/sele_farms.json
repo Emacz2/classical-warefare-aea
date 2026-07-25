@@ -1,18 +1,18 @@
 {
         "genericName": "Fertile Crescent",
         "autoResearch": true,
-        "description": "The Seleucid empire was located in a highly fertile region with productive soils. Farms are cheaper and faster to build.",
+        "description": "The Seleucid Empire controlled extensive agricultural regions stretching from the eastern Mediterranean to the irrigated river valleys of Mesopotamia. Fertile soils, established irrigation systems, and generations of agricultural knowledge allowed farmland to be developed rapidly and improvements in cultivation to be adopted without delay.",
         "requirements": {
                 "any": [
                         { "civ": "sele" }
                 ]
         },
         "icon": "stone_blocks_brown.png",
-        "tooltip": "Farms −25% wood cost and −75% build time.",
+        "tooltip": "Farms cost 25% less Wood and build 75% faster. Technologies researched at Farmsteads complete instantly.",
         "modifications": [
-                { "value": "Cost/Resources/wood", "multiply": 0.75 },
-                { "value": "Loot/wood", "multiply": 0.75 },
-		{ "value": "Cost/BuildTime", "multiply": 0.25 }
-        ],
-        "affects": ["Field"]
+                { "value": "Cost/Resources/wood", "multiply": 0.75, "affects": "Field"  },
+                { "value": "Loot/wood", "multiply": 0.75, "affects": "Field" },
+		{ "value": "Cost/BuildTime", "multiply": 0.25, "affects": "Field" },
+                { "value": "Researcher/TechCostMultiplier/time", "replace": 0, "affects": "Farmstead" }
+        ]
 }

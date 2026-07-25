@@ -1,13 +1,13 @@
 {
-	"genericName": "Gather Scrolls on military knowledge",
-	"description": "Techs from military buildings 25% less resource cost and research time.",
+	"genericName": "Gather Scrolls on Military Knowledge",
+	"description": "Treatises on tactics, logistics, fortification, siegecraft, and military organization are collected and studied, accelerating the adoption of new methods throughout the royal army.",
 	"cost": {
 		"food": 100,
 		"metal": 100
 	},
 	"icon": "skull_swords.png",
 	"researchTime": 30,
-	"tooltip": "Techs from military buildings 25% less resource cost and research time.",
+	"tooltip": "Technologies researched at Military Structures cost 25% fewer resources and research 25% faster.",
 	"modifications": [
 		{ "value": "Researcher/TechCostMultiplier/food", "multiply": 0.75 },
 		{ "value": "Researcher/TechCostMultiplier/wood", "multiply": 0.75 },

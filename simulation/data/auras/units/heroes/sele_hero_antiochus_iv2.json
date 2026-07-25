@@ -7,5 +7,5 @@
 	],
 	"auraName": "Mercenary forces",
 	"showDescription": 1,
-	"auraDescription": "Mercenaries -25% train time and cost while alive."
+	"auraDescription": "Mercenaries train 25% faster and cost 25% less Metal while Antiochus IV is alive."
 }

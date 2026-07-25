@@ -1,10 +1,10 @@
 {
 	"genericName": "Empire Phase",
 	"specificName": {
-		"rome": "Imperial Rome"
+		"rome": "Imperial Persia"
 	},
 
-	"description": "Advances from a veritable metropolis to Imperial Rome.",
+	"description": "Advances from a veritable metropolis to Imperial Persia.",
 	"cost": {
 		"food": 750,
 		"wood": 750,

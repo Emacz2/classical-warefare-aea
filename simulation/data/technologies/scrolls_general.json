@@ -1,13 +1,13 @@
 {
-	"genericName": "Gather scrolls on general knowledge",
-	"description": " Techs from civic buildings 25% less resource cost and research time.",
+	"genericName": "Gather scrolls on Civic Knowledge",
+	"description": " The Library’s scholars collect works on law, administration, architecture, philosophy, and public institutions, allowing the kingdom to benefit from the accumulated experience of many peoples..",
 	"cost": {
 		"food": 100,
 		"metal": 100
 	},
 	"icon": "statue_face_stone.png",
 	"researchTime": 30,
-	"tooltip": "Techs from civic buildings 25% less resource cost and research time..",
+	"tooltip": "Technologies researched at Civic Structures cost 25% fewer resources and research 25% faster. Excludes Civic Centers.",
 	"modifications": [
 		{ "value": "Researcher/TechCostMultiplier/food", "multiply": 0.75 },
 		{ "value": "Researcher/TechCostMultiplier/wood", "multiply": 0.75 },
@@ -15,6 +15,6 @@
 		{ "value": "Researcher/TechCostMultiplier/metal", "multiply": 0.75 },
 		{ "value": "Researcher/TechCostMultiplier/time", "multiply": 0.75 }
 	],
-	"affects": ["Structure Civic"],
+	"affects": ["Structure Civic !CivilCentre"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

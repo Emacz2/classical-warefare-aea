@@ -33,7 +33,6 @@
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "Trainer/BatchTimeModifier", "add": -0.1, "affects": "Stable" },
-		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
@@ -41,9 +40,8 @@
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.97, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Cost/BuildTime", "multiply": 0.85, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/RepeatTime", "multiply": 0.90, "affects": "Archer" }
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" }
+
 		
 		
 	],

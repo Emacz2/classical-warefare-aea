@@ -6,7 +6,7 @@
 	"modifications": [
 		{ "value": "Health/Max", "multiply": 0.9 }
 	],
-	"auraName": "Consort",
+	"auraName": "Dynastic Rivalry",
 	"showDescription": 1,
 	"auraDescription": "Enemy Heroes −10% health."
 }

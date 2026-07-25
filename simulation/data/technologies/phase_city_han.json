@@ -1,7 +1,7 @@
 {
 	"genericName": "City Phase",
 	"specificName": {
-		"Han": "Jùn"
+		"han": "Jùn"
 	},
 	"description": "Advances from a small village to a bustling town, ready to expand rapidly. Han crossbowmen shoot 5% faster and are 10% more accurate.",
 	"cost": {
@@ -34,15 +34,14 @@
 	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +1 capture points regeneration rate for garrisoned units.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.20, "affects": "CivCentre" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.97, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Cost/BuildTime", "multiply": 0.80, "affects": "Chariot" }
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" }
 	
 	],
 	"soundComplete": "interface/alarm/alarm_phase.xml"
