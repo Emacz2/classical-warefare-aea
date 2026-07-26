@@ -5,23 +5,18 @@
     structures/temple_efficiency_city
   </Auras>
   <Footprint>
-    <Square width="19.0" depth="28"/>
+    <Square width="19.0" depth="37.0"/>
     <Height>12.0</Height>
   </Footprint>
   <Identity>
-    <Civ>athen</Civ>
+    <Civ>spart</Civ>
     <SpecificName>Naos</SpecificName>
   </Identity>
   <Obstruction>
-    <Static width="17.5" depth="27"/>
+    <Static width="17.5" depth="35.5"/>
   </Obstruction>
-  <Trainer>
-    <Entities datatype="tokens">
-      units/{civ}/hero_hippocrates
-    </Entities>
-  </Trainer>
   <VisualActor>
-    <Actor>structures/athenians/temple.xml</Actor>
-    <FoundationActor>structures/fndn_5x7_temple.xml</FoundationActor>
+    <Actor>structures/spartans/temple.xml</Actor>
+    <FoundationActor>structures/fndn_4x8.xml</FoundationActor>
   </VisualActor>
 </Entity>
