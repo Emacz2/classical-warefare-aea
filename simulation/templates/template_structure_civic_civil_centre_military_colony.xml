@@ -46,13 +46,23 @@
     <Technologies datatype="tokens">
       -phase_town_{civ}
       -phase_city_{civ}
-      -hellenistic_metropolis
+      cc_range
+      -unlock_shared_los
+      -archery_tradition
+      -citystate/hoplite_tradition
+      -foreign_mercenaries
+      -javelineer_tradition
+      -pikeman_tradition
+      -hellenistic/hellenistic_metropolis
+      -roman_roads
+      -unlock_spies
+      -iber_females
+      -spy_counter
     </Technologies>
   </Researcher>
   <Trainer>
     <Entities datatype="tokens">
       -units/{civ}/support_civilian
-      -units/{civ}/support_female_citizen
       units/{civ}/infantry_pikeman_a
       units/{civ}/infantry_archer_a
       units/{civ}/merc_thracian_peltast

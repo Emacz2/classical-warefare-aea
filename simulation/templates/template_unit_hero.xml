@@ -59,6 +59,9 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+    <UnitMotion>
+    <WalkSpeed op="add">0.2</WalkSpeed>
+  </UnitMotion>
   <Vision>
     <Range>75</Range>
   </Vision>
