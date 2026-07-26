@@ -9,6 +9,6 @@
 	},
 	"requirementsTooltip": ".",
 	"icon": "silvershields.png",
-	"tooltip": "Allows you to research Persia's Empire Phase",
+	"tooltip": "Unlocks the upgrade from the Palace to the Imperial Palace",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

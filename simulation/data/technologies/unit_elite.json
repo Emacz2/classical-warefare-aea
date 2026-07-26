@@ -3,15 +3,17 @@
 	"icon": "upgrade_elite.png",
 	"tooltip": "Elite rank take 15% longer train time and -30% gathering rates compared to advanced rank. Melee units +25 health, +0.5 pierce resistance and +10% dmg. Ranged units +15 health, and 10% more accurate (Crossbowman do not gain accuracy)",
 	"modifications": [
-		{ "value": "Cost/BuildTime", "multiply": 1.15},
-		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.7 },
+		{ "value": "Cost/BuildTime", "multiply": 1.2 },
+		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.75 },
 		{ "value": "Health/Max", "add": 25, "affects": "Melee !Switch"},
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5, "affects": "!Switch" },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1},
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1},
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 },
-		{ "value": "Health/Max", "add": 15, "affects": "Ranged !Switch"},
-		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9, "affects": "!Crossbowman" }
+		{ "value": "Attack/Capture/Capture", "add": 0.5, "affects": "Melee !Switch" },
+		{ "value": "Health/Max", "add": 10, "affects": "Ranged !Switch"},
+		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9, "affects": "Ranged !Crossbowman" },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5, "affects": "!Healer !Switch" },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5, "affects": "!Healer !Switch" },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5, "affects": "!Healer !Switch" },
+		{ "value": "Heal/Range", "add": 2, "affects": "Healer" },
+		{ "value": "Heal/Health", "add": 5, "affects": "Healer" }
 
 		
 	

@@ -24,6 +24,7 @@
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Infantry" },
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Infantry" },
 		{ "value": "Vision/Range", "add": 10, "affects": "Infantry" },
+		{ "value": "Vision/Range", "add": 5, "affects": "Healer" },
 		{ "value": "Looter/Resource/metal",  "multiply": 1.25, "affects": "Infantry" },
 		{ "value": "Looter/Resource/stone",  "multiply": 1.25, "affects": "Infantry" },
 		{ "value": "Looter/Resource/food",  "multiply": 1.25, "affects": "Infantry" },

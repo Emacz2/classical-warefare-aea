@@ -30,7 +30,7 @@
 		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5, "affects": "Cavalry" }
+		{ "value": "Vision/Range", "add": 5, "affects": "Healer" }
 		
 		
 		

@@ -11,7 +11,7 @@
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "Civic Centers gain greater territory influence with each phase. Rome, Persia, and Han may advance to the Empire Phase, gaining an additional 30% territory influence and +10% maximum population.",
+	"tooltip": "Civic Centers gain greater territory influence with each phase. Han, Mauryan, Persia, and Rome may advance to the Empire Phase, gaining an additional 30% territory influence and +10% maximum population.",
 	"modifications": [
 	
 	

@@ -3,6 +3,7 @@
 	"affects": ["Siege"],
 	"affectedPlayers":["MutualAlly"],
 	"modifications": [
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.25 },
 		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.25 },
 		{ "value": "Attack/Ranged/MaxRange", "add": 5 }
 		

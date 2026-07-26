@@ -7,6 +7,6 @@
 	],
 	"auraName": "Nationalized Industries",
 	"showDescription": 1,
-	"auraDescription": "Gain small trickle a +0.5/1 second of food, metal, stone while minister is alive.",
+	"auraDescription": "Gain small trickle a +0.5/1 second of food, metal, wood while minister is alive.",
 	"stackable": true
 }

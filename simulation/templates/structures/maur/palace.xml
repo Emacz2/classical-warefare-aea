@@ -30,7 +30,7 @@
     <Upgrade>
     <ImperialPalace>
       <Entity>structures/{civ}/palace2</Entity>
-      <Tooltip>Enable training of heroes, reduce the batch training times and greatly increase the health, capture resistance and garrison capacity of this specific Civic Center.</Tooltip>
+      <Tooltip>Imperial Palace has 50% more Health and is Imperial Class, which is needed for Empire Phase</Tooltip>
       <Cost>
         <stone>300</stone>
         <wood>300</wood>

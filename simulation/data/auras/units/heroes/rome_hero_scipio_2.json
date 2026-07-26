@@ -8,7 +8,7 @@
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1 }
 
 	],
-	"auraName": "Sword of Rome",
+	"auraName": "Triumph",
 	"showDescription": 1,
 	"auraDescription": "Swordsman gain and additional 10% dmg.",
 	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"

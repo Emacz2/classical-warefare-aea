@@ -19,7 +19,7 @@
 	"tooltip": "Champion Cavalry +75 health, but 5% longer train time and +25 food.",
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.05 },
-		{ "value": "Cost/Resources/Food", "add": 25 },
+		{ "value": "Cost/Resources/food", "add": 25 },
 		{ "value": "Health/Max", "add": 75 }
 
 

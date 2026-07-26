@@ -46,7 +46,7 @@
 		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Health/Max", "add": 10, "affects": "Healer"}
+		{ "value": "Vision/Range", "add": 5, "affects": "Healer" }
 	],
 	"soundComplete": "interface/alarm/alarm_phase.xml"
 }
