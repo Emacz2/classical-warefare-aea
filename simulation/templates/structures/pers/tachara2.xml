@@ -1,53 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_special">
+<Entity parent="structures/pers/tachara">
   <Auras datatype="tokens">
     structures/satrapy_tribute
   </Auras>
   <BuildRestrictions>
     <Category>Palace</Category>
   </BuildRestrictions>
-  <Cost>
-    <BuildTime>300</BuildTime>
-    <Resources>
-      <stone>200</stone>
-      <metal>200</metal>
-    </Resources>
-  </Cost>
   <Footprint>
     <Square width="32.0" depth="32.0"/>
     <Height>8.0</Height>
   </Footprint>
   <GarrisonHolder>
-    <Max>10</Max>
+      <Max op="mul">1.5</Max>
   </GarrisonHolder>
   <Health>
-    <Max>3000</Max>
+       <Max op="mul">1.5</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_pers_cc</SpawnEntityOnDeath>
   </Health>
   <Identity>
     <Civ>pers</Civ>
-    <GenericName>Winter Palace</GenericName>
+    <GenericName>Imperial Palace</GenericName>
     <SpecificName>Taçara</SpecificName>
-    <Tooltip> Upgrade this Palace into an Imperial Palace, allowing Persia to advance to the Empire Phase.</Tooltip>
+    <Tooltip>Train Heroes and make use of the “Satrapy Tribute” feature.</Tooltip>
     <Classes datatype="tokens">ConquestCritical CivSpecific</Classes>
-    <VisibleClasses datatype="tokens">Palace</VisibleClasses>
+    <VisibleClasses datatype="tokens">-Town Palace Imperial</VisibleClasses>
     <Icon>structures/palace.png</Icon>
   </Identity>
-  <Upgrade>
-    <ImperialPalace>
-      <Entity>structures/{civ}/tachara2</Entity>
-      <Tooltip>Enable training of heroes, reduce the batch training times and greatly increase the health, capture resistance and garrison capacity of this specific Civic Center.</Tooltip>
-      <Cost>
-        <stone>300</stone>
-        <wood>300</wood>
-      </Cost>
-      <Time>40</Time>
-      <Variant>upgrading</Variant>
-      <Requirements>
-        <Techs datatype="tokens">persempire</Techs>
-      </Requirements>
-    </ImperialPalace>
-  </Upgrade>
+   <Upgrade disable=""/>
   <Loot>
     <stone>40</stone>
     <metal>40</metal>

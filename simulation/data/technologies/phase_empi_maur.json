@@ -1,10 +1,10 @@
 {
 	"genericName": "Empire Phase",
 	"specificName": {
-		"rome": "Imperial Persia"
+		"rome": "Imperial India"
 	},
 
-	"description": "Advances from a veritable metropolis to Imperial Persia.",
+	"description": "Advances from a veritable metropolis to Imperial India.",
 	"cost": {
 		"food": 750,
 		"wood": 750,
@@ -28,7 +28,7 @@
         ]
 	},
 	"requirementsTooltip": "persempire tech.",
-	"supersedes": "phase_city_pers",
+	"supersedes": "phase_city_maur",
 	"replaces": ["phase_empi"],
 	"icon": "empire_phase.png",
 	"researchTime": 75,

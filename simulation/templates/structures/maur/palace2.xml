@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_special">
+<Entity parent="structures/maur/palace">
   <Cost>
     <BuildTime>200</BuildTime>
     <Resources>
@@ -12,7 +12,7 @@
     <Height>10.0</Height>
   </Footprint>
   <Health>
-    <Max>3000</Max>
+    <Max op="mul">1.5</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_maur_cc</SpawnEntityOnDeath>
   </Health>
   <Identity>
@@ -23,25 +23,10 @@
       ConquestCritical
       CivSpecific
     </Classes>
-    <VisibleClasses datatype="tokens">Palace</VisibleClasses>
+    <VisibleClasses datatype="tokens">-Town Palace Imperial</VisibleClasses>
     <Icon>structures/stoa.png</Icon>
     <Tooltip>Train Heroes and their Poison Maiden Guards. Territory root.</Tooltip>
   </Identity>
-    <Upgrade>
-    <ImperialPalace>
-      <Entity>structures/{civ}/palace2</Entity>
-      <Tooltip>Enable training of heroes, reduce the batch training times and greatly increase the health, capture resistance and garrison capacity of this specific Civic Center.</Tooltip>
-      <Cost>
-        <stone>300</stone>
-        <wood>300</wood>
-      </Cost>
-      <Time>40</Time>
-      <Variant>upgrading</Variant>
-      <Requirements>
-        <Techs datatype="tokens">mauryempire</Techs>
-      </Requirements>
-    </ImperialPalace>
-  </Upgrade>
   <Loot>
     <stone>40</stone>
     <metal>40</metal>
@@ -74,11 +59,13 @@
       units/{civ}/champion_maiden_archer
       units/{civ}/hero_chanakya
       units/{civ}/hero_chandragupta
+      units/{civ}/hero_ashoka
     </Entities>
   </Trainer>
   <Vision>
     <Range>32</Range>
   </Vision>
+  <Upgrade disable=""/>
   <VisualActor>
     <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
     <Actor>structures/mauryas/palace.xml</Actor>

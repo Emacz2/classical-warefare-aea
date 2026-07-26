@@ -1,0 +1,14 @@
+{
+	"genericName": "Rise of Cyrus",
+	"description": "Cyrus II overthrew Median supremacy and united the Persians and Medes under Achaemenid rule. His conquests transformed Persia from a regional kingdom into a vast imperial power.",
+	
+	"requirements": {
+		"all": [
+			{ "civ": "pers" }
+		]
+	},
+	"requirementsTooltip": ".",
+	"icon": "silvershields.png",
+	"tooltip": "Allows you to research Persia's Empire Phase",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

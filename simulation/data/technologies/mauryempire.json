@@ -1,0 +1,14 @@
+{
+	"genericName": "Foundation of the Mauryan Empire",
+	"description": "With the counsel of Chanakya, Chandragupta Maurya overthrew the Nanda dynasty and established his rule at Pataliputra. Through conquest, diplomacy, and centralized administration, they transformed Magadha into the foundation of a vast imperial state.",
+	
+	"requirements": {
+		"all": [
+			{ "civ": "maur" }
+		]
+	},
+	"requirementsTooltip": ".",
+	"icon": "silvershields.png",
+	"tooltip": "Allows you to research Persia's Empire Phase",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

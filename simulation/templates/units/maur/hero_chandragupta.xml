@@ -10,6 +10,12 @@
     <SpecificName>Chandragupta Maurya</SpecificName>
     <Icon>units/maur/hero_chandragupta.png</Icon>
   </Identity>
+    <ProductionQueue/>
+  <Researcher>
+    <Technologies datatype="tokens">
+      mauryempire
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>units/mauryas/hero_elephant_chandragupta_m.xml</Actor>
   </VisualActor>

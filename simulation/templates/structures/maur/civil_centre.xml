@@ -22,6 +22,11 @@
       units/{civ}/support_elephant
     </Entities>
   </Trainer>
+    <Researcher>
+    <Technologies datatype="tokens">
+    phase_empi_maur
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>structures/mauryas/civil_centre.xml</Actor>
   </VisualActor>
