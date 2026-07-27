@@ -3,9 +3,9 @@
 	"radius": 60,
 	"auraName": "Excellency of Structures",
 	"showDescription": 1,
-	"auraDescription": "Structures +10% capture point regeneration rate.",
+	"auraDescription": "Structures +25% capture point regeneration rate.",
 	"modifications": [
-		{ "value": "Capturable/RegenRate", "multiply": 1.1 }
+		{ "value": "Capturable/RegenRate", "multiply": 1.25 }
 	],
 	"affects": ["Structure"],
 	"overlayIcon": "art/textures/ui/session/auras/laurel.png"

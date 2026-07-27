@@ -1,15 +1,14 @@
 {
-	"type": "global",
-	"affects": ["Temple"],
-	"modifications": [
-	
-		{
-			"value": "Researcher/TechCostMultiplier/time",
-			"multiply": 0.8
-		}
-	],
-	"auraName": "Focus on National Health",
-	"showDescription": 1,
-	"auraDescription": "Temple technologies -20% research time.",
-	"stackable": true
+  "type": "global",
+  "affects": ["Trader"],
+  "modifications": [
+    {
+      "value": "Trader/GainMultiplier",
+      "multiply": 1.10
+    }
+  ],
+  "auraName": "Tributary Relations",
+  "showDescription": 1,
+  "auraDescription": "Traders gain 10% more resources.",
+  "stackable": true
 }

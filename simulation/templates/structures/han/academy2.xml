@@ -31,7 +31,7 @@
     <VisibleClasses datatype="tokens">Empire Academy</VisibleClasses>
     <Icon>structures/embassy_italic.png</Icon>
     <Requirements>
-      <Techs datatype="tokens">phase_city</Techs>
+     <Techs datatype="tokens">phase_empi</Techs>
     </Requirements>
   </Identity>
   <Loot>
@@ -47,6 +47,16 @@
       -barracks_batch_training
     </Technologies>
   </Researcher>
+  <Trainer>
+  <BatchTimeModifier>0.6</BatchTimeModifier>
+  <Entities replace="" datatype="tokens">
+    units/{civ}/champion_infantry_spearman_academy
+    units/{civ}/champion_infantry_archer_academy
+    units/{civ}/champion_infantry_crossbowman_academy
+    units/{civ}/champion_cavalry_spearman_academy
+    units/{civ}/champion_chariot_academy
+  </Entities>
+</Trainer>
   <Sound>
     <SoundGroups>
       <select>interface/select/building/sel_tholos.xml</select>
@@ -54,15 +64,6 @@
       <upgraded>interface/complete/building/complete_tholos.xml</upgraded>
     </SoundGroups>
   </Sound>
-  <Trainer>
-    <BatchTimeModifier>0.7</BatchTimeModifier>
-    <Entities replace="" datatype="tokens">
-      units/{civ}/champion_infantry_spearman_academy
-      units/{civ}/champion_infantry_crossbowman_academy
-      units/{civ}/champion_cavalry_spearman_academy
-      units/{civ}/champion_chariot_academy
-    </Entities>
-  </Trainer>
   <VisualActor>
     <Actor>structures/han/academy.xml</Actor>
     <FoundationActor>structures/fndn_6x6.xml</FoundationActor>

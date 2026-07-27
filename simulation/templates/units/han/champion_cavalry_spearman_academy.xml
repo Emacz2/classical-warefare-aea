@@ -7,7 +7,7 @@
     <SelectionGroupName>units/han/champion_cavalry</SelectionGroupName>
     <Icon>units/han/champion_cavalry_spearman.png</Icon>
     <Requirements>
-      <Techs datatype="tokens">phase_city</Techs>
+      <Techs datatype="tokens">phase_empi</Techs>
     </Requirements>
   </Identity>
      <UnitMotion>

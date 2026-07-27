@@ -5,28 +5,6 @@
     units/han_minister_finance2
     units/han_minister_finance3
   </Auras>
-  <Attack>
-    <Capture>
-      <AttackName>Capture</AttackName>
-      <Capture>5</Capture>
-      <MaxRange>4</MaxRange>
-      <RepeatTime>1000</RepeatTime>
-      <RestrictedClasses datatype="tokens">Field Palisade Wall</RestrictedClasses>
-    </Capture>
-    </Attack>
-    <Attack>
-    <Melee>
-      <AttackName context="Name of an attack using a double-edged sword.">Sword</AttackName>
-      <Damage>
-        <Hack>14</Hack>
-        <Hack>2</Hack>
-      </Damage>
-      <MaxRange>2.75</MaxRange>
-      <PrepareTime>500</PrepareTime>
-      <RepeatTime>1000</RepeatTime>
-      <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
-    </Melee>
-  </Attack>
   <Cost>
     <Population>0</Population>
     <BuildTime>60</BuildTime>
@@ -36,18 +14,27 @@
     </Resources>
   </Cost>
   <Health>
-    <Max>200</Max>
+    <Max>150</Max>
   </Health>
+    <Resistance>
+    <Entity>
+      <Damage>
+        <Hack>2.5</Hack>
+        <Pierce>2.5</Pierce>
+        <Crush>5</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
   <Identity>
     <Civ>han</Civ>
     <GenericName>Minister of Finance (Agriculture)</GenericName>
-    <SpecificName>Shao-fu</SpecificName>
-    <Tooltip>Only Han buildings can garrison ministers.</Tooltip>
+   <SpecificName>Ta-ssu-nung</SpecificName>
+    <Tooltip>Oversees state revenue, grain, agriculture, and major fiscal administration. Only Han buildings can garrison ministers.</Tooltip>
     <Classes datatype="tokens">Organic Human</Classes>
     <VisibleClasses datatype="tokens">Minister</VisibleClasses>
     <Icon>units/han/minister.png</Icon>
     <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
+      <Techs datatype="tokens">phase_empi</Techs>
     </Requirements>
   </Identity>
   <Loot>
@@ -61,15 +48,6 @@
   <Position>
     <TurnRate>8</TurnRate>
   </Position>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack>4.5</Hack>
-        <Pierce>4.5</Pierce>
-        <Crush>10</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Selectable>
     <Overlay>
       <AlwaysVisible/>

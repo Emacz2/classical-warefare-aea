@@ -1,0 +1,10 @@
+{
+	"type": "garrison",
+	"affects": ["Structure"],
+	"modifications": [
+		{ "value": "Capturable/GarrisonRegenRate", "add": 2 }
+	],
+	"auraName": "Administrative Defense",
+	"showDescription": 1,
+	"auraDescription": "The Structure this Minister is garrisoned in restores +2 capture point per second."
+}
