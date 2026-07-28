@@ -2,28 +2,54 @@
 <Entity parent="template_unit_siege">
   <Cost>
     <BuildTime>20</BuildTime>
-    <Population>1</Population>
+    <Population>0</Population>
     <Resources>
-      <wood>60</wood>
-      <metal>15</metal>
+      <wood>100</wood>
     </Resources>
   </Cost>
+
   <Footprint replace="">
     <Square width="9.0" depth="9.0"/>
     <Height>15.0</Height>
   </Footprint>
+
+  <GarrisonHolder>
+    <Max>2</Max>
+    <EjectHealth>0.1</EjectHealth>
+    <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
+    <List datatype="tokens">Support Infantry</List>
+    <BuffHeal>0</BuffHeal>
+    <LoadingRange>2</LoadingRange>
+  </GarrisonHolder>
+
   <Health>
     <Max>250</Max>
   </Health>
+
   <Identity>
-    <VisibleClasses datatype="tokens">WatchTower Outpost</VisibleClasses>
-    <GenericName>Moving Tower</GenericName>
+    <Civ>han</Civ>
+    <GenericName>Mobile Observation Tower</GenericName>
+    <SpecificName>Cháochē</SpecificName>
+    <Classes datatype="tokens">WatchTower</Classes>
+    <Tooltip>Mobile reconnaissance unit with extensive vision. Garrison Infantry to improve its mobility. Cannot attack.</Tooltip>
+    <Icon>units/hele/siege_tower.png</Icon>
   </Identity>
+
   <Loot>
-    <xp>100</xp>
-    <wood>15</wood>
-    <metal>5</metal>
+    <xp>75</xp>
+    <wood>25</wood>
   </Loot>
+
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack>7.5</Hack>
+        <Pierce>20</Pierce>
+        <Crush>7.5</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
+
   <Selectable>
     <Overlay>
       <Texture>
@@ -32,48 +58,28 @@
       </Texture>
     </Overlay>
   </Selectable>
+
   <Sound>
     <SoundGroups>
       <select>attack/siege/siege_select.xml</select>
-      <order_attack>attack/siege/ram_move.xml</order_attack>
       <order_walk>attack/siege/ram_move.xml</order_walk>
-      <attack_impact_ranged>attack/impact/arrow_metal.xml</attack_impact_ranged>
-      <attack_ranged>attack/weapon/arrowfly.xml</attack_ranged>
       <trained>attack/siege/ram_trained.xml</trained>
     </SoundGroups>
   </Sound>
+
   <StatusBars>
     <HeightOffset>9.0</HeightOffset>
   </StatusBars>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack>7.5</Hack>
-        <Pierce>25</Pierce>
-        <Crush>7.5</Crush>
-      </Damage>
-    </Entity>
-  </Resistance>
+
   <UnitMotion>
-    <WalkSpeed op="mul">0.4</WalkSpeed>
-    <Acceleration op="mul">0.4</Acceleration>
+    <WalkSpeed op="mul">0.5</WalkSpeed>
+    <Acceleration op="mul">0.5</Acceleration>
   </UnitMotion>
-    <GarrisonHolder>
-    <Max>4</Max>
-    <EjectHealth>0.1</EjectHealth>
-    <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Support Infantry</List>
-    <BuffHeal>0</BuffHeal>
-    <LoadingRange>2</LoadingRange>
-  </GarrisonHolder>
+
   <Vision>
     <Range>80</Range>
   </Vision>
-  <Identity>
-    <Civ>han</Civ>
-    <SpecificName>Helépolis</SpecificName>
-    <Icon>units/hele/siege_tower.png</Icon>
-  </Identity>
+
   <VisualActor>
     <Actor>structures/seleucids/siege_tower.xml</Actor>
   </VisualActor>

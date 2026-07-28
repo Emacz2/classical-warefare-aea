@@ -8,7 +8,8 @@
 		{ "value": "Attack/Ranged/MaxRange", "add": 5 }
 		
 	],
-	"auraName": "Expert siege engineers",
-	"showDescription": 1,
-	"auraDescription": "Siege units 25% more crush dmg and ranged siege +5 max range."
+	"auraName": "Expert Siege Engineers",
+	"auraDescription": "Siege engines deal 25% more Crush damage. Ranged siege engines gain +5 attack range.",
+	"showDescription": 1
+
 }

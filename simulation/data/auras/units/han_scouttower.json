@@ -6,11 +6,12 @@
 	"modifications": [
 		{ "value": "UnitMotion/WalkSpeed", "add": 1 },
 		{ "value": "UnitMotion/Acceleration", "add": 1 },
+		{ "value": "Vision/Range", "add": 10},
 		{ "value": "Position/TurnRate", "add": 0.5 }
 	
 
 	],
 	"auraName": "Watch Tower Garrison",
 	"showDescription": 1,
-	"auraDescription": "Watch Towers +1 speed abd acceleration, +0.5 turn rate for each garrisoned soldier."
+	"auraDescription": "Watch Towers +1 speed and acceleration, +0.5 turn rate and +10 vision for each garrisoned soldier."
 }

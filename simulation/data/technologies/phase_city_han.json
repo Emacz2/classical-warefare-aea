@@ -3,7 +3,7 @@
 	"specificName": {
 		"han": "Jùn"
 	},
-	"description": "Advances from a small village to a bustling town, ready to expand rapidly. Han crossbowmen shoot 5% faster and are 10% more accurate.",
+	"description": "Advances the Han state from a developed town into a major commandery, unlocking advanced military, economic, and administrative institutions.",
 	"cost": {
 		"food": 500,
 		"wood": 500,
@@ -26,12 +26,12 @@
             }
         ]
 	},
-	"requirementsTooltip": "Requires twenty five Village Structures.",
+	"requirementsTooltip": "Requires twenty Village Structures and two Town Structures.",
 	"supersedes": "phase_town_han",
 	"replaces": ["phase_city"],
 	"icon": "city_phase.png",
 	"researchTime": 60,
-	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +1 capture points regeneration rate for garrisoned units.",
+	"tooltip": "Advance to Han City Phase. Civic Centers gain 25% territory influence radius, +10 population capacity, +10 garrison capacity, +5 attack range, +5 Hack Resistance, +7.5 Pierce Resistance, and +2.5 Crush Resistance, but deal 3% less Pierce damage. Garrisoned units restore Structures an additional 1 capture point per second.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },

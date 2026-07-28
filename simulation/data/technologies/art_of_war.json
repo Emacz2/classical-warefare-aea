@@ -1,7 +1,9 @@
 {
 	"genericName": "Sun Tzu's \"The Art of War\"",
-	"specificName": { "han": "Sūnzǐ Bīngfǎ" },
-	"description": "This famous and most important work of the Seven Military Classics teaches Han commanders everything about planning battles, maintaining armies, and defeating one's enemies.",
+	"specificName": {
+		"han": "Sūnzǐ Bīngfǎ"
+	},
+	"description": "An influential military treatise on planning, discipline, intelligence, logistics, terrain, maneuver, and the efficient conduct of war.",
 	"cost": {
 		"food": 1000,
 		"metal": 1000
@@ -15,9 +17,23 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "patriotism.png",
 	"researchTime": 50,
-	"tooltip": "All Citizen-Soldiers −20% required promotion experience.",
+	"tooltip": "Citizen-Soldiers require 25% less promotion experience. Soldiers gain +5 vision range, and Infantry move 5% faster..",
 	"modifications": [
-		{ "value": "Promotion/RequiredXp", "multiply": 0.75 }
+		{
+			"value": "Promotion/RequiredXp",
+			"multiply": 0.75,
+			"affects": "CitizenSoldier"
+		},
+		{
+			"value": "Vision/Range",
+			"add": 5,
+			"affects": "Soldier"
+		},
+		{
+			"value": "UnitMotion/WalkSpeed",
+			"multiply": 1.05,
+			"affects": "Infantry"
+		}
 	],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
