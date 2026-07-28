@@ -1,10 +1,10 @@
 {
 	"genericName": "Empire Phase",
 	"specificName": {
-		"rome": "Imperial Persia"
+		"pers": "Imperial Persia"
 	},
 
-	"description": "Advances from a veritable metropolis to Imperial Persia.",
+	"description": "Consolidates the Persian state into a vast empire governed through royal institutions, provincial administration, and an expanded imperial army.",
 	"cost": {
 		"food": 750,
 		"wood": 750,
@@ -27,12 +27,12 @@
             }
         ]
 	},
-	"requirementsTooltip": "persempire tech.",
+	"requirementsTooltip": "Requires one City Structure and one Imperial Structure.",
 	"supersedes": "phase_city_pers",
 	"replaces": ["phase_empi"],
 	"icon": "empire_phase.png",
 	"researchTime": 75,
-	"tooltip": "Advance to the Empire Phase, which boosts max population 10% and unlocks more entities and technologies. Civic Centers +30% territory influence radius. Structures +1 capture points regeneration rate for garrisoned units.",
+	"tooltip": "Advance to Persian Empire Phase. Maximum population increases by 10%. Civic Centers gain 30% territory influence radius, +10 population capacity, and +10 garrison capacity. Structures gain +2.5 Hack, Pierce, and Crush Resistance, and each garrisoned unit restores an additional 1 capture point per second.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.3, "affects": "CivCentre" },

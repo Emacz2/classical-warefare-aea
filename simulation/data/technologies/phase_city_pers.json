@@ -29,7 +29,7 @@
 	"replaces": ["phase_city"],
 	"icon": "city_phase.png",
 	"researchTime": 60,
-	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +1 capture points regeneration rate for garrisoned units. Decrease batch training time of units trained in Stables.",
+	"tooltip": "Advance to Persian City Phase, unlocking advanced buildings, units, and technologies. Civic Centers gain 25% territory influence radius, +10 population capacity, +10 garrison capacity, +5 attack range, +5 Hack Resistance, +7.5 Pierce Resistance, and +2.5 Crush Resistance, but deal 3% less Pierce damage. Garrisoned units restore Structures an additional 1 capture point per second. Persian Stables gain a further improvement to cavalry batch-training efficiency.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
 		{ "value": "Trainer/BatchTimeModifier", "add": -0.1, "affects": "Stable" },

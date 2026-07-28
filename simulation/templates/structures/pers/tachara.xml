@@ -3,9 +3,11 @@
   <Auras datatype="tokens">
     structures/satrapy_tribute
   </Auras>
+
   <BuildRestrictions>
     <Category>Palace</Category>
   </BuildRestrictions>
+
   <Cost>
     <BuildTime>300</BuildTime>
     <Resources>
@@ -13,30 +15,86 @@
       <metal>200</metal>
     </Resources>
   </Cost>
+
   <Footprint>
     <Square width="32.0" depth="32.0"/>
     <Height>8.0</Height>
   </Footprint>
+
   <GarrisonHolder>
     <Max>10</Max>
   </GarrisonHolder>
+
   <Health>
     <Max>3000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_pers_cc</SpawnEntityOnDeath>
   </Health>
+
   <Identity>
     <Civ>pers</Civ>
     <GenericName>Winter Palace</GenericName>
     <SpecificName>Taçara</SpecificName>
-    <Tooltip> Upgrade this Palace into an Imperial Palace, allowing Persia to advance to the Empire Phase.</Tooltip>
+    <Tooltip>Train Persian Heroes and upgrade this Palace into an Imperial Palace, allowing Persia to advance to Empire Phase.</Tooltip>
     <Classes datatype="tokens">ConquestCritical CivSpecific</Classes>
     <VisibleClasses datatype="tokens">Palace</VisibleClasses>
     <Icon>structures/palace.png</Icon>
   </Identity>
+
+  <Loot>
+    <stone>40</stone>
+    <metal>40</metal>
+  </Loot>
+
+  <Obstruction>
+    <Static width="30.0" depth="30.0"/>
+  </Obstruction>
+
+  <ProductionQueue/>
+
+  <Researcher>
+    <Technologies datatype="tokens">
+      immortals
+      persian_inf_speed
+    </Technologies>
+  </Researcher>
+
+  <ResourceTrickle>
+    <Rates>
+      <food>0</food>
+      <wood>0</wood>
+      <stone>0</stone>
+      <metal>0</metal>
+    </Rates>
+    <Interval>2000</Interval>
+  </ResourceTrickle>
+
+  <Sound>
+    <SoundGroups>
+      <select>interface/select/building/sel_greek_theater.xml</select>
+      <constructed>interface/complete/building/complete_greek_theater.xml</constructed>
+      <upgraded>interface/complete/building/complete_greek_theater.xml</upgraded>
+    </SoundGroups>
+  </Sound>
+
+  <TerritoryInfluence>
+    <Root>true</Root>
+    <Radius>48</Radius>
+    <Weight>40000</Weight>
+  </TerritoryInfluence>
+
+  <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/hero_cyrus_ii
+      units/{civ}/hero_darius_i
+      units/{civ}/hero_xerxes_i
+    </Entities>
+  </Trainer>
+
   <Upgrade>
     <ImperialPalace>
       <Entity>structures/{civ}/tachara2</Entity>
-      <Tooltip>Imperial Palace has 50% more Garrison capacity and Health, is Imperial Class, which is needed for Empire Phase</Tooltip>
+      <Tooltip>Upgrade to an Imperial Palace with 50% more health and garrison capacity. Provides the Imperial Structure required for Empire Phase.</Tooltip>
       <Cost>
         <stone>300</stone>
         <wood>300</wood>
@@ -48,74 +106,11 @@
       </Requirements>
     </ImperialPalace>
   </Upgrade>
-  <Loot>
-    <stone>40</stone>
-    <metal>40</metal>
-  </Loot>
-  <Obstruction>
-    <Static width="30.0" depth="30.0"/>
-  </Obstruction>
-  <ProductionQueue/>
-  <Researcher>
-    <Technologies datatype="tokens">
-      immortals
-      persian_inf_speed
-    </Technologies>
-  </Researcher>
-  <ResourceTrickle>
-    <Rates>
-      <food>0</food>
-      <wood>0</wood>
-      <stone>0</stone>
-      <metal>0</metal>
-    </Rates>
-    <Interval>2000</Interval>
-  </ResourceTrickle>
-  <Sound>
-    <SoundGroups>
-      <select>interface/select/building/sel_greek_theater.xml</select>
-      <constructed>interface/complete/building/complete_greek_theater.xml</constructed>
-      <upgraded>interface/complete/building/complete_greek_theater.xml</upgraded>
-    </SoundGroups>
-  </Sound>
-  <TerritoryInfluence>
-    <Root>true</Root>
-    <Radius>48</Radius>
-    <Weight>40000</Weight>
-  </TerritoryInfluence>
-  <Trainer>
-    <BatchTimeModifier>0.8</BatchTimeModifier>
-    <Entities datatype="tokens">
-      units/{civ}/hero_cyrus_ii
-      units/{civ}/hero_darius_i
-      units/{civ}/hero_xerxes_i
-    </Entities>
-  </Trainer>
-  <Upgrade>
-    <TributeFood>
-      <Entity>structures/pers/tachara_food</Entity>
-      <Tooltip>Receive free Food tribute to your treasury from your subject peoples.</Tooltip>
-      <Time>10</Time>
-    </TributeFood>
-    <TributeWood>
-      <Entity>structures/pers/tachara_wood</Entity>
-      <Tooltip>Receive free Wood tribute to your treasury from your subject peoples.</Tooltip>
-      <Time>10</Time>
-    </TributeWood>
-    <TributeStone>
-      <Entity>structures/pers/tachara_stone</Entity>
-      <Tooltip>Receive free Stone tribute to your treasury from your subject peoples.</Tooltip>
-      <Time>10</Time>
-    </TributeStone>
-    <TributeMetal>
-      <Entity>structures/pers/tachara_metal</Entity>
-      <Tooltip>Receive free Metal tribute to your treasury from your subject peoples.</Tooltip>
-      <Time>10</Time>
-    </TributeMetal>
-  </Upgrade>
+
   <Vision>
     <Range>40</Range>
   </Vision>
+
   <VisualActor>
     <Actor>structures/persians/tachara.xml</Actor>
     <FoundationActor>structures/fndn_8x9.xml</FoundationActor>
