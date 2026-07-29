@@ -24,7 +24,7 @@
             }
         ]
 	},
-	"requirementsTooltip": "Requires twenty Village Structures.",
+	"requirementsTooltip": "Requires twenty Village Structures and two Town Structures.",
 	"supersedes": "phase_town_pers",
 	"replaces": ["phase_city"],
 	"icon": "city_phase.png",

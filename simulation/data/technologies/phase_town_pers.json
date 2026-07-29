@@ -22,6 +22,7 @@
 	"tooltip": "Advance to Persian Town Phase, unlocking new buildings, units, and technologies. Civic Centers gain 20% territory influence radius, +5 population capacity, +5 garrison capacity, +10 attack range, and +2.5 Hack, Pierce, and Crush Resistance, but deal 2% less Pierce damage. Garrisoned units restore Structures an additional 0.5 capture points per second. Persian Stables train cavalry batches more efficiently.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
+		{ "value": "Trainer/BatchTimeModifier", "add": -0.1, "affects": "Stable" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
