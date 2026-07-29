@@ -9,7 +9,7 @@
       -units/{civ}/infantry_axeman_b
       units/{civ}/infantry_axeman_conscript
       -units/{civ}/infantry_spearman_b
-      units/{civ}/infantry_spearman_concsript
+      units/{civ}/infantry_spearman_conscript
       -units/{civ}/infantry_swordsman_b
       -units/{civ}/infantry_archer_b
       units/{civ}/infantry_archer_conscript

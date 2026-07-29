@@ -9,7 +9,28 @@
     <GenericName>Philip II of Macedon</GenericName>
     <SpecificName>Philippos B' ho Makedōn</SpecificName>
     <Icon>units/mace/hero_philip.png</Icon>
+     <Requirements>
+      <Techs datatype="tokens">-phase_city phase_town</Techs>
+    </Requirements>
   </Identity>
+    <Upgrade>
+    <Mounted>
+      <Entity>units/mace/hero_philip_ii</Entity>
+      <Tooltip>Give Philip a horse to ride</Tooltip>
+      <Cost>
+        <food>100</food>
+        <metal>50</metal>
+      </Cost>
+      <Variant>upgrading</Variant>
+      <Time>10</Time>
+    </Mounted>
+  </Upgrade>
+  <ProductionQueue/>
+  <Researcher>
+    <Technologies datatype="tokens">
+      philips_reforms
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>units/macedonians/hero_infantry_pikeman_philip.xml</Actor>
   </VisualActor>

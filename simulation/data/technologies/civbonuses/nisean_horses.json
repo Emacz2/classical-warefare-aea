@@ -16,12 +16,12 @@
 
 	"icon": "chamfron.png",
 	"researchTime": 45,
-	"tooltip": "Champion Cavalry +75 health, but 5% longer train time and +25 food.",
+	"tooltip": "Champion Cavalry gain +75 health and 5% Walk Speed, but cost +50 food and require 5% more time to train.",
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.05 },
-		{ "value": "Cost/Resources/food", "add": 25 },
-		{ "value": "Health/Max", "add": 75 }
-
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 },
+		{ "value": "Health/Max", "add": 75 },
+		{ "value": "Cost/Resources/food", "add": 50 }
 
 	],
 	"affects": ["Champion Cavalry"],

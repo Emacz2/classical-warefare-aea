@@ -5,11 +5,16 @@
 		"metal": 500,
 		"food": 500
 	},
-	"requirements": { "tech": "phase_city" },
+	"requirements": {
+  "all": [
+    { "tech": "phase_city" },
+    { "civ": "pers" }
+  ]
+},
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_plates_gold.png",
 	"researchTime": 40,
-	"tooltip": "Ranged Champion Cavalry +25 HP, Melee +50, all champion Cavalry +3 hack/pierce and +3 crush resistance but 5% slower walk speed.",
+	"tooltip": "Ranged Champion Cavalry gain +25 health and Melee Champion Cavalry gain +50 health. All Champion Cavalry gain +3 Hack, Pierce, and Crush Resistance, but move 5% slower.",
 	"modifications": [
 		{ "value": "Health/Max", "add": 25, "affects": "Ranged" },
 		{ "value": "Health/Max", "add": 50, "affects": "Melee" },
