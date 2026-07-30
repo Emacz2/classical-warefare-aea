@@ -1,7 +1,7 @@
 {
 	"genericName": "Nisean War Horses",
 	"autoResearch": true,
-	"description": "The now-extinct Nisian breed of horse was one of the largest and robust horses of ancient times.",
+	"description": "The now-extinct Nisaean breed was one of the largest and most robust horses of ancient times.",
 	"requirements": {
 		"any": [
 			{ "civ": "pers" },

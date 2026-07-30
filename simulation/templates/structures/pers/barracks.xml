@@ -16,7 +16,7 @@
       -units/{civ}/infantry_javelineer_b
       units/{civ}/infantry_javelineer_conscript
       -units/{civ}/infantry_slinger_b
-      units/{civ}/infantry_slinger_concsript
+      units/{civ}/infantry_slinger_conscript
     </Entities>
   </Trainer>
    <Upgrade>

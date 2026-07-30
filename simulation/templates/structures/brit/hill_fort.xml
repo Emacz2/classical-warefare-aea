@@ -57,7 +57,6 @@
       <attack_impact_ranged>attack/impact/arrow_impact.xml</attack_impact_ranged>
     </SoundGroups>
   </Sound>
-  <Researcher disable=""/>
   <VisualActor>
        <Actor>structures/celts/hut.xml</Actor>
   </VisualActor>

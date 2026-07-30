@@ -1,7 +1,7 @@
 {
 	"genericName": "Town Phase",
 	"specificName": {"pers": "Vardana"},
-	"description": "Advances from a small village to a bustling town, ready to expand rapidly. This is the Persian town phase.\nThe 'Times of War' bonus dercreases the batch training time in Stables. Large batches will benefit more than small batches.\nIn mathematical terms: The training time of one batch gets divided by `batchSize^0.1`.",
+	"description": "Advances from a small village to a bustling town, ready to expand rapidly. This is the Persian town phase.  The 'Times of War' bonus decreases the batch training time in Stables. Large batches will benefit more than small batches.\nIn mathematical terms: The training time of one batch gets divided by `batchSize^0.1`.",
 	"cost": {
 		"food": 500,
 		"wood": 500,

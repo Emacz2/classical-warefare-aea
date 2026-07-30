@@ -9,12 +9,17 @@
       </Damage>
     </Entity>
   </Resistance>
+  <Attack>
+  <Melee merge="">
+    <RepeatTime op="add">150</RepeatTime>
+  </Melee>
+  </Attack>
  <Identity>
     <GenericName>Heavy Formation Shields</GenericName>
-    <Tooltip>+4.5 Pierce +3 Hack and + 2.5 Crush resistance but -6% walk speed</Tooltip>
+    <Tooltip>+4.5 Pierce +3 Hack and + 2.5 Crush resistance but -5% walk speed and 150 ms melee repeat time</Tooltip>
     <History>Hoplon, Aspis, Scutum, Sacred Band Shield</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.94</WalkSpeed>
+    <WalkSpeed op="mul">0.95</WalkSpeed>
   </UnitMotion>
 </Entity>
