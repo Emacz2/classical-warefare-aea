@@ -1,36 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_support">
+<Entity parent="thebe|template_unit_support_trumpeter">
   <Auras datatype="tokens">
     units/salpinx2
   </Auras>
   <Identity>
     <Civ>theb</Civ>
-    <SpecificName>salpinx</SpecificName>
+    <SpecificName>Salpinx</SpecificName>
     <Icon>units/special/trumpeter_battle.png</Icon>
-        <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
   </Identity>
-       <Resistance>
-    <Entity>
-      <Damage>
-      <Crush op="add">1.5</Crush>
-      <Hack op="add">2</Hack>
-      <Pierce op="add">3.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
-    <Upgrade>
+  <Upgrade>
     <Rally_Cry>
       <Entity>units/theb/support_trumpeter_rally</Entity>
-      <Tooltip>Switch to battle cry support.</Tooltip>
+      <Tooltip>Switch to rally support.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>5</Time>
     </Rally_Cry>
   </Upgrade>
-    <TrainingRestrictions>
-    <Category>Trumpeter</Category>
-    </TrainingRestrictions>
   <VisualActor>
     <Actor>units/spartans/salpinx.xml</Actor>
   </VisualActor>
