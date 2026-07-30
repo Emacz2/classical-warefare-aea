@@ -22,6 +22,10 @@
   </Researcher>
   <Trainer>
     <Entities datatype="tokens">
+      units/{civ}/infantry_spearman_conscript
+      -units/{civ}/infantry_spearman_b
+      units/{civ}/infantry_archer_conscript
+      -units/{civ}/infantry_archer_b
       units/{civ}/infantry_crossbowman_b
     </Entities>
   </Trainer>
