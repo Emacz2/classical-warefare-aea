@@ -12,6 +12,7 @@ Attack.prototype.StartAttacking = function(target, type, callerIID, force)
 	const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
 	if (cmpModifiersManager.HasAnyModifier("Charge RepeatTimeBonus", this.entity))
 	{
+		const cmpTimer = Engine.QueryInterface(SYSTEM_ENTITY, IID_Timer);
 		const cmpUnitAI = Engine.QueryInterface(this.entity, IID_UnitAI);
 		cmpTimer.SetTimeout(this.entity, IID_Attack, "ChargeRepeatTimeBonusEnd", cmpUnitAI.template.Charge.RepeatTimeBonus.Duration);
 	}
@@ -29,7 +30,7 @@ DelayedDamage.prototype.Hit = function(data, lateness)
 			data.attackData.Damage[damageType] *= r;
 	}
 	DelayedDamageHit.apply(this, arguments);
-}
+};
 
 // Reduce range to ensure that the formation get close enough to attack
 FormationAttack.prototype.GetRange = function(target)
