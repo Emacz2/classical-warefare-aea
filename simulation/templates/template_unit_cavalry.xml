@@ -83,9 +83,6 @@
       special/formations/wedge
     </Formations>
   </UnitAI>
-  <UnitMotion>
-    <WalkSpeed>8.8</WalkSpeed>
-  </UnitMotion>
   <Vision>
     <Range>55</Range>
   </Vision>

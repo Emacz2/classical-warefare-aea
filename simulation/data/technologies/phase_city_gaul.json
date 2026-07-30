@@ -31,7 +31,7 @@
 	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +1 capture points regeneration rate for garrisoned units.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },
@@ -44,7 +44,8 @@
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" }
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Vision/Range", "add": 5, "affects": "Healer" }
 	
 	],
 	"soundComplete": "interface/alarm/alarm_phase.xml"

@@ -9,12 +9,17 @@
       </Damage>
     </Entity>
   </Resistance>
+  <Attack>
+  <Melee merge="">
+    <RepeatTime op="add">100</RepeatTime>
+  </Melee>
+  </Attack>
  <Identity>
     <GenericName>Large Oval Shield</GenericName>
-    <Tooltip>+4 Pierce, +2 Hack and +1.5 Crush resistance but -4% walk speed</Tooltip>
+    <Tooltip>+4 Pierce, +2 Hack and +1.5 Crush resistance but -3% walk speed and +100 ms melee repeat time</Tooltip>
     <History>Thureos, Galatian Oval, Hellenistic Oval</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.96</WalkSpeed>
+    <WalkSpeed op="mul">0.97</WalkSpeed>
   </UnitMotion>
 </Entity>

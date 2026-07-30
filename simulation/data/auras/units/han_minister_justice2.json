@@ -1,0 +1,14 @@
+{
+  "type": "global",
+  "affects": ["CivCentre"],
+  "modifications": [
+    {
+      "value": "TerritoryInfluence/Radius",
+      "multiply": 1.05
+    }
+  ],
+  "auraName": "Imperial Jurisdiction",
+  "showDescription": 1,
+  "auraDescription": "Civic Centers gain 5% territory radius.",
+  "stackable": true
+}

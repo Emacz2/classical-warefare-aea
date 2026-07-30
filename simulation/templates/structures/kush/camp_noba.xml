@@ -20,7 +20,7 @@
   <Identity>
     <Civ>kush</Civ>
     <GenericName>Noba Village</GenericName>
-    <Tooltip>Train Noba Mercenaries.</Tooltip>
+    <Tooltip>Train Noba Allied Infantry.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/mercenary_camp.png</Icon>
   </Identity>
@@ -37,8 +37,8 @@
   <TerritoryInfluence disable=""/>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/infantry_maceman_merc_b
-      units/{civ}/infantry_javelineer_merc_b
+      units/{civ}/infantry_maceman_ally_b
+      units/{civ}/infantry_javelineer_ally_b
     </Entities>
   </Trainer>
   <VisualActor>

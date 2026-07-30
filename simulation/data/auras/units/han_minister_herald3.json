@@ -1,14 +1,14 @@
 {
-	"type": "global",
-	"affects": ["Healer"],
-	"modifications": [
-		{
-			"value": "Cost/BuildTime",
-			"multiply": 0.8
-		}
-	],
-	"auraName": "Focus on National Health",
-	"showDescription": 1,
-	"auraDescription": "Healers 20% less recruit time.",
-	"stackable": true
+  "type": "global",
+  "affects": ["Trader"],
+  "modifications": [
+    {
+      "value": "Cost/BuildTime",
+      "multiply": 0.80
+    }
+  ],
+  "auraName": "Diplomatic Missions",
+  "showDescription": 1,
+  "auraDescription": "Traders train 20% faster.",
+  "stackable": true
 }

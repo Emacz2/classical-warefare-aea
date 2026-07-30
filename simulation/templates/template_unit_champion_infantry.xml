@@ -44,7 +44,4 @@
       </ApplyStatus>
     </Entity>
   </Resistance>
-    <UnitMotion>
-    <WalkSpeed op="add">0.1</WalkSpeed>
-  </UnitMotion>
 </Entity>

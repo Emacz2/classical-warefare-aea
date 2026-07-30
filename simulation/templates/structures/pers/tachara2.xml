@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="structures/pers/tachara">
+  <Auras datatype="tokens">
+    structures/satrapy_tribute
+  </Auras>
+
+  <BuildRestrictions>
+    <Category>Palace</Category>
+  </BuildRestrictions>
+
+  <Footprint>
+    <Square width="32.0" depth="32.0"/>
+    <Height>8.0</Height>
+  </Footprint>
+
+  <GarrisonHolder>
+    <Max op="mul">1.5</Max>
+  </GarrisonHolder>
+
+  <Health>
+    <Max op="mul">1.5</Max>
+    <SpawnEntityOnDeath>decay|rubble/rubble_pers_cc</SpawnEntityOnDeath>
+  </Health>
+
+  <Identity>
+    <Civ>pers</Civ>
+    <GenericName>Imperial Palace</GenericName>
+    <SpecificName>Taçara</SpecificName>
+    <Tooltip>Train Persian Heroes, research royal military technologies, and select a Satrapy Tribute specialization.</Tooltip>
+    <Classes datatype="tokens">ConquestCritical CivSpecific</Classes>
+    <VisibleClasses datatype="tokens">-Town Palace Imperial</VisibleClasses>
+    <Icon>structures/palace.png</Icon>
+  </Identity>
+
+  <Loot>
+    <stone>40</stone>
+    <metal>40</metal>
+  </Loot>
+
+  <Obstruction>
+    <Static width="30.0" depth="30.0"/>
+  </Obstruction>
+
+  <ProductionQueue/>
+
+  <Researcher>
+    <Technologies datatype="tokens">
+      immortals
+      persian_inf_speed
+    </Technologies>
+  </Researcher>
+
+  <ResourceTrickle>
+    <Rates>
+      <food>0</food>
+      <wood>0</wood>
+      <stone>0</stone>
+      <metal>0</metal>
+    </Rates>
+    <Interval>2000</Interval>
+  </ResourceTrickle>
+
+  <Sound>
+    <SoundGroups>
+      <select>interface/select/building/sel_greek_theater.xml</select>
+      <constructed>interface/complete/building/complete_greek_theater.xml</constructed>
+      <upgraded>interface/complete/building/complete_greek_theater.xml</upgraded>
+    </SoundGroups>
+  </Sound>
+
+  <TerritoryInfluence>
+    <Root>true</Root>
+    <Radius>48</Radius>
+    <Weight>40000</Weight>
+  </TerritoryInfluence>
+
+  <Trainer>
+    <BatchTimeModifier>0.8</BatchTimeModifier>
+    <Entities datatype="tokens">
+      units/{civ}/hero_cyrus_ii
+      units/{civ}/hero_darius_i
+      units/{civ}/hero_xerxes_i
+    </Entities>
+  </Trainer>
+
+  <Upgrade replace="">
+    <TributeFood>
+      <Entity>structures/pers/tachara2_food</Entity>
+      <Tooltip>Receive free Food tribute from subject peoples.</Tooltip>
+      <Time>10</Time>
+    </TributeFood>
+
+    <TributeWood>
+      <Entity>structures/pers/tachara2_wood</Entity>
+      <Tooltip>Receive free Wood tribute from subject peoples.</Tooltip>
+      <Time>10</Time>
+    </TributeWood>
+
+    <TributeStone>
+      <Entity>structures/pers/tachara2_stone</Entity>
+      <Tooltip>Receive free Stone tribute from subject peoples.</Tooltip>
+      <Time>10</Time>
+    </TributeStone>
+
+    <TributeMetal>
+      <Entity>structures/pers/tachara2_metal</Entity>
+      <Tooltip>Receive free Metal tribute from subject peoples.</Tooltip>
+      <Time>10</Time>
+    </TributeMetal>
+  </Upgrade>
+
+  <Vision>
+    <Range>40</Range>
+  </Vision>
+
+  <VisualActor>
+    <Actor>structures/persians/tachara.xml</Actor>
+    <FoundationActor>structures/fndn_8x9.xml</FoundationActor>
+  </VisualActor>
+</Entity>

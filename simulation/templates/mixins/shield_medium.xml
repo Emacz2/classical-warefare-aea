@@ -9,12 +9,17 @@
       </Damage>
     </Entity>
   </Resistance>
+  <Attack>
+  <Melee merge="">
+    <RepeatTime op="add">50</RepeatTime>
+  </Melee>
+</Attack>
  <Identity>
     <GenericName>Medium Shield</GenericName>
-    <Tooltip>+3 Pierce, +1.5 Hack and +1 Crush resistance but -3% walk speed</Tooltip>
+    <Tooltip>+3 Pierce, +1.5 Hack and +1 Crush resistance but -2% walk speed and 50ms slower melee repeat time</Tooltip>
     <History>Germanic, Celtic, Han Infantry, Parma, Large Caetra, reinforced/large pelte</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.97</WalkSpeed>
+    <WalkSpeed op="mul">0.98</WalkSpeed>
   </UnitMotion>
 </Entity>

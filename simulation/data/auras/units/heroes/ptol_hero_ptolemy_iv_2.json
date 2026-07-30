@@ -6,6 +6,6 @@
 	],
 	"auraName": "Pike reinforcements",
 	"showDescription": 1,
-	"auraDescription": "Pikeman +5% movement speed.",
+	"auraDescription": "Pikeman gain +5% movement speed.",
 	"overlayIcon": "art/textures/ui/session/auras/speed_bonus.png"
 }

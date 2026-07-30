@@ -1,7 +1,7 @@
 {
 	"genericName": "Town Phase",
 	"specificName": {"pers": "Vardana"},
-	"description": "Advances from a small village to a bustling town, ready to expand rapidly. This is the Persian town phase.\nThe 'Times of War' bonus dercreases the batch training time in Stables. Large batches will benefit more than small batches.\nIn mathematical terms: The training time of one batch gets divided by `batchSize^0.1`.",
+	"description": "Advances from a small village to a bustling town, ready to expand rapidly. This is the Persian town phase.  The 'Times of War' bonus decreases the batch training time in Stables. Large batches will benefit more than small batches.\nIn mathematical terms: The training time of one batch gets divided by `batchSize^0.1`.",
 	"cost": {
 		"food": 500,
 		"wood": 500,
@@ -19,9 +19,10 @@
 	"replaces": ["phase_town"],
 	"icon": "town_phase.png",
 	"researchTime": 40,
-	"tooltip": "Advance to Town Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +0.5 capture points regeneration rate for garrisoned units. Civic Centers 25% more garrison capacity, +5 range and 2.5 of each resistance but 2% less pierce dmg. Cavalry cost 10% less food.",
+	"tooltip": "Advance to Persian Town Phase, unlocking new buildings, units, and technologies. Civic Centers gain 20% territory influence radius, +5 population capacity, +5 garrison capacity, +10 attack range, and +2.5 Hack, Pierce, and Crush Resistance, but deal 2% less Pierce damage. Garrisoned units restore Structures an additional 0.5 capture points per second. Persian Stables train cavalry batches more efficiently.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
+		{ "value": "Trainer/BatchTimeModifier", "add": -0.1, "affects": "Stable" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
@@ -29,8 +30,7 @@
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.98, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "CivCentre" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Cost/Resources/food", "multiply": 0.9, "affects": "Cavalry" }
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" }
 	],
 	"soundComplete": "interface/alarm/alarm_phase.xml"
 }

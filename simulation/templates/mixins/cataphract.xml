@@ -22,10 +22,17 @@
       <MaxRange>25</MaxRange>
     </Charge>
   </UnitAI>
-    <UnitMotion>
-    <Acceleration op="mul">1.25</Acceleration>
-    <RunMultiplier op="mul">1.15</RunMultiplier>
-  </UnitMotion>
+  
+  <Attack>
+    <Melee>
+      <RepeatTime op="add">250</RepeatTime>
+    </Melee>
+  </Attack>
+
+  <Health>
+    <Max op="add">50</Max>
+  </Health>
+
   <Identity>
     <GenericName>Cataphract Cavalry</GenericName>
     <Classes datatype="tokens">Charge</Classes>
@@ -42,5 +49,7 @@
   </Resistance>
   <UnitMotion>
     <WalkSpeed op="mul">0.95</WalkSpeed>
+    <Acceleration op="mul">1.25</Acceleration>
+    <RunMultiplier op="mul">1.15</RunMultiplier>
   </UnitMotion>
 </Entity>

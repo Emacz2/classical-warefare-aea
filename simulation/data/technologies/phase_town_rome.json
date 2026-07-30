@@ -26,7 +26,7 @@
 	"tooltip": "Advance to Roman Town Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius, +5 more garrison capacity/population bonus, +10 range and 2.5 of each resistance. Structures +0.5 capture points regeneration rate for garrisoned units. ",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },
+		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
 		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "CivCentre" },
 		{ "value": "Population/Bonus", "add": 5, "affects": "CivCentre" },
 		{ "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "CivCentre" },

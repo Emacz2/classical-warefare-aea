@@ -1,6 +1,6 @@
 {
 	"genericName": "Royal Cataphract Corps",
-	"description": "The Seleucid Cataphracts were among the most formidable heavy cavalry of the Hellenistic world.",
+	"description": "The Seleucid Empire maintained one of the ancient world’s earliest organized corps of heavily armored shock cavalry. Drawing upon Persian cavalry traditions and Hellenistic military reforms, Seleucid cataphracts became among the most formidable horsemen of the Hellenistic world and could be fielded earlier than the heavy cavalry of rival kingdoms.",
 	
 	"cost": {
 		"food": 500,
@@ -15,6 +15,6 @@
 	"requirementsTooltip": "Unlocked in Town Phase.",
 	"icon": "helmet_corinthian_crest.png",
 	"researchTime": 60,
-	"tooltip": "Unlock Cataphracts at the Stable.",
+	"tooltip": "Unlocks Seleucid Champion Cataphracts from the stable in the Town Phase.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

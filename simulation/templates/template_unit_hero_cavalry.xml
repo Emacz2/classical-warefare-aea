@@ -37,9 +37,10 @@
   <StatusBars>
     <HeightOffset>7.0</HeightOffset>
   </StatusBars>
-   <UnitMotion>
-    <WalkSpeed>14</WalkSpeed>
-    <RunMultiplier op="mul">2</RunMultiplier>
+    <UnitMotion>
+    <WalkSpeed>15</WalkSpeed>
+    <RunMultiplier op="mul">1.8</RunMultiplier>
+    <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
   <UnitAI>
     <Formations datatype="tokens">

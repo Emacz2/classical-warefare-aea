@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_temple">
+<Auras datatype="tokens">
+    -structures/temple_efficiency
+    structures/temple_efficiency_city
+  </Auras>
   <Footprint>
     <Square width="19.0" depth="31.0"/>
   </Footprint>

@@ -1,6 +1,6 @@
 {
 	"genericName": "Hellenistic Metropolis",
-	"description": "Beginning with Alexander, the Hellenistic monarchs founded many cities throughout their empires, where Greek culture and art blended with local customs to create the motley Hellenistic civilization.",
+	"description": "Beginning with Alexander, Hellenistic monarchs founded and expanded great cities throughout their kingdoms. These metropolitan centers combined Greek institutions, art, and architecture with local traditions, serving as fortified seats of royal administration and military power.",
 	"cost": {
 		"stone": 500,
 		"metal": 500
@@ -20,7 +20,7 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "statue_face_stone.png",
 	"researchTime": 60,
-	"tooltip": "Civic Centers +100% health and capture points, double default arrows.",
+	"tooltip": "Civic Centers gain +100% Health and Capture Points and fire twice as many default arrows.",
 	"modifications": [
 		{ "value": "BuildingAI/DefaultArrowCount", "multiply": 2 },
 		{ "value": "Capturable/CapturePoints", "multiply": 2 },

@@ -12,7 +12,7 @@
 			{"civ": "ptol"}
 		]
 	},
-	"requirementsTooltip": "Unlocked in Town Phase.",
+	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "serapis.png",
 	"researchTime": 60,
 	"tooltip": "+2.0 metal trickle per second.",

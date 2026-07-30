@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+<Attack>
+  <Melee>
+    <RepeatTime op="add">100</RepeatTime>
+  </Melee>
+</Attack>
+  <Cost>
+  <BuildTime op="mul">0.9</BuildTime>
+    <Resources>
+      <food op="add">-5</food>
+      <wood op="add">-5</wood>
+    </Resources>
+  </Cost>
+  <Promotion>
+    <RequiredXp>60</RequiredXp>
+  </Promotion>
+    <Loot>
+    <xp>35</xp>
+    <wood>5</wood>
+    <stone>0</stone>
+    <metal>5</metal>
+  </Loot>
+  <Identity>
+    <VisibleClasses datatype="tokens">Conscript</VisibleClasses>
+    <Tooltip>Conscript melee soldiers train 10% faster and cost 5 less food and wood, but deal 5% less damage. They lose Conscript status when promoted to Basic rank after earning 60 experience.</Tooltip>
+  </Identity>
+</Entity>

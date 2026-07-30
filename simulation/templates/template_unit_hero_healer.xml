@@ -28,9 +28,6 @@
       </Damage>
     </Entity>
   </Resistance>
-    <UnitMotion>
-    <WalkSpeed op="add">0.2</WalkSpeed>
-  </UnitMotion>
   <Selectable>
     <Overlay>
       <Shape>

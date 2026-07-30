@@ -1,13 +1,14 @@
 {
-	"type": "global",
-	"affects": ["Academy"],
-	"modifications": [
-	
-		{ "value": "Cost/BuildTime", "multiply": 0.5 },
-		{ "value": "Cost/Resources", "multiply": 0.75 }
-	],
-	"auraName": "Expanded Teaching",
-	"showDescription": 1,
-	"auraDescription": "Academies 50% less build time and cost 25% less resources.",
-	"stackable": true
+  "type": "global",
+  "affects": ["Structure"],
+  "modifications": [
+    {
+      "value": "Capturable/RegenRate",
+      "add": 0.5
+    }
+  ],
+  "auraName": "Codified Law",
+  "showDescription": 1,
+  "auraDescription": "Structures restore +0.5 capture points per second.",
+  "stackable": true
 }

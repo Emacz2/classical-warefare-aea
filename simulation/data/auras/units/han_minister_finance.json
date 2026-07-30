@@ -3,19 +3,19 @@
 	"affects": ["Structure"],
 	"modifications": [
 		{
-			"value": "TechCostMultiplier/Food",
+			"value": "Researcher/TechCostMultiplier/food",
 			"multiply": 0.95
 		},
 		{
-			"value": "TechCostMultiplier/Metal",
+			"value": "Researcher/TechCostMultiplier/metal",
 			"multiply": 0.95
 		},
 		{
-			"value": "TechCostMultiplier/Stone",
+			"value": "Researcher/TechCostMultiplier/stone",
 			"multiply": 0.95
 		},
 		{
-			"value": "TechCostMultiplier/Wood",
+			"value": "Researcher/TechCostMultiplier/wood",
 			"multiply": 0.95
 		}
 		

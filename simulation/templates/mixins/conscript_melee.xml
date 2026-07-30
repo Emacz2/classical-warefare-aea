@@ -27,6 +27,6 @@
   </Loot>
   <Identity>
     <VisibleClasses datatype="tokens">Conscript</VisibleClasses>
-    <Tooltip>Concript soldiers -10% train time and cost 5 less food and wood, but do 5% less dmg.  They lose consript status when promoted (60 exp required) to basic rank</Tooltip>
+    <Tooltip>Conscript melee soldiers train 10% faster and cost 5 less food and wood, but deal 5% less damage. They lose Conscript status when promoted to Basic rank after earning 60 experience.</Tooltip>
   </Identity>
 </Entity>

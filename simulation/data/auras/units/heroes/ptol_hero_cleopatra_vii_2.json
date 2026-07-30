@@ -6,7 +6,7 @@
 	"modifications": [
 		{ "value": "Health/Max", "multiply": 1.1 }
 	],
-	"auraName": "Consort",
+	"auraName": "Royal Consort",
 	"showDescription": 1,
 	"auraDescription": "Allied Heroes +10% health.",
 	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
