@@ -4,7 +4,6 @@
     units/salpinx
   </Auras>
   <Identity>
-    <Civ>spart</Civ>
     <SpecificName>Salpinx</SpecificName>
     <Icon>units/special/trumpeter_rally.png</Icon>
   </Identity>
