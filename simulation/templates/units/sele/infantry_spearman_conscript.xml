@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="sele|armor_light|shield_light|conscript_melee_spear_axe|template_unit_infantry_melee_spearman">
+<Builder>
+    <Entities datatype="tokens">
+      structures/sele/range
+    </Entities>
+  </Builder>
+  <Identity>
+    <Civ>sele</Civ>
+    <Lang>greek</Lang>
+    <SelectionGroupName>units/sele/infantry_spearman_b</SelectionGroupName>
+    <GenericName>Seleucid Levy Spearman</GenericName>
+    <SpecificName>Psilós Doryphoros</SpecificName>
+    <Icon>units/sele/infantry_spearman_2.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/sele/infantry_spearman_b</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/seleucids/infantry_spearman_b.xml</Actor>
+  </VisualActor>
+</Entity>
