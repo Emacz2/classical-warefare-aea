@@ -8,7 +8,6 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_village" },
-			{ "civ": "han" },
 			{ "civ": "sele" },
 			{ "civ": "theb" }
 		]
