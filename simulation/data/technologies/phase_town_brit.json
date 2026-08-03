@@ -20,7 +20,7 @@
 	"replaces": ["phase_town"],
 	"icon": "town_phase.png",
 	"researchTime": 40,
-	"tooltip": "Structures gain +0.5 capture regeneration rate. Citizen Infantry 5% more pierce dmg. Druids +5 health.",
+	"tooltip": "Structures gain +0.5 capture regeneration rate. Tribal Centers gain +10% territory influence. Citizen Infantry deal 5% more damage. Druids gain +5 vision.",
 	"modifications": [
 		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
 		{ "value": "TerritoryInfluence/Radius", "multiply": 1.1, "affects": "TribalCenter" },

@@ -4,14 +4,14 @@
     <Civ>brit</Civ>
     <SpecificName>Hill Fort</SpecificName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
-    <Tooltip>Build in own or neutral territory. Acquire small tracts of territory. Territory root. Train Citizens. Garrison Soldiers for additional arrows.</Tooltip>
+    <Tooltip>Build in neutral territory to establish a fortified settlement and acquire a small tract of territory. Serves as a resource dropsite, trains Citizens and Scout Cavalry, and fires additional arrows when garrisoned.</Tooltip>
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
     <Icon>structures/brit_hill_fort.png</Icon>
   </Identity>
   <Upgrade>
     <ImperialCourt>
       <Entity>structures/{civ}/great_hill_fort</Entity>
-      <Tooltip>greatly increase the health, capture resistance and garrison capacity of this hill fort.</Tooltip>
+      <Tooltip>Upgrade this Hill Fort into a Great Hill Fort, greatly increasing its health, capture resistance, garrison capacity, defenses, and military recruitment options.</Tooltip>
       <Cost>
         <stone>300</stone>
         <wood>300</wood>
@@ -26,8 +26,8 @@
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/infantry_spearman_a
-      units/{civ}/infantry_javelineer_a
+      units/{civ}/infantry_spearman_b
+      units/{civ}/infantry_javelineer_b
       units/{civ}/cavalry_spearman_p
     </Entities>
   </Trainer>

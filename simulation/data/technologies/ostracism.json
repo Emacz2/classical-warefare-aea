@@ -1,23 +1,45 @@
 {
-	"genericName": "Ostracism",
-	"description": "In ancient Athens, ostracism was the process by which any citizen, including political leaders, could be expelled from the city-state for 10 years.",
-	"cost": {
-		"food": 300,
-		"metal": 300
-	},
-	"requirements": {
-		"all": [
-			{ "tech": "phase_city" },
-			{ "civ": "athen" }
-		]
-	},
-	"requirementsTooltip": "Unlocked in City Phase.",
-	"icon": "fist.png",
-	"researchTime": 60,
-	"tooltip": "Citizen soldiers +5% health, but Heroes −40% health.",
-	"modifications": [
-		{ "value": "Health/Max", "multiply": 1.05, "affects": "CitizenSoldier" },
-		{ "value": "Health/Max", "multiply": 0.6, "affects": "Hero" }
-	],
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+  "genericName": "Ostracism",
+  "description": "In ancient Athens, ostracism was a democratic procedure allowing the citizens to exile a prominent individual for ten years without confiscating his property or revoking his citizenship. Intended to protect the city from tyranny, excessive personal influence, and dangerous political conflict, it was also sometimes used against political rivals.",
+  "cost": {
+    "food": 300,
+    "metal": 300
+  },
+  "requirements": {
+    "all": [
+      {
+        "tech": "phase_town"
+      },
+      {
+        "civ": "athen"
+      }
+    ]
+  },
+  "requirementsTooltip": "Unlocked in Town Phase.",
+  "icon": "fist.png",
+  "researchTime": 60,
+  "tooltip": "Civic buildings gain +1 capture regeneration rate while garrisoned. Civilians train and construct buildings 10% faster, but Heroes train 25% slower.",
+  "modifications": [
+    {
+      "value": "Capturable/GarrisonRegenRate",
+      "add": 1,
+      "affects": "Civic"
+    },
+    {
+      "value": "Cost/BuildTime",
+      "multiply": 0.9,
+      "affects": "Civilian"
+    },
+    {
+      "value": "Builder/Rate",
+      "multiply": 1.1,
+      "affects": "Civilian"
+    },
+    {
+      "value": "Cost/BuildTime",
+      "multiply": 1.25,
+      "affects": "Hero"
+    }
+  ],
+  "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
