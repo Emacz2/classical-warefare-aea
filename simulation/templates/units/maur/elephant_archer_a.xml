@@ -4,12 +4,11 @@
     <Rank>Advanced</Rank>
   </Identity>
    <Attack>
-    <Ranged>
-      <AttackName>SimpleBow</AttackName>
-      <Damage>
-          <Pierce op="mul">0.55</Pierce>
-      </Damage>
-      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+  <Ranged>
+    <AttackName>ElephantBow</AttackName>
+    <Damage>
+      <Pierce>4.125</Pierce>
+    </Damage>
     </Ranged>
   </Attack>
   <BuildingAI>

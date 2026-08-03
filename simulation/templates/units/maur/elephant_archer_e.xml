@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="units/maur/elephant_archer_a">
-   <Attack>
-    <Ranged>
-      <AttackName>SimpleBow</AttackName>
-      <Damage>
-          <Pierce op="mul">0.4</Pierce>
-      </Damage>
-      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+ <Attack>
+  <Ranged>
+    <AttackName>ElephantBow</AttackName>
+    <Damage>
+      <Pierce>3</Pierce>
+    </Damage>
     </Ranged>
   </Attack>
   <BuildingAI>
