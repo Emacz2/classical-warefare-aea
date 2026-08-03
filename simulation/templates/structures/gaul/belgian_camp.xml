@@ -21,7 +21,7 @@
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Belgian Coalition Camp</GenericName>
-    <Tooltip>Reruit allies and research new techs from The Nervii, Eburones and Treveri tribes.</Tooltip>
+    <Tooltip>Recruit Treveri cavalry and learn new military techniques from the Nervii and Eburones.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/belgian_camp.png</Icon>
   </Identity>

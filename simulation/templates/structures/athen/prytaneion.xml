@@ -40,6 +40,7 @@
   <ProductionQueue/>
   <Researcher>
     <Technologies datatype="tokens">
+      citystate/ostracism 
       long_walls
     </Technologies>
   </Researcher>
