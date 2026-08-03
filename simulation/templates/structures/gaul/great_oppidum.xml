@@ -4,7 +4,7 @@
     <Civ>gaul</Civ>
     <SpecificName>Great Oppidum</SpecificName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
-    <Tooltip>A Fortifed Oppidum, the Gauls version of a Fort</Tooltip>
+    <Tooltip>A heavily fortified tribal settlement that expands territory, serves as a resource dropsite, trains Advanced Spearmen, Javelineers, and Slingers, and fires additional arrows when garrisoned.</Tooltip>
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
     <Icon>structures/oppidum_fort.png</Icon>
   </Identity>
