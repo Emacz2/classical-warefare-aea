@@ -44,8 +44,8 @@
   </Trainer>
    <Researcher>
     <Technologies datatype="tokens">
-      gaul_nervii_melee
-      gaul_eburones_jav
+      tribal/gaul_nervii_melee
+      tribal/gaul_eburones_jav
     </Technologies>
   </Researcher>
   <VisualActor>

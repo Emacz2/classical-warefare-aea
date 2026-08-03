@@ -44,7 +44,7 @@
   </Trainer>
     <Researcher>
     <Technologies datatype="tokens">
-     gaul_senones_capture
+     tribal/gaul_senones_capture
     </Technologies>
   </Researcher>
   <VisualActor>
