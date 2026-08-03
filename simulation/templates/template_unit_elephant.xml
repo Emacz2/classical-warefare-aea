@@ -59,7 +59,7 @@
   <UnitMotion>
     <PassabilityClass>large</PassabilityClass>
     <Acceleration op="mul">0.5</Acceleration>
-    <WalkSpeed op="mul">0.92</WalkSpeed>
+    <WalkSpeed op="mul">0.9</WalkSpeed>
     <RunMultiplier>1.2</RunMultiplier>
     <Weight op="mul">5.0</Weight>
   </UnitMotion>

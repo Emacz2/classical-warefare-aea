@@ -9,12 +9,15 @@
       <Damage>
           <Pierce op="mul">0.55</Pierce>
       </Damage>
-      <Projectile>
-         <Count>2</Count>
-      </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Ranged>
   </Attack>
+  <BuildingAI>
+    <DefaultArrowCount>2</DefaultArrowCount>
+    <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
+    <MaxArrowCount>2</MaxArrowCount>
+    <GarrisonArrowClasses>Infantry Archer</GarrisonArrowClasses>
+  </BuildingAI>
   <Promotion>
     <Entity>units/maur/elephant_archer_e</Entity>
   </Promotion>

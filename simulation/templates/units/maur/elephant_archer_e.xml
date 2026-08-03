@@ -6,12 +6,15 @@
       <Damage>
           <Pierce op="mul">0.4</Pierce>
       </Damage>
-      <Projectile>
-         <Count>3</Count>
-      </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Ranged>
   </Attack>
+  <BuildingAI>
+    <DefaultArrowCount>3</DefaultArrowCount>
+    <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
+    <MaxArrowCount>3</MaxArrowCount>
+    <GarrisonArrowClasses>Infantry Archer</GarrisonArrowClasses>
+  </BuildingAI>
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
