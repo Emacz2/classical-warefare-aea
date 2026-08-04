@@ -44,7 +44,10 @@
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" }
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.2, "affects": "Boiorix" },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.2, "affects": "Boiorix" },
+		{ "value": "Health/Max", "multiply": 2, "affects": "Boiorix"}
 	
 	],
 	"soundComplete": "interface/alarm/alarm_phase.xml"

@@ -53,6 +53,9 @@
       units/{civ}/champion_infantry_axeman
       units/{civ}/champion_cavalry
       units/{civ}/siege_ram
+      units/{civ}/hero_boiorix
+      units/{civ}/hero_teutobod
+      units/{civ}/hero_lugius
     </Entities>
   </Trainer>
   <Vision>
