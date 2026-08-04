@@ -23,7 +23,7 @@
     <Civ>germ</Civ>
     <GenericName>Great Hall</GenericName>
     <SpecificName>Kuningashallō</SpecificName>
-    <Tooltip>Train Champions and Light Siege.</Tooltip>
+    <Tooltip>Train Germanic Champions and Heroes, and construct Battering Rams.</Tooltip>
     <VisibleClasses datatype="tokens">Town</VisibleClasses>
     <Classes datatype="tokens">ConquestCritical CivSpecific</Classes>
     <Icon>structures/hall.png</Icon>
