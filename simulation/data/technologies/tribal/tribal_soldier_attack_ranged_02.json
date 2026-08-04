@@ -21,7 +21,7 @@
 			
 		]
 	},
-	"requirementsTooltip": "Unlocked in Town Phase.",
+	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "arrow_02.png",
 	"researchTime": 40,
 	"tooltip": "Soldiers +20% ranged attack damage.",
