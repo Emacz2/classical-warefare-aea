@@ -29,9 +29,6 @@
     </Melee>
   </Attack>
 
-  <Health>
-    <Max op="add">50</Max>
-  </Health>
 
   <Identity>
     <GenericName>Cataphract Cavalry</GenericName>

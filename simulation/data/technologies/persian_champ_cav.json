@@ -2,8 +2,8 @@
 	"genericName": "Horse Barding",
 	"description": "Persian armorers equipped elite warhorses with protective barding of leather, quilted cloth, mail, or scale armor. Though the additional weight slowed their advance, the extra protection greatly increased the survivability of both horse and rider.",
 	"cost": {
-		"metal": 500,
-		"food": 500
+		"metal": 600,
+		"food": 400
 	},
 	"requirements": {
   "all": [
@@ -14,14 +14,14 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_plates_gold.png",
 	"researchTime": 40,
-	"tooltip": "Ranged Champion Cavalry gain +25 health and Melee Champion Cavalry gain +50 health. All Champion Cavalry gain +3 Hack, Pierce, and Crush Resistance, but move 5% slower.",
+	"tooltip": "Champion Cavalry gain +2 Hack, Pierce, and Crush Resistance and train 10% faster, but move 5% slower.",
 	"modifications": [
-		{ "value": "Health/Max", "add": 25, "affects": "Ranged" },
-		{ "value": "Health/Max", "add": 50, "affects": "Melee" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 3 },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 3 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 3 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 2 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 2 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2 },
+		{ "value": "Cost/BuildTime", "multiply": 0.9 },
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 0.95 }
+			
 
 	],
 	"affects": ["Champion Cavalry"],
