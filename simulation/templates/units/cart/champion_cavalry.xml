@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="carth|cav_heavy|cav_shock|cav_charge|template_unit_champion_cavalry_lancer">
+<Entity parent="carth|cav_heavy|cav_charge|cav_spear_shield|template_unit_champion_cavalry_spearman">
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Sacred Band Cavalry</GenericName>
-    <SpecificName>Sacred Band of Astarte</SpecificName>
+    <GenericName>Punic Noble Cavalry</GenericName>
     <Icon>units/cart/champion_cavalry.png</Icon>
+    <Tooltip>Elite Punic citizen cavalry. Heavily equipped spear cavalry trained for disciplined close combat and mounted charges.</Tooltip>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
-   <Heal>
-    <Range>15</Range>
-    <RangeOverlay>
-      <LineTexture>heal_overlay_range.png</LineTexture>
-      <LineTextureMask>heal_overlay_range_mask.png</LineTextureMask>
-      <LineThickness>0.35</LineThickness>
-    </RangeOverlay>
-    <Health>0.75</Health>
-    <Interval>1000</Interval>
-    <UnhealableClasses datatype="tokens"/>
-    <HealableClasses datatype="tokens">Soldier</HealableClasses>
-  </Heal>
-   <TrainingRestrictions>
-    <Category>SacredBandCavalry</Category>
+  <TrainingRestrictions>
+    <Category>PunicNobleCavalry</Category>
   </TrainingRestrictions>
   <VisualActor>
     <Actor>units/carthaginians/cavalry_spearman_c_m.xml</Actor>

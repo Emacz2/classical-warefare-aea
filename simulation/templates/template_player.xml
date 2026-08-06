@@ -23,7 +23,7 @@
       <Champion_Perioikoi>10</Champion_Perioikoi>
       <CivilCentre>1</CivilCentre>
       <Agora>1</Agora>
-      <ConsularBodyguard>10</ConsularBodyguard>
+      <BodyguardCavalry>12</BodyguardCavalry>
       <EstateSlave>5</EstateSlave>
       <Ephor>5</Ephor>
       <Gerousia>1</Gerousia>
@@ -55,6 +55,7 @@
       <ThebsSB>50</ThebsSB>
       <TribalCenter>1</TribalCenter>
       <Police>10</Police>
+      <PunicNobleCavalry>20</PunicNobleCavalry>
       <Silvermine>3</Silvermine>
       <SkiritaiCamp>2</SkiritaiCamp>
       <SpartW>1</SpartW>
@@ -62,7 +63,6 @@
       <WarDog>5</WarDog>
       <SpartCav>40</SpartCav>
       <SacredBandInfantry>30</SacredBandInfantry>
-      <SacredBandCavalry>20</SacredBandCavalry>
       <Centurion>10</Centurion>
       <Trumpeter>5</Trumpeter>
       <Wonder>1</Wonder>

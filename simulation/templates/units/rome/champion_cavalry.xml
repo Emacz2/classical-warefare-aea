@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="aux_champ|cav_charge|consular|cav_heavy|template_unit_champion_cavalry_swordsman">
+<Entity parent="aux_champ|cav_charge|cav_bodyguard|cav_heavy|template_unit_champion_cavalry_swordsman">
  <Cost>
     <Resources>
       <food>500</food>
@@ -19,9 +19,6 @@
        <Techs datatype="tokens">phase_empi</Techs>
     </Requirements>
   </Identity>
-  <TrainingRestrictions>
-    <Category>ConsularBodyguard</Category>
-  </TrainingRestrictions>
   <VisualActor>
     <Actor>units/romans/cavalry_swordsman_c_m.xml</Actor>
   </VisualActor>

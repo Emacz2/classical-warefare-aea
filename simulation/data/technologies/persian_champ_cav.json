@@ -14,7 +14,7 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_plates_gold.png",
 	"researchTime": 40,
-	"tooltip": "Champion Cavalry gain +2 Hack, Pierce, and Crush Resistance and train 10% faster, but move 5% slower.",
+	"tooltip": "Champion Cavalry gain +2 Hack, Pierce, and Crush Resistance and train 10% faster, but move 5% slower (Excludes Chariots).",
 	"modifications": [
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2 },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2 },
@@ -24,6 +24,6 @@
 			
 
 	],
-	"affects": ["Champion Cavalry"],
+	"affects": ["Champion Cavalry !Chariot"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

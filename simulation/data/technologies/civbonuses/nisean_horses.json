@@ -24,6 +24,6 @@
 		{ "value": "Cost/Resources/food", "add": 50 }
 
 	],
-	"affects": ["Champion Cavalry"],
+	"affects": ["Champion Cavalry !Chariot"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
