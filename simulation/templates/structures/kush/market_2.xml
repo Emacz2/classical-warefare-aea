@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_economic_market">
+   <Identity>
+    <Civ>kush</Civ>
+    <GenericName>Market lvl 2</GenericName>
+    <SpecificName>Pr-sbt</SpecificName>
+    <VisibleClasses datatype="tokens">Village -Town Two</VisibleClasses>
+    <Requirements>
+      <Techs datatype="tokens">-phase_town phase_village</Techs>
+    </Requirements>
+  </Identity>
+  <VisualActor>
+    <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
+    <Actor>structures/kushites/market.xml</Actor>
+  </VisualActor>
+   <Obstruction>
+    <Static width="30.0" depth="30.0"/>
+  </Obstruction>
+  <Footprint>
+    <Square width="32" depth="32"/>
+    <Height>8.0</Height>
+  </Footprint>
+</Entity>

@@ -10,9 +10,8 @@
   </BuildRestrictions>
   <Capturable>
     <CapturePoints op="mul">1.5</CapturePoints>
-    <RegenRate>8</RegenRate>
-    <GarrisonRegenRate>5.5</GarrisonRegenRate>
   </Capturable>
+  <TerritoryDecay disable=""/>
  <Identity>
     <Civ>cart</Civ>
     <SpecificName>Šūq</SpecificName>

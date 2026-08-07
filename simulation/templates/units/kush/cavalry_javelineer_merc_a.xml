@@ -3,7 +3,5 @@
   <Identity>
     <Rank>Advanced</Rank>
   </Identity>
-  <Promotion>
-    <Entity>units/kush/cavalry_javelineer_merc_e</Entity>
-  </Promotion>
+   <Promotion disable=""/>
 </Entity>
