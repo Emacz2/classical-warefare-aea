@@ -37,9 +37,9 @@
         </Burning>
       </ApplyStatus>
       <Damage>
-        <Crush>15</Crush>
+        <Crush>7.5</Crush>
         <Hack>25</Hack>
-        <Pierce>45</Pierce>
+        <Pierce>40</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -57,14 +57,14 @@
   </BuildingAI>
   <Capturable>
     <CapturePoints>4500</CapturePoints>
-    <RegenRate>10.0</RegenRate>
+    <RegenRate>20.0</RegenRate>
   </Capturable>
   <Cost>
     <BuildTime>510</BuildTime>
     <Resources>
-      <metal>250</metal>
-      <wood>250</wood>
-      <stone>750</stone>
+      <metal>100</metal>
+      <wood>300</wood>
+      <stone>600</stone>
     </Resources>
   </Cost>
   <Footprint>
