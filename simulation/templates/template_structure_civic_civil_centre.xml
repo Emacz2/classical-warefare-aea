@@ -22,7 +22,7 @@
       </Damage>
       <MaxRange>45</MaxRange>
       <PrepareTime>400</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <RepeatTime>2000</RepeatTime>
       <Projectile>
         <Speed>100</Speed>
         <Spread>2</Spread>
@@ -41,9 +41,9 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush>10</Crush>
-        <Hack>20</Hack>
-        <Pierce>40</Pierce>
+        <Crush  op="add">2.5</Crush>
+        <Hack op="add">5</Hack>
+        <Pierce op="add">5</Pierce>
       </Damage>
     <ApplyStatus>
         <Burning>
@@ -62,13 +62,13 @@
     </Distance>
   </BuildRestrictions>
   <BuildingAI>
-    <DefaultArrowCount>10</DefaultArrowCount>
+    <DefaultArrowCount>6</DefaultArrowCount>
     <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
     <GarrisonArrowClasses>Soldier</GarrisonArrowClasses>
   </BuildingAI>
   <Capturable>
     <CapturePoints>2500</CapturePoints>
-    <RegenRate>7.5</RegenRate>
+    <RegenRate>15</RegenRate>
   </Capturable>
   <Cost>
     <BuildTime>480</BuildTime>
@@ -88,7 +88,7 @@
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>
-    <Max>4000</Max>
+    <Max>3000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
    <Researcher>
