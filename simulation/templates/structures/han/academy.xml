@@ -24,31 +24,31 @@
   </Health>
   <Identity>
     <Civ>han</Civ>
-    <GenericName>Imperial Guard Barracks</GenericName>
-    <Tooltip>Train elite Palace Guard infantry.</Tooltip>
+    <GenericName>Imperial Guard Academy</GenericName>
+    <Tooltip>Train Han War Chariots. Elite Palace Guard infantry become available in City Phase.</Tooltip>
     <SelectionGroupName>structures/han/academy</SelectionGroupName>
-    <VisibleClasses datatype="tokens">City Academy</VisibleClasses>
+    <VisibleClasses datatype="tokens">Town Academy</VisibleClasses>
     <Icon>structures/embassy_italic.png</Icon>
     <Requirements>
-      <Techs datatype="tokens">phase_city</Techs>
+      <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
   <Upgrade>
-  <ImperialGuardHeadquarters>
-    <Entity>structures/{civ}/academy2</Entity>
-    <Tooltip>Expand the Imperial Guard establishment, unlocking elite cavalry, crossbow guards, and guard chariots.</Tooltip>
-    <Cost>
-      <wood>100</wood>
-      <stone>100</stone>
-      <metal>100</metal>
-    </Cost>
-    <Time>40</Time>
-    <Variant>upgrading</Variant>
-    <Requirements>
-      <Techs datatype="tokens">phase_empi</Techs>
-    </Requirements>
-  </ImperialGuardHeadquarters>
-</Upgrade>
+    <ImperialGuardHeadquarters>
+      <Entity>structures/{civ}/academy2</Entity>
+      <Tooltip>Expand the academy into the Imperial Guard headquarters, unlocking elite cavalry, crossbow guards, guard chariots, and Yulin mounted archers.</Tooltip>
+      <Cost>
+        <wood>100</wood>
+        <stone>100</stone>
+        <metal>100</metal>
+      </Cost>
+      <Time>40</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_empi</Techs>
+      </Requirements>
+    </ImperialGuardHeadquarters>
+  </Upgrade>
   <Loot>
     <wood>0</wood>
     <stone>30</stone>
@@ -70,13 +70,14 @@
       <upgraded>interface/complete/building/complete_tholos.xml</upgraded>
     </SoundGroups>
   </Sound>
-<Trainer>
-  <BatchTimeModifier>0.7</BatchTimeModifier>
-  <Entities replace="" datatype="tokens">
-    units/{civ}/champion_infantry_spearman_academy
-    units/{civ}/champion_infantry_archer_academy
-  </Entities>
-</Trainer>
+  <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities replace="" datatype="tokens">
+      units/{civ}/chariot_academy
+      units/{civ}/champion_infantry_spearman_academy
+      units/{civ}/champion_infantry_archer_academy
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/han/academy.xml</Actor>
     <FoundationActor>structures/fndn_6x6.xml</FoundationActor>

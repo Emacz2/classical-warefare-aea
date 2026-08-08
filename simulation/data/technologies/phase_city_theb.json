@@ -1,21 +1,21 @@
 {
-	"genericName": "City Phase",
-	"specificName": {
-		"theb": "Megalopolis"
-	},
-	"description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology.",
-	"cost": {
-		"food": 500,
-		"wood": 500,
-		"stone": 750,
-		"metal": 500
-	},
-	 "requirements": {
+    "genericName": "City Phase",
+    "specificName": {
+        "theb": "Megalopolis"
+    },
+    "description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology.",
+    "cost": {
+        "food": 350,
+        "wood": 350,
+        "stone": 600,
+        "metal": 200
+    },
+    "requirements": {
         "all": [
             {
                 "entity": {
                     "class": "Village",
-                    "number": 20
+                    "number": 15
                 }
             },
             {
@@ -25,26 +25,61 @@
                 }
             }
         ]
-	},
-	"requirementsTooltip": "Requires 20 village and 2 town structures.",
-	"supersedes": "phase_town_theb",
-	"replaces": ["phase_city"],
-	"icon": "city_phase.png",
-	"researchTime": 60,
-	"tooltip": "Advance to City Phase, unlocking new entities and technologies. Agoras gain an additional +15% territory influence radius, +10 garrison capacity, +10 population capacity, +5 attack range, +5 Hack resistance, +7.5 Pierce resistance, and +2.5 Crush resistance. Garrisoned Structures gain an additional +2 Capture Point regeneration rate. Champion Spearmen deal 20% more melee Hack and Pierce damage.",
-	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 2, "affects": "Structure" },
-		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "Agora" },
-		{ "value": "Population/Bonus", "add": 10, "affects": "Agora" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "Agora" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 5, "affects": "Agora" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "Agora" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "Agora" },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15, "affects": "Champion Spearman" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15, "affects": "Champion Spearman" }
-	
-		
-	],
-	"soundComplete": "interface/alarm/alarm_phase.xml"
+    },
+    "requirementsTooltip": "Requires 20 village and 2 town structures.",
+    "supersedes": "phase_town_theb",
+    "replaces": [
+        "phase_city"
+    ],
+    "icon": "city_phase.png",
+    "researchTime": 50,
+    "tooltip": "Advance to City Phase, unlocking new entities and technologies. Agoras gain +15% territory influence radius, +10 garrison capacity, +10 population capacity, +10 attack range, +10% Health, +10% Capture Points. Garrisoned Structures gain +2 capture point regeneration rate. Champion Spearmen gain 15% melee Hack and Pierce damage.",
+    "modifications": [
+        {
+            "value": "Capturable/GarrisonRegenRate",
+            "add": 2,
+            "affects": "Structure"
+        },
+        {
+            "value": "GarrisonHolder/Max",
+            "add": 10,
+            "affects": "Agora"
+        },
+        {
+            "value": "Population/Bonus",
+            "add": 10,
+            "affects": "Agora"
+        },
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 10,
+            "affects": "Agora"
+        },
+        {
+            "value": "TerritoryInfluence/Radius",
+            "multiply": 1.15,
+            "affects": "Agora"
+        },
+        {
+            "value": "Attack/Melee/Damage/Hack",
+            "multiply": 1.15,
+            "affects": "Champion Spearman"
+        },
+        {
+            "value": "Attack/Melee/Damage/Pierce",
+            "multiply": 1.15,
+            "affects": "Champion Spearman"
+        },
+        {
+            "value": "Health/Max",
+            "multiply": 1.1,
+            "affects": "Agora"
+        },
+        {
+            "value": "Capturable/CapturePoints",
+            "multiply": 1.1,
+            "affects": "Agora"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_phase.xml"
 }

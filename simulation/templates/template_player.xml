@@ -65,6 +65,7 @@
       <SacredBandInfantry>30</SacredBandInfantry>
       <Centurion>10</Centurion>
       <Trumpeter>5</Trumpeter>
+      <HanChariot>8</HanChariot>
       <Wonder>1</Wonder>
     </Limits>
     <LimitChangers>

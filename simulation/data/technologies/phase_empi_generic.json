@@ -1,17 +1,16 @@
 {
-	"genericName": "Empire Phase",
-	"specificName": {
-		"rome": "Empire"
-	},
-
-	"description": "Advances from city phase to empire phase.",
-	"cost": {
-		"food": 1000,
-		"wood": 1000,
-		"stone": 1000,
-		"metal": 500
-	},
-	"requirements": {
+    "genericName": "Empire Phase",
+    "specificName": {
+        "rome": "Empire"
+    },
+    "description": "Advances from city phase to empire phase.",
+    "cost": {
+        "food": 400,
+        "wood": 400,
+        "stone": 900,
+        "metal": 300
+    },
+    "requirements": {
         "all": [
             {
                 "entity": {
@@ -26,23 +25,41 @@
                 }
             }
         ]
-	},
-	"requirementsTooltip": "Requires 3 town and 2 city structures.",
-	"supersedes": "phase_city_generic",
-	"replaces": ["phase_empi"],
-	"icon": "empire_phase.png",
-	"researchTime": 90,
-	"tooltip": "Advance to Town Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +0.5 capture points regeneration rate for garrisoned units.",
-	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },
-		{ "value": "GarrisonHolder/Max", "add": 15, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 15, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.98, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" }
-	],
-	"soundComplete": "interface/alarm/alarm_phase.xml"
+    },
+    "requirementsTooltip": "Requires 3 Town Structures and 2 City Structures.",
+    "supersedes": "phase_city_generic",
+    "replaces": [
+        "phase_empi"
+    ],
+    "icon": "empire_phase.png",
+    "researchTime": 75,
+    "tooltip": "Advance to the Empire Phase, unlocking new entities and technologies. Civic Centers gain +25% territory influence radius, +15 population capacity, +15 garrison capacity, and +5 attack range. Garrisoned Structures gain +0.5 capture point regeneration rate.",
+    "modifications": [
+        {
+            "value": "Capturable/GarrisonRegenRate",
+            "add": 0.5,
+            "affects": "Structure"
+        },
+        {
+            "value": "TerritoryInfluence/Radius",
+            "multiply": 1.25,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "GarrisonHolder/Max",
+            "add": 15,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Population/Bonus",
+            "add": 15,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 5,
+            "affects": "CivCentre"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_phase.xml"
 }

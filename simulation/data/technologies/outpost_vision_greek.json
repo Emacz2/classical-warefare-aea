@@ -1,27 +1,46 @@
 {
-	"genericName": "Phryctoria",
-	"description": "Increases outpost vision.",
-	"cost": {
-		"food": 100,
-		"wood": 100
-	},
-
-	"requirements": {
-		"all": [
-			{ "tech": "phase_village" },
-			{ "civ": "athen"},
-			{ "civ": "mace" },
-			{ "civ": "ptol" },
-			{ "civ": "sele" },
-			{ "civ": "spart" }
-		]
-	},
-	"icon": "pigeon.png",
-	"researchTime": 30,
-	"tooltip": "Outpost +25% vision range.",
-	"modifications": [
-		{ "value": "Vision/Range", "multiply": 1.25 }
-	],
-	"affects": ["Outpost"],
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+    "genericName": "Phryctoria",
+    "description": "Beacon networks improve long-distance observation from outposts.",
+    "cost": {
+        "food": 100,
+        "wood": 100
+    },
+    "requirements": {
+        "all": [
+            {
+                "tech": "phase_village"
+            },
+            {
+                "civ": "athen"
+            },
+            {
+                "civ": "mace"
+            },
+            {
+                "civ": "ptol"
+            },
+            {
+                "civ": "sele"
+            },
+            {
+                "civ": "spart"
+            },
+            {
+                "civ": "theb"
+            }
+        ]
+    },
+    "icon": "pigeon.png",
+    "researchTime": 30,
+    "tooltip": "Outposts +15 vision.",
+    "modifications": [
+        {
+            "value": "Vision/Range",
+            "add": 15
+        }
+    ],
+    "affects": [
+        "Outpost"
+    ],
+    "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

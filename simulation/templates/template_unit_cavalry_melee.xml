@@ -12,4 +12,7 @@
     <metal>15</metal>
     <wood>15</wood>
   </Loot>
+  <Vision>
+    <Range>50</Range>
+  </Vision>
 </Entity>

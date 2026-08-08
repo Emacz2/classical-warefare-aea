@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_defensive">
   <Auras datatype="tokens">
     structures/wall_garrisoned
@@ -6,18 +6,18 @@
   <BuildRestrictions>
     <Territory>own neutral</Territory>
     <Distance>
-      <FromClass>Outpost</FromClass>
-      <MinDistance>50</MinDistance>
+      <FromClass>TowerChain</FromClass>
+      <MinDistance>80</MinDistance>
     </Distance>
   </BuildRestrictions>
   <Cost>
-    <BuildTime>30</BuildTime>
+    <BuildTime>25</BuildTime>
     <Resources>
-      <wood>60</wood>
+      <wood>50</wood>
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="7.0" depth="7.0"/>
+    <Square width="7.0" depth="7.0" />
     <Height>13.0</Height>
   </Footprint>
   <Health>
@@ -27,17 +27,17 @@
   <Identity>
     <GenericName>Outpost</GenericName>
     <SelectionGroupName>template_structure_defensive_outpost</SelectionGroupName>
-    <Tooltip>Build in own or neutral territory.</Tooltip>
-    <VisibleClasses datatype="tokens">Outpost</VisibleClasses>
+    <Tooltip>Build in own or neutral territory. Can be upgraded to a Sentry Tower.</Tooltip>
+    <VisibleClasses datatype="tokens">Outpost TowerChain</VisibleClasses>
     <Icon>structures/outpost.png</Icon>
   </Identity>
   <Loot>
-    <wood>12</wood>
+    <wood>10</wood>
   </Loot>
   <Obstruction>
-    <Static width="6.0" depth="6.0"/>
+    <Static width="6.0" depth="6.0" />
   </Obstruction>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Resistance>
     <Entity>
       <Damage>
@@ -68,14 +68,28 @@
       </One>
     </TurretPoints>
   </TurretHolder>
-   <Researcher>
+  <Researcher>
     <Technologies datatype="tokens">
-     outpost_vision
-     outpost_vision_greek
+      outpost_vision
+      outpost_vision_greek
     </Technologies>
   </Researcher>
+  <Upgrade>
+    <Tower>
+      <Entity>structures/{civ}/sentry_tower</Entity>
+      <Tooltip>Reinforce the outpost and upgrade it to a Sentry Tower.</Tooltip>
+      <Cost>
+        <wood>70</wood>
+      </Cost>
+      <Variant>upgrading</Variant>
+      <Time>35</Time>
+      <Requirements>
+        <Techs datatype="tokens">phase_village</Techs>
+      </Requirements>
+    </Tower>
+  </Upgrade>
   <Vision>
-    <Range>80</Range>
+    <Range>85</Range>
   </Vision>
   <VisualActor>
     <FoundationActor>structures/fndn_2x2.xml</FoundationActor>

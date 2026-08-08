@@ -48,4 +48,7 @@
   <TrainingRestrictions>
     <Category>Trumpeter</Category>
   </TrainingRestrictions>
+   <Vision>
+    <Range>50</Range>
+  </Vision>
 </Entity>

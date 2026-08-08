@@ -40,6 +40,6 @@
     <RunMultiplier op="mul">1.6</RunMultiplier>
   </UnitMotion>
    <Vision>
-    <Range>65</Range>
+    <Range>50</Range>
   </Vision>
 </Entity>

@@ -1,29 +1,46 @@
 {
-	"genericName": "Carrier Pigeons",
-	"description": "Increases outpost vision.",
-	"cost": {
-		"food": 100,
-		"wood": 100
-	},
-
-	"requirements": {
-		"all": [
-			{ "tech": "phase_village" },
-			{ "notciv": "athen" },
-			{ "notciv": "mace" },
-			{ "notciv": "ptol" },
-			{ "notciv": "sele" },
-			{ "notciv": "spart" }
-			
-			
-		]
-	},
-	"icon": "pigeon.png",
-	"researchTime": 30,
-	"tooltip": "Outpost +25% vision range.",
-	"modifications": [
-		{ "value": "Vision/Range", "multiply": 1.25 }
-	],
-	"affects": ["Outpost"],
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+    "genericName": "Carrier Pigeons",
+    "description": "Carrier pigeons improve long-distance observation from outposts.",
+    "cost": {
+        "food": 100,
+        "wood": 100
+    },
+    "requirements": {
+        "all": [
+            {
+                "tech": "phase_village"
+            },
+            {
+                "notciv": "athen"
+            },
+            {
+                "notciv": "mace"
+            },
+            {
+                "notciv": "ptol"
+            },
+            {
+                "notciv": "sele"
+            },
+            {
+                "notciv": "spart"
+            },
+            {
+                "notciv": "theb"
+            }
+        ]
+    },
+    "icon": "pigeon.png",
+    "researchTime": 30,
+    "tooltip": "Outposts +10 vision.",
+    "modifications": [
+        {
+            "value": "Vision/Range",
+            "add": 10
+        }
+    ],
+    "affects": [
+        "Outpost"
+    ],
+    "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

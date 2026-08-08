@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_military">
   <Auras datatype="tokens">
     structures/xp_trickle_1.5
@@ -9,7 +9,7 @@
       <Damage>
         <Pierce>1.7</Pierce>
       </Damage>
-      <MaxRange>70</MaxRange>
+      <MaxRange>80</MaxRange>
       <MinRange>10</MinRange>
       <PrepareTime>400</PrepareTime>
       <RepeatTime>1000</RepeatTime>
@@ -18,7 +18,7 @@
         <Spread>1.0</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="3"/>
+        <LaunchPoint y="3" />
       </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
       <RangeOverlay>
@@ -30,7 +30,7 @@
   </Attack>
   <Resistance>
     <Entity>
-    <ApplyStatus>
+      <ApplyStatus>
         <Burning>
           <Duration>0.1</Duration>
           <BlockChance>0.98</BlockChance>
@@ -68,7 +68,7 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="30.0" depth="30.0"/>
+    <Square width="30.0" depth="30.0" />
     <Height>8.0</Height>
   </Footprint>
   <GarrisonHolder>
@@ -78,9 +78,9 @@
     <LoadingRange>5</LoadingRange>
     <BuffHeal>1</BuffHeal>
   </GarrisonHolder>
-	  <Population>
+  <Population>
     <Bonus>35</Bonus>
-    </Population>
+  </Population>
   <Health>
     <Max>4500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
@@ -101,9 +101,9 @@
     <stone>120</stone>
   </Loot>
   <Obstruction>
-    <Static width="25.0" depth="25.0"/>
+    <Static width="25.0" depth="25.0" />
   </Obstruction>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
@@ -155,12 +155,12 @@
     <Root>true</Root>
     <Radius>60</Radius>
     <Weight>10000</Weight>
-    </TerritoryInfluence>
+  </TerritoryInfluence>
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
   </Trainer>
   <Vision>
-    <Range>90</Range>
+    <Range>100</Range>
   </Vision>
   <VisualActor>
     <FoundationActor>structures/fndn_8x8.xml</FoundationActor>

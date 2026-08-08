@@ -1,31 +1,48 @@
 {
-	"genericName": "Carrier Pigeons2",
-	"description": "Increases tower vision.",
-	"cost": {
-		"food": 200,
-		"wood": 200
-	},
-"supersedes": "outpost_vision",
-"requirements": {
-		"all": [
-			{ "tech": "phase_town" },
-			{ "notciv": "athen" },
-			{ "notciv": "mace" },
-			{ "notciv": "ptol" },
-			{ "notciv": "sele" },
-			{ "notciv": "spart" }
-		]
-	},
-
-
-
-	"icon": "pigeon.png",
-	"researchTime": 40,
-	"tooltip": "towers and outposts +25% vision range.",
-	"modifications": [
-		{ "value": "Vision/Range", "multiply": 1.25 }
-	],
-	"affects": ["Outpost", "Tower"],
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+    "genericName": "Improved Carrier Pigeons",
+    "description": "Expanded messenger networks improve observation from towers and outposts.",
+    "cost": {
+        "food": 200,
+        "wood": 200
+    },
+    "supersedes": "outpost_vision",
+    "requirements": {
+        "all": [
+            {
+                "tech": "phase_town"
+            },
+            {
+                "notciv": "athen"
+            },
+            {
+                "notciv": "mace"
+            },
+            {
+                "notciv": "ptol"
+            },
+            {
+                "notciv": "sele"
+            },
+            {
+                "notciv": "spart"
+            },
+            {
+                "notciv": "theb"
+            }
+        ]
+    },
+    "icon": "pigeon.png",
+    "researchTime": 40,
+    "tooltip": "Towers and outposts +10 vision.",
+    "modifications": [
+        {
+            "value": "Vision/Range",
+            "add": 10
+        }
+    ],
+    "affects": [
+        "Outpost",
+        "Tower"
+    ],
+    "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }
-

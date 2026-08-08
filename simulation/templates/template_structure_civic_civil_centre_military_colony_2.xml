@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_civic_civil_centre">
   <BuildRestrictions>
     <Territory>own neutral</Territory>
@@ -11,7 +11,7 @@
   <BuildingAI>
     <DefaultArrowCount>1</DefaultArrowCount>
   </BuildingAI>
-    <Cost>
+  <Cost>
     <BuildTime>300</BuildTime>
     <Resources>
       <food>100</food>
@@ -45,7 +45,7 @@
       -hellenistic/hellenistic_metropolis
     </Technologies>
   </Researcher>
-    <Trainer>
+  <Trainer>
     <Entities datatype="tokens">
       -units/{civ}/support_civilian
       -units/{civ}/support_female_citizen
@@ -66,4 +66,12 @@
   <TerritoryInfluence>
     <Radius>75</Radius>
   </TerritoryInfluence>
+  <Attack>
+    <Ranged>
+      <MaxRange>60</MaxRange>
+    </Ranged>
+  </Attack>
+  <Vision>
+    <Range>90</Range>
+  </Vision>
 </Entity>

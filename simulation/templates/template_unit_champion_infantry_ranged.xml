@@ -43,4 +43,7 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+  <Vision>
+    <Range>55</Range>
+  </Vision>
 </Entity>

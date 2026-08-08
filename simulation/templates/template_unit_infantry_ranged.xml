@@ -32,4 +32,7 @@
       special/formations/skirmish
     </Formations>
   </UnitAI>
+  <Vision>
+    <Range>50</Range>
+  </Vision>
 </Entity>

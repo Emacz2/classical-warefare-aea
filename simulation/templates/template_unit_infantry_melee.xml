@@ -31,4 +31,7 @@
       special/formations/testudo
     </Formations>
   </UnitAI>
+  <Vision>
+    <Range>45</Range>
+  </Vision>
 </Entity>

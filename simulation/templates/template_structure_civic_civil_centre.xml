@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_civic">
-<Identity>
+  <Identity>
     <GenericName>Civic Center</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Build in own or neutral territory. Acquire large tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
@@ -28,7 +28,7 @@
         <Spread>2</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="0"/>
+        <LaunchPoint y="0" />
       </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
       <RangeOverlay>
@@ -41,18 +41,18 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush  op="add">2.5</Crush>
+        <Crush op="add">2.5</Crush>
         <Hack op="add">5</Hack>
         <Pierce op="add">5</Pierce>
       </Damage>
-    <ApplyStatus>
+      <ApplyStatus>
         <Burning>
           <Duration>0.2</Duration>
           <BlockChance>0.5</BlockChance>
         </Burning>
       </ApplyStatus>
     </Entity>
-  </Resistance> 
+  </Resistance>
   <BuildRestrictions>
     <Territory>own neutral</Territory>
     <Category>CivilCentre</Category>
@@ -91,7 +91,7 @@
     <Max>3000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
-   <Researcher>
+  <Researcher>
     <Technologies datatype="tokens">
       phase_town_{civ}
       phase_city_{civ}
@@ -109,15 +109,15 @@
       spy_counter
     </Technologies>
   </Researcher>
-    <Population>
+  <Population>
     <Bonus>20</Bonus>
   </Population>
-  <ProductionQueue/>
+  <ProductionQueue />
   <ResourceDropsite>
     <Types>food wood stone metal</Types>
     <Sharable>true</Sharable>
   </ResourceDropsite>
-   <TerritoryInfluence>
+  <TerritoryInfluence>
     <Root>true</Root>
     <Radius>120</Radius>
     <Weight>10000</Weight>
@@ -137,10 +137,10 @@
     <Icon size="16.0">civil_centre.png</Icon>
   </Minimap>
   <Obstruction>
-    <Static depth="30.0" width="30.0"/>
+    <Static depth="30.0" width="30.0" />
   </Obstruction>
   <Footprint>
-    <Square depth="32.0" width="32.0"/>
+    <Square depth="32.0" width="32.0" />
     <Height>8.0</Height>
   </Footprint>
   <Sound>

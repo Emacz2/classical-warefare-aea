@@ -40,4 +40,7 @@
     <WalkSpeed op="mul">0.94</WalkSpeed>
     <RunMultiplier op="mul">1.5</RunMultiplier>
   </UnitMotion>
+  <Vision>
+    <Range>75</Range>
+  </Vision>
 </Entity>

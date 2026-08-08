@@ -17,4 +17,7 @@
       special/formations/skirmish
     </Formations>
   </UnitAI>
+  <Vision>
+    <Range>55</Range>
+  </Vision>
 </Entity>

@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_defensive_tower">
   <Attack>
     <Ranged>
+      <MaxRange>75</MaxRange>
       <Origin>
         <X>0</X>
         <Y>9</Y>
@@ -19,7 +20,7 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="9.5" depth="8.5"/>
+    <Square width="9.5" depth="8.5" />
     <Height>9.0</Height>
   </Footprint>
   <GarrisonHolder>
@@ -31,7 +32,7 @@
   <Identity>
     <GenericName>Sentry Tower</GenericName>
     <SelectionGroupName>template_structure_defensive_tower_sentry</SelectionGroupName>
-    <Tooltip>Garrison Infantry for additional arrows. Needs the “Murder Holes” technology to protect its foot.</Tooltip>
+    <Tooltip>Garrison Infantry for additional arrows. Can be upgraded to a Stone Tower in Town Phase. Needs the “Murder Holes” technology to protect its foot.</Tooltip>
     <VisibleClasses datatype="tokens">SentryTower</VisibleClasses>
     <Icon>structures/sentry_tower.png</Icon>
     <Requirements>
@@ -42,9 +43,9 @@
     <wood>20</wood>
   </Loot>
   <Obstruction>
-    <Static width="9.0" depth="7.5"/>
+    <Static width="9.0" depth="7.5" />
   </Obstruction>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Researcher>
     <Technologies datatype="tokens">
       tower_watch
@@ -60,7 +61,7 @@
   <Upgrade>
     <Tower>
       <Entity>structures/{civ}/defense_tower</Entity>
-      <Tooltip>Reinforce with stone and upgrade to a defense tower.</Tooltip>
+      <Tooltip>Reinforce with stone and upgrade to a Stone Tower.</Tooltip>
       <Cost>
         <wood>50</wood>
         <stone>100</stone>
@@ -72,4 +73,7 @@
       </Requirements>
     </Tower>
   </Upgrade>
+  <Vision>
+    <Range>90</Range>
+  </Vision>
 </Entity>

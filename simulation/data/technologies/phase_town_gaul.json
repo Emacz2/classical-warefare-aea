@@ -1,46 +1,87 @@
 {
-	"genericName": "Town Phase",
-	"description": "Advances from a small village to a bustling town, ready to expand rapidly.",
-	"cost": {
-		"food": 500,
-		"wood": 500,
-		"stone": 150,
-		"metal": 100
-	},
-
-	"requirements": {
-		"entity": {
-			"class": "Village",
-			"number": 8
-		}
-	},
-
-	"requirementsTooltip": "Requires eight Village Structures.",
-	"supersedes": "phase_village",
-	"replaces": ["phase_town"],
-	"icon": "town_phase.png",
-	"researchTime": 40,
-"tooltip": "Advance to Town Phase, unlocking new entities and technologies. Structures gain +0.5 capture regeneration rate while garrisoned. The Tribal Center gains +10% territory influence. Citizen Infantry deal 5% more melee and ranged damage. Druids gain +5 vision.",
-	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 0.5, "affects": "Structure" },
-		{ "value": "GarrisonHolder/Max", "add": 5, "affects": "TribalCenter" },
-		{ "value": "Population/Bonus", "add": 5, "affects": "TribalCenter" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 10, "affects": "TribalCenter"  },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "TribalCenter"  },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "TribalCenter"  },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "TribalCenter"  },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.1, "affects": "TribalCenter"  },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Vision/Range", "add": 5, "affects": "Healer" }
-		
-		
-		
-
-	],
-	"soundComplete": "interface/alarm/alarm_phase.xml"
+    "genericName": "Town Phase",
+    "description": "Advances from a small village to a bustling town, ready to expand rapidly.",
+    "cost": {
+        "food": 300,
+        "wood": 300,
+        "stone": 100,
+        "metal": 50
+    },
+    "requirements": {
+        "entity": {
+            "class": "Village",
+            "number": 8
+        }
+    },
+    "requirementsTooltip": "Requires eight Village Structures.",
+    "supersedes": "phase_village",
+    "replaces": [
+        "phase_town"
+    ],
+    "icon": "town_phase.png",
+    "researchTime": 30,
+    "tooltip": "Advance to Town Phase, unlocking new entities and technologies. Tribal Centers gain +10% territory influence radius, +5 garrison capacity, +5 population capacity, +5 attack range. Garrisoned Structures gain +0.5 Capture Point regeneration. Citizen Infantry deal 5% more melee and ranged damage. Druids gain +5 vision.",
+    "modifications": [
+        {
+            "value": "Capturable/GarrisonRegenRate",
+            "add": 0.5,
+            "affects": "Structure"
+        },
+        {
+            "value": "GarrisonHolder/Max",
+            "add": 5,
+            "affects": "TribalCenter"
+        },
+        {
+            "value": "Population/Bonus",
+            "add": 5,
+            "affects": "TribalCenter"
+        },
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 5,
+            "affects": "TribalCenter"
+        },
+        {
+            "value": "TerritoryInfluence/Radius",
+            "multiply": 1.1,
+            "affects": "TribalCenter"
+        },
+        {
+            "value": "Attack/Melee/Damage/Hack",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Melee/Damage/Pierce",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Melee/Damage/Crush",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Ranged/Damage/Crush",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Ranged/Damage/Hack",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Ranged/Damage/Pierce",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Vision/Range",
+            "add": 5,
+            "affects": "Healer"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_phase.xml"
 }
