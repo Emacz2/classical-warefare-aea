@@ -31,7 +31,7 @@
         "phase_town"
     ],
     "icon": "town_phase.png",
-    "researchTime": 40,
+    "researchTime": 30,
     "tooltip": "Advance to Town Phase, unlocking new entities and technologies. Civic Centers gain +25% territory influence radius, +5 garrison capacity, +5 population capacity, +5 attack range. Garrisoned Structures gain +0.5 Capture Point regeneration.",
     "modifications": [
         {

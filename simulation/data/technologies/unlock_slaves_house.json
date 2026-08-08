@@ -18,7 +18,7 @@
 		]
 	},
 	"icon": "wives_festival.png",
-	"researchTime": 60,
+	"researchTime": 40,
 	"tooltip": "Unlock the ability to train slaves from houses.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

@@ -38,6 +38,9 @@
       <MinDistance>80</MinDistance>
     </Distance>
   </BuildRestrictions>
+  <TerritoryDecay>
+    <Territory>enemy</Territory>
+  </TerritoryDecay>
   <GarrisonHolder>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
