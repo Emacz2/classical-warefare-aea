@@ -52,9 +52,6 @@
     <Max>1000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_2x2</SpawnEntityOnDeath>
   </Health>
-  <Capturable>
-    <GarrisonRegenRate>2</GarrisonRegenRate>
-  </Capturable>
   <Identity>
     <GenericName>Tower</GenericName>
     <VisibleClasses datatype="tokens">Tower TowerChain</VisibleClasses>

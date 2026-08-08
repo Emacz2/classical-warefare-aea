@@ -57,8 +57,9 @@
   </BuildingAI>
   <Capturable>
     <CapturePoints>4500</CapturePoints>
-    <RegenRate>20.0</RegenRate>
-  </Capturable>
+    <RegenRate>10</RegenRate>
+    <GarrisonRegenRate>1.75</GarrisonRegenRate>
+</Capturable>
   <Cost>
     <BuildTime>510</BuildTime>
     <Resources>
@@ -72,14 +73,14 @@
     <Height>8.0</Height>
   </Footprint>
   <GarrisonHolder>
-    <Max>35</Max>
+    <Max>40</Max>
     <EjectHealth>0.1</EjectHealth>
     <List datatype="tokens">Support Serf Infantry Cavalry Siege Elephant</List>
     <LoadingRange>5</LoadingRange>
     <BuffHeal>1</BuffHeal>
   </GarrisonHolder>
   <Population>
-    <Bonus>35</Bonus>
+    <Bonus>40</Bonus>
   </Population>
   <Health>
     <Max>4500</Max>

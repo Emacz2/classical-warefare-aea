@@ -28,7 +28,7 @@
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_4x6</SpawnEntityOnDeath>
   </Health>
     <Capturable>
-    <RegenRate>15.0</RegenRate>
+    <RegenRate>5.0</RegenRate>
   </Capturable>
   <Identity>
     <GenericName>Temple</GenericName>

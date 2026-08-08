@@ -24,11 +24,11 @@
     <Height>5.0</Height>
   </Footprint>
   <GarrisonHolder>
-    <Max>3</Max>
+    <Max>5</Max>
     <BuffHeal>0</BuffHeal>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Support Serf !Elephant</List>
+    <List datatype="tokens">Civilian</List>
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>

@@ -4,9 +4,9 @@
     <Melee>
       <AttackName>Ram</AttackName>
       <Damage>
-        <Crush>30</Crush>
+        <Crush>25</Crush>
       </Damage>
-      <MaxRange>6.5</MaxRange>
+      <MaxRange>5.5</MaxRange>
       <PrepareTime>1000</PrepareTime>
       <RepeatTime>1500</RepeatTime>
       <Bonuses>

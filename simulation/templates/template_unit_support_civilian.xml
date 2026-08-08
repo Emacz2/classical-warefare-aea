@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="builder|template_unit_support">
   <Attack>
+    <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture>0.5</Capture>
+      <MaxRange>1</MaxRange>
+      <RepeatTime>1000</RepeatTime>
+      <RestrictedClasses datatype="tokens">Field Palisade Wall</RestrictedClasses>
+    </Capture>
     <Melee>
       <AttackName>Dagger</AttackName>
       <Damage>
