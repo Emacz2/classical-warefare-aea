@@ -55,7 +55,7 @@
       units/{civ}/champion_infantry_crossbowman_academy
       units/{civ}/champion_cavalry_spearman_academy
       units/{civ}/champion_cavalry_archer_academy
-      units/{civ}/champion_chariot_academy
+      units/{civ}/champion_chariot_academy2
     </Entities>
   </Trainer>
   <Sound>

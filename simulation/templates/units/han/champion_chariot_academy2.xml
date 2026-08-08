@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="han|chariot|cav_heavy|template_unit_champion_cavalry_archer_chariot">
+  <Attack>
+    <Ranged>
+      <Damage>
+        <Pierce>10</Pierce>
+      </Damage>
+    </Ranged>
+  </Attack>
+  <Footprint replace="">
+    <Square depth="10.0" width="10.0"/>
+    <Height>5.0</Height>
+  </Footprint>
+  <Health>
+    <Max>250</Max>
+  </Health>
+  <Identity>
+    <Civ>han</Civ>
+    <GenericName>Imperial Guard Chariot</GenericName>
+    <SpecificName>Zhànchē</SpecificName>
+    <Icon>units/han/chariot.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">-unlock_champion_chariots phase_empi</Techs>
+    </Requirements>
+  </Identity>
+  <TrainingRestrictions>
+    <Category>HanChariot</Category>
+  </TrainingRestrictions>
+  <VisualActor>
+    <Actor>units/han/chariot_archer_m.xml</Actor>
+  </VisualActor>
+</Entity>
