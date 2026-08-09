@@ -19,7 +19,7 @@
   </Diplomacy>
   <EntityLimits>
     <Limits>
-      <Animal>20</Animal>
+      <Animal>50</Animal>
       <Champion_Perioikoi>10</Champion_Perioikoi>
       <CivilCentre>1</CivilCentre>
       <Agora>1</Agora>
