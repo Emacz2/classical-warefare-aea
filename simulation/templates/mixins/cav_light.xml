@@ -12,12 +12,12 @@
  <Identity>
     <GenericName>Light Cavalry</GenericName>
      <VisibleClasses datatype="tokens">Light Cavalry</VisibleClasses>
-    <Tooltip>+1.5 of each resistance and 65% faster than standard unit</Tooltip>
+    <Tooltip>+1.5 of each resistance and 70% walk speed faster than standard unit</Tooltip>
     <History>.</History>
   </Identity>
    <UnitMotion>
-    <WalkSpeed op="mul">1.65</WalkSpeed>
-    <RunMultiplier op="mul">1.9</RunMultiplier>
+    <WalkSpeed op="mul">1.7</WalkSpeed>
+    <RunMultiplier op="mul">1.85</RunMultiplier>
     <Acceleration op="mul">1.2</Acceleration>
   </UnitMotion>
    <Position>
