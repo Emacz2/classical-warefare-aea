@@ -37,7 +37,6 @@
   <TerritoryInfluence disable=""/>
   <Trainer>
     <Entities datatype="tokens">
-      -units/{civ}/cavalry_javelineer_merc_a
       units/{civ}/cavalry_javelineer_merc_e
       units/{civ}/cavalry_swordsman_merc
     </Entities>
