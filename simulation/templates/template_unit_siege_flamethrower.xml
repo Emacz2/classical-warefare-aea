@@ -40,7 +40,7 @@
     </Damage>
   </DeathDamage>
   <Health>
-    <Max>300</Max>
+    <Max>250</Max>
   </Health>
   <Identity>
     <GenericName>Flamethrower</GenericName>

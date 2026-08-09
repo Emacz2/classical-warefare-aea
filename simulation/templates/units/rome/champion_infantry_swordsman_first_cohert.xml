@@ -5,7 +5,6 @@
       <lightdamage>0.85</lightdamage>
       <mediumdamage>0.45</mediumdamage>
     </DamageVariants>
-    <Max op="add">-25</Max>
   </Health>
   <Cost>
     <BuildTime op="mul">0.9</BuildTime>

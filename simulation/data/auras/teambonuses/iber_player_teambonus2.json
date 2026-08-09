@@ -1,14 +1,18 @@
 {
 	"type": "global",
-	"affects": ["Cavalry"],
-	"affectedPlayers": ["MutualAlly"],
-	"modifications": [
-		{ "value": "Health/Max", "add": 25, "affects": "!Hero"},
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05},
-		{ "value": "Cost/BuildTime", "multiply": 1.05 }
-	
+	"affects": [
+		"Cavalry !Camel !Chariot"
 	],
-	"auraName": "Superior horses",
+	"affectedPlayers": [
+		"MutualAlly"
+	],
+	"modifications": [
+		{
+			"value": "UnitMotion/WalkSpeed",
+			"multiply": 1.05
+		}
+	],
+	"auraName": "Iberian Horse Breeding",
 	"showDescription": 1,
-	"auraDescription": "Cavalry +25 more health and 5% faster walk speed but 5% longer train time."
+	"auraDescription": "Allied horse cavalry move 5% faster."
 }

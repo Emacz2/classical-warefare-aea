@@ -9,10 +9,10 @@
     </Resources>
   </Cost>
   <Health>
-    <Max>600</Max>
+    <Max>500</Max>
   </Health>
     <Loot>
-    <xp>600</xp>
+    <xp>250</xp>
     <metal>50</metal>
   </Loot>
   <Identity>

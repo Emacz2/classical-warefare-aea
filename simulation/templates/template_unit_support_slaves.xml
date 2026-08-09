@@ -28,22 +28,22 @@
     <Population>0</Population>
     <BuildTime>10</BuildTime>
     <Resources>
-      <food>40</food>
+      <food>50</food>
       <metal>10</metal>
     </Resources>
   </Cost>
   <Health>
-    <Max>40</Max>
+    <Max>75</Max>
   </Health>
+    <Loot>
+    <xp>25</xp>
+  </Loot>
   <Identity>
     <GenericName>Slave</GenericName>
     <SelectionGroupName>template_unit_support_slave</SelectionGroupName>
     <Tooltip>Same gather speed as civilians but zero pop</Tooltip>
     <VisibleClasses datatype="tokens">Worker Slave -Citizen</VisibleClasses>
   </Identity>
-  <Loot>
-    <xp>10</xp>
-  </Loot>
   <TreasureCollector disable=""/>
   <Sound>
     <SoundGroups>

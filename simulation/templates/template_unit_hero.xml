@@ -30,9 +30,6 @@
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
-  <Loot>
-    <xp>400</xp>
-  </Loot>
   <Minimap>
     <Type>hero</Type>
   </Minimap>

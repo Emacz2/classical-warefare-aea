@@ -10,6 +10,12 @@
       <metal>150</metal>
     </Resources>
   </Cost>
+     <Health>
+    <Max>300</Max>
+  </Health>
+    <Loot>
+    <xp>150</xp>
+  </Loot>
   <Identity>
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
     <GenericName>Hero</GenericName>

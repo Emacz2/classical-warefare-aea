@@ -21,7 +21,7 @@
     </Resources>
   </Cost>
   <Health>
-    <Max>150</Max>
+    <Max>125</Max>
   </Health>
   <Identity>
     <GenericName>Support Trumpeter</GenericName>

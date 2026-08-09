@@ -16,14 +16,6 @@
       </Damage>
     </Melee>
   </Attack>
- <Health>
-    <Max op="add">-25</Max>
-  </Health>
-    <Loot>
-    <xp>100</xp>
-  </Loot>
- <UnitMotion>
- </UnitMotion>
   <Identity>
     <Civ>spart</Civ>
     <Lang>greek</Lang>

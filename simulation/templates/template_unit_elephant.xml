@@ -10,8 +10,11 @@
     <Classes datatype="tokens">Human CitizenSoldier</Classes>
     <VisibleClasses datatype="tokens">Citizen Soldier Elephant</VisibleClasses>
   </Identity>
+   <Health>
+    <Max>250</Max>
+  </Health>
   <Loot>
-    <xp>200</xp>
+    <xp>80</xp>
   </Loot>
   <Position>
     <TurnRate>4</TurnRate>
@@ -19,9 +22,6 @@
   <Promotion>
     <RequiredXp>150</RequiredXp>
   </Promotion>
-  <Health>
-    <Max>200</Max>
-  </Health>
   <Resistance>
     <Entity>
       <Damage>

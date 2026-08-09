@@ -20,14 +20,14 @@
   <Identity>
     <Rank>Elite</Rank>
     <GenericName>Numidian Light Javelineer Cavalry</GenericName>
-    <Tooltip>The Numidian cavalry's horses, were small compared with other horses of the era, and were well adapted for faster movement over long distances; 15% faster walk, 10% faster run and +10 accleration</Tooltip>
+    <Tooltip>The Numidian cavalry's horses, were small compared with other horses of the era, and were well adapted for faster movement over long distances; 10% faster movement (Walk, Run and Accleration)</Tooltip>
     <Icon>units/cart/champion_cavalry.png</Icon>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
     <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
+    <WalkSpeed op="mul">1.10</WalkSpeed>
     <RunMultiplier op="mul">1.1</RunMultiplier>
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>

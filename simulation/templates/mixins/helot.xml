@@ -33,7 +33,7 @@
     </Resources>
   </Cost>
   <Health>
-    <Max>60</Max>
+    <Max>75</Max>
   </Health>
   <ResourceGatherer>
     <MaxDistance>2.0</MaxDistance>

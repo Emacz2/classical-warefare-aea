@@ -6,9 +6,6 @@
       <wood op="add">-25</wood>
     </Resources>
   </Cost>
-    <Health>
-    <Max>200</Max>
-  </Health>
 <Attack>
   <Melee>
   <Damage>

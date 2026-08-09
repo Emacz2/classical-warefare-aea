@@ -17,9 +17,6 @@
       </ApplyStatus>
     </Ranged>
   </Attack>
-  <Health>
-    <Max>180</Max>
-  </Health>
   <Identity>
     <Civ>pers</Civ>
     <Lang>persian</Lang>

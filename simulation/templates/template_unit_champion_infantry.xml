@@ -11,6 +11,14 @@
       <metal>100</metal>
     </Resources>
   </Cost>
+   <Health>
+    <Max>175</Max>
+  </Health>
+      <Loot>
+    <xp>60</xp>
+    <metal>10</metal>
+    <wood>10</wood>
+  </Loot>
   <Identity>
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
     <GenericName>Champion Infantry</GenericName>

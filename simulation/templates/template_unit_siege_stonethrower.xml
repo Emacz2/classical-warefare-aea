@@ -53,7 +53,7 @@
     <Height>4.5</Height>
   </Footprint>
   <Health>
-    <Max>500</Max>
+    <Max>350</Max>
   </Health>
   <Resistance>
     <Entity>

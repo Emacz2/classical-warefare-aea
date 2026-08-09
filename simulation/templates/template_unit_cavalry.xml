@@ -25,6 +25,14 @@
       <food>125</food>
     </Resources>
   </Cost>
+  <Health>
+    <Max>175</Max>
+  </Health>
+    <Loot>
+    <xp>60</xp>
+    <metal>5</metal>
+    <wood>5</wood>
+  </Loot>
   <Footprint replace="">
     <Square width="3.0" depth="6.0"/>
     <Height>6.0</Height>
@@ -35,9 +43,6 @@
     <Classes datatype="tokens">Human FastMoving CitizenSoldier</Classes>
     <VisibleClasses datatype="tokens">Citizen Soldier Cavalry</VisibleClasses>
   </Identity>
-  <Position>
-    <TurnRate>10</TurnRate>
-  </Position>
   <Promotion>
     <RequiredXp>150</RequiredXp>
   </Promotion>

@@ -14,15 +14,12 @@
    <Resistance>
     <Entity>
       <Damage>
-        <Hack op="add">5</Hack>
-        <Pierce op="add">5</Pierce>
-        <Crush op="add">5</Crush>
+        <Hack op="add">1.5</Hack>
+        <Pierce op="add">1.5</Pierce>
+        <Crush op="add">1.5</Crush>
       </Damage>
     </Entity>
   </Resistance>
-  <Health>
-    <Max>1000</Max>
-  </Health>
   <VisualActor>
     <Actor>units/spartans/hero_infantry_spearman_agis.xml</Actor>
   </VisualActor>

@@ -11,15 +11,16 @@
     <Height>8.0</Height>
   </Footprint>
   <Health>
-    <Max>200</Max>
+    <Max>250</Max>
+  <Loot>
+    <xp>80</xp>
+    <food>25</food>
+  </Loot>
   </Health>
   <Identity>
     <GenericName>Worker Elephant</GenericName>
     <VisibleClasses datatype="tokens">Elephant</VisibleClasses>
   </Identity>
-  <Loot>
-    <food>10</food>
-  </Loot>
   <Position>
     <Anchor>pitch</Anchor>
     <TurnRate>4</TurnRate>

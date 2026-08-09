@@ -1,70 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="builder|template_unit_support">
-  <Attack>
-    <Melee>
-      <AttackName>Dagger</AttackName>
-      <Damage>
-        <Hack>1.5</Hack>
-      </Damage>
-      <MaxRange>2</MaxRange>
-      <PrepareTime>500</PrepareTime>
-      <RepeatTime>1000</RepeatTime>
-    </Melee>
-    <Slaughter>
-      <AttackName>Slaughter</AttackName>
-      <Damage>
-        <Hack>1000</Hack>
-      </Damage>
-      <MaxRange>2</MaxRange>
-      <PrepareTime>900</PrepareTime>
-      <RepeatTime>1000</RepeatTime>
-      <RestrictedClasses datatype="tokens">!Domestic</RestrictedClasses>
-    </Slaughter>
-  </Attack>
-  <Cost>
-    <BuildTime>8</BuildTime>
-    <Resources>
-      <food>40</food>
-    </Resources>
-  </Cost>
-  <Health>
-    <Max>40</Max>
-  </Health>
+<Entity parent="builder|template_unit_support_civilian">
   <Identity>
     <Phenotype>female</Phenotype>
     <GenericName>Female Citizen</GenericName>
     <SelectionGroupName>template_unit_support_female_citizen</SelectionGroupName>
     <Classes datatype="tokens">FemaleCitizen</Classes>
-    <VisibleClasses datatype="tokens">Civilian Worker</VisibleClasses>
   </Identity>
-  <Loot>
-    <xp>40</xp>
-    <food>10</food>
-    <metal>10</metal>
-    <stone>10</stone>
-    <wood>10</wood>
-  </Loot>
-  <ResourceGatherer>
-    <MaxDistance>2.0</MaxDistance>
-    <BaseSpeed>1.0</BaseSpeed>
-    <Rates>
-      <food.fruit>1</food.fruit>
-      <food.grain>0.5</food.grain>
-      <food.meat>2</food.meat>
-      <wood.tree>0.5</wood.tree>
-      <wood.ruins>5</wood.ruins>
-      <stone.rock>0.2</stone.rock>
-      <stone.ruins>2</stone.ruins>
-      <metal.ore>0.2</metal.ore>
-      <metal.ruins>2</metal.ruins>
-    </Rates>
-    <Capacities>
-      <food>15</food>
-      <wood>15</wood>
-      <stone>10</stone>
-      <metal>10</metal>
-    </Capacities>
-  </ResourceGatherer>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword.xml</attack_melee>

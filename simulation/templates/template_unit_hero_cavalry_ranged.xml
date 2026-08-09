@@ -4,12 +4,6 @@
     <VisibleClasses datatype="tokens">Cavalry</VisibleClasses>
     <GenericName>Champion Ranged Cavalry</GenericName>
   </Identity>
-   <Health>
-    <Max>800</Max>
-  </Health>
-    <Loot>
-    <xp>400</xp>
-  </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>

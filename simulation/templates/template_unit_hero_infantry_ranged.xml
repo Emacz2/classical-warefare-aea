@@ -12,12 +12,6 @@
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
     <GenericName>Hero Ranged Infantry</GenericName>
   </Identity>
-  <Health>
-    <Max>500</Max>
-  </Health>
-      <Loot>
-    <xp>500</xp>
-  </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>

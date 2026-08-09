@@ -21,8 +21,12 @@
     <HealableClasses datatype="tokens">Human</HealableClasses>
   </Heal>
   <Health>
-    <Max>200</Max>
+    <Max>150</Max>
   </Health>
+  <Loot>
+    <xp>50</xp>
+    <metal>10</metal>
+  </Loot>
   <Identity>
     <GenericName>Champion Healer</GenericName>
 	<VisibleClasses datatype="tokens">Healer -Soldier</VisibleClasses>
@@ -30,12 +34,6 @@
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
-  <Loot>
-    <xp>150</xp>
-    <food>10</food>
-    <wood>5</wood>
-    <metal>10</metal>
-  </Loot>
   <Sound>
     <SoundGroups>
       <order_heal>voice/{lang}/civ/civ_{phenotype}_heal.xml</order_heal>

@@ -12,7 +12,6 @@
     </Entities>
   </Builder>
   <Health>
-    <Max>175</Max>
     <IdleRegenRate>0.5</IdleRegenRate>
   </Health>
    <Identity>

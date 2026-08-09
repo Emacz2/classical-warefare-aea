@@ -18,9 +18,7 @@
     </Melee>
   </Attack>
  <Health>
-    <Max op="add">75</Max>
     <RegenRate>-0.25</RegenRate>
-    <Unhealable>true</Unhealable>
   </Health>
   <Upgrade>
     <Berserker_Rage>

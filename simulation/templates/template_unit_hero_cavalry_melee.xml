@@ -4,12 +4,6 @@
     <VisibleClasses datatype="tokens">Cavalry</VisibleClasses>
     <GenericName>Champion Melee Cavalry</GenericName>
   </Identity>
-   <Health>
-    <Max>900</Max>
-  </Health>
-    <Loot>
-    <xp>450</xp>
-  </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
