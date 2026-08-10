@@ -100,3 +100,104 @@ Formation.prototype.AreSomeMembersAttacking = function()
 	return false;
 };
 
+const roundCount = 20;
+const attackType = "Ranged";
+
+// Building shoot random target
+BuildingAI.prototype.FireArrows = function()
+{
+	if (!this.targetUnits.length && !this.unitAITarget)
+	{
+		if (!this.timer)
+			return;
+
+		const cmpTimer = Engine.QueryInterface(SYSTEM_ENTITY, IID_Timer);
+		cmpTimer.CancelTimer(this.timer);
+		this.timer = undefined;
+		return;
+	}
+
+	const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
+	if (!cmpAttack)
+		return;
+
+	if (this.currentRound > roundCount - 1)
+		this.currentRound = 0;
+
+	if (this.currentRound == 0)
+		this.arrowsLeft = this.GetArrowCount();
+
+	let arrowsToFire;
+	if (this.currentRound == roundCount - 1)
+		arrowsToFire = this.arrowsLeft;
+	else
+		arrowsToFire = Math.min(
+			// shooting arrows in the first quarter of rounds results in a burst.
+			this.GetArrowCount() / (roundCount / 4),
+			this.arrowsLeft
+		);
+
+	if (arrowsToFire <= 0)
+	{
+		++this.currentRound;
+		return;
+	}
+
+	// Add targets to a list.
+	let targets = [];
+	const addTarget = function(target)
+	{
+		const pref = (cmpAttack.GetPreference(target) ?? 49);
+		targets.push({ "entityId": target, "preference": pref });
+	};
+
+	// Add the UnitAI target separately, as the UnitMotion and RangeManager implementations differ.
+	if (this.unitAITarget && this.targetUnits.indexOf(this.unitAITarget) == -1)
+		addTarget(this.unitAITarget);
+
+	else if (this.unitAITarget && this.targetUnits.indexOf(this.unitAITarget) != -1)
+		this.focusTargets = [{ "entityId": this.unitAITarget }];
+
+	if (!this.focusTargets.length)
+	{
+		for (const target of this.targetUnits)
+			addTarget(target);
+		// Sort targets by preference and then randomness.
+		targets = shuffleArray(targets);
+		targets.sort((a, b) => a.preference - b.preference);
+	}
+	else
+		targets = this.focusTargets;
+
+	// The obstruction manager performs approximate range checks.
+	// so we need to verify them here.
+	// TODO: perhaps an optional 'precise' mode to range queries would be more performant.
+	const cmpObstructionManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ObstructionManager);
+	const range = cmpAttack.GetRange(attackType);
+	const yOrigin = cmpAttack.GetAttackYOrigin(attackType);
+
+	let firedArrows = 0;
+	let targetIndex = 0;
+	while (firedArrows < arrowsToFire && targetIndex < targets.length)
+	{
+
+		const selectedTarget = targets[targetIndex].entityId;
+		if (this.CheckTargetVisible(selectedTarget) && cmpObstructionManager.IsInTargetParabolicRange(
+			this.entity,
+			selectedTarget,
+			range.min,
+			range.max,
+			yOrigin,
+			false))
+		{
+			cmpAttack.PerformAttack(attackType, selectedTarget);
+			PlaySound("attack_" + attackType.toLowerCase(), this.entity);
+			++firedArrows;
+		}
+		else
+			++targetIndex;// Could not attack target, try a different target.
+	}
+	targets.splice(0, targetIndex);
+	this.arrowsLeft -= firedArrows;
+	++this.currentRound;
+};
