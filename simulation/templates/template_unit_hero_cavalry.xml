@@ -44,7 +44,7 @@
     <HeightOffset>7.0</HeightOffset>
   </StatusBars>
     <UnitMotion>
-    <WalkSpeed>16</WalkSpeed>
+    <WalkSpeed>17</WalkSpeed>
     <RunMultiplier op="mul">1.8</RunMultiplier>
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
