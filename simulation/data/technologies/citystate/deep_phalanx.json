@@ -8,7 +8,7 @@
 			{ "civ": "theb" }
 		]
 	},
-	"requirementsTooltip": "Unlocked in Town Phase.",
+	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 60,
 	"tooltip": "Hoplites gain +1 crush, +0.5 Hack resistance but lose 3% walk speed",
