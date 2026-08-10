@@ -32,7 +32,7 @@
     </Resources>
   </Cost>
     <Health>
-    <Max>125</Max>
+    <Max>100</Max>
   </Health>
     <Loot>
     <xp>40</xp>
@@ -107,6 +107,6 @@
     </SoundGroups>
   </Sound>
   <Vision>
-    <Range>50</Range>
+    <Range>60</Range>
   </Vision>
 </Entity>

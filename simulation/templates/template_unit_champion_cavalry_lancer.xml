@@ -4,8 +4,8 @@
     <Melee>
       <AttackName>Lance</AttackName>
       <Damage>
-        <Hack>11</Hack>
-        <Pierce>26</Pierce>
+        <Hack>11.5</Hack>
+        <Pierce>27.3</Pierce>
       </Damage>
        <MaxRange>6.5</MaxRange>
       <MinRange>1</MinRange>

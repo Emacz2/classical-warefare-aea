@@ -21,7 +21,7 @@
     <HealableClasses datatype="tokens">Human</HealableClasses>
   </Heal>
   <Health>
-    <Max>150</Max>
+    <Max>125</Max>
   </Health>
   <Loot>
     <xp>50</xp>

@@ -12,7 +12,7 @@
     </Resources>
   </Cost>
    <Health>
-    <Max>175</Max>
+    <Max>150</Max>
   </Health>
       <Loot>
     <xp>60</xp>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">0.5</Hack>
+        <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <Vision>
+    <Range op="add">-5</Range>
+  </Vision>
+  <Identity>
+    <GenericName>Open Helmet</GenericName>
+    <Tooltip>+0.5 Hack/Pierce resistance but -5 vision.</Tooltip>
+    <History>Open-faced helmets provide modest head protection with only a small reduction in peripheral awareness.</History>
+  </Identity>
+</Entity>

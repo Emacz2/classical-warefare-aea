@@ -11,9 +11,6 @@
     <Square depth="10.0" width="10.0"/>
     <Height>5.0</Height>
   </Footprint>
-  <Health>
-    <Max>250</Max>
-  </Health>
   <Identity>
     <Civ>han</Civ>
     <GenericName>Imperial Guard Chariot</GenericName>

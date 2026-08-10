@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="builder|template_unit_support">
   <Health>
-    <Max>40</Max>
+    <Max>50</Max>
   </Health>
   <Identity>
     <Phenotype>female</Phenotype>

@@ -5,6 +5,6 @@
     <VisibleClasses datatype="tokens">Melee</VisibleClasses>
   </Identity>
   <Vision>
-    <Range>50</Range>
+    <Range>60</Range>
   </Vision>
 </Entity>
