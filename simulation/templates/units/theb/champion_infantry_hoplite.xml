@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="thebe|hoplite|shield_heavy|armor_heavy|template_unit_champion_infantry_spearman">
+<Entity parent="thebe|hoplite|shield_heavy|armor_heavy|helmet_open|template_unit_champion_infantry_spearman">
 <Auras datatype="tokens"> 
   units/thebes_sb
  </Auras>
  <Attack>
     <Melee>
       <Damage>
-        <Hack op="mul">1.2</Hack>
-        <Pierce op="mul">1.2</Pierce>
+        <Hack op="mul">1.1</Hack>
+        <Pierce op="mul">1.1</Pierce>
       </Damage>
     </Melee>
   </Attack>
@@ -23,10 +23,7 @@
     </Requirements>
     <Icon>units/theb/champion_infantry_hoplite.png</Icon>
     </Identity>
-    <Promotion>
-    <Entity>units/theb/champion_infantry_hoplite_dp</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
+   <Promotion disable=""/>
   <TrainingRestrictions>
   <Category>ThebsSB</Category>
   </TrainingRestrictions>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="spartan|armor_super_heavy|shield_heavy|sword_short|inf_bodyguard|template_unit_champion_infantry_swordsman">
+<Entity parent="spartan|armor_super_heavy|shield_heavy|sword_short|inf_bodyguard|helmet_unobstructed|template_unit_champion_infantry_swordsman">
  <Upgrade>
     <doru>
       <Entity>units/spart/champion_infantry_spear_olympian</Entity>
