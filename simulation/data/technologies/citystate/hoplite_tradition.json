@@ -22,14 +22,15 @@
 	"requirementsTooltip": "Unlocked in village Phase.",
 	"icon": "armor_corinthian.png",
 	"researchTime": 60,
-	"tooltip": "Hoplites 20% less train time and need 20% less experience to promote. Citizens -10% food/wood cost. Champions +25 health",
+	"tooltip": "Hoplites 20% less train time and need 20% less experience to promote. Citizens -5 food/wood cost, champions -10 food/metal cost.",
 	
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 0.8 },
 		{ "value": "Promotion/RequiredXp", "multiply": 0.8 },
 		{ "value": "Cost/Resources/food", "add": -5, "affects": "Citizen !Champion" },
 		{ "value": "Cost/Resources/wood", "add": -5, "affects": "Citizen !Champion" },
-		{ "value": "Health/Max", "add": 25, "affects": "Champion" }
+		{ "value": "Cost/Resources/food", "add": -10, "affects": "Champion" },
+		{ "value": "Cost/Resources/metal", "add": -10, "affects": "Champion" }
 		
 
 	],

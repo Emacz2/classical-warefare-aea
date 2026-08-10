@@ -17,7 +17,7 @@
     <VisibleClasses datatype="tokens">-Soldier Healer Support</VisibleClasses>
   </Identity>
   <Health>
-    <Max>250</Max>
+    <Max>200</Max>
   </Health>
     <Loot>
     <xp>125</xp>

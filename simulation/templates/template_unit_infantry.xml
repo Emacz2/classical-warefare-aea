@@ -32,7 +32,7 @@
     </Resources>
   </Cost>
     <Health>
-    <Max>125</Max>
+    <Max>100</Max>
   </Health>
     <Loot>
     <xp>40</xp>
@@ -65,7 +65,7 @@
     <Rates>
       <food.fruit>0.5</food.fruit>
       <food.grain>0.25</food.grain>
-      <food.meat>3</food.meat>
+      <food.meat>4</food.meat>
       <wood.tree>0.6</wood.tree>
       <wood.ruins>5</wood.ruins>
       <stone.rock>0.3</stone.rock>
@@ -107,6 +107,6 @@
     </SoundGroups>
   </Sound>
   <Vision>
-    <Range>50</Range>
+    <Range>60</Range>
   </Vision>
 </Entity>

@@ -4,8 +4,8 @@
     <Melee>
        <AttackName>Axe</AttackName>
       <Damage>
-        <Crush>6.5</Crush>
-        <Hack>11</Hack>
+        <Crush>6.8</Crush>
+        <Hack>11.6</Hack>
       </Damage>
       <MaxRange>2.5</MaxRange>
       <PrepareTime>500</PrepareTime>

@@ -1,7 +1,7 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_advanced.png",
-	"tooltip": "Advanced rank take 15% longer train time and -20% gathering rates compared to basic rank. Melee units +25 health, +1 capture attack and +5% dmg. Ranged units +10 health and 10% more accurate (crossbowman do not gain accuracy) ", 
+	"tooltip": "Advanced rank take 15% longer train time and -20% gathering rates compared to basic rank. Melee units gain +1 capture attack and +5% dmg. Ranged units are 10% more accurate (crossbowman do not gain accuracy) ", 
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.2 },
 		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.75 },

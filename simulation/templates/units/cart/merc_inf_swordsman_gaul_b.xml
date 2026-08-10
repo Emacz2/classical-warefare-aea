@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_inf|inf_charge|shield_medium|armor_medium|template_unit_infantry_melee_swordsman">
+<Entity parent="merc_inf|inf_charge|shield_medium|armor_medium|helmet_open|template_unit_infantry_melee_swordsman">
   <Attack>
     <Melee>
       <Damage>
@@ -9,7 +9,7 @@
     </Melee>
   </Attack>
   <Vision>
-    <Range op="add">15</Range>
+    <Range op="add">10</Range>
   </Vision>
   <Identity>
     <Civ>cart</Civ>

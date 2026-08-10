@@ -41,7 +41,7 @@
     <Rates>
     <food.fruit>1</food.fruit>
       <food.grain>0.5</food.grain>
-      <food.meat>3</food.meat>
+      <food.meat>4</food.meat>
       <wood.tree>0.8</wood.tree>
       <wood.ruins>5</wood.ruins>
       <stone.rock>0.5</stone.rock>
@@ -67,6 +67,6 @@
   </Resistance>
   <Identity>
     <VisibleClasses datatype="tokens">HelotM -Soldier -Citizen</VisibleClasses>
-    <Tooltip>Helots 25% less range and spread, 10% less dmg than normal citizen infantry, but same gather rates as civilians.  They also only have 60 HPs but cost only 40 food and 10 wood or stone. They don't receive forge techs.</Tooltip>
+    <Tooltip>Helots have 25% less range, wider spread, and 10% less damage than normal citizen infantry, but the same gather rates as civilians. They have 75 HP and cost only 40 food and 10 wood or stone. They do not receive forge techs.</Tooltip>
   </Identity>
 </Entity>
