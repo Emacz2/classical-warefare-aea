@@ -6346,14 +6346,14 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 		const diff = Math.max(0, range.min - dist, dist - range.max);
 		entsByPreferences.push([pref, inRange, diff, ent]);
 	}
-	shuffleArray(entsByPreferences);
-	entsByPreferences.sort((a, b) => {
-		if (a[0] != b[0]) return a[0] - b[0];
-		if (a[1] != b[1]) return b[1] - a[1];
-		return a[2] - b[2];
-	});
 	if (entsByPreferences.length) {
-		attack(entsByPreferences[0][3]);
+		const shuffled = shuffleArray(entsByPreferences);
+		shuffled.sort((a, b) => {
+			if (a[0] != b[0]) return a[0] - b[0];
+			if (a[1] != b[1]) return b[1] - a[1];
+			return a[2] - b[2];
+		});
+		attack(shuffled[0][3]);
 		return true;
 	}
 
@@ -6635,9 +6635,7 @@ UnitAI.prototype.IsPacking = function()
 
 UnitAI.prototype.IsAttackingAsFormation = function()
 {
-	var cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-	return cmpAttack && cmpAttack.CanAttackAsFormation() &&
-		this.GetCurrentState() == "FORMATIONCONTROLLER.COMBAT.ATTACKING";
+	return this.GetCurrentState() == "FORMATIONCONTROLLER.COMBAT.ATTACKING";
 };
 
 UnitAI.prototype.MoveRandomly = function(distance)
@@ -6726,13 +6724,13 @@ UnitAI.prototype.AttackEntitiesByPreference = function(ents)
 		const diff = Math.max(0, range.min - dist, dist - range.max);
 		entsByPreferences.push([pref, inRange, diff, ent]);
 	}
-	shuffleArray(entsByPreferences);
-	entsByPreferences.sort((a, b) => {
+	const shuffled = shuffleArray(entsByPreferences);
+	shuffled.sort((a, b) => {
 		if (a[0] != b[0]) return a[0] - b[0];
 		if (a[1] != b[1]) return b[1] - a[1];
 		return a[2] - b[2];
 	});
-	return this.RespondToTargetedEntities(entsByPreferences.map(x => x[3]));
+	return this.RespondToTargetedEntities(shuffled.map(x => x[3]));
 };
 
 /**
