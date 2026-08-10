@@ -6338,12 +6338,13 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 		if (!attackfilter(ent))
 			continue;
 		const pref = cmpAttack.GetPreference(ent);
+		if (pref === undefined) continue
 		const type = cmpAttack.GetBestAttackAgainst(ent, false);
 		const inRange = this.CheckTargetAttackRange(ent, type);
 		const dist = PositionHelper.DistanceBetweenEntities(this.entity, ent);
 		const range = cmpAttack.GetRange(type);
 		const diff = Math.max(0, range.min - dist, dist - range.max);
-		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, diff, ent]);
+		entsByPreferences.push([pref, inRange, diff, ent]);
 	}
 	shuffleArray(entsByPreferences);
 	entsByPreferences.sort((a, b) => {
@@ -6717,12 +6718,13 @@ UnitAI.prototype.AttackEntitiesByPreference = function(ents)
 		if (!attackfilter(ent))
 			continue;
 		const pref = cmpAttack.GetPreference(ent);
+		if (pref === undefined) continue;
 		const type = cmpAttack.GetBestAttackAgainst(ent, false);
 		const inRange = this.CheckTargetAttackRange(ent, type);
 		const dist = PositionHelper.DistanceBetweenEntities(this.entity, ent);
 		const range = cmpAttack.GetRange(type);
 		const diff = Math.max(0, range.min - dist, dist - range.max);
-		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, diff, ent]);
+		entsByPreferences.push([pref, inRange, diff, ent]);
 	}
 	shuffleArray(entsByPreferences);
 	entsByPreferences.sort((a, b) => {
