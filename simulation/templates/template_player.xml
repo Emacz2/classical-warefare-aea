@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity>
   <AttackDetection>
     <SuppressionTransferRange>80</SuppressionTransferRange>
@@ -19,6 +19,9 @@
   </Diplomacy>
   <EntityLimits>
     <Limits>
+      <Livestock>0</Livestock>
+      <CorralSpecial>2</CorralSpecial>
+      <Corral>1</Corral>
       <Animal>50</Animal>
       <Champion_Perioikoi>10</Champion_Perioikoi>
       <CivilCentre>1</CivilCentre>
@@ -69,6 +72,16 @@
       <Wonder>1</Wonder>
     </Limits>
     <LimitChangers>
+      <Livestock>
+        <Corral>5</Corral>
+        <CorralSpecial>5</CorralSpecial>
+      </Livestock>
+      <CorralSpecial>
+        <Farmstead>1</Farmstead>
+      </CorralSpecial>
+      <Corral>
+        <Farmstead>1</Farmstead>
+      </Corral>
       <EstateSlave>
         <Estate>2</Estate>
       </EstateSlave>
@@ -94,7 +107,7 @@
         <Brasidas>30</Brasidas>
       </Neodamodes>
       <Pheideition>
-      <Stratopedon>1</Stratopedon>
+        <Stratopedon>1</Stratopedon>
       </Pheideition>
       <PerioikoiTown>
         <Syssiton>1</Syssiton>
@@ -178,7 +191,6 @@
     </SoundGroups>
   </Sound>
   <StatisticsTracker>
-    <!-- The summary screen and lobby rankings expect these classes, but additional classes may be added. -->
     <UnitClasses datatype="tokens">
       Cavalry
       Champion
@@ -211,5 +223,5 @@
       Two
     </StructureClasses>
   </StatisticsTracker>
-  <TechnologyManager/>
+  <TechnologyManager />
 </Entity>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_unit_fauna_herd">
   <Identity>
     <Classes datatype="tokens">Domestic</Classes>
@@ -7,4 +7,7 @@
   <Vision>
     <Range>6</Range>
   </Vision>
+  <TrainingRestrictions>
+    <Category>Livestock</Category>
+  </TrainingRestrictions>
 </Entity>
