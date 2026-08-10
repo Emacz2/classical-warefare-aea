@@ -103,6 +103,7 @@ Formation.prototype.AreSomeMembersAttacking = function()
 const roundCount = 20;
 const attackType = "Ranged";
 
+// Building shoot random target
 BuildingAI.prototype.FireArrows = function()
 {
 	if (!this.targetUnits.length && !this.unitAITarget)
