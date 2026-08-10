@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="roman|armor_super_heavy|shield_heavy|sword_short|inf_bodyguard|template_unit_champion_infantry_swordsman">
+<Entity parent="roman|armor_super_heavy|shield_heavy|sword_short|inf_bodyguard|helmet_unobstructed|template_unit_champion_infantry_swordsman">
   <Identity>
     <GenericName>Imperial Guard Infantry</GenericName>
     <SpecificName>Praetorianus</SpecificName>

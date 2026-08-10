@@ -1,12 +1,19 @@
 {
-	"genericName": "Bovine Tradition",
-	"autoResearch": true,
-	"description": "Germanic convoys brought livestock, in particular cattle, and placed great importance on these animals for religious sacrifices.",
-	"requirements": { "civ": "germ" },
-	"icon": "meat.png",
-	"tooltip": "Civilians +100% meat gather rate.",
-	"modifications": [
-		{ "value": "ResourceGatherer/Rates/food.meat", "multiply": 2 }
-	],
-	"affects": [ "Civilian" ]
+  "genericName": "Herds and Hunt",
+  "autoResearch": true,
+  "description": "Germanic communities relied heavily on livestock products, meat, and hunting alongside cultivation.",
+  "requirements": {
+    "civ": "germ"
+  },
+  "icon": "meat.png",
+  "tooltip": "German Workers gather meat 50% faster.",
+  "modifications": [
+    {
+      "value": "ResourceGatherer/Rates/food.meat",
+      "multiply": 1.5
+    }
+  ],
+  "affects": [
+    "German Worker"
+  ]
 }

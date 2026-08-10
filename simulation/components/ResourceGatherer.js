@@ -313,11 +313,18 @@ ResourceGatherer.prototype.GetTargetGatherRate = function(target)
 	// CWA: Domestic livestock is intentionally slower to butcher than wild game.
 	// The standard CWA wild-meat rate is 4.0; multiplying Domestic-class meat by 0.75
 	// keeps chickens and corral livestock at an effective rate of 3.0.
+	// Wild-only civilization bonuses (for example Iberian Hunting Traditions) are
+	// applied through the virtual ResourceGatherer/Rates/food.meat.wild modifier.
 	if (type.generic == "food" && type.specific == "meat")
 	{
 		const cmpIdentity = QueryMiragedInterface(target, IID_Identity);
-		if (cmpIdentity && cmpIdentity.GetClassesList().indexOf("Domestic") != -1)
+		const isDomestic = cmpIdentity && cmpIdentity.GetClassesList().indexOf("Domestic") != -1;
+
+		if (isDomestic)
 			rate *= 0.75;
+		else
+			rate = ApplyValueModificationsToEntity(
+			"ResourceGatherer/Rates/food.meat.wild", rate, this.entity);
 	}
 
 	const diminishingReturns = cmpResourceSupply.GetDiminishingReturns();
