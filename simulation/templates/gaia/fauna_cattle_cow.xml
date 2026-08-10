@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_fauna_herd_domestic_cattle">
   <Cost>
-    <BuildTime>30</BuildTime>
+    <BuildTime>40</BuildTime>
     <Resources>
       <food>100</food>
     </Resources>
