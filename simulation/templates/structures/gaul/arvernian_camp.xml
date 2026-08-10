@@ -21,7 +21,7 @@
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Arvernian Coalition Camp</GenericName>
-    <Tooltip>Train Treveri and Ruthni allies and research learn new technologies from them.</Tooltip>
+    <Tooltip>Recruit Ruteni Archers and Gallic Fanatics, and learn missile-training techniques from the Ruteni.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/arvernian_camp.png</Icon>
   </Identity>
@@ -42,6 +42,11 @@
       units/{civ}/champion_fanatic
     </Entities>
   </Trainer>
+    <Researcher>
+    <Technologies datatype="tokens">
+      tribal/gaul_rutheni_missle
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>structures/mercenaries/camp_blemmye.xml</Actor>
     <FoundationActor>structures/fndn_8x7.xml</FoundationActor>

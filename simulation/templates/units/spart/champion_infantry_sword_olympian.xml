@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="spartan|armor_super_heavy|shield_heavy|sword_short|template_unit_champion_infantry_swordsman">
- <Attack>
-    <Melee>
-      <Damage>
-        <Hack op="mul">1.1</Hack>
-        <Pierce op="mul">1.1</Pierce>
-      </Damage>
-    </Melee>
-  </Attack>
- <Health>
-    <Max>250</Max>
-  </Health>
+<Entity parent="spartan|armor_super_heavy|shield_heavy|sword_short|inf_bodyguard|template_unit_champion_infantry_swordsman">
  <Upgrade>
     <doru>
       <Entity>units/spart/champion_infantry_spear_olympian</Entity>

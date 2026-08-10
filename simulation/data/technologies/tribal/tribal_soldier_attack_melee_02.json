@@ -5,7 +5,7 @@
 		"food": 400,
 		"metal": 300
 	},
-	"supersedes": "tribal_soldier_attack_melee_01",
+	"supersedes": "tribal/tribal_soldier_attack_melee_01",
 	"requirements": {
 		"all": [
 			{ "tech": "phase_city" },

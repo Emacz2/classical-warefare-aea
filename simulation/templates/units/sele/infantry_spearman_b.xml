@@ -12,9 +12,6 @@
     <GenericName>Seleucid Light Spearman</GenericName>
     <SpecificName>Psilós Doryphoros</SpecificName>
     <Icon>units/sele/infantry_spearman_2.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">unlock_spearmen</Techs>
-    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/sele/infantry_spearman_a</Entity>

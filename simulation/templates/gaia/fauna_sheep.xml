@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_fauna_herd_domestic">
   <Cost>
-    <BuildTime>45</BuildTime>
+    <BuildTime>20</BuildTime>
     <Resources>
       <food>50</food>
     </Resources>
@@ -17,18 +17,18 @@
     <GenericName>Sheep</GenericName>
     <SpecificName>Ovis aries</SpecificName>
     <Icon>gaia/fauna_sheep.png</Icon>
-    <Tooltip>Slow trickle +1 food every 4 seconds while alive</Tooltip>
+    <Tooltip>Slow trickle +3 food every 4 seconds while alive</Tooltip>
   </Identity>
   <Loot>
     <xp>2</xp>
   </Loot>
   <ResourceSupply>
-    <Max>80</Max>
+    <Max>75</Max>
     <MaxGatherers>3</MaxGatherers>
   </ResourceSupply>
   <ResourceTrickle>
     <Rates>
-      <food>0.25</food>
+      <food>0.75</food>
     </Rates>
     <Interval>1000</Interval>
   </ResourceTrickle>

@@ -2,8 +2,7 @@
 <Entity parent="allied_inf|shield_light|armor_light|template_unit_infantry_ranged_javelineer">
  <Builder disable=""/>
   <Health>
-    <Max>175</Max>
-    <RegenRate>-0.5</RegenRate>
+    <RegenRate>-0.25</RegenRate>
   </Health>
    <Identity>
     <Rank>Elite</Rank>

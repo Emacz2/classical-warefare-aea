@@ -4,17 +4,19 @@
     <Rank>Advanced</Rank>
   </Identity>
    <Attack>
-    <Ranged>
-      <AttackName>SimpleBow</AttackName>
-      <Damage>
-          <Pierce op="mul">0.55</Pierce>
-      </Damage>
-      <Projectile>
-         <Count>2</Count>
-      </Projectile>
-      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+  <Ranged>
+    <AttackName>ElephantBow</AttackName>
+    <Damage>
+      <Pierce>4.125</Pierce>
+    </Damage>
     </Ranged>
   </Attack>
+  <BuildingAI>
+    <DefaultArrowCount>2</DefaultArrowCount>
+    <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
+    <MaxArrowCount>2</MaxArrowCount>
+    <GarrisonArrowClasses>Infantry Archer</GarrisonArrowClasses>
+  </BuildingAI>
   <Promotion>
     <Entity>units/maur/elephant_archer_e</Entity>
   </Promotion>

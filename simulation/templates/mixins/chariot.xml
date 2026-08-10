@@ -18,6 +18,9 @@
       <metal>200</metal>
     </Resources>
   </Cost>
+   <Health>
+    <Max op="add">25</Max>
+  </Health>
    <Loot>
     <xp>125</xp>
     <metal>15</metal>

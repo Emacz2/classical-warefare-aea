@@ -1,18 +1,18 @@
 {
-	"genericName": "City Phase",
-	"description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology. This is the Cart city phase.",
-	"cost": {
-		"food": 500,
-		"wood": 500,
-		"stone": 750,
-		"metal": 500
-	},
-	 "requirements": {
+    "genericName": "City Phase",
+    "description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology. This is the Cart city phase.",
+    "cost": {
+        "food": 350,
+        "wood": 350,
+        "stone": 600,
+        "metal": 200
+    },
+    "requirements": {
         "all": [
             {
                 "entity": {
                     "class": "Village",
-                    "number": 25
+                    "number": 20
                 }
             },
             {
@@ -22,31 +22,81 @@
                 }
             }
         ]
-	},
-	"requirementsTooltip": "Requires twenty five Village Structures.",
-	"supersedes": "phase_town_brit",
-	"replaces": ["phase_city"],
-	"icon": "city_phase.png",
-	"researchTime": 60,
-	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +0.5 capture points regeneration rate for garrisoned units. Civ Center 40% more garrison capacity, 5 more range +7.5 pierce resistance +5 Hack resistance +2.5 Crush resistance but -3% pierce dmg.  Chariots -20% train time and 3% faster movement. Druids +10 health.",
-	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.15, "affects": "CivCentre !Colony" },
-		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.97, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Cost/BuildTime", "multiply": 0.85, "affects": "Chariot" },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Citizen Infantry" },
-		{ "value": "Vision/Range", "add": 5, "affects": "Healer" }
-	],
-	"soundComplete": "interface/alarm/alarm_phase.xml"
+    },
+    "requirementsTooltip": "Requires twenty five Village Structures.",
+    "supersedes": "phase_town_brit",
+    "replaces": [
+        "phase_city"
+    ],
+    "icon": "city_phase.png",
+    "researchTime": 50,
+    "tooltip": "Advance to City Phase, unlocking new entities and technologies. Tribal Centers gain +15% territory influence radius, +10 garrison capacity, +10 population capacity, +10 attack range. Garrisoned Structures gain +1 capture point regeneration rate. Citizen Infantry deal 5% more melee and ranged damage. Chariots train 20% faster. Healers gain +5 vision.",
+    "modifications": [
+        {
+            "value": "Capturable/GarrisonRegenRate",
+            "add": 1,
+            "affects": "Structure"
+        },
+        {
+            "value": "TerritoryInfluence/Radius",
+            "multiply": 1.15,
+            "affects": "TribalCenter"
+        },
+        {
+            "value": "GarrisonHolder/Max",
+            "add": 10,
+            "affects": "TribalCenter"
+        },
+        {
+            "value": "Population/Bonus",
+            "add": 10,
+            "affects": "TribalCenter"
+        },
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 10,
+            "affects": "TribalCenter"
+        },
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.8,
+            "affects": "Chariot"
+        },
+        {
+            "value": "Attack/Melee/Damage/Hack",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Melee/Damage/Pierce",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Melee/Damage/Crush",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Ranged/Damage/Crush",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Ranged/Damage/Hack",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Attack/Ranged/Damage/Pierce",
+            "multiply": 1.05,
+            "affects": "Citizen Infantry"
+        },
+        {
+            "value": "Vision/Range",
+            "add": 5,
+            "affects": "Healer"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_phase.xml"
 }

@@ -8,9 +8,6 @@
       </Damage>
     </Melee>
   </Attack>
-  <Health>
-    <Max op="add">25</Max>
-  </Health>
   <Identity>
     <GenericName>Champion Swordsman II</GenericName>
     <SpecificName>Principalis</SpecificName>

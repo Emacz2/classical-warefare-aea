@@ -10,7 +10,6 @@
 	"researchTime": 20,
 	"tooltip": "Civilian +10 health, +1 H/P resitance.",
 	"modifications": [
-		{ "value": "Health/Max", "add": 10 },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 }
 		

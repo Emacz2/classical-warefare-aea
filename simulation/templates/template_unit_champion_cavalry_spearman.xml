@@ -20,14 +20,6 @@
       <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
-   <Health>
-    <Max>325</Max>
-  </Health>
-      <Loot>
-    <xp>150</xp>
-    <metal>30</metal>
-    <wood>15</wood>
-  </Loot>
   <Identity>
     <GenericName>Champion Cavalry Spearman</GenericName>
     <Tooltip>Single handed spear 1.5× vs Cavalry.</Tooltip>

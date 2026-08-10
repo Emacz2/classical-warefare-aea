@@ -4,14 +4,6 @@
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
     <GenericName>Champion Melee Infantry</GenericName>
   </Identity>
-   <Health>
-    <Max>225</Max>
-  </Health>
-      <Loot>
-    <xp>115</xp>
-    <metal>30</metal>
-    <wood>15</wood>
-  </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
@@ -40,4 +32,7 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+  <Vision>
+    <Range>50</Range>
+  </Vision>
 </Entity>

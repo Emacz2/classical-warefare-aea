@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="gaul|template_unit_support">
+<Entity parent="gaul|template_unit_support_trumpeter">
   <Auras datatype="tokens">
     units/carnyx
     units/carnyx2
   </Auras>
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Support Trumpeter</GenericName>
+    <GenericName>Carnyx War Horn Player</GenericName>
     <SpecificName>Carnucos</SpecificName>
     <Icon>units/gaul/champion_swordsman_carnyx.png</Icon>
-        <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
   </Identity>
-     <Resistance>
+  <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">2</Crush>
-      <Hack op="add">3</Hack>
-      <Pierce op="add">4</Pierce>
+        <Crush op="add">0.5</Crush>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">0.5</Pierce>
       </Damage>
     </Entity>
   </Resistance>
-    <TrainingRestrictions>
-    <Category>Trumpeter</Category>
-    </TrainingRestrictions>
   <VisualActor>
     <Actor>units/gauls/infantry_carnyx_c.xml</Actor>
   </VisualActor>

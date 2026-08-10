@@ -24,6 +24,10 @@
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/mercenary_camp.png</Icon>
   </Identity>
+    <Promotion>
+    <Entity>structures/kush/camp_blemmye_2</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
   <Loot>
     <wood>20</wood>
     <metal>20</metal>

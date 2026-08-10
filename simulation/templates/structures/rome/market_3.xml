@@ -8,7 +8,6 @@
     <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
-      -units/{civ}/support_slave
       units/{civ}/aux_archer
       units/{civ}/aux_inf_slinger_stone
     </Entities>

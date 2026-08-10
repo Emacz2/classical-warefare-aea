@@ -1,23 +1,56 @@
 {
-	"genericName": "City States",
-	"autoResearch": true,
-	"description": "The independent Greek city-states were built around powerful urban centers whose citizen populations formed disciplined hoplite armies. Although their territories were relatively small, their civic institutions, military traditions, and prosperous cities made them among the most influential states of the ancient world.",
-	"requirements": {
-		"any": [
-			{ "civ": "athen" },
-			{ "civ": "spart" },
-			{ "civ": "theb" }
-		]
-	},
-	"icon": "ionic_column.png",
-	"tooltip": "Greek City States may construct only a single Capital (Agora/Civil Center). The Capital supports 50% more population and benefits from Hellenistic Architecture. Hoplites deal 5% more damage and unlock Hoplite Reforms during Phase I. However, Greek City States have 10% lower maximum population.",
-	"modifications": [
-		{ "value": "Population/Bonus", "multiply": 1.5, "affects": "Agora" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoplite"},
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Hoplite"},
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05, "affects": "Hoplite"},
-		{ "value": "Player/MaxPopulation", "multiply": 0.9 }
-
-	
-	]
+    "genericName": "City States",
+    "autoResearch": true,
+    "description": "The independent Greek city-states were built around powerful urban centers whose citizen populations formed disciplined hoplite armies. Although their territories were relatively small, their civic institutions, military traditions, and prosperous cities made them among the most influential states of the ancient world.",
+    "requirements": {
+        "any": [
+            {
+                "civ": "athen"
+            },
+            {
+                "civ": "spart"
+            },
+            {
+                "civ": "theb"
+            }
+        ]
+    },
+    "icon": "ionic_column.png",
+    "tooltip": "Greek City States may construct only a single Capital (Agora/Civil Center). The Capital supports 50% more population and benefits from Hellenistic Architecture. Agora and Polis defensive arrows deal 5% more damage. Hoplites deal 5% more damage and unlock Hoplite Reforms during Phase I. However, Greek City States have 10% lower maximum population.",
+    "modifications": [
+        {
+            "value": "Population/Bonus",
+            "multiply": 1.5,
+            "affects": "Agora"
+        },
+        {
+            "value": "Attack/Melee/Damage/Crush",
+            "multiply": 1.05,
+            "affects": "Hoplite"
+        },
+        {
+            "value": "Attack/Melee/Damage/Hack",
+            "multiply": 1.05,
+            "affects": "Hoplite"
+        },
+        {
+            "value": "Attack/Melee/Damage/Pierce",
+            "multiply": 1.05,
+            "affects": "Hoplite"
+        },
+        {
+            "value": "Player/MaxPopulation",
+            "multiply": 0.9
+        },
+        {
+            "value": "Attack/Ranged/Damage/Pierce",
+            "multiply": 1.05,
+            "affects": "Agora"
+        },
+        {
+            "value": "Attack/Ranged/Damage/Pierce",
+            "multiply": 1.05,
+            "affects": "Polis"
+        }
+    ]
 }

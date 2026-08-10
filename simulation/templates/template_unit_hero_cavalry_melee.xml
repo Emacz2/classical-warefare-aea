@@ -4,12 +4,6 @@
     <VisibleClasses datatype="tokens">Cavalry</VisibleClasses>
     <GenericName>Champion Melee Cavalry</GenericName>
   </Identity>
-   <Health>
-    <Max>900</Max>
-  </Health>
-    <Loot>
-    <xp>450</xp>
-  </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
@@ -38,4 +32,7 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+  <Vision>
+    <Range>60</Range>
+  </Vision>
 </Entity>

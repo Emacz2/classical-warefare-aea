@@ -1,21 +1,30 @@
 {
-	"genericName": "Arrow Shooters",
-	"description": "Fortress arrows shoot further.",
-	"cost": {
-		"wood": 400,
-		"metal": 200,
-		"food": 400
-	},
-	"requirements": { "tech": "phase_city" },
-	"requirementsTooltip": "Unlocked in City Phase.",
-	"icon": "arrow.png",
-	"researchTime": 30,
-	"tooltip": "Fortress +15 vision, +10 attack range. ",
-	"modifications": [
-		{ "value": "Attack/Ranged/MaxRange", "add": 10 },
-		{ "value": "Vision/Range","add": 15 }
-	
-	],
-	"affects": ["Fortress"],
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+    "genericName": "Arrow Shooters",
+    "description": "Improved arrow positions extend fortress defensive reach.",
+    "cost": {
+        "wood": 400,
+        "metal": 200,
+        "food": 400
+    },
+    "requirements": {
+        "tech": "phase_city"
+    },
+    "requirementsTooltip": "Unlocked in City Phase.",
+    "icon": "arrow.png",
+    "researchTime": 30,
+    "tooltip": "Fortresses +10 attack range and +15 vision.",
+    "modifications": [
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 10
+        },
+        {
+            "value": "Vision/Range",
+            "add": 15
+        }
+    ],
+    "affects": [
+        "Fortress"
+    ],
+    "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

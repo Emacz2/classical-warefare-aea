@@ -4,9 +4,6 @@
     <GenericName>Economic Structure</GenericName>
     <VisibleClasses datatype="tokens">Economic</VisibleClasses>
   </Identity>
-   <Capturable>
-    <CapturePoints>500</CapturePoints>
-  </Capturable>
     <Health>
     <Max>750</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_4x4</SpawnEntityOnDeath>
@@ -14,8 +11,8 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush>5</Crush>
-        <Hack>10</Hack>
+        <Crush>2.5</Crush>
+        <Hack>7.5</Hack>
         <Pierce>25</Pierce>
       </Damage>
     </Entity>

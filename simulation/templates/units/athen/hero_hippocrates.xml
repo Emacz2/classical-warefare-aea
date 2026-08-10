@@ -4,9 +4,6 @@
     units/heroes/athen_hero_hippocrates_1
     units/heroes/athen_hero_hippocrates_2
   </Auras>
-  <Health>
-    <Max>600</Max>
-  </Health>
   <Identity>
     <Civ>athen</Civ>
     <GenericName>Hippocrates</GenericName>

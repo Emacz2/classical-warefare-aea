@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
- <Cost>
+  <!-- PURE TROOP IDENTITY: no Mercenary/Auxiliary/Allied employment rules here. -->
+  <Cost>
+    <!-- Cretan specialists remain 10% slower to train regardless of employer. -->
     <BuildTime op="mul">1.1</BuildTime>
-     <Resources>
-      <metal>60</metal>
-      <food>25</food>
-      <wood>0</wood>
-      <stone>0</stone>
-    </Resources>
   </Cost>
-   <Attack>
-   <Capture>
-      <AttackName>Capture</AttackName>
-      <Capture>1.0</Capture>
-      <MaxRange>3</MaxRange>
-      <RepeatTime>1000</RepeatTime>
-    </Capture>
+  <Attack>
     <Ranged>
       <RepeatTime op="add">-100</RepeatTime>
       <Projectile>
@@ -27,24 +17,21 @@
   <Resistance>
     <Entity>
       <Damage>
-      <Crush op="add">1</Crush>
-      <Hack op="add">1</Hack>
-      <Pierce op="add">2</Pierce>
+        <Crush op="add">1</Crush>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">2</Pierce>
       </Damage>
     </Entity>
   </Resistance>
   <Identity>
     <Lang>greek</Lang>
-    <GenericName>Cretan Archer Mercenary</GenericName>
+    <GenericName>Cretan Archer</GenericName>
     <SpecificName>Toxótēs Krētikós</SpecificName>
-    <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <Icon>units/mace/infantry_archer.png</Icon>
-    <Tooltip>Elite mercenary archer renowned for exceptional accuracy and rapid fire. (10% faster repeat time and 25% more accurate. Additionly they have +2 Pierace and +1 Crush/Hack resistance.) Strengths: Highly effective against lightly armored troops at range. Weaknesses: Requires protection from cavalry and melee infantry.</Tooltip>
+    <Tooltip>Elite Cretan archer renowned for exceptional accuracy and rapid fire. 10% faster repeat time, 25% more accurate, +2 Pierce resistance, and +1 Crush/Hack resistance. Strengths: Highly effective against lightly armored troops at range. Weaknesses: Requires protection from cavalry and melee infantry.</Tooltip>
     <History>Cretan archers were among the most sought-after professional missile troops of the ancient Mediterranean.</History>
   </Identity>
-   <VisualActor>
+  <VisualActor>
     <Actor>units/athenians/infantry_archer_b.xml</Actor>
   </VisualActor>
-  <ResourceGatherer disable=""/>
 </Entity>
-

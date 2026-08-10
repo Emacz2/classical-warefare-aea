@@ -12,6 +12,7 @@
 			{
 				"any": [
 					{ "civ": "brit" },
+					{ "civ": "han" },
 					{ "civ": "kush" },
 					{ "civ": "maur" },
 					{ "civ": "pers" },

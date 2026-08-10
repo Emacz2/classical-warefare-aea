@@ -1,18 +1,18 @@
 {
-	"genericName": "City Phase",
-	"description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology. This is the Persian city phase.\nThe 'Times of War' bonus decreases the batch training time in Stables. Large batches will benefit more than small batches.\nIn mathematical terms: The training time of one batch gets divided by `batchSize^0.1`.",
-	"cost": {
-		"food": 500,
-		"wood": 500,
-		"stone": 750,
-		"metal": 500
-	},
-	 "requirements": {
+    "genericName": "City Phase",
+    "description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology. This is the Persian city phase.\nThe 'Times of War' bonus decreases the batch training time in Stables. Large batches will benefit more than small batches.\nIn mathematical terms: The training time of one batch gets divided by `batchSize^0.1`.",
+    "cost": {
+        "food": 350,
+        "wood": 350,
+        "stone": 600,
+        "metal": 200
+    },
+    "requirements": {
         "all": [
             {
                 "entity": {
                     "class": "Village",
-                    "number": 25
+                    "number": 20
                 }
             },
             {
@@ -22,25 +22,41 @@
                 }
             }
         ]
-	},
-	"requirementsTooltip": "Requires twenty Village Structures.",
-	"supersedes": "phase_town_ptol",
-	"replaces": ["phase_city"],
-	"icon": "city_phase.png",
-	"researchTime": 60,
-	"tooltip": "Advance to City Phase, unlocking new entities and technologies. Civic Centers gain an additional +20% territory influence radius, +10 garrison capacity, +10 population capacity, +5 attack range, +5 Hack Resistance, +7.5 Pierce Resistance, and +2.5 Crush Resistance, but deal an additional 3% less Pierce damage. Garrisoned Structures gain an additional +1 Capture Point regeneration rate.",
-	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.2, "affects": "CivCentre" },
-		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.97, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" }
-	
-		
-	],
-	"soundComplete": "interface/alarm/alarm_phase.xml"
+    },
+    "requirementsTooltip": "Requires twenty Village Structures.",
+    "supersedes": "phase_town_ptol",
+    "replaces": [
+        "phase_city"
+    ],
+    "icon": "city_phase.png",
+    "researchTime": 50,
+    "tooltip": "Advance to City Phase, unlocking new entities and technologies. Civic Centers gain +20% territory influence radius, +10 garrison capacity, +10 population capacity, +10 attack range. Garrisoned Structures gain +1 capture point regeneration rate.",
+    "modifications": [
+        {
+            "value": "Capturable/GarrisonRegenRate",
+            "add": 1,
+            "affects": "Structure"
+        },
+        {
+            "value": "TerritoryInfluence/Radius",
+            "multiply": 1.2,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "GarrisonHolder/Max",
+            "add": 10,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Population/Bonus",
+            "add": 10,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 10,
+            "affects": "CivCentre"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_phase.xml"
 }

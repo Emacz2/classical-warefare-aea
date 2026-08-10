@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="aux_inf|slinger_baleric|template_unit_infantry_ranged_slinger">
   <Identity>
-  <GenericName>Auxiliary Baleric Slinger</GenericName>
-  <SelectionGroupName>units/rome/aux_inf_slinger_stone</SelectionGroupName>
-  <Icon>units/cart/infantry_slinger.png</Icon>
+    <GenericName>Auxiliary Balearic Slinger</GenericName>
+    <SelectionGroupName>units/rome/aux_inf_slinger_stone</SelectionGroupName>
+    <Icon>units/cart/infantry_slinger.png</Icon>
   </Identity>
-    <Upgrade>
+  <Upgrade>
     <Lead>
       <Entity>units/rome/aux_inf_slinger_lead</Entity>
-      <Tooltip>Switch to stone throwing Balearic Slinger</Tooltip>
+      <Tooltip>Switch to lead throwing Balearic Slinger</Tooltip>
       <Variant>upgrading</Variant>
       <Time>10</Time>
     </Lead>

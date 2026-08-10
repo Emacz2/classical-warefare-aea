@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_defensive_tower">
   <Attack>
     <Ranged>
+      <MaxRange>80</MaxRange>
       <Origin>
         <X>0</X>
         <Y>15</Y>
@@ -20,7 +21,7 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="10.0" depth="10.0"/>
+    <Square width="10.0" depth="10.0" />
     <Height>15.0</Height>
   </Footprint>
   <GarrisonHolder>
@@ -29,7 +30,7 @@
   <Health>
     <Max>1200</Max>
   </Health>
-    <Resistance>
+  <Resistance>
     <Entity>
       <Damage>
         <Crush op="add">5</Crush>
@@ -41,7 +42,7 @@
   <Identity>
     <GenericName>Stone Tower</GenericName>
     <SelectionGroupName>template_structure_defensive_tower_stone</SelectionGroupName>
-    <Tooltip>Garrison Infantry for additional arrows. Needs the “Murder Holes” technology to protect its foot.</Tooltip>
+    <Tooltip>Long-range defensive tower. Garrison Infantry for additional arrows. Needs the “Murder Holes” technology to protect its foot.</Tooltip>
     <VisibleClasses datatype="tokens">StoneTower Town</VisibleClasses>
     <Icon>structures/defense_tower.png</Icon>
     <Requirements>
@@ -53,9 +54,9 @@
     <stone>20</stone>
   </Loot>
   <Obstruction>
-    <Static width="7.0" depth="7.0"/>
+    <Static width="7.0" depth="7.0" />
   </Obstruction>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Researcher>
     <Technologies datatype="tokens">
       tower_watch
@@ -71,4 +72,7 @@
     <Radius>35</Radius>
     <Weight>30000</Weight>
   </TerritoryInfluence>
+  <Vision>
+    <Range>100</Range>
+  </Vision>
 </Entity>

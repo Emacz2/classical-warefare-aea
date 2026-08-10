@@ -1,19 +1,27 @@
 {
-	"genericName": "Arrow Shooters",
-	"description": "Stronger Bows.",
-	"cost": {
-		"wood": 500,
-		"metal": 250
-	},
-	"requirements": { "tech": "phase_town" },
-	"requirementsTooltip": "Unlocked in Town Phase.",
-	"icon": "arrow.png",
-	"researchTime": 40,
-	"tooltip": "Sentry and Stone Towers +5 attack range +10 vision.",
-	"modifications": [
-		{ "value": "Attack/Ranged/MaxRange", "add": 5 },
-		{ "value": "Vision/Range","add": 10 }
-	],
-	"affects": ["SentryTower", "StoneTower", "GreatTower"],
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+    "genericName": "Arrow Shooters",
+    "description": "Stronger bows and improved firing positions extend tower attack range.",
+    "cost": {
+        "wood": 500,
+        "metal": 250
+    },
+    "requirements": {
+        "tech": "phase_town"
+    },
+    "requirementsTooltip": "Unlocked in Town Phase.",
+    "icon": "arrow.png",
+    "researchTime": 40,
+    "tooltip": "Sentry and Stone Towers +5 attack range.",
+    "modifications": [
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 5
+        }
+    ],
+    "affects": [
+        "SentryTower",
+        "StoneTower",
+        "GreatTower"
+    ],
+    "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

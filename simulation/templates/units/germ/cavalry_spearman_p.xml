@@ -4,7 +4,7 @@
     <Civ>germ</Civ>
     <GenericName>Cimbrian Scout Spear Cavalry</GenericName>
     <SpecificName>Gaizazridjô</SpecificName>
-    <SelectionGroupName>units/germ/cavalry_spearman_b</SelectionGroupName>
+    <SelectionGroupName>units/germ/cavalry_spearman_p</SelectionGroupName>
     <Icon>units/germ/cavalry_spearman.png</Icon>
   </Identity>
 <Promotion disable=""/>

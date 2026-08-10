@@ -10,8 +10,7 @@
     </Resources>
   </Cost>
  <Health>
-    <Max>200</Max>
-    <RegenRate>-0.5</RegenRate>
+    <RegenRate>-0.25</RegenRate>
   </Health>
    <Identity>
     <Rank>Advanced</Rank>

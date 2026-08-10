@@ -5,9 +5,6 @@
     <SpecificName>Samnite Spearman</SpecificName>
     <Icon>units/samn/spearman.png</Icon>
   </Identity>
-  <Health>
-    <Max op="add">25</Max>
-  </Health>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/carthaginians/infantry_spearman_c_samnite.xml</Actor>

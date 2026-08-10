@@ -7,17 +7,9 @@
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
     <GenericName>Champion Ranged Infantry</GenericName>
   </Identity>
-  <Health>
-    <Max>125</Max>
-  </Health>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
-    <Loot>
-    <xp>65</xp>
-    <metal>15</metal>
-    <wood>30</wood>
-  </Loot>
       <Resistance>
     <Entity>
       <Damage>
@@ -43,4 +35,7 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+  <Vision>
+    <Range>55</Range>
+  </Vision>
 </Entity>

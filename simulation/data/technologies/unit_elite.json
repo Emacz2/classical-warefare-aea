@@ -5,9 +5,7 @@
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.2 },
 		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.75 },
-		{ "value": "Health/Max", "add": 25, "affects": "Melee !Switch"},
 		{ "value": "Attack/Capture/Capture", "add": 0.5, "affects": "Melee !Switch" },
-		{ "value": "Health/Max", "add": 10, "affects": "Ranged !Switch"},
 		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9, "affects": "Ranged !Crossbowman" },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5, "affects": "!Healer !Switch" },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5, "affects": "!Healer !Switch" },

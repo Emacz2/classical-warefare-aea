@@ -21,9 +21,6 @@
       </ApplyStatus>
     </Ranged>
   </Attack>
-  <Health>
-    <Max>100</Max>
-  </Health>
   <Identity>
     <Civ>maur</Civ>
     <Phenotype>female</Phenotype>

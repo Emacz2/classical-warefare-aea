@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Health>
+    <Max op="add">25</Max>
+  </Health>
+
+  <Attack>
+    <Melee>
+      <Damage>
+        <Hack op="mul">1.05</Hack>
+        <Pierce op="mul">1.05</Pierce>
+        <Crush op="mul">1.05</Crush>
+      </Damage>
+    </Melee>
+  </Attack>
+
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">1</Pierce>
+        <Crush op="add">1</Crush>
+      </Damage>
+    </Entity>
+  </Resistance>
+
+  <Identity>
+    <Classes datatype="tokens">Bodyguard</Classes>
+    <VisibleClasses datatype="tokens">Bodyguard</VisibleClasses>
+  </Identity>
+
+  <TrainingRestrictions>
+    <Category>BodyguardInf</Category>
+  </TrainingRestrictions>
+
+</Entity>

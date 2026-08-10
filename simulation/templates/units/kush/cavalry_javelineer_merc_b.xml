@@ -22,9 +22,7 @@
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
-  <Promotion>
-    <Entity>units/kush/cavalry_javelineer_merc_a</Entity>
-  </Promotion>
+  <Promotion disable=""/>
   <Sound>
     <SoundGroups>
       <select>actor/fauna/animal/camel.xml</select>

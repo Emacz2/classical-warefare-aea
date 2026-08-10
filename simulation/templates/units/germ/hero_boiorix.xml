@@ -8,7 +8,22 @@
     <Civ>germ</Civ>
     <SpecificName>Boiorix</SpecificName>
     <Icon>units/germ/hero_boiorix.png</Icon>
+    <VisibleClasses datatype="tokens">Boiorix</VisibleClasses> 
+   <Requirements>
+      <Techs datatype="tokens">-phase_city phase_town</Techs>
+    </Requirements>
   </Identity>
+   <Attack>
+    <Melee>
+      <Damage>
+        <Hack op="mul">0.8</Hack>
+        <Pierce op="mul">0.8</Pierce>
+      </Damage>
+    </Melee>
+  </Attack>
+  <Health>
+    <Max op="mul">0.5</Max>
+  </Health>
   <VisualActor>
     <Actor>units/germans/hero_cavalry_swordsman_boiorix_m.xml</Actor>
   </VisualActor>

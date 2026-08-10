@@ -4,17 +4,12 @@
     <VisibleClasses datatype="tokens">Ranged</VisibleClasses>
     <GenericName>Ranged Cavalry</GenericName>
   </Identity>
-  <Health>
-    <Max>175</Max>
-  </Health>
-    <Loot>
-    <xp>90</xp>
-    <metal>15</metal>
-    <wood>15</wood>
-  </Loot>
   <UnitAI>
     <Formations datatype="tokens">
       special/formations/skirmish
     </Formations>
   </UnitAI>
+  <Vision>
+    <Range>55</Range>
+  </Vision>
 </Entity>

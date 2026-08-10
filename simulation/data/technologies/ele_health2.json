@@ -9,9 +9,8 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_plates_gold.png",
 	"researchTime": 40,
-	"tooltip": "Elephants +50 health, +1.5 Hack/Pierce and +2 Crush resistance.",
+	"tooltip": "Elephants +1.5 Hack/Pierce and +2 Crush resistance.",
 	"modifications": [
-		{ "value": "Health/Max", "add": 50},
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1.5 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2 }
