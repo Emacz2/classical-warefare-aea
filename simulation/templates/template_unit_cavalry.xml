@@ -50,7 +50,7 @@
     <MaxDistance>2.0</MaxDistance>
     <BaseSpeed>1.0</BaseSpeed>
     <Rates>
-      <food.meat>3</food.meat>
+      <food.meat>4</food.meat>
     </Rates>
     <Capacities>
       <food>20</food>
