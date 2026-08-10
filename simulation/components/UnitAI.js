@@ -849,8 +849,7 @@ UnitAI.prototype.UnitFsmSpec = {
 		"Order.Stop": function(msg) {
 			const cmpFormation = Engine.QueryInterface(this.entity, IID_Formation);
 			cmpFormation.ResetOrderVariant();
-			if (!this.IsAttackingAsFormation())
-				this.CallMemberFunction("Stop", [false]);
+			this.CallMemberFunction("Stop", [false]);
 			this.FinishOrder();
 			return ACCEPT_ORDER;
 			// Don't move the members back into formation,
@@ -1084,6 +1083,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.DropAtNearestDropSite": function(msg) {
+			warn("CWA: No drop at nearest dropsite as formation!");
+			return this.FinishOrder();
+
 			this.CallMemberFunction("DropAtNearestDropSite", [false, false]);
 
 			this.SetNextState("MEMBER");
@@ -1409,7 +1411,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 					const cmpFormation = Engine.QueryInterface(this.entity, IID_Formation);
 					// TODO fix the rearranging while attacking as formation
-					cmpFormation.SetRearrange(!this.IsAttackingAsFormation());
+					cmpFormation.SetRearrange(false);
 					cmpFormation.MoveMembersIntoFormation(false, false, "combat");
 					this.StartTimer(200, 200);
 					return false;
@@ -6635,7 +6637,7 @@ UnitAI.prototype.IsPacking = function()
 
 UnitAI.prototype.IsAttackingAsFormation = function()
 {
-	return this.GetCurrentState() == "FORMATIONCONTROLLER.COMBAT.ATTACKING";
+	return this.GetCurrentState() == "FORMATIONCONTROLLER.COMBAT.ATTACKING" || this.GetCurrentState() == "FORMATIONCONTROLLER.COMBAT.APPROACHING";
 };
 
 UnitAI.prototype.MoveRandomly = function(distance)
