@@ -110,8 +110,10 @@ Trainer.prototype.Item.prototype.Queue = function(trainCostMultiplier, batchTime
 	}
 
 	// Reserve only after every other training-limit check has succeeded.
-	if (cmpPlayerCavalryLimits)
-		cmpPlayerCavalryLimits.ReserveTraining(this.templateName, this.count);
+	// Store the exact reservation on this queue item so spawn/cancel can release
+	// it without re-detecting the template later.
+	this.cavalryReserved = cmpPlayerCavalryLimits ?
+		cmpPlayerCavalryLimits.ReserveTraining(this.templateName, this.count) : 0;
 
 	const buildTime = ApplyValueModificationsToTemplate("Cost/BuildTime", +template.Cost.BuildTime, this.player, template);
 
@@ -161,8 +163,11 @@ Trainer.prototype.Item.prototype.Stop = function()
 	}
 
 	const cmpPlayerCavalryLimits = QueryPlayerIDInterface(this.player, IID_CavalryLimits);
-	if (cmpPlayerCavalryLimits)
-		cmpPlayerCavalryLimits.ReleaseTraining(this.templateName, this.count);
+	if (cmpPlayerCavalryLimits && this.cavalryReserved)
+	{
+		cmpPlayerCavalryLimits.ReleaseTraining(this.cavalryReserved);
+		this.cavalryReserved = 0;
+	}
 
 	if (cmpPlayer)
 	{
@@ -304,10 +309,13 @@ Trainer.prototype.Item.prototype.Spawn = function()
 				cmpPlayerEntityLimits.ChangeCount(cmpTrainingRestrictions.GetCategory(), -1);
 		}
 
-		// Convert one queued cavalry reservation into a live cavalry unit.
+		// Convert one explicitly reserved cavalry slot into a live cavalry unit.
 		// SetOwner then triggers CavalryLimits.OnGlobalOwnershipChanged.
-		if (cmpPlayerCavalryLimits)
-			cmpPlayerCavalryLimits.ReleaseTraining(this.templateName, 1);
+		if (cmpPlayerCavalryLimits && this.cavalryReserved > 0)
+		{
+			cmpPlayerCavalryLimits.ReleaseTraining(1);
+			--this.cavalryReserved;
+		}
 
 		cmpNewOwnership.SetOwner(this.player);
 
@@ -412,6 +420,7 @@ Trainer.prototype.Item.prototype.GetBasicInfo = function()
 
 Trainer.prototype.Item.prototype.SerializableAttributes = [
 	"count",
+	"cavalryReserved",
 	"entities",
 	"metadata",
 	"missingPopSpace",

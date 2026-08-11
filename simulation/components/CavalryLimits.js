@@ -111,13 +111,24 @@ CavalryLimits.prototype.AllowedToTrain = function(templateName, count)
 
 CavalryLimits.prototype.ReserveTraining = function(templateName, count)
 {
-	if (this.IsCavalryTemplate(templateName))
-		this.queuedCount += count;
+	if (!this.IsCavalryTemplate(templateName))
+		return 0;
+
+	this.queuedCount += count;
+	return count;
 };
 
-CavalryLimits.prototype.ReleaseTraining = function(templateName, count)
+/**
+ * Release slots that a Trainer item explicitly reserved earlier.
+ *
+ * Do NOT re-detect the current template here.  A queued item's template can
+ * change while it is waiting (for example through trainer-map upgrades), and
+ * re-testing the template at release time can leak a reservation.  The Trainer
+ * item serializes its own reservation count instead.
+ */
+CavalryLimits.prototype.ReleaseTraining = function(count)
 {
-	if (!this.IsCavalryTemplate(templateName))
+	if (!count)
 		return;
 
 	this.queuedCount -= count;
