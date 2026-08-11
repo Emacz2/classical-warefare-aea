@@ -36,6 +36,11 @@
 			"Name": "Large Rams",
 			"History": "",
 			"Description": "Battering Rams +20% attack damage and +2 garrison capacity."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Kushite warfare made use of infantry, archers, cavalry, chariots, and elephants, and Nubia had a long association with valuable warhorses and skilled horse handling. Mounted troops were significant, but they shared the battlefield with other arms that were equally characteristic of Kushite warfare.",
+			"Description": "Maximum cavalry as a share of effective population: Village 7.5%; Town 12.5%; City 17.5%."
 		}
 	],
 	"StartEntities": [

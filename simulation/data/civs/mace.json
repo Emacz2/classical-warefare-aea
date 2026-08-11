@@ -31,7 +31,13 @@
 			"Type": "peace"
 		}
 	],
-	"CivBonuses": [],
+	"CivBonuses": [
+		{
+			"Name": "Cavalry Limit",
+			"History": "Under Philip II and Alexander, Macedonian warfare became a highly effective combined-arms system. The phalanx fixed the enemy while Companion and allied cavalry exploited openings, attacked flanks, pursued defeated troops, and could deliver decisive shock action.",
+			"Description": "Maximum cavalry as a share of effective population: Village 10%; Town 20%; City 25%."
+		}
+	],
 	"WallSets": [
 		"structures/wallset_palisade",
 		"structures/mace/wallset_stone"
@@ -56,7 +62,6 @@
 			"Template": "units/mace/cavalry_spearman_p",
 			"Count": 1
 		}
-	
 	],
 	"AINames": [
 		"Antipater",

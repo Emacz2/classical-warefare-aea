@@ -32,6 +32,11 @@
 			"Name": "Centurions",
 			"History": "Centurions were the officers responsible for a centuria, a group of 100 soldiers.",
 			"Description": "Promote Elite Rank Swordsmen to Champion Centurions."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Republican Roman armies were built primarily around heavy infantry and fielded a relatively limited citizen cavalry arm, with allied horsemen providing much of the additional mounted strength. As Roman power expanded, allied and auxiliary cavalry from Italy and the provinces became increasingly important.",
+			"Description": "Maximum cavalry as a share of effective population: Village 5%; Town 15%; City 20%; Empire 25%."
 		}
 	],
 	"WallSets": [

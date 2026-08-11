@@ -22,10 +22,13 @@
 			"File": "Only_300_Stood.ogg",
 			"Type": "peace"
 		}
-		],
+	],
 	"CivBonuses": [
-		
-
+		{
+			"Name": "Cavalry Limit",
+			"History": "Spartan military power rested overwhelmingly on its heavy infantry system. Sparta did field cavalry, but the mounted arm remained comparatively small and secondary to the hoplite force, making cavalry a useful support arm rather than a major share of the Spartan army.",
+			"Description": "Maximum cavalry as a share of effective population: Village 2.5%; Town 7.5%; City 7.5%."
+		}
 	],
 	"WallSets": [
 		"structures/wallset_palisade",
@@ -52,8 +55,6 @@
 		{
 			"Template": "units/spart/champion_infantry_spear_b"
 		}
-	
-		
 	],
 	"AINames": [
 		"Agesilaus",

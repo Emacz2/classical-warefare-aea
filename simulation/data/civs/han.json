@@ -16,6 +16,11 @@
 			"Name": "Ministry",
 			"History": "The Nine Ministers or Nine Chamberlains (Chinese: 九卿; pinyin: jiǔ qīng) was the collective name for nine high officials in the imperial government of the Han dynasty (206 BC–220 AD), who each headed one of the Nine Courts and were subordinates to the Three Councillors of State..",
 			"Description": "Han have the ability to train 9 ministers each with their own bonus(es), mini heroes in a way.."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Long conflict with the Xiongnu pushed the Han state to invest heavily in horses and expand its frontier cavalry. Han armies could conduct major long-range mounted campaigns, while infantry and crossbow troops continued to form an important part of the empire's military system.",
+			"Description": "Maximum cavalry as a share of effective population: Village 10%; Town 17.5%; City 20%; Empire 25%."
 		}
 	],
 	"WallSets": [

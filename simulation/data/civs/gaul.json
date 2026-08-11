@@ -32,6 +32,11 @@
 			"Name": "Deas Celtica",
 			"History": "Celtic religion and druidry inspired their warlike mindset.",
 			"Description": "Druid aura; Soldiers 5% more dmg and promote 15% faster."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Gallic elites possessed a strong mounted warrior tradition, and cavalry repeatedly appears as an important arm in accounts of warfare in Gaul. Noble horsemen, retainers, and allied riders gave Gallic armies substantial mounted strength while infantry remained the numerical foundation.",
+			"Description": "Maximum cavalry as a share of effective population: Village 10%; Town 17.5%; City 20%."
 		}
 	],
 	"WallSets": [
@@ -61,7 +66,6 @@
 		{
 			"Template": "units/gaul/cavalry_javelineer_b"
 		}
-		
 	],
 	"AINames": [
 		"Cativolcus",
