@@ -12,6 +12,11 @@
       </CivilCentre>
     </LimitRemovers>
   </EntityLimits>
+  <CavalryLimits>
+    <Village>7.5</Village>
+    <Town>15</Town>
+    <City>20</City>
+  </CavalryLimits>
   <Identity>
     <Civ>ptol</Civ>
     <GenericName>Ptolemies</GenericName>

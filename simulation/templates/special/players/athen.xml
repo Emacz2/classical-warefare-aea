@@ -4,6 +4,11 @@
     teambonuses/athen_player_teambonus
     teambonuses/athen_player_teambonus2
   </Auras>
+  <CavalryLimits>
+    <Village>5</Village>
+    <Town>10</Town>
+    <City>12.5</City>
+  </CavalryLimits>
   <Identity>
     <Civ>athen</Civ>
     <GenericName>Athenians</GenericName>

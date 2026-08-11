@@ -4,6 +4,11 @@
     teambonuses/cart_player_teambonus
     teambonuses/cart_player_teambonus2
   </Auras>
+  <CavalryLimits>
+    <Village>5</Village>
+    <Town>15</Town>
+    <City>25</City>
+  </CavalryLimits>
   <Identity>
     <Civ>cart</Civ>
     <GenericName>Carthaginians</GenericName>

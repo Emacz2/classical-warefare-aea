@@ -4,6 +4,11 @@
     teambonuses/kush_player_teambonus
     teambonuses/kush_player_teambonus2
   </Auras>
+  <CavalryLimits>
+    <Village>7.5</Village>
+    <Town>12.5</Town>
+    <City>17.5</City>
+  </CavalryLimits>
   <Identity>
     <Civ>kush</Civ>
     <GenericName>Kushites</GenericName>

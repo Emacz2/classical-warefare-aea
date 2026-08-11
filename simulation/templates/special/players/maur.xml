@@ -4,6 +4,12 @@
     teambonuses/maur_player_teambonus
     teambonuses/maur_player_teambonus2
   </Auras>
+  <CavalryLimits>
+    <Village>7.5</Village>
+    <Town>15</Town>
+    <City>20</City>
+    <Empire>20</Empire>
+  </CavalryLimits>
   <Identity>
     <Civ>maur</Civ>
     <GenericName>Mauryas</GenericName>

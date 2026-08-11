@@ -12,6 +12,12 @@
       <Minister>9</Minister>
     </Limits>
   </EntityLimits>
+  <CavalryLimits>
+    <Village>10</Village>
+    <Town>17.5</Town>
+    <City>20</City>
+    <Empire>25</Empire>
+  </CavalryLimits>
   <Identity>
     <Civ>han</Civ>
     <GenericName>Han</GenericName>

@@ -5,7 +5,7 @@
     <SpecificName>Kleros</SpecificName>
     <GenericName>Helot Farmstead</GenericName>
     <Icon>structures/kleros.png</Icon>
-    <VisibleClasses datatype="tokens">Tent</VisibleClasses>
+    <VisibleClasses datatype="tokens">Tent Farmstead</VisibleClasses>
 	<Tooltip>Helot agricultural estate. Trains Helots and serves as a food dropsite. Provides 1 food every 2 seconds per Kleros (maximum of 5)</Tooltip>
   </Identity>
 

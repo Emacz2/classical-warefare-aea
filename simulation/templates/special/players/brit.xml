@@ -4,6 +4,11 @@
     teambonuses/brit_player_teambonus
     teambonuses/brit_player_teambonus2
   </Auras>
+  <CavalryLimits>
+    <Village>7.5</Village>
+    <Town>15</Town>
+    <City>20</City>
+  </CavalryLimits>
   <Identity>
     <Civ>brit</Civ>
     <GenericName>Britons</GenericName>

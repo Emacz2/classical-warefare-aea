@@ -4,6 +4,12 @@
     teambonuses/rome_player_teambonus
     teambonuses/rome_player_teambonus2
   </Auras>
+  <CavalryLimits>
+    <Village>5</Village>
+    <Town>15</Town>
+    <City>20</City>
+    <Empire>25</Empire>
+  </CavalryLimits>
   <Identity>
     <Civ>rome</Civ>
     <GenericName>Romans</GenericName>

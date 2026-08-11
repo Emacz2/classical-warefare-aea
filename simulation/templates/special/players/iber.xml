@@ -4,6 +4,11 @@
     teambonuses/iber_player_teambonus
     teambonuses/iber_player_teambonus2
   </Auras>
+  <CavalryLimits>
+    <Village>10</Village>
+    <Town>17.5</Town>
+    <City>20</City>
+  </CavalryLimits>
   <Identity>
     <Civ>iber</Civ>
     <GenericName>Iberians</GenericName>
