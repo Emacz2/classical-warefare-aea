@@ -10,13 +10,13 @@
     <Square width="4.5" depth="9.0"/>
     <Height>8.0</Height>
   </Footprint>
-  <Health>
-    <Max>250</Max>
-  <Loot>
-    <xp>80</xp>
-    <food>25</food>
-  </Loot>
-  </Health>
+<Health>
+  <Max>250</Max>
+</Health>
+<Loot>
+  <xp>80</xp>
+  <food>25</food>
+</Loot>
   <Identity>
     <GenericName>Worker Elephant</GenericName>
     <VisibleClasses datatype="tokens">Elephant</VisibleClasses>
