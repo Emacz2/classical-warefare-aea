@@ -1,6 +1,6 @@
 {
 	"genericName": "Professional Garrisons",
-	"description": "Increase the garrison capacity of your Fotress.",
+	"description": "Increase the garrison capacity of your Fortress.",
 	"cost": {
 		"food": 500,
 		"metal": 250,
@@ -8,7 +8,7 @@
 	},
 	"icon": "coinage.png",
 	"researchTime": 50,
-	"tooltip": "50% more garison capacity (60 total).",
+	"tooltip": "Increase Fortress garrison capacity by 50%.",
 	"modifications": [
 		{ "value": "GarrisonHolder/Max", "multiply": 1.5}
 		

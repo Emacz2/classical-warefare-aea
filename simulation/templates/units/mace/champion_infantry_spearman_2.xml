@@ -5,6 +5,7 @@
     <Acceleration op="mul">1.05</Acceleration>
   </UnitMotion>
   <Identity>
+    <GenericName>Macedonian Silver Shield Pikeman</GenericName>
     <SpecificName>Hypaspistḗs Argyraspídi</SpecificName>
     <Icon>units/mace/argyraspidai.png</Icon>
     <VisibleClasses datatype="tokens">Nobel</VisibleClasses>

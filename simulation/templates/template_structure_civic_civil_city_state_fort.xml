@@ -3,7 +3,7 @@
   <Identity>
     <GenericName>Polis</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
-    <Tooltip>Foritfy your Polis. increase defenses (+5 Crush and +7.5 Hack resistance), garrison capacity (10) and populaton bonus (10). Healthy and Capture points increased 20%.</Tooltip>
+    <Tooltip>Fortitfy your Polis. increase defenses (+5 Crush and +7.5 Hack resistance), garrison capacity (10) and populaton bonus (10). Healthy and Capture points increased 25%.</Tooltip>
     <Classes datatype="tokens">Polis</Classes>
     <VisibleClasses datatype="tokens">Defensive Polis FarmBlocker</VisibleClasses>
   </Identity>

@@ -3,7 +3,7 @@
   <Attack>
     <Ranged>
       <Damage>
-        <Crush>15</Crush>
+        <Crush>20</Crush>
       </Damage>
       <Projectile>
         <Spread>3</Spread>
@@ -16,9 +16,9 @@
       <Splash>
         <Shape>Circular</Shape>
         <Range>4</Range>
-        <FriendlyFire>false</FriendlyFire>
+        <FriendlyFire>true</FriendlyFire>
         <Damage>
-          <Crush>5</Crush>
+          <Crush>10</Crush>
         </Damage>
       </Splash>
     </Ranged>
@@ -48,7 +48,7 @@
     <Foundation>
       <Damage>
         <Hack>1</Hack>
-        <Pierce>1</Pierce>
+        <Pierce>15</Pierce>
         <Crush>1</Crush>
       </Damage>
     </Foundation>
