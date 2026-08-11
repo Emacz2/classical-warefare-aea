@@ -8,5 +8,6 @@
   <Identity>
     <Civ>germ</Civ>
     <GenericName>Germans</GenericName>
+    <Icon>emblems/emblem_germ.png</Icon>
   </Identity>
 </Entity>
