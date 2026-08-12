@@ -4,11 +4,6 @@
     teambonuses/mace_player_teambonus
      teambonuses/mace_player_teambonus2
   </Auras>
-  <CavalryLimits>
-    <Village>10</Village>
-    <Town>20</Town>
-    <City>25</City>
-  </CavalryLimits>
   <Identity>
     <Civ>mace</Civ>
     <GenericName>Macedonians</GenericName>

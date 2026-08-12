@@ -12,11 +12,6 @@
       </CivilCentre>
     </LimitRemovers>
   </EntityLimits>
-  <CavalryLimits>
-    <Village>10</Village>
-    <Town>20</Town>
-    <City>25</City>
-  </CavalryLimits>
   <Identity>
     <Civ>sele</Civ>
     <GenericName>Seleucids</GenericName>

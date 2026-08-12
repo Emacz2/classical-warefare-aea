@@ -4,11 +4,6 @@
   teambonuses/spart_player_teambonus
   teambonuses/spart_player_teambonus2
   </Auras>
-  <CavalryLimits>
-    <Village>2.5</Village>
-    <Town>7.5</Town>
-    <City>7.5</City>
-  </CavalryLimits>
   <Identity>
     <Civ>spart</Civ>
     <GenericName>Spartans</GenericName>

@@ -4,12 +4,6 @@
     teambonuses/pers_player_teambonus
     teambonuses/pers_player_teambonus2
   </Auras>
-  <CavalryLimits>
-    <Village>12.5</Village>
-    <Town>25</Town>
-    <City>30</City>
-    <Empire>30</Empire>
-  </CavalryLimits>
   <Identity>
     <Civ>pers</Civ>
     <GenericName>Persians</GenericName>

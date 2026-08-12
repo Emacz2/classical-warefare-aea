@@ -9,11 +9,6 @@
 	  <Stoa>1</Stoa>
     </Limits>
   </EntityLimits>
-  <CavalryLimits>
-    <Village>7.5</Village>
-    <Town>12.5</Town>
-    <City>15</City>
-  </CavalryLimits>
   <Identity>
     <Civ>theb</Civ>
     <GenericName>Thebans</GenericName>
