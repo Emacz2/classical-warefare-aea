@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_cav|cav_charge|template_unit_cavalry_melee_spearman">
-<Cost>
-    <BuildTime op="mul">1.05</BuildTime>
-  </Cost>
-  <Health>
-    <Max op="add">20</Max>
-  </Health>
+<Entity parent="allied_cav|cav_charge|cav_medium|cav_spear_shield|template_unit_cavalry_melee_spearman">
   <UnitMotion>
     <WalkSpeed op="mul">1.05</WalkSpeed>
  </UnitMotion>

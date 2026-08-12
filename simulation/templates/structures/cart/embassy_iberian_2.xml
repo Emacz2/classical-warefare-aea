@@ -41,6 +41,7 @@
     <Entities datatype="tokens">
       units/{civ}/merc_inf_javelineer_iber_a
       units/{civ}/merc_inf_swordsman_iber_a
+      units/{civ}/merc_spearcav_iber_a
     </Entities>
   </Trainer>
   <VisualActor>

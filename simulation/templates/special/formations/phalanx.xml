@@ -38,6 +38,6 @@
   <Identity>
     <GenericName>Phalanx</GenericName>
     <Icon>formations/phalanx.png</Icon>
-    <Tooltip>Compact formation of Infantry Hoplites creating a shield wall. FGain + 1.5 Hack/Pierce and +0.5 Crush resistance and 10% damage, but lose 20% speed</Tooltip>
+    <Tooltip>Compact formation of Infantry Hoplites creating a shield wall. Gain + 1.5 Hack/Pierce and +0.5 Crush resistance and 10% damage, but lose 20% speed</Tooltip>
   </Identity>
 </Entity>
