@@ -10,11 +10,11 @@
     </Entity>
   </Resistance>
     <UnitMotion>
-    <WalkSpeed op="mul">1.4</WalkSpeed>
-    <RunMultiplier op="mul">1.65</RunMultiplier>
+    <WalkSpeed op="mul">1.45</WalkSpeed>
+    <RunMultiplier op="mul">1.55</RunMultiplier>
   </UnitMotion>
    <Position>
-    <TurnRate>5</TurnRate>
+    <TurnRate>6</TurnRate>
   </Position>
  <Identity>
     <GenericName>Heavily Armored Cavalry</GenericName>

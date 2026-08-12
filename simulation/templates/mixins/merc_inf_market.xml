@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity>
   <Cost>
     <BuildTime op="mul">0.9</BuildTime>
@@ -10,9 +10,9 @@
     </Resources>
   </Cost>
   <Identity>
-    <Tooltip>Purchase mercenaries from the market for the cost of metal only, -10% train time</Tooltip>
-  </Identity>
+    <Tooltip>Market mercenaries cost metal only and train 10% faster than their standard mercenary counterparts. They have 1 capture attack, cannot gather resources or build, do not promote through fighting, and do not receive normal soldier forge technologies.</Tooltip>
+  <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses></Identity>
   <Loot>
     <metal>10</metal>
   </Loot>
-</Entity>
+<Attack><Capture><AttackName>Capture</AttackName><Capture>1.0</Capture><MaxRange>3</MaxRange><RepeatTime>1000</RepeatTime></Capture></Attack><Promotion disable="" /><ResourceGatherer disable="" /><Builder disable="" /></Entity>

@@ -6,16 +6,32 @@
 		"metal": 250
 	},
 	"supersedes": "soldier_attack_melee_01",
-		"requirements": {
+	"requirements": {
 		"all": [
-			{ "tech": "phase_town" },
-			{ "notciv": "athen" },
-			{ "notciv": "brit" },
-			{ "notciv": "gaul" },
-			{ "notciv": "germ" },
-			{ "notciv": "iber" },
-			{ "notciv": "spart" },
-			{ "notciv": "theb" }
+			{
+				"tech": "phase_town"
+			},
+			{
+				"notciv": "athen"
+			},
+			{
+				"notciv": "brit"
+			},
+			{
+				"notciv": "gaul"
+			},
+			{
+				"notciv": "germ"
+			},
+			{
+				"notciv": "iber"
+			},
+			{
+				"notciv": "spart"
+			},
+			{
+				"notciv": "theb"
+			}
 		]
 	},
 	"requirementsTooltip": "Unlocked in Town Phase.",
@@ -23,10 +39,21 @@
 	"researchTime": 40,
 	"tooltip": "Soldiers +15% melee attack damage.",
 	"modifications": [
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15 },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15 },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.15 }
+		{
+			"value": "Attack/Melee/Damage/Hack",
+			"multiply": 1.15
+		},
+		{
+			"value": "Attack/Melee/Damage/Pierce",
+			"multiply": 1.15
+		},
+		{
+			"value": "Attack/Melee/Damage/Crush",
+			"multiply": 1.15
+		}
 	],
-	"affects": ["Soldier !Mercenary!Elephant"],
+	"affects": [
+		"Soldier !Mercenary !Elephant"
+	],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

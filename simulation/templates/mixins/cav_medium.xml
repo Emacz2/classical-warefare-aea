@@ -10,17 +10,17 @@
     </Entity>
   </Resistance>
    <UnitMotion>
-    <WalkSpeed op="mul">1.55</WalkSpeed>
-    <RunMultiplier op="mul">1.75</RunMultiplier>
-    <Acceleration op="mul">1.1</Acceleration>
+    <WalkSpeed op="mul">1.6</WalkSpeed>
+    <RunMultiplier op="mul">1.60</RunMultiplier>
+    <Acceleration op="mul">1.15</Acceleration>
   </UnitMotion>
    <Position>
-    <TurnRate>8</TurnRate>
+    <TurnRate>10</TurnRate>
   </Position>
  <Identity>
     <GenericName>Medium Armored Cavalry</GenericName>
      <VisibleClasses datatype="tokens">Medium Cavalry</VisibleClasses>
-    <Tooltip>+3 Hack +2.5 Pierce and +2 Crush resistance and 55% faster walk speed than standard unit.</Tooltip>
+    <Tooltip>+3 Hack +2.5 Pierce and +2 Crush resistance and 60% faster walk speed than standard unit.</Tooltip>
     <History>.</History>
   </Identity>
 </Entity>
