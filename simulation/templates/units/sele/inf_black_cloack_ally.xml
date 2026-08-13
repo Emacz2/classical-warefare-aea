@@ -2,6 +2,7 @@
 <Entity parent="allied_inf|units/thracian_black_cloak">
   <Identity>
     <Civ>sele</Civ>
+    <Rank>Advanced</Rank>
     <Lang>greek</Lang>
     <GenericName>Thracian Black Cloak</GenericName>
     <SpecificName>Rhomphaiaphoros</SpecificName>

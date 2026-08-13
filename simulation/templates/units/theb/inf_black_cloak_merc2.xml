@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="merc_inf_market|units/thracian_black_cloak">
   <Identity>
-    <Civ>theb</Civ>
-     <Rank>Advanced</Rank>
+    <Civ>theb</Civ> 
+    <Rank>Elite</Rank>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>

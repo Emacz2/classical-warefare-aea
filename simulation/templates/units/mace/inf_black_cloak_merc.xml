@@ -6,6 +6,7 @@
     <GenericName>Thracian Black Cloak</GenericName>
     <SpecificName>Rhomphaiaphoros</SpecificName>
     <Icon>units/thrac/champion_infantry_swordsman.png</Icon>
+     <Rank>Advanced</Rank>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
