@@ -4,9 +4,6 @@
     <BuildTime op="mul">1.25</BuildTime>
 </Cost>
   <Attack>
-   <AttackName context="Name of an attack using a rhomphaia (ῥομφαία), a Thracian two-handed weapon capable of both thrusting and slashing.">Rhomphaia</AttackName>
-   <Capture>
-      <AttackName>Capture</AttackName>
       <Capture>1.0</Capture>
       <MaxRange>3</MaxRange>
       <RepeatTime>1000</RepeatTime>
