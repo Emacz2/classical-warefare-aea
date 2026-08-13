@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="sword_long|inf_shock|armor_medium|template_unit_infantry_melee_swordsman">
-<Attack>
-    <Melee>
-     <Damage>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">0.5</Pierce>
+<Entity parent="sword_long|inf_shock|armor_medium|helmet_protected|template_unit_infantry_melee_swordsman">
+<Cost>
+    <BuildTime op="mul">1.25</BuildTime>
+</Cost>
+  <Attack>
+   <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture>1.0</Capture>
+      <MaxRange>3</MaxRange>
+      <RepeatTime>1000</RepeatTime>
+    </Capture>
+     <Melee>
+      <Damage>
+        <Hack op="add">2</Hack>
+        <Pierce op="add">1</Pierce>
       </Damage>
+      <MaxRange op="add">0.5</MaxRange>
+      <RepeatTime op="add">100</RepeatTime>
     </Melee>
   </Attack>
-  <Identity>
-    <Rank>Elite</Rank>
+   <Identity>
     <Lang>greek</Lang>
     <GenericName>Thracian Black Cloak</GenericName>
+    <VisibleClasses datatype="tokens">Mercenary -Citizen</VisibleClasses>
     <SpecificName>Rhomphaiophoros</SpecificName>
-    <Icon>units/special/pelt_sword.png</Icon>
+    <Icon>units/thrac/champion_infantry_swordsman.png</Icon>
   </Identity>
+  <UnitMotion>
+    <WalkSpeed op="mul">1.05</WalkSpeed>
+  </UnitMotion>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>
