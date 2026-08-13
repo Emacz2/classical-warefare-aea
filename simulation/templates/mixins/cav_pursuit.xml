@@ -9,14 +9,14 @@
 <Attack>
   <Melee>
   <Damage>
-	  <Hack op="mul">0.6</Hack>
-    <Pierce op="mul">0.6</Pierce>
-    <Crush op="mul">0.6</Crush>
+	  <Hack op="mul">0.75</Hack>
+    <Pierce op="mul">0.57</Pierce>
+    <Crush op="mul">0.57</Crush>
   </Damage>
    <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>2.5</Multiplier>
+          <Multiplier>2</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PrepareTime>0</PrepareTime>

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Entity>
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="shield_light|helmet_open|template_unit_infantry_ranged_archer">
   <Cost>
     <BuildTime op="mul">1.1</BuildTime>
   </Cost>
@@ -12,15 +12,6 @@
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
     </Ranged>
   </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">1</Crush>
-        <Hack op="add">1</Hack>
-        <Pierce op="add">2</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Identity>
     <Lang>greek</Lang>
     <GenericName>Cretan Archer</GenericName>
