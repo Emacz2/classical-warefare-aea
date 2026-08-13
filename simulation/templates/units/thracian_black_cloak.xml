@@ -4,6 +4,7 @@
     <BuildTime op="mul">1.25</BuildTime>
 </Cost>
   <Attack>
+    <Capture>
       <Capture>1.0</Capture>
       <MaxRange>3</MaxRange>
       <RepeatTime>1000</RepeatTime>
