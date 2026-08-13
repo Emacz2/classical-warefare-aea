@@ -2,6 +2,7 @@
 <Entity parent="merc_inf_market|units/thracian_black_cloak">
   <Identity>
     <Civ>spart</Civ>
+    <Rank>Elite</Rank>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
