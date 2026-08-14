@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_light|template_unit_infantry_ranged_javelineer">
+<Entity parent="inf_raider|shield_light|template_unit_infantry_ranged_javelineer">
   <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
-    <Acceleration op="mul">1.05</Acceleration>
+    <WalkSpeed>11.8</WalkSpeed>
+    <RunMultiplier>1.8</RunMultiplier>
+    <Acceleration>40</Acceleration>
   </UnitMotion>
   <Identity>
-    <Rank>Elite</Rank>
     <Lang>greek</Lang>
     <GenericName>Thracian Peltast</GenericName>
     <SpecificName>Peltastḗs Thrâx</SpecificName>
