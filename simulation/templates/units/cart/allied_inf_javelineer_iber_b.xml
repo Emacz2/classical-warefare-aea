@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_inf|shield_light|template_unit_infantry_ranged_javelineer">
+<Entity parent="allied_inf|shield_light|template_unit_infantry_ranged_javelineer">
   <Identity>
     <Civ>cart</Civ>
     <Classes datatype="tokens">Iberian</Classes>
-    <GenericName>Iberian Mercenary Peltast</GenericName>
+    <GenericName>Iberian Allied Peltast</GenericName>
     <SpecificName>Sǝḫīr Kidōn</SpecificName>
     <SelectionGroupName>units/cart/merc_inf_javelineer_iber_b</SelectionGroupName>
     <Icon>units/cart/infantry_javelinist.png</Icon>
@@ -15,7 +15,6 @@
   </Attack>
   <Promotion>
     <Entity>units/cart/allied_inf_javelineer_iber_a</Entity>
-    <RequiredXp>3000</RequiredXp>
   </Promotion>
   <VisualActor>
     <Actor>units/iberians/infantry_javelinist_b.xml</Actor>

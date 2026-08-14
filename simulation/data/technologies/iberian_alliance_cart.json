@@ -1,0 +1,35 @@
+{
+  "genericName": "Iberian Alliance",
+  "description": "Formalize Carthage's military alliance with Iberian communities, integrating existing Iberian mercenaries into the allied army.",
+  "cost": {
+    "food": 300,
+    "metal": 300
+  },
+  "requirements": {
+    "all": [
+      {
+        "tech": "phase_town"
+      },
+      {
+        "civ": "cart"
+      }
+    ]
+  },
+  "requirementsTooltip": "Unlocked in Town Phase.",
+  "icon": "diplomacy.png",
+  "researchTime": 40,
+  "tooltip": "Existing Iberian Mercenaries immediately become Advanced Allied Iberian troops. Iberian Embassies thereafter recruit Basic Allied Iberians, who promote normally through experience.",
+  "modifications": [
+    {
+      "value": "Promotion/RequiredXp",
+      "replace": 0,
+      "affects": "Iberian Mercenary"
+    },
+    {
+      "value": "Promotion/RequiredXp",
+      "replace": 0,
+      "affects": "IberianEmbassy"
+    }
+  ],
+  "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

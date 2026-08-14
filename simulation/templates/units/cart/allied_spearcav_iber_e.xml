@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/cart/merc_spearcav_iber_a">
+<Entity parent="units/cart/allied_spearcav_iber_a">
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
-  <Promotion>
-    <Entity>units/cart/allied_spearcav_iber_a</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/iberians/cavalry_spearman_e_m.xml</Actor>
   </VisualActor>
