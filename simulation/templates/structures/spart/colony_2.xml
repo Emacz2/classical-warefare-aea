@@ -37,7 +37,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_e
       units/{civ}/neodamodes_spearman
-      units/{civ}/merc_thracian_peltast
+      units/{civ}/merc_thracian_peltast_e
     </Entities>
   </Trainer>
    <TerritoryInfluence>

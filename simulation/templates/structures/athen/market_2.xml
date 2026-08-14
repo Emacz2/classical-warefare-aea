@@ -13,7 +13,7 @@
       -units/{civ}/merc_inf_archer_market_b
       units/{civ}/merc_inf_slinger_market_e
       units/{civ}/merc_inf_archer_market_e
-      units/{civ}/merc_thracian_peltast
+      units/{civ}/merc_thracian_peltast_e
     </Entities>
   </Trainer>
   <VisualActor>

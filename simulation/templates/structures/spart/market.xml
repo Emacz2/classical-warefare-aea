@@ -15,6 +15,8 @@
     <Entities datatype="tokens">
       -units/{civ}/merc_inf_archer_market_b
        units/{civ}/merc_inf_archer_market_e
+       -units/{civ}/merc_market_thracian_peltast
+       units/{civ}/merc_market_thracian_peltast_e
     </Entities>
   </Trainer>
   <VisualActor>
