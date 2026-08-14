@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
+<Entity parent="cav_raider|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
   <Cost>
      <Resources>
-      <food>175</food>
-      <wood>75</wood>
-      <stone>0</stone>
+      <food op="add">25</food>
+      <wood op="add">10</wood>
     </Resources>
   </Cost>
   <Attack>

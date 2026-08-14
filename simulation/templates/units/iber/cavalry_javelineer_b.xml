@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="iber|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
+<Entity parent="iber|cav_raider|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
   <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/cavalry_javelineer_b</SelectionGroupName>
-     <GenericName>Iberian Cavalry Javelineer</GenericName>
+     <GenericName>Iberian Horse Javelineer</GenericName>
     <SpecificName>Zaldun Txabalindari</SpecificName>
     <Icon>units/iber/cavalry_javelinist.png</Icon>
     <Requirements>

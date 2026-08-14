@@ -25,13 +25,9 @@
     </Ranged>
   </Attack>
 
-  <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
-  </UnitMotion>
-
   <Identity>
-    <GenericName>Infantry Raider</GenericName>
+    <GenericName>Cavalry Raider</GenericName>
     <VisibleClasses datatype="tokens">Raider</VisibleClasses>
-    <Tooltip>Raiders move 15% faster, deal 25% more damage to support units, and gain +0.5 capture attack.</Tooltip>
+    <Tooltip>Raiders deal 25% more damage to support units and gain +0.5 capture attack.</Tooltip>
   </Identity>
 </Entity>
