@@ -4,11 +4,6 @@
     teambonuses/gaul_player_teambonus
     teambonuses/gaul_player_teambonus2
   </Auras>
-   <EntityLimits>
-    <Limits>
-      <Diplomat>3</Diplomat>
-    </Limits>
-  </EntityLimits>
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Gauls</GenericName>
