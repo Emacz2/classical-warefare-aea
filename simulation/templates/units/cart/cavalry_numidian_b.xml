@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="allied_cav|units/numidian_cavalry">
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Allied Numidian Light Javelineer Cavalry</GenericName>
+    <GenericName>Allied Numidian Horse Javelineer</GenericName>
     <SpecificName>Numidae Iaculatores</SpecificName>
     <SelectionGroupName>units/cart/cavalry_numidian_b</SelectionGroupName>
     <Icon>units/special/num_cav_merc.png</Icon>

@@ -24,11 +24,10 @@
     <Icon>units/cart/champion_cavalry.png</Icon>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">1.10</WalkSpeed>
-    <RunMultiplier op="mul">1.10</RunMultiplier>
-    <Acceleration op="mul">1.10</Acceleration>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
+    <RunMultiplier op="mul">1.1</RunMultiplier>
+    <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
-  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/carthaginians/champion_cavalry_numidian_c_m.xml</Actor>
   </VisualActor>

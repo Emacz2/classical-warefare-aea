@@ -38,7 +38,7 @@
   <Trainer>
     <Entities datatype="tokens">
       units/{civ}/cavalry_javelineer_merc_e
-      units/{civ}/cavalry_swordsman_merc
+      units/{civ}/cavalry_swordsman_merc_e
     </Entities>
   </Trainer>
   <VisualActor>
