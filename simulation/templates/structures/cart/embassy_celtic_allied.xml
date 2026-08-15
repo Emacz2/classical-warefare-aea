@@ -27,12 +27,13 @@
   </Health>
   <Identity>
     <Civ>cart</Civ>
-    <SpecificName>Celtic Mercenary Embassy</SpecificName>
-    <Tooltip>Train Advanced Gallic Mercenaries.</Tooltip>
-    <Classes datatype="tokens">CivSpecific CelticEmbassy</Classes>
-    <VisibleClasses datatype="tokens">Village -Town Two</VisibleClasses>
+    <SpecificName>Celtic Allied Embassy</SpecificName>
+    <Tooltip>Train Elite Gallic Mercenaries and Basic Gallic Allied troops. Allied troops promote normally through battlefield experience.</Tooltip>
+    <Classes datatype="tokens">CivSpecific CelticEmbassy CelticAlliedEmbassy</Classes>
+    <VisibleClasses datatype="tokens">Village -Town</VisibleClasses>
     <Icon>structures/embassy_celtic.png</Icon>
   </Identity>
+  <Promotion disable=""/>
   <Loot>
     <wood>40</wood>
   </Loot>
@@ -41,14 +42,12 @@
   </Obstruction>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/merc_inf_swordsman_gaul_a
-      units/{civ}/merc_swordcav_gaul_a
+      units/{civ}/merc_inf_swordsman_gaul_e
+      units/{civ}/merc_swordcav_gaul_e
+      units/{civ}/allied_inf_swordsman_gaul_b
+      units/{civ}/allied_swordcav_gaul_b
     </Entities>
   </Trainer>
-  <Promotion>
-    <Entity>structures/cart/embassy_celtic_3</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
   <VisualActor>
     <Actor>structures/carthaginians/embassy_celtic.xml</Actor>
   </VisualActor>

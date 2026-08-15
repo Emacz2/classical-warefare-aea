@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="shield_light|template_unit_infantry_ranged_javelineer">
   <Identity>
+    <Classes datatype="tokens">Samnite</Classes>
     <GenericName>Samnite Skirmisher</GenericName>
-      <SpecificName>Vēles Samnītis</SpecificName>
+    <SpecificName>Vēles Samnītis</SpecificName>
     <Icon>units/samn/skirmisher.png</Icon>
   </Identity>
-  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/carthaginians/infantry_javelinist_c_samnite.xml</Actor>
   </VisualActor>

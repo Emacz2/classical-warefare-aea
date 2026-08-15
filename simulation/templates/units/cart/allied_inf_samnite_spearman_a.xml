@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/cart/allied_inf_samnite_spearman_b">
+  <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
+  <Promotion>
+    <Entity>units/cart/allied_inf_samnite_spearman_e</Entity>
+  </Promotion>
+</Entity>

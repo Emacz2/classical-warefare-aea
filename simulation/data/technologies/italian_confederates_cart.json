@@ -1,0 +1,36 @@
+{
+  "genericName": "Italian Confederates",
+  "description": "Deepen Carthage's military agreements with allied communities in southern Italy and improve the flow of experienced contingents to Hannibal's army.",
+  "cost": {
+    "food": 300,
+    "metal": 250
+  },
+  "requirements": {
+    "all": [
+      {
+        "tech": "phase_city"
+      },
+      {
+        "civ": "cart"
+      }
+    ]
+  },
+  "requirementsTooltip": "Unlocked in City Phase.",
+  "icon": "diplomacy.png",
+  "researchTime": 40,
+  "tooltip": "Samnite Allied troops train 10% faster and require 20% less experience to promote.",
+  "affects": [
+    "Samnite Allied"
+  ],
+  "modifications": [
+    {
+      "value": "Cost/BuildTime",
+      "multiply": 0.9
+    },
+    {
+      "value": "Promotion/RequiredXp",
+      "multiply": 0.8
+    }
+  ],
+  "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

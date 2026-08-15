@@ -1,0 +1,30 @@
+{
+    "genericName": "Gallic Alliances",
+    "description": "Formalize military alliances with Gallic peoples while retaining Carthage's existing Celtic mercenary contracts.",
+    "cost": {
+        "food": 300,
+        "metal": 300
+    },
+    "requirements": {
+        "all": [
+            {
+                "tech": "phase_city"
+            },
+            {
+                "civ": "cart"
+            }
+        ]
+    },
+    "requirementsTooltip": "Unlocked in City Phase.",
+  "icon": "handshake.png",
+    "researchTime": 40,
+    "tooltip": "Celtic Embassies continue to train Elite Gallic Mercenaries and also gain access to Basic Gallic Allied swordsmen and cavalry. Allied Gallic troops promote normally through experience.",
+    "modifications": [
+        {
+            "value": "Promotion/RequiredXp",
+            "replace": 0,
+            "affects": "CelticAllianceReady"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="allied_inf|units/samnite_spearman">
+  <Identity>
+    <Civ>cart</Civ>
+    <GenericName>Samnite Allied Spearman</GenericName>
+    <SpecificName>Samnite Spearman</SpecificName>
+    <SelectionGroupName>units/cart/allied_inf_samnite_spearman_b</SelectionGroupName>
+    <Icon>units/samn/spearman.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/cart/allied_inf_samnite_spearman_a</Entity>
+  </Promotion>
+</Entity>
