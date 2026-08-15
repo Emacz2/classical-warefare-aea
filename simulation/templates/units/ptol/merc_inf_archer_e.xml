@@ -3,7 +3,7 @@
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
-<Promotion disable=""/>
+  <Promotion disable="" />
   <VisualActor>
     <Actor>units/ptolemies/infantry_archer_merc_e.xml</Actor>
   </VisualActor>

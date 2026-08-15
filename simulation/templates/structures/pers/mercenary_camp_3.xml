@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="structures/pers/mercenary_camp_2">
+  <Identity>
+    <GenericName>Elite Greek Mercenary Camp</GenericName>
+    <SpecificName>Stratopedeia Misthophorōn</SpecificName>
+    <Classes datatype="tokens">MercenaryCamp</Classes>
+    <Tooltip>Recruit Elite Greek Hoplites and Thracian Peltasts.</Tooltip>
+    <Icon>structures/mercenary_camp.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">phase_city</Techs>
+    </Requirements>
+  </Identity>
+  <Upgrade disable="" />
+  <Trainer>
+    <Entities replace="" datatype="tokens">
+      units/{civ}/merc_inf_spearman_e
+      units/{civ}/merc_thracian_peltast_e
+    </Entities>
+  </Trainer>
+</Entity>

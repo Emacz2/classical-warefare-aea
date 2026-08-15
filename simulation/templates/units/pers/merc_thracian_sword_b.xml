@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="merc_inf|units/thracian_peltast_sword">
+  <Identity>
+    <Civ>pers</Civ>
+    <Rank>Basic</Rank>
+  </Identity>
+  <Promotion disable="" />
+  <Upgrade>
+    <Peltast_Jav>
+      <Entity>units/pers/merc_thracian_peltast_b</Entity>
+      <Tooltip>Switch to throwing javelins.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>4</Time>
+    </Peltast_Jav>
+  </Upgrade>
+</Entity>

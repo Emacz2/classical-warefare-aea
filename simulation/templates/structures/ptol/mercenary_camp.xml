@@ -14,7 +14,7 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="25.5" depth="25.5"/>
+    <Square width="25.5" depth="25.5" />
     <Height>12.0</Height>
   </Footprint>
   <Health>
@@ -26,20 +26,20 @@
     <List datatype="tokens">Infantry</List>
   </GarrisonHolder>
   <Identity>
-    <GenericName>Greek Mercanery Camp</GenericName>
+    <GenericName>Greek Mercenary Camp</GenericName>
     <SpecificName>Stratopedeia Misthophorōn</SpecificName>
     <Classes datatype="tokens">MercenaryCamp</Classes>
     <VisibleClasses datatype="tokens">Village</VisibleClasses>
-    <Tooltip>Cheap Barracks-like structure that is buildable in neutral territory, but casts no territory influence. Train Mercenaries.</Tooltip>
+    <Tooltip>Recruit Basic Cretan Archers and Tarantine Horse Javelineers. Upgrade the camp in Town Phase to recruit Advanced mercenaries.</Tooltip>
     <Icon>structures/mercenary_camp.png</Icon>
-      <Requirements>
+    <Requirements>
       <Techs datatype="tokens">-phase_town phase_village</Techs>
     </Requirements>
   </Identity>
-   <Upgrade>
+  <Upgrade>
     <camp>
       <Entity>structures/ptol/mercenary_camp_2</Entity>
-      <Tooltip>Upgrade to a bigger camp, train elite and advanced Mercenaries.</Tooltip>
+      <Tooltip>Upgrade to an Advanced Greek Mercenary Camp.</Tooltip>
       <Cost>
         <metal>25</metal>
         <wood>100</wood>
@@ -58,7 +58,7 @@
     <metal>20</metal>
   </Loot>
   <Obstruction>
-    <Static width="23.5" depth="23.5"/>
+    <Static width="23.5" depth="23.5" />
   </Obstruction>
   <Sound>
     <SoundGroups>
@@ -69,8 +69,8 @@
   <TerritoryDecay>
     <DecayRate>1</DecayRate>
   </TerritoryDecay>
-  <TerritoryInfluence disable=""/>
- <Trainer>
+  <TerritoryInfluence disable="" />
+  <Trainer>
     <Entities replace="" datatype="tokens">
       units/{civ}/merc_inf_archer_b
       units/{civ}/cavalry_javelineer_merc_b
