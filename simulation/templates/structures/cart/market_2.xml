@@ -12,20 +12,29 @@
     <CapturePoints op="mul">1.5</CapturePoints>
   </Capturable>
   <TerritoryDecay disable=""/>
- <Identity>
+  <Identity>
     <Civ>cart</Civ>
     <GenericName>Market lvl 2</GenericName>
     <SpecificName>Šūq</SpecificName>
+    <Tooltip>Barter resources, establish trade routes, and recruit Advanced Balearic mercenary slingers.</Tooltip>
     <VisibleClasses datatype="tokens">Village -Town Two</VisibleClasses>
   </Identity>
-   <Trainer>
+  <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
+
+      -units/{civ}/inf_black_cloak_merc
+      -units/{civ}/merc_inf_swordsman_market_b
+      -units/{civ}/merc_inf_spearman_market_b
+      -units/{civ}/merc_inf_archer_market_b
+      -units/{civ}/merc_market_thracian_peltast
+      -units/{civ}/merc_spear_market_b
+      -units/{civ}/merc_spearcav_market_b
       -units/{civ}/merc_inf_slinger_market_b
       units/{civ}/merc_inf_slinger_market_a
     </Entities>
   </Trainer>
-    <Promotion>
+  <Promotion>
     <Entity>structures/cart/market_3</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>

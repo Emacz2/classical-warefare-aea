@@ -1,6 +1,6 @@
 {
   "genericName": "Foreign Contingents",
-  "description": "Carthage drew heavily upon both hired mercenaries and allied contingents. Experience coordinating soldiers from many peoples made these foreign formations more effective when serving in Carthaginian armies.",
+  "description": "Carthage drew heavily upon both hired mercenaries and allied contingents. Greater reliance on foreign manpower improved the effectiveness of these formations, but made the mobilization and replacement of Punic troops comparatively slower.",
   "cost": {
     "food": 400,
     "metal": 200,
@@ -19,7 +19,7 @@
   "requirementsTooltip": "Unlocked in Town Phase for Carthage.",
   "icon": "armor_corinthian.png",
   "researchTime": 40,
-  "tooltip": "Mercenary and Allied troops deal 5% more attack damage.",
+  "tooltip": "Mercenary and Allied troops deal 5% more attack damage. Punic non-Support, non-Hero troops take 15% longer to train.",
   "modifications": [
     {
       "value": "Attack/Melee/Damage/Hack",
@@ -80,6 +80,11 @@
       "value": "Attack/Ranged/Damage/Crush",
       "multiply": 1.05,
       "affects": "Allied"
+    },
+    {
+      "value": "Cost/BuildTime",
+      "multiply": 1.15,
+      "affects": "Punic !Support !Hero"
     }
   ]
 }

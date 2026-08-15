@@ -1,14 +1,17 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <Entity parent="merc_special_inf|slinger_baleric|template_unit_infantry_ranged_slinger_lead">
- <Identity>
+  <Identity>
+    <Civ>cart</Civ>
     <Rank>Elite</Rank>
+    <GenericName>Balearic Mercenary Lead Slinger</GenericName>
+    <SpecificName>Qallāʿ Ibušimi</SpecificName>
     <Icon>units/cart/infantry_slinger.png</Icon>
-    <SelectionGroupName>units/cart/merc_inf_slinger_lead</SelectionGroupName>
+    <SelectionGroupName>units/cart/merc_inf_slinger_market_b</SelectionGroupName>
   </Identity>
-   <Upgrade>
+  <Upgrade>
     <Stone>
       <Entity>units/cart/merc_inf_slinger_market_e</Entity>
-      <Tooltip>Switch to stone Throwing Balearic Slinger</Tooltip>
+      <Tooltip>Switch to stone sling ammunition.</Tooltip>
       <Cost>
         <stone>10</stone>
       </Cost>
@@ -16,7 +19,7 @@
       <Time>10</Time>
     </Stone>
   </Upgrade>
-   <Promotion disable="" />
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/iberians/infantry_slinger_e.xml</Actor>
   </VisualActor>

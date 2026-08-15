@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="units/cart/merc_inf_slinger_market_a">
- <Identity>
+  <Identity>
     <Rank>Elite</Rank>
-     <Requirements>
+    <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
-     <SelectionGroupName>units/cart/merc_inf_slinger_market_b</SelectionGroupName>
+    <SelectionGroupName>units/cart/merc_inf_slinger_market_b</SelectionGroupName>
   </Identity>
   <Upgrade>
     <Lead>
       <Entity>units/cart/merc_inf_slinger_lead</Entity>
-      <Tooltip>Switch to lead bullet Balearic Slinger</Tooltip>
+      <Tooltip>Switch to lead sling bullets.</Tooltip>
       <Cost>
         <metal>10</metal>
       </Cost>
@@ -18,7 +18,7 @@
       <Time>10</Time>
     </Lead>
   </Upgrade>
-   <Promotion disable=""/>
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/iberians/infantry_slinger_e.xml</Actor>
   </VisualActor>
