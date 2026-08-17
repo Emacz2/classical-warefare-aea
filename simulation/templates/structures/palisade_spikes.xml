@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_defensive_palisade_spikes|structures/palisades_spikes_small">
+  <BuildRestrictions>
+    <PlacementType>land-shore</PlacementType>
+    <Territory>own neutral</Territory>
+    <Category>Wall</Category>
+  </BuildRestrictions>
+  <Cost>
+    <BuildTime>20</BuildTime>
+    <Resources>
+      <food>0</food>
+      <wood>125</wood>
+      <stone>0</stone>
+      <metal>0</metal>
+    </Resources>
+  </Cost>
+  <Identity>
+    <Civ>gaia</Civ>
+    <GenericName>Palisade Spikes</GenericName>
+    <SelectionGroupName>structures/palisade_spikes</SelectionGroupName>
+    <Tooltip>Sharpened wooden stakes that infantry can pass through, but which slow and injure nearby cavalry.</Tooltip>
+    <VisibleClasses datatype="tokens">Defensive Village Palisade Spikes</VisibleClasses>
+    <Icon>structures/wooden_spikes.png</Icon>
+  </Identity>
+  <Obstruction>
+    <Active>true</Active>
+    <BlockMovement>false</BlockMovement>
+    <BlockPathfinding>false</BlockPathfinding>
+    <BlockFoundation>true</BlockFoundation>
+    <BlockConstruction>false</BlockConstruction>
+    <DisableBlockMovement>false</DisableBlockMovement>
+    <DisableBlockPathfinding>false</DisableBlockPathfinding>
+    <DeleteUponConstruction>false</DeleteUponConstruction>
+  </Obstruction>
+  <RallyPoint disable=""/>
+</Entity>
