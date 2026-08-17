@@ -15,11 +15,12 @@
     <GenericName>Thureophoros Spearman</GenericName>
     <SpecificName>Thureophóros</SpecificName>
     <Icon>units/ptol/infantry_spearman_2.png</Icon>
+    <Rank>Basic</Rank>
   </Identity>
-   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/ptolemies/infantry_spearman_b.xml</Actor>
   </VisualActor>
+  <Promotion>
+    <Entity>units/sele/tureos_spearman_a</Entity>
+  </Promotion>
 </Entity>
-
-

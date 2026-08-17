@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="sele|units/tureos_skirmisher">
-   <Upgrade>
+  <Upgrade>
     <Spear>
       <Entity>units/sele/tureos_spearman</Entity>
       <Tooltip>Switch to using a spear.</Tooltip>
@@ -13,9 +13,12 @@
     <SelectionGroupName>units/sele/tureos_skirmisher</SelectionGroupName>
     <GenericName>Thureophoros Skirmisher</GenericName>
     <SpecificName>Thureophóros</SpecificName>
+    <Rank>Basic</Rank>
   </Identity>
-  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/iberians/infantry_javelinist_b.xml</Actor>
   </VisualActor>
+  <Promotion>
+    <Entity>units/sele/tureos_skirmisher_a</Entity>
+  </Promotion>
 </Entity>

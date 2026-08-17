@@ -2,6 +2,7 @@
 <Entity parent="han|armor_medium|shield_medium|helmet_open|template_unit_infantry_melee_swordsman">
   <Identity>
     <Rank>Advanced</Rank>
+   <Icon>units/han/infantry_swordsman.png</Icon>
   </Identity>
   <Promotion>
     <Entity>units/han/infantry_swordsman_e</Entity>

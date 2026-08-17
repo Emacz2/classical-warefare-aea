@@ -16,6 +16,8 @@
       units/{civ}/cavalry_spearman_p
       -units/{civ}/merc_inf_archer_a
       units/{civ}/merc_inf_archer_e
+      -units/{civ}/merc_tureos_skirmisher
+      units/{civ}/tureos_skirmisher
     </Entities>
   </Trainer>
   <Researcher>

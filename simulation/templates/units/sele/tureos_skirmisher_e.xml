@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/sele/tureos_skirmisher_a">
+  <Identity>
+    <Rank>Elite</Rank>
+  </Identity>
+  <Upgrade>
+    <Spear>
+      <Entity>units/sele/tureos_spearman_e</Entity>
+      <Tooltip>Switch to using a spear.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>4</Time>
+    </Spear>
+  </Upgrade>
+  <Promotion disable="" />
+</Entity>
