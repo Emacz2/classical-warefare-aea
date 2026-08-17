@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="aux_inf|slinger_baleric|template_unit_infantry_ranged_slinger_lead">
   <Identity>
+    <Civ>rome</Civ>
     <GenericName>Auxiliary Balearic Slinger</GenericName>
     <SelectionGroupName>units/rome/aux_inf_slinger_lead</SelectionGroupName>
     <Icon>units/cart/infantry_slinger.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">roman_reforms</Techs>
+    </Requirements>
   </Identity>
   <Upgrade>
     <Stone>
       <Entity>units/rome/aux_inf_slinger_stone</Entity>
-      <Tooltip>Switch to stone throwing Balearic Slinger</Tooltip>
+      <Tooltip>Switch to stone ammunition.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>10</Time>
     </Stone>
   </Upgrade>
-  <Promotion disable=""/>
+  <Promotion disable="" />
   <VisualActor>
     <Actor>units/iberians/infantry_slinger_b.xml</Actor>
   </VisualActor>

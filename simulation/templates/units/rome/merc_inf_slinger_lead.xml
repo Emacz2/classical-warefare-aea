@@ -1,13 +1,15 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Entity parent="merc_special_inf|slinger_baleric|template_unit_infantry_ranged_slinger_lead">
- <Identity>
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="merc_inf_market|merc_special_inf|slinger_baleric|template_unit_infantry_ranged_slinger_lead">
+  <Identity>
+    <Civ>rome</Civ>
     <Rank>Elite</Rank>
     <SelectionGroupName>units/rome/merc_inf_slinger_lead</SelectionGroupName>
+    <VisibleClasses datatype="tokens">Republic</VisibleClasses>
   </Identity>
-    <Upgrade>
+  <Upgrade>
     <Stone>
       <Entity>units/rome/merc_inf_slinger_market_e</Entity>
-      <Tooltip>Switch to stone amunition</Tooltip>
+      <Tooltip>Switch to stone ammunition.</Tooltip>
       <Cost>
         <stone>10</stone>
       </Cost>
@@ -15,7 +17,10 @@
       <Time>10</Time>
     </Stone>
   </Upgrade>
- <Promotion disable="" />
+  <Promotion>
+    <Entity>units/rome/aux_inf_slinger_lead</Entity>
+    <RequiredXp>100000</RequiredXp>
+  </Promotion>
   <VisualActor>
     <Actor>units/iberians/infantry_slinger_e.xml</Actor>
   </VisualActor>

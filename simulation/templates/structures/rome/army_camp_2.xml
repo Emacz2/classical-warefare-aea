@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="structures/rome/army_camp">
+  <Identity>
+    <GenericName>Reformed Army Camp</GenericName>
+    <SpecificName>Castra</SpecificName>
+    <VisibleClasses datatype="tokens">-Republic</VisibleClasses>
+    <Tooltip>Reformed Roman field camp. Train Roman infantry and Legionary Javelineers, recruit slaves, and construct field siege engines.</Tooltip>
+    <Requirements>
+      <Techs datatype="tokens">roman_reforms</Techs>
+    </Requirements>
+  </Identity>
+  <Promotion disable="" />
+  <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities replace="" datatype="tokens">
+      units/{civ}/support_slave
+      units/{civ}/infantry_swordsman_a
+      units/{civ}/infantry_spearman_t
+      units/{civ}/champion_infantry_swordsman_guard
+      units/{civ}/infantry_antesignanus
+      units/{civ}/siege_onager_packed
+      units/{civ}/siege_ram
+    </Entities>
+  </Trainer>
+</Entity>

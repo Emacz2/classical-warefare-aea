@@ -3,8 +3,11 @@
   <Identity>
     <Rank>Advanced</Rank>
   </Identity>
- <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/rome/aux_archer</Entity>
+    <RequiredXp>100000</RequiredXp>
+  </Promotion>
   <VisualActor>
-   <Actor>units/athenians/infantry_archer_a.xml</Actor>
+    <Actor>units/athenians/infantry_archer_a.xml</Actor>
   </VisualActor>
 </Entity>

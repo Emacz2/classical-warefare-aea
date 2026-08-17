@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_economic_market">
+<Entity parent="structures/rome/market_2">
   <Identity>
     <Civ>rome</Civ>
-    <SpecificName>Emporion</SpecificName> 
-    <VisibleClasses datatype="tokens">Republic</VisibleClasses>
+    <SpecificName>Mercātus</SpecificName>
+    <VisibleClasses datatype="tokens">-Republic</VisibleClasses>
+    <Tooltip>Trade resources and recruit professional Auxiliary Cretan Archers and Balearic Slingers.</Tooltip>
+    <Requirements>
+      <Techs datatype="tokens">roman_reforms</Techs>
+    </Requirements>
   </Identity>
-    <Trainer>
+  <Promotion disable=""/>
+  <Upgrade disable=""/>
+  <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
-    <Entities datatype="tokens">
+    <Entities replace="" datatype="tokens">
+      units/{civ}/support_trader
       units/{civ}/aux_archer
       units/{civ}/aux_inf_slinger_stone
     </Entities>
   </Trainer>
-  <VisualActor>
-      <Actor>structures/hellenes/market.xml</Actor>
-  </VisualActor>
 </Entity>

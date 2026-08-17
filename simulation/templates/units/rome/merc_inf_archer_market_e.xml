@@ -2,15 +2,12 @@
 <Entity parent="units/rome/merc_inf_archer_market_a">
   <Identity>
     <Rank>Elite</Rank>
-    <Requirements>
-      <Techs datatype="tokens">phase_city</Techs>
-    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/rome/aux_archer</Entity>
-    <RequiredXp>4000</RequiredXp>
+    <RequiredXp>100000</RequiredXp>
   </Promotion>
   <VisualActor>
-   <Actor>units/athenians/infantry_archer_e.xml</Actor>
+    <Actor>units/athenians/infantry_archer_e.xml</Actor>
   </VisualActor>
 </Entity>

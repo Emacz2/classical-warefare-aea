@@ -2,14 +2,11 @@
 <Entity parent="units/rome/merc_inf_slinger_market_a">
   <Identity>
     <Rank>Elite</Rank>
-    <Requirements>
-      <Techs datatype="tokens">phase_city</Techs>
-    </Requirements>
   </Identity>
   <Upgrade>
     <Lead>
       <Entity>units/rome/merc_inf_slinger_lead</Entity>
-      <Tooltip>Switch to lead bullet Balearic Slinger</Tooltip>
+      <Tooltip>Switch to lead bullets.</Tooltip>
       <Cost>
         <metal>10</metal>
       </Cost>
@@ -17,7 +14,10 @@
       <Time>10</Time>
     </Lead>
   </Upgrade>
- <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/rome/aux_inf_slinger_stone</Entity>
+    <RequiredXp>100000</RequiredXp>
+  </Promotion>
   <VisualActor>
     <Actor>units/iberians/infantry_slinger_e.xml</Actor>
   </VisualActor>

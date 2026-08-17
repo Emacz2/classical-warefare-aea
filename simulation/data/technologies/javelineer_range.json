@@ -1,0 +1,53 @@
+{
+	"genericName": "Javelin throwing thong",
+	"specificName": {
+		"athen": "Ankyle",
+		"gaul": "Throwing Thong",
+		"iber": "Throwing Thong",
+		"mace": "Ankyle",
+		"ptol": "Ankyle",
+		"rome": "Amentum",
+		"sele": "Ankyle",
+		"spart": "Ankyle",
+		"theb": "Ankyle"
+		
+
+		
+	},
+	"description": "A leather thong wrapped around the javelin shaft increases leverage and imparts stabilizing spin, allowing trained javelineers to throw farther and more accurately, though preparing each cast takes slightly longer.",
+	"cost": {
+		"food": 250,
+		"wood": 250
+		
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{
+				"any": [
+					{ "civ": "athen" },
+					{ "civ": "gaul" },
+					{ "civ": "iber" },
+					{ "civ": "mace" },
+					{ "civ": "ptol" },
+					{ "civ": "rome" },
+					{ "civ": "sele" },
+					{ "civ": "spart" },
+					{ "civ": "theb" }
+
+				]
+			}
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "archery_tradition.png",
+	"researchTime": 40,
+	"tooltip": "Infantry Javelineers gain +5 range and 15% improved accuracy, but their repeat time increases by 250 ms.",
+	"modifications": [
+		{ "value": "Attack/Ranged/MaxRange", "add": 5 },
+		{ "value":  "Attack/Ranged/Projectile/Spread", "multiply": 0.85 },
+		{ "value": "Attack/Ranged/RepeatTime", "add": 250 }
+	],
+	"affects": ["Infantry Javelineer !Chariot !Heavy"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

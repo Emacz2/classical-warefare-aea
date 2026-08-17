@@ -10,7 +10,7 @@
     <SpecificName>Zhànchē</SpecificName>
     <Icon>units/han/chariot.png</Icon>
     <Requirements>
-      <Techs datatype="tokens">unlock_champion_chariots phase_town</Techs>
+      <Techs datatype="tokens">unlock_champion_chariots</Techs>
     </Requirements>
   </Identity>
   <TrainingRestrictions>

@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_structure_economic_market">
+<Entity parent="structures/rome/market">
   <Identity>
     <Civ>rome</Civ>
-    <SpecificName>Emporion</SpecificName> 
-    <VisibleClasses datatype="tokens">Republic</VisibleClasses>
+    <SpecificName>Mercātus</SpecificName>
+    <VisibleClasses datatype="tokens">City Republic</VisibleClasses>
+    <Tooltip>Trade resources and recruit Elite Cretan Archer and Balearic Slinger mercenaries. Augustus' Reforms automatically reorganize the Market and these specialists as Auxiliaries.</Tooltip>
+    <Requirements>
+      <Techs datatype="tokens">phase_city</Techs>
+    </Requirements>
   </Identity>
-    <Trainer>
+  <Upgrade disable="" />
+  <Promotion>
+    <Entity>structures/rome/market_3</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
+  <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
-    <Entities datatype="tokens">
-      -units/{civ}/merc_inf_archer_market_b
-      -units/{civ}/merc_inf_slinger_market_b
+    <Entities replace="" datatype="tokens">
+      units/{civ}/support_trader
       units/{civ}/merc_inf_slinger_market_e
       units/{civ}/merc_inf_archer_market_e
     </Entities>
   </Trainer>
-    <Promotion>
-    <Entity>structures/rome/market_3</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
-  <VisualActor>
-      <Actor>structures/hellenes/market.xml</Actor>
-  </VisualActor>
 </Entity>

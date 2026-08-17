@@ -2,11 +2,11 @@
 <Entity parent="units/rome/merc_inf_slinger_market_b">
   <Identity>
     <Rank>Advanced</Rank>
-     <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
   </Identity>
-  <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/rome/aux_inf_slinger_stone</Entity>
+    <RequiredXp>100000</RequiredXp>
+  </Promotion>
   <VisualActor>
     <Actor>units/iberians/infantry_slinger_a.xml</Actor>
   </VisualActor>

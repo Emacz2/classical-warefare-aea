@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_economic_market">
   <Footprint>
-    <Square width="36.0" depth="30.0"/>
+    <Square width="36.0" depth="30.0" />
     <Height>8.0</Height>
   </Footprint>
   <Health>
@@ -10,22 +10,23 @@
   <Identity>
     <Civ>rome</Civ>
     <SpecificName>Mercātus</SpecificName>
+    <GenericName>Market</GenericName>
+    <Tooltip>Trade resources and recruit Advanced Cretan Archer and Balearic Slinger mercenaries. Promotes automatically in City Phase to recruit Elite mercenaries.</Tooltip>
   </Identity>
   <Promotion>
     <Entity>structures/rome/market_2</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>
-      <Trainer>
+  <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
-    <Entities datatype="tokens">
-      -units/{civ}/merc_inf_slinger_market_b
-      -units/{civ}/merc_inf_archer_market_b
+    <Entities datatype="tokens" replace="">
+      units/{civ}/support_trader
       units/{civ}/merc_inf_slinger_market_a
       units/{civ}/merc_inf_archer_market_a
     </Entities>
   </Trainer>
   <Obstruction>
-    <Static width="32.0" depth="26.0"/>
+    <Static width="32.0" depth="26.0" />
   </Obstruction>
   <VisualActor>
     <Actor>structures/romans/market.xml</Actor>

@@ -1,23 +1,32 @@
 {
-	"genericName": "Augustus' Reforms",
-	"description": "Gaius Octavius, later known as Augustus created a series of laws between 30 BCE and 2 BCE that transformed the constitution of the Roman Republic into the Constitution of the Roman Empire.  One of which created a standing army of approximately 28 legions consisting of 5,000-6,000 professional soldiers.",
-	"cost": {
-		"food": 800,
-		"metal": 800
-	},
-	"researchTime": 60,
-	"requirements": {
-		"all": [
-			{ "tech": "phase_city" },
-			{ "civ": "rome" }
-		]
-	},
-	"requirementsTooltip": "Unlocked in City Phase.",
-	"icon": "shield_scutum.png",
-	"modifications":[
-		{ "value": "Promotion/RequiredXp", "replace": 0 }
-	],
-	"affects": ["Republic"],
-	"tooltip": "Converts Republican infantry into Professional Legionaries. Unlocks Centurions and Onagers. Infantry become full-time soldiers: Their gather rates are significantly reduced, they cost +10 Metal but −10 Wood, build 25% faster, gain improved equipment (Javelineers switch to heavier pilums; 75% increased dmg but 20% less range, 50% longer repeat time and 2% slower walk. They also gain 2.5 Crush 3.5 Hack/Pierce resistance with better armor and shields), Swordsman gain 0.5 Crush 1 Hack and .5 Pierce through improved armor and are able to promote to First Cohert Legionary than Evocatus and finaly Principalis.",
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+  "genericName": "Augustus' Reforms",
+  "description": "Gaius Octavius, later known as Augustus created a series of laws between 30 BCE and 2 BCE that transformed the constitution of the Roman Republic into the Constitution of the Roman Empire.  One of which created a standing army of approximately 28 legions consisting of 5,000-6,000 professional soldiers.",
+  "cost": {
+    "food": 800,
+    "metal": 800
+  },
+  "researchTime": 60,
+  "requirements": {
+    "all": [
+      {
+        "tech": "phase_city"
+      },
+      {
+        "civ": "rome"
+      }
+    ]
+  },
+  "requirementsTooltip": "Unlocked in City Phase.",
+  "icon": "shield_scutum.png",
+  "modifications": [
+    {
+      "value": "Promotion/RequiredXp",
+      "replace": 0
+    }
+  ],
+  "affects": [
+    "Republic"
+  ],
+  "tooltip": "Reorganizes the Roman army into a professional standing force. Existing Roman-employed Cretan Archer and Balearic Slinger mercenaries are converted into terminal Auxiliary troops; Allied Italian Horse Javelineers are replaced by Numidian Auxiliary Horse Javelineers. The reformed Market recruits Auxiliaries instead of mercenaries. Unlocks the reformed Roman military roster, including Centurions and Onagers.",
+  "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

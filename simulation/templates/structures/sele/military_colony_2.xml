@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_civil_centre_military_colony">
   <Footprint>
-    <Square width="31" depth="31"/>
+    <Square width="31" depth="31" />
     <Height>8</Height>
   </Footprint>
   <Identity>
@@ -9,20 +9,22 @@
     <SpecificName>Klērouchia</SpecificName>
     <Classes datatype="tokens">CivSpecific</Classes>
   </Identity>
-   <Trainer>
+  <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/inf_black_cloack_ally
       units/{civ}/cavalry_spearman_p
+      -units/{civ}/merc_inf_archer_a
+      units/{civ}/merc_inf_archer_e
     </Entities>
   </Trainer>
-   <Researcher>
+  <Researcher>
     <Technologies datatype="tokens">
       pair_unlock_champions_sele
     </Technologies>
   </Researcher>
   <Obstruction>
-    <Static width="29" depth="29"/>
+    <Static width="29" depth="29" />
   </Obstruction>
   <VisualActor>
     <Actor>structures/seleucids/military_colony.xml</Actor>
