@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/spart/merc_thracian_sword_a">
+<Entity parent="units/spart/merc_thracian_sword_b">
   <Identity>
-    <Rank>Elite</Rank>
+    <Rank>Advanced</Rank>
   </Identity>
   <Promotion disable=""/>
   <Upgrade>
     <Peltast_Jav>
-      <Entity>units/spart/merc_thracian_peltast_e</Entity>
+      <Entity>units/spart/merc_thracian_peltast_a</Entity>
       <Tooltip>Switch to throwing javelins.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>

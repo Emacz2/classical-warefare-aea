@@ -27,9 +27,9 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Hack>9</Hack>
-        <Pierce>25</Pierce>
-        <Crush>2</Crush>
+        <Hack>5</Hack>
+        <Pierce>20</Pierce>
+        <Crush>2.5</Crush>
       </Damage>
     <ApplyStatus>
         <Burning>

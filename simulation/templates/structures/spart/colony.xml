@@ -23,7 +23,7 @@
     <Entities replace="" datatype="tokens">
       units/{civ}/infantry_spearman_a
       units/{civ}/neodamodes_spearman
-      units/{civ}/merc_thracian_peltast
+      units/{civ}/merc_thracian_peltast_a
       units/{civ}/helot_javelineer
       units/{civ}/helot_stone_thrower
     </Entities>
