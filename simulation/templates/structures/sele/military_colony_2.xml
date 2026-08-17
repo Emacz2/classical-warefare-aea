@@ -12,11 +12,13 @@
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
-      units/{civ}/inf_black_cloak_ally_a
-      units/{civ}/cavalry_spearman_p
+      -units/{civ}/merc_thracian_peltast
+      -units/{civ}/merc_tureos_skirmisher
+      -units/{civ}/cavalry_spearman_merc_a
       -units/{civ}/merc_inf_archer_a
       units/{civ}/merc_inf_archer_e
-      -units/{civ}/merc_tureos_skirmisher
+      units/{civ}/inf_black_cloak_ally_a
+      units/{civ}/cavalry_spearman_p
       units/{civ}/tureos_skirmisher
     </Entities>
   </Trainer>

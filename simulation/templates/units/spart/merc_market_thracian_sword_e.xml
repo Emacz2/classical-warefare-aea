@@ -2,7 +2,7 @@
 <Entity parent="merc_inf_market|merc_inf|units/thracian_peltast_sword">
   <Upgrade>
     <Peltast_Jav>
-      <Entity>units/athen/merc_market_thracian_peltast_e</Entity>
+      <Entity>units/spart/merc_market_thracian_peltast_e</Entity>
       <Tooltip>Switch to throwing javelins.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
@@ -11,7 +11,7 @@
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
-  <Promotion disable="" />
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>
   </VisualActor>

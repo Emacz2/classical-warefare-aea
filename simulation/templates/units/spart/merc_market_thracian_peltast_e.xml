@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="merc_inf_market|merc_inf|units/thracian_peltast">
   <Upgrade>
-    <Black_Cloack>
-      <Entity>units/athen/merc_market_thracian_sword_e</Entity>
+    <Peltast_Sword>
+      <Entity>units/spart/merc_market_thracian_sword_e</Entity>
       <Tooltip>Switch to using a sword.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
-    </Black_Cloack>
+    </Peltast_Sword>
   </Upgrade>
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
-  <Promotion disable="" />
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/athenians/merc_inf_javelinist_a.xml</Actor>
   </VisualActor>
