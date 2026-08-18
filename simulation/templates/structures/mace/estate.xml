@@ -3,19 +3,23 @@
   <GarrisonHolder>
     <Max op="mul">1.5</Max>
   </GarrisonHolder>
+  <Health>
+    <Max op="mul">1.25</Max>
+  </Health>
   <Identity>
-    <Civ>athen</Civ>
+    <Civ>mace</Civ>
     <GenericName>Estate</GenericName>
+    <SpecificName>Oikos</SpecificName>
     <Classes datatype="tokens">Estate</Classes>
     <VisibleClasses datatype="tokens">Estate</VisibleClasses>
-    <Tooltip>Large household estate. Increases population capacity and the Slave limit, and can unlock and train Slaves.</Tooltip>
+    <Tooltip>Large household estate. Adds 5 population, expands the Slave limit, and can unlock and train Slaves.</Tooltip>
   </Identity>
   <Population>
     <Bonus op="add">5</Bonus>
   </Population>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/support_slave
+      units/mace/support_slave
     </Entities>
   </Trainer>
   <Researcher>
@@ -24,6 +28,6 @@
     </Technologies>
   </Researcher>
   <VisualActor>
-    <Actor>structures/romans/house.xml</Actor>
+    <Actor>structures/macedonians/house.xml</Actor>
   </VisualActor>
 </Entity>

@@ -4,9 +4,9 @@
 	"description": ".",
 	"requirements": { "civ": "rome" },
 	  "icon": "ionic_column.png",
-	  "tooltip": "Houses +4 garrison capacity, technologies -50% resource cost.",
+	  "tooltip": "Roman Houses cost 50 less wood but 25 more stone and take 10 seconds longer to build. Technologies researched at Houses and Villas cost 50% fewer resources.",
 	  "modifications": [
-		{ "value": "GarrisonHolder/Max", "add": 4},
+		
 		{ "value": "Researcher/TechCostMultiplier/food", "multiply": 0.5 },
 		{ "value": "Researcher/TechCostMultiplier/wood", "multiply": 0.5 },
 		{ "value": "Researcher/TechCostMultiplier/stone", "multiply": 0.5 },

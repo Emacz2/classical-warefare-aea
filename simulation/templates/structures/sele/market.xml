@@ -5,15 +5,9 @@
     <SpecificName>Emporion</SpecificName>
   </Identity>
   <Trainer>
-    <Entities datatype="tokens">
-      -units/{civ}/inf_black_cloak_merc
-      -units/{civ}/merc_inf_swordsman_market_b
-      -units/{civ}/merc_inf_spearman_market_b
-      -units/{civ}/merc_inf_slinger_market_b
-      -units/{civ}/merc_inf_archer_market_b
-      -units/{civ}/merc_market_thracian_peltast
-      -units/{civ}/merc_spear_market_b
-      -units/{civ}/merc_spearcav_market_b
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities replace="" datatype="tokens">
+      units/{civ}/support_trader
     </Entities>
   </Trainer>
   <VisualActor>

@@ -28,7 +28,7 @@
     <BuffHeal>0</BuffHeal>
     <EjectHealth>0.1</EjectHealth>
     <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Civilian</List>
+    <List datatype="tokens">Civilian Slave</List>
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>

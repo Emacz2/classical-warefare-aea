@@ -1,59 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_house_big">
-  <Capturable>
-    <CapturePoints op="mul">2</CapturePoints>
-  </Capturable>
-  <Cost>
-    <BuildTime>90</BuildTime>
-    <Resources>
-      <stone op="add">50</stone>
-    </Resources>
-  </Cost>
-  <Footprint>
-    <Square width="15.0" depth="15.0"/>
-  </Footprint>
-  <GarrisonHolder>
-    <Max op="mul">1.5</Max>
-  </GarrisonHolder>
-  <Health>
-    <Max op="mul">1.5</Max>
-  </Health>
   <Identity>
     <Civ>rome</Civ>
     <SpecificName>Domus</SpecificName>
-    <GenericName>Estate</GenericName>
-    <VisibleClasses datatype="tokens">Estate</VisibleClasses>
   </Identity>
-  <Obstruction>
-    <Static width="13.0" depth="13.0"/>
-  </Obstruction>
-  <Population>
-    <Bonus op="add">5</Bonus>
-  </Population>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Crush op="add">2.5</Crush>
-        <Hack op="add">2.5</Hack>
-      </Damage>
-      <ApplyStatus>
-        <Burning>
-        <Duration>0.2</Duration>
-        <BlockChance>0.5</BlockChance>
-        </Burning>
-      </ApplyStatus>
-    </Entity>
-  </Resistance>
-  <Trainer>
-    <Entities datatype="tokens">
-      units/{civ}/support_slave
-    </Entities>
-  </Trainer>
-   <Researcher>
-    <Technologies datatype="tokens">
-    unlock_slaves_house
-    </Technologies>
-  </Researcher>
+  <Cost>
+    <BuildTime>60</BuildTime>
+    <Resources>
+      <stone>25</stone>
+      <wood>100</wood>
+    </Resources>
+  </Cost>
+  <Upgrade>
+    <Villa>
+      <Entity>structures/rome/estate</Entity>
+      <Tooltip>Upgrade this Domus into a Villa estate. Villas provide additional population and garrison capacity, expand the Slave limit, and can unlock and train Slaves.</Tooltip>
+      <Cost>
+        <wood>50</wood>
+        <stone>50</stone>
+      </Cost>
+      <Time>30</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_town</Techs>
+      </Requirements>
+    </Villa>
+  </Upgrade>
   <VisualActor>
     <Actor>structures/romans/house.xml</Actor>
   </VisualActor>

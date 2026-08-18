@@ -6,10 +6,10 @@
     <Category>Wall</Category>
   </BuildRestrictions>
   <Cost>
-    <BuildTime>20</BuildTime>
+    <BuildTime>8</BuildTime>
     <Resources>
       <food>0</food>
-      <wood>125</wood>
+      <wood>30</wood>
       <stone>0</stone>
       <metal>0</metal>
     </Resources>

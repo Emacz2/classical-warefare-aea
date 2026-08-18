@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/theb/support_civilian">
+<Entity parent="units/han/support_civilian">
   <Attack disable=""/>
   <Cost>
     <Population>0</Population>
@@ -16,12 +16,12 @@
   </Health>
   <Identity>
     <GenericName>Slave</GenericName>
-    <SpecificName>Doûlos</SpecificName>
-    <SelectionGroupName>units/theb/support_slave</SelectionGroupName>
+    <SpecificName>Núbì</SpecificName>
+    <SelectionGroupName>units/han/support_slave</SelectionGroupName>
     <Tooltip>Cheap economic laborer with the same gathering rates as this civilization's civilian. Cannot attack or capture. Costs no population but counts toward the Slave limit.</Tooltip>
     <VisibleClasses replace="" datatype="tokens">Worker Slave</VisibleClasses>
     <Requirements>
-      <Techs datatype="tokens">unlock_slaves_house</Techs>
+      <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
     <Icon>units/global/slave.png</Icon>
   </Identity>

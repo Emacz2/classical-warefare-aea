@@ -14,6 +14,11 @@
   <Obstruction>
     <Static width="30.8" depth="30.8"/>
   </Obstruction>
+  <Trainer>
+    <Entities datatype="tokens">
+      units/{civ}/support_slave
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/mauryas/market.xml</Actor>
     <FoundationActor>structures/fndn_8x7.xml</FoundationActor>

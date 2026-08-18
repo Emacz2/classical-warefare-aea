@@ -1,6 +1,14 @@
 {
   "genericName": "Intensive Quarrying",
-  "description": "Organize intensive quarry work and improve stone extraction.",
+  "specificName": {
+    "athen": "Andrapoda",
+    "cart": "Enslaved Labor",
+    "mace": "Andrapoda",
+    "rome": "Servi",
+    "sele": "Andrapoda",
+    "theb": "Andrapoda"
+  },
+  "description": "Expand quarry workforces and organize more intensive stone extraction. Civilizations with large enslaved-labor systems may employ slaves for this work.",
   "cost": {
     "food": 600,
     "stone": 300

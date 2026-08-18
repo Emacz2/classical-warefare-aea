@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_civic_house_big">
   <Identity>
-    <Civ>theb</Civ>
+    <Civ>mace</Civ>
     <SpecificName>Oikos</SpecificName>
   </Identity>
   <Upgrade>
     <Estate>
-      <Entity>structures/theb/estate</Entity>
+      <Entity>structures/mace/estate</Entity>
       <Tooltip>Expand this household into an Estate. Estates add 5 population, expand the Slave limit, and can unlock and train Slaves.</Tooltip>
       <Cost>
         <wood>50</wood>
@@ -20,6 +20,6 @@
     </Estate>
   </Upgrade>
   <VisualActor>
-    <Actor>structures/hellenes/house.xml</Actor>
+    <Actor>structures/macedonians/house.xml</Actor>
   </VisualActor>
 </Entity>

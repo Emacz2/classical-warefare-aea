@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="template_unit_support_slaves">
-<Cost>
+<Entity parent="units/mace/support_civilian">
+  <Attack disable=""/>
+  <Cost>
+    <Population>0</Population>
+    <BuildTime>8</BuildTime>
     <Resources>
-      <food>75</food>
+      <food>50</food>
       <wood>0</wood>
+      <stone>0</stone>
       <metal>0</metal>
     </Resources>
   </Cost>
+  <Health>
+    <Max>40</Max>
+  </Health>
   <Identity>
-    <Civ>mace</Civ>
+    <GenericName>Slave</GenericName>
     <SpecificName>Doûlos</SpecificName>
-    <Icon>units/global/slave.png</Icon>
-     <Requirements>
-    <Techs datatype="tokens">unlock_slaves_house</Techs>
+    <SelectionGroupName>units/mace/support_slave</SelectionGroupName>
+    <Tooltip>Cheap economic laborer with the same gathering rates as this civilization's civilian. Cannot attack or capture. Costs no population but counts toward the Slave limit.</Tooltip>
+    <VisibleClasses replace="" datatype="tokens">Worker Slave</VisibleClasses>
+    <Requirements>
+      <Techs datatype="tokens">unlock_slaves_house</Techs>
     </Requirements>
+    <Icon>units/global/slave.png</Icon>
   </Identity>
+  <TrainingRestrictions>
+    <Category>Slave</Category>
+  </TrainingRestrictions>
   <VisualActor>
     <Actor>units/global/slave.xml</Actor>
   </VisualActor>
-  <TrainingRestrictions>
-  <Category>EstateSlave</Category>
-  </TrainingRestrictions>
 </Entity>

@@ -1,24 +1,40 @@
 {
-	"genericName": "Estate servants",
-	
-	"description": "Wealthy estates owned slaves.",
-	"cost": {
-		"food": 250
-		
-	},
-	"requirements": {
-		"all": [
-			{ "tech": "phase_town" },
-			{ "civ": "athen"},
-			{ "civ": "cart" },
-			{ "civ": "mace" },
-			{ "civ": "rome" },
-			{ "civ": "theb" }
-			
-		]
-	},
-	"icon": "wives_festival.png",
-	"researchTime": 40,
-	"tooltip": "Unlock the ability to train slaves from houses.",
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+  "genericName": "Estate Servants",
+  "description": "Organize enslaved labor on large estates.",
+  "cost": {
+    "food": 250
+  },
+  "requirements": {
+    "all": [
+      {
+        "tech": "phase_town"
+      },
+      {
+        "any": [
+          {
+            "civ": "athen"
+          },
+          {
+            "civ": "cart"
+          },
+          {
+            "civ": "mace"
+          },
+          {
+            "civ": "rome"
+          },
+          {
+            "civ": "theb"
+          },
+          {
+            "civ": "sele"
+          }
+        ]
+      }
+    ]
+  },
+  "icon": "wives_festival.png",
+  "researchTime": 40,
+  "tooltip": "Unlock Slaves for major estate economies. Slaves cost no population but are limited.",
+  "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

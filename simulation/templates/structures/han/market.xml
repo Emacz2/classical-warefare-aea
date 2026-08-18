@@ -11,6 +11,11 @@
   <Obstruction>
     <Static depth="28.0" width="28.0"/>
   </Obstruction>
+  <Trainer>
+    <Entities datatype="tokens">
+      units/{civ}/support_slave
+    </Entities>
+  </Trainer>
   <Researcher>
     <Technologies datatype="tokens">
       silk_road

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_economic_market">
+  <Identity>
+    <Civ>theb</Civ>
+    <GenericName>Expanded Market</GenericName>
+    <SpecificName>Emporion</SpecificName>
+    <History>Thebes was a center of trade and commerce for the Boeotian region and much of central Greece.</History>
+    <Tooltip>Barter resources, establish trade routes, and recruit Elite Thracian Black Cloak mercenaries.</Tooltip>
+    <VisibleClasses datatype="tokens">City Market</VisibleClasses>
+    <Requirements>
+      <Techs datatype="tokens">phase_city</Techs>
+    </Requirements>
+  </Identity>
+  <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities replace="" datatype="tokens">
+      units/{civ}/support_trader
+      units/{civ}/inf_black_cloak_merc2
+    </Entities>
+  </Trainer>
+  <VisualActor>
+    <Actor>structures/hellenes/market.xml</Actor>
+  </VisualActor>
+</Entity>
