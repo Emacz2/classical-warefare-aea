@@ -7,7 +7,6 @@
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
-    <Icon>units/global/slave.png</Icon>
   </Identity>
   <VisualActor>
     <Actor>units/global/slave.xml</Actor>
