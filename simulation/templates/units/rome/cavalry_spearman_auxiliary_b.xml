@@ -3,7 +3,7 @@
   <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
-    <GenericName>Italian Auxilary Scout Cavalry</GenericName>
+    <GenericName>Italian Auxilary Horse Spearman and Scout</GenericName>
     <SpecificName>Eques Alaris</SpecificName>
     <SelectionGroupName>units/rome/cavalry_spearman_auxiliary_b</SelectionGroupName>
     <Icon>units/rome/cavalry_spearman_auxiliary.png</Icon>

@@ -1,13 +1,13 @@
 {
-	"type": "range",
-	"radius": 45,
-	"affects": ["Scythian"],
-	"modifications": [
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 2 },
-		{ "value": "Attack/Ranged/RepeatTime", "multiply": 0.6 }
-	],
-	"auraName": "Protector ",
-	"showDescription": 1,
-	"auraDescription": "Sythian archers 40% quicker repeat time and 50% faster movement speed when in range of CC and Fort.",
-	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
+  "type": "range",
+  "radius": 45,
+  "affects": ["Scythian"],
+  "modifications": [
+    { "value": "UnitMotion/WalkSpeed", "multiply": 1.15 },
+    { "value": "Vision/Range", "multiply": 1.20 }
+  ],
+  "auraName": "Protector",
+  "showDescription": 1,
+  "auraDescription": "Scythian archers move 15% faster and have 20% greater vision near Civic Centers and Fortresses.",
+  "overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
 }

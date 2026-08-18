@@ -9,7 +9,7 @@
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1.5 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 2 }
 	],
-	"auraName": "Protector ",
+	"auraName": "Protector",
 	"showDescription": 1,
 	"auraDescription": "Praetorian Guards 25% faster movement speed, 10% faster attack repeat, +1.5 Hack/Pierce and +2 crush resistances when in range of Fortress or Camps.",
 	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"
