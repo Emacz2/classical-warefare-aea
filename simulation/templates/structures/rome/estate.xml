@@ -18,7 +18,7 @@
     <GenericName>Estate</GenericName>
     <Classes datatype="tokens">Estate</Classes>
     <VisibleClasses datatype="tokens">Estate</VisibleClasses>
-    <Tooltip>Roman villa estate. Provides additional population and garrison capacity, expands the Slave limit, and can unlock and train Slaves.</Tooltip>
+    <Tooltip>Roman villa estate. Provides additional population and garrison capacity, expands the Estate Slave limit, and can unlock and train Estate Slaves.</Tooltip>
   </Identity>
   <Obstruction>
     <Static width="13.0" depth="13.0"/>

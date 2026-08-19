@@ -15,9 +15,9 @@
     <Max>40</Max>
   </Health>
   <Identity>
-    <GenericName>Slave</GenericName>
+    <GenericName>Estate Slave</GenericName>
     <SelectionGroupName>units/cart/support_slave</SelectionGroupName>
-    <Tooltip>Cheap economic laborer with the same gathering rates as this civilization's civilian. Cannot attack or capture. Costs no population but counts toward the Slave limit.</Tooltip>
+    <Tooltip>Cheap estate laborer with the same gathering rates as this civilization's civilian. Cannot attack or capture. Costs no population; Estate Slave capacity is provided by Estates.</Tooltip>
     <VisibleClasses replace="" datatype="tokens">Worker Slave</VisibleClasses>
     <Requirements>
       <Techs datatype="tokens">unlock_slaves_house</Techs>
@@ -25,7 +25,7 @@
     <Icon>units/global/slave.png</Icon>
   </Identity>
   <TrainingRestrictions>
-    <Category>Slave</Category>
+    <Category>EstateSlave</Category>
   </TrainingRestrictions>
   <VisualActor>
     <Actor>units/global/slave.xml</Actor>

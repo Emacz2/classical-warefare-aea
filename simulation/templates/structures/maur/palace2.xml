@@ -55,6 +55,7 @@
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
+      units/{civ}/support_slave
       units/{civ}/champion_maiden
       units/{civ}/champion_maiden_archer
       units/{civ}/hero_chanakya

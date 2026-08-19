@@ -8,7 +8,7 @@
     <GenericName>Estate</GenericName>
     <Classes datatype="tokens">Estate</Classes>
     <VisibleClasses datatype="tokens">Estate</VisibleClasses>
-    <Tooltip>Large household estate. Increases population capacity and the Slave limit, and can unlock and train Slaves.</Tooltip>
+    <Tooltip>Large household estate. Increases population capacity and the Estate Slave limit, and can unlock and train Estate Slaves.</Tooltip>
   </Identity>
   <Population>
     <Bonus op="add">5</Bonus>

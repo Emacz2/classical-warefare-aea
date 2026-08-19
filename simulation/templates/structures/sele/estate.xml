@@ -12,7 +12,7 @@
     <SpecificName>Oikos</SpecificName>
     <Classes datatype="tokens">Estate</Classes>
     <VisibleClasses datatype="tokens">Estate</VisibleClasses>
-    <Tooltip>Large household estate. Adds 5 population, expands the Slave limit, and can unlock and train Slaves.</Tooltip>
+    <Tooltip>Large household estate. Adds 5 population, expands the Estate Slave limit, and can unlock and train Estate Slaves.</Tooltip>
   </Identity>
   <Population>
     <Bonus op="add">5</Bonus>

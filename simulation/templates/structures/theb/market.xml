@@ -24,6 +24,7 @@
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities replace="" datatype="tokens">
+      units/{civ}/support_slave_market
       units/{civ}/support_trader
       units/{civ}/inf_black_cloak_merc
     </Entities>

@@ -27,7 +27,11 @@
       <CivilCentre>1</CivilCentre>
       <Agora>1</Agora>
       <BodyguardCavalry>12</BodyguardCavalry>
-      <Slave>0</Slave>
+      <EstateSlave>0</EstateSlave>
+      <CaptiveSlave>0</CaptiveSlave>
+      <HanLabor>0</HanLabor>
+      <MauryaLabor>0</MauryaLabor>
+      <PtolemyLabor>0</PtolemyLabor>
       <Ephor>5</Ephor>
       <Gerousia>1</Gerousia>
       <Gladiator>0</Gladiator>
@@ -38,7 +42,6 @@
       <LandTrader>5</LandTrader>
       <Library>1</Library>
       <Lighthouse>1</Lighthouse>
-      <MaceSlave>0</MaceSlave>
       <Monument>5</Monument>
       <Neodamodes>15</Neodamodes>
       <Palace>1</Palace>
@@ -48,7 +51,6 @@
       <Pillar>0</Pillar>
       <PyramidLarge>2</PyramidLarge>
       <PraetorianGuard>0</PraetorianGuard>
-      <RomanSlave>0</RomanSlave>
       <TempleOfAmun>1</TempleOfAmun>
       <TempleOfIsis>1</TempleOfIsis>
       <TempleOfVesta>1</TempleOfVesta>
@@ -82,9 +84,24 @@
       <Corral>
         <Farmstead>1</Farmstead>
       </Corral>
-      <Slave>
+      <EstateSlave>
         <Estate>2</Estate>
-      </Slave>
+      </EstateSlave>
+      <CaptiveSlave>
+        <TribalCenter>4</TribalCenter>
+      </CaptiveSlave>
+      <HanLabor>
+        <Market>2</Market>
+        <ImperialMinistry>3</ImperialMinistry>
+      </HanLabor>
+      <MauryaLabor>
+        <Market>2</Market>
+        <Palace>2</Palace>
+      </MauryaLabor>
+      <PtolemyLabor>
+        <Market>2</Market>
+        <Temple>2</Temple>
+      </PtolemyLabor>
       <Gladiator>
         <Amphitheater>15</Amphitheater>
       </Gladiator>
@@ -100,9 +117,6 @@
       <Juggernaut>
         <PtolemyIV>4</PtolemyIV>
       </Juggernaut>
-      <MaceSlave>
-        <Nobel>1</Nobel>
-      </MaceSlave>
       <Neodamodes>
         <Brasidas>30</Brasidas>
       </Neodamodes>
@@ -118,9 +132,6 @@
       <PraetorianGuard>
         <Fortress>5</Fortress>
       </PraetorianGuard>
-      <RomanSlave>
-        <ArmyCamp>10</ArmyCamp>
-      </RomanSlave>
       <ScythianGuard>
         <Fortress>5</Fortress>
       </ScythianGuard>

@@ -35,6 +35,6 @@
   },
   "icon": "wives_festival.png",
   "researchTime": 40,
-  "tooltip": "Unlock Slaves for major estate economies. Slaves cost no population but are limited.",
+  "tooltip": "Unlock Estate Slaves for major estate economies. Estate Slaves cost no population but require Estate-provided capacity.",
   "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

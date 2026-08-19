@@ -15,10 +15,10 @@
     <Max>40</Max>
   </Health>
   <Identity>
-    <GenericName>Slave</GenericName>
+    <GenericName>Dependent Laborer</GenericName>
     <SpecificName>Dāsa</SpecificName>
     <SelectionGroupName>units/maur/support_slave</SelectionGroupName>
-    <Tooltip>Cheap economic laborer with the same gathering rates as this civilization's civilian. Cannot attack or capture. Costs no population but counts toward the Slave limit.</Tooltip>
+    <Tooltip>Cheap dependent laborer with the same gathering rates as this civilization's civilian. Cannot attack or capture. Costs no population; labor capacity is provided by Markets and Palaces.</Tooltip>
     <VisibleClasses replace="" datatype="tokens">Worker Slave</VisibleClasses>
     <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
@@ -26,7 +26,7 @@
     <Icon>units/global/slave.png</Icon>
   </Identity>
   <TrainingRestrictions>
-    <Category>Slave</Category>
+    <Category>MauryaLabor</Category>
   </TrainingRestrictions>
   <VisualActor>
     <Actor>units/global/slave.xml</Actor>
