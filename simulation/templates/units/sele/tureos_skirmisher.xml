@@ -19,6 +19,7 @@
     <Actor>units/iberians/infantry_javelinist_b.xml</Actor>
   </VisualActor>
   <Promotion>
+    <RequiredXp>100</RequiredXp>
     <Entity>units/sele/tureos_skirmisher_a</Entity>
   </Promotion>
 </Entity>

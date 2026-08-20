@@ -21,6 +21,7 @@
     <Actor>units/ptolemies/infantry_spearman_b.xml</Actor>
   </VisualActor>
   <Promotion>
+    <RequiredXp>100</RequiredXp>
     <Entity>units/sele/tureos_spearman_a</Entity>
   </Promotion>
 </Entity>

@@ -28,6 +28,6 @@
     </Technologies>
   </Researcher>
   <VisualActor>
-    <Actor>structures/macedonians/house.xml</Actor>
+    <Actor>structures/hellenes/house.xml</Actor>
   </VisualActor>
 </Entity>

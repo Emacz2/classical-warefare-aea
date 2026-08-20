@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/sele/inf_black_cloak_ally_a">
+<Entity parent="units/sele/inf_black_cloak_ally">
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
