@@ -4,7 +4,7 @@
     <GenericName>Tribal Village</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Build in neutral territory. Acquire small tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
-    <Classes datatype="tokens">TribalVillage</Classes>
+    <Classes datatype="tokens">CivCentre TribalVillage</Classes>
     <VisibleClasses datatype="tokens">Defensive TribalVillage FarmBlocker</VisibleClasses>
   </Identity>
   <AlertRaiser>

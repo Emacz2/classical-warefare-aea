@@ -1,5 +1,6 @@
 {
-	"genericName": "",
+	"genericName": "Reinforced Shields",
+	"description": "Improved shields and protective equipment increase the resilience of ranged soldiers.",
 	"cost": {
 		"wood": 200,
 		"metal": 100

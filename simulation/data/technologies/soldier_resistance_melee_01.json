@@ -1,11 +1,11 @@
 {
-	"genericName": "",
+	"genericName": "Improved Armor",
 	"specificName": {
 		"mace": "Spolas",
 		"ptol": "Spolas",
 		"sele": "Spolas"
 	},
-	"description": ".",
+	"description": "Improved armor and protective equipment increase the resilience of melee soldiers.",
 	"cost": {
 		"food": 200,
 		"metal": 200

@@ -10,7 +10,7 @@
   <Identity>
     <Civ>brit</Civ>
     <SpecificName>Tigernotreba</SpecificName>
-    <Classes datatype="tokens">-CivCentre TribalCenter</Classes>
+    <Classes datatype="tokens">TribalCenter</Classes>
     <VisibleClasses datatype="tokens">-CivilCentre TribalCenter Defensive FarmBlocker</VisibleClasses>
   </Identity>
   <Obstruction>
