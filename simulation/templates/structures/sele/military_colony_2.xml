@@ -17,7 +17,7 @@
       -units/{civ}/cavalry_spearman_merc_a
       -units/{civ}/merc_inf_archer_a
       units/{civ}/merc_inf_archer_e
-      units/{civ}/inf_black_cloak_ally
+      units/{civ}/inf_black_cloak_ally_b
       units/{civ}/cavalry_spearman_p
       units/{civ}/tureos_skirmisher
     </Entities>

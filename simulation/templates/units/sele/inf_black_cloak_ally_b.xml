@@ -2,16 +2,19 @@
 <Entity parent="allied_inf|units/thracian_black_cloak">
   <Identity>
     <Civ>sele</Civ>
-    <Rank>Advanced</Rank>
     <Lang>greek</Lang>
     <GenericName>Thracian Black Cloak</GenericName>
-    <SpecificName>Rhomphaiaphoros</SpecificName>
+    <SpecificName>Rhomphaiophoros</SpecificName>
+    <SelectionGroupName>units/sele/inf_black_cloak_ally_b</SelectionGroupName>
     <Icon>units/thrac/champion_infantry_swordsman.png</Icon>
-      <Requirements>
+    <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
+    <Rank>Advanced</Rank>
   </Identity>
-  <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/sele/inf_black_cloak_ally_e</Entity>
+  </Promotion>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>
   </VisualActor>
