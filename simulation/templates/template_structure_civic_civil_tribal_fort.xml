@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_civic_civil_tribal">
-<Identity>
+  <Identity>
     <GenericName>Tribal Village</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Fortify your Village, increase defenses (+5 Crush and +7.5 Hack resistance), garrison capacity (10) and populaton bonus (10). Healthy and Capture points increased 25%.</Tooltip>
@@ -14,7 +14,7 @@
         <Hack op="add">7.5</Hack>
       </Damage>
     </Entity>
-  </Resistance> 
+  </Resistance>
   <Capturable>
     <CapturePoints op="mul">1.25</CapturePoints>
   </Capturable>
@@ -30,10 +30,10 @@
     <Max op="mul">1.25</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
-    <Population>
+  <Population>
     <Bonus op="add">10</Bonus>
   </Population>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Vision>
     <Range op="add">15</Range>
   </Vision>

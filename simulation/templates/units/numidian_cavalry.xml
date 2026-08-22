@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
+<Entity parent="cav_raider|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
   <Cost>
-     <Resources>
-      <food>175</food>
-      <wood>75</wood>
-      <stone>0</stone>
+    <Resources>
+      <food op="add">25</food>
+      <wood op="add">10</wood>
     </Resources>
   </Cost>
   <Attack>
     <Ranged>
       <AttackName>Javelin</AttackName>
-    <Damage>
+      <Damage>
         <Pierce op="mul">0.95</Pierce>
       </Damage>
       <PrepareTime>500</PrepareTime>
@@ -18,20 +17,17 @@
     </Ranged>
   </Attack>
   <Identity>
-    <Rank>Elite</Rank>
-    <GenericName>Numidian Light Javelineer Cavalry</GenericName>
-    <Tooltip>The Numidian cavalry's horses, were small compared with other horses of the era, and were well adapted for faster movement over long distances; 15% faster walk, 10% faster run and +10 accleration</Tooltip>
+    <Rank>Basic</Rank>
+    <Classes datatype="tokens">Numidian</Classes>
+    <GenericName>Numidian Horse Javelineer</GenericName>
+    <Tooltip>Fast, highly mobile Numidian light cavalry specialized in skirmishing, pursuit, and raiding. Their hardy horses grant 10% faster walk speed, run multiplier, and acceleration.</Tooltip>
     <Icon>units/cart/champion_cavalry.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">phase_town</Techs>
-    </Requirements>
   </Identity>
-    <UnitMotion>
-    <WalkSpeed op="mul">1.15</WalkSpeed>
+  <UnitMotion>
+    <WalkSpeed op="mul">1.1</WalkSpeed>
     <RunMultiplier op="mul">1.1</RunMultiplier>
     <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
-  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/carthaginians/champion_cavalry_numidian_c_m.xml</Actor>
   </VisualActor>

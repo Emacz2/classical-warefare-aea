@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_inf_market|slinger_baleric|template_unit_infantry_ranged_slinger">
+<Entity parent="merc_inf_market|merc_special_inf|slinger_baleric|template_unit_infantry_ranged_slinger">
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Balearic Slinger</GenericName>
+    <GenericName>Balearic Mercenary Slinger</GenericName>
     <SpecificName>Qallāʿ Ibušimi</SpecificName>
     <SelectionGroupName>units/cart/merc_inf_slinger_market_b</SelectionGroupName>
     <Icon>units/cart/infantry_slinger.png</Icon>

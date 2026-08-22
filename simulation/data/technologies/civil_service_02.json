@@ -1,8 +1,8 @@
 {
 	"pair": "pair_unlock_civil_service_han",
-	"genericName": "Intensive Training",
+	"genericName": "Protected Officials",
 	"specificName": { "han": "Guānliáo" },
-	"description": "",
+	"description": "Imperial officials were afforded greater protection and support while carrying out their duties. Better escorts, equipment, and logistical planning ensured that the empire's most valuable administrators could continue serving even under dangerous conditions.",
 	"cost": {
 		"food": 200,
 		"wood": 200,

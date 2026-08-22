@@ -1,6 +1,6 @@
 {
 	"genericName": "Helot Economy",
-	"description": "Helots were the servants of Greece. Unlike slaves, helots were owned by the state, which managed economic production. Helots must give a reasonable portion of their harvest to support a warrior and his family or widow.",
+	"description": "Helots were the state-owned agricultural laborers of Sparta. They farmed the land and were required to provide a substantial portion of their harvest to support Spartan citizens, allowing them to devote themselves to military training.",
 	"cost": {
 		"food": 300,
 		"wood": 300,
@@ -14,17 +14,16 @@
 	},
 	"icon": "sickle_2.png",
 	"researchTime": 40,
-	"tooltip": "Helots +50% resource gather rate, but Infantry take 10% longer.",
+	"tooltip": "Helots gather resources 25% faster but deal 15% less damage in combat.",
 	"modifications": [
-		{ "value": "ResourceGatherer/Rates/food.grain", "multiply": 1.5, "affects": "HelotM" },
-		{ "value": "ResourceGatherer/Rates/metal.ore", "multiply": 1.5, "affects": "HelotM" },
-		{ "value": "ResourceGatherer/Rates/wood.tree", "multiply": 1.5, "affects": "HelotM" },
-		{ "value": "ResourceGatherer/Rates/stone.rock", "multiply": 1.5, "affects": "HelotM" },
-		{ "value": "ResourceGatherer/Rates/food.grain", "multiply": 1.5, "affects": "HelotW" },
-		{ "value": "ResourceGatherer/Rates/metal.ore", "multiply": 1.5, "affects": "HelotW" },
-		{ "value": "ResourceGatherer/Rates/wood.tree", "multiply": 1.5, "affects": "HelotW" },
-		{ "value": "ResourceGatherer/Rates/stone.rock", "multiply": 1.5, "affects": "HelotW" },
-		{ "value": "Cost/BuildTime", "multiply": 1.10, "affects": "Infantry" }
+		{ "value": "ResourceGatherer/Rates/food.grain", "multiply": 1.25},
+		{ "value": "ResourceGatherer/Rates/metal.ore", "multiply": 1.25 },
+		{ "value": "ResourceGatherer/Rates/wood.tree", "multiply": 1.25 },
+		{ "value": "ResourceGatherer/Rates/stone.rock", "multiply": 1.25 },
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 0.85 },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.85 },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 0.85 }
 	],
+		"affects": ["Helot"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

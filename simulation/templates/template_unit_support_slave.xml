@@ -1,63 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="builder|template_unit_support">
-  <Builder>
-    <Rate>0.5</Rate>
-  </Builder>
+<Entity parent="template_unit_support_civilian">
+  <Attack disable=""/>
+  <Builder disable=""/>
   <Cost>
     <Population>0</Population>
-    <BuildTime>15</BuildTime>
+    <BuildTime>8</BuildTime>
     <Resources>
-      <metal>50</metal>
+      <food>0</food>
+      <wood>0</wood>
+      <stone>0</stone>
+      <metal>35</metal>
     </Resources>
   </Cost>
   <Health>
-    <RegenRate>-0.25</RegenRate>
-    <Unhealable>true</Unhealable>
+    <Max>40</Max>
   </Health>
   <Identity>
-    <GenericName>Slave</GenericName>
+    <GenericName>Mining Slave</GenericName>
     <SelectionGroupName>template_unit_support_slave</SelectionGroupName>
-    <Tooltip>Gatherer with a finite life span. Bonused at mining and lumbering.</Tooltip>
-    <VisibleClasses datatype="tokens">Worker Slave</VisibleClasses>
+    <Tooltip>Cheap specialist mine and quarry laborer. Gathers stone and metal 25% faster than a civilian, but cannot gather food or wood, build, attack, or capture. Shares the Slave limit.</Tooltip>
+    <VisibleClasses replace="" datatype="tokens">Worker Slave MiningSlave</VisibleClasses>
+    <Icon>units/special/mine_slave.png</Icon>
   </Identity>
-  <Loot>
-    <xp>10</xp>
-    <metal>5</metal>
-  </Loot>
-  <ResourceGatherer>
+  <ResourceGatherer replace="">
     <MaxDistance>2.0</MaxDistance>
     <BaseSpeed>1.0</BaseSpeed>
     <Rates>
-      <food.fish>0.5</food.fish>
-      <food.fruit>0.5</food.fruit>
-      <food.grain>0.35</food.grain>
-      <food.meat>1</food.meat>
-      <wood.tree>1.0</wood.tree>
-      <wood.ruins>5</wood.ruins>
-      <stone.rock>1.0</stone.rock>
-      <stone.ruins>5</stone.ruins>
-      <metal.ore>1.0</metal.ore>
+      <stone.rock>0.625</stone.rock>
+      <stone.ruins>2.5</stone.ruins>
+      <metal.ore>0.625</metal.ore>
+      <metal.ruins>2.5</metal.ruins>
     </Rates>
     <Capacities>
-      <food>10</food>
-      <wood>10</wood>
       <stone>10</stone>
       <metal>10</metal>
     </Capacities>
   </ResourceGatherer>
-  <TreasureCollector disable=""/>
-  <Sound>
-    <SoundGroups>
-      <build>resource/construction/con_wood.xml</build>
-      <gather_fruit>resource/foraging/forage_leaves.xml</gather_fruit>
-      <gather_grain>resource/farming/farm.xml</gather_grain>
-      <gather_wood>resource/lumbering/lumbering.xml</gather_wood>
-      <gather_stone>resource/mining/pickaxe.xml</gather_stone>
-      <gather_metal>resource/mining/mining.xml</gather_metal>
-      <invalid_building_placement>interface/alarm/alarm_invalid_building_placement.xml</invalid_building_placement>
-      <order_build>voice/{lang}/civ/civ_{phenotype}_build.xml</order_build>
-      <order_repair>voice/{lang}/civ/civ_{phenotype}_repair.xml</order_repair>
-      <trained>actor/singlesteps/steps_gravel_trained.xml</trained>
-    </SoundGroups>
-  </Sound>
+  <TrainingRestrictions>
+    <Category>Slave</Category>
+  </TrainingRestrictions>
 </Entity>

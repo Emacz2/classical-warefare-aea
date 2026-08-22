@@ -7,6 +7,12 @@
       <metal>250</metal>
     </Resources>
   </Cost>
+    <Health>
+    <Max>300</Max>
+  </Health>
+    <Loot>
+    <xp>175</xp>
+  </Loot>
   <Footprint replace="">
     <Square width="3.0" depth="6.0"/>
     <Height>6.0</Height>
@@ -37,9 +43,10 @@
   <StatusBars>
     <HeightOffset>7.0</HeightOffset>
   </StatusBars>
-   <UnitMotion>
-    <WalkSpeed>14</WalkSpeed>
-    <RunMultiplier op="mul">2</RunMultiplier>
+    <UnitMotion>
+    <WalkSpeed>17</WalkSpeed>
+    <RunMultiplier op="mul">1.8</RunMultiplier>
+    <Acceleration op="mul">1.1</Acceleration>
   </UnitMotion>
   <UnitAI>
     <Formations datatype="tokens">

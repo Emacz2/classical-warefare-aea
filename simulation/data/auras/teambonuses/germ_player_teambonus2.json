@@ -1,0 +1,13 @@
+{
+	"type": "global",
+	"affects": [ "Infantry" ],
+	"affectedPlayers": [ "MutualAlly" ],
+	"modifications": [
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05},
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05},
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05},
+		{ "value": "Attack/Capture/Capture", "add": 0.5 }
+	],
+	"auraName": "Germanic Ferocity",
+	"auraDescription": "Infantry 5% more melee dmg and +0.5 capture attack."
+}

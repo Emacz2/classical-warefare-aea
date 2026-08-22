@@ -34,7 +34,7 @@
  </UnitMotion>
   <Promotion disable=""/>
   <TrainingRestrictions>
-    <Category>Doulos</Category>
+    <Category>Police</Category>
   </TrainingRestrictions>
   <VisualActor>
     <Actor>units/athenians/infantry_archer_c.xml</Actor>

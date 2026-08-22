@@ -27,7 +27,13 @@
 			"Type": "peace"
 		}
 	],
-	"CivBonuses": [],
+	"CivBonuses": [
+		{
+			"Name": "Cavalry Limit",
+			"History": "The Seleucid army combined Macedonian cavalry traditions with the horse-rich regions of Iran and Central Asia. Companion-style cavalry, horse archers, and increasingly heavily armored horsemen gave Seleucid armies exceptional mounted depth within a broader combined-arms force.",
+			"Description": "Maximum cavalry as a share of effective population: Village 10%; Town 20%; City 25%."
+		}
+	],
 	"WallSets": [
 		"structures/wallset_palisade",
 		"structures/sele/wallset_stone"
@@ -41,7 +47,7 @@
 			"Count": 4
 		},
 		{
-			"Template": "units/sele/infantry_pikeman_b",
+			"Template": "units/sele/infantry_spearman_conscript",
 			"Count": 2
 		},
 		{
@@ -49,7 +55,7 @@
 			"Count": 2
 		},
 		{
-			"Template": "units/sele/cavalry_javelineer_b"
+			"Template": "units/sele/cavalry_spearman_p"
 		}
 	],
 	"AINames": [

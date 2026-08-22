@@ -12,6 +12,7 @@
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/infantry_archer_b</SelectionGroupName>
+    <GenericName>Han Infantry Archer</GenericName>
     <SpecificName>Shè Shǒu</SpecificName>
     <Icon>units/han/infantry_archer.png</Icon>
     <Requirements>

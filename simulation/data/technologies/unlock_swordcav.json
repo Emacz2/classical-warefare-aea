@@ -10,11 +10,10 @@
 	"requirements": {
 		"all": [
 			{ "tech": "phase_village" },
-			{ "civ": "athen" },
-			{ "civ": "brit" },
 			{ "civ": "gaul" },
 			{ "civ": "han" },
-			{ "civ": "maur" }
+			{ "civ": "maur" },
+			{ "civ": "sele" }
 		]
 	},
 	"requirementsTooltip": "Unlocked in village Phase.",

@@ -1076,14 +1076,20 @@ Worker.prototype.buildAnyField = function(gameState, baseID)
 		return false;
 	if (this.base.Config.difficulty >= difficulty.EXPERT)
 	{
-		// Expert v0.3.2 worker-role lock: an active farmer should keep farming.
-		// New/idle civilians may build new fields; current farmers should not all
-		// walk away to mass-build the next field foundation.
+		// Expert v0.3.3 worker-role lock: active food workers stay on their
+		// resource.  New/idle civilians may build new fields; current farmers or
+		// berry gatherers should not all walk away to mass-build the next field.
 		const supplyId = this.ent.getMetadata(PlayerID, "supply");
 		const supply = supplyId ? gameState.getEntityById(supplyId) : undefined;
-		if (supply && supply.hasClass && supply.hasClass("Field") &&
-		    this.ent.getMetadata(PlayerID, "subrole") === Worker.SUBROLE_GATHERER)
-			return false;
+		if (supply && this.ent.getMetadata(PlayerID, "subrole") === Worker.SUBROLE_GATHERER)
+		{
+			if (supply.hasClass && supply.hasClass("Field"))
+				return false;
+			const supplyType = supply.resourceSupplyType && supply.resourceSupplyType();
+			if (supplyType && supplyType.generic == "food" &&
+			    (!supply.resourceSupplyAmount || supply.resourceSupplyAmount() > 0))
+				return false;
+		}
 	}
 	let bestFarmEnt = false;
 	let bestFarmDist = 10000000;

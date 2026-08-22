@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="allied_inf|inf_charge|shield_large|armor_heavy|sword_long|template_unit_infantry_melee_swordsman">
+<Entity parent="merc_inf|inf_charge|shield_large|armor_heavy|sword_long|helmet_protected|template_unit_infantry_melee_swordsman">
   <Attack>
     <Melee>
-	    <Damage>
+      <Damage>
         <Hack op="mul">1.05</Hack>
         <Pierce op="mul">1.05</Pierce>
       </Damage>
@@ -10,12 +10,16 @@
   </Attack>
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Iberian Allied Nobel Swordsman</GenericName>
+    <Classes datatype="tokens">Iberian</Classes>
+    <GenericName>Iberian Mercenary Noble Swordsman</GenericName>
     <SpecificName></SpecificName>
-    <SelectionGroupName>units/cart/merc_inf_iber_sword_b</SelectionGroupName>
+    <SelectionGroupName>units/cart/merc_inf_swordsman_iber_b</SelectionGroupName>
     <Icon>units/cart/infantry_swordsman.png</Icon>
   </Identity>
- <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/cart/allied_inf_swordsman_iber_a</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
   <VisualActor>
     <Actor>units/iberians/infantry_swordsman_b.xml</Actor>
   </VisualActor>

@@ -8,7 +8,7 @@
       </Damage>
       <MaxRange>65</MaxRange>
       <MinRange>10</MinRange>
-      <PrepareTime>750</PrepareTime>
+      <PrepareTime>1000</PrepareTime>
       <RepeatTime>1000</RepeatTime>
       <Projectile>
         <Speed>125</Speed>
@@ -41,6 +41,6 @@
     <RunMultiplier op="mul">1.55</RunMultiplier>
   </UnitMotion>
    <Vision>
-    <Range>75</Range>
+    <Range>65</Range>
   </Vision>
 </Entity>

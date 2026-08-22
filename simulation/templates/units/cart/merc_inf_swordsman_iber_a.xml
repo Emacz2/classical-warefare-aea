@@ -3,7 +3,10 @@
   <Identity>
     <Rank>Advanced</Rank>
   </Identity>
-<Promotion disable=""/>
+  <Promotion>
+    <Entity>units/cart/allied_inf_swordsman_iber_a</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
   <VisualActor>
     <Actor>units/carthaginians/infantry_swordsman_a.xml</Actor>
   </VisualActor>

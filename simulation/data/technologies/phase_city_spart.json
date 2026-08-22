@@ -1,22 +1,21 @@
 {
-	"genericName": "City Phase",
-	"specificName": {
-		"spart": "Megalopolis"
-	},
-
-	"description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology.",
-	"cost": {
-		"food": 500,
-		"wood": 500,
-		"stone": 750,
-		"metal": 500
-	},
-	 "requirements": {
+    "genericName": "City Phase",
+    "specificName": {
+        "spart": "Megalopolis"
+    },
+    "description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology.",
+    "cost": {
+        "food": 350,
+        "wood": 350,
+        "stone": 600,
+        "metal": 200
+    },
+    "requirements": {
         "all": [
             {
                 "entity": {
                     "class": "Village",
-                    "number": 20
+                    "number": 15
                 }
             },
             {
@@ -26,30 +25,86 @@
                 }
             }
         ]
-	},
-	"requirementsTooltip": "Requires 20 village and 2 town structures.",
-	"supersedes": "phase_town_spart",
-	"replaces": ["phase_city"],
-	"icon": "city_phase.png",
-	"researchTime": 60,
-	"tooltip": "Advance to Spartan city Phase, which unlocks more entities and technologies. Civic Centers +10 garrison capacity/population bonus, +5 range and +2.5C +5H +7.5P resittances. Structures +1 capture points regeneration rate for garrisoned units.",
-	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 2, "affects": "Structure" },
-		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "Agora" },
-		{ "value": "Population/Bonus", "add": 10, "affects": "Agora" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "Agora" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "Agora" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "Agora" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Agora" },
-		{ "value": "Cost/BuildTime", "multiply": 1.15, "affects": "Champion" },
-		{ "value": "Cost/BuildTime", "multiply": 0.90, "affects": "Perioikoi" },
-		{ "value": "Cost/BuildTime", "multiply": 0.9, "affects": "HelotM" },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.2, "affects": "Leonidas" },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.2, "affects": "Leonidas" },
-		{ "value": "Health/Max", "multiply": 2, "affects": "Leonidas"},
-		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Structure" }
-	
-		
-	],
-	"soundComplete": "interface/alarm/alarm_phase.xml"
+    },
+    "requirementsTooltip": "Requires 20 village and 2 town structures.",
+    "supersedes": "phase_town_spart",
+    "replaces": [
+        "phase_city"
+    ],
+    "icon": "city_phase.png",
+    "researchTime": 50,
+    "tooltip": "Advance to City Phase, unlocking new entities and technologies. Agoras gain +15% territory influence radius, +10 garrison capacity, +10 population capacity, +10 attack range, +10% Health, +10% Capture Points. Garrisoned Structures gain +2 capture point regeneration rate. Perioikoi and male Helots train 10% faster; Champions train 10% slower. Leonidas gains +20% melee Hack and Pierce damage and +100% Health. Structures promote immediately.",
+    "modifications": [
+        {
+            "value": "Capturable/GarrisonRegenRate",
+            "add": 2,
+            "affects": "Structure"
+        },
+        {
+            "value": "GarrisonHolder/Max",
+            "add": 10,
+            "affects": "Agora"
+        },
+        {
+            "value": "Population/Bonus",
+            "add": 10,
+            "affects": "Agora"
+        },
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 10,
+            "affects": "Agora"
+        },
+        {
+            "value": "TerritoryInfluence/Radius",
+            "multiply": 1.15,
+            "affects": "Agora"
+        },
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 1.1,
+            "affects": "Champion"
+        },
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.9,
+            "affects": "Perioikoi"
+        },
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.9,
+            "affects": "HelotM"
+        },
+        {
+            "value": "Attack/Melee/Damage/Hack",
+            "multiply": 1.2,
+            "affects": "Leonidas"
+        },
+        {
+            "value": "Attack/Melee/Damage/Pierce",
+            "multiply": 1.2,
+            "affects": "Leonidas"
+        },
+        {
+            "value": "Health/Max",
+            "multiply": 2,
+            "affects": "Leonidas"
+        },
+        {
+            "value": "Promotion/RequiredXp",
+            "replace": 0,
+            "affects": "Structure"
+        },
+        {
+            "value": "Health/Max",
+            "multiply": 1.1,
+            "affects": "Agora"
+        },
+        {
+            "value": "Capturable/CapturePoints",
+            "multiply": 1.1,
+            "affects": "Agora"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_phase.xml"
 }

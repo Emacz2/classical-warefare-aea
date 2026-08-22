@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="structures/ptol/mercenary_camp_2">
+  <Identity>
+    <GenericName>Elite Greek Mercenary Camp</GenericName>
+    <SpecificName>Stratopedeia Misthophorōn</SpecificName>
+    <Classes datatype="tokens">MercenaryCamp</Classes>
+    <Tooltip>Recruit Elite Cretan Archers and Tarantine Horse Javelineers.</Tooltip>
+    <Icon>structures/mercenary_camp.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">phase_city</Techs>
+    </Requirements>
+  </Identity>
+  <Upgrade disable="" />
+  <Trainer>
+    <Entities replace="" datatype="tokens">
+      units/{civ}/merc_inf_archer_e
+      units/{civ}/cavalry_javelineer_merc_e
+    </Entities>
+  </Trainer>
+</Entity>

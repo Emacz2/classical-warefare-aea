@@ -7,7 +7,10 @@
       <Variant>upgrading</Variant>
       <Time>4</Time>
     </Peltast_Jav>
-  </Upgrade>
+  </Upgrade> 
+    <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>

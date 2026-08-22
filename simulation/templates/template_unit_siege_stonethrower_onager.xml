@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_unit_siege_stonethrower">
   <Attack>
     <Ranged>
       <Damage>
-        <Crush>15</Crush>
+        <Crush>20</Crush>
       </Damage>
       <Projectile>
         <Spread>3</Spread>
       </Projectile>
-      <MaxRange>75</MaxRange>
+      <MaxRange>80</MaxRange>
       <MinRange>20</MinRange>
       <PrepareTime>1000</PrepareTime>
       <RepeatTime>5000</RepeatTime>
@@ -16,9 +16,9 @@
       <Splash>
         <Shape>Circular</Shape>
         <Range>4</Range>
-        <FriendlyFire>false</FriendlyFire>
+        <FriendlyFire>true</FriendlyFire>
         <Damage>
-          <Crush>5</Crush>
+          <Crush>10</Crush>
         </Damage>
       </Splash>
     </Ranged>
@@ -37,7 +37,7 @@
     <Max>250</Max>
   </Health>
   <Footprint replace="">
-    <Square width="9.0" depth="15.0"/>
+    <Square width="9.0" depth="15.0" />
     <Height>5.0</Height>
   </Footprint>
   <Resistance>
@@ -48,12 +48,12 @@
     <Foundation>
       <Damage>
         <Hack>1</Hack>
-        <Pierce>1</Pierce>
+        <Pierce>15</Pierce>
         <Crush>1</Crush>
       </Damage>
     </Foundation>
   </Resistance>
   <Vision>
-    <Range>95</Range>
+    <Range>100</Range>
   </Vision>
 </Entity>

@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="aux_inf|units/samnite_skirmisher">
+<Entity parent="units/rome/allied_inf_samnite_skirmisher">
   <Identity>
-    <SelectionGroupName>units/rome/aux_inf_samnite_skirmisher</SelectionGroupName>
-    <SpecificName>Samnite Skirmisher</SpecificName>
-    <Icon>units/samn/skirmisher.png</Icon>
-     <Requirements>
-      <Techs datatype="tokens">roman_reforms</Techs>
-    </Requirements>
+    <GenericName>Allied Samnite Skirmisher</GenericName>
+    <SelectionGroupName>units/rome/allied_inf_samnite_skirmisher</SelectionGroupName>
   </Identity>
-  <VisualActor>
-    <Actor>units/carthaginians/infantry_javelinist_c_samnite.xml</Actor>
-  </VisualActor>
+  <Promotion disable=""/>
 </Entity>

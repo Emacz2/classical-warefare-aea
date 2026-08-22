@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="sele|pike_phalanx|armor_heavy|shield_light|template_unit_champion_infantry_pikeman">
+<Entity parent="sele|armor_heavy|shield_light|helmet_unobstructed|template_unit_champion_infantry_pikeman">
     <Identity>
     <Civ>sele</Civ>
     <Lang>greek</Lang>
@@ -10,10 +10,6 @@
       <Techs datatype="tokens">traditional_army_sele</Techs>
     </Requirements>
   </Identity>
-  <Promotion>
-  <RequiredXp>3000</RequiredXp>
-    <Entity>units/sele/champion_infantry_swordsman</Entity>
-  </Promotion>
   <VisualActor>
     <Actor>units/seleucids/infantry_pikeman_c.xml</Actor>
   </VisualActor>

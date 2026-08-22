@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="merc_cav|cav_camel|cav_raider|cav_medium|cav_sword_shield|template_unit_cavalry_melee_swordsman">
+  <Footprint>
+    <Height>7.5</Height>
+  </Footprint>
+  <Identity>
+    <Civ>kush</Civ>
+    <Lang>napatan</Lang>
+    <SelectionGroupName>units/kush/cavalry_swordsman_merc_b</SelectionGroupName>
+    <GenericName>Blemmye Desert Raider</GenericName>
+    <SpecificName>Nhw Bulahau gml</SpecificName>
+    <VisibleClasses datatype="tokens">Camel</VisibleClasses>
+    <Icon>units/kush/camel_javelinist.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
+  </Identity>
+  <Promotion>
+    <Entity>units/kush/cavalry_swordsman_merc</Entity>
+  </Promotion>
+  <Sound>
+    <SoundGroups>
+      <select>actor/fauna/animal/camel.xml</select>
+      <order_walk>actor/fauna/movement/camel_order.xml</order_walk>
+      <death>actor/fauna/death/death_camel.xml</death>
+    </SoundGroups>
+  </Sound>
+  <StatusBars>
+    <HeightOffset>8.5</HeightOffset>
+  </StatusBars>
+  <VisualActor>
+    <Actor>units/kushites/camel_swordsman_m.xml</Actor>
+  </VisualActor>
+</Entity>

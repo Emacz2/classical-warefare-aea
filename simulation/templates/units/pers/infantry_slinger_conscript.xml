@@ -10,11 +10,9 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/infantry_slinger_b</SelectionGroupName>
+    <GenericName>Levy Persian Slinger</GenericName>
     <SpecificName>Pastiš Bandakabara</SpecificName>
     <Icon>units/iber/infantry_slinger.png</Icon>
-    <Requirements>
-      <Techs datatype="tokens">unlock_slingers</Techs>
-    </Requirements>
   </Identity>
     <Promotion>
     <Entity>units/pers/infantry_slinger_b</Entity>

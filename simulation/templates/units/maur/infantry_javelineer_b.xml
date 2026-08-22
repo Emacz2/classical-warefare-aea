@@ -10,7 +10,7 @@
   <Identity>
     <Civ>maur</Civ>
     <SelectionGroupName>units/maur/infantry_javelineer_merc_b</SelectionGroupName>
-    <GenericName>Maury Skirmisher</GenericName>
+    <GenericName>Mauryan Javelineer</GenericName>
      <SpecificName>Bhalladhara</SpecificName>
     <Icon>units/maur/maury_infantry_skirm.png</Icon>
     <Requirements>

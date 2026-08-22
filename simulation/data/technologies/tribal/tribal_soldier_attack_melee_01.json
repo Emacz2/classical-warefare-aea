@@ -1,0 +1,34 @@
+{
+	"genericName": "Hardened Blades",
+	"description": "Improved heat treatment produced stronger blades that held a sharper edge in battle.",
+	"cost": {
+		"food": 350,
+		"metal": 250
+	},
+		"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ 
+				"any": [
+					{ "civ": "brit" },
+					{ "civ": "gaul" },
+					{ "civ": "germ" },
+					{ "civ": "iber" }
+				
+				] 
+		
+		}
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "sword_02.png",
+	"researchTime": 40,
+	"tooltip": "Soldiers +15% melee attack damage.",
+	"modifications": [
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.15 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.15 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.15 }
+	],
+	"affects": ["Soldier !Mercenary !Elephant"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

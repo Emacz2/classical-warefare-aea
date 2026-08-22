@@ -3,8 +3,11 @@
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
-   <Promotion disable=""/>
+  <Promotion>
+    <Entity>units/cart/allied_spearcav_iber_a</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
   <VisualActor>
-   <Actor>units/iberians/cavalry_spearman_e_m.xml</Actor>
+    <Actor>units/iberians/cavalry_spearman_e_m.xml</Actor>
   </VisualActor>
 </Entity>

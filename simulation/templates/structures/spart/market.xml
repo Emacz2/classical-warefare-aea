@@ -6,15 +6,18 @@
   <Identity>
     <Civ>spart</Civ>
     <SpecificName>Emporion</SpecificName>
-     <Requirements>
+    <Tooltip>Trade resources and recruit Elite Cretan Archers, Thracian Peltasts, and Thracian Black Cloaks.</Tooltip>
+    <Requirements>
       <Techs datatype="tokens">-phase_town phase_city</Techs>
     </Requirements>
   </Identity>
   <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
-    <Entities datatype="tokens">
-      -units/{civ}/merc_inf_archer_market_b
-       units/{civ}/merc_inf_archer_market_e
+    <Entities replace="" datatype="tokens">
+      units/{civ}/support_trader
+      units/{civ}/merc_inf_archer_market_e
+      units/{civ}/merc_market_thracian_peltast_e
+      units/{civ}/inf_black_cloak_merc
     </Entities>
   </Trainer>
   <VisualActor>

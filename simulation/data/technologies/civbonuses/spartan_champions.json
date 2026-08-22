@@ -1,9 +1,9 @@
 {
 	"genericName": "Great Rhetra",
 	"autoResearch": true,
-	"description": "Under the constitution written by the mythical lawgiver Lycurgus, the institution of the Agoge was established, where Spartans were trained from the age of 6 to be superior warriors in defense of the Spartan state.",
+	"description": "The Great Rhetra, traditionally attributed to Lycurgus, established the foundations of Spartan society and the Agoge. From early childhood, Spartan citizens were raised through rigorous military training, producing generations of disciplined warriors whose skill and experience culminated in the elite Spartiates.",
 	"icon": "agoge.png",
-	"tooltip": "Spartiates (Champion Hoplites) are available in p1. They start as Young Hoplites (Paidiskoi) costing 80 food 40 wood 80 metal and train 20% faster than regular champs (16s.)  However, they do 20% less dmg, have -1 hack/pierce resitance and -25 health.  They promote to normal Hebontes (regular stat/cost champ spearman) and can eventually promote to Hippeis (Elite Royal Guard) ",
+	"tooltip": "Spartiates (Champion Hoplites) are available in Town Phase. They begin as Young Hoplites (Paidiskoi), who cost 80 Food, 40 Wood, and 80 Metal, train 20% faster than standard Champions, but have −20% attack, −1 Hack and Pierce Resistance, and −25 Health. They promote into Hebontes (standard Champion Hoplites) and can eventually become Hippeis, Sparta's elite Royal Guard.",
 	"requirements": { "civ": "spart" },
 	"modifications": [
 	

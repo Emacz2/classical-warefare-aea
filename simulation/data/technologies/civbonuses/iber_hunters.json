@@ -1,14 +1,19 @@
 {
-	"genericName": "Execellent hunters",
-	"autoResearch": true,
-	"description": "Iberians were excellent hunters and relied on the wild game as a source of food.",
-	"requirements": { "civ": "iber" },
-	"icon": "wooden_walls.png",
-	"tooltip": "Gathers 50% faster meat garthering.",
-	"modifications": 
-[
-	{ "value": "ResourceGatherer/Rates/food.meat", "multiply": 1.5 }
-	
-	],
-	"affects": ["Gathers"]
+  "genericName": "Hunting Traditions",
+  "autoResearch": true,
+  "description": "Hunting remained an important supplementary food source among communities of the Iberian Peninsula.",
+  "requirements": {
+    "civ": "iber"
+  },
+  "icon": "wooden_walls.png",
+  "tooltip": "Iberian Workers gather meat from wild animals 100% faster.",
+  "modifications": [
+    {
+      "value": "ResourceGatherer/Rates/food.meat.wild",
+      "multiply": 2
+    }
+  ],
+  "affects": [
+    "Iberian Worker"
+  ]
 }

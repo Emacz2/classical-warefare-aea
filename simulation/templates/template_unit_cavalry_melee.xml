@@ -4,12 +4,7 @@
     <GenericName>Melee Cavalry</GenericName>
     <VisibleClasses datatype="tokens">Melee</VisibleClasses>
   </Identity>
-  <Health>
-    <Max>250</Max>
-  </Health>
-    <Loot>
-    <xp>125</xp>
-    <metal>15</metal>
-    <wood>15</wood>
-  </Loot>
+  <Vision>
+    <Range>60</Range>
+  </Vision>
 </Entity>

@@ -1,10 +1,10 @@
 {
-        "genericName": "Long reign",
+        "genericName": "Dynastic Continuity",
         "autoResearch": true,
-        "description": "The Ptol dynasty was the longest lasting of Egypt origin ,",
+        "description": "For nearly three centuries, the Ptolemaic dynasty maintained a stable royal administration combining Greek governance with established Egyptian institutions. This institutional continuity reduced the material cost of civic reforms, but the complexity and conservatism of the bureaucracy slowed their implementation.",
         "requirements": { "civ": "ptol" },
         "icon": "stone_blocks_brown.png",
-        "tooltip": "CC techs cost 20% less but 25% more train time.",
+        "tooltip": "CC techs cost 20% less resources but 25% more research time.",
         "modifications": [
                 { "value": "Researcher/TechCostMultiplier/food", "multiply": 0.8 },
                 { "value": "Researcher/TechCostMultiplier/wood", "multiply": 0.8 },

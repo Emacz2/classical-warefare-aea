@@ -2,20 +2,37 @@
 <Entity parent="template_structure_economic_market">
   <BuildRestrictions>
     <Territory>own ally neutral</Territory>
+    <Category>MarketC</Category>
+    <Distance>
+      <FromClass>MarketC</FromClass>
+      <MinDistance>70</MinDistance>
+    </Distance>
   </BuildRestrictions>
+  <Capturable>
+    <CapturePoints op="mul">1.5</CapturePoints>
+  </Capturable>
   <TerritoryDecay disable=""/>
- <Identity>
+  <Identity>
     <Civ>cart</Civ>
     <GenericName>Market lvl 3</GenericName>
     <SpecificName>Šūq</SpecificName>
+    <Tooltip>Barter resources, establish trade routes, and recruit Elite Balearic mercenary slingers.</Tooltip>
     <VisibleClasses datatype="tokens">Village -Town</VisibleClasses>
-      <Requirements>
+    <Requirements>
       <Techs datatype="tokens">-phase_town</Techs>
     </Requirements>
   </Identity>
-     <Trainer>
+  <Trainer>
     <BatchTimeModifier>0.7</BatchTimeModifier>
     <Entities datatype="tokens">
+      units/{civ}/support_slave_market
+      -units/{civ}/inf_black_cloak_merc
+      -units/{civ}/merc_inf_swordsman_market_b
+      -units/{civ}/merc_inf_spearman_market_b
+      -units/{civ}/merc_inf_archer_market_b
+      -units/{civ}/merc_market_thracian_peltast
+      -units/{civ}/merc_spear_market_b
+      -units/{civ}/merc_spearcav_market_b
       -units/{civ}/merc_inf_slinger_market_b
       units/{civ}/merc_inf_slinger_market_e
     </Entities>

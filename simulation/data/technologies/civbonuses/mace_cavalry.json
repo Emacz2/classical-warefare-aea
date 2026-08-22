@@ -1,18 +1,19 @@
 {
 	"genericName": "Elite Cavalry",
 	"autoResearch": true,
-	"description": "The combination of Thessalian Cavalry and Companion Cavalry was one of the strongest and the first true shock cavalry in Europe.",
+	"description": "Thessalian and Companion Cavalry formed one of the most powerful mounted forces of the ancient Mediterranean. Their discipline, equipment, and coordinated shock tactics made Macedonian cavalry exceptionally effective in close combat.",
 	"requirements": { "civ": "mace" },
 	"icon": "sword_cavalry.png",
-	"tooltip": "Cavalry 0.5 of Hack/Pierce resistance and 10% more dmg.",
+	"tooltip": "Melee Cavalry gain +1 Pierce Resistance, +0.5 Hack and Crush Resistance, and +10% melee damage. Excludes Mercenaries. ",
 	"modifications": [
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5 },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1},
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1},
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.1},
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.1}
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1}
 	
 		
 	],
-	"affects": ["Cavalry !Mercenary"]
+	"affects": ["Melee Cavalry !Mercenary"]
 }

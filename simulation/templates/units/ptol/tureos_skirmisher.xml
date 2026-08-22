@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_inf|units/tureos_skirmisher">
+<Entity parent="allied_inf|units/tureos_skirmisher">
  <Builder>
     <Entities datatype="tokens">
       structures/ptol/lighthouse
@@ -20,7 +20,4 @@
     <SelectionGroupName>units/ptol/tureos_skirmisher</SelectionGroupName>
   </Identity>
   <Promotion disable=""/>
-  <VisualActor>
-    <Actor>units/iberians/infantry_javelinist_b.xml</Actor>
-  </VisualActor>
 </Entity>

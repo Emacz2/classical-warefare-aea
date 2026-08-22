@@ -8,6 +8,8 @@
   </BuildRestrictions>
   <Capturable>
     <CapturePoints op="mul">4</CapturePoints>
+    <RegenRate>5</RegenRate>
+    <GarrisonRegenRate>20</GarrisonRegenRate>
   </Capturable>
   <Cost>
     <BuildTime>750</BuildTime>
@@ -23,10 +25,10 @@
     <Height>10.0</Height>
   </Footprint>
   <GarrisonHolder>
-    <Max>60</Max>
+    <Max>1</Max>
     <EjectHealth>0.1</EjectHealth>
-    <EjectClassesOnDestroy datatype="tokens">Unit</EjectClassesOnDestroy>
-    <List datatype="tokens">Support Soldier Serf</List>
+    <EjectClassesOnDestroy datatype="tokens">Hero</EjectClassesOnDestroy>
+    <List datatype="tokens">Hero</List>
     <BuffHeal>5</BuffHeal>
     <LoadingRange>2</LoadingRange>
   </GarrisonHolder>

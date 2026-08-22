@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_military_embassy">
- <Cost>
+  <Cost>
     <Resources>
       <stone>50</stone>
       <metal>100</metal>
       <wood>100</wood>
     </Resources>
-  <BuildTime>120</BuildTime>
-   </Cost>
-   <Resistance>
+    <BuildTime>120</BuildTime>
+  </Cost>
+  <Resistance>
     <Entity>
-    <ApplyStatus>
+      <ApplyStatus>
         <Burning>
           <Duration>0.4</Duration>
           <BlockChance>0.6</BlockChance>
@@ -28,8 +28,8 @@
   <Identity>
     <Civ>cart</Civ>
     <SpecificName>Italic Embassy</SpecificName>
-    <Tooltip>Train Italic Mercenaries.</Tooltip>
-    <Classes datatype="tokens">CivSpecific</Classes>
+    <Tooltip>Recruit allied Samnite contingents from southern Italy. Samnite Allied troops promote normally through battlefield experience.</Tooltip>
+    <Classes datatype="tokens">CivSpecific ItalicEmbassy</Classes>
     <VisibleClasses datatype="tokens">Village -Town Two</VisibleClasses>
     <Icon>structures/embassy_italic.png</Icon>
   </Identity>
@@ -41,10 +41,15 @@
   <Obstruction>
     <Static width="11.0" depth="14.0"/>
   </Obstruction>
+  <Researcher>
+    <Technologies datatype="tokens">
+      italian_confederates_cart
+    </Technologies>
+  </Researcher>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/merc_inf_samnite_spearman
-      units/{civ}/merc_inf_samnite_skirmisher
+      units/{civ}/allied_inf_samnite_spearman_b
+      units/{civ}/allied_inf_samnite_skirmisher_b
     </Entities>
   </Trainer>
   <VisualActor>

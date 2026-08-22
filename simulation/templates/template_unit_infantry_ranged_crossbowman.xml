@@ -4,11 +4,11 @@
     <Ranged>
       <AttackName>Crossbow</AttackName>
       <Damage>
-        <Pierce>31</Pierce>
+        <Pierce>30</Pierce>
       </Damage>
       <MaxRange>70</MaxRange>
       <MinRange>10</MinRange>
-      <PrepareTime>1000</PrepareTime>
+      <PrepareTime>500</PrepareTime>
       <RepeatTime>6000</RepeatTime>
       <Projectile>
         <Speed>175</Speed>
@@ -40,6 +40,6 @@
     <RunMultiplier op="mul">1.5</RunMultiplier>
   </UnitMotion>
   <Vision>
-    <Range>75</Range>
+    <Range>70</Range>
   </Vision>
 </Entity>

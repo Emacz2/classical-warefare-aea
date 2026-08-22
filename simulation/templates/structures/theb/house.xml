@@ -3,13 +3,22 @@
   <Identity>
     <Civ>theb</Civ>
     <SpecificName>Oikos</SpecificName>
-    <History>Hellenic houses from the Classical Age were generally humble yet stylish. During the Hellenistic Age, however, luxurious palaces and estates became commonplace in the rich Hellenistic metropolises like Antioch, Alexandria and Seleucia.</History>
   </Identity>
-   <Trainer>
-    <Entities datatype="tokens">
-      units/{civ}/support_slave
-    </Entities>
-  </Trainer>
+  <Upgrade>
+    <Estate>
+      <Entity>structures/theb/estate</Entity>
+      <Tooltip>Expand this household into an Estate. Estates add 5 population, expand the Slave limit, and can unlock and train Slaves.</Tooltip>
+      <Cost>
+        <wood>50</wood>
+        <stone>50</stone>
+      </Cost>
+      <Time>30</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_town</Techs>
+      </Requirements>
+    </Estate>
+  </Upgrade>
   <VisualActor>
     <Actor>structures/hellenes/house.xml</Actor>
   </VisualActor>

@@ -1,11 +1,12 @@
 {
 
 	"type": "global",
+	"affects": ["Player"],
 	"modifications": [
 		{ "value": "ResourceTrickle/Rates/metal", "add": 0.5 }
 	],
 	"auraName": "Taxes",
 	"showDescription": 1,
-	"auraDescription": "Gain small trickle a +0.5 metal per second when Ephor garrisoned in Civic Center.",
+	"auraDescription": "Gain small trickle a +0.5 metal per second while Ephor is alive.",
 	"stackable": true
 }

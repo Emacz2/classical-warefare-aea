@@ -7,7 +7,7 @@
     <Upgrade>
     <Apartment>
       <Entity>structures/athen/estate</Entity>
-      <Tooltip>Upgrade to an estate, allows you to unlock and train slaves, increases popluation bonus (5) Garrison capacity (50%).</Tooltip>
+      <Tooltip>Upgrade to an Estate. Estates add 5 population, increase garrison capacity by 50%, expand the Slave limit, and can unlock and train Slaves.</Tooltip>
       <Cost>
         <wood>50</wood>
         <stone>50</stone>

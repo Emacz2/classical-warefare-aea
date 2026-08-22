@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/han/support_civilian">
+  <Attack disable=""/>
+  <Cost>
+    <Population>0</Population>
+    <BuildTime>8</BuildTime>
+    <Resources>
+      <food>50</food>
+      <wood>0</wood>
+      <stone>0</stone>
+      <metal>0</metal>
+    </Resources>
+  </Cost>
+  <Health>
+    <Max>40</Max>
+  </Health>
+  <Identity>
+    <GenericName>Slave Laborer</GenericName>
+    <SpecificName>Núbì</SpecificName>
+    <SelectionGroupName>units/han/support_slave</SelectionGroupName>
+    <Tooltip>Cheap enslaved laborer with the same gathering rates as this civilization's civilian. Cannot attack or capture. Costs no population; labor capacity is provided by Markets and the Imperial Ministry.</Tooltip>
+    <VisibleClasses replace="" datatype="tokens">Worker Slave</VisibleClasses>
+    <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
+    <Icon>units/global/slave.png</Icon>
+  </Identity>
+  <TrainingRestrictions>
+    <Category>HanLabor</Category>
+  </TrainingRestrictions>
+  <VisualActor>
+    <Actor>units/global/slave.xml</Actor>
+  </VisualActor>
+</Entity>

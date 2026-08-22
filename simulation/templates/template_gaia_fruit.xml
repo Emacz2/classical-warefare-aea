@@ -26,7 +26,7 @@
     <Change>
       <Regrowth>
         <Value>1</Value>
-        <Interval>2000</Interval>
+        <Interval>6000</Interval>
       </Regrowth>
     </Change>
   </ResourceSupply>

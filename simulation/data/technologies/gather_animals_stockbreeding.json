@@ -4,7 +4,12 @@
 	"cost": {
 		"food": 100
 	},
-	"requirements": { "tech": "phase_village" },
+	"requirements": {
+		"all": [
+			{ "tech": "phase_village" },
+			{ "notciv": "kush" }
+		]
+	},
 	"icon": "meat.png",
 	"researchTime": 40,
 	"tooltip": "Domestic Animals −25% breeding time.",

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/sele/tureos_skirmisher">
+  <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
+  <Upgrade>
+    <Spear>
+      <Entity>units/sele/tureos_spearman_a</Entity>
+      <Tooltip>Switch to using a spear.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>4</Time>
+    </Spear>
+  </Upgrade>
+  <Promotion>
+    <Entity>units/sele/tureos_skirmisher_e</Entity>
+  </Promotion>
+</Entity>

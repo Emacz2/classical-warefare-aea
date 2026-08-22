@@ -21,6 +21,12 @@
       </Shape>
     </Overlay>
   </Selectable>
+  <ProductionQueue/>
+  <Researcher>
+    <Technologies datatype="tokens">
+      darius_reforms
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>units/persians/hero_chariot_archer_darius_m.xml</Actor>
   </VisualActor>

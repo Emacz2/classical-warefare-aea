@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">0.5</Hack>
+        <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <Identity>
+    <GenericName>Unobstructed Helmet</GenericName>
+    <Tooltip>+0.5 Hack/Pierce resistance with no vision penalty.</Tooltip>
+    <History>Open helmet designs that protect the head while preserving a broad field of view, such as the Boeotian cavalry helmet.</History>
+  </Identity>
+</Entity>

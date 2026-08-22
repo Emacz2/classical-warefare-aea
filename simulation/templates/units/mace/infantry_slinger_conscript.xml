@@ -9,7 +9,7 @@
     <Civ>mace</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/mace/infantry_slinger_b</SelectionGroupName>
-    <GenericName>Conscripted Citzin Slinger</GenericName>
+    <GenericName>Macedonian Levy Slinger</GenericName>
     <SpecificName>Sphendonḗtēs</SpecificName>
     <Icon>units/athen/infantry_slinger.png</Icon>
   </Identity>
@@ -17,6 +17,6 @@
     <Entity>units/mace/infantry_slinger_b</Entity>
   </Promotion>
   <VisualActor>
-   <Actor>units/athenians/infantry_slinger_b.xml</Actor>
+  <Actor>units/macedonians/infantry_slinger_b.xml</Actor>
   </VisualActor>
 </Entity>

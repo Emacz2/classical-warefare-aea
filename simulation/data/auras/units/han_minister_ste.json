@@ -1,5 +1,6 @@
 {
 	"type": "global",
+	"affects": ["Player"],
 	"modifications": [
 		{ "value": "ResourceTrickle/Rates/wood", "add": 0.5 },
 		{ "value": "ResourceTrickle/Rates/food", "add": 0.5 },
@@ -7,6 +8,6 @@
 	],
 	"auraName": "Nationalized Industries",
 	"showDescription": 1,
-	"auraDescription": "Gain small trickle a +0.5/1 second of food, metal, stone while minister is alive.",
+	"auraDescription": "Gain +0.5 food, wood, and metal per second while this Minister is alive.",
 	"stackable": true
 }

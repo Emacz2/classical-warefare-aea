@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="allied_inf|inf_charge|shield_large|armor_heavy|sword_long|helmet_protected|template_unit_infantry_melee_swordsman">
+  <Attack>
+    <Melee>
+      <Damage>
+        <Hack op="mul">1.05</Hack>
+        <Pierce op="mul">1.05</Pierce>
+      </Damage>
+    </Melee>
+  </Attack>
+  <Identity>
+    <Civ>cart</Civ>
+    <Classes datatype="tokens">Iberian</Classes>
+    <GenericName>Iberian Allied Noble Swordsman</GenericName>
+    <SpecificName></SpecificName>
+    <SelectionGroupName>units/cart/merc_inf_swordsman_iber_b</SelectionGroupName>
+    <Icon>units/cart/infantry_swordsman.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/cart/allied_inf_swordsman_iber_a</Entity>
+  </Promotion>
+  <VisualActor>
+    <Actor>units/iberians/infantry_swordsman_b.xml</Actor>
+  </VisualActor>
+</Entity>

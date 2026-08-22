@@ -1,13 +1,13 @@
 {
-	"genericName": "Gather scrolls on economic knowledge",
-	"description": "Techs from economic buildings 25% less resource cost and research time.",
+	"genericName": "Gather scrolls on Economic Knowledge",
+	"description": "Scholars gather and translate works concerning agriculture, commerce, mining, craftsmanship, and the management of estates, spreading practical knowledge throughout the kingdom.",
 	"cost": {
 		"food": 100,
 		"metal": 100
 	},
 	"icon": "amphore.png",
 	"researchTime": 30,
-	"tooltip": "Techs from economic buildings 25% less resource cost and research time..",
+	"tooltip": "TTechnologies researched at Economic Structures cost 25% fewer resources and research 25% faster. Excludes Civic Centers.",
 	"modifications": [
 		{ "value": "Researcher/TechCostMultiplier/food", "multiply": 0.75 },
 		{ "value": "Researcher/TechCostMultiplier/wood", "multiply": 0.75 },

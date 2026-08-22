@@ -26,7 +26,7 @@
   </Attack>
    <Cost>
     <Resources>
-      <food>75</food>
+      <food>50</food>
       <wood>25</wood>
     </Resources>
   </Cost>
@@ -34,9 +34,6 @@
     <GenericName>Infantry Torchman</GenericName>
     <VisibleClasses datatype="tokens">Torchman</VisibleClasses>
   </Identity>
-  <UnitMotion>
-    <RunMultiplier op="mul">1.45</RunMultiplier>
-  </UnitMotion>
   <Sound>
     <SoundGroups>
       <attack_melee>attack/weapon/sword_attack.xml</attack_melee>

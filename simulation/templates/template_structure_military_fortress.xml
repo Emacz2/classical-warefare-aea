@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_military">
   <Auras datatype="tokens">
     structures/xp_trickle_1.5
@@ -9,7 +9,7 @@
       <Damage>
         <Pierce>1.7</Pierce>
       </Damage>
-      <MaxRange>70</MaxRange>
+      <MaxRange>80</MaxRange>
       <MinRange>10</MinRange>
       <PrepareTime>400</PrepareTime>
       <RepeatTime>1000</RepeatTime>
@@ -18,7 +18,7 @@
         <Spread>1.0</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="3"/>
+        <LaunchPoint y="3" />
       </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
       <RangeOverlay>
@@ -30,16 +30,16 @@
   </Attack>
   <Resistance>
     <Entity>
-    <ApplyStatus>
+      <ApplyStatus>
         <Burning>
           <Duration>0.1</Duration>
           <BlockChance>0.98</BlockChance>
         </Burning>
       </ApplyStatus>
       <Damage>
-        <Crush>15</Crush>
+        <Crush>7.5</Crush>
         <Hack>25</Hack>
-        <Pierce>45</Pierce>
+        <Pierce>40</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -57,30 +57,31 @@
   </BuildingAI>
   <Capturable>
     <CapturePoints>4500</CapturePoints>
-    <RegenRate>10.0</RegenRate>
-  </Capturable>
+    <RegenRate>10</RegenRate>
+    <GarrisonRegenRate>1.75</GarrisonRegenRate>
+</Capturable>
   <Cost>
     <BuildTime>510</BuildTime>
     <Resources>
-      <metal>250</metal>
-      <wood>250</wood>
-      <stone>750</stone>
+      <metal>100</metal>
+      <wood>300</wood>
+      <stone>600</stone>
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="30.0" depth="30.0"/>
+    <Square width="30.0" depth="30.0" />
     <Height>8.0</Height>
   </Footprint>
   <GarrisonHolder>
-    <Max>35</Max>
+    <Max>40</Max>
     <EjectHealth>0.1</EjectHealth>
     <List datatype="tokens">Support Serf Infantry Cavalry Siege Elephant</List>
     <LoadingRange>5</LoadingRange>
     <BuffHeal>1</BuffHeal>
   </GarrisonHolder>
-	  <Population>
-    <Bonus>35</Bonus>
-    </Population>
+  <Population>
+    <Bonus>40</Bonus>
+  </Population>
   <Health>
     <Max>4500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
@@ -101,9 +102,9 @@
     <stone>120</stone>
   </Loot>
   <Obstruction>
-    <Static width="25.0" depth="25.0"/>
+    <Static width="25.0" depth="25.0" />
   </Obstruction>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
@@ -133,12 +134,9 @@
   </Trainer>
   <Researcher>
     <Technologies datatype="tokens">
-      attack_soldiers_will
       tower_murderholes
       fort_garrison
       art_of_war
-      poison_arrows
-      poison_blades
       fort_range
       roman_reforms
     </Technologies>
@@ -158,12 +156,12 @@
     <Root>true</Root>
     <Radius>60</Radius>
     <Weight>10000</Weight>
-    </TerritoryInfluence>
+  </TerritoryInfluence>
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
   </Trainer>
   <Vision>
-    <Range>90</Range>
+    <Range>100</Range>
   </Vision>
   <VisualActor>
     <FoundationActor>structures/fndn_8x8.xml</FoundationActor>

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_civic">
-<Identity>
+  <Identity>
     <GenericName>Civic Center</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Build in own or neutral territory. Acquire large tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
@@ -18,17 +18,17 @@
     <Ranged>
       <AttackName>Bow</AttackName>
       <Damage>
-        <Pierce>4.5</Pierce>
+        <Pierce>4</Pierce>
       </Damage>
       <MaxRange>45</MaxRange>
       <PrepareTime>400</PrepareTime>
-      <RepeatTime>1500</RepeatTime>
+      <RepeatTime>2000</RepeatTime>
       <Projectile>
         <Speed>100</Speed>
         <Spread>2</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="0"/>
+        <LaunchPoint y="0" />
       </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
       <RangeOverlay>
@@ -41,18 +41,18 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush>10</Crush>
-        <Hack>20</Hack>
-        <Pierce>40</Pierce>
+        <Crush op="add">2.5</Crush>
+        <Hack op="add">5</Hack>
+        <Pierce op="add">5</Pierce>
       </Damage>
-    <ApplyStatus>
+      <ApplyStatus>
         <Burning>
           <Duration>0.2</Duration>
           <BlockChance>0.5</BlockChance>
         </Burning>
       </ApplyStatus>
     </Entity>
-  </Resistance> 
+  </Resistance>
   <BuildRestrictions>
     <Territory>own neutral</Territory>
     <Category>CivilCentre</Category>
@@ -62,13 +62,14 @@
     </Distance>
   </BuildRestrictions>
   <BuildingAI>
-    <DefaultArrowCount>10</DefaultArrowCount>
+    <DefaultArrowCount>6</DefaultArrowCount>
     <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
     <GarrisonArrowClasses>Soldier</GarrisonArrowClasses>
   </BuildingAI>
   <Capturable>
     <CapturePoints>2500</CapturePoints>
-    <RegenRate>7.5</RegenRate>
+    <RegenRate>10</RegenRate>
+    <GarrisonRegenRate>1.5</GarrisonRegenRate>
   </Capturable>
   <Cost>
     <BuildTime>480</BuildTime>
@@ -88,10 +89,10 @@
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>
-    <Max>4000</Max>
+    <Max>3000</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
-   <Researcher>
+  <Researcher>
     <Technologies datatype="tokens">
       phase_town_{civ}
       phase_city_{civ}
@@ -99,24 +100,24 @@
       unlock_shared_los
       archery_tradition
       citystate/hoplite_tradition
-      javelineer_tradition
-      polearm_tradition
-      hellenistic_metropolis
+      foreign_mercenaries
+      pikeman_tradition
+      hellenistic/hellenistic_metropolis
       roman_roads
       unlock_spies
       iber_females
       spy_counter
     </Technologies>
   </Researcher>
-    <Population>
+  <Population>
     <Bonus>20</Bonus>
   </Population>
-  <ProductionQueue/>
+  <ProductionQueue />
   <ResourceDropsite>
     <Types>food wood stone metal</Types>
     <Sharable>true</Sharable>
   </ResourceDropsite>
-   <TerritoryInfluence>
+  <TerritoryInfluence>
     <Root>true</Root>
     <Radius>120</Radius>
     <Weight>10000</Weight>
@@ -125,7 +126,7 @@
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
       units/{civ}/support_civilian
-      units/{civ}/support_female_citizen
+      units/{civ}/cavalry_spearman_p
     </Entities>
   </Trainer>
   <Vision>
@@ -136,10 +137,10 @@
     <Icon size="16.0">civil_centre.png</Icon>
   </Minimap>
   <Obstruction>
-    <Static depth="30.0" width="30.0"/>
+    <Static depth="30.0" width="30.0" />
   </Obstruction>
   <Footprint>
-    <Square depth="32.0" width="32.0"/>
+    <Square depth="32.0" width="32.0" />
     <Height>8.0</Height>
   </Footprint>
   <Sound>

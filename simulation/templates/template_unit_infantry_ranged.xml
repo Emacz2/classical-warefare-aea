@@ -4,9 +4,6 @@
     <VisibleClasses datatype="tokens">Ranged</VisibleClasses>
     <GenericName>Ranged</GenericName>
   </Identity>
- <Health>
-    <Max>75</Max>
-  </Health>
   <Resistance>
     <Entity>
       <ApplyStatus>
@@ -18,12 +15,6 @@
     </Entity>
   </Resistance>
   <Turretable/>
-  <Loot>
-    <xp>40</xp>
-    <wood>15</wood>
-    <stone>5</stone>
-    <metal>5</metal>
-  </Loot>
  <UnitMotion>
     <Acceleration>40</Acceleration>
   </UnitMotion>

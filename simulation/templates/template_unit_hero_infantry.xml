@@ -10,6 +10,12 @@
       <metal>150</metal>
     </Resources>
   </Cost>
+     <Health>
+    <Max>250</Max>
+  </Health>
+    <Loot>
+    <xp>150</xp>
+  </Loot>
   <Identity>
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
     <GenericName>Hero</GenericName>
@@ -28,7 +34,4 @@
       </Texture>
     </Overlay>
   </Selectable>
-    <UnitMotion>
-    <WalkSpeed op="add">0.2</WalkSpeed>
-  </UnitMotion>
 </Entity>

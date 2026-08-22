@@ -21,7 +21,7 @@
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Raeti and Nervii encampment</GenericName>
-    <Tooltip>Train Rutheni and Senones allies.</Tooltip>
+    <Tooltip>Recruit Rhaetian Axemen and Senones Swordsmen, and learn assault techniques from the Senones.</Tooltip>
     <Classes datatype="tokens">CivSpecific</Classes>
     <Icon>structures/cisalpine_camp.png</Icon>
   </Identity>
@@ -44,7 +44,7 @@
   </Trainer>
     <Researcher>
     <Technologies datatype="tokens">
-     gaul_senones_capture
+     tribal/gaul_senones_capture
     </Technologies>
   </Researcher>
   <VisualActor>

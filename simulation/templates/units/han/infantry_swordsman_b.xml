@@ -12,6 +12,7 @@
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/infantry_swordsman_b</SelectionGroupName>
+    <GenericName>Han Infantry Swordsman</GenericName>
     <SpecificName>Dāo Bīng</SpecificName>
     <Icon>units/han/infantry_swordsman.png</Icon>
      <Requirements>

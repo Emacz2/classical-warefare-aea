@@ -9,6 +9,7 @@
       <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
+     <Rank>Elite</Rank>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>

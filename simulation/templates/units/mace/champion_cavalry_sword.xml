@@ -16,7 +16,7 @@
   <Upgrade>
     <Spear>
       <Entity>units/mace/champion_cavalry</Entity>
-      <Tooltip>Switch to a thrusting spear.</Tooltip>
+      <Tooltip>Switch to a lance.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
     </Spear>

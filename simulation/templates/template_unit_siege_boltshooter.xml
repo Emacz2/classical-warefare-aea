@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_unit_siege">
   <Attack>
     <Ranged>
@@ -6,11 +6,11 @@
       <Damage>
         <Pierce>90</Pierce>
       </Damage>
-      <MaxRange>70</MaxRange>
+      <MaxRange>80</MaxRange>
       <MinRange>15</MinRange>
       <PrepareTime>2000</PrepareTime>
       <RepeatTime>6500</RepeatTime>
-        <Bonuses>
+      <Bonuses>
         <BonusMelee>
           <Classes>Human</Classes>
           <Multiplier>3</Multiplier>
@@ -21,7 +21,7 @@
         <Spread>1</Spread>
         <Gravity>9.81</Gravity>
         <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="3"/>
+        <LaunchPoint y="3" />
       </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
       <RangeOverlay>
@@ -48,13 +48,13 @@
     <Population>2</Population>
   </Cost>
   <Footprint replace="">
-    <Square width="5.0" depth="12.0"/>
+    <Square width="5.0" depth="12.0" />
     <Height>3.0</Height>
   </Footprint>
   <Health>
-    <Max>200</Max>
+    <Max>250</Max>
   </Health>
-   <Resistance>
+  <Resistance>
     <Entity>
       <ApplyStatus>
         <Poisoned>

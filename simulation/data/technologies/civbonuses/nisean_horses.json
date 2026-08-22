@@ -1,7 +1,7 @@
 {
 	"genericName": "Nisean War Horses",
 	"autoResearch": true,
-	"description": "The now-extinct Nisian breed of horse was one of the largest and robust horses of ancient times.",
+	"description": "The now-extinct Nisaean breed was among the most prized war horses of antiquity, renowned for its size, robustness, and quality as a military mount.",
 	"requirements": {
 		"any": [
 			{ "civ": "pers" },
@@ -16,14 +16,14 @@
 
 	"icon": "chamfron.png",
 	"researchTime": 45,
-	"tooltip": "Champion Cavalry +75 health, but 5% longer train time and +25 food.",
+	"tooltip": "Champion Cavalry gain +25 health and 10% walk speed, but cost +25 food and require 5% more time to train.",
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 1.05 },
-		{ "value": "Cost/Resources/Food", "add": 25 },
-		{ "value": "Health/Max", "add": 75 }
-
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.1 },
+		{ "value": "Health/Max", "add": 25 },
+		{ "value": "Cost/Resources/food", "add": 25 }
 
 	],
-	"affects": ["Champion Cavalry"],
+	"affects": ["Champion Cavalry !Chariot"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

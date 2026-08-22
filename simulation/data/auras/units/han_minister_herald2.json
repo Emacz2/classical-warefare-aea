@@ -1,15 +1,14 @@
 {
-	"type": "global",
-	"affects": ["Healer"],
-	"modifications": [
-	
-		{
-			"value": "Cost/Resources",
-			"multiply": 0.8
-		}
-	],
-	"auraName": "Focus on National Health",
-	"showDescription": 1,
-	"auraDescription": "Healers cost 20% less resources.",
-	"stackable": true
+  "type": "global",
+  "affects": ["Trader"],
+  "modifications": [
+    {
+      "value": "Cost/Resources",
+      "multiply": 0.90
+    }
+  ],
+  "auraName": "Protected Envoys",
+  "showDescription": 1,
+  "auraDescription": "Traders cost 10% fewer resources.",
+  "stackable": true
 }

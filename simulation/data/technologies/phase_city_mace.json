@@ -1,18 +1,18 @@
 {
-	"genericName": "City Phase",
-	"description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology. This is the Cart city phase.",
-	"cost": {
-		"food": 500,
-		"wood": 500,
-		"stone": 750,
-		"metal": 500
-	},
-	 "requirements": {
+    "genericName": "City Phase",
+    "description": "Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology. This is the Cart city phase.",
+    "cost": {
+        "food": 350,
+        "wood": 350,
+        "stone": 600,
+        "metal": 200
+    },
+    "requirements": {
         "all": [
             {
                 "entity": {
                     "class": "Village",
-                    "number": 20
+                    "number": 15
                 }
             },
             {
@@ -22,25 +22,51 @@
                 }
             }
         ]
-	},
-	"requirementsTooltip": "Requires twenty Village Structures.",
-	"supersedes": "phase_town_mace",
-	"replaces": ["phase_city"],
-	"icon": "city_phase.png",
-	"researchTime": 60,
-	"tooltip": "Advance to City Phase, which unlocks more entities and technologies. Civic Centers +25% territory influence radius. Structures +20% damage and +1 capture points regeneration rate for garrisoned units.",
-	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.25, "affects": "CivCentre" },
-		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/MaxRange", "add": 5, "affects": "CivCentre" },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 0.97, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 7.5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 5, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "CivCentre" },
-		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Market" }
-	
-	],
-	"soundComplete": "interface/alarm/alarm_phase.xml"
+    },
+    "requirementsTooltip": "Requires twenty Village Structures.",
+    "supersedes": "phase_town_mace",
+    "replaces": [
+        "phase_city"
+    ],
+    "icon": "city_phase.png",
+    "researchTime": 50,
+    "tooltip": "Advance to City Phase, unlocking new entities and technologies. Civic Centers gain +20% territory influence radius, +10 garrison capacity, +10 population capacity, +10 attack range. Garrisoned Structures gain +1 capture point regeneration rate. Markets and Stables promote immediately.",
+    "modifications": [
+        {
+            "value": "Capturable/GarrisonRegenRate",
+            "add": 1,
+            "affects": "Structure"
+        },
+        {
+            "value": "TerritoryInfluence/Radius",
+            "multiply": 1.2,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "GarrisonHolder/Max",
+            "add": 10,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Population/Bonus",
+            "add": 10,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 10,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Promotion/RequiredXp",
+            "replace": 0,
+            "affects": "Market"
+        },
+        {
+            "value": "Promotion/RequiredXp",
+            "replace": 0,
+            "affects": "Stable"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_phase.xml"
 }

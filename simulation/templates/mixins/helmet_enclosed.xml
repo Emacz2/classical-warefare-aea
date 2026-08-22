@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">0.5</Crush>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <Vision>
+    <Range op="add">-15</Range>
+  </Vision>
+  <Identity>
+    <GenericName>Enclosed Helmet</GenericName>
+    <Tooltip>+1 Hack/Pierce and +0.5 Crush resistance but -15 vision.</Tooltip>
+    <History>Highly enclosed helmets maximize protection of the head and face at the cost of peripheral vision and battlefield awareness.</History>
+  </Identity>
+</Entity>

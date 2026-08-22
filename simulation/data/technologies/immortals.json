@@ -14,7 +14,7 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "immortals.png",
 	"researchTime": 45,
-	"tooltip": "Immortals −33% training.",
+	"tooltip": "Immortals require 33% less time to train.",
 	"modifications": [
 		{ "value": "Cost/BuildTime", "multiply": 0.667 }
 		

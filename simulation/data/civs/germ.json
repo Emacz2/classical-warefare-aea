@@ -1,7 +1,11 @@
 {
 	"Code": "germ",
-	"Culture":[ "germ" ],
-	"Region":[ "europe" ],
+	"Culture": [
+		"germ"
+	],
+	"Region": [
+		"europe"
+	],
 	"Music": [
 		{
 			"File": "Northern_Frontier.ogg",
@@ -29,15 +33,18 @@
 			"Name": "Seeresses",
 			"History": "Seeresses accompanied the Germanic armies and envisioned prophecies of victory from sacrifices.",
 			"Description": "A unique Champion Healer unit is available in City Phase."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Germanic warfare varied greatly between peoples, but cavalry could be an important arm and was sometimes paired closely with selected light infantry. Mounted troops were significant without consistently reaching the scale or institutional prominence seen in Persia or the major Hellenistic kingdoms.",
+			"Description": "Maximum cavalry as a share of effective population: Village 7.5%; Town 15%; City 17.5%."
 		}
 	],
-	"WallSets":
-	[
+	"WallSets": [
 		"structures/wallset_palisade",
 		"structures/germ/wallset_stone"
 	],
-	"StartEntities":
-	[
+	"StartEntities": [
 		{
 			"Template": "structures/germ/civil_centre"
 		},
@@ -57,17 +64,15 @@
 			"Template": "units/germ/support_wagon"
 		},
 		{
-			"Template": "units/germ/cavalry_javelineer_b"
+			"Template": "units/germ/cavalry_spearman_p"
 		}
 	],
-	"AINames":
-	[
+	"AINames": [
 		"Claodicus",
 		"Divico",
 		"Caesorix"
 	],
-	"SkirmishReplacements":
-	{
+	"SkirmishReplacements": {
 		"skirmish/units/default_infantry_melee_b": "units/germ/infantry_spearman_b",
 		"skirmish/units/default_infantry_ranged_b": "units/germ/infantry_slinger_b",
 		"skirmish/units/special_starting_unit": "units/germ/support_wagon",

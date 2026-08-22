@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_civic_civil_city_state">
-<Identity>
+  <Identity>
     <GenericName>Polis</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
-    <Tooltip>Foritfy your Polis. increase defenses (+5 Crush and +7.5 Hack resistance), garrison capacity (10) and populaton bonus (10). Healthy and Capture points increased 20%.</Tooltip>
+    <Tooltip>Fortitfy your Polis. increase defenses (+5 Crush and +7.5 Hack resistance), garrison capacity (10) and populaton bonus (10). Healthy and Capture points increased 25%.</Tooltip>
     <Classes datatype="tokens">Polis</Classes>
     <VisibleClasses datatype="tokens">Defensive Polis FarmBlocker</VisibleClasses>
   </Identity>
@@ -14,7 +14,7 @@
         <Hack op="add">7.5</Hack>
       </Damage>
     </Entity>
-  </Resistance> 
+  </Resistance>
   <Capturable>
     <CapturePoints op="mul">1.25</CapturePoints>
   </Capturable>
@@ -30,10 +30,10 @@
     <Max op="mul">1.25</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
-    <Population>
+  <Population>
     <Bonus op="add">10</Bonus>
   </Population>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Vision>
     <Range op="add">15</Range>
   </Vision>

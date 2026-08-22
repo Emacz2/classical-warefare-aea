@@ -1,0 +1,22 @@
+{
+	"genericName": "Unlock spearman",
+	"description": "",
+	"cost": {
+		"food": 150,
+		"wood": 150
+		
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_village" },
+			{ "civ": "han" },
+			{ "civ": "sele" }
+	
+		]
+	},
+	"requirementsTooltip": "Unlocked in village Phase.",
+	"icon": "unlock_spearmen.png",
+	"researchTime": 20,
+	"tooltip": "Unlock the ability to train spearman from barracks.",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

@@ -4,7 +4,7 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/cavalry_javelineer_b</SelectionGroupName>
-    <GenericName>Median Mounted Light-Javelineer</GenericName>
+    <GenericName>Median Cavalry Javelineer</GenericName>
     <SpecificName>Asabāra Māda</SpecificName>
     <Icon>units/pers/cavalry_javelinist.png</Icon>
   </Identity>

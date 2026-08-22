@@ -6,7 +6,7 @@
       <metal>100</metal>
       <wood>100</wood>
     </Resources>
-  <BuildTime>120</BuildTime>
+    <BuildTime>120</BuildTime>
   </Cost>
   <Health>
     <Max>1000</Max>
@@ -14,10 +14,13 @@
   <Identity>
     <Civ>cart</Civ>
     <SpecificName>Numidian Camp</SpecificName>
-    <Tooltip>Train Numidian Elite Jav Cav.</Tooltip>
-    <Classes datatype="tokens">CivSpecific</Classes>
-    <VisibleClasses datatype="tokens">Town Two</VisibleClasses>
+    <Tooltip>Train Basic Allied Numidian Light Javelineer Cavalry.</Tooltip>
+    <Classes datatype="tokens">CivSpecific NumidianCamp</Classes>
+    <VisibleClasses datatype="tokens">Village Two</VisibleClasses>
     <Icon>structures/mercenary_camp.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">-phase_town phase_village</Techs>
+    </Requirements>
   </Identity>
   <Loot>
     <metal>40</metal>
@@ -25,9 +28,14 @@
   <Obstruction>
     <Static width="11.0" depth="14.0"/>
   </Obstruction>
+  <Researcher>
+    <Technologies datatype="tokens">
+      numidian_horsemanship
+    </Technologies>
+  </Researcher>
   <Trainer>
     <Entities datatype="tokens">
-      units/{native}/cavalry_numidian
+      units/{civ}/cavalry_numidian_b
     </Entities>
   </Trainer>
   <VisualActor>

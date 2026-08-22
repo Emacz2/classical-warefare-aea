@@ -23,7 +23,13 @@
 			"Type": "peace"
 		}
 	],
-	"CivBonuses": [],
+	"CivBonuses": [
+		{
+			"Name": "Cavalry Limit",
+			"History": "Mauryan armies were organized as broad combined-arms forces in which infantry, cavalry, chariots, and war elephants all had established roles. Cavalry provided mobility and battlefield reach, but it remained one major arm among several rather than the defining core of the army.",
+			"Description": "Maximum cavalry as a share of effective population: Village 7.5%; Town 15%; City 20%; Empire 20%."
+		}
+	],
 	"WallSets": [
 		"structures/wallset_palisade",
 		"structures/maur/wallset_stone"

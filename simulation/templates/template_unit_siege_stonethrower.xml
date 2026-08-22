@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_unit_siege">
   <Attack>
     <Ranged>
@@ -6,7 +6,7 @@
       <Damage>
         <Crush>150</Crush>
       </Damage>
-      <MaxRange>85</MaxRange>
+      <MaxRange>95</MaxRange>
       <MinRange>25</MinRange>
       <PrepareTime>3000</PrepareTime>
       <RepeatTime>10000</RepeatTime>
@@ -21,7 +21,7 @@
         <Spread>3</Spread>
         <Gravity>20</Gravity>
         <FriendlyFire>true</FriendlyFire>
-        <LaunchPoint y="3"/>
+        <LaunchPoint y="3" />
         <ImpactActorName>props/units/weapons/rock_explosion.xml</ImpactActorName>
         <ImpactAnimationLifetime>0.1</ImpactAnimationLifetime>
       </Projectile>
@@ -49,19 +49,19 @@
     </Resources>
   </Cost>
   <Footprint replace="">
-    <Square width="6.0" depth="15.0"/>
+    <Square width="6.0" depth="15.0" />
     <Height>4.5</Height>
   </Footprint>
   <Health>
-    <Max>500</Max>
+    <Max>350</Max>
   </Health>
   <Resistance>
     <Entity>
-        <Damage>
-          <Hack>10</Hack>
-          <Pierce>35</Pierce>
-          <Crush>15</Crush>
-        </Damage>
+      <Damage>
+        <Hack>10</Hack>
+        <Pierce>35</Pierce>
+        <Crush>15</Crush>
+      </Damage>
       <ApplyStatus>
         <Burning>
           <Duration>0.5</Duration>
@@ -74,7 +74,7 @@
     <VisibleClasses datatype="tokens">Ranged StoneThrower</VisibleClasses>
     <GenericName>Siege Catapult</GenericName>
     <Tooltip>3.25x dmg vs structures</Tooltip>
-      <Requirements>
+    <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>
   </Identity>
@@ -100,6 +100,6 @@
     <Acceleration op="mul">0.55</Acceleration>
   </UnitMotion>
   <Vision>
-    <Range>105</Range>
+    <Range>110</Range>
   </Vision>
 </Entity>

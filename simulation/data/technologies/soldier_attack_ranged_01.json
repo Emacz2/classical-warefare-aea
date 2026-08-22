@@ -1,5 +1,6 @@
 {
-	"genericName": "Bodkin Arrowheads",
+	"genericName": "Hardened Arrowheads",
+	"description": "Advances in arrowhead design produced stronger, more efficient projectiles capable of delivering greater force against both armored and unarmored foes.",
 	"cost": {
 		"wood": 200,
 		"metal": 100

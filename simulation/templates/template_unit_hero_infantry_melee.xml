@@ -12,12 +12,6 @@
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
     <GenericName>Hero Melee Infantry</GenericName>
   </Identity>
-   <Health>
-    <Max>750</Max>
-  </Health>
-    <Loot>
-    <xp>750</xp>
-  </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
@@ -46,4 +40,7 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+  <Vision>
+    <Range>60</Range>
+  </Vision>
 </Entity>

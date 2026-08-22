@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="allied_inf|units/samnite_skirmisher">
+  <Identity>
+    <Civ>cart</Civ>
+    <GenericName>Samnite Allied Skirmisher</GenericName>
+    <SpecificName>Vēles Samnītis</SpecificName>
+    <SelectionGroupName>units/cart/allied_inf_samnite_skirmisher_b</SelectionGroupName>
+    <Icon>units/samn/skirmisher.png</Icon>
+  </Identity>
+  <Promotion>
+    <Entity>units/cart/allied_inf_samnite_skirmisher_a</Entity>
+  </Promotion>
+</Entity>

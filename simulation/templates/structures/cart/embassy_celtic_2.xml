@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_military_embassy">
- <Cost>
+  <Cost>
     <Resources>
       <stone>50</stone>
       <metal>50</metal>
       <wood>150</wood>
     </Resources>
-  <BuildTime>120</BuildTime>
+    <BuildTime>120</BuildTime>
   </Cost>
-   <Resistance>
+  <Resistance>
     <Entity>
-    <ApplyStatus>
+      <ApplyStatus>
         <Burning>
           <Duration>0.4</Duration>
           <BlockChance>0.6</BlockChance>
@@ -27,10 +27,10 @@
   </Health>
   <Identity>
     <Civ>cart</Civ>
-    <SpecificName>Celtic Embassy lvl 2</SpecificName>
-    <Tooltip>Train Celtic Mercenaries.</Tooltip>
-    <Classes datatype="tokens">CivSpecific</Classes>
-     <VisibleClasses datatype="tokens">Village -Town Two</VisibleClasses>
+    <SpecificName>Celtic Mercenary Embassy</SpecificName>
+    <Tooltip>Train Advanced Gallic Mercenaries.</Tooltip>
+    <Classes datatype="tokens">CivSpecific CelticEmbassy</Classes>
+    <VisibleClasses datatype="tokens">Village -Town Two</VisibleClasses>
     <Icon>structures/embassy_celtic.png</Icon>
   </Identity>
   <Loot>
@@ -45,7 +45,7 @@
       units/{civ}/merc_swordcav_gaul_a
     </Entities>
   </Trainer>
-    <Promotion>
+  <Promotion>
     <Entity>structures/cart/embassy_celtic_3</Entity>
     <RequiredXp>3000</RequiredXp>
   </Promotion>

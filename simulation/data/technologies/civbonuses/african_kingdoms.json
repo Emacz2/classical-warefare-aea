@@ -1,18 +1,49 @@
 {
-	"genericName": "African Kingdoms",
-	"autoResearch": true,
-	"description": ".",
-	"requirements": {
-		"any": [
-			{ "civ": "athen" },
-			{ "civ": "spart" },
-			{ "civ": "theb" }
-		]
-	},
-	"icon": "ionic_column.png",
-	"tooltip": ".",
-	"modifications": [
-
-	
-	]
+    "genericName": "African Kingdoms",
+    "autoResearch": true,
+    "description": "The kingdoms of Carthage and Kush prospered through long-distance trade, monumental civic construction, and the successful integration of diverse peoples into their armies. Their extensive commercial networks allowed them to establish markets early, while resilient institutions and the use of African war elephants enabled them to project power across Africa and the Mediterranean.",
+    "requirements": {
+        "any": [
+            {
+                "civ": "cart"
+            },
+            {
+                "civ": "kush"
+            }
+        ]
+    },
+    "icon": "ionic_column.png",
+    "tooltip": "Markets are available in the Village Phase and build 25% faster. Civic Structures gain +10% Health and +10% Capture Points. Allied units Mercenaries and Elephants train 10% faster.",
+    "modifications": [
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.75,
+            "affects": "Market"
+        },
+        {
+            "value": "Health/Max",
+            "multiply": 1.1,
+            "affects": "Civic"
+        },
+        {
+            "value": "Capturable/CapturePoints",
+            "multiply": 1.1,
+            "affects": "Civic"
+        },
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.9,
+            "affects": "Allied"
+        },
+         {
+            "value": "Cost/BuildTime",
+            "multiply": 0.9,
+            "affects": "Mercenary"
+        },
+        {
+            "value": "Cost/BuildTime",
+            "multiply": 0.9,
+            "affects": "Elephant"
+        }
+    ]
 }

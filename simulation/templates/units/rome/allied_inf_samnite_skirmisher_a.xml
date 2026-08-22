@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/rome/allied_inf_samnite_skirmisher">
+  <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
+  <Promotion>
+    <Entity>units/rome/allied_inf_samnite_skirmisher_e</Entity>
+  </Promotion>
+</Entity>

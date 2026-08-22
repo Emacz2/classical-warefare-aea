@@ -1,31 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="shield_light|sword_long|template_unit_infantry_melee_swordsman">
- <Resistance>
-    <Entity>
-      <Damage>
-      <Crush>1</Crush>
-      <Hack>2</Hack>
-      <Pierce>2</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
-  <Health>
-    <Max>150</Max>
-  </Health>
-    <Loot>
-    <xp>75</xp>
-  </Loot>
+<Entity parent="inf_raider|shield_light|sword_long|template_unit_infantry_melee_swordsman">
+  <UnitMotion>
+    <WalkSpeed>11.8</WalkSpeed>
+    <RunMultiplier>1.8</RunMultiplier>
+    <Acceleration>40</Acceleration>
+  </UnitMotion>
   <Identity>
-    <Rank>Elite</Rank>
     <Lang>greek</Lang>
     <GenericName>Thracian Peltast Swordsman</GenericName>
+     <SpecificName>Peltastḗs Thrâx</SpecificName>
     <Icon>units/special/pelt_sword.png</Icon>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
   </Identity>
-  <UnitMotion>
-    <RunMultiplier op="mul">1.1</RunMultiplier>
-    <Acceleration op="mul">1.1</Acceleration>
-  </UnitMotion>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>

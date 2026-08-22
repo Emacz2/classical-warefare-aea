@@ -15,6 +15,6 @@
     <Entity>units/sele/infantry_slinger_a</Entity>
   </Promotion>
   <VisualActor>
-    <Actor>units/macedonians/infantry_slinger_b.xml</Actor>
+    <Actor>units/seleucids/infantry_slinger_b.xml</Actor>
   </VisualActor>
 </Entity>

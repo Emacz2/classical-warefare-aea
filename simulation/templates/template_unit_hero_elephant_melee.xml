@@ -34,10 +34,10 @@
     <Height>9.0</Height>
   </Footprint>
   <Health>
-    <Max>1500</Max>
+    <Max>650</Max>
   </Health>
     <Loot>
-    <xp>500</xp>
+    <xp>325</xp>
   </Loot>
   <Identity>
     <GenericName>Hero Elephant</GenericName>

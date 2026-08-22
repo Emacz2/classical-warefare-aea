@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_civic_house_big">
+  <GarrisonHolder>
+    <Max op="mul">1.5</Max>
+  </GarrisonHolder>
+  <Health>
+    <Max op="mul">1.25</Max>
+  </Health>
+  <Identity>
+    <Civ>mace</Civ>
+    <GenericName>Estate</GenericName>
+    <SpecificName>Oikos</SpecificName>
+    <Classes datatype="tokens">Estate</Classes>
+    <VisibleClasses datatype="tokens">Estate</VisibleClasses>
+    <Tooltip>Large household estate. Adds 5 population, expands the Estate Slave limit, and can unlock and train Estate Slaves.</Tooltip>
+  </Identity>
+  <Population>
+    <Bonus op="add">5</Bonus>
+  </Population>
+  <Trainer>
+    <Entities datatype="tokens">
+      units/mace/support_slave
+    </Entities>
+  </Trainer>
+  <Researcher>
+    <Technologies datatype="tokens">
+      unlock_slaves_house
+    </Technologies>
+  </Researcher>
+  <VisualActor>
+    <Actor>structures/hellenes/house.xml</Actor>
+  </VisualActor>
+</Entity>

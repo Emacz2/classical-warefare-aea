@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/spart/merc_thracian_peltast_b">
+  <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
+  <Promotion disable=""/>
+  <Upgrade>
+    <Peltast_Sword>
+      <Entity>units/spart/merc_thracian_sword_a</Entity>
+      <Tooltip>Switch to using a sword.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>4</Time>
+    </Peltast_Sword>
+  </Upgrade>
+</Entity>

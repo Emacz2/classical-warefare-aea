@@ -1,20 +1,31 @@
 {
-	"genericName": "Higher Ramparts",
-	"description": "Civic centers +10 vision and attack range.",
-	"cost": {
-		"food": 150,
-		"wood": 100
-	},
-	"requirements": { "tech": "phase_village" },
-	"requirementsTooltip": "Unlocked in Village Phase.",
-	"icon": "arrow.png",
-	"researchTime": 30,
-	"tooltip": "Civic centers +10 vision and attack range. ",
-	"modifications": [
-		{ "value": "Attack/Ranged/MaxRange", "add": 10 },
-		{ "value": "Vision/Range","add": 10 }
-	
-	],
-	"affects": ["CivCentre", "Agora", "TribalCenter"],
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+    "genericName": "Higher Ramparts",
+    "description": "Improved ramparts extend civic center sight lines and defensive bow range.",
+    "cost": {
+        "food": 150,
+        "wood": 100
+    },
+    "requirements": {
+        "tech": "phase_town"
+    },
+    "requirementsTooltip": "Unlocked in Town Phase.",
+    "icon": "arrow.png",
+    "researchTime": 30,
+    "tooltip": "Civic centers +5 attack range and +10 vision.",
+    "modifications": [
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 5
+        },
+        {
+            "value": "Vision/Range",
+            "add": 10
+        }
+    ],
+    "affects": [
+        "CivCentre",
+        "Agora",
+        "TribalCenter"
+    ],
+    "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

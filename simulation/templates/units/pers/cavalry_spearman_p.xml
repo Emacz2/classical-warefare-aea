@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="persian|cav_pursuit|thrusting_spear|template_unit_cavalry_melee_spearman">
+  <Identity>
+    <Civ>pers</Civ>
+    <Lang>persian</Lang>
+    <SelectionGroupName>units/pers/cavalry_spearman_p</SelectionGroupName>
+    <GenericName>Persian pursuit and scout Spear Cavalry</GenericName>
+    <SpecificName>Asabāra</SpecificName>
+    <Icon>units/pers/cavalry_spearman.png</Icon>
+  </Identity>
+  <Promotion disable=""/>
+  <VisualActor>
+    <Actor>units/persians/cavalry_spearman_b_m.xml</Actor>
+  </VisualActor>
+</Entity>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_unit_elephant">
   <Attack>
-    <Ranged>
-      <AttackName>SimpleBow</AttackName>
-      <Damage>
-        <Pierce>7.5</Pierce>
-      </Damage>
-      <MaxRange>45</MaxRange>
+  <Ranged>
+    <AttackName>ElephantBow</AttackName>
+    <Damage>
+      <Pierce>7.5</Pierce>
+    </Damage>
+    <MaxRange>55</MaxRange>
       <PrepareTime>750</PrepareTime>
       <RepeatTime>1200</RepeatTime>
       <Projectile>
@@ -28,12 +28,12 @@
     </Resources>
   </Cost>
   <Health>
-    <Max>200</Max>
+    <Max>350</Max>
   </Health>
       <Loot>
-    <xp>200</xp>
-    <metal>15</metal>
-    <wood>30</wood>
+    <xp>115</xp>
+    <metal>10</metal>
+    <wood>20</wood>
   </Loot>
   <Identity>
     <GenericName>Elephant Archer</GenericName>

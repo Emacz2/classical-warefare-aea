@@ -1,23 +1,97 @@
 {
 	"autoResearch": true,
 	"icon": "upgrade_advanced.png",
-	"tooltip": "Elite mercanaries +15% train time and +20 metal cost compared to advanced mercanaries.They gain +2 of each resistance. Melee +30% dmg, +25 Health. Ranged +10 health, 10% more accurate and 25% more dmg. ", 
+	"tooltip": "Elite Mercenaries take another 15% longer to train and cost 20 additional metal compared with Advanced Mercenaries. They gain another +15% melee and ranged damage and +1 Hack, Pierce, and Crush resistance. Melee units gain another weapon-based attack-speed improvement (Swordsmen -50 ms; Spearmen, Axemen, and Macemen -100 ms; Pikemen -150 ms) and +0.5 capture attack. Ranged units gain another 10% accuracy; Crossbowmen gain another 5%.",
 	"modifications": [
-		{ "value": "Cost/BuildTime", "multiply": 1.15 },
-		{ "value": "Cost/Resources/metal", "add": 20 },
-		{ "value": "Health/Max", "add": 25, "affects": "Melee !Switch"},
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1, "affects": "!Switch" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 1, "affects": "!Switch" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1, "affects": "!Switch" },
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.3 },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.3 },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.3 },
-		{ "value": "Health/Max", "add": 15, "affects": "Ranged !Switch"},
-		{ "value": "Attack/Ranged/Projectile/Spread", "multiply": 0.9 },
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.25},
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.25 },
-		{ "value": "Atacck/Ranged/Damage/Crush", "multiply": 1.25 }
-	
+		{
+			"value": "Cost/BuildTime",
+			"multiply": 1.15
+		},
+		{
+			"value": "Cost/Resources/metal",
+			"add": 20
+		},
+		{
+			"value": "Resistance/Entity/Damage/Hack",
+			"add": 1,
+			"affects": "!Switch"
+		},
+		{
+			"value": "Resistance/Entity/Damage/Crush",
+			"add": 1,
+			"affects": "!Switch"
+		},
+		{
+			"value": "Resistance/Entity/Damage/Pierce",
+			"add": 1,
+			"affects": "!Switch"
+		},
+		{
+			"value": "Attack/Melee/Damage/Hack",
+			"multiply": 1.15
+		},
+		{
+			"value": "Attack/Melee/Damage/Pierce",
+			"multiply": 1.15
+		},
+		{
+			"value": "Attack/Melee/Damage/Crush",
+			"multiply": 1.15
+		},
+		{
+			"value": "Attack/Ranged/Damage/Hack",
+			"multiply": 1.15
+		},
+		{
+			"value": "Attack/Ranged/Damage/Pierce",
+			"multiply": 1.15
+		},
+		{
+			"value": "Attack/Ranged/Damage/Crush",
+			"multiply": 1.15
+		},
+		{
+			"value": "Attack/Capture/Capture",
+			"add": 0.5,
+			"affects": "Melee !Switch"
+		},
+		{
+			"value": "Attack/Melee/RepeatTime",
+			"add": -50,
+			"affects": "Swordsman !Switch"
+		},
+		{
+			"value": "Attack/Melee/RepeatTime",
+			"add": -100,
+			"affects": "Spearman !Switch"
+		},
+		{
+			"value": "Attack/Melee/RepeatTime",
+			"add": -100,
+			"affects": "Axeman !Switch"
+		},
+		{
+			"value": "Attack/Melee/RepeatTime",
+			"add": -100,
+			"affects": "Maceman !Switch"
+		},
+		{
+			"value": "Attack/Melee/RepeatTime",
+			"add": -150,
+			"affects": "Pikeman !Switch"
+		},
+		{
+			"value": "Attack/Ranged/Projectile/Spread",
+			"multiply": 0.9,
+			"affects": "Ranged !Crossbowman"
+		},
+		{
+			"value": "Attack/Ranged/Projectile/Spread",
+			"multiply": 0.95,
+			"affects": "Ranged Crossbowman"
+		}
 	],
-	"affects": ["Elite Mercenary"]
+	"affects": [
+		"Elite Mercenary"
+	]
 }

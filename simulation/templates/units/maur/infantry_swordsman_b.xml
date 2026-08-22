@@ -15,7 +15,7 @@
   <Identity>
     <Civ>maur</Civ>
     <SelectionGroupName>units/maur/infantry_swordsman_b</SelectionGroupName>
-    <GenericName>Indian Swordsman</GenericName>
+    <GenericName>Mauryan Swordsman</GenericName>
     <SpecificName>Khadagdhari</SpecificName>
     <Icon>units/maur/infantry_swordsman.png</Icon>
     <Requirements>

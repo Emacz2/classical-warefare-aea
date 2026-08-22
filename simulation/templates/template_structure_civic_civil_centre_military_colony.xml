@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_civic_civil_centre">
   <BuildRestrictions>
     <Territory>neutral</Territory>
@@ -11,8 +11,8 @@
   <BuildingAI>
     <DefaultArrowCount>1</DefaultArrowCount>
   </BuildingAI>
-    <Cost>
-    <BuildTime>360</BuildTime>
+  <Cost>
+    <BuildTime>300</BuildTime>
     <Resources>
       <food>100</food>
       <wood>300</wood>
@@ -20,7 +20,7 @@
       <metal>100</metal>
     </Resources>
   </Cost>
-   <Capturable>
+  <Capturable>
     <CapturePoints>3000</CapturePoints>
     <RegenRate>5</RegenRate>
   </Capturable>
@@ -46,13 +46,22 @@
     <Technologies datatype="tokens">
       -phase_town_{civ}
       -phase_city_{civ}
-      -hellenistic_metropolis
+      cc_range
+      -unlock_shared_los
+      -archery_tradition
+      -citystate/hoplite_tradition
+      -foreign_mercenaries
+      -pikeman_tradition
+      -hellenistic/hellenistic_metropolis
+      -roman_roads
+      -unlock_spies
+      -iber_females
+      -spy_counter
     </Technologies>
   </Researcher>
   <Trainer>
     <Entities datatype="tokens">
       -units/{civ}/support_civilian
-      -units/{civ}/support_female_citizen
       units/{civ}/infantry_pikeman_a
       units/{civ}/infantry_archer_a
       units/{civ}/merc_thracian_peltast
@@ -68,9 +77,17 @@
       <constructed>interface/complete/building/complete_gymnasium.xml</constructed>
     </SoundGroups>
   </Sound>
- <TerritoryInfluence>
+  <TerritoryInfluence>
     <Root>true</Root>
     <Radius>105</Radius>
     <Weight>10000</Weight>
   </TerritoryInfluence>
+  <Attack>
+    <Ranged>
+      <MaxRange>60</MaxRange>
+    </Ranged>
+  </Attack>
+  <Vision>
+    <Range>90</Range>
+  </Vision>
 </Entity>

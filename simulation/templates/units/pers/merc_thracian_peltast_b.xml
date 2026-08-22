@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="merc_inf|units/thracian_peltast">
+  <Identity>
+    <Civ>pers</Civ>
+    <Lang>greek</Lang>
+    <Rank>Basic</Rank>
+    <GenericName>Thracian Mercenary Peltast</GenericName>
+    <SpecificName>Peltastḗs Thrâx</SpecificName>
+    <SelectionGroupName>units/pers/merc_thracian_peltast_b</SelectionGroupName>
+    <Icon>units/athen/infantry_javelinist.png</Icon>
+  </Identity>
+  <Promotion disable="" />
+  <VisualActor>
+    <Actor>units/athenians/merc_inf_javelinist_a.xml</Actor>
+  </VisualActor>
+  <Upgrade>
+    <Peltast_Sword>
+      <Entity>units/pers/merc_thracian_sword_b</Entity>
+      <Tooltip>Switch to using a sword.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>4</Time>
+    </Peltast_Sword>
+  </Upgrade>
+</Entity>

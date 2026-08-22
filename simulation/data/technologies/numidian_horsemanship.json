@@ -1,0 +1,36 @@
+{
+  "genericName": "Numidian Horsemanship",
+  "description": "Numidian cavalry traditions emphasized endurance, mobility, loose-order skirmishing, and lifelong familiarity with horses.",
+  "cost": {
+    "food": 250,
+    "metal": 200
+  },
+  "requirements": {
+    "all": [
+      {
+        "tech": "phase_town"
+      },
+      {
+        "civ": "cart"
+      }
+    ]
+  },
+  "requirementsTooltip": "Unlocked in Town Phase.",
+  "icon": "horse_trainer.png",
+  "researchTime": 30,
+  "tooltip": "Numidian cavalry train 10% faster and require 20% less experience to promote.",
+  "modifications": [
+    {
+      "value": "Cost/BuildTime",
+      "multiply": 0.9
+    },
+    {
+      "value": "Promotion/RequiredXp",
+      "multiply": 0.8
+    }
+  ],
+  "affects": [
+    "Numidian Cavalry"
+  ],
+  "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

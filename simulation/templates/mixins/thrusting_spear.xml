@@ -15,6 +15,6 @@
   </UnitMotion>
   <Identity>
     <GenericName>Thrusting spearman</GenericName>
-    <Tooltip>5 tenths of a second faster repeat time and 5% faster walk speed but -0.5 range, and -25% hack dmg of regular spear</Tooltip>
+    <Tooltip>5 tenths of a second faster repeat time and 5% faster walk speed but -0.5 range, and -60% hack dmg of regular spear</Tooltip>
   </Identity>
 </Entity>

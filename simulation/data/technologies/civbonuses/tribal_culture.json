@@ -11,7 +11,7 @@
 		]
 	},
 	"icon": "wooden_buildings.png",
-	"tooltip": "Structures are built 20% faster, but have 20% less Health and 20% fewer Capture Points. Infantry gain +5% Walk Speed, +5% Damage, +10 Vision, and generate 25% more Loot. Workers gather Wood 10% faster.  However, Tribal Civilizations cannot research Tier III Economic Technologies. Britons, Gauls, and Germans cannot construct Fortresses. Instead, they may upgrade their Hill Forts, Oppida, or Ringforts into Great Fortified Settlements. ",
+	"tooltip": "Structures are built 20% faster, but have 20% less Health and 20% fewer Capture Points. Infantry gain +5% Walk Speed, +5% Damage, +10 Vision, and generate 25% more Loot. Workers gather Wood 10% faster.  However, Tribal Civilizations cannot research Tier III Economic Technologies. Britons, Gauls, and Germans cannot construct Fortresses. Instead, they may upgrade their Hill Forts, Oppida, or Wagon Encampments into fortified tribal settlements. ",
 	"modifications": [
 		{ "value": "Capturable/CapturePoints", "multiply": 0.8, "affects": "Structure !Wonder !TribalCenter !Tower" },
 		{ "value": "Cost/BuildTime", "multiply": 0.8, "affects": "Structure !Wonder !TribalCenter !Tower" },
@@ -24,6 +24,7 @@
 		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05, "affects": "Infantry" },
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05, "affects": "Infantry" },
 		{ "value": "Vision/Range", "add": 10, "affects": "Infantry" },
+		{ "value": "Vision/Range", "add": 5, "affects": "Healer" },
 		{ "value": "Looter/Resource/metal",  "multiply": 1.25, "affects": "Infantry" },
 		{ "value": "Looter/Resource/stone",  "multiply": 1.25, "affects": "Infantry" },
 		{ "value": "Looter/Resource/food",  "multiply": 1.25, "affects": "Infantry" },

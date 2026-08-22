@@ -3,14 +3,7 @@
   <Identity>
     <VisibleClasses datatype="tokens">Melee</VisibleClasses>
   </Identity>
-   <Health>
-    <Max>325</Max>
-  </Health>
-      <Loot>
-    <xp>150</xp>
-    <metal>30</metal>
-    <wood>15</wood>
-  </Loot>
+ 
   <Position>
     <Anchor>upright</Anchor>
   </Position>
@@ -22,12 +15,12 @@
       </Texture>
     </Overlay>
   </Selectable>
-     <Resistance>
+   <Resistance>
     <Entity>
       <Damage>
-      <Crush>2</Crush>
-      <Hack>2</Hack>
-      <Pierce>2</Pierce>
+      <Crush op="add">2</Crush>
+      <Hack op="add">2</Hack>
+      <Pierce op="add">2</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -39,4 +32,7 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+  <Vision>
+    <Range>60</Range>
+  </Vision>
 </Entity>

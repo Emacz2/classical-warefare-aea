@@ -1,10 +1,10 @@
 {
-        "genericName": "Advanced aging",
+        "genericName": "Royal Administration",
         "autoResearch": true,
         "description": "The seleucid empire had a relatively short history,",
         "requirements": { "civ": "sele" },
         "icon": "stone_blocks_brown.png",
-        "tooltip": "CC techs cost 10% more but 25% less research time.",
+        "tooltip": "The Seleucid kings governed a vast and diverse empire through royal officials, regional administrations, and an extensive network of cities. Maintaining this elaborate system was costly, but it allowed royal policies and civic reforms to be implemented rapidly across the empire.",
         "modifications": [
                 { "value": "Researcher/TechCostMultiplier/food", "multiply": 1.1 },
                 { "value": "Researcher/TechCostMultiplier/wood", "multiply": 1.1 },

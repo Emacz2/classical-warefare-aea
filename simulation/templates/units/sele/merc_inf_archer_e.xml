@@ -3,8 +3,8 @@
   <Identity>
     <Rank>Elite</Rank>
   </Identity>
-<Promotion disable=""/>
+  <Promotion disable="" />
   <VisualActor>
-    <Actor>units/athenians/infantry_archer_e.xml</Actor>
+    <Actor>units/seleucids/infantry_archer_e.xml</Actor>
   </VisualActor>
 </Entity>

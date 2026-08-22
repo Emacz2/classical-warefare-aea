@@ -1,0 +1,29 @@
+{
+	"genericName": "Imperial Army Reorganization",
+ 	"description": "Darius reorganized the Persian military by imposing greater discipline, standardizing command, and integrating conscript levies into a more effective imperial army.",
+	"cost": {
+		"food": 500,
+		"metal": 500
+	
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{
+				"any": [
+					{ "civ": "pers" }
+			
+				]
+			}
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "armor_corinthian.png",
+	"researchTime": 60,
+	"tooltip": "Promote all conscript infantry to basic rank.",
+	"modifications": [
+		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Conscript Infantry" }
+
+	],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

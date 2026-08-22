@@ -28,7 +28,7 @@
     <Civ>gaul</Civ>
     <GenericName>Assembly of Princes</GenericName>
     <SpecificName>Remogantion</SpecificName>
-    <Tooltip> Train Champion infantry and Heroes.</Tooltip>
+    <Tooltip>Train diplomats to establish coalition camps, recruit Gallic Noble Swordsmen, and summon Gaulish Heroes.</Tooltip>
     <Classes datatype="tokens">ConquestCritical CivSpecific</Classes>
     <VisibleClasses datatype="tokens">Town Council</VisibleClasses>
     <Icon>structures/tholos.png</Icon>

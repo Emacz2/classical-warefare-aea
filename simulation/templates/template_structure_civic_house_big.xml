@@ -10,7 +10,7 @@
     <Square width="16.0" depth="16.0"/>
   </Footprint>
   <GarrisonHolder>
-    <Max>6</Max>
+    <Max>10</Max>
   </GarrisonHolder>
   <Health>
     <Max>1200</Max>

@@ -1,0 +1,37 @@
+{
+	"genericName": "Sarissa Tradition",
+	"description": "The Macedonian military reforms of Philip II spread throughout the Successor Kingdoms, where disciplined formations of sarissa-armed phalangites remained the backbone of Hellenistic armies.",
+	"cost": {
+		"food": 200,
+		"metal": 350,
+		"wood": 200
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{
+				"any": [
+					{ "civ": "mace" },
+					{ "civ": "ptol" },
+					{ "civ": "sele" }
+				]
+			}
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "armor_corinthian.png",
+	"researchTime": 30,
+	"tooltip": "Pikemen train 20% faster, require 20% less experience to promote, and gain +1 Hack Resistance and +0.5 Pierce and Crush Resistance.",
+	"modifications": [
+		{ "value": "Cost/BuildTime", "multiply": 0.8 },
+		{ "value": "Promotion/RequiredXp", "multiply": 0.8 },
+		{ "value": "Resistance/Entity/Damage/Crush", "add": 0.5 },
+		{ "value": "Resistance/Entity/Damage/Hack", "add": 1 },
+		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 }
+		
+	
+		
+	],
+	"affects": ["Pikeman"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

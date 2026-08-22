@@ -34,6 +34,7 @@
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
       units/{civ}/infantry_slinger_b
+      units/{civ}/cavalry_spearman_p
       units/{civ}/support_wagon
 	</Entities>
   </Trainer>

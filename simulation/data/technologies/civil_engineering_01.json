@@ -2,7 +2,7 @@
 	"pair": "pair_unlock_civil_engineering_han",
 	"genericName": "Improved Construction",
 	"specificName": { "han": "Gōngchéng" },
-	"description": "",
+	"description": "Standardized building methods, organized labor, and careful planning enabled Han engineers to construct roads, fortifications, and public works more efficiently while reducing the resources required for every project",
 	"cost": {
 		"food": 0,
 		"wood": 300,

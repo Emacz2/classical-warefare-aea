@@ -1,19 +1,13 @@
 {
-	"genericName": "First Empire",
-	"description": ".",
-	
+	"genericName": "Founding of the Han Dynasty",
+	"description": "After defeating his rivals and ending the Chu–Han Contention, Liu Bang establishes the Han dynasty and consolidates a new imperial government.",
 	"requirements": {
 		"all": [
 			{ "civ": "han" }
 		]
 	},
-	"requirementsTooltip": ".",
+	"requirementsTooltip": "Can be researched by Liu Bang.",
 	"icon": "silvershields.png",
-	"researchTime": 30,
-	"modifications":[
-		{ "value": "Promotion/RequiredXp", "replace": 0 }
-	],
-	"affects": ["Academy"],
-	"tooltip": "Upgrade academies to Dynasty class, -.1 faster batch training and unlocks empire phase",
+	"tooltip": "Allows the Civic Center to be upgraded into the Han Imperial Court, fulfilling the unique requirement for Empire Phase.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

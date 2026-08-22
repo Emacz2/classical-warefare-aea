@@ -3,11 +3,11 @@
 	"autoResearch": true,
 	"description": "Kushite Herdsman represent the backbone of rural Kushite society and were skilled in cattle management.",
 	"icon": "wall.png",
-	"tooltip": "Corrals 50% build time and resources cost, live stock 25% less build time.",
+	"tooltip": "Corrals cost 25% less Wood and build 25% faster. Livestock train 25% faster.",
 	"requirements": { "civ": "kush" },
 	"modifications": [
-		{ "value": "Cost/BuildTime", "multiply": 0.5, "affects": "Corral"},
-		{ "value": "Cost/Resources/wood", "multiply": 0.5, "affects": "Corral"},
+		{ "value": "Cost/BuildTime", "multiply": 0.75, "affects": "Corral"},
+		{ "value": "Cost/Resources/wood", "multiply": 0.75, "affects": "Corral"},
 		{ "value": "Cost/BuildTime", "multiply": 0.75, "affects": "Domestic"  }
 	
 	]

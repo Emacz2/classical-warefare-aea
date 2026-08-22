@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="roman|armor_super_heavy|shield_heavy|sword_short|template_unit_champion_infantry_swordsman">
-   <Attack>
-    <Melee>
-      <Damage>
-        <Hack op="mul">1.1</Hack>
-        <Pierce op="mul">1.1</Pierce>
-      </Damage>
-    </Melee>
-  </Attack>
-  <Health>
-    <Max op="add">50</Max>
-  </Health>
+<Entity parent="roman|armor_super_heavy|shield_heavy|sword_short|inf_bodyguard|helmet_protected|template_unit_champion_infantry_swordsman">
   <Identity>
     <GenericName>Imperial Guard Infantry</GenericName>
     <SpecificName>Praetorianus</SpecificName>

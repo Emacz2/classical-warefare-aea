@@ -1,39 +1,85 @@
 {
-	"genericName": "Foreign mercanaries",
-	"description": ".",
-	"cost": {
-		"food": 400,
-		"metal": 200,
-		"wood": 400
-	},
-	"requirements": {
-		"all": [
-			{ "tech": "phase_town" },
-			{
-				"any": [
-					{ "civ": "ptol" }
-				]
-			}
-		]
-	},
-	"requirementsTooltip": "Unlocked in Town Phase.",
-	"icon": "armor_corinthian.png",
-	"researchTime": 40,
-	"tooltip": "Citizen Soldiers 10% melee dmg, 5% more ranged dmg +1 range, +0.5 pierce/hack armor but -10% res gathering.",
-	"modifications": [
-		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1 },
-		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1},
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1},
-		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.05 },
-		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.05},
-		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.05 },
-		{ "value": "Attack/Ranged/MaxRange", "add": 1 },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 0.5 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5 },
-		{ "value": "ResourceGatherer/BaseSpeed", "multiply": 0.9}
-	
-
-	],
-	"affects": ["Citizen Infantry"],
-	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+  "genericName": "Foreign Contingents",
+  "description": "Carthage drew heavily upon both hired mercenaries and allied contingents. Experience coordinating soldiers from many peoples made these foreign formations more effective when serving in Carthaginian armies.",
+  "cost": {
+    "food": 400,
+    "metal": 200,
+    "wood": 400
+  },
+  "requirements": {
+    "all": [
+      {
+        "tech": "phase_town"
+      },
+      {
+        "civ": "cart"
+      }
+    ]
+  },
+  "requirementsTooltip": "Unlocked in Town Phase for Carthage.",
+  "icon": "armor_corinthian.png",
+  "researchTime": 40,
+  "tooltip": "Mercenary and Allied troops deal 5% more attack damage.",
+  "modifications": [
+    {
+      "value": "Attack/Melee/Damage/Hack",
+      "multiply": 1.05,
+      "affects": "Mercenary"
+    },
+    {
+      "value": "Attack/Melee/Damage/Pierce",
+      "multiply": 1.05,
+      "affects": "Mercenary"
+    },
+    {
+      "value": "Attack/Melee/Damage/Crush",
+      "multiply": 1.05,
+      "affects": "Mercenary"
+    },
+    {
+      "value": "Attack/Ranged/Damage/Hack",
+      "multiply": 1.05,
+      "affects": "Mercenary"
+    },
+    {
+      "value": "Attack/Ranged/Damage/Pierce",
+      "multiply": 1.05,
+      "affects": "Mercenary"
+    },
+    {
+      "value": "Attack/Ranged/Damage/Crush",
+      "multiply": 1.05,
+      "affects": "Mercenary"
+    },
+    {
+      "value": "Attack/Melee/Damage/Hack",
+      "multiply": 1.05,
+      "affects": "Allied"
+    },
+    {
+      "value": "Attack/Melee/Damage/Pierce",
+      "multiply": 1.05,
+      "affects": "Allied"
+    },
+    {
+      "value": "Attack/Melee/Damage/Crush",
+      "multiply": 1.05,
+      "affects": "Allied"
+    },
+    {
+      "value": "Attack/Ranged/Damage/Hack",
+      "multiply": 1.05,
+      "affects": "Allied"
+    },
+    {
+      "value": "Attack/Ranged/Damage/Pierce",
+      "multiply": 1.05,
+      "affects": "Allied"
+    },
+    {
+      "value": "Attack/Ranged/Damage/Crush",
+      "multiply": 1.05,
+      "affects": "Allied"
+    }
+  ]
 }

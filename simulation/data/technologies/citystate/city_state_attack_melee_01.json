@@ -1,6 +1,6 @@
 {
-	"genericName": "Carburisation",
-	"description": "By adding a small amount of carbon during the iron smelting process, a stronger material, steel, can be forged.",
+	"genericName": "Hardened Blades",
+	"description": "Improved heat treatment produced stronger blades that held a sharper edge in battle.",
 	"cost": {
 		"food": 200,
 		"metal": 200
@@ -16,14 +16,14 @@
 	"requirementsTooltip": "Unlocked in village.",
 	"icon": "sword_01.png",
 	"researchTime": 20,
-	"tooltip": "Soldiers +5% melee attack damage. Hoplites gain an additional 10% ",
+	"tooltip": "Soldiers +5% melee attack damage. Hoplites gain an additional 5% ",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05 },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05 },
 		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05 },
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.05, "affects": "Hoplite" },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.05,"affects": "Hoplite" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoptlite" }
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.05, "affects": "Hoplite" }
 		
 	],
 	"affects": ["Soldier !Mercenary !Elephant"],

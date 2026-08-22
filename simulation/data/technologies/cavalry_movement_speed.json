@@ -1,5 +1,5 @@
 {
-	"genericName": "Faster Cavalry",
+	"genericName": "Horse Racing",
 		"specificName": {
 		"athen": "Spiked Rollers",
 		"mace": "Spiked Rollers",
@@ -7,21 +7,21 @@
 		"theb": "Spiked Rollers"
 		
 	},
-	"description": "Selective breading for faster cavalry.",
+	"description": "Conditioning and riding exercises improve the sustained pace and endurance of cavalry mounts.",
 	"cost": {
-		"food": 100
+		"food": 150
 		
 	},
 	"requirements": { "tech": "phase_village" },
 	"requirementsTooltip": "Unlocked in Village Phase.",
 	"icon": "cavalry_speed.png",
-	"researchTime": 15,
-	"tooltip": "Cavalry +10% walk and 15% run speed, but 10% more train time.",
+	"researchTime": 20,
+	"tooltip": "Conditioning, riding exercises, and improved equestrian equipment increase the sustained pace and responsiveness of cavalry mounts.",
 	"modifications": [
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.1 },
-		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.15 },
-		{ "value": "Cost/BuildTime", "multiply": 1.1 }
+		{ "value": "UnitMotion/RunMultiplier", "multiply": 0.95 }
+
 	],
-	"affects": ["Cavalry !Hunt"],
+	"affects": ["Cavalry"],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

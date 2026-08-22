@@ -10,7 +10,7 @@
 		]
 	},
 	"icon": "ionic_column.png",
-	"tooltip": "Capital City, Tempples, Special buildngs and Wonders +25% health and +25% capture points.",
+	"tooltip": "Capital (Agora), Temples, Special buildings and Wonders +25% health and +25% capture points.",
 	"modifications": [
 		{ "value": "Capturable/CapturePoints", "multiply": 1.25 },
 		{ "value": "Health/Max", "multiply": 1.25 }

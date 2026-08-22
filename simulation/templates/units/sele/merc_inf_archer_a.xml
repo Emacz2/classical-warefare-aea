@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="units/sele/merc_inf_archer_b">
-   <Identity>
+  <Identity>
     <Rank>Advanced</Rank>
   </Identity>
-   <Promotion disable=""/>
-    <VisualActor>
-    <Actor>units/athenians/infantry_archer_a.xml</Actor>
+  <Promotion disable="" />
+  <VisualActor>
+    <Actor>units/seleucids/infantry_archer_a.xml</Actor>
   </VisualActor>
 </Entity>

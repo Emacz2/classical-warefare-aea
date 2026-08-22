@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Entity>
 <Cost>
+    <BuildTime op="mul">0.9</BuildTime>
     <Resources>
       <wood op="add">-25</wood>
     </Resources>
   </Cost>
 <Attack>
-  <Melee merge="">
+  <Melee>
+  <Damage>
+	  <Hack op="mul">0.75</Hack>
+    <Pierce op="mul">0.57</Pierce>
+    <Crush op="mul">0.57</Crush>
+  </Damage>
    <Bonuses>
         <BonusCavMelee>
           <Classes>Cavalry</Classes>
-          <Multiplier>3</Multiplier>
+          <Multiplier>2</Multiplier>
         </BonusCavMelee>
       </Bonuses>
       <PrepareTime>0</PrepareTime>
@@ -27,15 +33,15 @@
  <Identity>
     <GenericName>Pursuit Cavalry</GenericName>
      <VisibleClasses datatype="tokens">Pursuit Cavalry</VisibleClasses>
-    <Tooltip>only 0.5 of Hack and Pierce resistance but the fastest/best riders for scouting and pursuing enemy cav. 1.7 walk 1.9 run multiplier and 3x dmg against cav</Tooltip>
+     <Tooltip>Pursuit cavalry are fastest cavalry (1.8x walk and run speed and 1.3x acceleration) used for scouting and pursuing enemy cav (2x dmg bonus). They train 10% faster and cost -25 wood, but have only 0.5 Hack and Pierce resistance.</Tooltip>
     <History>.</History>
   </Identity>
    <UnitMotion>
-    <WalkSpeed op="mul">1.7</WalkSpeed>
-    <RunMultiplier op="mul">1.9</RunMultiplier>
-    <Acceleration op="mul">1.25</Acceleration>
+    <WalkSpeed op="mul">1.8</WalkSpeed>
+    <RunMultiplier op="mul">1.8</RunMultiplier>
+    <Acceleration op="mul">1.3</Acceleration>
   </UnitMotion>
    <Position>
-    <TurnRate>12</TurnRate>
+    <TurnRate>15</TurnRate>
   </Position>
 </Entity>

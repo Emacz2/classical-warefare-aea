@@ -1,5 +1,6 @@
 {
-	"genericName": "Armor Plating",
+	"genericName": "Elephant Armor",
+	"description": "War elephants were fitted with protective armor of leather, quilted cloth, chain, or bronze scales to shield them from missiles and melee attacks. While expensive to produce, this additional protection greatly improved their survivability on the battlefield.",
 	"cost": {
 		"metal": 200,
 		"food": 300

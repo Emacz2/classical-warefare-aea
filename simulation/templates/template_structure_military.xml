@@ -9,6 +9,10 @@
     <BuffHeal>0</BuffHeal>
     <LoadingRange>2</LoadingRange>
   </GarrisonHolder>
+  <Capturable>
+    <RegenRate>5</RegenRate>
+    <GarrisonRegenRate>1.5</GarrisonRegenRate>
+  </Capturable>
   <Identity>
     <GenericName>Military Structure</GenericName>
     <Classes datatype="tokens">ConquestCritical</Classes>
@@ -18,7 +22,7 @@
     <Entity>
       <Damage>
         <Hack>20</Hack>
-        <Pierce>40</Pierce>
+        <Pierce>35</Pierce>
         <Crush>5</Crush>
       </Damage>
     </Entity>

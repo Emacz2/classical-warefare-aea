@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Entity parent="template_structure_resource_corral">
+  <BuildRestrictions>
+    <Category>CorralSpecial</Category>
+  </BuildRestrictions>
+  <Identity>
+    <Classes datatype="tokens">-Corral CorralSpecial</Classes>
+  </Identity>
+</Entity>

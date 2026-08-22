@@ -36,7 +36,7 @@
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/infantry_pikeman_b</SelectionGroupName>
-    <GenericName>Halberdier</GenericName>
+    <GenericName>Han Infantry Halberdier</GenericName>
     <SpecificName>Jǐ Bīng</SpecificName>
     <Icon>units/han/infantry_halberdman.png</Icon>
   </Identity>

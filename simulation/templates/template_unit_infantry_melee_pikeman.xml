@@ -4,8 +4,8 @@
     <Melee>
       <AttackName>Pike</AttackName>
       <Damage>
-        <Hack>5</Hack>
-        <Pierce>13</Pierce>
+        <Hack>5.2</Hack>
+        <Pierce>13.7</Pierce>
       </Damage>
       <MaxRange>10</MaxRange>
       <MinRange>2</MinRange>
@@ -17,7 +17,7 @@
           <Multiplier>2.5</Multiplier>
         </BonusCavMelee>
       </Bonuses>
-      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+      <PreferredClasses datatype="tokens">Unit+!Ship</PreferredClasses>
     </Melee>
   </Attack>
   <Cost>

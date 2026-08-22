@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="sele|units/tureos_skirmisher">
- <Builder>
-    <Entities datatype="tokens">
-      structures/ptol/lighthouse
-      structures/ptol/library
-      structures/ptol/temple_2
-    </Entities>
-  </Builder>
-   <Upgrade>
+  <Upgrade>
     <Spear>
       <Entity>units/sele/tureos_spearman</Entity>
       <Tooltip>Switch to using a spear.</Tooltip>
@@ -20,9 +13,13 @@
     <SelectionGroupName>units/sele/tureos_skirmisher</SelectionGroupName>
     <GenericName>Thureophoros Skirmisher</GenericName>
     <SpecificName>Thureophóros</SpecificName>
+    <Rank>Basic</Rank>
   </Identity>
-  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/iberians/infantry_javelinist_b.xml</Actor>
   </VisualActor>
+  <Promotion>
+    <RequiredXp>100</RequiredXp>
+    <Entity>units/sele/tureos_skirmisher_a</Entity>
+  </Promotion>
 </Entity>

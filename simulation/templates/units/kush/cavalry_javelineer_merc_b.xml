@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_cav|cav_camel|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
+<Entity parent="merc_cav|cav_camel|cav_raider|cav_light|cav_jav_shield|template_unit_cavalry_ranged_javelineer">
   <Attack>
     <Ranged>
       <Projectile>
@@ -22,9 +22,7 @@
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
-  <Promotion>
-    <Entity>units/kush/cavalry_javelineer_merc_a</Entity>
-  </Promotion>
+  <Promotion disable=""/>
   <Sound>
     <SoundGroups>
       <select>actor/fauna/animal/camel.xml</select>

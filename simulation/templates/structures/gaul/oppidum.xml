@@ -4,14 +4,14 @@
     <Civ>gaul</Civ>
     <SpecificName>Oppidum</SpecificName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
-    <Tooltip>Build in own or neutral territory. Acquire small tracts of territory. Territory root. Train Citizens. Garrison Soldiers for additional arrows.</Tooltip>
+      <Tooltip>Build in neutral territory to establish a fortified settlement and acquire a small tract of territory. Serves as a resource dropsite, trains Citizen Spearmen and Slingers, and fires additional arrows when garrisoned.</Tooltip>
     <VisibleClasses datatype="tokens">Defensive Colony</VisibleClasses>
     <Icon>structures/oppidum.png</Icon>
   </Identity>
   <Upgrade>
     <ImperialCourt>
       <Entity>structures/{civ}/great_oppidum</Entity>
-      <Tooltip>greatly increase the health, capture resistance and garrison capacity of this Oppidum.</Tooltip>
+      <Tooltip>Upgrade this Oppidum into a Great Oppidum, greatly increasing its health, capture resistance, garrison capacity, defenses, and military recruitment options.</Tooltip>
       <Cost>
         <stone>300</stone>
         <wood>300</wood>

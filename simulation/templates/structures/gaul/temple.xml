@@ -43,7 +43,7 @@
   </Obstruction>
   <Trainer>
     <Entities datatype="tokens">
-      units/{civ}/champion_infantry_trumpeter
+      units/{civ}/support_trumpeter
     </Entities>
   </Trainer>
   <VisualActor>

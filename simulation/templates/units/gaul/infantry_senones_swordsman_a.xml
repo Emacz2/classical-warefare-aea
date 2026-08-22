@@ -4,7 +4,7 @@
     <Rank>Advanced</Rank>
   </Identity>
   <Promotion>
-    <Entity>units/gaul/senones_swordsman_e</Entity>
+    <Entity>units/gaul/infantry_senones_swordsman_e</Entity>
   </Promotion>
   <VisualActor>
     <Actor>units/gauls/senones_swordsman_b.xml</Actor>

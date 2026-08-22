@@ -19,12 +19,19 @@
   </Diplomacy>
   <EntityLimits>
     <Limits>
-      <Animal>20</Animal>
+      <Livestock>0</Livestock>
+      <CorralSpecial>2</CorralSpecial>
+      <Corral>1</Corral>
+      <Animal>50</Animal>
       <Champion_Perioikoi>10</Champion_Perioikoi>
       <CivilCentre>1</CivilCentre>
       <Agora>1</Agora>
-      <ConsularBodyguard>10</ConsularBodyguard>
-      <EstateSlave>5</EstateSlave>
+      <BodyguardCavalry>12</BodyguardCavalry>
+      <EstateSlave>0</EstateSlave>
+      <CaptiveSlave>0</CaptiveSlave>
+      <HanLabor>0</HanLabor>
+      <MauryaLabor>0</MauryaLabor>
+      <PtolemyLabor>0</PtolemyLabor>
       <Ephor>5</Ephor>
       <Gerousia>1</Gerousia>
       <Gladiator>0</Gladiator>
@@ -35,7 +42,6 @@
       <LandTrader>5</LandTrader>
       <Library>1</Library>
       <Lighthouse>1</Lighthouse>
-      <MaceSlave>0</MaceSlave>
       <Monument>5</Monument>
       <Neodamodes>15</Neodamodes>
       <Palace>1</Palace>
@@ -45,7 +51,6 @@
       <Pillar>0</Pillar>
       <PyramidLarge>2</PyramidLarge>
       <PraetorianGuard>0</PraetorianGuard>
-      <RomanSlave>0</RomanSlave>
       <TempleOfAmun>1</TempleOfAmun>
       <TempleOfIsis>1</TempleOfIsis>
       <TempleOfVesta>1</TempleOfVesta>
@@ -54,7 +59,8 @@
       <ThebeFort>2</ThebeFort>
       <ThebsSB>50</ThebsSB>
       <TribalCenter>1</TribalCenter>
-      <ScythianGuard>5</ScythianGuard>
+      <Police>10</Police>
+      <PunicNobleCavalry>20</PunicNobleCavalry>
       <Silvermine>3</Silvermine>
       <SkiritaiCamp>2</SkiritaiCamp>
       <SpartW>1</SpartW>
@@ -62,15 +68,40 @@
       <WarDog>5</WarDog>
       <SpartCav>40</SpartCav>
       <SacredBandInfantry>30</SacredBandInfantry>
-      <SacredBandCavalry>20</SacredBandCavalry>
       <Centurion>10</Centurion>
       <Trumpeter>5</Trumpeter>
+      <HanChariot>8</HanChariot>
       <Wonder>1</Wonder>
     </Limits>
     <LimitChangers>
+      <Livestock>
+        <Corral>5</Corral>
+        <CorralSpecial>5</CorralSpecial>
+      </Livestock>
+      <CorralSpecial>
+        <Farmstead>1</Farmstead>
+      </CorralSpecial>
+      <Corral>
+        <Farmstead>1</Farmstead>
+      </Corral>
       <EstateSlave>
         <Estate>2</Estate>
       </EstateSlave>
+      <CaptiveSlave>
+        <TribalCenter>4</TribalCenter>
+      </CaptiveSlave>
+      <HanLabor>
+        <Market>2</Market>
+        <ImperialMinistry>3</ImperialMinistry>
+      </HanLabor>
+      <MauryaLabor>
+        <Market>2</Market>
+        <Palace>2</Palace>
+      </MauryaLabor>
+      <PtolemyLabor>
+        <Market>2</Market>
+        <Temple>2</Temple>
+      </PtolemyLabor>
       <Gladiator>
         <Amphitheater>15</Amphitheater>
       </Gladiator>
@@ -86,14 +117,11 @@
       <Juggernaut>
         <PtolemyIV>4</PtolemyIV>
       </Juggernaut>
-      <MaceSlave>
-        <Nobel>1</Nobel>
-      </MaceSlave>
       <Neodamodes>
         <Brasidas>30</Brasidas>
       </Neodamodes>
       <Pheideition>
-      <Stratopedon>1</Stratopedon>
+        <Stratopedon>1</Stratopedon>
       </Pheideition>
       <PerioikoiTown>
         <Syssiton>1</Syssiton>
@@ -104,9 +132,6 @@
       <PraetorianGuard>
         <Fortress>5</Fortress>
       </PraetorianGuard>
-      <RomanSlave>
-        <ArmyCamp>10</ArmyCamp>
-      </RomanSlave>
       <ScythianGuard>
         <Fortress>5</Fortress>
       </ScythianGuard>
@@ -177,7 +202,6 @@
     </SoundGroups>
   </Sound>
   <StatisticsTracker>
-    <!-- The summary screen and lobby rankings expect these classes, but additional classes may be added. -->
     <UnitClasses datatype="tokens">
       Cavalry
       Champion
@@ -210,5 +234,5 @@
       Two
     </StructureClasses>
   </StatisticsTracker>
-  <TechnologyManager/>
+  <TechnologyManager />
 </Entity>

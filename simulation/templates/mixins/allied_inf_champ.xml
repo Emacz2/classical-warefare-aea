@@ -11,7 +11,7 @@
   </Cost>
   <Identity>
     <VisibleClasses datatype="tokens">Allied</VisibleClasses>
-    <Tooltip>Allied troops 20% more train time but 10% less resources and all of it is food</Tooltip>
+    <Tooltip>Allied troops 20% more train time but all resource cost converted to food (225)</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

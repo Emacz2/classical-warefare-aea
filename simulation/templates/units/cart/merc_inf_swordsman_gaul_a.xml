@@ -3,7 +3,7 @@
   <Identity>
     <Rank>Advanced</Rank>
   </Identity>
- <Promotion disable=""/>
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/gauls/infantry_swordsman_a.xml</Actor>
   </VisualActor>

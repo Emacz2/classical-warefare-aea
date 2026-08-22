@@ -3,11 +3,12 @@
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/cavalry_javelineer_merc_b</SelectionGroupName>
-    <GenericName>Tarantine Light-Javelineer Cavalry</GenericName>
+    <GenericName>Tarantine Horse Javelineer</GenericName>
     <SpecificName>Hippeús Tarantînos</SpecificName>
     <Icon>units/hele/tarentine_cavalry_e.png</Icon>
+    <Rank>Basic</Rank>
   </Identity>
-  <Promotion disable=""/>
+  <Promotion disable="" />
   <VisualActor>
     <Actor>units/ptolemies/cavalry_javelinist_b_m.xml</Actor>
   </VisualActor>

@@ -13,7 +13,7 @@
     <Square width="7.0" depth="14.0"/>
   </Footprint>
   <Health>
-    <Max>250</Max>
+    <Max>200</Max>
   </Health>
   <Identity>
     <Classes datatype="tokens">DropsiteFood DropsiteWood DropsiteMetal DropsiteStone</Classes>

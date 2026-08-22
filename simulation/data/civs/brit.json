@@ -40,6 +40,11 @@
 			"Name": "Deas Celtica",
 			"History": "Celtic religion and druidry inspired their warlike mindset.",
 			"Description": "Druid aura; Soldiers 5% more dmg and promote 15% faster."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Iron Age British warfare is especially associated with chariots, which classical authors describe carrying warriors into and around battle. Mounted and chariot forces could be important for mobility and disruption, but they complemented rather than replaced the larger infantry body.",
+			"Description": "Maximum cavalry as a share of effective population: Village 7.5%; Town 15%; City 20%."
 		}
 	],
 	"WallSets": [
@@ -63,17 +68,16 @@
 			"Count": 2
 		},
 		{
-			"Template": "units/brit/cavalry_javelineer_b",
+			"Template": "units/brit/cavalry_spearman_p",
 			"Count": 1
 		},
-			{
+		{
 			"Template": "units/brit/support_healer_b",
 			"Count": 1
 		},
 		{
 			"Template": "units/brit/war_dog"
 		}
-		
 	],
 	"AINames": [
 		"Adminius",

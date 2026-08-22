@@ -20,6 +20,12 @@
       </Requirements>
     </Mount>
   </Upgrade>
+   <ProductionQueue/>
+  <Researcher>
+    <Technologies datatype="tokens">
+      mauryempire
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>units/mauryas/hero_infantry_swordsman_chandragupta.xml</Actor>
   </VisualActor>

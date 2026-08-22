@@ -9,7 +9,16 @@
     <GenericName>Philip II of Macedon</GenericName>
     <SpecificName>Philippos B' ho Makedōn</SpecificName>
     <Icon>units/mace/hero_philip.png</Icon>
+     <Requirements>
+      <Techs datatype="tokens">-phase_city phase_town</Techs>
+    </Requirements>
   </Identity>
+  <ProductionQueue/>
+  <Researcher>
+    <Technologies datatype="tokens">
+      philips_reforms
+    </Technologies>
+  </Researcher>
   <VisualActor>
     <Actor>units/macedonians/hero_cavalry_spearman_philip_m.xml</Actor>
   </VisualActor>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="gaul|armor_heavy|shield_heavy|sword_long|inf_shock|template_unit_champion_infantry_swordsman">
+<Entity parent="gaul|armor_heavy|shield_heavy|sword_long|inf_shock|helmet_protected|template_unit_champion_infantry_swordsman">
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Gallic Noble Warriory</GenericName>
+    <GenericName>Gallic Noble Warrior</GenericName>
     <SpecificName>Soliduros</SpecificName>
     <Icon>units/gaul/champion_infantry.png</Icon>
         <Requirements>

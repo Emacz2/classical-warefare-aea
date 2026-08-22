@@ -1,0 +1,28 @@
+{
+	"genericName": "Senones Assault Tradition",
+	"description": "Adopt the Senones' aggressive methods for overwhelming and seizing enemy settlements.",
+	"requirements": {
+		"all": [
+			{
+				"tech": "phase_town"
+			},
+			{
+				"civ": "gaul"
+			}
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "metalworker.png",
+	"researchTime": 90,
+	"tooltip": "Infantry gain +1 capture attack.",
+	"modifications": [
+		{
+			"value": "Attack/Capture/Capture",
+			"add": 1
+		}
+	],
+	"affects": [
+		"Infantry"
+	],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

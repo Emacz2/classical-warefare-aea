@@ -8,13 +8,18 @@
       <Pierce op="add">4.5</Pierce>
       </Damage>
     </Entity>
-  </Resistance>
+    </Resistance>
+   <Attack>
+    <Melee merge="">
+    <RepeatTime op="add">150</RepeatTime>
+  </Melee>
+  </Attack>
  <Identity>
     <GenericName>Missile Shield</GenericName>
-    <Tooltip>+4.5 Pierce and +0.5 Crush/Hack resistance but -5% walk speed</Tooltip>
+    <Tooltip>+4.5 Pierce and +0.5 Crush/Hack resistance but -4% walk speed and +150 ms melee repeat time</Tooltip>
     <History>Sparabara, Gerrhon, Persian Wall Shield</History>
   </Identity>
   <UnitMotion>
-    <WalkSpeed op="mul">0.95</WalkSpeed>
+    <WalkSpeed op="mul">0.96</WalkSpeed>
   </UnitMotion>
 </Entity>

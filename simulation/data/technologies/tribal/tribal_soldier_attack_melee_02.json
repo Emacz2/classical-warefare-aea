@@ -1,0 +1,35 @@
+{
+	"genericName": "Tempered Steel",
+	"description": "Carefully controlled heating and quenching created tougher, more resilient weapons that resisted chipping and breakage.",
+	"cost": {
+		"food": 400,
+		"metal": 300
+	},
+	"supersedes": "tribal/tribal_soldier_attack_melee_01",
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ 	"any": [
+					{ "civ": "brit" },
+					{ "civ": "gaul" },
+					{ "civ": "germ" },
+					{ "civ": "iber" }
+				
+				] 
+		
+		} 
+			
+		]
+	},
+	"requirementsTooltip": "Unlocked in City Phase.",
+	"icon": "sword_03.png",
+	"researchTime": 60,
+	"tooltip": "Soldiers +20% melee attack damage.",
+	"modifications": [
+		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.2 },
+		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.2 },
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.2 }
+	],
+	"affects": ["Soldier !Mercenary !Elephant"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

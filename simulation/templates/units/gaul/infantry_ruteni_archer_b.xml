@@ -9,9 +9,8 @@
   <Identity>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/infantry_rutheni_archer_b</SelectionGroupName>
-    <GenericName>Ruteni Archer</GenericName>
+    <GenericName> Allied Ruteni Archer</GenericName>
     <Tooltip>Ruteni Archers were know for their speed, often using the mane or the tail of the mounts of their camarades to get some additional speed. </Tooltip>
-    <VisibleClasses datatype="tokens">-Worker Builder</VisibleClasses>
     <Icon>units/gaul/gaul_infantry_archer.png</Icon>
   </Identity>
   <UnitMotion>

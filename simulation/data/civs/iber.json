@@ -33,6 +33,11 @@
 			"Name": "Massive Towers",
 			"History": "",
 			"Description": "Stone Towers −50% wood cost, +150% stone cost, +33% build time, +60% health, +2 garrison, and +1 default arrow count.  Sentry towers +1 garrison"
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Iberian and Celtiberian horsemen were valued for mobility, skirmishing, pursuit, and battlefield flexibility, and were employed beyond the peninsula by Carthaginian and Roman commanders. Cavalry was a notable Iberian strength, but remained part of an army in which infantry was still substantial.",
+			"Description": "Maximum cavalry as a share of effective population: Village 10%; Town 17.5%; City 20%."
 		}
 	],
 	"WallSets": [

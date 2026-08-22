@@ -16,6 +16,12 @@
   <Identity>
     <VisibleClasses datatype="tokens">-Soldier Healer Support</VisibleClasses>
   </Identity>
+  <Health>
+    <Max>200</Max>
+  </Health>
+    <Loot>
+    <xp>125</xp>
+  </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
@@ -28,9 +34,6 @@
       </Damage>
     </Entity>
   </Resistance>
-    <UnitMotion>
-    <WalkSpeed op="add">0.2</WalkSpeed>
-  </UnitMotion>
   <Selectable>
     <Overlay>
       <Shape>

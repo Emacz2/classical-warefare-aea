@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="gaul|template_unit_support_trumpeter">
+  <Auras datatype="tokens">
+    units/carnyx
+    units/carnyx2
+  </Auras>
+  <Identity>
+    <Civ>gaul</Civ>
+    <GenericName>Carnyx War Horn Player</GenericName>
+    <SpecificName>Carnucos</SpecificName>
+    <Icon>units/gaul/champion_swordsman_carnyx.png</Icon>
+  </Identity>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Crush op="add">0.5</Crush>
+        <Hack op="add">1</Hack>
+        <Pierce op="add">0.5</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <VisualActor>
+    <Actor>units/gauls/infantry_carnyx_c.xml</Actor>
+  </VisualActor>
+</Entity>

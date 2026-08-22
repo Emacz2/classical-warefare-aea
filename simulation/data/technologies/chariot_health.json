@@ -1,5 +1,6 @@
 {
-	"genericName": "Armor Plating",
+	"genericName": "Reinforced Chassis",
+	"description": "Master craftsmen strengthened chariot frames with heavier timbers, reinforced wheel hubs, and bronze fittings. These sturdier vehicles better withstood the rigors of battle, though their additional weight reduced speed.",
 	"cost": {
 		"metal": 400,
 		"food": 250
@@ -8,9 +9,8 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "armor_plates_gold.png",
 	"researchTime": 40,
-	"tooltip": "Chariots +25 health, +2.5 hack/pierce and +3 crush resistance but 5% slower walk speed.",
+	"tooltip": "Chariots +2.5 hack/pierce and +3 crush resistance but 5% slower walk speed.",
 	"modifications": [
-		{ "value": "Health/Max", "add": 25 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 3 },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5 },

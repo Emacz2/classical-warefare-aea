@@ -2,7 +2,7 @@
 <Entity parent="merc_cav|cav_charge|cav_sword_shield|cav_medium|template_unit_cavalry_melee_swordsman">
   <Attack>
     <Melee>
-	    <Damage>
+      <Damage>
         <Hack op="mul">1.1</Hack>
         <Pierce op="mul">1.1</Pierce>
         <Crush op="mul">1.1</Crush>
@@ -11,12 +11,13 @@
   </Attack>
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Celtic Mercenary Cavalry</GenericName>
+    <Classes datatype="tokens">Gallic</Classes>
+    <GenericName>Gallic Horse Swordsman Mercenary</GenericName>
     <SpecificName>Ḥayyāl Ḥerev Raḫūv</SpecificName>
     <SelectionGroupName>units/cart/merc_swordcav_celt</SelectionGroupName>
     <Icon>units/gaul/cavalry_swordsman.png</Icon>
   </Identity>
- <Promotion disable=""/>
+  <Promotion disable=""/>
   <VisualActor>
     <Actor>units/gauls/cavalry_swordsman_b_m.xml</Actor>
   </VisualActor>

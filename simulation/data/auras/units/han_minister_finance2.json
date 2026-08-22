@@ -11,6 +11,6 @@
 	],
 	"auraName": "Supreme Accounting",
 	"showDescription": 1,
-	"auraDescription": "All buildinings 5% less resources.",
+	"auraDescription": "All structures 5% less resources.",
 	"stackable": true
 }

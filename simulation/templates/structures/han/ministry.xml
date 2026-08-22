@@ -80,6 +80,7 @@
   <Trainer>
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
+      units/{civ}/support_slave
       units/{civ}/support_minister_cer
       units/{civ}/support_minister_coa
       units/{civ}/support_minister_fin

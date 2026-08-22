@@ -1,39 +1,62 @@
 {
-	"Code":"theb",
-	"Culture":[ "greek" ],
-	"Region":[ "mediterranean", "europe", "greece" ],
-	"Music":[
-		{"File":"The_Hellespont.ogg", "Type":"peace"},
-		{"File":"Harvest_Festival.ogg", "Type":"peace"},
-		{"File":"Helen_Leaves_Sparta.ogg", "Type":"peace"},
-		{"File":"In_the_Shadow_of_Olympus.ogg", "Type":"peace"},
-		{"File":"Forging_a_City-State.ogg", "Type":"peace"}
+	"Code": "theb",
+	"Culture": [
+		"greek"
 	],
-	"CivBonuses":
-	[
+	"Region": [
+		"mediterranean",
+		"europe",
+		"greece"
+	],
+	"Music": [
 		{
-			"Name":"Oblique Order",
-			"History":"The oblique order is a military tactic whereby an attacking army focuses its forces to attack a single enemy flank. The force commander concentrates the majority of his strength on one flank and uses the remainder to fix the enemy line. This allows a commander with weaker or equal forces to achieve a local superiority in numbers. The commander can then try to defeat the enemy in detail. It has been used by numerous successful generals. Oblique order required disciplined troops able to execute complex maneuvers in varied circumstances. The first recorded use of this tactic was at the Battle of Leuctra, in Greece, when the Thebans under Epaminondas defeated the Spartans by highly enforcing one flank to fifty rows deep, rather than spread forces parsimoniously. Philip of Macedon learned Epaminondas' technique while held prisoner at Thebes, and his descendants, including Alexander the Great, used it in their campaigns. The classical writer Vegetius was the first known to write about the tactic that became known as the oblique order of battle.",
-			"Description":"An extra-deep Phalanx formation that gives an extra pushing effect and health bonus to the spear infantry within it."
+			"File": "The_Hellespont.ogg",
+			"Type": "peace"
 		},
 		{
-			"Name":"Siege of Delion",
-			"History":"Unknown.",
-			"Description":"Thebans gain access to the Fire Raiser, a unique siege weapon good against units and buildings, but also loses health over its lifetime."
+			"File": "Harvest_Festival.ogg",
+			"Type": "peace"
 		},
 		{
-			"Name":"Hellenization",
-			"History":"The Greeks were highly successful in Hellenising various foreigners. During the Hellenistic Age, Greek was the lingua franca of the Ancient World, spoken widely from Spain to India.",
-			"Description":"Buildings +20% territory influence while the Theatron stands."
+			"File": "Helen_Leaves_Sparta.ogg",
+			"Type": "peace"
+		},
+		{
+			"File": "In_the_Shadow_of_Olympus.ogg",
+			"Type": "peace"
+		},
+		{
+			"File": "Forging_a_City-State.ogg",
+			"Type": "peace"
 		}
 	],
-	"WallSets":
-	[
+	"CivBonuses": [
+		{
+			"Name": "Oblique Order",
+			"History": "The oblique order is a military tactic whereby an attacking army focuses its forces to attack a single enemy flank. The force commander concentrates the majority of his strength on one flank and uses the remainder to fix the enemy line. This allows a commander with weaker or equal forces to achieve a local superiority in numbers. The commander can then try to defeat the enemy in detail. It has been used by numerous successful generals. Oblique order required disciplined troops able to execute complex maneuvers in varied circumstances. The first recorded use of this tactic was at the Battle of Leuctra, in Greece, when the Thebans under Epaminondas defeated the Spartans by highly enforcing one flank to fifty rows deep, rather than spread forces parsimoniously. Philip of Macedon learned Epaminondas' technique while held prisoner at Thebes, and his descendants, including Alexander the Great, used it in their campaigns. The classical writer Vegetius was the first known to write about the tactic that became known as the oblique order of battle.",
+			"Description": "An extra-deep Phalanx formation that gives an extra pushing effect and health bonus to the spear infantry within it."
+		},
+		{
+			"Name": "Siege of Delion",
+			"History": "Unknown.",
+			"Description": "Thebans gain access to the Fire Raiser, a unique siege weapon good against units and buildings, but also loses health over its lifetime."
+		},
+		{
+			"Name": "Hellenization",
+			"History": "The Greeks were highly successful in Hellenising various foreigners. During the Hellenistic Age, Greek was the lingua franca of the Ancient World, spoken widely from Spain to India.",
+			"Description": "Buildings +20% territory influence while the Theatron stands."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Boeotia's broad plains supported a stronger equestrian tradition than much of southern Greece. Theban and Boeotian cavalry played an important battlefield role alongside the region's famous heavy infantry, particularly during Thebes' fourth-century ascendancy.",
+			"Description": "Maximum cavalry as a share of effective population: Village 7.5%; Town 12.5%; City 15%."
+		}
+	],
+	"WallSets": [
 		"other/wallset_palisade",
 		"structures/theb/wallset_stone"
 	],
-	"StartEntities":
-	[
+	"StartEntities": [
 		{
 			"Template": "structures/theb/civil_centre"
 		},
@@ -50,11 +73,10 @@
 			"Count": 2
 		},
 		{
-			"Template": "units/theb/cavalry_spearman_b"
+			"Template": "units/theb/cavalry_spearman_p"
 		}
 	],
-	"AINames":
-	[
+	"AINames": [
 		"Calydnus",
 		"Ogyges",
 		"Cadmus",
@@ -64,8 +86,7 @@
 		"Lycus",
 		"Labdacus"
 	],
-	"SkirmishReplacements":
-	{
+	"SkirmishReplacements": {
 		"skirmish/units/default_infantry_melee_b": "units/theb/infantry_spearman_b"
 	},
 	"SelectableInGameSetup": true

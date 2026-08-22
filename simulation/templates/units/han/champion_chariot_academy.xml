@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="han|chariot|cav_heavy|template_unit_champion_cavalry_archer_chariot">
-  <Auras datatype="tokens">
-    units/scythe_1
-  </Auras>
   <Footprint replace="">
     <Square depth="10.0" width="10.0"/>
     <Height>5.0</Height>
   </Footprint>
   <Identity>
     <Civ>han</Civ>
-    <GenericName>Imperial Guard Chariot</GenericName>
-    <SpecificName>Zhanche</SpecificName>
+    <GenericName>Han War Chariot</GenericName>
+    <SpecificName>Zhànchē</SpecificName>
     <Icon>units/han/chariot.png</Icon>
-   <Requirements>
-      <Techs datatype="tokens">phase_empi</Techs>
+    <Requirements>
+      <Techs datatype="tokens">unlock_champion_chariots</Techs>
     </Requirements>
   </Identity>
+  <TrainingRestrictions>
+    <Category>HanChariot</Category>
+  </TrainingRestrictions>
+  <Upgrade>
+    <ImperialGuardChariot>
+      <Entity>units/han/champion_chariot_academy2</Entity>
+      <Tooltip>Refit this veteran war chariot for service in the Imperial Guard.</Tooltip>
+      <Cost>
+        <food>50</food>
+        <metal>50</metal>
+      </Cost>
+      <Time>10</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_empi</Techs>
+      </Requirements>
+    </ImperialGuardChariot>
+  </Upgrade>
   <VisualActor>
     <Actor>units/han/chariot_archer_m.xml</Actor>
   </VisualActor>

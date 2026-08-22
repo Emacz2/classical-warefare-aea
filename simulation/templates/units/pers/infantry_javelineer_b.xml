@@ -9,7 +9,7 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/infantry_javelineer_b</SelectionGroupName>
-    <GenericName>Persian Skirmisher</GenericName>
+    <GenericName>Persian Javelineer</GenericName>
     <SpecificName>Pastiš Asabara</SpecificName>
     <Icon>units/pers/infantry_javelinist.png</Icon>
   </Identity>

@@ -8,7 +8,7 @@
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 },
 		{ "value": "Resistance/Entity/Damage/Crush", "add": 1 }
 	],
-	"auraName": "Druids",
+	"auraName": "Druidic Guardians",
 	"showDescription": 1,
 	"auraDescription": "Healers +15 health and 1 of each resistance."
 }

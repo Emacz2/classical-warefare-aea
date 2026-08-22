@@ -1,5 +1,5 @@
 {
-	"genericName": "Unlock skirmishers",
+	"genericName": "Unlock Javelineers",
 	"description": "",
 	"cost": {
 		"food": 150,
@@ -18,6 +18,6 @@
 	"requirementsTooltip": "Unlocked in Village Phase.",
 	"icon": "helmet_corinthian_bronze_old.png",
 	"researchTime": 20,
-	"tooltip": "Unlock the ability to train Skirmishers from baracks.",
+	"tooltip": "Unlock the ability to train Skirmishers from barracks.",
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="roman|inf_shock|shield_heavy|armor_heavy|sword_short|template_unit_champion_infantry_swordsman">
+<Entity parent="roman|inf_shock|shield_heavy|armor_heavy|sword_short|helmet_protected|template_unit_champion_infantry_swordsman">
   <Health>
     <DamageVariants>
       <lightdamage>0.85</lightdamage>
       <mediumdamage>0.45</mediumdamage>
     </DamageVariants>
-    <Max op="add">-25</Max>
   </Health>
   <Cost>
     <BuildTime op="mul">0.9</BuildTime>

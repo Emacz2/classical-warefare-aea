@@ -1,16 +1,2 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Entity>
-  <Cost>
-    <BuildTime op="mul">0.9</BuildTime>
-    <Resources>
-      <metal>80</metal>
-      <food op="add">-25</food>
-    </Resources>
-  </Cost>
-  <Identity>
-    <Tooltip>Purchase mercanaries from the market for the cost of metal only, -10% train time</Tooltip>
-  </Identity>
-  <Loot>
-    <metal>10</metal>
-  </Loot>
-</Entity>
+<?xml version='1.0' encoding='utf-8'?>
+<Entity><Cost><BuildTime op="mul">0.9</BuildTime><Resources><metal>80</metal><food>0</food><stone>0</stone><wood>0</wood></Resources></Cost><Loot><metal>10</metal></Loot></Entity>

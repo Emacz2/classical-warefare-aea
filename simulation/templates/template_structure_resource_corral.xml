@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_resource">
+  <BuildRestrictions>
+    <Category>Corral</Category>
+  </BuildRestrictions>
   <Cost>
     <BuildTime>50</BuildTime>
     <Resources>
@@ -7,7 +10,7 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="18.0" depth="17.0"/>
+    <Square width="18.0" depth="17.0" />
     <Height>5.0</Height>
   </Footprint>
   <GarrisonHolder>
@@ -25,20 +28,21 @@
   <Identity>
     <GenericName>Corral</GenericName>
     <SelectionGroupName>template_structure_resource_corral</SelectionGroupName>
-    <Tooltip>Raise Domestic Animals for food. Garrison animals to gain a trickle of food.</Tooltip>
+    <Tooltip>Raise Domestic Animals for food. Each Corral supports up to 5 livestock. Farmsteads increase your Corral build limit.</Tooltip>
     <VisibleClasses datatype="tokens">Economic Village Corral</VisibleClasses>
     <Icon>structures/corral.png</Icon>
     <Requirements>
       <Techs datatype="tokens">phase_village</Techs>
     </Requirements>
+    <Classes datatype="tokens">Corral</Classes>
   </Identity>
   <Loot>
     <wood>20</wood>
   </Loot>
   <Obstruction>
-    <Static width="16.0" depth="15.0"/>
+    <Static width="16.0" depth="15.0" />
   </Obstruction>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Researcher>
     <Technologies datatype="tokens">
       gather_animals_stockbreeding

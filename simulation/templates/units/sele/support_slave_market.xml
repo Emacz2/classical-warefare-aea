@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_support_slave">
+  <Identity>
+    <Civ>sele</Civ>
+    <GenericName>Mining Slave</GenericName>
+    <SpecificName>Doûlos</SpecificName>
+    <SelectionGroupName>units/sele/support_slave_market</SelectionGroupName>
+    <Tooltip>Specialist mine and quarry laborer. Gathers stone and metal 25% faster than a civilian, but cannot gather food or wood, build, attack, or capture. Shares the Estate Slave capacity provided by Estates.</Tooltip>
+    <Requirements>
+      <Techs datatype="tokens">phase_town</Techs>
+    </Requirements>
+    <Icon>units/special/mine_slave.png</Icon>
+  </Identity>
+  <TrainingRestrictions>
+    <Category>EstateSlave</Category>
+  </TrainingRestrictions>
+  <VisualActor>
+    <Actor>units/global/slave.xml</Actor>
+  </VisualActor>
+</Entity>

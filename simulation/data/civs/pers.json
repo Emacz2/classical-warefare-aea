@@ -39,6 +39,11 @@
 			"Name": "Satrapy Tribute",
 			"History": "The empire was divided into provinces, called “Satrapies,” that sent yearly tribute to the ruling Persian dynasty in Persepolis as a form of tax.",
 			"Description": "Upgrade the Throne Hall to receive a free trickle of a desired resource."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Achaemenid armies drew heavily on Persian and subject cavalry, including aristocratic horsemen and contingents from horse-rich regions across the empire. Mounted troops were central to Persian battlefield mobility and striking power, making Persia the civilization with the greatest capacity for cavalry-heavy armies.",
+			"Description": "Maximum cavalry as a share of effective population: Village 12.5%; Town 25%; City 30%; Empire 30%."
 		}
 	],
 	"WallSets": [
@@ -55,14 +60,14 @@
 		},
 		{
 			"Template": "units/pers/infantry_archer_conscript",
-			"Count": 2
+			"Count": 3
 		},
 		{
 			"Template": "units/pers/infantry_axeman_conscript",
 			"Count": 2
 		},
 		{
-			"Template": "units/pers/cavalry_javelineer_b"
+			"Template": "units/pers/cavalry_spearman_p"
 		}
 	],
 	"AINames": [

@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="allied_inf|armor_light|shield_light|sword_short|template_unit_infantry_melee_swordsman">
- <Builder disable="" />
+  <Builder disable=""/>
   <Cost>
-     <Resources>
+    <Resources>
       <food>90</food>
       <metal>0</metal>
       <wood>20</wood>
       <stone>0</stone>
     </Resources>
   </Cost>
- <Health>
-    <Max>200</Max>
-    <RegenRate>-0.5</RegenRate>
+  <Health>
+    <RegenRate>-0.25</RegenRate>
   </Health>
-   <Identity>
+  <Identity>
     <Rank>Advanced</Rank>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
     <GenericName>Advanced Skiritai Scout Swordsman</GenericName>
     <SpecificName>Ékdromos Skirítēs</SpecificName>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
-    <Tooltip>As scout, speed is 12.0 but loses 1 HP every 2 seconds when moving.  Can not build as a scout. Can switch to light spearman. Restricted to 20 Skirítēs total</Tooltip>
+    <Tooltip>Scout mode. Very fast, cannot build, and loses health while moving. Can switch to vanguard spear mode. Veteran Skiritai promote to an Elite javelin scout. Restricted to 20 Skirítēs total.</Tooltip>
     <History></History>
     <Icon>units/spart/skiri_sword_v.png</Icon>
   </Identity>
-    <Upgrade>
-    <Skiri_sword>
+  <Upgrade>
+    <Skiri_spear>
       <Entity>units/spart/skiri_spearman</Entity>
-      <Tooltip>Switch to using spear.</Tooltip>
+      <Tooltip>Switch to vanguard spear mode.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
-    </Skiri_sword>
+    </Skiri_spear>
   </Upgrade>
+  <Promotion>
+    <Entity>units/spart/skiri_jav</Entity>
+  </Promotion>
   <TrainingRestrictions>
-  <Category>Skiri</Category>
+    <Category>Skiri</Category>
   </TrainingRestrictions>
- <UnitMotion>
+  <UnitMotion>
     <WalkSpeed op="mul">1.25</WalkSpeed>
     <RunMultiplier op="mul">0.90</RunMultiplier>
   </UnitMotion>
   <Vision>
     <Range>75</Range>
   </Vision>
-  <Promotion disable=""/>
   <ResourceGatherer disable=""/>
   <VisualActor>
     <Actor>units/spartans/skiri_swordsman_e.xml</Actor>

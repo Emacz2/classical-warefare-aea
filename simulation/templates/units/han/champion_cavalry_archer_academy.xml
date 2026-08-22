@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="han|cav_light|template_unit_champion_cavalry_archer">
+  <Identity>
+    <Civ>han</Civ>
+    <GenericName>Yulin Cavalry</GenericName>
+    <SpecificName>Yǔlín Qí</SpecificName>
+    <SelectionGroupName>units/han/champion_cavalry_archer_academy</SelectionGroupName>
+    <Icon>units/han/cavalry_archer.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">phase_empi</Techs>
+    </Requirements>
+  </Identity>
+  <VisualActor>
+    <Actor>units/han/cavalry_archer_e_m.xml</Actor>
+  </VisualActor>
+</Entity>

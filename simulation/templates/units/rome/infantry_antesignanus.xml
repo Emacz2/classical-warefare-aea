@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="roman|legionary|heavy_jav|shield_heavy|armor_medium|template_unit_infantry_ranged_javelineer">
+<Entity parent="roman|legionary|heavy_jav|shield_heavy|armor_medium|helmet_protected|template_unit_infantry_ranged_javelineer">
     <Builder>
     <Entities datatype="tokens">
       structures/rome/army_camp
       structures/rome/temple_vesta
       structures/rome/temple_mars
       structures/rome/tower_artillery
-      structures/structures/rome/
     </Entities>
   </Builder>
  <Attack>

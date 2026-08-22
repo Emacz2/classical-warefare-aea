@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="shield_light|helmet_open|template_unit_infantry_ranged_archer">
+  <Cost>
+    <BuildTime op="mul">1.1</BuildTime>
+  </Cost>
+  <Attack>
+    <Ranged>
+      <RepeatTime op="add">-100</RepeatTime>
+      <Projectile>
+        <Spread>1.6</Spread>
+      </Projectile>
+      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+    </Ranged>
+  </Attack>
+  <Identity>
+    <Lang>greek</Lang>
+    <GenericName>Cretan Archer</GenericName>
+    <SpecificName>Toxótēs Krētikós</SpecificName>
+    <Icon>units/mace/infantry_archer.png</Icon>
+    <Tooltip>Renowned for exceptional accuracy and rapid fire; -100 ms repeat time, 25% more accurate. Strengths: Highly effective against lightly armored troops at range. Weaknesses: Requires protection from cavalry and melee infantry.</Tooltip>
+    <History>Cretan archers were among the most sought-after professional missile troops of the ancient Mediterranean.</History>
+  </Identity>
+  <VisualActor>
+    <Actor>units/athenians/infantry_archer_b.xml</Actor>
+  </VisualActor>
+</Entity>

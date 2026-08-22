@@ -3,11 +3,14 @@
   <Upgrade>
     <Peltast_Jav>
       <Entity>units/spart/merc_market_thracian_peltast</Entity>
-      <Tooltip>Switch to throwing javilin.</Tooltip>
+      <Tooltip>Switch to throwing javelins.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
     </Peltast_Jav>
   </Upgrade>
+  <Identity>
+    <Rank>Advanced</Rank>
+  </Identity>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>

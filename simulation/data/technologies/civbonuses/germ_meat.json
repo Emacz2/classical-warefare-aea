@@ -1,0 +1,19 @@
+{
+  "genericName": "Herds and Hunt",
+  "autoResearch": true,
+  "description": "Germanic communities relied heavily on livestock products, meat, and hunting alongside cultivation.",
+  "requirements": {
+    "civ": "germ"
+  },
+  "icon": "meat.png",
+  "tooltip": "German Workers gather meat 50% faster.",
+  "modifications": [
+    {
+      "value": "ResourceGatherer/Rates/food.meat",
+      "multiply": 1.5
+    }
+  ],
+  "affects": [
+    "German Worker"
+  ]
+}

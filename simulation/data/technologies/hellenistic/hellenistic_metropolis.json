@@ -1,0 +1,31 @@
+{
+	"genericName": "Hellenistic Metropolis",
+	"description": "Beginning with Alexander, Hellenistic monarchs founded and expanded great cities throughout their kingdoms. These metropolitan centers combined Greek institutions, art, and architecture with local traditions, serving as fortified seats of royal administration and military power.",
+	"cost": {
+		"stone": 500,
+		"metal": 500
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{
+				"any": [
+					{ "civ": "mace" },
+					{ "civ": "ptol" },
+					{ "civ": "sele" }
+				]
+			}
+		]
+	},
+	"requirementsTooltip": "Unlocked in City Phase.",
+	"icon": "statue_face_stone.png",
+	"researchTime": 60,
+	"tooltip": "Civic Centers gain +100% Health and Capture Points and fire twice as many default arrows.",
+	"modifications": [
+		{ "value": "BuildingAI/DefaultArrowCount", "multiply": 2 },
+		{ "value": "Capturable/CapturePoints", "multiply": 2 },
+		{ "value": "Health/Max", "multiply": 2 }
+	],
+	"affects": ["CivCentre !Colony !Naval"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

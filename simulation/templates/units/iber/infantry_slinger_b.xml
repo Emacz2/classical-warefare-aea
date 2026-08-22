@@ -11,7 +11,7 @@
 <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/infantry_slinger_b</SelectionGroupName>
-    <GenericName>Infantry Slinger</GenericName>
+    <GenericName>Iberian Infantry Slinger</GenericName>
     <SpecificName>Habailari</SpecificName>
     <Icon>units/iber/infantry_slinger.png</Icon>
     <Requirements>
@@ -22,6 +22,6 @@
     <Entity>units/iber/infantry_slinger_a</Entity>
   </Promotion>
   <VisualActor>
-    <Actor>units/britons/infantry_slinger_b.xml</Actor>
+   <Actor>units/iberians/infantry_slinger_b.xml</Actor>
   </VisualActor>
 </Entity>

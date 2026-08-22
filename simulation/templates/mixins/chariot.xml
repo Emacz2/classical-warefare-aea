@@ -18,6 +18,9 @@
       <metal>200</metal>
     </Resources>
   </Cost>
+   <Health>
+    <Max op="add">50</Max>
+  </Health>
    <Loot>
     <xp>125</xp>
     <metal>15</metal>
@@ -31,7 +34,6 @@
   </Position>
   <ResourceGatherer disable=""/>
   <UnitMotion>
-    <WalkSpeed op="mul">1.05</WalkSpeed>
      <Acceleration op="mul">0.9</Acceleration>
     <PassabilityClass>large</PassabilityClass>
     <Weight op="mul">3.0</Weight>

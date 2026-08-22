@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="merc_inf_market|archer_cretan|template_unit_infantry_ranged_archer">
+<Entity parent="merc_inf|units/cretan_archer">
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/merc_inf_archer_b</SelectionGroupName>
+    <Rank>Basic</Rank>
   </Identity>
-<Promotion disable=""/>
+  <Promotion disable="" />
   <VisualActor>
     <Actor>units/ptolemies/infantry_archer_merc_b.xml</Actor>
   </VisualActor>

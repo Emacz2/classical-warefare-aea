@@ -4,8 +4,7 @@
 <Ranged>
       <AttackName>Pilum</AttackName>
       <Damage>
-        <Hack op="mul">2</Hack>
-        <Pierce op="mul">1.6</Pierce>
+        <Pierce op="mul">1.75</Pierce>
       </Damage>
       <MaxRange op="mul">0.8</MaxRange>
       <RepeatTime op="mul">1.5</RepeatTime>
@@ -19,10 +18,10 @@
     </Ranged>
   </Attack>
  <UnitMotion>
-  <WalkSpeed op="mul">0.95</WalkSpeed>
+  <WalkSpeed op="mul">0.98</WalkSpeed>
  </UnitMotion>
   <Identity>
     <Classes datatype="tokens">Heavy</Classes>
-    <Tooltip>Heavy Javelins 100% more hack damge, 650% more pierce dmg but 20% less range and 50% slower attack speed</Tooltip>
+    <Tooltip>Heavy Javelins 75% more pierce dmg but 20% less range, 50% slower repeat time and 2% slower walk speed</Tooltip>
      </Identity>
 </Entity>

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Entity>
+  <Cost>
+    <BuildTime op="mul">0.9</BuildTime>
+  </Cost>
+  <Attack>
+    <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture>3.0</Capture>
+      <MaxRange>3</MaxRange>
+      <RepeatTime>1000</RepeatTime>
+    </Capture>
+    <Melee merge="">
+      <Damage>
+        <Hack op="mul">1.05</Hack>
+        <Pierce op="mul">1.05</Pierce>
+        <Crush op="mul">1.05</Crush>
+      </Damage>
+    </Melee>
+    <Ranged merge="">
+      <Damage>
+        <Hack op="mul">1.05</Hack>
+        <Pierce op="mul">1.05</Pierce>
+        <Crush op="mul">1.05</Crush>
+      </Damage>
+    </Ranged>
+  </Attack>
+  <Identity>
+    <VisibleClasses datatype="tokens">Auxiliary</VisibleClasses>
+    <Tooltip>Auxiliary Champions are elite professional soldiers recruited from Rome's auxiliary forces. They train 10% faster than native Champions and deal 5% more melee and ranged damage.</Tooltip>
+  </Identity>
+  <Builder disable="" />
+  <ResourceGatherer disable="" />
+</Entity>

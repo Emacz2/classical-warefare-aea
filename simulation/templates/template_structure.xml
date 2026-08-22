@@ -121,7 +121,7 @@
       </ApplyStatus>
       <Damage>
         <Hack>1</Hack>
-        <Pierce>20</Pierce>
+        <Pierce>10</Pierce>
         <Crush>1</Crush>
       </Damage>
     </Foundation>

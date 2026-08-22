@@ -501,8 +501,25 @@ UnitAI.prototype.UnitFsmSpec = {
 
 			// Cancel any current packing order.
 			if (this.EnsureCorrectPackStateForAttack(false))
-				this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
+			{
+				if (this.IsFormationMember())
+					this.SetNextState("FORMATIONMEMBER.COMBAT.ATTACKING");
+				else
+					this.SetNextState("INDIVIDUAL.COMBAT.ATTACKING");
+			}
+			return ACCEPT_ORDER;
+		}
 
+		if (this.IsFormationMember())
+		{
+			const cmpFormation = Engine.QueryInterface(this.formationController, IID_Formation);
+			const cmpFormationUnitAI = Engine.QueryInterface(this.formationController, IID_UnitAI);
+			if (!cmpFormation.AreSomeMembersAttacking() && !cmpFormationUnitAI.IsAttackingAsFormation())
+			{
+				cmpFormationUnitAI.AddOrder("Attack", { "target": msg.data.target });
+			}
+			if (this.orderQueue.length)  // TODO why need to check?
+				return this.FinishOrder();
 			return ACCEPT_ORDER;
 		}
 
@@ -832,8 +849,7 @@ UnitAI.prototype.UnitFsmSpec = {
 		"Order.Stop": function(msg) {
 			const cmpFormation = Engine.QueryInterface(this.entity, IID_Formation);
 			cmpFormation.ResetOrderVariant();
-			if (!this.IsAttackingAsFormation())
-				this.CallMemberFunction("Stop", [false]);
+			this.CallMemberFunction("Stop", [false]);
 			this.FinishOrder();
 			return ACCEPT_ORDER;
 			// Don't move the members back into formation,
@@ -857,11 +873,7 @@ UnitAI.prototype.UnitFsmSpec = {
 				return this.FinishOrder();
 			}
 			this.CallMemberFunction("Attack", [target, msg.data.allowCapture, false]);
-			const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-			if (cmpAttack && cmpAttack.CanAttackAsFormation())
-				this.SetNextState("COMBAT.ATTACKING");
-			else
-				this.SetNextState("MEMBER");
+			this.SetNextState("COMBAT.ATTACKING");
 			return ACCEPT_ORDER;
 		},
 
@@ -882,6 +894,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.Gather": function(msg) {
+			warn("CWA: No gather as formation!");
+			return this.FinishOrder();
+
 			if (this.MustKillGatherTarget(msg.data.target))
 			{
 				// The target was visible when this order was given,
@@ -934,6 +949,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.GatherNearPosition": function(msg) {
+			warn("CWA: No gather as formation!");
+			return this.FinishOrder();
+
 			// TODO: on what should we base this range?
 			if (!this.CheckPointRangeExplicit(msg.data.x, msg.data.z, 0, 20))
 			{
@@ -1001,6 +1019,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.Repair": function(msg) {
+			warn("CWA: No repair as formation!");
+			return this.FinishOrder();
+
 			// TODO: on what should we base this range?
 			if (!this.CheckTargetRangeExplicit(msg.data.target, 0, 10))
 			{
@@ -1023,6 +1044,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.ReturnResource": function(msg) {
+			warn("CWA: No return resource as formation!");
+			return this.FinishOrder();
+
 			// TODO: on what should we base this range?
 			if (!this.CheckTargetRangeExplicit(msg.data.target, 0, 10))
 			{
@@ -1059,6 +1083,9 @@ UnitAI.prototype.UnitFsmSpec = {
 		},
 
 		"Order.DropAtNearestDropSite": function(msg) {
+			warn("CWA: No drop at nearest dropsite as formation!");
+			return this.FinishOrder();
+
 			this.CallMemberFunction("DropAtNearestDropSite", [false, false]);
 
 			this.SetNextState("MEMBER");
@@ -1363,12 +1390,7 @@ UnitAI.prototype.UnitFsmSpec = {
 					const cmpTargetUnitAI = Engine.QueryInterface(target, IID_UnitAI);
 					if (cmpTargetUnitAI && cmpTargetUnitAI.IsFormationMember())
 						target = cmpTargetUnitAI.GetFormationController();
-					const cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-					this.CallMemberFunction("Attack", [target, this.order.data.allowCapture, false]);
-					if (cmpAttack.CanAttackAsFormation())
-						this.SetNextState("COMBAT.ATTACKING");
-					else
-						this.SetNextState("MEMBER");
+					this.SetNextState("COMBAT.ATTACKING");
 				},
 			},
 
@@ -1389,7 +1411,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 					const cmpFormation = Engine.QueryInterface(this.entity, IID_Formation);
 					// TODO fix the rearranging while attacking as formation
-					cmpFormation.SetRearrange(!this.IsAttackingAsFormation());
+					cmpFormation.SetRearrange(false);
 					cmpFormation.MoveMembersIntoFormation(false, false, "combat");
 					this.StartTimer(200, 200);
 					return false;
@@ -1524,9 +1546,13 @@ UnitAI.prototype.UnitFsmSpec = {
 
 				const o = {};
 				const f = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "add": +v }]; };
+				const g = (s, v) => { if (v) o[s] = [{ "affects": ["Soldier"], "multiply": +v }]; };
 				f("Resistance/Entity/Damage/Hack", cmpFormation.template.ResistanceAdd?.Hack);
 				f("Resistance/Entity/Damage/Pierce", cmpFormation.template.ResistanceAdd?.Pierce);
 				f("Resistance/Entity/Damage/Crush", cmpFormation.template.ResistanceAdd?.Crush);
+				g("Attack/Melee/Damage/Hack", cmpFormation.template.AttackMultiply?.Melee?.Damage?.Hack);
+				g("Attack/Melee/Damage/Pierce", cmpFormation.template.AttackMultiply?.Melee?.Damage?.Pierce);
+				g("Attack/Melee/Damage/Crush", cmpFormation.template.AttackMultiply?.Melee?.Damage?.Crush);
 				const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
 				cmpModifiersManager.AddModifiers("Formation Bonus", o, this.entity);
 			}
@@ -1540,6 +1566,8 @@ UnitAI.prototype.UnitFsmSpec = {
 			const cmpModifiersManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_ModifiersManager);
 			cmpModifiersManager.RemoveAllModifiers("Formation Bonus", this.entity);
 		},
+
+		"COMBAT": "INDIVIDUAL.COMBAT",
 
 		"IDLE": "INDIVIDUAL.IDLE",
 
@@ -2329,8 +2357,7 @@ UnitAI.prototype.UnitFsmSpec = {
 						return true;
 					}
 
-					if (!this.formationAnimationVariant)
-						this.SetAnimationVariant("combat");
+					this.SetAnimationVariant("combat");
 
 					this.FaceTowardsTarget(this.order.data.target);
 
@@ -2356,10 +2383,22 @@ UnitAI.prototype.UnitFsmSpec = {
 					// Units with no cheering time do not cheer.
 					this.shouldCheer = cmpUnitAI && (!cmpUnitAI.IsAnimal() || cmpUnitAI.IsDangerousAnimal()) && this.cheeringTime > 0;
 
+					if (this.IsFormationMember())
+					{
+						const cmpFormation = Engine.QueryInterface(this.formationController, IID_Formation);
+						cmpFormation.SetAttackingEntity(this.entity);
+					}
+
 					return false;
 				},
 
 				"leave": function() {
+					if (this.IsFormationMember())
+					{
+						const cmpFormation = Engine.QueryInterface(this.formationController, IID_Formation);
+						cmpFormation.UnsetAttackingEntity(this.entity);
+					}
+
 					const cmpBuildingAI = Engine.QueryInterface(this.entity, IID_BuildingAI);
 					if (cmpBuildingAI)
 						cmpBuildingAI.SetUnitAITarget(0);
@@ -6301,21 +6340,22 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 		if (!attackfilter(ent))
 			continue;
 		const pref = cmpAttack.GetPreference(ent);
+		if (pref === undefined) continue
 		const type = cmpAttack.GetBestAttackAgainst(ent, false);
 		const inRange = this.CheckTargetAttackRange(ent, type);
 		const dist = PositionHelper.DistanceBetweenEntities(this.entity, ent);
 		const range = cmpAttack.GetRange(type);
 		const diff = Math.max(0, range.min - dist, dist - range.max);
-		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, diff, ent]);
+		entsByPreferences.push([pref, inRange, diff, ent]);
 	}
-	shuffleArray(entsByPreferences);
-	entsByPreferences.sort((a, b) => {
-		if (a[0] != b[0]) return a[0] - b[0];
-		if (a[1] != b[1]) return b[1] - a[1];
-		return a[2] - b[2];
-	});
 	if (entsByPreferences.length) {
-		attack(entsByPreferences[0][3]);
+		const shuffled = shuffleArray(entsByPreferences);
+		shuffled.sort((a, b) => {
+			if (a[0] != b[0]) return a[0] - b[0];
+			if (a[1] != b[1]) return b[1] - a[1];
+			return a[2] - b[2];
+		});
+		attack(shuffled[0][3]);
 		return true;
 	}
 
@@ -6597,9 +6637,7 @@ UnitAI.prototype.IsPacking = function()
 
 UnitAI.prototype.IsAttackingAsFormation = function()
 {
-	var cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);
-	return cmpAttack && cmpAttack.CanAttackAsFormation() &&
-		this.GetCurrentState() == "FORMATIONCONTROLLER.COMBAT.ATTACKING";
+	return this.GetCurrentState() == "FORMATIONCONTROLLER.COMBAT.ATTACKING" || this.GetCurrentState() == "FORMATIONCONTROLLER.COMBAT.APPROACHING";
 };
 
 UnitAI.prototype.MoveRandomly = function(distance)
@@ -6680,20 +6718,21 @@ UnitAI.prototype.AttackEntitiesByPreference = function(ents)
 		if (!attackfilter(ent))
 			continue;
 		const pref = cmpAttack.GetPreference(ent);
+		if (pref === undefined) continue;
 		const type = cmpAttack.GetBestAttackAgainst(ent, false);
 		const inRange = this.CheckTargetAttackRange(ent, type);
 		const dist = PositionHelper.DistanceBetweenEntities(this.entity, ent);
 		const range = cmpAttack.GetRange(type);
 		const diff = Math.max(0, range.min - dist, dist - range.max);
-		entsByPreferences.push([pref === null || pref === undefined ? Infinity : pref, inRange, diff, ent]);
+		entsByPreferences.push([pref, inRange, diff, ent]);
 	}
-	shuffleArray(entsByPreferences);
-	entsByPreferences.sort((a, b) => {
+	const shuffled = shuffleArray(entsByPreferences);
+	shuffled.sort((a, b) => {
 		if (a[0] != b[0]) return a[0] - b[0];
 		if (a[1] != b[1]) return b[1] - a[1];
 		return a[2] - b[2];
 	});
-	return this.RespondToTargetedEntities(entsByPreferences.map(x => x[3]));
+	return this.RespondToTargetedEntities(shuffled.map(x => x[3]));
 };
 
 /**

@@ -5,7 +5,7 @@
   </Health>
 <ResourceTrickle>
     <Rates>
-      <metal>0.5</metal>
+      <metal>0.75</metal>
     </Rates>
     <Interval>1000</Interval>
   </ResourceTrickle>
@@ -47,7 +47,6 @@
     <BatchTimeModifier>0.8</BatchTimeModifier>
     <Entities datatype="tokens">
      -units/{civ}/support_healer_b
-      units/{civ}/champion_cavalry
     </Entities>
   </Trainer>
 </Entity>

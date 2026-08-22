@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="brit|cav_light|template_unit_cavalry_ranged_javelineer">
+<Entity parent="brit|cav_raider|cav_light|template_unit_cavalry_ranged_javelineer">
   <Identity>
     <Civ>brit</Civ>
     <SelectionGroupName>units/brit/cavalry_javelineer_b</SelectionGroupName>
+    <GenericName>Brythonic Horse Javelineer</GenericName>
     <SpecificName>Marcacos</SpecificName>
-    <GenericName>Brythonic Light-Javelineer Cavalry</GenericName>
     <Icon>units/brit/cavalry_javelinist.png</Icon>
   </Identity>
   <Promotion>

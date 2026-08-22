@@ -4,11 +4,12 @@
 	"description": "The Gauls were well-known for their effective cavalry. Celtic mercenaries were in demand throughout the Mediterranean.",
 	"requirements": { "civ": "gaul" },
 	"icon": "sword_cavalry.png",
-	"tooltip": "Cavalry +10% melee attack damage.",
+	"tooltip": "Cavalry +10% melee attack damage and 5% faster walk speed.",
 	"modifications": [
 		{ "value": "Attack/Melee/Damage/Hack", "multiply": 1.1, "affects": "Melee" },
 		{ "value": "Attack/Melee/Damage/Pierce", "multiply": 1.1, "affects": "Melee" },
-		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1, "affects": "Melee" }
+		{ "value": "Attack/Melee/Damage/Crush", "multiply": 1.1, "affects": "Melee" },
+		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05 }
 	],
 	"affects": ["Cavalry"]
 }

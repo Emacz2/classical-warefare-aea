@@ -1,0 +1,13 @@
+{
+	"genericName": "Rise of Cyrus",
+	"description": "Cyrus II overthrew Median supremacy and united the Persians and Medes under Achaemenid rule. His conquests transformed Persia from a regional kingdom into a vast imperial power.",
+	"requirements": {
+		"all": [
+			{ "civ": "pers" }
+		]
+	},
+	"requirementsTooltip": "Can be researched by Cyrus II.",
+	"icon": "silvershields.png",
+	"tooltip": "Allows the Winter Palace to be upgraded into the Imperial Palace, fulfilling Persia's unique requirement for Empire Phase.",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

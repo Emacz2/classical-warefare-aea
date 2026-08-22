@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Attack>
+    <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture op="add">0.5</Capture>
+    </Capture>
+
+    <Melee merge="">
+      <Bonuses>
+        <Raider>
+          <Classes>Support</Classes>
+          <Multiplier>1.25</Multiplier>
+        </Raider>
+      </Bonuses>
+    </Melee>
+
+    <Ranged merge="">
+      <Bonuses>
+        <Raider>
+          <Classes>Support</Classes>
+          <Multiplier>1.25</Multiplier>
+        </Raider>
+      </Bonuses>
+    </Ranged>
+  </Attack>
+
+  <Identity>
+    <GenericName>Cavalry Raider</GenericName>
+    <VisibleClasses datatype="tokens">Raider</VisibleClasses>
+    <Tooltip>Raiders deal 25% more damage to support units and gain +0.5 capture attack.</Tooltip>
+  </Identity>
+</Entity>

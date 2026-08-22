@@ -4,10 +4,13 @@
     <Civ>sele</Civ>
     <SpecificName>Emporion</SpecificName>
   </Identity>
-    <Promotion>
-    <Entity>structures/sele/market_2</Entity>
-    <RequiredXp>3000</RequiredXp>
-  </Promotion>
+  <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities replace="" datatype="tokens">
+      units/{civ}/support_slave_market
+      units/{civ}/support_trader
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/seleucids/market.xml</Actor>
   </VisualActor>

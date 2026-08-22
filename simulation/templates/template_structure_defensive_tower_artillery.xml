@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_defensive_tower">
   <Attack>
     <Ranged>
@@ -7,7 +7,7 @@
         <Crush>90</Crush>
         <Pierce>0</Pierce>
       </Damage>
-      <MaxRange>80</MaxRange>
+      <MaxRange>85</MaxRange>
       <MinRange>40</MinRange>
       <Origin>
         <X>0</X>
@@ -21,7 +21,7 @@
         <Spread>6</Spread>
         <Gravity>9.81</Gravity>
         <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="3"/>
+        <LaunchPoint y="3" />
         <ActorName>props/units/weapons/tower_artillery_projectile.xml</ActorName>
         <ImpactActorName>props/units/weapons/tower_artillery_projectile_impact.xml</ImpactActorName>
         <ImpactAnimationLifetime>0.3</ImpactAnimationLifetime>
@@ -41,7 +41,7 @@
     </Resources>
   </Cost>
   <Footprint>
-    <Square width="10.0" depth="10.0"/>
+    <Square width="10.0" depth="10.0" />
     <Height>15.0</Height>
   </Footprint>
   <GarrisonHolder>
@@ -64,9 +64,9 @@
     <stone>40</stone>
   </Loot>
   <Obstruction>
-    <Static width="7.0" depth="7.0"/>
+    <Static width="7.0" depth="7.0" />
   </Obstruction>
-  <ProductionQueue/>
+  <ProductionQueue />
   <Researcher>
     <Technologies datatype="tokens">
       tower_health
@@ -83,4 +83,7 @@
     <Radius>32</Radius>
     <Weight>30000</Weight>
   </TerritoryInfluence>
+  <Vision>
+    <Range>105</Range>
+  </Vision>
 </Entity>

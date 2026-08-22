@@ -1,0 +1,24 @@
+{
+	"genericName": "Monumental Architecture",
+	"description": "Kushite architects mastered the construction of monumental temples, palaces, and pyramids through superior masonry, skilled craftsmanship, and enduring design. These imposing structures required greater time and resources to complete, but stood as lasting symbols of royal authority and proved far more difficult for enemies to destroy or capture.",
+	"cost": {
+		"stone": 600
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "kush" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "pers_hundred_columns.png",
+	"researchTime": 60,
+	"tooltip": "Civic Structures +20% build time, +20% health, and +20% capture points.",
+	"modifications": [
+		{ "value": "Capturable/CapturePoints", "multiply": 1.2 },
+		{ "value": "Cost/BuildTime", "multiply": 1.2 },
+		{ "value": "Health/Max", "multiply": 1.2 }
+	],
+	"affects": ["Civic"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

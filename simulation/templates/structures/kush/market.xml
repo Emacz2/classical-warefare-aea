@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_economic_market">
-  <Identity>
+   <Identity>
     <Civ>kush</Civ>
     <SpecificName>Pr-sbt</SpecificName>
+    <VisibleClasses datatype="tokens">Village -Town</VisibleClasses>
+    <Requirements>
+      <Techs datatype="tokens">-phase_town phase_village</Techs>
+    </Requirements>
   </Identity>
+   <Promotion>
+    <Entity>structures/kush/market_2</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
   <VisualActor>
     <FoundationActor>structures/fndn_8x8.xml</FoundationActor>
     <Actor>structures/kushites/market.xml</Actor>

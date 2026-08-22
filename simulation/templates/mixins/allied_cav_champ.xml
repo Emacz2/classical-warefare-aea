@@ -11,7 +11,7 @@
   </Cost>
   <Identity>
     <VisibleClasses datatype="tokens">Allied</VisibleClasses>
-    <Tooltip>Allied Champion Cavalry 20% more train time but resource cost is converted to 100% food</Tooltip>
+    <Tooltip>Allied Champion Cavalry 20% more train time but resource cost is converted to food (450)</Tooltip>
   </Identity>
   <ResourceGatherer disable=""/>
 </Entity>

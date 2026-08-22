@@ -1,0 +1,50 @@
+{
+  "genericName": "Intensive Quarrying",
+  "specificName": {
+    "athen": "Andrapoda",
+    "cart": "Enslaved Labor",
+    "mace": "Andrapoda",
+    "rome": "Servi",
+    "sele": "Andrapoda",
+    "theb": "Andrapoda"
+  },
+  "description": "Expand quarry workforces and organize more intensive stone extraction. Civilizations with large enslaved-labor systems may employ slaves for this work.",
+  "cost": {
+    "food": 600,
+    "stone": 300
+  },
+  "supersedes": "gather_mining_serfs",
+  "requirements": {
+    "all": [
+      {
+        "tech": "phase_city"
+      },
+      {
+        "notciv": "brit"
+      },
+      {
+        "notciv": "gaul"
+      },
+      {
+        "notciv": "germ"
+      },
+      {
+        "notciv": "iber"
+      }
+    ]
+  },
+  "requirementsTooltip": "Unlocked in City Phase.",
+  "icon": "mining_stone_03.png",
+  "researchTime": 60,
+  "tooltip": "Workers +25% stone gather rate.",
+  "modifications": [
+    {
+      "value": "ResourceGatherer/Rates/stone.rock",
+      "multiply": 1.25
+    }
+  ],
+  "affects": [
+    "Worker"
+  ],
+  "soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

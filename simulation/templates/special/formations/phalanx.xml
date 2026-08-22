@@ -17,6 +17,15 @@
       2..2,1..-1: phalanx_mid;
       3..-1,1..-1: phalanx_back
     </AnimationVariants>
+    <AttackMultiply>
+      <Melee>
+        <Damage>
+          <Hack>1.1</Hack>
+          <Pierce>1.1</Pierce>
+          <Crush>1.1</Crush>
+        </Damage>
+      </Melee>
+    </AttackMultiply>
     <ResistanceAdd>
       <Hack>1.5</Hack>
       <Pierce>1.5</Pierce>
@@ -29,6 +38,6 @@
   <Identity>
     <GenericName>Phalanx</GenericName>
     <Icon>formations/phalanx.png</Icon>
-    <Tooltip>Compact formation of Infantry Hoplites creating a shield wall. + 1.5 Hack/Pierce and +0.5 Crush resistance but lose 20% speed</Tooltip>
+    <Tooltip>Compact formation of Infantry Hoplites creating a shield wall. Gain + 1.5 Hack/Pierce and +0.5 Crush resistance and 10% damage, but lose 20% speed</Tooltip>
   </Identity>
 </Entity>

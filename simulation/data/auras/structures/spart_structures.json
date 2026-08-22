@@ -8,7 +8,7 @@
 		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 2 }
 		
 	],
-	"auraName": "Protector ",
+	"auraName": "Protector",
 	"showDescription": 1,
 	"auraDescription": "Spartan Women twice as much range and dmg when defending near spartan buildings.",
 	"overlayIcon": "art/textures/ui/session/auras/attack_bonus.png"

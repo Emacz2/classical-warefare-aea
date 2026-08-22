@@ -9,13 +9,14 @@
   </Identity>
   <Researcher>
     <Technologies datatype="tokens">
-      colonization
+      africankingdoms/colonization
     </Technologies>
   </Researcher>
   <Trainer>
     <Entities datatype="tokens">
       units/{civ}/infantry_spearman_b
       units/{civ}/infantry_javelineer_b
+      units/{civ}/cavalry_spearman_b
       units/{civ}/champion_infantry
       units/{civ}/champion_cavalry
     </Entities>

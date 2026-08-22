@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="units/han/infantry_pikeman_b">
+<Entity parent="han|armor_heavy|spear_long|helmet_open|template_unit_infantry_melee_spearman">
+  <Attack>
+    <Melee>
+      <AttackName>Ji</AttackName>
+      <Damage>
+        <Crush op="add">2</Crush>
+        <Hack op="add">2</Hack>
+        <Pierce op="add">-1.5</Pierce>
+      </Damage>
+      <MaxRange op="add">0.5</MaxRange>
+      <Bonuses>
+        <BonusCavMelee>
+          <Classes>Cavalry</Classes>
+          <Multiplier>2</Multiplier>
+        </BonusCavMelee>
+      </Bonuses>
+      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+    </Melee>
+  </Attack>
+    <Cost>
+    <Resources>
+      <wood op="add">-10</wood>
+      <metal op="add">10</metal>
+    </Resources>
+  </Cost>
   <Identity>
+   <Civ>han</Civ>
+    <SelectionGroupName>units/han/infantry_pikeman_b</SelectionGroupName>
+    <GenericName>Han Infantry Halberdier</GenericName>
+    <SpecificName>Jǐ Bīng</SpecificName>
+    <Icon>units/han/infantry_halberdman.png</Icon>
     <Rank>Advanced</Rank>
   </Identity>
   <Promotion>

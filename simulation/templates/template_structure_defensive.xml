@@ -4,6 +4,10 @@
     <GenericName>Defensive Structure</GenericName>
     <VisibleClasses datatype="tokens">Defensive</VisibleClasses>
   </Identity>
+ <Capturable>
+    <RegenRate>5</RegenRate>
+    <GarrisonRegenRate>2.0</GarrisonRegenRate>
+</Capturable>
   <Resistance>
     <Entity>
       <Damage>

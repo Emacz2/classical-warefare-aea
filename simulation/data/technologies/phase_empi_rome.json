@@ -1,17 +1,16 @@
 {
-	"genericName": "Empire Phase",
-	"specificName": {
-		"rome": "Imperial Rome"
-	},
-
-	"description": "Advances from a veritable metropolis to Imperial Rome.",
-	"cost": {
-		"food": 750,
-		"wood": 750,
-		"stone": 1000,
-		"metal": 500
-	},
-	 "requirements": {
+    "genericName": "Empire Phase",
+    "specificName": {
+        "rome": "Imperial Rome"
+    },
+    "description": "Advances from a veritable metropolis to Imperial Rome.",
+    "cost": {
+        "food": 400,
+        "wood": 400,
+        "stone": 900,
+        "metal": 300
+    },
+    "requirements": {
         "all": [
             {
                 "entity": {
@@ -26,25 +25,50 @@
                 }
             }
         ]
-	},
-	"requirementsTooltip": "Requires 2 city and Reforms.",
-	"supersedes": "phase_city_rome",
-	"replaces": ["phase_empi"],
-	"icon": "empire_phase.png",
-	"researchTime": 75,
-	"tooltip": "Advance to the Empire Phase, which boosts max population 10% and unlocks more entities and technologies. Civic Centers +40% territory influence radius. Structures +1 capture points regeneration rate for garrisoned units.",
-	"modifications": [
-		{ "value": "Capturable/GarrisonRegenRate", "add": 1, "affects": "Structure" },
-		{ "value": "TerritoryInfluence/Radius", "multiply": 1.4, "affects": "CivCentre" },
-		{ "value": "GarrisonHolder/Max", "add": 10, "affects": "CivCentre" },
-		{ "value": "Population/Bonus", "add": 10, "affects": "CivCentre" },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 2.5, "affects": "Structure" },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 2.5, "affects": "Structure" },
-		{ "value": "Resistance/Entity/Damage/Crush", "add": 2.5, "affects": "Structure" },
-		{ "value": "Player/MaxPopulation", "multiply": 1.1 },
-		{ "value": "Promotion/RequiredXp", "replace": 0, "affects": "Mercenary" }
-	
-		
-	],
-	"soundComplete": "interface/alarm/alarm_phase.xml"
+    },
+    "requirementsTooltip": "Requires 2 City Structures and 1 Reform Structure.",
+    "supersedes": "phase_city_rome",
+    "replaces": [
+        "phase_empi"
+    ],
+    "icon": "empire_phase.png",
+    "researchTime": 75,
+    "tooltip": "Advance to the Roman Empire Phase. Maximum population increases by 10%. Civic Centers gain +30% territory influence radius, +10 population capacity, +10 garrison capacity, and +5 attack range. Garrisoned Structures gain +1 capture point regeneration rate. Mercenaries promote immediately.",
+    "modifications": [
+        {
+            "value": "Capturable/GarrisonRegenRate",
+            "add": 1,
+            "affects": "Structure"
+        },
+        {
+            "value": "TerritoryInfluence/Radius",
+            "multiply": 1.3,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "GarrisonHolder/Max",
+            "add": 10,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Population/Bonus",
+            "add": 10,
+            "affects": "CivCentre"
+        },
+        {
+            "value": "Player/MaxPopulation",
+            "multiply": 1.1
+        },
+        {
+            "value": "Promotion/RequiredXp",
+            "replace": 0,
+            "affects": "Mercenary"
+        },
+        {
+            "value": "Attack/Ranged/MaxRange",
+            "add": 5,
+            "affects": "CivCentre"
+        }
+    ],
+    "soundComplete": "interface/alarm/alarm_phase.xml"
 }

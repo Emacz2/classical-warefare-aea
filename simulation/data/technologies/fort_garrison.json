@@ -1,16 +1,16 @@
 {
 	"genericName": "Professional Garrisons",
-	"description": "Hire soldiers to hold defenses against enemies.",
+	"description": "Increase the garrison capacity of your Fortress.",
 	"cost": {
-		"food": 400,
-		"metal": 200
+		"food": 500,
+		"metal": 250,
+		"stone": 250
 	},
 	"icon": "coinage.png",
 	"researchTime": 50,
-	"tooltip": "Fortress +5 default arrows and +15 garison capacity (50 total).",
+	"tooltip": "Increase Fortress garrison capacity by 50%.",
 	"modifications": [
-		{ "value": "BuildingAI/DefaultArrowCount", "add": 5, "affects": "Fortress" },
-		{ "value": "GarrisonHolder/Max", "add": 15, "affects": "Fortress" }
+		{ "value": "GarrisonHolder/Max", "multiply": 1.5}
 		
 	],
 	"affects": ["Fortress"],

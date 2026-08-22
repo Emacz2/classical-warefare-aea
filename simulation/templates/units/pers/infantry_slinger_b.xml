@@ -9,7 +9,8 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/infantry_slinger_b</SelectionGroupName>
-   <SpecificName>Pastiš Bandakabara</SpecificName>
+    <GenericName>Persian Slinger</GenericName>
+    <SpecificName>Pastiš Bandakabara</SpecificName>
     <Icon>units/iber/infantry_slinger.png</Icon>
   </Identity>
   <Promotion>

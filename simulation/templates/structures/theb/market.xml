@@ -3,8 +3,32 @@
   <Identity>
     <Civ>theb</Civ>
     <SpecificName>Emporion</SpecificName>
-    <History>Thebes was a center of trade and commerce for the Boeotian region and most of central Greece. The Emporion is the Theban marketplace near the Cadmean citadel.</History>
+    <History>Thebes was a center of trade and commerce for the Boeotian region and much of central Greece.</History>
+    <Tooltip>Barter resources, establish trade routes, and recruit Advanced Thracian Black Cloak mercenaries. Upgrade in City Phase to recruit Elite Black Cloaks.</Tooltip>
   </Identity>
+  <Upgrade>
+    <ExpandedMarket>
+      <Entity>structures/{civ}/market_2</Entity>
+      <Tooltip>Expand the Emporion to recruit Elite Thracian Black Cloak mercenaries.</Tooltip>
+      <Cost>
+        <wood>100</wood>
+        <metal>100</metal>
+      </Cost>
+      <Time>30</Time>
+      <Variant>upgrading</Variant>
+      <Requirements>
+        <Techs datatype="tokens">phase_city</Techs>
+      </Requirements>
+    </ExpandedMarket>
+  </Upgrade>
+  <Trainer>
+    <BatchTimeModifier>0.7</BatchTimeModifier>
+    <Entities replace="" datatype="tokens">
+      units/{civ}/support_slave_market
+      units/{civ}/support_trader
+      units/{civ}/inf_black_cloak_merc
+    </Entities>
+  </Trainer>
   <VisualActor>
     <Actor>structures/hellenes/market.xml</Actor>
   </VisualActor>

@@ -19,8 +19,12 @@
     <HealableClasses datatype="tokens">Human</HealableClasses>
   </Heal>
   <Health>
-    <Max>85</Max>
+    <Max>75</Max>
   </Health>
+    <Loot>
+    <xp>35</xp>
+    <metal>5</metal>
+  </Loot>
   <Identity>
     <Classes datatype="tokens">-ConquestCritical</Classes>
     <VisibleClasses datatype="tokens">Healer Citizen</VisibleClasses>
@@ -29,10 +33,6 @@
     <Rank>Basic</Rank>
     <Tooltip>Heal units.</Tooltip>
   </Identity>
-  <Loot>
-    <xp>8</xp>
-    <food>10</food>
-  </Loot>
   <Promotion>
     <RequiredXp>150</RequiredXp>
   </Promotion>

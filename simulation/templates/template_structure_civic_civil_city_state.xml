@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Entity parent="template_structure_civic">
-<Identity>
+  <Identity>
     <GenericName>Polis</GenericName>
     <SelectionGroupName>template_structure_civic_civil_centre</SelectionGroupName>
     <Tooltip>Build in neutral territory. Acquire small tracts of territory. Territory root. Train Citizens and research technologies. Garrison Soldiers for additional arrows.</Tooltip>
     <Classes datatype="tokens">Polis</Classes>
     <Icon>structures/polis.png</Icon>
     <VisibleClasses datatype="tokens">Defensive Polis FarmBlocker</VisibleClasses>
-        <Requirements>
+    <Requirements>
       <Techs datatype="tokens">phase_town</Techs>
     </Requirements>
   </Identity>
@@ -23,7 +23,7 @@
       <Damage>
         <Pierce>3</Pierce>
       </Damage>
-      <MaxRange>45</MaxRange>
+      <MaxRange>50</MaxRange>
       <PrepareTime>400</PrepareTime>
       <RepeatTime>2000</RepeatTime>
       <Projectile>
@@ -31,7 +31,7 @@
         <Spread>2</Spread>
         <Gravity>50</Gravity>
         <FriendlyFire>false</FriendlyFire>
-        <LaunchPoint y="0"/>
+        <LaunchPoint y="0" />
       </Projectile>
       <PreferredClasses datatype="tokens">Human</PreferredClasses>
       <RangeOverlay>
@@ -48,14 +48,14 @@
         <Hack>15</Hack>
         <Pierce>35</Pierce>
       </Damage>
-    <ApplyStatus>
+      <ApplyStatus>
         <Burning>
           <Duration>0.2</Duration>
           <BlockChance>0.5</BlockChance>
         </Burning>
       </ApplyStatus>
     </Entity>
-  </Resistance> 
+  </Resistance>
   <BuildRestrictions>
     <Territory>neutral</Territory>
     <Category>Polis</Category>
@@ -72,6 +72,7 @@
   <Capturable>
     <CapturePoints>2500</CapturePoints>
     <RegenRate>5</RegenRate>
+    <GarrisonRegenRate>1.5</GarrisonRegenRate>
   </Capturable>
   <Cost>
     <BuildTime>250</BuildTime>
@@ -94,20 +95,20 @@
     <Max>2500</Max>
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
-   <Researcher>
+  <Researcher>
     <Technologies datatype="tokens">
       spy_counter
     </Technologies>
   </Researcher>
-    <Population>
+  <Population>
     <Bonus>15</Bonus>
   </Population>
-  <ProductionQueue/>
+  <ProductionQueue />
   <ResourceDropsite>
     <Types>food wood stone metal</Types>
     <Sharable>true</Sharable>
   </ResourceDropsite>
-   <TerritoryInfluence>
+  <TerritoryInfluence>
     <Root>true</Root>
     <Radius>90</Radius>
     <Weight>10000</Weight>
@@ -125,17 +126,17 @@
     </Entities>
   </Trainer>
   <Vision>
-    <Range>60</Range>
+    <Range>80</Range>
   </Vision>
   <Minimap>
     <Type>structure</Type>
     <Icon size="16.0">civil_centre.png</Icon>
   </Minimap>
   <Obstruction>
-    <Static depth="30.0" width="30.0"/>
+    <Static depth="30.0" width="30.0" />
   </Obstruction>
   <Footprint>
-    <Square depth="32.0" width="32.0"/>
+    <Square depth="32.0" width="32.0" />
     <Height>8.0</Height>
   </Footprint>
   <Sound>

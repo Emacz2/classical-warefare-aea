@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="units/sele/tureos_spearman_a">
+  <Identity>
+    <Rank>Elite</Rank>
+  </Identity>
+  <Upgrade>
+    <Heavy_Jav>
+      <Entity>units/sele/tureos_skirmisher_e</Entity>
+      <Tooltip>Switch to throwing javelins.</Tooltip>
+      <Variant>upgrading</Variant>
+      <Time>4</Time>
+    </Heavy_Jav>
+  </Upgrade>
+  <Promotion disable="" />
+</Entity>

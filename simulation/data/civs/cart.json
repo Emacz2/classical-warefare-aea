@@ -29,6 +29,11 @@
 			"Name": "Desirable Products",
 			"History": "",
 			"Description": "Docks and Markets +10% international trade bonus."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Carthaginian armies were multinational. Punic horsemen were reinforced by Numidian, Iberian, Gallic, and other allied or mercenary cavalry, allowing mounted forces to become a major battlefield arm even though Carthage itself was not a horse-dominated citizen society.",
+			"Description": "Maximum cavalry as a share of effective population: Village 5%; Town 15%; City 25%."
 		}
 	],
 	"WallSets": [

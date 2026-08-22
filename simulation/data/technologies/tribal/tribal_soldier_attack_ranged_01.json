@@ -1,0 +1,34 @@
+{
+"genericName": "Hardened Arrowheads",
+	"description": "Advances in arrowhead design produced stronger, more efficient projectiles capable of delivering greater force against both armored and unarmored foes.",
+	"cost": {
+		"wood": 300,
+		"metal": 100
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ 
+				"any": [
+					{ "civ": "brit" },
+					{ "civ": "gaul" },
+					{ "civ": "germ" },
+					{ "civ": "iber" }
+				
+				] 
+		
+		}
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "arrow_01.png",
+	"researchTime": 20,
+	"tooltip": "Soldiers +15% ranged attack damage.",
+	"modifications": [
+		{ "value": "Attack/Ranged/Damage/Hack", "multiply": 1.15 },
+		{ "value": "Attack/Ranged/Damage/Pierce", "multiply": 1.15 },
+		{ "value": "Attack/Ranged/Damage/Crush", "multiply": 1.15 }
+	],
+	"affects": ["Soldier !Helot !Mercenary"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

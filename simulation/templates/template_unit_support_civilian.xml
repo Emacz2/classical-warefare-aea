@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="builder|template_unit_support">
   <Attack>
+    <Capture>
+      <AttackName>Capture</AttackName>
+      <Capture>0.5</Capture>
+      <MaxRange>1</MaxRange>
+      <RepeatTime>1000</RepeatTime>
+      <RestrictedClasses datatype="tokens">Field Palisade Wall</RestrictedClasses>
+    </Capture>
     <Melee>
       <AttackName>Dagger</AttackName>
       <Damage>
@@ -30,6 +37,12 @@
   <Health>
     <Max>50</Max>
   </Health>
+    <Loot>
+    <xp>25</xp>
+    <metal>5</metal>
+    <stone>5</stone>
+    <wood>5</wood>
+  </Loot>
   <Identity>
     <GenericName>Civilian</GenericName>
     <Phenotype datatype="tokens">
@@ -45,7 +58,7 @@
     <Rates>
       <food.fruit>1</food.fruit>
       <food.grain>0.5</food.grain>
-      <food.meat>3</food.meat>
+      <food.meat>4</food.meat>
       <wood.tree>0.8</wood.tree>
       <wood.ruins>5</wood.ruins>
       <stone.rock>0.5</stone.rock>
@@ -60,13 +73,6 @@
       <metal>10</metal>
     </Capacities>
   </ResourceGatherer>
-   <Loot>
-    <xp>50</xp>
-    <food>10</food>
-    <metal>5</metal>
-    <stone>5</stone>
-    <wood>10</wood>
-  </Loot>
   <Sound>
     <SoundGroups>
       <trained>interface/alarm/alarm_create_infantry.xml</trained>

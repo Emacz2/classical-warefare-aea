@@ -1,8 +1,8 @@
 {
 	"genericName": "Judean Lead slingers",
-	"description": "Judean slingers adopted other helenistc slingers used of lead bullets.",
+	"description": "Judean slingers adopt cast lead bullets. Lead ammunition sacrifices impact against structures but provides greater range, accuracy, and armor-piercing power.",
 	"cost": {
-		"metal": 600
+		"metal": 400
 	},
 	"requirements": {
 		"all": [
@@ -13,7 +13,7 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "archery_tradition.png",
 	"researchTime": 60,
-	"tooltip": "Upgrade Judean slingers to rank3 using lead bullets.",
+	"tooltip": "Immediately promotes all Infantry Slingers into elite Judean Lead Slingers.",
 	"modifications": [
 		{ "value": "Promotion/RequiredXp", "replace": 0 }
 	],

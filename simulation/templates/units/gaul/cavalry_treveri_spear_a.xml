@@ -7,7 +7,6 @@
    <Promotion>
     <Entity>units/gaul/cavalry_treveri_spear_e</Entity>
   </Promotion>
-  <ResourceGatherer disable=""/>
   <VisualActor>
     <Actor>units/gauls/cavalry_treveri_spear_m.xml</Actor>
   </VisualActor>

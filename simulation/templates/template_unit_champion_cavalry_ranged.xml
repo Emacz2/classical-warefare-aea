@@ -4,23 +4,15 @@
   <VisibleClasses datatype="tokens">Ranged</VisibleClasses>
     <GenericName>Champion Ranged Cavalry</GenericName>
   </Identity>
-   <Health>
-    <Max>225</Max>
-  </Health>
-    <Loot>
-    <xp>115</xp>
-    <metal>15</metal>
-    <wood>30</wood>
-  </Loot>
   <Position>
     <Anchor>upright</Anchor>
   </Position>
-     <Resistance>
+      <Resistance>
     <Entity>
       <Damage>
-      <Crush>1</Crush>
-      <Hack>1</Hack>
-      <Pierce>1</Pierce>
+      <Crush op="add">1</Crush>
+      <Hack op="add">1</Hack>
+      <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>
   </Resistance>
@@ -40,4 +32,7 @@
       <death>actor/human/death/{phenotype}_death.xml</death>
     </SoundGroups>
   </Sound>
+  <Vision>
+    <Range>60</Range>
+  </Vision>
 </Entity>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="template_structure_military_embassy">
- <Cost>
+  <Cost>
     <Resources>
       <stone>50</stone>
       <metal>50</metal>
       <wood>150</wood>
     </Resources>
-  <BuildTime>120</BuildTime>
+    <BuildTime>120</BuildTime>
   </Cost>
-   <Resistance>
+  <Resistance>
     <Entity>
-    <ApplyStatus>
+      <ApplyStatus>
         <Burning>
           <Duration>0.4</Duration>
           <BlockChance>0.6</BlockChance>
@@ -27,21 +27,30 @@
   </Health>
   <Identity>
     <Civ>cart</Civ>
-    <SpecificName>Celtic Embassy lvl 2</SpecificName>
-    <Tooltip>Train Celtic Mercenaries.</Tooltip>
-    <Classes datatype="tokens">CivSpecific</Classes>
+    <SpecificName>Celtic Mercenary Embassy</SpecificName>
+    <Tooltip>Train Elite Gallic Mercenaries. Research Gallic Alliances to recruit allied Gallic contingents alongside them.</Tooltip>
+    <Classes datatype="tokens">CivSpecific CelticEmbassy CelticAllianceReady</Classes>
     <VisibleClasses datatype="tokens">Village -Town</VisibleClasses>
     <Icon>structures/embassy_celtic.png</Icon>
-      <Requirements>
+    <Requirements>
       <Techs datatype="tokens">-phase_town</Techs>
     </Requirements>
   </Identity>
+  <Promotion>
+    <Entity>structures/cart/embassy_celtic_allied</Entity>
+    <RequiredXp>3000</RequiredXp>
+  </Promotion>
   <Loot>
     <wood>40</wood>
   </Loot>
   <Obstruction>
     <Static width="15.0" depth="12.0"/>
   </Obstruction>
+  <Researcher>
+    <Technologies datatype="tokens">
+      gallic_alliances_cart
+    </Technologies>
+  </Researcher>
   <Trainer>
     <Entities datatype="tokens">
       units/{civ}/merc_inf_swordsman_gaul_e

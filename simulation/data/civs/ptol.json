@@ -37,6 +37,11 @@
 			"Name": "Nile Delta",
 			"History": "The Nile Delta is a region where the Nile River divides into several branches to flow into the Mediterranean Sea, in northern Egypt.",
 			"Description": "The three farming technologies are available in Village Phase."
+		},
+		{
+			"Name": "Cavalry Limit",
+			"History": "Ptolemaic armies retained Macedonian-style cavalry and drew on military settlers, mercenaries, and regional contingents. Mounted troops were important, but they operated alongside large phalanx formations, mercenary infantry, and war elephants rather than replacing them.",
+			"Description": "Maximum cavalry as a share of effective population: Village 7.5%; Town 15%; City 20%."
 		}
 	],
 	"WallSets": [
@@ -60,9 +65,8 @@
 			"Count": 2
 		},
 		{
-			"Template": "units/ptol/cavalry_archer_b"
+			"Template": "units/ptol/cavalry_spearman_p"
 		}
-		
 	],
 	"AINames": [
 		"Ptolemy Philadelphus",
