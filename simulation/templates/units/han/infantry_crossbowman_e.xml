@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity parent="han|armor_medium|helmet_open|template_unit_infantry_ranged_crossbowman">
+<Entity parent="helmet_open|units/han/infantry_crossbowman_a">
   <Identity>
-    <Rank>Elite</Rank>
+  <Rank>Elite</Rank>
   </Identity>
   <Promotion disable=""/>
   <VisualActor>
