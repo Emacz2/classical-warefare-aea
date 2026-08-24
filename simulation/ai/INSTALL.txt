@@ -1,0 +1,18 @@
+Expert AI Petra RC1 — Installation
+==================================
+
+This package contains a COMPLETE replacement `petra` folder.
+
+Install:
+1. Keep a backup of your current `simulation/ai/petra/` folder.
+2. Replace that folder with the `petra` folder included here.
+3. Do not copy the standalone Decision Layer v0.7.0 folder into the mod; the reusable tested modules needed at runtime are already included under `petra/expertDecision/`.
+
+RC1 scope:
+- Expert difficulty uses ExpertDecisionController as the single early-economy decision owner.
+- The tested controlled opening runs through 5:00.
+- At 5:00 it stops creating new Expert economic obligations, completes any already-authorized construction obligation, then hands control one-way to normal Petra.
+- Other difficulty levels do not instantiate the Expert controller.
+
+This RC1 passed the offline/static integration audit packaged in RC1_AUDIT_REPORT.txt.
+It has not yet been validated by a fresh in-game replay after packaging; RC1 is the first runtime candidate.

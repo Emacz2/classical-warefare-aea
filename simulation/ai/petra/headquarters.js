@@ -10,14 +10,7 @@ import { DefenseManager } from "simulation/ai/petra/defenseManager.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { DiplomacyManager } from "simulation/ai/petra/diplomacyManager.js";
 import { EmergencyManager } from "simulation/ai/petra/emergencyManager.js";
-import { ExpertEconomyManager, ExpertOpeningConstants } from "simulation/ai/petra/expertEconomyManager.js";
-import { ExpertOpeningManager } from "simulation/ai/petra/expertOpeningManager.js";
-import { ExpertConstructionManager } from "simulation/ai/petra/expertConstructionManager.js";
-import { ExpertFoodClusterManager } from "simulation/ai/petra/expertFoodClusterManager.js";
-import { ExpertFoodManager } from "simulation/ai/petra/expertFoodManager.js";
-import { ExpertTransitionManager } from "simulation/ai/petra/expertTransitionManager.js";
-import { ExpertWorkerManager } from "simulation/ai/petra/expertWorkerManager.js";
-import { ExpertDiagnosticManager } from "simulation/ai/petra/expertDiagnosticManager.js";
+import { ExpertDecisionController } from "simulation/ai/petra/expertDecisionController.js";
 import { allowCapture, getAttackBonus, getLandAccess, getMaxStrength, isLineInsideEnemyTerritory,
 	setSeaAccess } from "simulation/ai/petra/entityExtend.js";
 import { GarrisonManager } from "simulation/ai/petra/garrisonManager.js";
@@ -81,14 +74,9 @@ export function Headquarters(config)
 	this.garrisonManager = new GarrisonManager(this.Config);
 	this.victoryManager = new VictoryManager(this.Config);
 	this.emergencyManager = new EmergencyManager(this.Config);
-	this.expertEconomyManager = new ExpertEconomyManager(this);
-	this.expertOpeningManager = new ExpertOpeningManager(this, ExpertOpeningConstants);
-	this.expertConstructionManager = new ExpertConstructionManager(this, ExpertOpeningConstants);
-	this.expertFoodClusterManager = new ExpertFoodClusterManager(this, ExpertOpeningConstants);
-	this.expertFoodManager = new ExpertFoodManager(this, ExpertOpeningConstants);
-	this.expertTransitionManager = new ExpertTransitionManager(this, ExpertOpeningConstants);
-	this.expertWorkerManager = new ExpertWorkerManager(this, ExpertOpeningConstants);
-	this.expertDiagnosticManager = new ExpertDiagnosticManager(this);
+	// Expert is a separate economy controller, not a stack of Petra patches.
+	// It is created once here and owns its workers/construction while active.
+	this.expertDecisionController = this.Config.difficulty >= difficulty.EXPERT ? new ExpertDecisionController(this) : undefined;
 
 	this.capturableTargets = new Map();
 	this.capturableTargetsTime = 0;
@@ -321,8 +309,14 @@ Headquarters.prototype.checkEvents = function(gameState, events)
 Headquarters.prototype.handleNewBase = function(gameState)
 {
 	if (!this.firstBaseConfig)
-		// This is our first base, let us configure our starting resources.
+	{
+		// During Expert control, configFirstBase is intentionally deferred.  This
+		// second call site matters for newly-created/nomad bases just as much as the
+		// normal gameAnalysis call site.
+		if (this.expertDecisionController && this.expertDecisionController.isActive(gameState))
+			return;
 		this.configFirstBase(gameState);
+	}
 	else
 	{
 		// Let us hope this new base will fix our possible resource shortage.
@@ -413,48 +407,6 @@ Headquarters.prototype.OnPhaseUp = function(gameState, phase)
 };
 
 
-Headquarters.prototype.trainExpertOpeningWorkers = function(gameState, queues, templateDef)
-{
-	if (!this.isExpertOpeningPhaseActive || !this.isExpertOpeningPhaseActive(gameState))
-		return false;
-	if (!templateDef)
-		return true;
-
-	// v0.4.2: Expert owns Civic Centre civilian production during the
-	// opening/transition.  Keep at most one waiting villager plan; do not let Petra
-	// stack several tiny batches or clamp the Expert batch size back to 1.
-	queues.villager.plans = queues.villager.plans.filter(plan =>
-		plan.metadata && plan.metadata.expertOpeningNewSupport);
-	if (queues.villager.plans.length > 1)
-		queues.villager.plans = queues.villager.plans.slice(0, 1);
-	if (queues.villager.hasQueuedUnits())
-		return true;
-
-	const roles = this.countExpertOpeningCivilianRoles ?
-		this.countExpertOpeningCivilianRoles(gameState) : { "total": 0 };
-	const food = gameState.getResources().food || 0;
-	let size;
-	if (roles.total < 24)
-		size = 3;
-	else if (food >= 600)
-		size = 6;
-	else if (food >= 425)
-		size = 5;
-	else if (food >= 250)
-		size = 4;
-	else
-		size = 3;
-
-	const freeSlots = gameState.getPopulationLimit() - this.getAccountedPopulation(gameState);
-	if (freeSlots <= 0)
-		return true;
-	size = Math.max(1, Math.min(size, freeSlots));
-
-	queues.villager.addPlan(new TrainingPlan(gameState, templateDef,
-		{ "role": Worker.ROLE_WORKER, "base": 0, "support": true, "expertOpeningNewSupport": true }, size, size));
-	return true;
-};
-
 /** This code trains citizen workers, trying to keep close to a ratio of worker/soldiers */
 Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 {
@@ -463,8 +415,6 @@ Headquarters.prototype.trainMoreWorkers = function(gameState, queues)
 	const classesDef = ["Support+Worker"];
 	const templateDef = this.findBestTrainableUnit(gameState, classesDef, requirementsDef);
 
-	if (this.trainExpertOpeningWorkers(gameState, queues, templateDef))
-		return;
 
 	// counting the workers that aren't part of a plan
 	let numberOfWorkers = 0;   // all workers
@@ -1499,17 +1449,6 @@ Headquarters.prototype.buildMoreHouses = function(gameState, queues)
 	if (gameState.getPopulationMax() <= gameState.getPopulationLimit())
 		return;
 
-	// Expert v0.3.2: do not let Petra's generic house planner create far-away
-	// residential houses during the economy boom.  The Expert economy layer owns
-	// opening house placement and will either place a house near the active
-	// wood/storehouse worksite or wait and try again next update.
-	if (this.Config.difficulty >= difficulty.EXPERT &&
-		this.expertEconomyManager && this.expertEconomyManager.isActive(gameState) &&
-		this.ensureExpertOpeningHouse)
-	{
-		this.ensureExpertOpeningHouse(gameState, queues);
-		return;
-	}
 
 	const numPlanned = queues.house.length();
 	if (numPlanned < 3 || numPlanned < 5 && gameState.getPopulation() > 80)
@@ -1740,8 +1679,6 @@ Headquarters.prototype.buildForge = function(gameState, queues)
  */
 Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 {
-	if (this.isExpertOpeningPhaseActive && this.isExpertOpeningPhaseActive(gameState))
-		return;
 	if (this.saveResources && !this.canBarter || queues.militaryBuilding.hasQueuedUnits())
 		return;
 
@@ -1754,13 +1691,7 @@ Headquarters.prototype.constructTrainingBuildings = function(gameState, queues)
 	const rangeTemplate = this.canBuild(gameState, "structures/{civ}/range") ? "structures/{civ}/range" : undefined;
 	const numRanges = gameState.getOwnEntitiesByClass("Range", true).length;
 
-	// Expert v0.3: do not let Petra leak into an early stable while the economy
-	// opening is still trying to hit its civilian population target. We will add
-	// early stable logic back later only when Expert has a cavalry strategy or is
-	// reacting to an enemy threat.
-	const delayExpertStable = this.Config.difficulty >= difficulty.EXPERT &&
-		gameState.ai.elapsedTime < 480 && !this.defenseManager.hasEmergency;
-	const stableTemplate = !delayExpertStable && this.canBuild(gameState, "structures/{civ}/stable") ? "structures/{civ}/stable" : undefined;
+	const stableTemplate = this.canBuild(gameState, "structures/{civ}/stable") ? "structures/{civ}/stable" : undefined;
 	const numStables = gameState.getOwnEntitiesByClass("Stable", true).length;
 
 	if (this.getAccountedPopulation(gameState) > this.Config.Military.popForBarracks1 ||
@@ -2324,9 +2255,8 @@ Headquarters.prototype.update = function(gameState, queues, events)
 	this.emergencyManager.update(gameState);
 	this.turnCache = {};
 	this.territoryMap = createTerritoryMap(gameState);
-	this.canBarter = gameState.getOwnEntitiesByClass("Market", true).filter(filters.isBuilt())
-		.hasEntities();
-	// TODO find a better way to update
+	this.canBarter = gameState.getOwnEntitiesByClass("Market", true).filter(filters.isBuilt()).hasEntities();
+
 	if (this.currentPhase != gameState.currentPhase())
 	{
 		if (this.Config.debug > 0)
@@ -2334,35 +2264,35 @@ Headquarters.prototype.update = function(gameState, queues, events)
 				" to " + gameState.currentPhase() + " at time " + gameState.ai.elapsedTime +
 				" phasing " + this.phasing);
 		this.currentPhase = gameState.currentPhase();
-
-		// In principle, this.phasing should be already reset to 0 when starting the research
-		// but this does not work in case of an autoResearch tech
 		if (this.phasing)
 			this.phasing = 0;
 	}
 
-	/*
-	if (this.Config.debug > 1)
-	{
-		gameState.getOwnUnits().forEach (function (ent) {
-			if (!ent.position())
-				return;
-			dumpEntity(ent);
-		});
-	}
-	*/
-
-	if (this.applyExpertEconomyRules)
-		this.applyExpertEconomyRules(gameState, queues);
-
+	// Event bookkeeping is shared.  In particular BasesManager must see completed
+	// Expert structures so its dropsite/base collections remain correct.
 	this.checkEvents(gameState, events);
 	this.navalManager.checkEvents(gameState, queues, events);
 
-	if (this.isExpertOpeningPhaseActive && this.isExpertOpeningPhaseActive(gameState))
+	// Clean architectural cutover: while Expert owns the early economy, none of
+	// Petra's economic planners, base worker reassignment, generic house/farmstead
+	// placement, or training-building logic runs.  ExpertDecisionController is the one brain.
+	if (this.expertDecisionController && this.expertDecisionController.isActive(gameState))
 	{
-		// Expert opening: no phase techs or other research yet.
+		this.expertDecisionController.update(gameState, queues, events);
+
+		// Defensive systems can react to attacks without becoming an economic planner.
+		this.garrisonManager.update(gameState, events);
+		this.defenseManager.update(gameState, events);
+
+		if (gameState.ai.elapsedTime - this.capturableTargetsTime > 3)
+			this.updateCaptureStrength(gameState);
+		Engine.ProfileStop();
+		return;
 	}
-	else if (this.phasing)
+
+	// Normal Petra path (all non-Expert difficulties, and Expert after its explicit
+	// early-economy handoff).  No legacy Expert helper calls live in this path.
+	if (this.phasing)
 		this.checkPhaseRequirements(gameState, queues);
 	else
 		this.researchManager.checkPhase(gameState, queues);
@@ -2371,25 +2301,13 @@ Headquarters.prototype.update = function(gameState, queues, events)
 	{
 		if (gameState.ai.playedTurn % 4 == 0)
 			this.trainMoreWorkers(gameState, queues);
-
 		if (gameState.ai.playedTurn % 4 == 1)
-		{
-			if (this.expertOpeningManager && this.expertOpeningManager.isActive(gameState))
-				this.ensureExpertOpeningHouse(gameState, queues);
-			else
-				this.buildMoreHouses(gameState, queues);
-		}
-
-		if (!(this.expertOpeningManager && this.expertOpeningManager.isActive(gameState)) &&
-		    (!this.saveResources || this.canBarter) && gameState.ai.playedTurn % 4 == 2)
+			this.buildMoreHouses(gameState, queues);
+		if ((!this.saveResources || this.canBarter) && gameState.ai.playedTurn % 4 == 2)
 			this.buildFarmstead(gameState, queues);
-
-		if (!(this.expertOpeningManager && this.expertOpeningManager.isActive(gameState)) &&
-		    this.needCorral && gameState.ai.playedTurn % 4 == 3)
+		if (this.needCorral && gameState.ai.playedTurn % 4 == 3)
 			this.manageCorral(gameState, queues);
-
-		if (!(this.isExpertOpeningPhaseActive && this.isExpertOpeningPhaseActive(gameState)) &&
-		    gameState.ai.playedTurn % 5 == 1)
+		if (gameState.ai.playedTurn % 5 == 1)
 			this.researchManager.update(gameState, queues);
 	}
 
@@ -2401,51 +2319,36 @@ Headquarters.prototype.update = function(gameState, queues, events)
 	{
 		if (!this.canBarter)
 			this.buildMarket(gameState, queues);
-
 		if (!this.saveResources)
 		{
 			this.buildForge(gameState, queues);
 			this.buildTemple(gameState, queues);
 		}
-
 		if (gameState.ai.playedTurn % 30 == 0 &&
 		    gameState.getPopulation() > 0.9 * gameState.getPopulationMax())
 			this.buildWonder(gameState, queues, false);
 	}
 
 	this.tradeManager.update(gameState, events, queues);
-
 	this.garrisonManager.update(gameState, events);
 	this.defenseManager.update(gameState, events);
 
 	if (gameState.ai.playedTurn % 3 == 0)
 	{
-		if (!(this.isExpertOpeningPhaseActive && this.isExpertOpeningPhaseActive(gameState)))
-			this.constructTrainingBuildings(gameState, queues);
+		this.constructTrainingBuildings(gameState, queues);
 		if (this.Config.difficulty > difficulty.SANDBOX)
 			this.buildDefenses(gameState, queues);
 	}
 
 	this.basesManager.update(gameState, queues, events);
-
-	// ExpertWorkerManager runs after Petra base managers so Expert ownership is
-	// the last word on opening/transition worker tasks.
-	if (this.expertWorkerManager)
-		this.expertWorkerManager.update(gameState);
-
-	if (this.expertDiagnosticManager)
-		this.expertDiagnosticManager.update(gameState, queues, "after-worker");
-
 	this.navalManager.update(gameState, queues, events);
 
 	if (this.Config.difficulty > difficulty.SANDBOX && (this.hasActiveBase() || !this.canBuildUnits))
 		this.attackManager.update(gameState, queues, events);
 
 	this.diplomacyManager.update(gameState, events);
-
 	this.victoryManager.update(gameState, events, queues);
 
-	// We update the capture strength at the end as it can change attack orders
 	if (gameState.ai.elapsedTime - this.capturableTargetsTime > 3)
 		this.updateCaptureStrength(gameState);
 
@@ -2511,6 +2414,7 @@ Headquarters.prototype.Serialize = function()
 		"garrisonManager": this.garrisonManager.Serialize(),
 		"victoryManager": this.victoryManager.Serialize(),
 		"emergencyManager": this.emergencyManager.Serialize(),
+		"expertDecisionController": this.expertDecisionController ? this.expertDecisionController.Serialize() : undefined
 	};
 };
 
@@ -2556,11 +2460,8 @@ Headquarters.prototype.Deserialize = function(gameState, data)
 	this.victoryManager.Deserialize(data.victoryManager);
 
 	this.emergencyManager = new EmergencyManager(this.Config);
-	this.expertEconomyManager = new ExpertEconomyManager(this);
-	this.expertOpeningManager = new ExpertOpeningManager(this, ExpertOpeningConstants);
-	this.expertConstructionManager = new ExpertConstructionManager(this, ExpertOpeningConstants);
-	this.expertFoodClusterManager = new ExpertFoodClusterManager(this, ExpertOpeningConstants);
-	this.expertFoodManager = new ExpertFoodManager(this, ExpertOpeningConstants);
-	this.expertTransitionManager = new ExpertTransitionManager(this, ExpertOpeningConstants);
+	this.expertDecisionController = this.Config.difficulty >= difficulty.EXPERT ? new ExpertDecisionController(this) : undefined;
+	if (this.expertDecisionController && data.expertDecisionController)
+		this.expertDecisionController.Deserialize(gameState, data.expertDecisionController);
 	this.emergencyManager.Deserialize(data.emergencyManager);
 };

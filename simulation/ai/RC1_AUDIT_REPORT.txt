@@ -1,0 +1,51 @@
+Expert AI Petra RC1 — Final Integration Audit
+Date: 2026-08-23
+Authoritative Petra base: /mnt/data/petra_snapshot/petra
+Decision layer: Expert AI Decision Layer v0.7.0
+
+RESULT: PASS — RC1 PACKAGE AUTHORIZED
+
+Audit gates
+-----------
+PASS  JavaScript syntax: 53/53 files parse.
+PASS  Petra local import/export integrity: all 143 local Petra imports resolve and named exports exist.
+PASS  Decision-layer fidelity: 20/20 runtime modules are exact v0.7 logic after import-path normalization.
+PASS  Authoritative-snapshot boundary: only the intended legacy Petra integration files differ.
+PASS  Legacy Expert manager removal: 10/10 old manager files absent.
+PASS  Legacy Expert hook/reference scan: 0 old architecture matches.
+PASS  Single Expert strategic owner: Expert difficulty logic is limited to Headquarters + ExpertDecisionController.
+PASS  Startup cutover: Expert runs before configFirstBase can queue its own opening economy.
+PASS  New-base cutover: the second configFirstBase path is also gated.
+PASS  TrainingFinished ownership gate is ordered before Petra worker reassignment/update.
+PASS  assignEntity ownership gate is ordered before Petra worker reassignment/update.
+PASS  Headquarters single-brain ordering: active Expert branch returns before normal Petra economy.
+PASS  Headquarters controller state serializes/deserializes.
+PASS  Foundation identity and civilian ordinal roster serialize/deserializes.
+PASS  ExpertFixedConstructionPlan survives queue save/load.
+PASS  5:00 lifecycle: no new Expert obligations after the boundary; existing construction is maintained before release.
+PASS  Economic queue ownership: non-Expert plans are not allowed to coexist in Expert-owned early queues.
+PASS  Full decision-layer tests: 138/138.
+PASS  Stored replay regression scenarios: 9/9.
+PASS  Five-minute stress openings: 314/314 (14 deterministic + 300 randomized).
+
+Architecture in RC1
+-------------------
+Expert difficulty
+  -> Headquarters
+  -> ExpertDecisionController
+  -> exact tested v0.7 policy / state / ownership / collector / resolver modules
+  -> ExpertFixedConstructionPlan / TrainingPlan / exact worker commands
+
+The old Expert Opening/Economy/Food/Construction/Placement/Transition/Worker/Diagnostic/Director managers are not present.
+
+Important scope statement
+-------------------------
+This audit proves source integrity, offline policy behavior, integration ordering, save/load wiring,
+and package consistency. It does NOT prove 0 A.D. engine runtime behavior. RC1 is intentionally the
+first build to be exercised in a real game/replay after the offline gates passed.
+
+Package integrity
+-----------------
+PASS  Final ZIP was re-extracted after packaging.
+PASS  Re-extracted package files match the packaged source byte-for-byte by SHA-256.
+PASS  Re-extracted Petra JavaScript syntax: 53/53.

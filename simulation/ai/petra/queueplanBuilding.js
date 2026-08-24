@@ -124,103 +124,6 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 
 	const HQ = gameState.ai.HQ;
 
-	if (template.hasClass("House") && this.metadata && this.metadata.expertOpeningHouse && this.position)
-	{
-		// Expert v0.3.1: opening houses are anchored to the active worksite.
-		// We search a tight ring around the actual storehouse/foundation and do
-		// not fall back to Petra's generic residential placement.  If no close tile
-		// is legal this turn, wait rather than building a far-away house.
-		const obstructions = createObstructionMap(gameState, 0, template);
-		const radius = Math.ceil(template.obstructionRadius().max / obstructions.cellSize);
-		const territoryMap = HQ.territoryMap;
-		const houseRadius = template.obstructionRadius().max;
-		const anchorRadius = this.metadata.expertOpeningHouseAnchorRadius || 0;
-		const borderGap = this.metadata.expertOpeningHouseMaxDistance || 5;
-		const minDist = anchorRadius + houseRadius + 0.5;
-		const maxDist = anchorRadius + houseRadius + borderGap;
-
-		let away = [1, 0];
-		if (this.metadata.expertOpeningHouseAvoid)
-		{
-			away = [this.position[0] - this.metadata.expertOpeningHouseAvoid[0],
-				this.position[1] - this.metadata.expertOpeningHouseAvoid[1]];
-			const len = Math.sqrt(away[0] * away[0] + away[1] * away[1]);
-			away = len > 0 ? [away[0] / len, away[1] / len] : [1, 0];
-		}
-
-		const angles = [];
-		const baseAngle = Math.atan2(away[1], away[0]);
-		for (const delta of [0, Math.PI/8, -Math.PI/8, Math.PI/4, -Math.PI/4, Math.PI/2, -Math.PI/2,
-			3*Math.PI/4, -3*Math.PI/4, Math.PI])
-			angles.push(baseAngle + delta);
-
-		let best;
-		let bestScore = -Infinity;
-		for (let d = minDist; d <= maxDist + 0.01; d += 1)
-		{
-			for (const angle of angles)
-			{
-				const tryPos = [this.position[0] + Math.cos(angle) * d,
-					this.position[1] + Math.sin(angle) * d];
-				const mapPos = territoryMap.gamePosToMapPos(tryPos);
-				if (mapPos[0] < 0 || mapPos[1] < 0 || mapPos[0] >= territoryMap.width || mapPos[1] >= territoryMap.width)
-					continue;
-				const j = mapPos[0] + mapPos[1] * territoryMap.width;
-				const i = territoryMap.getNonObstructedTile(j, radius, obstructions);
-				if (i < 0)
-					continue;
-				const x = (i % obstructions.width + 0.5) * obstructions.cellSize;
-				const z = (Math.floor(i / obstructions.width) + 0.5) * obstructions.cellSize;
-				const distSq = SquareVectorDistance([x, z], this.position);
-				if (distSq > maxDist * maxDist)
-					continue;
-				if (HQ.isDangerousLocation(gameState, [x, z], template.obstructionRadius().max))
-					continue;
-				let score = -distSq;
-				if (this.metadata.expertOpeningHouseAvoid)
-					score += 0.03 * SquareVectorDistance([x, z], this.metadata.expertOpeningHouseAvoid);
-				if (score > bestScore)
-				{
-					bestScore = score;
-					best = { "x": x, "z": z, "angle": 3*Math.PI/4, "base": this.metadata.base };
-				}
-			}
-		}
-		return best || false;
-	}
-
-	if (template.hasClass("Field") && this.metadata && this.metadata.expertOpeningFarm && this.position)
-	{
-		// Expert farms should border a food dropsite. The field footprint is 28m,
-		// so centers about 18-24m from the farmstead put the field edge close to
-		// the dropsite while leaving enough room for placement.
-		const obstructions = createObstructionMap(gameState, 0, template);
-		const radius = Math.ceil(template.obstructionRadius().max / obstructions.cellSize);
-		const territoryMap = HQ.territoryMap;
-		const offsets = [[20,0],[-20,0],[0,20],[0,-20],[18,18],[18,-18],[-18,18],[-18,-18],[24,0],[-24,0],[0,24],[0,-24]];
-		for (const off of offsets)
-		{
-			const tryPos = [this.position[0] + off[0], this.position[1] + off[1]];
-			const mapPos = territoryMap.gamePosToMapPos(tryPos);
-			if (mapPos[0] < 0 || mapPos[1] < 0 || mapPos[0] >= territoryMap.width || mapPos[1] >= territoryMap.width)
-				continue;
-			const j = mapPos[0] + mapPos[1] * territoryMap.width;
-			// Expert opening houses are anchored to the first storehouse/work area.
-			// Do not reject nearby tiles just because Petra's baseAtIndex still maps
-			// them to another internal base region.
-			if (!this.metadata.expertOpeningHouse && this.metadata.base !== undefined && HQ.baseAtIndex(j) != this.metadata.base)
-				continue;
-			const i = territoryMap.getNonObstructedTile(j, radius, obstructions);
-			if (i < 0)
-				continue;
-			const x = (i % obstructions.width + 0.5) * obstructions.cellSize;
-			const z = (Math.floor(i / obstructions.width) + 0.5) * obstructions.cellSize;
-			if (HQ.isDangerousLocation(gameState, [x, z], template.obstructionRadius().max))
-				continue;
-			return { "x": x, "z": z, "angle": 3*Math.PI/4, "base": this.metadata.base };
-		}
-	}
-
 	if (template.hasClass("Storehouse") && this.metadata && this.metadata.base)
 	{
 		// recompute the best dropsite location in case some conditions have changed
@@ -434,12 +337,9 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 		radius = Math.ceil(template.obstructionRadius().max / obstructions.cellSize);
 
 	let bestTile;
-	if (template.hasClass("House") && !alreadyHasHouses &&
-	    (!this.metadata || !this.metadata.expertOpeningHouse))
+	if (template.hasClass("House") && !alreadyHasHouses)
 	{
-		// try to get some space to place several houses first. Expert opening
-		// houses are different: they must be close to the first storehouse so
-		// citizen soldiers do not waste time walking across the territory.
+		// try to get some space to place several houses first
 		bestTile = placement.findBestTile(3*radius, obstructions);
 		if (!bestTile.val)
 			bestTile = undefined;
