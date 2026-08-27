@@ -11,6 +11,10 @@ function hasKind(ent, kind, classMap) {
   return !!(ent && typeof ent.hasClass === "function" && ent.hasClass(className));
 }
 
+function isFoundationEntity(ent) {
+  return !!(ent && typeof ent.foundationProgress === "function" && ent.foundationProgress() !== undefined);
+}
+
 class FoundationTracker {
   constructor(options = {}) {
     this.playerId = Number.isFinite(options.playerId) ? options.playerId : 1;
@@ -94,8 +98,14 @@ class FoundationTracker {
     const task = this.tasks.get(taskId);
     if (!task)
       throw new Error(`Unknown construction task ${taskId}`);
-    const foundations = toEntities(gameState.getOwnFoundations());
-    const structures = toEntities(gameState.getOwnStructures());
+    // In live 0 A.D., getOwnStructures() can include unfinished foundations because
+    // foundations are still Structure-class entities.  Never treat that collection
+    // as "completed" without explicitly excluding entities that report
+    // foundationProgress().  IT1 proved that failing to make this distinction makes
+    // a newly placed foundation look completed immediately, releases its builders,
+    // and leaves the foundation untouched forever.
+    const foundations = toEntities(gameState.getOwnFoundations()).filter(isFoundationEntity);
+    const structures = toEntities(gameState.getOwnStructures()).filter(ent => !isFoundationEntity(ent));
 
     let complete = this.findMetadataMatch(structures, taskId, task.kind);
     if (!complete.length && task.foundationId !== undefined) {

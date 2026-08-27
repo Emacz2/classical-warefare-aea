@@ -1,0 +1,69 @@
+# Expert AI non-regression contracts — IT14
+
+These are hard contracts for future Expert updates. Do not remove or weaken them unless a replay demonstrates that the contract itself is wrong.
+
+1. No persistent idle economy workers
+   - `food-wait` is not a legal steady state.
+   - If natural food has another productive cluster, switch/commit there instead of waiting.
+   - If natural food is exhausted, use a completed field; if preferred 3-worker field capacity is temporarily full, an unused legal engine field slot is better than idling.
+   - If permanent food capacity is still under construction, an otherwise-idle food civilian helps finish the pending field/farmstead.
+   - New civilians must not be assigned to food once the mathematically required food workforce for the active production burn is already covered.
+
+2. Natural food before new farming
+   - All worthwhile fruit/berry clusters inside owned territory are part of one food network.
+   - New food civilians exploit available natural food before taking a permanent farm lock.
+   - There is NO "two fields before next fruit patch" gate.
+   - Fields are prebuilt just-in-time from natural-food runway / production burn, not from one primary patch percentage.
+
+3. Persistent food sites / no A-B-A churn
+   - A civilian commits to a food cluster and stays there while that cluster has capacity.
+   - Saturation is handled inside the same cluster first.
+   - Hysteresis may prevent churn, but may NEVER create an idle worker when another food cluster has capacity.
+   - A worker cannot immediately switch back to the site it just abandoned while its current site still contains food.
+   - Food workers never use the old generic same-resource fallback that caused the IT12 1924 <-> 1825 loop.
+
+4. Measured food throughput
+   - Planner food income uses cumulative delivered-food statistics when available.
+   - If cumulative statistics are unavailable, only workers with an actual live GATHER.GATHERING order count toward active income.
+   - A worker merely labelled "food" while walking/building/idle contributes zero theoretical gather income.
+   - Pending fields count as already-paid near-term capacity so the planner does not queue several more fields to solve the same deficit.
+
+5. New-worker-only resource balancing
+   - Existing farmers, woodcutters and miners stay on their assigned resource/site unless their supply is exhausted, inaccessible, unsafe, or the army is deliberately mobilized.
+   - CC trains civilians to 75 when housing allows.
+   - After the opening 20 civilian woodcutters, NEW civilians go where the production math says they are needed.
+   - Once food burn is covered and wood is functional, NEW civilians begin stone/metal instead of becoming surplus farmers.
+
+6. Sticky construction crews
+   - Once a worker begins a foundation, that worker finishes it unless the foundation disappears or the worker becomes unavailable.
+   - Existing crews consume the global builder budget before new builders are assigned.
+   - Routine projects may not repeatedly steal/release the same gatherers.
+   - Field builder -> completed field -> permanent farmer remains a hard invariant.
+
+7. Field/farmstead geometry
+   - Fields must remain within the established <=2 m farmstead-border rule.
+   - Fill measured legal field slots before adding another permanent farm hub.
+   - Permanent farm hubs normally require at least 4 legal touching field slots; they may relax to 3 only after repeated placement failure.
+   - A natural-food farmstead must also be useful later: placement scoring includes future touching-field capacity.
+
+8. Military/economy pacing preserved
+   - CC trains civilians continuously to 75 when housing allows.
+   - Barracks #1 is not gated by an arbitrary field count; reserve ~2:15, target ~2:30, hard ~3:00.
+   - Barracks #2 requires at least 5 COMPLETE fields, then uses measured/pending food income + bank-runway math. It must NOT demand 11-12 fields before construction.
+   - Target barracks #2 around 5-6 minutes when the bank can bridge the short-term two-barracks deficit.
+   - Citizen soldiers work wood while massing.
+   - City states remain melee/Hoplite-heavy after the opening fast-ranged batch.
+   - No stable in this opening layer.
+
+9. Preserve already-working opening contracts
+   - Starting civilians: 4 food.
+   - First 3 trained civilians: wood.
+   - Next 3 trained civilians: food.
+   - Continue to 20 civilian woodcutters; citizen soldiers do not count toward that 20 and work wood.
+   - Opening cavalry completes chickens before hunt/scout transition.
+   - Wicker-before-first-house city-state rule remains.
+   - No automatic Petra handoff.
+
+Replay regressions locked by IT14:
+- IT12: natural-food A<->B target oscillation and theoretical food income while workers were walking.
+- IT13 interestinglog(20260826-225332).html: `food-wait` produced up to 19 idle workers, new civilians continued joining an already-overfull food workforce, 11-12 required fields blocked barracks #2, and 4 farmsteads were built for only 5 completed fields.

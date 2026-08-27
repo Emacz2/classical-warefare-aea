@@ -53,8 +53,9 @@ function generateFarmsteadCandidates(request) {
   const toward = request.toward ? requirePosition(request.toward, "farmstead toward") : [center[0] + 1, center[1]];
   const base = Math.atan2(toward[1] - center[1], toward[0] - center[0]);
   const out = [];
+  const angleCount = Math.max(8, Math.floor(Number(request.angleCount) || 16));
   for (const dist of request.distances || [12, 15, 18, 21])
-    for (const angle of orderedAngles(base, 16))
+    for (const angle of orderedAngles(base, angleCount))
       out.push(addPolar(center, dist, angle));
   return out;
 }
@@ -63,23 +64,39 @@ function generateFieldCandidates(request) {
   const anchor = requirePosition(request.anchor, "field farmstead anchor");
   const farm = request.anchorHalfExtents || { width: 5, depth: 5 };
   const field = request.templateHalfExtents || { width: 14, depth: 14 };
-  const gap = Number.isFinite(request.gap) ? request.gap : 0.5;
-  const x = Number(farm.width) + Number(field.width) + gap;
-  const z = Number(farm.depth) + Number(field.depth) + gap;
-  const raw = [
-    [anchor[0] + x, anchor[1]],
-    [anchor[0] - x, anchor[1]],
-    [anchor[0], anchor[1] + z],
-    [anchor[0], anchor[1] - z]
-  ];
-  if (request.diagonals) {
-    raw.push(
-      [anchor[0] + x, anchor[1] + z], [anchor[0] + x, anchor[1] - z],
-      [anchor[0] - x, anchor[1] + z], [anchor[0] - x, anchor[1] - z]
-    );
+  const baseGap = Number.isFinite(request.gap) ? request.gap : 0.5;
+  const gaps = Array.isArray(request.gaps) && request.gaps.length ? request.gaps : [baseGap, 1.0, 1.5, 2.0];
+  const out = [];
+  const seen = new Set();
+  const push = (x, z) => {
+    const key = `${x.toFixed(3)},${z.toFixed(3)}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push([x, z]);
+  };
+
+  // Sweep the entire usable perimeter instead of trying only eight fixed slots.
+  // Tangential offsets remain within the farmstead/field overlap span, so every
+  // candidate is still directly adjacent (<= ~2m border gap) to the farmstead.
+  for (const gap of gaps) {
+    const x = Number(farm.width) + Number(field.width) + gap;
+    const z = Number(farm.depth) + Number(field.depth) + gap;
+    const spanZ = Number(farm.depth) + Number(field.depth);
+    const spanX = Number(farm.width) + Number(field.width);
+    const samples = Math.max(9, Number(request.edgeSamples) || 9);
+    for (let i = 0; i < samples; ++i) {
+      const t = samples === 1 ? 0 : -1 + 2 * i / (samples - 1);
+      const dz = t * spanZ;
+      const dx = t * spanX;
+      push(anchor[0] + x, anchor[1] + dz);
+      push(anchor[0] - x, anchor[1] + dz);
+      push(anchor[0] + dx, anchor[1] + z);
+      push(anchor[0] + dx, anchor[1] - z);
+    }
   }
-  return raw;
+  return out;
 }
+
 
 function generateRingCandidates(request, defaults = [18, 22, 26, 30]) {
   const anchor = requirePosition(request.anchor, `${request.kind} anchor`);
@@ -89,8 +106,9 @@ function generateRingCandidates(request, defaults = [18, 22, 26, 30]) {
     base = Math.atan2(toward[1] - anchor[1], toward[0] - anchor[0]);
   }
   const out = [];
+  const angleCount = Math.max(8, Math.floor(Number(request.angleCount) || 16));
   for (const dist of request.distances || defaults)
-    for (const angle of orderedAngles(base, 16))
+    for (const angle of orderedAngles(base, angleCount))
       out.push(addPolar(anchor, dist, angle));
   return out;
 }
@@ -118,6 +136,7 @@ function resolveBuildingPosition(request, ports = {}) {
     throw new Error("ports.snapToLegalPosition(candidate, request) is required");
   const candidates = generatePlacementCandidates(request);
   const rejected = [];
+  const scored = [];
   for (let index = 0; index < candidates.length; ++index) {
     const candidate = candidates[index];
     const snapped = ports.snapToLegalPosition(candidate, request);
@@ -138,11 +157,36 @@ function resolveBuildingPosition(request, ports = {}) {
       rejected.push({ index, candidate, position, reason: "extra-validation" });
       continue;
     }
+
+    // Preserve legacy first-legal behavior unless the caller explicitly supplies a
+    // score. Farmstead placement uses this to prefer clear berry->dropsite paths
+    // instead of a geometrically close position hidden behind stone/metal blockers.
+    if (typeof ports.scoreCandidate !== "function")
+      return {
+        kind: request.kind,
+        position: [position[0], position[1]],
+        angle: Number.isFinite(request.angle) ? request.angle : 3 * Math.PI / 4,
+        candidateIndex: index,
+        rejected
+      };
+
+    const score = Number(ports.scoreCandidate(position, request, index));
+    if (!Number.isFinite(score)) {
+      rejected.push({ index, candidate, position, reason: "invalid-score" });
+      continue;
+    }
+    scored.push({ index, position: [position[0], position[1]], score });
+  }
+
+  if (scored.length) {
+    scored.sort((a, b) => a.score - b.score || a.index - b.index);
+    const best = scored[0];
     return {
       kind: request.kind,
-      position: [position[0], position[1]],
+      position: best.position,
       angle: Number.isFinite(request.angle) ? request.angle : 3 * Math.PI / 4,
-      candidateIndex: index,
+      candidateIndex: best.index,
+      score: best.score,
       rejected
     };
   }

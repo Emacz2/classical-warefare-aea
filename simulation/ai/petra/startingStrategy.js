@@ -55,13 +55,14 @@ Headquarters.prototype.gameAnalysis = function(gameState)
 			this.buildFirstBase(gameState);
 	}
 
-	// Configure the first base. Expert Decision owns the tested 0:00-5:00
-	// economy and must run before Petra configFirstBase can queue its own dropsite.
+	// Configure the first base.  Expert deliberately does NOT execute worker or
+	// construction commands from gameAnalysis.  Starting entities are only assigned
+	// to a base/claimed here; the first real Expert orders are issued from the normal
+	// Headquarters.update lifecycle.  RC1 issued startup commands too early, then
+	// trusted its own metadata even though UnitAI had no live order.
 	if (this.hasPotentialBase())
 	{
-		if (this.expertDecisionController && this.expertDecisionController.isActive(gameState))
-			this.expertDecisionController.update(gameState, gameState.ai.queues, {});
-		else
+		if (!(this.expertDecisionController && this.expertDecisionController.isActive(gameState)))
 			this.configFirstBase(gameState);
 	}
 

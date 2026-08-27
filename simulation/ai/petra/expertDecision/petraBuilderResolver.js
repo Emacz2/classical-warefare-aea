@@ -85,6 +85,20 @@ function selectFoundationStarter(gameState, kind, targetPosition, action = {}, o
   return selected[0];
 }
 
+
+function selectFoundationStarterCandidate(gameState, kind, targetPosition, action = {}, options = {}) {
+  const allowedJobs = allowedJobsFor(kind, action);
+  const selected = selectBuilders(gameState, {
+    allowedJobs,
+    count: 1,
+    targetPosition,
+    playerId: options.playerId || 1,
+    taskId: options.taskId,
+    requireEmptyHands: false,
+    preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood")
+  });
+  return selected[0];
+}
 function selectMaintenanceTeam(gameState, kind, targetPosition, count, action = {}, options = {}) {
   return selectBuilders(gameState, {
     allowedJobs: allowedJobsFor(kind, action),
@@ -126,6 +140,7 @@ export {
   selectBuilders,
   allowedJobsFor,
   selectFoundationStarter,
+  selectFoundationStarterCandidate,
   selectMaintenanceTeam,
   commitBuilders,
   releaseBuilders

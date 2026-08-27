@@ -2290,8 +2290,8 @@ Headquarters.prototype.update = function(gameState, queues, events)
 		return;
 	}
 
-	// Normal Petra path (all non-Expert difficulties, and Expert after its explicit
-	// early-economy handoff).  No legacy Expert helper calls live in this path.
+	// Normal Petra path for non-Expert difficulties (or an explicit future manual release).
+	// Expert does not automatically hand control back after five minutes.
 	if (this.phasing)
 		this.checkPhaseRequirements(gameState, queues);
 	else

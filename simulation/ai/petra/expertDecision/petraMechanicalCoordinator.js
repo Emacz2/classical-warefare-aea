@@ -2,7 +2,7 @@ import { buildKey } from "simulation/ai/petra/expertDecision/petraActionAdapter.
 import { desiredBuilders } from "simulation/ai/petra/expertDecision/constructionLifecycle.js";
 import { entityPosition } from "simulation/ai/petra/expertDecision/petraMechanicalCollector.js";
 import { resolveBuildingPosition } from "simulation/ai/petra/expertDecision/petraPlacementResolver.js";
-import { selectFoundationStarter, selectMaintenanceTeam, commitBuilders } from "simulation/ai/petra/expertDecision/petraBuilderResolver.js";
+import { selectFoundationStarter, selectFoundationStarterCandidate, selectMaintenanceTeam, commitBuilders } from "simulation/ai/petra/expertDecision/petraBuilderResolver.js";
 
 function mechanicalTaskId(action) {
   return `expert:${action.kind}:${action.role || "primary"}`;
@@ -16,9 +16,11 @@ function prepareBuild(gameState, action, request, ports, tracker, options) {
   if (!resolved.position)
     return { key, blocked: "no-legal-position", diagnostics: resolved.rejected };
   const taskId = request.taskId || mechanicalTaskId(action);
-  const starter = selectFoundationStarter(gameState, action.kind, resolved.position, action, { playerId: options.playerId, taskId });
+  let starter = selectFoundationStarter(gameState, action.kind, resolved.position, action, { playerId: options.playerId, taskId });
   if (!starter)
-    return { key, blocked: "no-eligible-empty-handed-starter", diagnostics: resolved.rejected };
+    starter = selectFoundationStarterCandidate(gameState, action.kind, resolved.position, action, { playerId: options.playerId, taskId });
+  if (!starter)
+    return { key, blocked: "no-eligible-starter", diagnostics: resolved.rejected };
   tracker.register({ taskId, kind: action.kind, role: action.role || "primary", position: resolved.position });
   commitBuilders([starter], taskId, options.playerId);
   return {

@@ -9,6 +9,9 @@ function isExpertOpeningEconomyEntity(ent, options = {}) {
     return false;
   const playerId = Number.isFinite(options.playerId) ? options.playerId : 1;
   const metadataKey = options.metadataKey || DEFAULT_OWNERSHIP_METADATA;
+  // Citizen soldiers are intentionally part of the Expert economy while the army
+  // is massing. They chop wood until defense/attack management claims them via army
+  // metadata. Do NOT exclude Expert-trained CitizenSoldiers here.
   if (typeof ent.getMetadata === "function" && ent.getMetadata(playerId, metadataKey) === true)
     return true;
 

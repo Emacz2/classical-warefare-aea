@@ -15,13 +15,13 @@ const BUILDING_SPECS = Object.freeze({
     className: "Farmstead",
     template: "structures/{civ}/farmstead",
     queue: "dropsites",
-    allowedBuilderJobs: ["food", "farm"]
+    allowedBuilderJobs: ["food", "food_owned"]
   },
   field: {
     className: "Field",
     template: "structures/{civ}/field",
     queue: "field",
-    allowedBuilderJobs: ["food", "farm"]
+    allowedBuilderJobs: ["food", "food_owned"]
   },
   barracks: {
     className: "Barracks",
@@ -124,6 +124,30 @@ function templateCost(gameState, kind) {
   return cloneResources(template.cost());
 }
 
+function templateNumber(template, path, fallback = 0) {
+  if (!template)
+    return fallback;
+  if (typeof template.get === "function") {
+    const value = Number(template.get(path));
+    if (Number.isFinite(value))
+      return value;
+  }
+  return fallback;
+}
+
+function housingMetrics(gameState, context = {}) {
+  const houseTemplate = gameState.getTemplate(resolvedTemplate(gameState, "house"));
+  const live = context.housing || {};
+  const houseBuildTime = Number.isFinite(Number(live.houseBuildTime)) ? Number(live.houseBuildTime) :
+    templateNumber(houseTemplate, "Cost/BuildTime", 0);
+  const housePopulationBonus = Number.isFinite(Number(live.housePopulationBonus)) ? Number(live.housePopulationBonus) :
+    (houseTemplate && typeof houseTemplate.getPopulationBonus === "function" ? Number(houseTemplate.getPopulationBonus()) || 0 : 0);
+  const civilianTrainTime = Number.isFinite(Number(live.civilianTrainTime)) ? Number(live.civilianTrainTime) : 0;
+  const activeMilitaryTrainers = Number.isFinite(Number(live.activeMilitaryTrainers)) ? Math.max(0, Number(live.activeMilitaryTrainers)) : 0;
+  const ccSoldierActive = !!live.ccSoldierActive;
+  return { houseBuildTime, housePopulationBonus, civilianTrainTime, activeMilitaryTrainers, ccSoldierActive };
+}
+
 function observePetra(gameState, context = {}) {
   const getPopulation = requireMethod(gameState, "getPopulation", "gameState");
   const getPopulationLimit = requireMethod(gameState, "getPopulationLimit", "gameState");
@@ -170,6 +194,7 @@ function observePetra(gameState, context = {}) {
     time: finite(Number(context.time ?? ((gameState.ai && gameState.ai.elapsedTime) ?? 0)), "time"),
     population: { used, limit, queued: queuedPopulation },
     training: countPendingCivilianTraining(gameState, context),
+    housing: housingMetrics(gameState, context),
     resources: cloneResources(getResources()),
     structures,
     foundations,
@@ -180,7 +205,23 @@ function observePetra(gameState, context = {}) {
       primaryRemaining: finite(Number(context.food.primaryRemaining), "food.primaryRemaining"),
       targetFoodWorkers: finite(Number(context.food.targetFoodWorkers), "food.targetFoodWorkers"),
       naturalFoodWorkers: finite(Number(context.food.naturalFoodWorkers), "food.naturalFoodWorkers"),
-      farmWorkers: finite(Number(context.food.farmWorkers), "food.farmWorkers")
+      farmWorkers: finite(Number(context.food.farmWorkers), "food.farmWorkers"),
+      alternativeRemaining: Number.isFinite(Number(context.food.alternativeRemaining)) ? Math.max(0, Number(context.food.alternativeRemaining)) : 0,
+      alternativeClusters: Number.isFinite(Number(context.food.alternativeClusters)) ? Math.max(0, Number(context.food.alternativeClusters)) : 0,
+      alternativeCovered: !!context.food.alternativeCovered,
+      fieldCapacityKnown: !!context.food.fieldCapacityKnown,
+      supportedFieldSlots: Number.isFinite(Number(context.food.supportedFieldSlots)) ? Math.max(0, Number(context.food.supportedFieldSlots)) : 0,
+      openFieldSlots: Number.isFinite(Number(context.food.openFieldSlots)) ? Math.max(0, Number(context.food.openFieldSlots)) : 0,
+      naturalIncomeRate: Number.isFinite(Number(context.food.naturalIncomeRate)) ? Math.max(0, Number(context.food.naturalIncomeRate)) : 0,
+      farmIncomeRate: Number.isFinite(Number(context.food.farmIncomeRate)) ? Math.max(0, Number(context.food.farmIncomeRate)) : 0,
+      measuredFoodIncomeRate: Number.isFinite(Number(context.food.measuredFoodIncomeRate)) ? Math.max(0, Number(context.food.measuredFoodIncomeRate)) : 0,
+      measuredFoodIncomeAvailable: !!context.food.measuredFoodIncomeAvailable,
+      totalNaturalRemaining: Number.isFinite(Number(context.food.totalNaturalRemaining)) ? Math.max(0, Number(context.food.totalNaturalRemaining)) : 0,
+      naturalRunwaySeconds: Number.isFinite(Number(context.food.naturalRunwaySeconds)) ? Math.max(0, Number(context.food.naturalRunwaySeconds)) : 0,
+      averageFarmerRate: Number.isFinite(Number(context.food.averageFarmerRate)) ? Math.max(0, Number(context.food.averageFarmerRate)) : 0,
+      ccFoodBurnRate: Number.isFinite(Number(context.food.ccFoodBurnRate)) ? Math.max(0, Number(context.food.ccFoodBurnRate)) : 0,
+      oneBarracksFoodBurnRate: Number.isFinite(Number(context.food.oneBarracksFoodBurnRate)) ? Math.max(0, Number(context.food.oneBarracksFoodBurnRate)) : 0,
+      twoBarracksFoodBurnRate: Number.isFinite(Number(context.food.twoBarracksFoodBurnRate)) ? Math.max(0, Number(context.food.twoBarracksFoodBurnRate)) : 0
     },
     woodsite: {
       localWoodAmount: finite(Number(context.woodsite.localWoodAmount), "woodsite.localWoodAmount"),
@@ -194,10 +235,16 @@ function observePetra(gameState, context = {}) {
       food: finite(Number(context.workers.food), "workers.food"),
       farm: finite(Number(context.workers.farm), "workers.farm"),
       wood: finite(Number(context.workers.wood), "workers.wood"),
+      stone: Number.isFinite(Number(context.workers.stone)) ? Math.max(0, Number(context.workers.stone)) : 0,
+      metal: Number.isFinite(Number(context.workers.metal)) ? Math.max(0, Number(context.workers.metal)) : 0,
       builders: finite(Number(context.workers.builders), "workers.builders"),
-      idle: finite(Number(context.workers.idle), "workers.idle")
+      idle: finite(Number(context.workers.idle), "workers.idle"),
+      civilians: Number.isFinite(Number(context.workers.civilians)) ? Math.max(0, Number(context.workers.civilians)) : 0,
+      woodCivilians: Number.isFinite(Number(context.workers.woodCivilians)) ? Math.max(0, Number(context.workers.woodCivilians)) : 0,
+      foodOwnedCivilians: Number.isFinite(Number(context.workers.foodOwnedCivilians)) ? Math.max(0, Number(context.workers.foodOwnedCivilians)) : 0,
+      overflowWood: Number.isFinite(Number(context.workers.overflowWood)) ? Math.max(0, Number(context.workers.overflowWood)) : 0
     }
   };
 }
 
-export { BUILDING_SPECS, observePetra, countQueued, countPendingCivilianTraining, resolvedTemplate };
+export { BUILDING_SPECS, observePetra, countQueued, countPendingCivilianTraining, resolvedTemplate, housingMetrics };

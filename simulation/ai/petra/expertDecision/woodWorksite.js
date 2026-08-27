@@ -40,9 +40,15 @@ function chooseWoodTarget(worker, trees, options = {}) {
 }
 
 function updateLowWoodEvidence(previousCount, metrics, policy) {
-  const low = metrics.localWoodAmount <= policy.localWoodCriticalAmount ||
-    (metrics.localWoodAmount < policy.localWoodHealthyAmount && metrics.averageDropDistance > policy.targetWoodDropDistance);
-  if (!low || metrics.availableTargets > 0 || metrics.saturatedTargets > 0)
+  // Strategic rollover must begin BEFORE the last usable tree disappears.
+  // Available local targets therefore do not erase genuine low-stock evidence.
+  // Mere saturation still does not count unless the measured stock itself is low.
+  const criticallyLow = metrics.localWoodAmount <= policy.localWoodCriticalAmount;
+  const poorDelivery = metrics.localWoodAmount < policy.localWoodHealthyAmount &&
+    metrics.averageDropDistance > policy.targetWoodDropDistance;
+  if (!criticallyLow && !poorDelivery)
+    return 0;
+  if (!criticallyLow && metrics.availableTargets === 0 && metrics.saturatedTargets > 0)
     return 0;
   return Math.max(0, previousCount || 0) + 1;
 }

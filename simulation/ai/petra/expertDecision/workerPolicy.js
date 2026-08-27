@@ -3,7 +3,7 @@ const WOOD_CONSTRUCTION = new Set(["house", "storehouse", "barracks"]);
 
 function canBorrowForConstruction(workerJob, buildingKind) {
   if (FOOD_CONSTRUCTION.has(buildingKind))
-    return workerJob === "food" || workerJob === "farm";
+    return workerJob === "food" || workerJob === "food_owned" || workerJob === "farm";
   if (WOOD_CONSTRUCTION.has(buildingKind))
     return workerJob === "wood" || workerJob === "citizenSoldierWood";
   return false;

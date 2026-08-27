@@ -2,19 +2,65 @@ const ALLOWED_POOLS = Object.freeze({
   house: ["wood", "citizenSoldierWood"],
   storehouse: ["wood", "citizenSoldierWood"],
   barracks: ["wood", "citizenSoldierWood"],
-  farmstead: ["food", "farm"],
-  field: ["food", "farm"]
+  farmstead: ["food", "food_owned"],
+  field: ["food", "food_owned"]
 });
 
-function desiredBuilders(kind) {
+function desiredBuilders(kind, context = {}) {
   switch (kind) {
-    case "house": return 3;
-    case "field": return 3;
-    case "farmstead": return 4;
-    case "storehouse": return 4;
+    case "house":
+      if (context.emergency) return 4;
+      return 3;
+    case "field":
+      // Human openings usually use one worker per field. Sticky field builders already
+      // finish what they start, so extra builders mostly steal gathering time.
+      return 1;
+    case "farmstead":
+      if (context.opening) return 4;
+      return 2;
+    case "storehouse":
+      if (context.opening) return 4;
+      return 2;
     case "barracks": return 4;
     default: return 2;
   }
+}
+
+function constructionPriority(kind, context = {}) {
+  switch (kind) {
+    case "storehouse": return context.opening ? 100 : 98;
+    case "house": return context.emergency ? 100 : context.urgent ? 96 : 65;
+    case "field": return (Number(context.capacityDeficit) || 0) > 0 ? 94 : context.transition ? 88 : 70;
+    case "farmstead": return context.opening ? 100 : 96;
+    case "barracks": return context.urgent ? 99 : 93;
+    default: return 50;
+  }
+}
+
+function allocateBuilderBudget(tasks = [], maxBuilders = 8) {
+  const cap = Math.max(1, Math.floor(Number(maxBuilders) || 8));
+  const ordered = tasks.map((task, index) => ({
+    ...task,
+    key: String(task.key ?? index),
+    wanted: Math.max(1, Math.floor(Number(task.wanted) || 1)),
+    priority: Number.isFinite(Number(task.priority)) ? Number(task.priority) : constructionPriority(task.kind, task.context || {})
+  })).sort((a, b) => b.priority - a.priority || a.key.localeCompare(b.key));
+  const allocations = Object.fromEntries(ordered.map(task => [task.key, 0]));
+  let remaining = cap;
+  for (const task of ordered) {
+    if (remaining <= 0) break;
+    allocations[task.key] = 1;
+    --remaining;
+  }
+  for (const task of ordered) {
+    if (remaining <= 0) break;
+    const add = Math.min(remaining, task.wanted - allocations[task.key]);
+    if (add > 0) {
+      allocations[task.key] += add;
+      remaining -= add;
+    }
+  }
+  return allocations;
 }
 
 function updateConstructionTask(task, observation) {
@@ -36,4 +82,4 @@ function updateConstructionTask(task, observation) {
   return { state: "foundation", actions, allowedJobs, desiredBuilders: wanted };
 }
 
-export { ALLOWED_POOLS, desiredBuilders, updateConstructionTask };
+export { ALLOWED_POOLS, desiredBuilders, constructionPriority, allocateBuilderBudget, updateConstructionTask };

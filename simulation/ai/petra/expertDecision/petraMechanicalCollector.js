@@ -64,10 +64,15 @@ function ownerAt(context, position) {
   return map.getOwner(position);
 }
 
-function allowedWoodTerritory(gameState, owner, playerId) {
-  if (owner === playerId || owner === 0)
+function allowedWoodTerritory(gameState, owner, playerId, context = {}) {
+  // Expert opening civilians stay inside their own territory. Neutral/allied wood is
+  // an explicit opt-in only; the live opening controller does not enable it.
+  if (owner === playerId)
     return true;
-  return !!(gameState && typeof gameState.isPlayerMutualAlly === "function" && gameState.isPlayerMutualAlly(owner));
+  if (owner === 0 && context.allowNeutralWood === true)
+    return true;
+  return !!(context.allowAlliedWood === true && gameState &&
+    typeof gameState.isPlayerMutualAlly === "function" && gameState.isPlayerMutualAlly(owner));
 }
 
 function collectFoodCandidates(gameState, context) {
@@ -127,6 +132,62 @@ function selectConnectedCluster(candidates, anchorPosition, linkDistance = 24) {
   return ordered.filter(ent => selected.has(ent.id()));
 }
 
+function summarizeFoodCluster(entities, anchorPosition = undefined) {
+  const ids = [];
+  let remaining = 0, x = 0, z = 0, positioned = 0;
+  for (const ent of entities || []) {
+    const amount = resourceAmount(ent);
+    const pos = entityPosition(ent);
+    if (!pos || amount <= 0)
+      continue;
+    ids.push(ent.id());
+    remaining += amount;
+    x += pos[0];
+    z += pos[1];
+    ++positioned;
+  }
+  const center = positioned ? [x / positioned, z / positioned] : undefined;
+  return {
+    ids,
+    remaining,
+    initialAmount: remaining,
+    center,
+    anchorDistance: center && anchorPosition ? distance(center, anchorPosition) : 0
+  };
+}
+
+function collectFoodClusters(gameState, context) {
+  const candidates = collectFoodCandidates(gameState, context);
+  const linkDistance = Number.isFinite(context.linkDistance) ? context.linkDistance : 24;
+  const linkSq = linkDistance * linkDistance;
+  const unvisited = new Map(candidates.map(ent => [ent.id(), ent]));
+  const clusters = [];
+
+  while (unvisited.size) {
+    const first = unvisited.values().next().value;
+    const queue = [first];
+    const component = [];
+    unvisited.delete(first.id());
+    while (queue.length) {
+      const ent = queue.pop();
+      component.push(ent);
+      const pos = entityPosition(ent);
+      for (const [id, other] of Array.from(unvisited.entries())) {
+        if (squareDistance(pos, entityPosition(other)) > linkSq)
+          continue;
+        unvisited.delete(id);
+        queue.push(other);
+      }
+    }
+    const summary = summarizeFoodCluster(component, context.anchorPosition);
+    if (summary.ids.length)
+      clusters.push(summary);
+  }
+
+  clusters.sort((a, b) => a.anchorDistance - b.anchorDistance || b.remaining - a.remaining || a.ids[0] - b.ids[0]);
+  return clusters;
+}
+
 class PrimaryFoodClusterTracker {
   constructor(seed = {}) {
     this.ids = Array.isArray(seed.ids) ? [...seed.ids] : [];
@@ -141,6 +202,15 @@ class PrimaryFoodClusterTracker {
     this.initialAmount = selected.reduce((sum, ent) => sum + resourceAmount(ent), 0);
     this.captured = this.ids.length > 0 && this.initialAmount > 0;
     return this.observe(gameState);
+  }
+
+  retarget(cluster) {
+    const ids = cluster && Array.isArray(cluster.ids) ? cluster.ids.filter(Number.isFinite) : [];
+    const amount = Number(cluster && (cluster.remaining ?? cluster.initialAmount));
+    this.ids = [...ids];
+    this.initialAmount = Number.isFinite(amount) ? Math.max(0, amount) : 0;
+    this.captured = this.ids.length > 0 && this.initialAmount > 0;
+    return this.captured;
   }
 
   observe(gameState, context = undefined) {
@@ -197,7 +267,7 @@ function collectInitialWoodCandidates(gameState, context) {
       continue;
     if (Number.isFinite(accessIndex) && getLandAccess(gameState, ent) !== accessIndex)
       continue;
-    if (!allowedWoodTerritory(gameState, ownerAt(context, pos), playerId))
+    if (!allowedWoodTerritory(gameState, ownerAt(context, pos), playerId, context))
       continue;
     const anchorSq = squareDistance(pos, anchorPosition);
     if (anchorSq > searchSq)
@@ -236,7 +306,7 @@ function collectWoodTrees(gameState, context) {
       continue;
     if (Number.isFinite(accessIndex) && getLandAccess(gameState, ent) !== accessIndex)
       continue;
-    if (!allowedWoodTerritory(gameState, ownerAt(context, pos), playerId))
+    if (!allowedWoodTerritory(gameState, ownerAt(context, pos), playerId, context))
       continue;
     const dropSq = squareDistance(pos, worksitePosition);
     if (dropSq > radiusSq)
@@ -274,14 +344,43 @@ function collectWorkerMetrics(gameState, options = {}) {
   const playerId = Number.isFinite(options.playerId) ? options.playerId : 1;
   const jobKey = options.jobKey || "expertDecisionJob";
   const taskKey = options.taskKey || "expertDecisionTaskId";
-  const out = { food: 0, farm: 0, wood: 0, builders: 0, idle: 0 };
+  const out = { food: 0, farm: 0, wood: 0, stone: 0, metal: 0, builders: 0, idle: 0, civilians: 0, woodCivilians: 0, foodOwnedCivilians: 0, overflowWood: 0 };
   for (const ent of toEntities(gameState.getOwnUnits())) {
     if (!ent || typeof ent.getMetadata !== "function")
       continue;
+    const civilian = typeof ent.hasClass === "function" && ent.hasClass("Civilian") && !ent.hasClass("CitizenSoldier") && !ent.hasClass("Cavalry");
+    if (civilian)
+      ++out.civilians;
     const job = ent.getMetadata(playerId, jobKey);
-    if (job === "food") ++out.food;
-    else if (job === "farm") ++out.farm;
-    else if (job === "wood" || job === "citizenSoldierWood") ++out.wood;
+    const gatherType = ent.getMetadata(playerId, "gather-type");
+    if (job === "food") {
+      ++out.food;
+      if (gatherType === "wood") ++out.overflowWood;
+    }
+    else if (job === "farm") {
+      ++out.farm;
+      if (gatherType === "wood") ++out.overflowWood;
+      if (civilian) ++out.foodOwnedCivilians;
+    }
+    else if (job === "food_owned") {
+      ++out.food;
+      if (gatherType === "wood") ++out.overflowWood;
+      if (civilian) ++out.foodOwnedCivilians;
+    }
+    else if (job === "food_overflow_wood") {
+      // Backward-compatible save metadata from IT5. New assignments use food_owned.
+      ++out.wood;
+      ++out.overflowWood;
+      if (civilian) ++out.foodOwnedCivilians;
+    }
+    else if (job === "wood" || job === "citizenSoldierWood") {
+      ++out.wood;
+      if (civilian && job === "wood") ++out.woodCivilians;
+    }
+    else if (job === "stone")
+      ++out.stone;
+    else if (job === "metal")
+      ++out.metal;
     if (ent.getMetadata(playerId, taskKey) !== undefined)
       ++out.builders;
     if (typeof ent.isIdle === "function" && ent.isIdle())
@@ -324,6 +423,8 @@ export {
   resourceAmount,
   collectFoodCandidates,
   selectConnectedCluster,
+  summarizeFoodCluster,
+  collectFoodClusters,
   PrimaryFoodClusterTracker,
   collectInitialWoodCandidates,
   collectWoodTrees,

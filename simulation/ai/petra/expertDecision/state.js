@@ -15,6 +15,7 @@ function normalizeState(input = {}) {
   const food = input.food || {};
   const workers = input.workers || {};
   const training = input.training || {};
+  const housing = input.housing || {};
 
   return {
     time: n(input.time),
@@ -27,6 +28,13 @@ function normalizeState(input = {}) {
     training: {
       pendingCivilians: n(training.pendingCivilians),
       pendingBatches: n(training.pendingBatches)
+    },
+    housing: {
+      houseBuildTime: n(housing.houseBuildTime),
+      housePopulationBonus: n(housing.housePopulationBonus),
+      civilianTrainTime: n(housing.civilianTrainTime),
+      activeMilitaryTrainers: n(housing.activeMilitaryTrainers),
+      ccSoldierActive: bool(housing.ccSoldierActive)
     },
     resources: {
       food: n(resources.food),
@@ -60,7 +68,23 @@ function normalizeState(input = {}) {
       primaryRemaining: n(food.primaryRemaining),
       targetFoodWorkers: n(food.targetFoodWorkers, 7),
       naturalFoodWorkers: n(food.naturalFoodWorkers),
-      farmWorkers: n(food.farmWorkers)
+      farmWorkers: n(food.farmWorkers),
+      alternativeRemaining: n(food.alternativeRemaining),
+      alternativeClusters: n(food.alternativeClusters),
+      alternativeCovered: bool(food.alternativeCovered),
+      fieldCapacityKnown: bool(food.fieldCapacityKnown),
+      supportedFieldSlots: n(food.supportedFieldSlots),
+      openFieldSlots: n(food.openFieldSlots),
+      naturalIncomeRate: n(food.naturalIncomeRate),
+      farmIncomeRate: n(food.farmIncomeRate),
+      measuredFoodIncomeRate: n(food.measuredFoodIncomeRate),
+      measuredFoodIncomeAvailable: bool(food.measuredFoodIncomeAvailable),
+      totalNaturalRemaining: n(food.totalNaturalRemaining),
+      naturalRunwaySeconds: n(food.naturalRunwaySeconds),
+      averageFarmerRate: n(food.averageFarmerRate),
+      ccFoodBurnRate: n(food.ccFoodBurnRate),
+      oneBarracksFoodBurnRate: n(food.oneBarracksFoodBurnRate),
+      twoBarracksFoodBurnRate: n(food.twoBarracksFoodBurnRate)
     },
     woodsite: {
       localWoodAmount: n(woodsite.localWoodAmount),
@@ -74,8 +98,14 @@ function normalizeState(input = {}) {
       food: n(workers.food),
       farm: n(workers.farm),
       wood: n(workers.wood),
+      stone: n(workers.stone),
+      metal: n(workers.metal),
       builders: n(workers.builders),
-      idle: n(workers.idle)
+      idle: n(workers.idle),
+      civilians: n(workers.civilians),
+      woodCivilians: n(workers.woodCivilians),
+      foodOwnedCivilians: n(workers.foodOwnedCivilians),
+      overflowWood: n(workers.overflowWood)
     },
     costs: input.costs || {},
     flags: { ...(input.flags || {}) }

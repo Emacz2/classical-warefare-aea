@@ -84,8 +84,9 @@ function executeBuild(gameState, action, execution, ports, result, playerId) {
   if (hasCarriedResources(starter)) {
     if (!safeReturnResources(ports, gameState, starter))
       throw new Error(`Starter ${execution.starterId} is carrying resources but no valid return path exists`);
-    result.delayedBuilds.push({ key: buildKey(action), reason: "starter returning carried resources first" });
-    return;
+    // Queue the exact-position plan now. ExpertFixedConstructionPlan.canStart() will
+    // hold it until this specific worker has deposited the carried resources.
+    result.delayedBuilds.push({ key: buildKey(action), reason: "starter returning carried resources before exact construction starts" });
   }
 
   if (typeof ports.createFixedConstructionPlan !== "function")
