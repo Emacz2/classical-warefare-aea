@@ -1,13 +1,13 @@
 {
   "type": "range",
   "radius": 8,
-  "affects": ["Cavalry"],
+  "affects": ["Cavalry", "Infantry"],
   "modifications": [
-    { "value": "Health/RegenRate", "add": -2.5 },
+    { "value": "Health/RegenRate", "add": -1 },
     { "value": "UnitMotion/WalkSpeed", "multiply": 0.65 }
   ],
   "auraName": "Impaling",
   "showDescription": 1,
-  "auraDescription": "Nearby cavalry are slowed by 35% and lose 2.5 health per second.",
+  "auraDescription": "Nearby cavalry and infantry are slowed by 35% and lose 1 health per second.",
   "overlayIcon": "art/textures/ui/session/auras/blood.png"
 }

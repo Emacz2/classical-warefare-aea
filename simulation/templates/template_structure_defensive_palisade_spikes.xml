@@ -2,6 +2,7 @@
 <Entity parent="template_structure_defensive">
   <Auras datatype="tokens">
     structures/palisades
+    structures/palisades_damage
   </Auras>
    <Capturable>
     <CapturePoints op="mul">0.25</CapturePoints>
@@ -28,7 +29,7 @@
     <Entity>
       <Damage>
         <Hack>5</Hack>
-        <Pierce>20</Pierce>
+        <Pierce>50</Pierce>
         <Crush>2.5</Crush>
       </Damage>
     <ApplyStatus>
