@@ -21,7 +21,7 @@
   </Loot>
   <Identity>
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
-    <GenericName>Champion Infantry</GenericName>
+    <GenericName>Champion Soldier</GenericName>
   </Identity>
   <Position>
     <Anchor>upright</Anchor>

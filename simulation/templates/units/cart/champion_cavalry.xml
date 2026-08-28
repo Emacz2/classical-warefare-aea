@@ -2,7 +2,7 @@
 <Entity parent="carth|cav_heavy|cav_charge|cav_spear_shield|template_unit_champion_cavalry_spearman">
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Punic Noble Cavalry</GenericName>
+    <GenericName>Punic Noble Horse Spearman</GenericName>
     <Icon>units/cart/champion_cavalry.png</Icon>
     <Tooltip>Elite Punic citizen cavalry. Heavily equipped spear cavalry trained for disciplined close combat and mounted charges.</Tooltip>
     <Requirements>

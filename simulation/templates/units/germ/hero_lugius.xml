@@ -5,6 +5,7 @@
     units/heroes/germ_hero_lugius_2
   </Auras>
   <Identity>
+    <GenericName>Lugius</GenericName>
     <Civ>germ</Civ>
     <SpecificName>Lugius</SpecificName>
     <Icon>units/germ/hero_lugius.png</Icon>

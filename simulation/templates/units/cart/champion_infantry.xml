@@ -2,7 +2,7 @@
 <Entity parent="carth|inf_shock|hoplite|armor_heavy|shield_heavy|helmet_protected|template_unit_champion_infantry_spearman">
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Sacred Band Infantry</GenericName>
+    <GenericName>Punic Sacred Band Hoplite</GenericName>
     <SpecificName>Sacred Band of Ba'al</SpecificName>
     <Icon>units/cart/champion_infantry.png</Icon>
     <Tooltip>Can slowly heal other soldiers.</Tooltip>

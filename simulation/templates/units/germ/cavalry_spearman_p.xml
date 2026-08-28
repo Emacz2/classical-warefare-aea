@@ -2,7 +2,7 @@
 <Entity parent="germ|cav_raider|cav_pursuit|cav_spear_shield|thrusting_spear|template_unit_cavalry_melee_spearman">
   <Identity>
     <Civ>germ</Civ>
-    <GenericName>Cimbrian Scout Spear Cavalry</GenericName>
+    <GenericName>Cimbrian Horse Scout Spearman</GenericName>
     <SpecificName>Gaizazridjô</SpecificName>
     <SelectionGroupName>units/germ/cavalry_spearman_p</SelectionGroupName>
     <Icon>units/germ/cavalry_spearman.png</Icon>

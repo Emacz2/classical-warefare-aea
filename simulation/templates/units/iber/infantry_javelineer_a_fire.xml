@@ -36,7 +36,7 @@
   <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/infantry_javelineer_b</SelectionGroupName>
-    <GenericName>Burning Falarica thrower</GenericName>
+    <GenericName>Burning Falarica Thrower</GenericName>
     <SpecificName>Oinezko Falarikari</SpecificName>
     <Icon>units/iber/infantry_javelinist.png</Icon>
     <Rank>Advanced</Rank>

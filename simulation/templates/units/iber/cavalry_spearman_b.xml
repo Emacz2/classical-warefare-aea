@@ -3,7 +3,7 @@
   <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Iberian Cavalry Spearman</GenericName>
+    <GenericName>Iberian Horse Spearman</GenericName>
     <SpecificName>Zaldun Lantzari</SpecificName>
     <Icon>units/iber/cavalry_spearman.png</Icon>
   </Identity>

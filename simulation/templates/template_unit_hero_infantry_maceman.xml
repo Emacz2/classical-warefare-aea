@@ -20,7 +20,7 @@
     </Melee>
   </Attack>
   <Identity>
-    <GenericName>Hero Infantry Maceman</GenericName>
+    <GenericName>Hero Maceman</GenericName>
     <VisibleClasses datatype="tokens">Melee Maceman</VisibleClasses>
   </Identity>
  <UnitMotion>

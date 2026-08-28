@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="han|armor_medium|shield_medium|helmet_protected|template_unit_infantry_melee_swordsman">
   <Identity>
+    <GenericName>Han Swordsman</GenericName>
     <Rank>Elite</Rank>
   </Identity>
   <Promotion disable=""/>

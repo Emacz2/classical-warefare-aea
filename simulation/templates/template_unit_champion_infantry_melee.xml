@@ -2,7 +2,7 @@
 <Entity parent="template_unit_champion_infantry">
   <Identity>
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
-    <GenericName>Champion Melee Infantry</GenericName>
+    <GenericName>Champion Melee Soldier</GenericName>
   </Identity>
   <Position>
     <Anchor>upright</Anchor>

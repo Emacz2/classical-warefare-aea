@@ -3,7 +3,7 @@
   <Upgrade>
     <Peltast_Jav>
       <Entity>units/athen/merc_market_thracian_peltast</Entity>
-      <Tooltip>Switch to throwing javilin.</Tooltip>
+      <Tooltip>Switch to throwing javelins.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
     </Peltast_Jav>

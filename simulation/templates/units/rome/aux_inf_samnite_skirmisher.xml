@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="units/rome/allied_inf_samnite_skirmisher">
   <Identity>
-    <GenericName>Allied Samnite Skirmisher</GenericName>
+    <GenericName>Allied Samnite Javelineer</GenericName>
     <SelectionGroupName>units/rome/allied_inf_samnite_skirmisher</SelectionGroupName>
   </Identity>
   <Promotion disable=""/>

@@ -3,7 +3,7 @@
   <Identity>
     <Civ>cart</Civ>
     <SelectionGroupName>units/cart/cavalry_javelineer_b</SelectionGroupName>
-    <GenericName>Liby-Phoenician Cavalry Javelineer</GenericName>
+    <GenericName>Liby-Phoenician Horse Javelineer</GenericName>
     <SpecificName>Ḥayyāl Raḫūv Masili</SpecificName>
     <Icon>units/cart/cavalry_javelinist.png</Icon>
   </Identity>

@@ -8,7 +8,7 @@
   <Identity>
     <Civ>theb</Civ>
     <Lang>greek</Lang>
-    <GenericName>Theban Light Militia</GenericName>
+    <GenericName>Theban Light Militia Slinger</GenericName>
     <SpecificName>Gymnites Thebaïkós</SpecificName>
     <SelectionGroupName>units/theb/infantry_slinger_b</SelectionGroupName>
     <Requirements>

@@ -2,7 +2,7 @@
 <Entity parent="allied_cav_champ|cav_spear_shield|cav_heavy|cav_shock|template_unit_champion_cavalry_spearman">
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Treveri Noble Cavalry</GenericName>
+    <GenericName>Treveri Noble Horse Spearman</GenericName>
     <SpecificName>Uerouicos</SpecificName>
     <SelectionGroupName>units/gaul/champion_cavalry</SelectionGroupName>
     <Icon>units/gaul/champion_cavalry.png</Icon>

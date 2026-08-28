@@ -26,7 +26,7 @@
     </Resources>
   </Cost>
   <Identity>
-    <GenericName>Infantry Javelineer</GenericName>
+    <GenericName>Javelineer</GenericName>
     <VisibleClasses datatype="tokens">Javelineer</VisibleClasses>
   </Identity>
   <Sound>

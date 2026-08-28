@@ -3,7 +3,7 @@
   <Identity>
     <Civ>iber</Civ>
     <SpecificName>Zaldun Buruzagi</SpecificName>
-    <GenericName>Iberian Elite Sword Cavalry</GenericName>
+    <GenericName>Iberian Elite Horse Swordsman</GenericName>
     <SelectionGroupName>units/iber/champion_cavalry</SelectionGroupName>
     <Icon>units/iber/champ_cav.png</Icon>
     <Requirements>

@@ -11,7 +11,7 @@
   <Identity>
     <Civ>sele</Civ>
     <SelectionGroupName>units/sele/tureos_skirmisher</SelectionGroupName>
-    <GenericName>Thureophoros Skirmisher</GenericName>
+    <GenericName>Thureophoros Javelineer</GenericName>
     <SpecificName>Thureophóros</SpecificName>
     <Rank>Basic</Rank>
   </Identity>

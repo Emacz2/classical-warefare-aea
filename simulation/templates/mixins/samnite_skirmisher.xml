@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="merc_inf|template_unit_infantry_ranged_javelineer">
   <Identity>
-    <GenericName>Samnite Skirmisher</GenericName>
+    <GenericName>Samnite Javelineer</GenericName>
     <SpecificName>Samnite Skirmisher</SpecificName>
     <Icon>units/samn/skirmisher.png</Icon>
   </Identity>

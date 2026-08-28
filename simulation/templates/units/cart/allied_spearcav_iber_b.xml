@@ -6,7 +6,7 @@
   <Identity>
     <Civ>cart</Civ>
     <Classes datatype="tokens">Iberian</Classes>
-    <GenericName>Iberian Spear Cavalry</GenericName>
+    <GenericName>Allied Iberian Horse Spearman</GenericName>
     <SpecificName>Ḥayyāl Romaḥ Raḫūv</SpecificName>
     <SelectionGroupName>units/cart/merc_spearcav_iber</SelectionGroupName>
     <Icon>units/cart/cavalry_spearman.png</Icon>

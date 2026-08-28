@@ -2,7 +2,7 @@
 <Entity parent="allied_inf_champ|shield_large|spear_long|inf_shock|template_unit_champion_infantry_spearman">
   <Identity>
     <Civ>gaul</Civ>
-    <GenericName>Naked Fanatic</GenericName>
+    <GenericName>Gallic Naked Fanatic Spearman</GenericName>
     <SpecificName>Gaesatae</SpecificName>
     <Icon>units/gaul/champion_fanatic.png</Icon>
   </Identity>

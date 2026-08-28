@@ -3,7 +3,7 @@
   <Identity>
     <Civ>theb</Civ>
     <Rank>Elite</Rank>
-    <GenericName>Thessalian Shock Cavalry</GenericName>
+    <GenericName>Thessalian Elite Horse Spearman</GenericName>
     <SpecificName>Xystophóros Thessalikós</SpecificName>
     <SelectionGroupName>units/theb/elite_cavalry</SelectionGroupName>
     <Icon>units/theb/champcav_jav.png</Icon>

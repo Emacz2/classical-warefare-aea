@@ -3,7 +3,6 @@
  <Builder>
     <Entities datatype="tokens">
       structures/spart/camp
-      structures/spart/tent_helot
       structures/spart/gerousia
       structures/spart/syssiton
       structures/spart/colony
@@ -20,7 +19,7 @@
     <Civ>spart</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/spart/helot_javelineer</SelectionGroupName>
-    <GenericName>Helot Skirmisher</GenericName>
+    <GenericName>Helot Javelineer</GenericName>
     <SpecificName>Akontistḗs Heílōs</SpecificName>
     <Tooltip>Slaves of Sparta</Tooltip>
     <Icon>units/spart/helot_jav.png</Icon>

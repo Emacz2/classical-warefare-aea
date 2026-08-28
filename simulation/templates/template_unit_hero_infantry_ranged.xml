@@ -10,7 +10,7 @@
   </Attack>
   <Identity>
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
-    <GenericName>Hero Ranged Infantry</GenericName>
+    <GenericName>Hero Ranged Soldier</GenericName>
   </Identity>
   <Position>
     <Anchor>upright</Anchor>

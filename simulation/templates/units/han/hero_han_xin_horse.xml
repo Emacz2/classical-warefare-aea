@@ -5,6 +5,7 @@
     units/heroes/han_hero_han_xin_2
   </Auras>
   <Identity>
+    <GenericName>Han Xin</GenericName>
     <Civ>han</Civ>
     <SpecificName>Hán Xìn</SpecificName>
     <Icon>units/han/hero_han_xin.png</Icon>

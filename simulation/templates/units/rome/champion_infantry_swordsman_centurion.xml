@@ -14,7 +14,7 @@
   <Identity>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
-    <GenericName>Roman Centurion</GenericName>
+    <GenericName>Roman Centurion Swordsman</GenericName>
     <SpecificName>Centuriō</SpecificName>
     <Icon>units/rome/champion_infantry_centurion.png</Icon>
     <Tooltip>Centurions may be promoted from elite melee citizen infantry, and train from the Fortress after Marian Reforms.</Tooltip>

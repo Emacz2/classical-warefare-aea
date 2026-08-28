@@ -9,6 +9,7 @@
     <Height>5.0</Height>
   </Footprint>
   <Identity>
+    <GenericName>Wei Qing</GenericName>
     <Civ>han</Civ>
     <SpecificName>Wèi Qīng</SpecificName>
     <Icon>units/han/hero_wei_qing.png</Icon>

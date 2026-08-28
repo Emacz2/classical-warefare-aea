@@ -3,7 +3,6 @@
  <Builder>
     <Entities datatype="tokens">
       structures/spart/camp
-      structures/spart/tent_helot
       structures/spart/gerousia
       structures/spart/syssiton
       structures/spart/colony
