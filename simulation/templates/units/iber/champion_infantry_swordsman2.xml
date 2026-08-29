@@ -2,7 +2,7 @@
 <Entity parent="iber|inf_raider|shield_light|armor_light|sword_long|helmet_open|template_unit_champion_infantry_swordsman">
   <Identity>
     <Civ>iber</Civ>
-    <GenericName>Noble Light Infantry Swordsman</GenericName>
+    <GenericName>Iberian Noble Light Swordsman</GenericName>
     <SpecificName>Oinezko Ezpatari Arker</SpecificName>
     <Icon>units/iber/iber_champ_sword2.png</Icon>
     <Requirements>

@@ -7,7 +7,7 @@
   <Identity>
     <Civ>mace</Civ>
     <Lang>greek</Lang>
-    <GenericName>Macedonian Shield Bearer</GenericName>
+    <GenericName>Macedonian Shield Bearer Spearman</GenericName>
     <SpecificName>Hypaspistḗs</SpecificName>
      <VisibleClasses datatype="tokens">Nobel</VisibleClasses>
     <SelectionGroupName>units/mace/champion_infantry_spearman</SelectionGroupName>

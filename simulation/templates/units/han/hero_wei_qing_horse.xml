@@ -5,6 +5,7 @@
     units/heroes/han_hero_wei_qing_2
   </Auras>
   <Identity>
+    <GenericName>Wei Qing</GenericName>
     <Civ>han</Civ>
     <SpecificName>Wèi Qīng</SpecificName>
     <Icon>units/han/hero_wei_qing.png</Icon>

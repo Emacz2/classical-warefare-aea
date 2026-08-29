@@ -3,7 +3,7 @@
   <Identity>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/cavalry_archer_b</SelectionGroupName>
-    <GenericName>Han Archer Cavalry</GenericName>
+    <GenericName>Han Horse Archer</GenericName>
     <SpecificName>Gōng Qíbīng</SpecificName>
     <Icon>units/han/cavalry_archer.png</Icon>
     <Requirements>

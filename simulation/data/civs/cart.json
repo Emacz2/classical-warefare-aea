@@ -77,7 +77,7 @@
 		"Hasdrubal the Boetharch"
 	],
 	"SkirmishReplacements": {
-		"skirmish/units/default_infantry_ranged_b": "units/cart/infantry_archer_b",
+		"skirmish/units/default_infantry_ranged_b": "units/cart/infantry_javelineer_b",
 		"skirmish/structures/default_house_10": "structures/{civ}/house"
 	},
 	"SelectableInGameSetup": true

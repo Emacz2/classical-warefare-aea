@@ -11,7 +11,7 @@
   <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/infantry_javelineer_b</SelectionGroupName>
-     <GenericName>Infantry Javelineer</GenericName>
+     <GenericName>Iberian Javelineer</GenericName>
     <SpecificName>Txabalindari</SpecificName>
     <Icon>units/iber/infantry_javelinist.png</Icon>
   </Identity>

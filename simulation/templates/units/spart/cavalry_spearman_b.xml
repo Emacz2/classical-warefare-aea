@@ -4,7 +4,7 @@
     <Civ>spart</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/spart/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Laconian Cavalry</GenericName>
+    <GenericName>Laconian Horse Spearman</GenericName>
     <SpecificName>Hippeús Symmakhikós</SpecificName>
     <Icon>units/spart/cavalry_spearman.png</Icon>
     <Requirements>

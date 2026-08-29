@@ -2,7 +2,7 @@
 <Entity parent="brit|armor_heavy|shield_medium|sword_long|inf_shock|helmet_open|template_unit_champion_infantry_swordsman">
   <Identity>
     <Civ>brit</Civ>
-    <GenericName>Brythonic Noble Warrior</GenericName>
+    <GenericName>Brythonic Noble Swordsman</GenericName>
     <SpecificName>Argos</SpecificName>
     <Icon>units/brit/champion_infantry.png</Icon>
     <Requirements>

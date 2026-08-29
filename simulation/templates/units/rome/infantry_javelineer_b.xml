@@ -12,7 +12,7 @@
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SelectionGroupName>units/rome/infantry_javelineer_b</SelectionGroupName>
-    <GenericName>Roman Skirmisher</GenericName>
+    <GenericName>Roman Javelineer</GenericName>
     <SpecificName>Vēles</SpecificName>
      <VisibleClasses datatype="tokens">Republic</VisibleClasses>
     <Icon>units/rome/infantry_javelinist.png</Icon>

@@ -4,7 +4,7 @@
     <Civ>spart</Civ>
     <Lang>greek</Lang>
     <SelectionGroupName>units/spart/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Spartan Scout Cavalry</GenericName>
+    <GenericName>Spartan Horse Scout Spearman</GenericName>
     <SpecificName>Hippeús Lakōnikós</SpecificName>
     <Icon>units/spart/cavalry_spearman.png</Icon>
      <History>Sparta, known for its focus on hoplite infantry, had a relatively limited cavalry force. Spartan cavalry was often considered less effective compared to other Greek city-states. Melee Cavalry can't upgrade rank. Total Cavalry force limited to 40</History>

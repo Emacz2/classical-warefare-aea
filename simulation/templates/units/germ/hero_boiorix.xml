@@ -5,6 +5,7 @@
     units/heroes/germ_hero_boiorix_2
   </Auras>
   <Identity>
+    <GenericName>Boiorix</GenericName>
     <Civ>germ</Civ>
     <SpecificName>Boiorix</SpecificName>
     <Icon>units/germ/hero_boiorix.png</Icon>

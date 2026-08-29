@@ -4,6 +4,7 @@
     units/heroes/iber_hero_indibil
   </Auras>
   <Identity>
+    <GenericName>Indibil</GenericName>
     <Civ>iber</Civ>
     <SpecificName>Indibil</SpecificName>
     <Icon>units/iber/hero_indibil.png</Icon>

@@ -3,7 +3,7 @@
   <Identity>
     <Civ>sele</Civ>
     <SelectionGroupName>units/sele/cavalry_spearman_p</SelectionGroupName>
-    <GenericName>Macedonian Scout Cavalry</GenericName>
+    <GenericName>Macedonian Horse Scout Spearman</GenericName>
     <SpecificName>Hippeús Symmakhikós</SpecificName>
     <Icon>units/spart/cavalry_spearman.png</Icon>
   </Identity>

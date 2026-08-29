@@ -3,7 +3,7 @@
   <Upgrade>
     <Peltast_Jav>
       <Entity>units/spart/merc_thracian_peltast</Entity>
-      <Tooltip>Switch to throwing javilin.</Tooltip>
+      <Tooltip>Switch to throwing javilins.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
     </Peltast_Jav>

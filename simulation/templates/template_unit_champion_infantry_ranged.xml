@@ -5,7 +5,7 @@
   </Auras>
   <Identity>
     <VisibleClasses datatype="tokens">Infantry</VisibleClasses>
-    <GenericName>Champion Ranged Infantry</GenericName>
+    <GenericName>Champion Ranged Soldier</GenericName>
   </Identity>
   <Position>
     <Anchor>upright</Anchor>

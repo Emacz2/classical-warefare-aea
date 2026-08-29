@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="thebe|cav_pursuit|cav_spear_shield|template_unit_cavalry_melee_spearman">
   <Identity>
+    <GenericName>Boeotian Horse Scout Spearman</GenericName>
     <Civ>theb</Civ>
     <Lang>greek</Lang>
     <SpecificName>Boeotian Scout Cavalry</SpecificName>

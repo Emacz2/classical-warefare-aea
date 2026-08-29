@@ -9,7 +9,7 @@
     <Civ>kush</Civ>
     <Lang>napatan</Lang>
     <Classes datatype="tokens">AmunGuard</Classes>
-    <GenericName>Napatan Temple Guard</GenericName>
+    <GenericName>Napatan Temple Guard Spearman</GenericName>
     <SpecificName>Rs ʿImn</SpecificName>
     <Icon>units/kush/champion_amun.png</Icon>
   </Identity>

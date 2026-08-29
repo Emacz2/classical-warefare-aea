@@ -26,7 +26,7 @@
     </Resources>
   </Cost>
   <Identity>
-    <GenericName>Infantry Crossbowman</GenericName>
+    <GenericName>Crossbowman</GenericName>
     <VisibleClasses datatype="tokens">Crossbowman</VisibleClasses>
   </Identity>
   <Sound>

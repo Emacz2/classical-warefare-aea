@@ -5,6 +5,7 @@
     units/heroes/rome_hero_marcellus_2
   </Auras>
   <Identity>
+    <GenericName>Marcus Claudius Marcellus</GenericName>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SpecificName>Mārcus Claudius Mārcellus</SpecificName>

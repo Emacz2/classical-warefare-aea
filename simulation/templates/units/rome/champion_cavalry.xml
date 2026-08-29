@@ -11,7 +11,7 @@
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SpecificName>Equites Singulares Augusti</SpecificName>
-    <GenericName>Imperial Roman Cavalry</GenericName>
+    <GenericName>Imperial Roman Horse Swordsman</GenericName>
     <Icon>units/rome/champion_cavalry.png</Icon>
     <Tooltip>Counters: 1.5× vs Ranged Infantry.</Tooltip>
     <SelectionGroupName>units/rome/champion_cavalry</SelectionGroupName>

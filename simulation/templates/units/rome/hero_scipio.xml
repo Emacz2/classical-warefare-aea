@@ -5,6 +5,7 @@
     units/heroes/rome_hero_scipio_2
   </Auras>
   <Identity>
+    <GenericName>Scipio Africanus</GenericName>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SpecificName>Pūblius Cornēlius Scīpiō Āfricānus</SpecificName>

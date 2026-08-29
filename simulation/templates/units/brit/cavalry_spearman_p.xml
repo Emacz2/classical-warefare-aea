@@ -3,7 +3,7 @@
   <Identity>
     <Civ>brit</Civ>
     <SelectionGroupName>units/brit/cavalry_spearman_b</SelectionGroupName>
-     <GenericName>Tribal Horse Scout</GenericName>
+     <GenericName>Brythonic Horse Scout Spearman</GenericName>
     <SpecificName>Eporedos</SpecificName>
     <Icon>units/brit/cavalry_swordsman.png</Icon>
   </Identity>
