@@ -13,7 +13,8 @@ function carryingAmount(ent) {
 function workerUnavailable(ent, playerId) {
   if (!ent || typeof ent.getMetadata !== "function")
     return true;
-  if (ent.getMetadata(playerId, "transport") !== undefined || ent.getMetadata(playerId, "PartOfArmy"))
+  if (ent.getMetadata(playerId, "transport") !== undefined || ent.getMetadata(playerId, "PartOfArmy") ||
+      ent.getMetadata(playerId, "expertDefenseMobilized") !== undefined)
     return true;
   const plan = ent.getMetadata(playerId, "plan");
   if (plan !== undefined && plan !== -1)

@@ -332,7 +332,7 @@ Config.prototype.Cheat = function(gameState)
 	// Sandbox, Very Easy, Easy, Medium, Hard, Very Hard, Expert
 	// rate apply on resource stockpiling as gathering and trading
 	// time apply on building, upgrading, packing, training and technologies
-	const rate = [ 0.42, 0.56, 0.75, 1.00, 1.25, 1.56, 1.56 ];
+	const rate = [ 0.42, 0.56, 0.75, 1.00, 1.25, 1.56, 1.40 ];
 	const time = [ 1.40, 1.25, 1.10, 1.00, 1.00, 1.00, 1.00 ];
 	const AIDiff = Math.min(this.difficulty, rate.length - 1);
 	SimEngine.QueryInterface(Sim.SYSTEM_ENTITY, Sim.IID_ModifiersManager).AddModifiers("AI Bonus", {

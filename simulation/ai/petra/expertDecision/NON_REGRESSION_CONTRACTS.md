@@ -67,3 +67,7 @@ These are hard contracts for future Expert updates. Do not remove or weaken them
 Replay regressions locked by IT14:
 - IT12: natural-food A<->B target oscillation and theoretical food income while workers were walking.
 - IT13 interestinglog(20260826-225332).html: `food-wait` produced up to 19 idle workers, new civilians continued joining an already-overfull food workforce, 11-12 required fields blocked barracks #2, and 4 farmsteads were built for only 5 completed fields.
+
+- IT14.7: opening farmstead is berry-first and must prioritize nearest-bush travel; P2 uses hasResearchers rather than findAvailableTech; field backlog may start up to three fields concurrently; woodline rollover stages established-worker migration.
+- IT14.8: Expert gather/trade multiplier is 1.40 (Very Hard remains 1.56); significant incoming armies mobilize combat units away from worker control, deposit carried resources, retreat to the base rally, assemble before counterattacking, and may request a capped emergency tower only when materially outmatched.
+- IT14.9: keep Expert at 1.40; established farmers may start/maintain fields and farm hubs; generic mining is locked until six completed fields, then metal outranks stone; permanent field demand has 6/8/10/12 population floors; normal houses/barracks/farm hubs preserve an open CC core; barracks follow the dominant eligible wood-builder work district; wood rollover deepens the current forest with additional storehouses before abandoning a still-rich patch. Territory-bridging placement is intentionally deferred.

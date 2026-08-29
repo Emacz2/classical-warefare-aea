@@ -121,6 +121,7 @@ function decidePostOpeningCivilianJob(input = {}) {
   const dynamicWoodShortage = Math.max(0, Number(input.dynamicWoodShortageBank) || 350);
   const surplusFood = Math.max(foodFloor, Number(input.foodSurplusRedirectThreshold) || 900);
   const miningStart = Math.max(0, finiteNonNegativeInteger(input.miningStartCivilians, 45));
+  const miningMinimumFields = Math.max(0, finiteNonNegativeInteger(input.miningMinimumCompletedFields, 6));
   const miningFoodFloor = Math.max(foodFloor, Number(input.miningFoodFloor) || 750);
   const miningWoodFloor = Math.max(0, Number(input.miningWoodFloor) || 300);
   const stoneTarget = Math.max(0, finiteNonNegativeInteger(input.miningTargetStoneWorkers, 6));
@@ -149,19 +150,18 @@ function decidePostOpeningCivilianJob(input = {}) {
   // Once current food burn is covered and wood is functional, start stone/metal
   // with NEW civilians instead of making surplus farmers. This does not require a
   // huge 900-food bank; the food workforce itself is the proof that food is covered.
-  if (civilians >= miningStart && wood >= miningWoodFloor && food >= Math.min(foodFloor, miningFoodFloor)) {
-    if (stoneWorkers < stoneTarget || metalWorkers < metalTarget) {
-      if (stoneWorkers <= metalWorkers && stoneWorkers < stoneTarget)
-        return { job: "stone", reason: "food/wood production is covered; grow balanced stone mining" };
-      if (metalWorkers < metalTarget)
-        return { job: "metal", reason: "food/wood production is covered; grow balanced metal mining" };
-      return { job: "stone", reason: "finish the initial stone mining target" };
-    }
+  if (fields >= miningMinimumFields && civilians >= miningStart && wood >= miningWoodFloor && food >= Math.min(foodFloor, miningFoodFloor)) {
+    // Metal opens first; stone is the lowest-priority generic reserve. This prevents the
+    // old 6-stone/6-metal symmetry from starving food/wood while low-value stone piles up.
+    if (metalWorkers < metalTarget)
+      return { job: "metal", reason: `six-field food base is online; establish the higher-priority metal reserve (${metalWorkers}/${metalTarget})` };
+    if (stoneWorkers < stoneTarget)
+      return { job: "stone", reason: `metal reserve is established; begin the smaller stone reserve (${stoneWorkers}/${stoneTarget})` };
     if (wood < 700 && woodCivilians < maxDynamicWood)
       return { job: "wood", reason: "mining is functional; new civilian shores up wood" };
-    return stoneWorkers <= metalWorkers ?
-      { job: "stone", reason: "core economy covered; extend balanced mining" } :
-      { job: "metal", reason: "core economy covered; extend balanced mining" };
+    return metalWorkers <= Math.max(1, stoneWorkers * 2) ?
+      { job: "metal", reason: "core economy covered; preserve metal-over-stone mining priority" } :
+      { job: "stone", reason: "metal is comfortably ahead; add a limited stone worker" };
   }
 
   // Before mining is unlocked, use new workers to prevent a wood shortage. If both
@@ -190,35 +190,45 @@ function resourceBalanceDirective(input = {}) {
     stone: Math.max(0, Number(input.stone) || 0),
     metal: Math.max(0, Number(input.metal) || 0)
   };
+  const weights = {
+    food: Math.max(0.01, Number(input.weights && input.weights.food) || 1),
+    wood: Math.max(0.01, Number(input.weights && input.weights.wood) || 1),
+    stone: Math.max(0.01, Number(input.weights && input.weights.stone) || 1),
+    metal: Math.max(0.01, Number(input.weights && input.weights.metal) || 1)
+  };
   const activation = Math.max(0, Number(input.activationBank) || 1000);
   const ratioFloor = Math.max(1, Number(input.ratioFloor) || 250);
   const newWorkerRatio = Math.max(1, Number(input.newWorkerRatio) || 2);
   const strongRatio = Math.max(newWorkerRatio, Number(input.strongRatio) || 3);
   const foodPriorityBank = Math.max(0, Number(input.foodPriorityBank) || 700);
 
-  const ranked = Object.entries(banks).map(([type, amount]) => ({ type, amount }))
-    .sort((a, b) => b.amount - a.amount || a.type.localeCompare(b.type));
+  const ranked = Object.entries(banks).map(([type, amount]) => ({
+    type, amount, weight: weights[type], normalized: amount / weights[type]
+  })).sort((a, b) => b.normalized - a.normalized || a.type.localeCompare(b.type));
   const surplus = ranked[0];
   if (!surplus || surplus.amount < activation)
-    return { active: false, banks };
+    return { active: false, banks, weights };
 
+  const allowedTargets = new Set(Array.isArray(input.allowedTargets) && input.allowedTargets.length ?
+    input.allowedTargets : ["food", "wood", "stone", "metal"]);
   let target;
-  if (surplus.type !== "food" && banks.food < foodPriorityBank)
-    target = { type: "food", amount: banks.food };
+  if (surplus.type !== "food" && allowedTargets.has("food") && banks.food < foodPriorityBank)
+    target = { type: "food", amount: banks.food, weight: weights.food, normalized: banks.food / weights.food };
   else
-    target = ranked.filter(item => item.type !== surplus.type)
-      .sort((a, b) => a.amount - b.amount || a.type.localeCompare(b.type))[0];
+    target = ranked.filter(item => item.type !== surplus.type && allowedTargets.has(item.type))
+      .sort((a, b) => a.normalized - b.normalized || a.type.localeCompare(b.type))[0];
   if (!target)
-    return { active: false, banks };
+    return { active: false, banks, weights };
 
-  const ratio = surplus.amount / Math.max(ratioFloor, target.amount);
+  const ratio = surplus.normalized / Math.max(ratioFloor, target.normalized);
   if (ratio < newWorkerRatio)
-    return { active: false, banks, surplus: surplus.type, target: target.type, ratio };
+    return { active: false, banks, weights, surplus: surplus.type, target: target.type, ratio };
 
   return {
     active: true,
     strong: ratio >= strongRatio,
     banks,
+    weights,
     surplus: surplus.type,
     target: target.type,
     ratio

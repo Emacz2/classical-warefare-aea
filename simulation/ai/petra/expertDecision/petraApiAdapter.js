@@ -15,18 +15,24 @@ const BUILDING_SPECS = Object.freeze({
     className: "Farmstead",
     template: "structures/{civ}/farmstead",
     queue: "dropsites",
-    allowedBuilderJobs: ["food", "food_owned"]
+    allowedBuilderJobs: ["food", "food_owned", "farm"]
   },
   field: {
     className: "Field",
     template: "structures/{civ}/field",
     queue: "field",
-    allowedBuilderJobs: ["food", "food_owned"]
+    allowedBuilderJobs: ["food", "food_owned", "farm"]
   },
   barracks: {
     className: "Barracks",
     template: "structures/{civ}/barracks",
     queue: "militaryBuilding",
+    allowedBuilderJobs: ["wood", "citizenSoldierWood"]
+  },
+  tower: {
+    className: "Tower",
+    template: "structures/{civ}/sentry_tower",
+    queue: "defenseBuilding",
     allowedBuilderJobs: ["wood", "citizenSoldierWood"]
   }
 });
@@ -76,6 +82,19 @@ function resolvedTemplate(gameState, kind) {
   const spec = BUILDING_SPECS[kind];
   if (!spec)
     throw new Error(`Unknown building kind: ${kind}`);
+  if (kind === "tower") {
+    const sentry = gameState.applyCiv("structures/{civ}/sentry_tower");
+    const defense = gameState.applyCiv("structures/{civ}/defense_tower");
+    const phase = typeof gameState.currentPhase === "function" ? gameState.currentPhase() : 1;
+    const canBuild = gameState.ai && gameState.ai.HQ && typeof gameState.ai.HQ.canBuild === "function" ?
+      type => gameState.ai.HQ.canBuild(gameState, type) :
+      type => !!(gameState.getTemplate && gameState.getTemplate(type));
+    if (phase >= 2 && canBuild(defense))
+      return defense;
+    if (canBuild(sentry))
+      return sentry;
+    return phase >= 2 ? defense : sentry;
+  }
   return gameState.applyCiv(spec.template);
 }
 

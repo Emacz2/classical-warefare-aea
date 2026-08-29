@@ -124,6 +124,7 @@ function generatePlacementCandidates(request) {
     case "field": return generateFieldCandidates(request);
     case "barracks": return generateRingCandidates(request, [18, 22, 26, 30]);
     case "storehouse": return generateRingCandidates(request, [20, 24, 28, 32]);
+    case "tower": return generateRingCandidates(request, [16, 20, 24, 28, 32]);
     default: throw new Error(`Unsupported placement kind ${request.kind}`);
   }
 }
