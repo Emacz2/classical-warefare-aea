@@ -689,14 +689,30 @@ export class ExpertDecisionController
 	filterFrameForOpeningTech(gameState, queues, foodClusters, frame)
 	{
 		const wickerGate = this.deferFirstHouseForCityStateWicker(gameState, queues, foodClusters);
-		const axeGate = EARLY_AXE_CIVS.has(gameState.getPlayerCiv()) && !this.earlyAxeCompleted(gameState) &&
-			this.earlyAxeCommitted(gameState, queues) &&
-			this.builtByClass(gameState, "House").length === 0 && this.foundationsByClass(gameState, "House").length === 0;
+		const storehouseSecured = this.builtByClass(gameState, "Storehouse").length > 0 ||
+			this.foundationsByClass(gameState, "Storehouse").length > 0 ||
+			(gameState.ai.queues.dropsites && gameState.ai.queues.dropsites.plans &&
+			 gameState.ai.queues.dropsites.plans.some(plan => plan.metadata && plan.metadata.expertDecisionKind === "storehouse"));
+		const noHouseYet = this.builtByClass(gameState, "House").length === 0 && this.foundationsByClass(gameState, "House").length === 0;
+		const free = gameState.getPopulationLimit() - this.HQ.getAccountedPopulation(gameState);
+		// Athens/Thebes opening contract: after the opening storehouse is secured, Iron Axe
+		// completes before the first house/field unless population is at genuine emergency headroom.
+		// Wicker may still precede it when there are multiple worthwhile fruit patches.
+		const axeGate = EARLY_AXE_CIVS.has(gameState.getPlayerCiv()) && storehouseSecured && noHouseYet &&
+			!this.earlyAxeCompleted(gameState) && free > mergePolicy().houseEmergencyFreePopulation;
 		if (!wickerGate && !axeGate)
 			return frame;
 		return {
 			...frame,
-			"actions": frame.actions.filter(action => action.kind !== "house" && action.type !== "PAUSE_POPULATION_TRAINING")
+			"actions": frame.actions.filter(action => {
+				if (action.type === "PAUSE_POPULATION_TRAINING")
+					return false;
+				if (action.kind === "house" && (wickerGate || axeGate))
+					return false;
+				if (action.kind === "field" && axeGate)
+					return false;
+				return true;
+			})
 		};
 	}
 
@@ -762,11 +778,10 @@ export class ExpertDecisionController
 		if (multipleFruit && !basketDone)
 			return;
 
-		// Athens and Thebes can safely exploit their strong opening by taking Iron Axe
-		// before the first house. Wicker still wins first when multiple fruit sources
-		// exist. Other civilizations retain the old house-secured safety rule.
-		const earlyAxe = EARLY_AXE_CIVS.has(gameState.getPlayerCiv()) && storehouseSecured &&
-			this.openingTechSafeBeforeHouse(gameState, cc, policy);
+		// Athens and Thebes deliberately take Iron Axe before the first house once the
+		// opening storehouse is secured. Wicker still wins first with multiple fruit.
+		// The housing filter carries the emergency-pop escape hatch.
+		const earlyAxe = EARLY_AXE_CIVS.has(gameState.getPlayerCiv()) && storehouseSecured && !houseBuilt;
 		if (!houseSecured && !earlyAxe)
 			return;
 		const axe = "gather_lumbering_ironaxes";
@@ -2643,7 +2658,8 @@ export class ExpertDecisionController
 			const candidates = [];
 			for (const site of ranked)
 			{
-				const local = initialStorehousePlacementCandidates(site, { "distances": [0, 4, 6, 8, 10, 12], "angleCount": 16 });
+				const local = initialStorehousePlacementCandidates({ "action": "SELECT_INITIAL_WOODSITE", ...site },
+					{ "distances": [0, 4, 6, 8, 10, 12], "angleCount": 16 });
 				for (const candidate of local)
 					candidates.push(candidate);
 			}
@@ -4049,7 +4065,7 @@ export class ExpertDecisionController
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.10] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.11] t=" + Math.round(gameState.ai.elapsedTime) +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" res=" + Math.round(res.food) + "/" + Math.round(res.wood) + "/" + Math.round(res.stone) + "/" + Math.round(res.metal) +
 			" desired f=" + workers.food + " farm=" + workers.farm + " w=" + workers.wood + " woodCiv=" + workers.woodCivilians + " overflow=" + workers.overflowWood + " b=" + workers.builders +
@@ -4096,7 +4112,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.10] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.11] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
