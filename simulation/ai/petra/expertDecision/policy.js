@@ -179,13 +179,19 @@ const DEFAULT_POLICY = Object.freeze({
   // resource-driven exceptions; later housing/military/farm hubs stay outside the core.
   houseMinimumCCDistance: 24,
   barracksMinimumCCDistance: 28,
+  barracksAwaitingFoundationRetrySeconds: 20,
   farmHubMinimumCCDistance: 40,
   storehouseMinimumCCDistance: 18,
-  // A forest is a work district, not a one-storehouse resource. When the cutting front
-  // recedes, deepen the same patch before abandoning it for a different forest.
-  woodSamePatchRadius: 90,
-  woodSamePatchMinimumRemaining: 900,
-  woodStorehouseMinimumSpacing: 18,
+  // A forest is a work district, but repeated dropsites require a genuinely large,
+  // actively-worked CONNECTED forest and a meaningful drop-distance improvement.
+  woodClusterSearchRadius: 110,
+  woodClusterLinkDistance: 22,
+  woodDeepenMinimumWorkers: 12,
+  woodDeepenExtraWorkersPerStorehouse: 8,
+  woodDeepenMinimumRemaining: 1500,
+  woodDeepenExtraRemainingPerStorehouse: 300,
+  woodDeepenMinimumDistanceImprovement: 5,
+  woodStorehouseMinimumSpacing: 24,
   ecoTechFoodReserve: 600,
   ecoTechWoodReserve: 300,
   ecoTechSurplusFood: 900,

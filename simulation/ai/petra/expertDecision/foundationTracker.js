@@ -41,6 +41,8 @@ class FoundationTracker {
 
   get(taskId) { return this.tasks.get(taskId); }
 
+  remove(taskId) { this.tasks.delete(taskId); }
+
   serialize() {
     return {
       version: 1,

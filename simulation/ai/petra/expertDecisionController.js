@@ -19,7 +19,7 @@ import {
 	PrimaryFoodClusterTracker, collectFoodClusters, collectInitialWoodCandidates, collectWoodTrees,
 	summarizeWoodTrees, collectWorkerMetrics, entityPosition, toEntities
 } from "simulation/ai/petra/expertDecision/petraMechanicalCollector.js";
-import { selectInitialWoodWorksite, makeInitialStorehousePlacementRequest } from
+import { selectInitialWoodWorksite, makeInitialStorehousePlacementRequest, initialStorehousePlacementCandidates } from
 	"simulation/ai/petra/expertDecision/initialWoodWorksite.js";
 import { FoundationTracker } from "simulation/ai/petra/expertDecision/foundationTracker.js";
 import { observePetra, BUILDING_SPECS, resolvedTemplate, countPendingCivilianTraining } from
@@ -1919,6 +1919,41 @@ export class ExpertDecisionController
 			aiWarn("[EXPERT-FARM] field=" + field.id() + " permanently locked builders=" + locked);
 	}
 
+	cancelQueuedConstructionTask(gameState, taskId)
+	{
+		let removed = 0;
+		for (const name of ["house", "dropsites", "field", "militaryBuilding", "defenseBuilding"])
+		{
+			const queue = gameState.ai.queues[name];
+			if (!queue || !queue.plans)
+				continue;
+			const before = queue.plans.length;
+			queue.plans = queue.plans.filter(plan => !(plan.metadata && plan.metadata.expertTaskId === taskId));
+			removed += before - queue.plans.length;
+		}
+		return removed;
+	}
+
+	retryStalledBarracksTask(gameState, taskId, observed)
+	{
+		if (!taskId || !observed || observed.state !== "awaiting-foundation")
+			return false;
+		const started = Number(this.taskStartedAt[taskId]);
+		const timeout = mergePolicy().barracksAwaitingFoundationRetrySeconds;
+		if (!Number.isFinite(started) || gameState.ai.elapsedTime - started < timeout)
+			return false;
+		const removed = this.cancelQueuedConstructionTask(gameState, taskId);
+		this.releaseConstructionTeam(gameState, taskId);
+		delete this.activeTaskByKind.barracks;
+		delete this.taskStartedAt[taskId];
+		delete this.pendingWoodSelectionByTask[taskId];
+		delete this.taskDiagnostics[taskId];
+		if (this.foundationTracker && this.foundationTracker.remove)
+			this.foundationTracker.remove(taskId);
+		aiWarn("[EXPERT-BARRACKS] retry stalled task=" + taskId + " waited=" + Math.round(gameState.ai.elapsedTime - started) + "s removedPlans=" + removed);
+		return true;
+	}
+
 	cleanupStaleConstructionAssignments(gameState)
 	{
 		const active = new Set([
@@ -1945,6 +1980,9 @@ export class ExpertDecisionController
 			let observed;
 			try { observed = this.foundationTracker.observeTask(gameState, taskId); }
 			catch (e) { return; }
+
+			if (!isField && kind === "barracks" && this.retryStalledBarracksTask(gameState, taskId, observed))
+				return;
 
 			if (observed.state === "completed" || observed.state === "missing-after-foundation")
 			{
@@ -2139,6 +2177,67 @@ export class ExpertDecisionController
 		}
 		const best = [...groups.values()].sort((a, b) => b.length - a.length || a[0].id() - b[0].id())[0];
 		return centerOf(best || pool);
+	}
+
+	connectedWoodCluster(trees, seedPosition, linkDistance)
+	{
+		if (!trees || !trees.length || !seedPosition)
+			return [];
+		let seed = 0;
+		let best = Infinity;
+		for (let i = 0; i < trees.length; ++i)
+		{
+			const d = SquareVectorDistance(trees[i].position, seedPosition);
+			if (d < best)
+			{
+				best = d;
+				seed = i;
+			}
+		}
+		const linkSq = linkDistance * linkDistance;
+		const seen = new Set([seed]);
+		const queue = [seed];
+		while (queue.length)
+		{
+			const i = queue.shift();
+			for (let j = 0; j < trees.length; ++j)
+			{
+				if (seen.has(j) || SquareVectorDistance(trees[i].position, trees[j].position) > linkSq)
+					continue;
+				seen.add(j);
+				queue.push(j);
+			}
+		}
+		return [...seen].map(i => trees[i]);
+	}
+
+	woodAmount(trees)
+	{
+		return (trees || []).reduce((sum, tree) => sum + Math.max(0, Number(tree.remaining) || 0), 0);
+	}
+
+	weightedWoodDistance(trees, position)
+	{
+		const amount = this.woodAmount(trees);
+		if (!amount || !position)
+			return 0;
+		return trees.reduce((sum, tree) => sum + Math.sqrt(SquareVectorDistance(tree.position, position)) * Math.max(0, Number(tree.remaining) || 0), 0) / amount;
+	}
+
+	storehousesServingWoodCluster(gameState, trees, radius = 30)
+	{
+		if (!trees || !trees.length)
+			return 0;
+		const r2 = radius * radius;
+		let count = 0;
+		for (const store of this.builtByClass(gameState, "Storehouse"))
+		{
+			if (!entityPosition(store))
+				continue;
+			if (trees.some(tree => SquareVectorDistance(store.position(), tree.position) <= r2))
+				++count;
+		}
+		return count;
 	}
 
 	collectWoodsite(gameState, cc, accessIndex)
@@ -2492,38 +2591,47 @@ export class ExpertDecisionController
 			const localWorkers = this.woodWorkersForWorksite(gameState, currentId);
 			const workerAnchor = centerOf(localWorkers) || this.dominantWoodBuilderCenter(gameState) || current;
 
-			// First deepen the CURRENT forest. A human commonly walks the dropsite forward
-			// through one large wood patch several times before abandoning the patch.
-			const samePatch = collectInitialWoodCandidates(gameState, {
+			// Identify the actual connected forest around the current dropsite. IT14.9
+			// incorrectly summed every tree in a wide circle and called it one patch.
+			const nearby = collectInitialWoodCandidates(gameState, {
 				"getLandAccess": getLandAccess, "isSupplyFull": isSupplyFull,
 				"territoryMap": this.HQ.territoryMap, "anchorPosition": current,
-				"accessIndex": accessIndex, "playerId": PlayerID, "searchRadius": policy.woodSamePatchRadius
+				"accessIndex": accessIndex, "playerId": PlayerID, "searchRadius": policy.woodClusterSearchRadius
 			});
-			const samePatchAmount = samePatch.reduce((sum, tree) => sum + Math.max(0, Number(tree.remaining) || 0), 0);
+			const currentCluster = this.connectedWoodCluster(nearby, current, policy.woodClusterLinkDistance);
+			const clusterIds = new Set(currentCluster.map(tree => tree.id));
+			const samePatchAmount = this.woodAmount(currentCluster);
+			const servingStores = Math.max(1, this.storehousesServingWoodCluster(gameState, currentCluster));
+			const requiredWorkers = policy.woodDeepenMinimumWorkers + Math.max(0, servingStores - 1) * policy.woodDeepenExtraWorkersPerStorehouse;
+			const requiredWood = policy.woodDeepenMinimumRemaining + Math.max(0, servingStores - 1) * policy.woodDeepenExtraRemainingPerStorehouse;
 			let ranked = [];
 			let mode = "new_patch";
-			if (samePatchAmount >= policy.woodSamePatchMinimumRemaining)
+			let improvement = 0;
+
+			if (currentCluster.length && localWorkers.length >= requiredWorkers && samePatchAmount >= requiredWood)
 			{
-				const selection = selectInitialWoodWorksite(samePatch, workerAnchor, { "radius": 30, "approachWeight": 5 });
+				const selection = selectInitialWoodWorksite(currentCluster, workerAnchor, { "radius": 30, "approachWeight": 5 });
 				if (selection && selection.position)
 				{
-					ranked = (selection.ranked && selection.ranked.length ? selection.ranked : [selection])
-						.filter(site => site && site.position &&
-							SquareVectorDistance(site.position, current) >= Math.pow(policy.woodStorehouseMinimumSpacing * 0.75, 2))
-						.slice(0, 8);
-					mode = ranked.length ? "deepen_patch" : mode;
+					improvement = this.weightedWoodDistance(currentCluster, current) - this.weightedWoodDistance(currentCluster, selection.position);
+					if (improvement >= policy.woodDeepenMinimumDistanceImprovement)
+					{
+						ranked = (selection.ranked && selection.ranked.length ? selection.ranked : [selection])
+							.filter(site => site && site.position && this.HQ.territoryMap.getOwner(site.position) === PlayerID &&
+								SquareVectorDistance(site.position, current) >= policy.woodStorehouseMinimumSpacing * policy.woodStorehouseMinimumSpacing)
+							.slice(0, 8);
+						mode = ranked.length ? "deepen_patch" : mode;
+					}
 				}
 			}
 
-			// Only after the current forest no longer offers a worthwhile forward dropsite
-			// do we rank a genuinely different in-territory wood patch.
 			if (!ranked.length)
 			{
 				const all = collectInitialWoodCandidates(gameState, {
 					"getLandAccess": getLandAccess, "isSupplyFull": isSupplyFull,
 					"territoryMap": this.HQ.territoryMap, "anchorPosition": workerAnchor,
 					"accessIndex": accessIndex, "playerId": PlayerID, "searchRadius": 200
-				}).filter(tree => SquareVectorDistance(tree.position, current) > policy.woodSamePatchRadius * policy.woodSamePatchRadius);
+				}).filter(tree => !clusterIds.has(tree.id));
 				const selection = selectInitialWoodWorksite(all, workerAnchor);
 				if (!selection || !selection.position)
 					return undefined;
@@ -2535,23 +2643,20 @@ export class ExpertDecisionController
 			const candidates = [];
 			for (const site of ranked)
 			{
-				const candidateSelection = { "action": "SELECT_INITIAL_WOODSITE", ...site };
-				const one = makeInitialStorehousePlacementRequest(candidateSelection, geometry.radius,
-					{ "distances": [0, 4, 8, 12, 16], "angleCount": 16 });
-				candidates.push(...one.candidates);
+				const local = initialStorehousePlacementCandidates(site, { "distances": [0, 4, 6, 8, 10, 12], "angleCount": 16 });
+				for (const candidate of local)
+					candidates.push(candidate);
 			}
 			if (!candidates.length)
 				return undefined;
 			request = {
 				kind, "templateRadius": geometry.radius, candidates,
-				"worksiteAnchor": ranked[0].position,
-				"selectedTreeIds": [...(ranked[0].treeIds || [])],
-				"minimumCCDistance": policy.storehouseMinimumCCDistance,
-				"woodExpansionMode": mode
+				"worksiteAnchor": ranked[0].position, "selectedTreeIds": [...(ranked[0].treeIds || [])],
+				"minimumCCDistance": policy.storehouseMinimumCCDistance, "woodExpansionMode": mode
 			};
 			this.pendingWoodSelectionByTask[taskId] = ranked[0];
-			aiWarn("[EXPERT-WOOD] storehouse plan=" + mode + " samePatchWood=" + Math.round(samePatchAmount) +
-				" workers=" + localWorkers.length);
+			aiWarn("[EXPERT-WOOD] storehouse plan=" + mode + " connectedWood=" + Math.round(samePatchAmount) +
+				" workers=" + localWorkers.length + " stores=" + servingStores + " improve=" + improvement.toFixed(1));
 		}
 
 		else if (kind === "farmstead")
@@ -2659,7 +2764,7 @@ export class ExpertDecisionController
 					lineCandidates.push([firstPos[0] - tangent[0] * spacing * step, firstPos[1] - tangent[1] * spacing * step]);
 				}
 				const fallback = generatePlacementCandidates({
-					"kind": "barracks", "anchor": firstPos,
+					"kind": "house", "anchor": firstPos,
 					"toward": woodPos,
 					"distances": [10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58], "angleCount": 32,
 					"templateRadius": geometry.radius
@@ -2667,6 +2772,7 @@ export class ExpertDecisionController
 				request = { kind, "candidates": [...lineCandidates, ...fallback], "templateRadius": geometry.radius,
 					"minimumCCDistance": mergePolicy().houseMinimumCCDistance };
 			}
+		}
 		else if (kind === "field")
 		{
 			const hub = this.farmsteadForNextField(gameState, accessIndex);
@@ -2682,21 +2788,26 @@ export class ExpertDecisionController
 		else if (kind === "barracks")
 		{
 			const policy = mergePolicy();
-			const builderAnchor = this.dominantWoodBuilderCenter(gameState) || this.getPrimaryWoodPosition(gameState) || cc.position();
-			const dx = builderAnchor[0] - cc.position()[0], dz = builderAnchor[1] - cc.position()[1];
+			const ccPos = cc.position();
+			const builderAnchor = this.dominantWoodBuilderCenter(gameState) || this.getPrimaryWoodPosition(gameState) || ccPos;
+			const dx = builderAnchor[0] - ccPos[0], dz = builderAnchor[1] - ccPos[1];
 			const len = Math.hypot(dx, dz) || 1;
 			const outward = [builderAnchor[0] + dx / len * 20, builderAnchor[1] + dz / len * 20];
-			request = {
-				kind,
-				// Military production belongs to the work district that supplies its builders.
-				// Nearest eligible wood workers will therefore build near their current woodline,
-				// while the CC core remains open for unit movement/assembly.
-				"anchor": builderAnchor, "toward": outward,
-				"distances": [8, 12, 16, 20, 24, 28, 32, 36], "angleCount": 32,
-				"templateRadius": geometry.radius,
-				"minimumCCDistance": policy.barracksMinimumCCDistance
-			};
+			const primary = generatePlacementCandidates({
+				"kind": "barracks", "anchor": builderAnchor, "toward": outward,
+				"distances": [8, 12, 16, 20, 24, 28, 32, 36, 40], "angleCount": 32, "templateRadius": geometry.radius
+			});
+			// Robust fallback on the SAME SIDE of the settlement. This keeps the CC core
+			// open but prevents one obstructed lumber district from deleting barracks all game.
+			const fallbackAnchor = [ccPos[0] + dx / len * 38, ccPos[1] + dz / len * 38];
+			const fallback = generatePlacementCandidates({
+				"kind": "barracks", "anchor": fallbackAnchor, "toward": outward,
+				"distances": [0, 6, 10, 14, 18, 22, 26], "angleCount": 32, "templateRadius": geometry.radius
+			});
+			request = { kind, "candidates": [...primary, ...fallback], "templateRadius": geometry.radius,
+				"minimumCCDistance": policy.barracksMinimumCCDistance };
 		}
+
 		else if (kind === "tower")
 			request = {
 				kind,
@@ -3208,6 +3319,11 @@ export class ExpertDecisionController
 		// exploit the newly-built dropsite.
 		const salvageTrees = this.woodTreesAt(gameState, position, accessIndex, policy.woodMigrationSalvageRadius);
 		const salvage = summarizeWoodTrees(salvageTrees);
+		const primaryId = primaryWoodsite && Number.isFinite(Number(primaryWoodsite.entityId)) ? Number(primaryWoodsite.entityId) : undefined;
+		// Do not "migrate" a worker away from a site only to assign the exact same site
+		// again. IT14.9 repeatedly did this and created apparent A->B->A churn.
+		if (Number.isFinite(primaryId) && Number.isFinite(Number(entityId)) && primaryId === Number(entityId))
+			return { trees: salvageTrees, ...salvage, position, entityId };
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		if (salvage.availableTargets > 0 && salvage.localWoodAmount > 0)
 		{
@@ -3240,11 +3356,12 @@ export class ExpertDecisionController
 			const type = current.resourceSupplyType();
 			currentIsLiveWood = !!(type && type.generic === "wood");
 		}
-		const currentTreeValid = !!(current && (currentIsLiveWood || trees.some(tree => tree.id === current.id())) &&
+		const currentTreeValid = !!(current && currentIsLiveWood && trees.some(tree => tree.id === current.id()) &&
 			current.resourceSupplyAmount && current.resourceSupplyAmount() > 0);
 
-		// Productive lumberjacks are sacred: if the engine is still gathering a live
-		// tree, keep that order even if a newer storehouse has become globally preferred.
+		// Preserve a productive tree only while it belongs to THIS worker's committed
+		// worksite. A live tree in an old/different forest is no longer sufficient reason
+		// to send the worker back across the map.
 		if (currentTreeValid && hasLiveGatherOrder(ent, current.id()))
 		{
 			this.diagnoseWorkerOrder(ent, "wood", current.id(), "CONFIRMED");
@@ -3754,6 +3871,8 @@ export class ExpertDecisionController
 	setDecisionPriorities(gameState, frame)
 	{
 		const map = { house: "house", storehouse: "dropsites", farmstead: "dropsites", field: "field", barracks: "militaryBuilding", tower: "defenseBuilding" };
+		if (this.activeTaskByKind.barracks)
+			gameState.ai.queueManager.changePriority("militaryBuilding", Math.max(this.HQ.Config.priorities.militaryBuilding || 1, 990));
 		for (const action of frame.actions)
 		{
 			if ((action.type !== "BUILD" && action.type !== "MAINTAIN_CONSTRUCTION") || !map[action.kind])
@@ -3930,7 +4049,7 @@ export class ExpertDecisionController
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.9] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.10] t=" + Math.round(gameState.ai.elapsedTime) +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" res=" + Math.round(res.food) + "/" + Math.round(res.wood) + "/" + Math.round(res.stone) + "/" + Math.round(res.metal) +
 			" desired f=" + workers.food + " farm=" + workers.farm + " w=" + workers.wood + " woodCiv=" + workers.woodCivilians + " overflow=" + workers.overflowWood + " b=" + workers.builders +
@@ -3977,7 +4096,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.9] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.10] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
