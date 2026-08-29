@@ -77,3 +77,13 @@ Replay regressions locked by IT14:
 ## IT14.11 opening/storehouse correction
 - Athens/Thebes: Wicker may come first when multiple worthwhile fruit patches exist; after the opening storehouse is secured, Iron Axe completes before the first house and first field unless population is at emergency headroom.
 - Later wood-storehouse placement must not call the opening-only candidate routine with an untagged ranked summary; no repeated `initialStorehousePlacementCandidates requires a selected initial woodsite` exceptions.
+
+
+## IT14.12 P1 freeze + first Town-phase layer
+
+- P1 strategic timings/field/mining/defense rules remain unchanged from IT14.11.
+- Natural-food workers keep valid current supplies, but new assignments fill the least-loaded bush/supply first (one-per-bush before doubling where possible).
+- P2 housing no longer depends on extending the original P1 house line; it searches outward from developed district edges and wider legal rings while preserving the CC core.
+- A third barracks is P2-only and capacity-driven: >=110 pop, >=10 completed fields, and healthy food/wood banks.
+- P2 surplus research prefers affordable soldier combat upgrades before generic surplus eco upgrades; opening Wicker/Axe/Plows behavior is unchanged.
+- Deliberate territory bridging remains opportunistic through outward P2 housing; no separate territory-expansion strategy is introduced yet.

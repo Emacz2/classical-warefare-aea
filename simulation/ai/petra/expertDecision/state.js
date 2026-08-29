@@ -19,6 +19,7 @@ function normalizeState(input = {}) {
 
   return {
     time: n(input.time),
+    phase: Math.max(1, n(input.phase, 1)),
     stage: input.stage || "bootstrap",
     population: {
       used: n(input.population && input.population.used),

@@ -350,6 +350,22 @@ function planEconomy(rawState, overrides = {}) {
       actions.push({ type: "RESERVE", kind: "barracks", role: "second", priority: 97, cost, reason: "reserve wood for pre-5:00 second barracks" });
   }
 
+  // IT14.12 Town-phase production ramp. P1 remains exactly two barracks. Once P2 is
+  // complete, population and permanent food capacity may justify a third barracks.
+  // This is demand/capacity driven, not a hard clock, and preserves a useful wood bank.
+  const thirdBarracksReady = state.phase >= 2 && completedBarracks === 2 && pendingBarracks === 0 &&
+    state.population.used >= policy.phase2ThirdBarracksPopulation &&
+    state.structures.field >= policy.phase2ThirdBarracksMinimumFields &&
+    state.resources.food >= policy.phase2ThirdBarracksFoodBank &&
+    state.resources.wood >= policy.phase2ThirdBarracksWoodBank;
+  if (thirdBarracksReady) {
+    const cost = costOf(state, policy, "barracks");
+    if (resourceEnough(state.resources, cost, reservations)) {
+      actions.push({ type: "BUILD", kind: "barracks", role: "third_p2", priority: 93, builderPool: ["wood", "citizenSoldierWood"], reason: `Town production ramp (${state.population.used} pop, ${state.structures.field} fields)` });
+      addReservation(reservations, cost);
+    }
+  }
+
   // 5. Wood rollover is a hard economic continuity obligation. Once a large
   // wood workforce is outgrowing the current site, reserve/build the next dropsite
   // before optional farm expansion can spend the same wood.

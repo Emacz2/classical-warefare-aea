@@ -211,6 +211,7 @@ function observePetra(gameState, context = {}) {
 
   return {
     time: finite(Number(context.time ?? ((gameState.ai && gameState.ai.elapsedTime) ?? 0)), "time"),
+    phase: typeof gameState.currentPhase === "function" ? Math.max(1, Number(gameState.currentPhase()) || 1) : 1,
     population: { used, limit, queued: queuedPopulation },
     training: countPendingCivilianTraining(gameState, context),
     housing: housingMetrics(gameState, context),

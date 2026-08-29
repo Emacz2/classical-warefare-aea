@@ -121,6 +121,16 @@ const DEFAULT_POLICY = Object.freeze({
   phase2NormalCostCoverage: 0.45,
   phase2MajorThreatUnits: 12,
   phase2MajorThreatRadius: 150,
+  // IT14.12: once Town Phase is actually reached, production should scale with the
+  // economy instead of remaining frozen at the two-barracks P1 footprint. This is
+  // deliberately conservative so P1 timing is untouched.
+  phase2ThirdBarracksPopulation: 110,
+  phase2ThirdBarracksMinimumFields: 10,
+  phase2ThirdBarracksFoodBank: 500,
+  phase2ThirdBarracksWoodBank: 500,
+  phase2MilitaryTechFoodReserve: 550,
+  phase2MilitaryTechWoodReserve: 350,
+  phase2MilitaryTechMetalReserve: 100,
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
   // emergency force multipliers, never routine border spam.
@@ -178,6 +188,10 @@ const DEFAULT_POLICY = Object.freeze({
   // Keep the civic-center movement/assembly core open. Opening resource dropsites are
   // resource-driven exceptions; later housing/military/farm hubs stay outside the core.
   houseMinimumCCDistance: 24,
+  // P2 houses stop extending a single P1 line forever. Search developed edges and
+  // wider rings while retaining the same open CC core.
+  phase2HouseSearchMaximumDistance: 96,
+  phase2HouseDistrictRadius: 34,
   barracksMinimumCCDistance: 28,
   barracksAwaitingFoundationRetrySeconds: 20,
   farmHubMinimumCCDistance: 40,

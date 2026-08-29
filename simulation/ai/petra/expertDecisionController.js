@@ -869,6 +869,57 @@ export class ExpertDecisionController
 		aiWarn("[EXPERT-TECH] queued surplus eco upgrade " + pick);
 	}
 
+	researchExpertP2MilitaryTech(gameState, queues)
+	{
+		if (!gameState || !gameState.currentPhase || gameState.currentPhase() < 2 ||
+		    !queues || !queues.minorTech || queues.minorTech.hasQueuedUnits())
+			return false;
+		const policy = mergePolicy();
+		const resources = gameState.getResources();
+		const candidates = [];
+		for (const tech of gameState.findAvailableTech() || [])
+		{
+			const name = tech && tech[0], data = tech && tech[1];
+			if (!name || !data || !data._template || !Array.isArray(data._template.modifications))
+				continue;
+			const affects = String(data._template.affects || "");
+			if (!/(CitizenSoldier|Infantry|Soldier|Spearman|Javelineer|Cavalry)/i.test(affects))
+				continue;
+			let score = 0;
+			for (const mod of data._template.modifications)
+			{
+				const value = String(mod && mod.value || "");
+				if (value.startsWith("Attack/")) score += 130;
+				else if (value.startsWith("Resistance/")) score += 115;
+				else if (value.includes("Health/Max")) score += 105;
+				else if (value.startsWith("UnitMotion/")) score += 70;
+			}
+			if (!score)
+				continue;
+			const raw = data._template.cost || {};
+			const cost = { food: Number(raw.food) || 0, wood: Number(raw.wood) || 0, stone: Number(raw.stone) || 0, metal: Number(raw.metal) || 0 };
+			if (resources.food < cost.food + policy.phase2MilitaryTechFoodReserve ||
+			    resources.wood < cost.wood + policy.phase2MilitaryTechWoodReserve ||
+			    resources.metal < cost.metal + policy.phase2MilitaryTechMetalReserve ||
+			    resources.stone < cost.stone)
+				continue;
+			const totalCost = cost.food + cost.wood + cost.stone + cost.metal;
+			candidates.push({ name, score: score * 1000 - totalCost });
+		}
+		if (!candidates.length)
+			return false;
+		candidates.sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+		const pick = candidates[0].name;
+		const plan = new ResearchPlan(gameState, pick, false);
+		if (!plan)
+			return false;
+		plan.metadata = { "expertDecisionLayer": true, "expertMilitaryTech": "p2" };
+		queues.minorTech.addPlan(plan);
+		gameState.ai.queueManager.changePriority("minorTech", Math.max(this.HQ.Config.priorities.minorTech || 1, 720));
+		aiWarn("[EXPERT-P2] queued military tech " + pick);
+		return true;
+	}
+
 	phaseTechInfo(gameState)
 	{
 		if (!gameState || !gameState.currentPhase || gameState.currentPhase() !== 1)
@@ -2762,33 +2813,84 @@ export class ExpertDecisionController
 				};
 			else
 			{
-				// Build later houses as an organized line first, with the old broad search as
-				// fallback. This keeps the base legible and turns housing into a partial wall.
+				const policy = mergePolicy();
+				const phase = typeof gameState.currentPhase === "function" ? Number(gameState.currentPhase()) || 1 : 1;
 				const houses = this.builtByClass(gameState, "House").sort((a, b) => a.id() - b.id());
 				const first = houses[0];
 				const firstPos = first && entityPosition(first) ? first.position() : cc.position();
 				const woodPos = this.getPrimaryWoodPosition(gameState) || [cc.position()[0] + 1, cc.position()[1]];
-				let dx = woodPos[0] - cc.position()[0], dz = woodPos[1] - cc.position()[1];
-				const len = Math.hypot(dx, dz) || 1;
-				dx /= len; dz /= len;
-				const tangent = [-dz, dx];
-				const spacing = Math.max(10, 2 * Number(geometry.radius || 4) + 2);
-				const lineCandidates = [];
-				for (let step = 1; step <= 10; ++step)
+
+				if (phase >= 2)
 				{
-					lineCandidates.push([firstPos[0] + tangent[0] * spacing * step, firstPos[1] + tangent[1] * spacing * step]);
-					lineCandidates.push([firstPos[0] - tangent[0] * spacing * step, firstPos[1] - tangent[1] * spacing * step]);
+					// IT14.12 P2 housing: the P1 house line is a preference, not a prison.
+					// Expand from the OUTER edges of already-developed work/military districts,
+					// which also naturally lets houses push territory toward nearby resources.
+					const ccPos = cc.position();
+					const developed = [
+						...houses,
+						...this.builtByClass(gameState, "Barracks"),
+						...this.builtByClass(gameState, "Farmstead"),
+						...this.builtByClass(gameState, "Storehouse")
+					].filter(ent => ent && entityPosition(ent));
+					developed.sort((a, b) => SquareVectorDistance(b.position(), ccPos) - SquareVectorDistance(a.position(), ccPos) || a.id() - b.id());
+					const candidates = [];
+					for (const anchorEnt of developed.slice(0, 8))
+					{
+						const pos = anchorEnt.position();
+						let dx = pos[0] - ccPos[0], dz = pos[1] - ccPos[1];
+						const len = Math.hypot(dx, dz) || 1;
+						const outward = [pos[0] + dx / len * 20, pos[1] + dz / len * 20];
+						candidates.push(...generatePlacementCandidates({
+							"kind": "barracks", "anchor": pos, "toward": outward,
+							"distances": [10, 14, 18, 22, 26, 30, policy.phase2HouseDistrictRadius],
+							"angleCount": 24, "templateRadius": geometry.radius
+						}));
+					}
+					const district = this.dominantWoodBuilderCenter(gameState) || woodPos;
+					candidates.push(...generatePlacementCandidates({
+						"kind": "barracks", "anchor": district, "toward": woodPos,
+						"distances": [10, 14, 18, 22, 26, 30, 34], "angleCount": 32, "templateRadius": geometry.radius
+					}));
+					candidates.push(...generatePlacementCandidates({
+						"kind": "barracks", "anchor": ccPos, "toward": woodPos,
+						"distances": [28, 34, 40, 46, 52, 58, 64, 70, 76, 82, 88, policy.phase2HouseSearchMaximumDistance],
+						"angleCount": 48, "templateRadius": geometry.radius
+					}));
+					const seen = new Set();
+					const unique = candidates.filter(pos => {
+						const key = pos[0].toFixed(2) + ":" + pos[1].toFixed(2);
+						if (seen.has(key)) return false;
+						seen.add(key); return true;
+					});
+					request = { kind, "candidates": unique, "templateRadius": geometry.radius,
+						"minimumCCDistance": policy.houseMinimumCCDistance, "phase2Housing": true };
 				}
-				const fallback = generatePlacementCandidates({
-					"kind": "house", "anchor": firstPos,
-					"toward": woodPos,
-					"distances": [10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58], "angleCount": 32,
-					"templateRadius": geometry.radius
-				});
-				request = { kind, "candidates": [...lineCandidates, ...fallback], "templateRadius": geometry.radius,
-					"minimumCCDistance": mergePolicy().houseMinimumCCDistance };
+				else
+				{
+					// P1 remains frozen: extend the organized house line with the prior broad fallback.
+					let dx = woodPos[0] - cc.position()[0], dz = woodPos[1] - cc.position()[1];
+					const len = Math.hypot(dx, dz) || 1;
+					dx /= len; dz /= len;
+					const tangent = [-dz, dx];
+					const spacing = Math.max(10, 2 * Number(geometry.radius || 4) + 2);
+					const lineCandidates = [];
+					for (let step = 1; step <= 10; ++step)
+					{
+						lineCandidates.push([firstPos[0] + tangent[0] * spacing * step, firstPos[1] + tangent[1] * spacing * step]);
+						lineCandidates.push([firstPos[0] - tangent[0] * spacing * step, firstPos[1] - tangent[1] * spacing * step]);
+					}
+					const fallback = generatePlacementCandidates({
+						"kind": "house", "anchor": firstPos,
+						"toward": woodPos,
+						"distances": [10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58], "angleCount": 32,
+						"templateRadius": geometry.radius
+					});
+					request = { kind, "candidates": [...lineCandidates, ...fallback], "templateRadius": geometry.radius,
+						"minimumCCDistance": policy.houseMinimumCCDistance };
+				}
 			}
 		}
+
 		else if (kind === "field")
 		{
 			const hub = this.farmsteadForNextField(gameState, accessIndex);
@@ -3150,8 +3252,28 @@ export class ExpertDecisionController
 		if (!(target && target.resourceSupplyAmount && target.resourceSupplyAmount() > 0 && !isSupplyFull(gameState, target)))
 		{
 			const candidates = cluster.availableIds.map(id => gameState.getEntityById(id)).filter(s => s && entityPosition(s));
-			candidates.sort((a, b) => SquareVectorDistance(ent.position(), a.position()) - SquareVectorDistance(ent.position(), b.position()) || a.id() - b.id());
+			// IT14.12 pro berry micro: keep existing assignments sticky, but NEW natural-food
+			// assignments fill each bush/supply once before doubling up. Regenerating berries
+			// therefore get one civilian per bush whenever the patch geometry allows it.
+			const loads = new Map(candidates.map(s => [s.id(), 0]));
+			for (const worker of gameState.getOwnUnits().values())
+			{
+				if (!worker || worker.id() === ent.id() || !worker.getMetadata)
+					continue;
+				const job = worker.getMetadata(PlayerID, JOB_METADATA);
+				if (job !== "food" && job !== "food_owned")
+					continue;
+				const supplyId = Number(worker.getMetadata(PlayerID, SUPPLY_ID));
+				if (loads.has(supplyId))
+					loads.set(supplyId, loads.get(supplyId) + 1);
+			}
+			candidates.sort((a, b) =>
+				(loads.get(a.id()) || 0) - (loads.get(b.id()) || 0) ||
+				SquareVectorDistance(ent.position(), a.position()) - SquareVectorDistance(ent.position(), b.position()) ||
+				a.id() - b.id());
 			target = candidates[0];
+			if (target)
+				aiWarn("[EXPERT-BERRIES] worker=" + ent.id() + " supply=" + target.id() + " priorLoad=" + (loads.get(target.id()) || 0));
 		}
 		if (!target)
 			return false;
@@ -3983,7 +4105,11 @@ export class ExpertDecisionController
 		// the first house exactly as before.
 		const phasePending = this.researchExpertPhase2(gameState, queues, frame);
 		if (!phasePending && !(defenseState && defenseState.active))
-			this.researchExpertEcoTech(gameState, queues, allFoodClusters, cc);
+		{
+			const militaryTech = this.researchExpertP2MilitaryTech(gameState, queues);
+			if (!militaryTech)
+				this.researchExpertEcoTech(gameState, queues, allFoodClusters, cc);
+		}
 		frame = this.filterFrameForOpeningTech(gameState, queues, allFoodClusters, frame);
 		if (defenseState && defenseState.shouldBuildTower)
 			frame = { ...frame, "actions": [...frame.actions, { "type": "BUILD", "kind": "tower", "role": "emergency_defense",
@@ -4065,7 +4191,7 @@ export class ExpertDecisionController
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.11] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.12] t=" + Math.round(gameState.ai.elapsedTime) +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" res=" + Math.round(res.food) + "/" + Math.round(res.wood) + "/" + Math.round(res.stone) + "/" + Math.round(res.metal) +
 			" desired f=" + workers.food + " farm=" + workers.farm + " w=" + workers.wood + " woodCiv=" + workers.woodCivilians + " overflow=" + workers.overflowWood + " b=" + workers.builders +
@@ -4112,7 +4238,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.11] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.12] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
