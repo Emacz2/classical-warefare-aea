@@ -1,13 +1,25 @@
 {
 	"type": "global",
-	"affects": ["Structure"],
+	"affects": [
+		"Structure"
+	],
 	"modifications": [
-	
 		{
-			"value": "Cost/Resources",
+			"value": "Cost/Resources/food",
+			"multiply": 0.95
+		},
+		{
+			"value": "Cost/Resources/wood",
+			"multiply": 0.95
+		},
+		{
+			"value": "Cost/Resources/stone",
+			"multiply": 0.95
+		},
+		{
+			"value": "Cost/Resources/metal",
 			"multiply": 0.95
 		}
-		
 	],
 	"auraName": "Supreme Accounting",
 	"showDescription": 1,
