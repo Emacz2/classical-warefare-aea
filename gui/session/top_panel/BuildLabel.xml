@@ -3,7 +3,8 @@
 
 	<!-- IMPORTANT: remember to update pregame/ProjectInformation.js in sync with this: -->
 	<object type="text" style="ModernLabelText" text_valign="top" ghost="true" size="0% 1 100% 100%">
-		<translatableAttribute id="caption">Release XXVIII: Boiorix With Classical Warfare AEA 28.9</translatableAttribute>
+
+		<translatableAttribute id="caption">Release XXVIII: Boiorix With Classical Warfare AEA 0.28.1</translatableAttribute>
 	</object>
 
 	<!-- Displays build date and build version-->

@@ -1,14 +1,28 @@
 {
-  "type": "global",
-  "affects": ["Trader"],
-  "modifications": [
-    {
-      "value": "Cost/Resources",
-      "multiply": 0.90
-    }
-  ],
-  "auraName": "Protected Envoys",
-  "showDescription": 1,
-  "auraDescription": "Traders cost 10% fewer resources.",
-  "stackable": true
+	"type": "global",
+	"affects": [
+		"Trader"
+	],
+	"modifications": [
+		{
+			"value": "Cost/Resources/food",
+			"multiply": 0.9
+		},
+		{
+			"value": "Cost/Resources/wood",
+			"multiply": 0.9
+		},
+		{
+			"value": "Cost/Resources/stone",
+			"multiply": 0.9
+		},
+		{
+			"value": "Cost/Resources/metal",
+			"multiply": 0.9
+		}
+	],
+	"auraName": "Protected Envoys",
+	"showDescription": 1,
+	"auraDescription": "Traders cost 10% fewer resources.",
+	"stackable": true
 }
