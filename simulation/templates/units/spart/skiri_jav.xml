@@ -8,7 +8,7 @@
     <Rank>Elite</Rank>
     <Civ>spart</Civ>
     <Lang>greek</Lang>
-    <GenericName>Elite Skiritai Light Skirmisher</GenericName>
+    <GenericName>Elite Skiritai Light Javelineer</GenericName>
     <SpecificName>Ékdromos Skirítēs</SpecificName>
     <VisibleClasses datatype="tokens">Switch</VisibleClasses>
     <Tooltip>As scout, speed is 12.5 but loses 1 HP every 2 seconds when moving. While idle health regenerates 1 HP every 2 seconds.  Can not build as a scout. Can switch to thrusting spearman. Restricted to 20 Skirítēs total</Tooltip>

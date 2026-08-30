@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="allied_cav|cav_charge|cav_medium|cav_spear_shield|template_unit_cavalry_melee_spearman">
   <Identity>
+    <GenericName>Allied Treveri Horse Spearman</GenericName>
     <Civ>gaul</Civ>
     <SelectionGroupName>units/gaul/cavalry_treveri_spear_b</SelectionGroupName>
-    <SpecificName>Treveri Allied Spear Cavalry</SpecificName>
+    <SpecificName>Allied Treveri Horse Spearman</SpecificName>
     <Icon>units/gaul/cavalry_javelinist.png</Icon>
   </Identity>
    <Promotion>

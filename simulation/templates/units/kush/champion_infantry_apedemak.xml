@@ -3,7 +3,7 @@
   <Identity>
     <Civ>kush</Civ>
     <Lang>napatan</Lang>
-    <GenericName>Meroitic Temple Guard</GenericName>
+    <GenericName>Meroitic Temple Guard Axeman</GenericName>
     <SpecificName>Rs ʿIprmk</SpecificName>
     <Classes datatype="tokens">ApedemakGuard</Classes>
     <Icon>units/kush/champion_apedemak.png</Icon>

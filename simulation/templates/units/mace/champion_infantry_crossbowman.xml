@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="macedonian|gastraphetes|armor_light|template_unit_champion_infantry_crossbowman">
   <Identity>
+    <GenericName>Macedonian Champion Crossbowman</GenericName>
     <Civ>mace</Civ>
     <Lang>greek</Lang>
     <SpecificName>Gastraphetophoros</SpecificName>

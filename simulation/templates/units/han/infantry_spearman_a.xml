@@ -10,6 +10,7 @@
     </Entities>
   </Builder>
   <Identity>
+    <GenericName>Han Spearman</GenericName>
     <Civ>han</Civ>
     <SelectionGroupName>units/han/infantry_spearman_b</SelectionGroupName>
     <Icon>units/han/infantry_spearman.png</Icon>

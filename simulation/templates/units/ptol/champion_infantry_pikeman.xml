@@ -3,7 +3,7 @@
   <Identity>
     <Civ>ptol</Civ>
     <Lang>greek</Lang>
-    <GenericName>Royal Guard Infantry</GenericName>
+    <GenericName>Ptolemaic Royal Guard Pikeman</GenericName>
     <SpecificName>Phalangitès Agema</SpecificName>
     <Icon>units/ptol/champion_infantry.png</Icon>
   </Identity>

@@ -4,7 +4,7 @@
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SpecificName>Eques Cōnsulāris</SpecificName>
-    <GenericName>Consular Bodyguard</GenericName>
+    <GenericName>Consular Bodyguard Horse Spearman</GenericName>
     <Icon>units/rome/consul_spear.png</Icon>
     <SelectionGroupName>units/rome/champion_cavalry_spear_consul</SelectionGroupName>
   </Identity>

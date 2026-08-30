@@ -12,7 +12,7 @@
   </Upgrade>
   <Identity>
     <Rank>Elite</Rank>
-    <GenericName>Royal Guard</GenericName>
+    <GenericName>Spartan Royal Guard Spearman</GenericName>
     <SpecificName>Hippeis</SpecificName>
     <VisibleClasses datatype="tokens">Free</VisibleClasses>
     <Icon>units/spart/olympic_spear.png</Icon>

@@ -4,7 +4,7 @@
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SelectionGroupName>units/rome/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Roman Spear Cavalry</GenericName>
+    <GenericName>Roman Horse Spearman</GenericName>
     <SpecificName>Eques Rōmānus</SpecificName>
     <Icon>units/rome/cavalry_spearman.png</Icon>
   </Identity>

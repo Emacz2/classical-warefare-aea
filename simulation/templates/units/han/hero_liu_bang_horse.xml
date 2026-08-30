@@ -5,6 +5,7 @@
     units/heroes/han_hero_liu_bang_2
   </Auras>
   <Identity>
+    <GenericName>Liu Bang</GenericName>
     <Civ>han</Civ>
     <SpecificName>Liú Bāng</SpecificName>
     <Icon>units/han/hero_liu_bang.png</Icon>

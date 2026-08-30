@@ -14,7 +14,7 @@
    <Upgrade>
     <persian_stoa>
       <Entity>structures/{civ}/persian_stoa</Entity>
-      <Tooltip>Upgrade you baracks or stable to train champion infantry and cavalry.</Tooltip>
+      <Tooltip>Upgrade your barracks or stable to train champion infantry and cavalry.</Tooltip>
       <Cost>
         <metal>25</metal>
         <stone>50</stone>

@@ -11,7 +11,7 @@
   <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/infantry_swordsman_b</SelectionGroupName>
-    <GenericName>Infantry Swordman</GenericName>
+    <GenericName>Iberian Swordsman</GenericName>
     <SpecificName>Oinezko Ezpatari</SpecificName>
     <Icon>units/iber/infantry_swordsman.png</Icon>
     <Requirements>

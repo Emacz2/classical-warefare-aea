@@ -2,7 +2,7 @@
 <Entity parent="ptol|cav_bodyguard|cav_heavy|cav_shock|template_unit_champion_cavalry_lancer">
   <Identity>
     <Civ>ptol</Civ>
-    <GenericName>Agema Companion Cavalry</GenericName>
+    <GenericName>Ptolemaic Agema Horse Spearman</GenericName>
     <SpecificName>Ágēma Basiléōs</SpecificName>
     <Icon>units/ptol/champion_cavalry.png</Icon>
   </Identity>

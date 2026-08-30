@@ -2,7 +2,7 @@
 <Entity parent="allied_inf|units/samnite_skirmisher">
   <Identity>
     <Civ>cart</Civ>
-    <GenericName>Samnite Allied Skirmisher</GenericName>
+    <GenericName>Allied Samnite Javelineer</GenericName>
     <SpecificName>Vēles Samnītis</SpecificName>
     <SelectionGroupName>units/cart/allied_inf_samnite_skirmisher_b</SelectionGroupName>
     <Icon>units/samn/skirmisher.png</Icon>

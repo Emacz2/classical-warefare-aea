@@ -3,7 +3,7 @@
   <Identity>
     <Lang>greek</Lang>
     <Civ>athen</Civ>
-    <GenericName>Champion Infantry Crossbowman</GenericName>
+    <GenericName>Athenian Champion Crossbowman</GenericName>
     <SpecificName>Gastraphetophoros</SpecificName>
     <Icon>units/mace/champion_infantry_crossbowman.png</Icon>
     <Tooltip></Tooltip>

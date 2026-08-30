@@ -2,15 +2,19 @@
 <Entity parent="merc_inf_market|merc_inf|units/thracian_peltast_sword">
   <Upgrade>
     <Peltast_Jav>
-      <Entity>units/athen/merc_market_thracian_peltast</Entity>
+      <Entity>units/spart/merc_market_thracian_peltast_b</Entity>
       <Tooltip>Switch to throwing javelins.</Tooltip>
       <Variant>upgrading</Variant>
       <Time>4</Time>
     </Peltast_Jav>
   </Upgrade>
-    <Identity>
-    <Rank>Advanced</Rank>
-    </Identity>
+  <Identity>
+    <Civ>spart</Civ>
+    <Lang>greek</Lang>
+    <Rank>Basic</Rank>
+    <GenericName>Thracian Mercenary Swordsman</GenericName>
+    <SelectionGroupName>units/spart/merc_market_thracian_sword_b</SelectionGroupName>
+  </Identity>
   <Promotion disable=""/>
   <VisualActor>
     <Actor>units/macedonians/infantry_swordsman_c_thracian.xml</Actor>

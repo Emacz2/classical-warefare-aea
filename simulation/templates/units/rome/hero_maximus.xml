@@ -5,6 +5,7 @@
     units/heroes/rome_hero_maximus_2
   </Auras>
   <Identity>
+    <GenericName>Quintus Fabius Maximus</GenericName>
     <Civ>rome</Civ>
     <Lang>latin</Lang>
     <SpecificName>Quīntus Fabius Maximus Verrūcōsus Cūnctātor</SpecificName>

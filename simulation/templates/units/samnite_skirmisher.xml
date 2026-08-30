@@ -2,7 +2,7 @@
 <Entity parent="shield_medium|armor_light|template_unit_infantry_ranged_javelineer">
   <Identity>
     <Classes datatype="tokens">Samnite</Classes>
-    <GenericName>Samnite Skirmisher</GenericName>
+    <GenericName>Samnite Javelineer</GenericName>
     <SpecificName>Vēles Samnītis</SpecificName>
     <Icon>units/samn/skirmisher.png</Icon>
   </Identity>

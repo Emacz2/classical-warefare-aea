@@ -21,7 +21,7 @@
     </Ranged>
   </Attack>
   <Identity>
-    <GenericName>Champion Infantry Crossbowman</GenericName>
+    <GenericName>Champion Crossbowman</GenericName>
     <VisibleClasses datatype="tokens">Ranged Crossbowman</VisibleClasses>
   </Identity>
   <Sound>

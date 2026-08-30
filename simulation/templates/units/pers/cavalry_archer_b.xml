@@ -4,7 +4,7 @@
     <Civ>pers</Civ>
     <Lang>persian</Lang>
     <SelectionGroupName>units/pers/cavalry_archer_b</SelectionGroupName>
-    <GenericName>Saka Mounted Archer</GenericName>
+    <GenericName>Saka Horse Archer</GenericName>
     <SpecificName>Asabāra Saka</SpecificName>
     <Icon>units/pers/cavalry_archer.png</Icon>
   </Identity>

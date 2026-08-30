@@ -3,7 +3,7 @@
   <Identity>
     <Civ>ptol</Civ>
     <SelectionGroupName>units/ptol/cavalry_spearman_b</SelectionGroupName>
-    <GenericName>Ptolemaic Horse Scout</GenericName>
+    <GenericName>Ptolemaic Horse Scout Spearman</GenericName>
     <SpecificName>Hippeús Symmakhikós</SpecificName>
     <Icon>units/spart/cavalry_spearman.png</Icon>
   </Identity>

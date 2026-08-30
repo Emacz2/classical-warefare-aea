@@ -4,7 +4,7 @@
     <Ranged>
       <AttackName>Bolt</AttackName>
       <Damage>
-        <Pierce>90</Pierce>
+        <Pierce>80</Pierce>
       </Damage>
       <MaxRange>80</MaxRange>
       <MinRange>15</MinRange>
@@ -13,7 +13,7 @@
       <Bonuses>
         <BonusMelee>
           <Classes>Human</Classes>
-          <Multiplier>3</Multiplier>
+          <Multiplier>2.5</Multiplier>
         </BonusMelee>
       </Bonuses>
       <Projectile>
@@ -72,7 +72,7 @@
   <Identity>
     <VisibleClasses datatype="tokens">Ranged BoltShooter</VisibleClasses>
     <GenericName>Bolt Shooter</GenericName>
-    <Tooltip>3 x dmg vs Humnans</Tooltip>
+    <Tooltip>2.5 x damage vs humnans</Tooltip>
     <Requirements>
       <Techs datatype="tokens">phase_city</Techs>
     </Requirements>

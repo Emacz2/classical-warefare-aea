@@ -31,7 +31,7 @@
   </UnitMotion>
 
   <Identity>
-    <GenericName>Infantry Raider</GenericName>
+    <GenericName>Raider</GenericName>
     <VisibleClasses datatype="tokens">Raider</VisibleClasses>
     <Tooltip>Raiders walk 10% faster, deal 25% more damage to support units, and gain +0.5 capture attack.</Tooltip>
   </Identity>

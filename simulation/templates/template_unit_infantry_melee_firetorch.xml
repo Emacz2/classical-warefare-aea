@@ -31,7 +31,7 @@
     </Resources>
   </Cost>
   <Identity>
-    <GenericName>Infantry Torchman</GenericName>
+    <GenericName>Torchman</GenericName>
     <VisibleClasses datatype="tokens">Torchman</VisibleClasses>
   </Identity>
   <Sound>

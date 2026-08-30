@@ -7,7 +7,7 @@
     <Civ>kush</Civ>
     <Lang>napatan</Lang>
     <SelectionGroupName>units/kush/cavalry_swordsman_merc</SelectionGroupName>
-    <GenericName>Blemmye Desert Raider</GenericName>
+    <GenericName>Blemmye Camel Swordsman Raider</GenericName>
     <SpecificName>Nhw Bulahau gml</SpecificName>
     <VisibleClasses datatype="tokens">Camel</VisibleClasses>
     <Icon>units/kush/camel_javelinist.png</Icon>

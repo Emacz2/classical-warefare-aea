@@ -18,7 +18,7 @@
   <Identity>
     <Civ>gaul</Civ>
     <GenericName>Belgian Diplomat</GenericName>
-    <Tooltip>Allows you to build Belgian Coalition Camps and research new technogies and train Treveri Cavalry</Tooltip>
+    <Tooltip>Allows you to build Belgian Coalition Camps and research new technologies and train Treveri Cavalry</Tooltip>
     <Classes datatype="tokens">Organic Human</Classes>
     <VisibleClasses datatype="tokens">Diplomat</VisibleClasses>
     <Icon>units/gaul/celt_diplo.png</Icon>

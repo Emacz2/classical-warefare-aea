@@ -2,7 +2,7 @@
 <Entity parent="germ|cav_charge|cav_medium|template_unit_champion_cavalry_swordsman">
   <Identity>
     <Civ>germ</Civ>
-    <GenericName>Cimbrian Noble Cavalry</GenericName>
+    <GenericName>Cimbrian Noble Horse Swordsman</GenericName>
     <SpecificName>Aþalazridjô</SpecificName>
     <SelectionGroupName>units/germ/champion_cavalry</SelectionGroupName>
     <Icon>units/germ/champion_cavalry.png</Icon>

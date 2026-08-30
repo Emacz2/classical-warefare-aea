@@ -11,7 +11,7 @@
   <Identity>
     <Civ>iber</Civ>
     <SelectionGroupName>units/iber/infantry_spearman_b</SelectionGroupName>
-    <GenericName>Infantry Spearman</GenericName>
+    <GenericName>Iberian Spearman</GenericName>
     <SpecificName>Oinezko Lantzari</SpecificName>
     <Icon>units/iber/infantry_spearman.png</Icon>
   </Identity>

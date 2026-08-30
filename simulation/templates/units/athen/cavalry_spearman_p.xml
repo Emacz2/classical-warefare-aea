@@ -2,7 +2,7 @@
 <Entity parent="civ/athen|athenian|cav_pursuit|thrusting_spear|template_unit_cavalry_melee_spearman">
   <Identity>
     <SelectionGroupName>units/athen/cavalry_spearman</SelectionGroupName>
-    <GenericName>Athenian Horse Scout</GenericName>
+    <GenericName>Athenian Horse Scout Spearman</GenericName>
     <Icon>units/athen/cavalry_pursuit.png</Icon>
   </Identity>
 <Promotion disable=""/>
