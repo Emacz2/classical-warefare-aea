@@ -23,8 +23,8 @@
   </Attack>
     <Cost>
     <Resources>
-      <food op="add">10</food>
-      <metal>40</metal>
+      <food op="add">25</food>
+      <metal>25</metal>
     </Resources>
   </Cost>
   <Identity>

@@ -22,7 +22,8 @@
   </Attack>
   <Cost>
     <Resources>
-      <wood>50</wood>
+      <metal>10</metal>
+      <wood>40</wood>
     </Resources>
   </Cost>
   <Identity>
