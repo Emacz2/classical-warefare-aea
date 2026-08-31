@@ -163,3 +163,22 @@ Replay regressions locked by IT14:
 - Independent buildings strongly prefer positions outside the farm district (about 38m from farmstead centers) while retaining their existing candidate order once outside that district.
 - House and market fallback generation no longer treats farmsteads as generic development anchors; food hubs are not seeds for housing/military sprawl.
 - Resource-driven dropsites and emergency towers remain exempt so wood access and emergency defense are not sacrificed to layout aesthetics.
+
+## IT14.24 adaptive P1 food/wood + persistent farm districts
+- Preserve the IT14.14/15 high-throughput opening, Wicker-before-secondary-farmstead sequence, IT14.21 farmstead authorization rule, IT14.22 natural-to-field handoff, and IT14.23 independent-building farm-ring protection.
+- Twenty ordinary civilian woodcutters is an opening target, not a permanent law. After ~3 minutes a live feedback governor uses food/wood banks, delivered food income versus current food burn, immediate food capacity, field construction, and food-owned overflow to decide whether the economy is balanced, needs food recovery, or can release NEW civilians to wood.
+- During real food recovery, move at most a small cooldown-controlled batch of ordinary civilian lumberjacks back to food and never below the protected minimum civilian wood core. The opening ordinal script may not undo an adaptive food correction on the next tick.
+- A food-owned worker with no usable food capacity remains food-owned while temporarily chopping wood. Temporary overflow is a symptom that should accelerate permanent food capacity, not silently inflate the permanent civilian wood workforce.
+- Once >=7 fields are established and the food bank plus delivered food rate demonstrate genuine surplus, only NEW civilians may grow the permanent wood workforce above the opening target. Established farmers are not stripped from food to repair wood.
+- Every civilian working a natural-food cluster remembers the nearby farmstead as its home food district. A dedicated natural-food branch becomes a permanent local farm district when its source is exhausted: those workers take/build nearby fields before considering distant food.
+- Locality is strong but not absolute: after a home district has at least 3 completed local fields and no legal local field slot remains, its workers may be released to another food district.
+- Reuse exhausted natural-food farmsteads for permanent farming before buying another hub. Existing dropsites may use a modest <=4m field-border gap when the preferred near-touching ring is obstructed; dedicated new farm hubs retain the stricter capacity requirement.
+- Houses, barracks, and markets reserve the future farm district even while berries/fruit still occupy it. Their hard farmstead clearance remains conservative enough not to reintroduce the housing deadlock; outside that protected core, existing placement ordering is preserved.
+
+
+## IT14.25 second-storehouse handoff + storehouse builder micro
+- Built directly from IT14.24; do not alter the IT14.24 adaptive food/wood controller in this patch.
+- As soon as the *second* storehouse has a live foundation, its position is the primary wood destination for NEW wood workers. Existing lumberjacks keep their explicit old WORKSITE_ID.
+- Newly-created civilians that are still part of the opening wood tranche help finish storehouse #2 if its foundation is live; on completion that crew is committed to the new woodsite.
+- Storehouse construction prefers melee/hoplite citizen-soldiers over javelin/ranged citizen-soldiers when both are reasonable candidates, leaving the faster ranged units on the repeated wood walking loop.
+- `farmCapacitySnapshot()` must create its own merged policy before referencing farm-reuse settings; the IT14.24 `policy is not defined` runtime spam is forbidden.

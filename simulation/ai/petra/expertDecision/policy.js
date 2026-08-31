@@ -187,18 +187,31 @@ const DEFAULT_POLICY = Object.freeze({
   // Preserve a still-rich committed forest instead of switching the whole lumber crew
   // just because the tight ring around its storehouse has thinned out.
   woodMigrationRetainWoodRatio: 1.15,
-  // Post-opening civilians are assigned once, then left alone. New workers repair
-  // resource imbalance instead of yanking established farmers off fields.
+  // Post-opening assignments are sticky, but not blind. Permanent farmers remain
+  // protected; a severe food deficit may peel a tiny batch of civilian lumberjacks
+  // back to food while later wood recovery is supplied by NEW civilians.
   postOpeningFoodFloor: 300,
   postOpeningWoodFloor: 180,
   postOpeningFoodWoodRatioForWood: 2.0,
-  // IT14.20: 20 is the protected EARLY civilian wood tranche, not a permanent ceiling.
-  // Keep the strong food-first opening; once 8+ fields are online and food is clearly
-  // surplus, NEW civilians may reinforce wood. Existing farmers stay on food.
-  maxDynamicWoodCivilians: 20,
-  matureFoodWoodReleaseFields: 8,
-  matureFoodWoodReleaseBank: 1200,
-  matureFoodWoodReleaseRatio: 2.0,
+  // IT14.24: 20 is the opening civilian-wood target, not a permanent ceiling/floor.
+  // The feedback governor may
+  // peel a few of those civilians back to food when wood is clearly ahead, or let
+  // NEW civilians grow the wood workforce later when a mature food economy is surplus.
+  maxDynamicWoodCivilians: 28,
+  matureFoodWoodReleaseFields: 7,
+  matureFoodWoodReleaseBank: 900,
+  matureFoodWoodReleaseRatio: 1.75,
+  matureFoodWoodReleaseRateRatio: 1.30,
+  matureFoodWoodReleaseWoodBankCeiling: 550,
+  foodWoodFeedbackStartTime: 180,
+  foodRecoveryFoodBank: 500,
+  foodRecoveryWoodBank: 450,
+  foodRecoveryWoodFoodRatio: 1.50,
+  foodRecoveryStrongWoodFoodRatio: 2.25,
+  foodRecoveryRateRatio: 1.05,
+  foodRecoveryMinimumCivilianWood: 12,
+  foodRecoveryReassignBatch: 2,
+  foodRecoveryReassignCooldownSeconds: 12,
   dynamicWoodShortageBank: 350,
   foodSurplusRedirectThreshold: 900,
   foodSurplusPauseFarmExpansion: 1000,
@@ -234,8 +247,14 @@ const DEFAULT_POLICY = Object.freeze({
   // Independent buildings should live outside the food-production core. Fields keep
   // first claim on the legal ring immediately around every farmstead; houses/barracks/
   // markets prefer the outside of that district instead of consuming future field slots.
+  farmDistrictIndependentBuildingMinimumDistance: 28,
   farmDistrictIndependentBuildingPreferredDistance: 38,
   farmDistrictReservedSlotMargin: 2,
+  // Reuse natural-food farmsteads as permanent farm districts before buying another
+  // farm hub. Dedicated hubs still prefer near-touching fields; exhausted natural
+  // dropsites may use a modestly wider ring if that is what the terrain allows.
+  existingFarmsteadReuseMaxBorderGap: 4.0,
+  farmWorkerHomeRadius: 55,
   storehouseMinimumCCDistance: 18,
   // A forest is a work district, but repeated dropsites require a genuinely large,
   // actively-worked CONNECTED forest and a meaningful drop-distance improvement.

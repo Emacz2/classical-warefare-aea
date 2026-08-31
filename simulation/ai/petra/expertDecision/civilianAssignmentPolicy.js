@@ -210,6 +210,84 @@ function resourceBalanceDirective(input = {}) {
   };
 }
 
+
+function foodWoodFeedbackDirective(input = {}) {
+  const time = Math.max(0, Number(input.time) || 0);
+  const food = Math.max(0, Number(input.food) || 0);
+  const wood = Math.max(0, Number(input.wood) || 0);
+  const foodIncomeRate = Math.max(0, Number(input.foodIncomeRate) || 0);
+  const foodBurnRate = Math.max(0, Number(input.foodBurnRate) || 0);
+  const foodSlots = Math.max(0, finiteNonNegativeInteger(input.foodSlots, 0));
+  const fieldFoundations = Math.max(0, finiteNonNegativeInteger(input.fieldFoundations, 0));
+  const fields = Math.max(0, finiteNonNegativeInteger(input.fields, 0));
+  const overflowWood = Math.max(0, finiteNonNegativeInteger(input.overflowWood, 0));
+  const woodCivilians = Math.max(0, finiteNonNegativeInteger(input.woodCivilians, 0));
+
+  const startTime = Math.max(0, Number(input.startTime) || 180);
+  const recoveryFoodBank = Math.max(0, Number(input.recoveryFoodBank) || 500);
+  const recoveryWoodBank = Math.max(0, Number(input.recoveryWoodBank) || 450);
+  const recoveryWoodFoodRatio = Math.max(1, Number(input.recoveryWoodFoodRatio) || 1.5);
+  const recoveryRateRatio = Math.max(0.1, Number(input.recoveryRateRatio) || 1.05);
+  const strongWoodFoodRatio = Math.max(recoveryWoodFoodRatio, Number(input.strongWoodFoodRatio) || 2.25);
+  const minimumCivilianWood = Math.max(0, finiteNonNegativeInteger(input.minimumCivilianWood, 12));
+  const maxReassign = Math.max(0, finiteNonNegativeInteger(input.maxReassign, 2));
+
+  const releaseFields = Math.max(0, finiteNonNegativeInteger(input.releaseFields, 7));
+  const releaseFoodBank = Math.max(0, Number(input.releaseFoodBank) || 900);
+  const releaseRateRatio = Math.max(1, Number(input.releaseRateRatio) || 1.30);
+  const releaseFoodWoodRatio = Math.max(1, Number(input.releaseFoodWoodRatio) || 1.75);
+  const releaseWoodBankCeiling = Math.max(0, Number(input.releaseWoodBankCeiling) || 550);
+
+  const bankRatio = wood / Math.max(150, food);
+  const rateRatio = foodBurnRate > 0 ? foodIncomeRate / foodBurnRate : 999;
+
+  const bankRecovery = food < recoveryFoodBank && wood >= recoveryWoodBank && bankRatio >= recoveryWoodFoodRatio;
+  const rateRecovery = foodBurnRate > 0 && rateRatio < recoveryRateRatio && food < recoveryFoodBank + 200 && wood > food;
+  const capacityRecovery = overflowWood >= 4;
+  const recovery = time >= startTime && (bankRecovery || rateRecovery || capacityRecovery);
+
+  const strongRecovery = recovery && (
+    bankRatio >= strongWoodFoodRatio ||
+    (foodBurnRate > 0 && rateRatio < 0.90 && food < recoveryFoodBank) ||
+    (food < 300 && wood >= 600) ||
+    overflowWood >= 8
+  );
+
+  const nearTermFoodCapacity = foodSlots > 0 || fieldFoundations > 0;
+  const availableWoodCivilians = Math.max(0, woodCivilians - minimumCivilianWood);
+  // Overflow by itself means "build food capacity", not "steal from wood". The IT14.18
+  // benchmark had useful food overflow while wood was nearly empty; peeling lumberjacks
+  // there would regress a strong opening. Existing wood civilians only move when the
+  // wood bank is itself healthy and genuinely ahead of food.
+  const woodCanFundRecovery = wood >= recoveryWoodBank && wood > food;
+  const reassignCount = recovery && nearTermFoodCapacity && woodCanFundRecovery ?
+    Math.min(availableWoodCivilians, strongRecovery ? maxReassign : Math.min(1, maxReassign)) : 0;
+
+  const woodRelease = time >= startTime && !recovery &&
+    fields >= releaseFields && food >= releaseFoodBank &&
+    rateRatio >= releaseRateRatio &&
+    (wood <= releaseWoodBankCeiling || food >= Math.max(1, wood) * releaseFoodWoodRatio);
+
+  return {
+    mode: woodRelease ? "wood_release" : recovery ? "food_recovery" : "balanced",
+    food,
+    wood,
+    bankRatio,
+    foodIncomeRate,
+    foodBurnRate,
+    rateRatio,
+    foodSlots,
+    fieldFoundations,
+    fields,
+    overflowWood,
+    woodCivilians,
+    recovery,
+    strongRecovery,
+    reassignCount,
+    allowNewCivilianWood: woodRelease
+  };
+}
+
 function serializeCivilianRoster(roster) {
   return createCivilianRoster(roster);
 }
@@ -225,6 +303,7 @@ export {
   decideCivilianJob,
   decidePostOpeningCivilianJob,
   resourceBalanceDirective,
+  foodWoodFeedbackDirective,
   serializeCivilianRoster,
   deserializeCivilianRoster
 };

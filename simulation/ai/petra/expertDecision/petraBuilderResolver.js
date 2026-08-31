@@ -47,12 +47,12 @@ function builderScore(ent, request) {
   let score = request.targetPosition ? squareDistance(pos, request.targetPosition) : 0;
   if (request.preferCitizenSoldiers && typeof ent.hasClass === "function" && ent.hasClass("CitizenSoldier"))
     score -= 400;
-  // Storehouse builders return to wood immediately afterward. When gather/build rates
-  // are equal, prefer the faster ranged citizen-soldier so the walk/deposit/return cycle
-  // is marginally shorter while hoplites keep chopping.
-  if (request.preferRangedCitizenSoldiers && typeof ent.hasClass === "function" &&
-      ent.hasClass("CitizenSoldier") && (ent.hasClass("Ranged") || ent.hasClass("Javelineer")))
-    score -= 100;
+  // IT14.25 storehouse micro: keep the faster javelin/ranged soldiers on the repeated
+  // tree<->dropsite walking loop and use the slower melee/hoplite soldiers for the
+  // one-time construction walk whenever both are reasonable candidates.
+  if (request.preferMeleeCitizenSoldiers && typeof ent.hasClass === "function" &&
+      ent.hasClass("CitizenSoldier") && (ent.hasClass("Hoplite") || ent.hasClass("Melee")))
+    score -= 225;
   if (request.existingBuilderIds && request.existingBuilderIds.includes(ent.id()))
     score -= 1e9;
   return score;
@@ -92,7 +92,7 @@ function selectFoundationStarter(gameState, kind, targetPosition, action = {}, o
     taskId: options.taskId,
     requireEmptyHands: true,
     preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood"),
-    preferRangedCitizenSoldiers: kind === "storehouse",
+    preferMeleeCitizenSoldiers: kind === "storehouse",
     requiredBuilderIds: action.requiredBuilderIds
   });
   return selected[0];
@@ -109,7 +109,7 @@ function selectFoundationStarterCandidate(gameState, kind, targetPosition, actio
     taskId: options.taskId,
     requireEmptyHands: false,
     preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood"),
-    preferRangedCitizenSoldiers: kind === "storehouse",
+    preferMeleeCitizenSoldiers: kind === "storehouse",
     requiredBuilderIds: action.requiredBuilderIds
   });
   return selected[0];
@@ -124,7 +124,7 @@ function selectMaintenanceTeam(gameState, kind, targetPosition, count, action = 
     existingBuilderIds: options.existingBuilderIds || [],
     requireEmptyHands: false,
     preferCitizenSoldiers: kind === "house" || kind === "storehouse" || kind === "barracks" || kind === "market",
-    preferRangedCitizenSoldiers: kind === "storehouse",
+    preferMeleeCitizenSoldiers: kind === "storehouse",
     requiredBuilderIds: action.requiredBuilderIds
   });
 }
