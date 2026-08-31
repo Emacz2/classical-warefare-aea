@@ -87,3 +87,79 @@ Replay regressions locked by IT14:
 - A third barracks is P2-only and capacity-driven: >=110 pop, >=10 completed fields, and healthy food/wood banks.
 - P2 surplus research prefers affordable soldier combat upgrades before generic surplus eco upgrades; opening Wicker/Axe/Plows behavior is unchanged.
 - Deliberate territory bridging remains opportunistic through outward P2 housing; no separate territory-expansion strategy is introduced yet.
+
+## IT14.13 P1 food polish + Town infrastructure + civilian evacuation
+- P1 strategy remains frozen except: after Wicker, primary-fruit civilians above one per live bush deposit first and become wood workers.
+- Natural-expansion farmsteads are food dropsites first and hug the selected in-territory fruit/tree cluster; permanent farm hubs remain a separate role.
+- Fields target near-zero farmstead border gap, with a small failure-only relaxation to avoid deadlock.
+- Town phase adds one market after two barracks with a healthy wood reserve; no P1 market is introduced.
+- Third Town barracks keeps worksite-centered placement but gains a wide owned-territory fallback.
+- Civilians within local combat danger deposit carried resources, then seek safe work away from the threat or garrison in a house/CC; they resume their permanent job after danger passes.
+- Military defense assembly behavior and +40% Expert gather rate remain unchanged.
+
+
+## IT14.14 natural-food branch ownership
+- Post-Wicker excess berry civilians establish a worthwhile uncovered in-territory natural-food branch before falling back to wood.
+- The same branch civilians build the new farmstead deposit-first and remain committed to that natural-food cluster after completion.
+- A live individual berry/fruit target is sticky. Occupancy changes elsewhere may not retarget a worker that is already gathering or approaching a live supply.
+- Natural-food branch locks survive ordinary food balancing and release only when the locked cluster is genuinely exhausted.
+
+
+## IT14.15 P1 housing + territory-natural-food contract
+
+- Preserve the organized P1 house line as the first placement choice. If it is blocked, use real broad ring candidates around the outer developed/wood district; a blocked line must never hard-cap production.
+- Track the combined amount of natural food first observed inside owned territory. Permanent fields may not begin while worthwhile uncovered natural-food clusters remain or while the combined in-territory natural-food pool is above 30% of its discovered amount.
+- Cover worthwhile in-territory natural-food clusters sequentially with farmsteads before permanent farming. Existing Wicker branch ownership/sticky berry assignments remain unchanged.
+
+
+## IT14.17 rollback-safe opening corrections
+
+- Code lineage is IT14.15, not IT14.16.
+- Athens/Thebes secondary natural-food farmstead is blocked until Wicker Baskets is fully researched.
+- The natural-food preferred ceiling is eight civilians per connected patch, but this ceiling may never determine whether the opening berries are valid food.
+- Natural-food assignments must remain inside owned territory; a sticky target that ceases to be owned is invalidated.
+- Completed non-opening storehouse builders remain committed to the new storehouse worksite, and the completed storehouse remains the primary worksite for new wood workers.
+- The territory-wide natural-food ratio must pass through the Petra adapter into planner state.
+- Natural-food-first may be overridden when population >=45 and wood >=800, or when the natural-food network is at the eight-worker cap with <=2 immediate food slots.
+
+## IT14.18 civilian-food ownership + field-throughput contract
+
+- Permanent ordinary-civilian wood ownership is capped at 20 in P1. Citizen-soldiers remain the primary post-opening wood workforce.
+- Every ordinary civilian after that opening tranche is food-owned until the six-field mining gate permits metal/stone assignments.
+- If no natural/field slot is open, a food-owned civilian may chop wood temporarily without changing its permanent job; the next food slot must reclaim it automatically.
+- The natural-food eight-worker ceiling must never turn overflow civilians into permanent lumberjacks.
+- Field-capacity measurement and actual placement must use the same border-gap limit. Failure relaxation to ~1.3m must propagate into the real placement request.
+- Concurrent field starts fan across completed farmsteads so one obstructed hub cannot block capacity_1/2/3 in the same frame.
+
+
+
+## IT14.20 replay-combination contract
+- Preserve IT14.14's high-throughput opening and Wicker/secondary-food behavior.
+- Preserve IT14.15+ P1 housing fallback so the opening cannot die on a blocked house line.
+- Preserve IT14.18 food-owned overflow, 20-civilian opening wood tranche, field fan-out, and defensive behavior.
+- Do not add a permanent farm hub while field foundations are already filling current hubs; once those finish, add a hub immediately if measured touching capacity is still exhausted.
+- After 8+ completed fields and a strong food surplus, NEW civilians may reinforce wood; established farmers are not stripped from food.
+- Preserve a still-rich committed wood front and retain the primary storehouse entity id so staged migration cannot bounce the lumber crew unnecessarily.
+
+
+## IT14.21 compact-farm contract
+- A new farmstead has exactly two valid strategic reasons: (A) cover a worthwhile uncovered natural-food source inside owned territory, or (B) expand permanent farming after an existing farmstead has at least 3 completed adjacent fields and no legal touching field slot remains.
+- Field demand, overflow civilians, or a large wood bank alone may never authorize another permanent farmstead.
+- Concurrent field starts fill one compact farmstead block first; they no longer deliberately fan one field across each farmstead.
+- Permanent farm-hub placement keeps the full minimum field-capacity requirement; repeated placement failures must not relax into one-field/two-field farmstead spam.
+
+## IT14.22 natural-food-to-field handoff
+- Preserve the IT14.21 farmstead contract: natural-food dropsites or a genuinely saturated 3+ field farm hub are the only reasons to add another farmstead.
+- When the post-Wicker secondary natural-food branch is exhausted and no field exists, force field #1 immediately; do not merge those workers back onto already-occupied berry bushes.
+- Before Wicker, preserve the proven opening occupancy. After Wicker, multi-supply berry/fruit patches prefer one civilian per individual live supply; single-source fruit branches may still use multiple workers up to the connected-patch ceiling.
+- Immediate food-capacity accounting must use the same post-Wicker per-supply preference so food-owned civilians do not accumulate against imaginary berry capacity.
+- Field-capacity probing must not deadlock at the strict 0.8m border gap. Probe 1.3m and then the existing <=2m hard geometry contract before declaring an existing farmstead unable to accept a field.
+- Storehouse construction prefers ranged/javelin citizen-soldiers over hoplites when both are otherwise eligible, because gather/build rates are equal and the faster unit loses slightly less time to walking/deposit/return.
+
+## IT14.23 farm-district layout protection
+- Preserve IT14.22 food timing, Wicker handoff, worker ownership, storehouse-builder preference, and the IT14.21 farmstead authorization contract.
+- The legal touching-field ring around every completed or under-construction farmstead is reserved for fields before independent buildings are placed.
+- Houses, barracks, and markets may not occupy a currently legal reserved field footprint or sit directly against a farmstead.
+- Independent buildings strongly prefer positions outside the farm district (about 38m from farmstead centers) while retaining their existing candidate order once outside that district.
+- House and market fallback generation no longer treats farmsteads as generic development anchors; food hubs are not seeds for housing/military sprawl.
+- Resource-driven dropsites and emergency towers remain exempt so wood access and emergency defense are not sacrificed to layout aesthetics.

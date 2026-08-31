@@ -65,7 +65,7 @@ function generateFieldCandidates(request) {
   const farm = request.anchorHalfExtents || { width: 5, depth: 5 };
   const field = request.templateHalfExtents || { width: 14, depth: 14 };
   const baseGap = Number.isFinite(request.gap) ? request.gap : 0.5;
-  const gaps = Array.isArray(request.gaps) && request.gaps.length ? request.gaps : [baseGap, 1.0, 1.5, 2.0];
+  const gaps = Array.isArray(request.gaps) && request.gaps.length ? request.gaps : [baseGap, 0.25, 0.5, 0.75];
   const out = [];
   const seen = new Set();
   const push = (x, z) => {
@@ -123,6 +123,7 @@ function generatePlacementCandidates(request) {
     case "farmstead": return generateFarmsteadCandidates(request);
     case "field": return generateFieldCandidates(request);
     case "barracks": return generateRingCandidates(request, [18, 22, 26, 30]);
+    case "market": return generateRingCandidates(request, [28, 34, 40, 46, 52]);
     case "storehouse": return generateRingCandidates(request, [20, 24, 28, 32]);
     case "tower": return generateRingCandidates(request, [16, 20, 24, 28, 32]);
     default: throw new Error(`Unsupported placement kind ${request.kind}`);

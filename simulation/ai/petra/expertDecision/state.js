@@ -48,21 +48,24 @@ function normalizeState(input = {}) {
       storehouse: n(structures.storehouse),
       farmstead: n(structures.farmstead),
       field: n(structures.field),
-      barracks: n(structures.barracks)
+      barracks: n(structures.barracks),
+      market: n(structures.market)
     },
     foundations: {
       house: n(foundations.house),
       storehouse: n(foundations.storehouse),
       farmstead: n(foundations.farmstead),
       field: n(foundations.field),
-      barracks: n(foundations.barracks)
+      barracks: n(foundations.barracks),
+      market: n(foundations.market)
     },
     queued: {
       house: n(queued.house),
       storehouse: n(queued.storehouse),
       farmstead: n(queued.farmstead),
       field: n(queued.field),
-      barracks: n(queued.barracks)
+      barracks: n(queued.barracks),
+      market: n(queued.market)
     },
     food: {
       primaryRatio: Number.isFinite(food.primaryRatio) ? food.primaryRatio : 1,
@@ -76,11 +79,15 @@ function normalizeState(input = {}) {
       fieldCapacityKnown: bool(food.fieldCapacityKnown),
       supportedFieldSlots: n(food.supportedFieldSlots),
       openFieldSlots: n(food.openFieldSlots),
+      maxSaturatedHubFields: n(food.maxSaturatedHubFields),
       naturalIncomeRate: n(food.naturalIncomeRate),
       farmIncomeRate: n(food.farmIncomeRate),
       measuredFoodIncomeRate: n(food.measuredFoodIncomeRate),
       measuredFoodIncomeAvailable: bool(food.measuredFoodIncomeAvailable),
       totalNaturalRemaining: n(food.totalNaturalRemaining),
+      territoryNaturalDiscovered: n(food.territoryNaturalDiscovered),
+      territoryNaturalRatio: Number.isFinite(food.territoryNaturalRatio) ? Math.max(0, Math.min(1, food.territoryNaturalRatio)) : 1,
+      immediateFoodSlots: n(food.immediateFoodSlots),
       naturalRunwaySeconds: n(food.naturalRunwaySeconds),
       averageFarmerRate: n(food.averageFarmerRate),
       ccFoodBurnRate: n(food.ccFoodBurnRate),

@@ -14,7 +14,8 @@ function workerUnavailable(ent, playerId) {
   if (!ent || typeof ent.getMetadata !== "function")
     return true;
   if (ent.getMetadata(playerId, "transport") !== undefined || ent.getMetadata(playerId, "PartOfArmy") ||
-      ent.getMetadata(playerId, "expertDefenseMobilized") !== undefined)
+      ent.getMetadata(playerId, "expertDefenseMobilized") !== undefined ||
+      ent.getMetadata(playerId, "expertCivilianEvacuating") !== undefined)
     return true;
   const plan = ent.getMetadata(playerId, "plan");
   if (plan !== undefined && plan !== -1)
@@ -46,6 +47,12 @@ function builderScore(ent, request) {
   let score = request.targetPosition ? squareDistance(pos, request.targetPosition) : 0;
   if (request.preferCitizenSoldiers && typeof ent.hasClass === "function" && ent.hasClass("CitizenSoldier"))
     score -= 400;
+  // Storehouse builders return to wood immediately afterward. When gather/build rates
+  // are equal, prefer the faster ranged citizen-soldier so the walk/deposit/return cycle
+  // is marginally shorter while hoplites keep chopping.
+  if (request.preferRangedCitizenSoldiers && typeof ent.hasClass === "function" &&
+      ent.hasClass("CitizenSoldier") && (ent.hasClass("Ranged") || ent.hasClass("Javelineer")))
+    score -= 100;
   if (request.existingBuilderIds && request.existingBuilderIds.includes(ent.id()))
     score -= 1e9;
   return score;
@@ -58,7 +65,10 @@ function selectBuilders(gameState, request) {
     throw new Error("builder resolver requires allowedJobs");
   if (!Number.isInteger(request.count) || request.count < 1)
     throw new Error("builder resolver requires positive integer count");
-  const candidates = toEntities(gameState.getOwnUnits()).filter(ent => eligibleBuilder(ent, request));
+  const required = Array.isArray(request.requiredBuilderIds) && request.requiredBuilderIds.length ?
+    new Set(request.requiredBuilderIds.map(Number).filter(Number.isFinite)) : undefined;
+  const candidates = toEntities(gameState.getOwnUnits()).filter(ent =>
+    (!required || required.has(ent.id())) && eligibleBuilder(ent, request));
   candidates.sort((a, b) => builderScore(a, request) - builderScore(b, request) || a.id() - b.id());
   return candidates.slice(0, request.count);
 }
@@ -81,7 +91,9 @@ function selectFoundationStarter(gameState, kind, targetPosition, action = {}, o
     playerId: options.playerId || 1,
     taskId: options.taskId,
     requireEmptyHands: true,
-    preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood")
+    preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood"),
+    preferRangedCitizenSoldiers: kind === "storehouse",
+    requiredBuilderIds: action.requiredBuilderIds
   });
   return selected[0];
 }
@@ -96,7 +108,9 @@ function selectFoundationStarterCandidate(gameState, kind, targetPosition, actio
     playerId: options.playerId || 1,
     taskId: options.taskId,
     requireEmptyHands: false,
-    preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood")
+    preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood"),
+    preferRangedCitizenSoldiers: kind === "storehouse",
+    requiredBuilderIds: action.requiredBuilderIds
   });
   return selected[0];
 }
@@ -109,7 +123,9 @@ function selectMaintenanceTeam(gameState, kind, targetPosition, count, action = 
     taskId: options.taskId,
     existingBuilderIds: options.existingBuilderIds || [],
     requireEmptyHands: false,
-    preferCitizenSoldiers: kind === "house" || kind === "storehouse" || kind === "barracks"
+    preferCitizenSoldiers: kind === "house" || kind === "storehouse" || kind === "barracks" || kind === "market",
+    preferRangedCitizenSoldiers: kind === "storehouse",
+    requiredBuilderIds: action.requiredBuilderIds
   });
 }
 

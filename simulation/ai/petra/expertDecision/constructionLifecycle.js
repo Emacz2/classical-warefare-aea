@@ -2,6 +2,7 @@ const ALLOWED_POOLS = Object.freeze({
   house: ["wood", "citizenSoldierWood"],
   storehouse: ["wood", "citizenSoldierWood"],
   barracks: ["wood", "citizenSoldierWood"],
+  market: ["wood", "citizenSoldierWood"],
   tower: ["wood", "citizenSoldierWood"],
   farmstead: ["food", "food_owned", "farm"],
   field: ["food", "food_owned", "farm"]
@@ -23,6 +24,7 @@ function desiredBuilders(kind, context = {}) {
       if (context.opening) return 4;
       return 2;
     case "barracks": return 4;
+    case "market": return 3;
     case "tower": return 4;
     default: return 2;
   }
@@ -35,6 +37,7 @@ function constructionPriority(kind, context = {}) {
     case "field": return (Number(context.capacityDeficit) || 0) > 0 ? 94 : context.transition ? 88 : 70;
     case "farmstead": return context.opening ? 100 : 96;
     case "barracks": return context.urgent ? 99 : 93;
+    case "market": return 92;
     case "tower": return context.emergency ? 100 : 94;
     default: return 50;
   }

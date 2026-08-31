@@ -116,72 +116,47 @@ function decidePostOpeningCivilianJob(input = {}) {
   const naturalFoodAvailable = !!input.naturalFoodAvailable;
 
   const foodFloor = Math.max(0, Number(input.postOpeningFoodFloor) || 300);
-  const woodFloor = Math.max(0, Number(input.postOpeningWoodFloor) || 180);
-  const maxDynamicWood = Math.max(1, finiteNonNegativeInteger(input.maxDynamicWoodCivilians, 28));
-  const dynamicWoodShortage = Math.max(0, Number(input.dynamicWoodShortageBank) || 350);
-  const surplusFood = Math.max(foodFloor, Number(input.foodSurplusRedirectThreshold) || 900);
   const miningStart = Math.max(0, finiteNonNegativeInteger(input.miningStartCivilians, 45));
   const miningMinimumFields = Math.max(0, finiteNonNegativeInteger(input.miningMinimumCompletedFields, 6));
-  const miningFoodFloor = Math.max(foodFloor, Number(input.miningFoodFloor) || 750);
   const miningWoodFloor = Math.max(0, Number(input.miningWoodFloor) || 300);
   const stoneTarget = Math.max(0, finiteNonNegativeInteger(input.miningTargetStoneWorkers, 6));
   const metalTarget = Math.max(0, finiteNonNegativeInteger(input.miningTargetMetalWorkers, 6));
 
-  // This function is called only for a NEW civilian. Existing workers are never
-  // rebalanced here. First satisfy the mathematically required food workforce for
-  // the production buildings that are actually running. Do not keep assigning
-  // civilians to food merely because the CC has not reached 75 yet.
+  // IT14.20 contract: ordinary civilians own food after the opening 20-civilian
+  // wood tranche. Citizen-soldiers carry later wood growth. A food-owned civilian
+  // may TEMPORARILY chop wood when no completed food slot exists, but its permanent
+  // job remains food_owned so the next field immediately pulls it back.
+  if (woodCivilians < 20)
+    return { job: "wood", reason: "restore the 20-civilian opening wood workforce" };
+
   if (foodWorkers < requiredFoodWorkers) {
     if (naturalFoodAvailable)
       return { job: "food_owned", reason: `food workforce ${foodWorkers}/${requiredFoodWorkers}; exploit remaining natural food` };
     if (farmWorkers < farmCapacity)
       return { job: "farm", reason: `food workforce ${foodWorkers}/${requiredFoodWorkers}; take completed farm capacity` };
-    return { job: "food_owned", reason: `food workforce ${foodWorkers}/${requiredFoodWorkers}; permanent food capacity must catch up` };
+    return { job: "food_owned", reason: `food workforce ${foodWorkers}/${requiredFoodWorkers}; wait productively for permanent food capacity` };
   }
 
-  // Preserve the 20-civilian opening wood tranche. After that, only NEW civilians
-  // reinforce wood when the bank is genuinely short.
-  if (woodCivilians < 20)
-    return { job: "wood", reason: "new civilian finishes/restores the 20-civilian opening wood workforce" };
-
-  if (wood < dynamicWoodShortage && woodCivilians < maxDynamicWood)
-    return { job: "wood", reason: "food production is mathematically covered but wood is short" };
-
-  // Once current food burn is covered and wood is functional, start stone/metal
-  // with NEW civilians instead of making surplus farmers. This does not require a
-  // huge 900-food bank; the food workforce itself is the proof that food is covered.
-  if (fields >= miningMinimumFields && civilians >= miningStart && wood >= miningWoodFloor && food >= Math.min(foodFloor, miningFoodFloor)) {
-    // Metal opens first; stone is the lowest-priority generic reserve. This prevents the
-    // old 6-stone/6-metal symmetry from starving food/wood while low-value stone piles up.
+  // Generic mining still opens only after six completed fields. Once that durable
+  // food base exists, NEW civilians may establish metal first and then a small stone
+  // reserve. Wood remains the citizen-soldier responsibility rather than exceeding
+  // the 20 permanent civilian woodcutters.
+  if (fields >= miningMinimumFields && civilians >= miningStart && wood >= miningWoodFloor && food >= foodFloor) {
     if (metalWorkers < metalTarget)
-      return { job: "metal", reason: `six-field food base is online; establish the higher-priority metal reserve (${metalWorkers}/${metalTarget})` };
+      return { job: "metal", reason: `six-field food base is online; establish metal reserve (${metalWorkers}/${metalTarget})` };
     if (stoneWorkers < stoneTarget)
-      return { job: "stone", reason: `metal reserve is established; begin the smaller stone reserve (${stoneWorkers}/${stoneTarget})` };
-    if (wood < 700 && woodCivilians < maxDynamicWood)
-      return { job: "wood", reason: "mining is functional; new civilian shores up wood" };
-    return metalWorkers <= Math.max(1, stoneWorkers * 2) ?
-      { job: "metal", reason: "core economy covered; preserve metal-over-stone mining priority" } :
-      { job: "stone", reason: "metal is comfortably ahead; add a limited stone worker" };
+      return { job: "stone", reason: `metal reserve established; begin limited stone reserve (${stoneWorkers}/${stoneTarget})` };
   }
 
-  // Before mining is unlocked, use new workers to prevent a wood shortage. If both
-  // core resources are healthy, a small food buffer is still preferable to idling.
-  if (wood < woodFloor && woodCivilians < maxDynamicWood)
-    return { job: "wood", reason: "new civilian shores up the lower wood bank" };
-
-  if (food < foodFloor && foodWorkers <= requiredFoodWorkers)
-    return naturalFoodAvailable ?
-      { job: "food_owned", reason: "food bank is low; reinforce natural food without moving established workers" } :
-      { job: farmWorkers < farmCapacity ? "farm" : "food_owned", reason: "food bank is low; reinforce permanent food" };
-
-  // A large food bank must never create more farmers. Until mining is enabled, favor
-  // wood; once mining starts the branch above takes over.
-  if (food >= surplusFood && woodCivilians < maxDynamicWood)
-    return { job: "wood", reason: "food is floating; new civilian converts surplus into wood capacity" };
-
-  return { job: "wood", reason: "food requirement is already covered; keep the new civilian productive on wood until mining starts" };
+  if (farmWorkers < farmCapacity)
+    return { job: "farm", reason: "post-20 civilian takes completed permanent-food capacity" };
+  return {
+    job: "food_owned",
+    reason: naturalFoodAvailable ?
+      "post-20 civilian remains food-owned on natural food" :
+      "post-20 civilian remains food-owned while fields catch up"
+  };
 }
-
 
 function resourceBalanceDirective(input = {}) {
   const banks = {

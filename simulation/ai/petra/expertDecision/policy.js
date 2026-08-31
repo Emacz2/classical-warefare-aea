@@ -18,6 +18,16 @@ const DEFAULT_POLICY = Object.freeze({
   firstTrainedWoodCivilians: 3,
   secondTrainedFoodCivilians: 3,
   openingNaturalFoodCivilians: 7,
+  // After Wicker completes, preserve one civilian per live bush in the primary patch;
+  // surplus berry gatherers establish a worthwhile secondary food branch, otherwise wood.
+  postWickerOneWorkerPerBush: true,
+  // Preferred connected-patch ceiling. This caps NEW assignments only; it must never
+  // redefine whether the opening berries themselves are valid food.
+  naturalFoodMaxWorkersPerCluster: 8,
+  // One civilian per individual berry/fruit supply before permanent food. This is
+  // intentionally stricter than the connected-patch ceiling: a five-bush patch wants
+  // five civilians, not eight civilians piled onto those same five bushes.
+  naturalFoodMaxWorkersPerSupply: 1,
   targetWoodCivilians: 20,
   maxConcurrentBuilders: 6,
   maxConcurrentFieldTasks: 3,
@@ -42,6 +52,13 @@ const DEFAULT_POLICY = Object.freeze({
   farmPrepareRatio: 0.35,
   farmTransitionRatio: 0.25,
   naturalFoodExpansionRatio: 0.25,
+  // IT14.15 baseline: permanent fields normally begin when the COMBINED natural food
+  // discovered in our territory falls to roughly 30%. IT14.17 adds two safe overrides:
+  // spend a large wood bank on fields, or add field capacity when natural patches are full.
+  territoryNaturalFarmTransitionRatio: 0.30,
+  woodSurplusFarmExpansionBank: 800,
+  woodSurplusFarmExpansionPopulation: 45,
+  naturalFoodFieldPressureSlots: 2,
   minimumAlternativeNaturalFood: 120,
   foodSiteMinimumCommitSeconds: 20,
   naturalFoodDropsiteComfortDistance: 15,
@@ -54,6 +71,10 @@ const DEFAULT_POLICY = Object.freeze({
   farmersPerField: 3,
   fieldsPerFarmstead: 6,
   minimumFarmHubFieldSlots: 4,
+  // IT14.21 user contract: a NEW permanent farmstead is not allowed merely because
+  // field demand is high. The current compact block must have at least three completed
+  // fields and no remaining touching slot. Natural-food dropsites are the only exception.
+  minimumFieldsBeforeNextFarmHub: 3,
   minimumNaturalExpansionFieldSlots: 2,
   maxFarmHubDistanceFromCC: 70,
   minimumPrebuildFields: 2,
@@ -131,6 +152,8 @@ const DEFAULT_POLICY = Object.freeze({
   phase2MilitaryTechFoodReserve: 550,
   phase2MilitaryTechWoodReserve: 350,
   phase2MilitaryTechMetalReserve: 100,
+  phase2MarketPopulation: 90,
+  phase2MarketWoodReserve: 450,
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
   // emergency force multipliers, never routine border spam.
@@ -152,17 +175,30 @@ const DEFAULT_POLICY = Object.freeze({
   defenseTowerCooldownSeconds: 180,
   defenseTowerGarrisonSlots: 5,
   defenseTowerReserveWood: 125,
+  // Civilians near a live fight evacuate independently of army assembly.
+  civilianDangerRadius: 48,
+  civilianImmediateGarrisonRadius: 22,
+  civilianEvacuationReleaseSeconds: 10,
+  civilianSafeResourceThreatDistance: 62,
+  civilianSafeResourceCCDistance: 150,
   woodMigrationBatch: 4,
   woodMigrationWindowSeconds: 12,
   woodMigrationSalvageRadius: 52,
+  // Preserve a still-rich committed forest instead of switching the whole lumber crew
+  // just because the tight ring around its storehouse has thinned out.
+  woodMigrationRetainWoodRatio: 1.15,
   // Post-opening civilians are assigned once, then left alone. New workers repair
   // resource imbalance instead of yanking established farmers off fields.
   postOpeningFoodFloor: 300,
   postOpeningWoodFloor: 180,
   postOpeningFoodWoodRatioForWood: 2.0,
-  // 20 is the opening civilian wood target, not a lifetime ceiling. Once food is
-  // clearly solved, NEW civilians may reinforce wood if the bank is actually low.
-  maxDynamicWoodCivilians: 28,
+  // IT14.20: 20 is the protected EARLY civilian wood tranche, not a permanent ceiling.
+  // Keep the strong food-first opening; once 8+ fields are online and food is clearly
+  // surplus, NEW civilians may reinforce wood. Existing farmers stay on food.
+  maxDynamicWoodCivilians: 20,
+  matureFoodWoodReleaseFields: 8,
+  matureFoodWoodReleaseBank: 1200,
+  matureFoodWoodReleaseRatio: 2.0,
   dynamicWoodShortageBank: 350,
   foodSurplusRedirectThreshold: 900,
   foodSurplusPauseFarmExpansion: 1000,
@@ -195,6 +231,11 @@ const DEFAULT_POLICY = Object.freeze({
   barracksMinimumCCDistance: 28,
   barracksAwaitingFoundationRetrySeconds: 20,
   farmHubMinimumCCDistance: 40,
+  // Independent buildings should live outside the food-production core. Fields keep
+  // first claim on the legal ring immediately around every farmstead; houses/barracks/
+  // markets prefer the outside of that district instead of consuming future field slots.
+  farmDistrictIndependentBuildingPreferredDistance: 38,
+  farmDistrictReservedSlotMargin: 2,
   storehouseMinimumCCDistance: 18,
   // A forest is a work district, but repeated dropsites require a genuinely large,
   // actively-worked CONNECTED forest and a meaningful drop-distance improvement.
@@ -217,7 +258,8 @@ const DEFAULT_POLICY = Object.freeze({
     storehouse: { wood: 100 },
     farmstead: { wood: 100 },
     field: { wood: 100 },
-    barracks: { wood: 200 }
+    barracks: { wood: 200 },
+    market: { wood: 300 }
   })
 });
 

@@ -29,6 +29,12 @@ const BUILDING_SPECS = Object.freeze({
     queue: "militaryBuilding",
     allowedBuilderJobs: ["wood", "citizenSoldierWood"]
   },
+  market: {
+    className: "Market",
+    template: "structures/{civ}/market",
+    queue: "economicBuilding",
+    allowedBuilderJobs: ["wood", "citizenSoldierWood"]
+  },
   tower: {
     className: "Tower",
     template: "structures/{civ}/sentry_tower",
@@ -232,11 +238,15 @@ function observePetra(gameState, context = {}) {
       fieldCapacityKnown: !!context.food.fieldCapacityKnown,
       supportedFieldSlots: Number.isFinite(Number(context.food.supportedFieldSlots)) ? Math.max(0, Number(context.food.supportedFieldSlots)) : 0,
       openFieldSlots: Number.isFinite(Number(context.food.openFieldSlots)) ? Math.max(0, Number(context.food.openFieldSlots)) : 0,
+      maxSaturatedHubFields: Number.isFinite(Number(context.food.maxSaturatedHubFields)) ? Math.max(0, Number(context.food.maxSaturatedHubFields)) : 0,
       naturalIncomeRate: Number.isFinite(Number(context.food.naturalIncomeRate)) ? Math.max(0, Number(context.food.naturalIncomeRate)) : 0,
       farmIncomeRate: Number.isFinite(Number(context.food.farmIncomeRate)) ? Math.max(0, Number(context.food.farmIncomeRate)) : 0,
       measuredFoodIncomeRate: Number.isFinite(Number(context.food.measuredFoodIncomeRate)) ? Math.max(0, Number(context.food.measuredFoodIncomeRate)) : 0,
       measuredFoodIncomeAvailable: !!context.food.measuredFoodIncomeAvailable,
       totalNaturalRemaining: Number.isFinite(Number(context.food.totalNaturalRemaining)) ? Math.max(0, Number(context.food.totalNaturalRemaining)) : 0,
+      territoryNaturalDiscovered: Number.isFinite(Number(context.food.territoryNaturalDiscovered)) ? Math.max(0, Number(context.food.territoryNaturalDiscovered)) : 0,
+      territoryNaturalRatio: Number.isFinite(Number(context.food.territoryNaturalRatio)) ? Math.max(0, Math.min(1, Number(context.food.territoryNaturalRatio))) : 1,
+      immediateFoodSlots: Number.isFinite(Number(context.food.immediateFoodSlots)) ? Math.max(0, Number(context.food.immediateFoodSlots)) : 0,
       naturalRunwaySeconds: Number.isFinite(Number(context.food.naturalRunwaySeconds)) ? Math.max(0, Number(context.food.naturalRunwaySeconds)) : 0,
       averageFarmerRate: Number.isFinite(Number(context.food.averageFarmerRate)) ? Math.max(0, Number(context.food.averageFarmerRate)) : 0,
       ccFoodBurnRate: Number.isFinite(Number(context.food.ccFoodBurnRate)) ? Math.max(0, Number(context.food.ccFoodBurnRate)) : 0,
