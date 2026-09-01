@@ -75,23 +75,40 @@ function generateFieldCandidates(request) {
     out.push([x, z]);
   };
 
-  // Sweep the entire usable perimeter instead of trying only eight fixed slots.
-  // Tangential offsets remain within the farmstead/field overlap span, so every
-  // candidate is still directly adjacent (<= ~2m border gap) to the farmstead.
+  // IT14.27 FARM PACKING CONTRACT:
+  // Human players naturally put the first four fields on the middle of the four
+  // farmstead sides. The previous perimeter sweep began at the corners, so field #1
+  // could consume the geometry needed by two later fields and falsely make a roomy
+  // farmstead look "full". Always test the four canonical side-centres first.
+  //
+  // If a side-centre is obstructed, search a little left/right along THAT side before
+  // giving up. These offsets stay inside the farmstead/field overlap span, preserving
+  // direct adjacency instead of drifting into a loose ring.
+  const tangentFractions = [0.18, -0.18, 0.36, -0.36, 0.54, -0.54, 0.70, -0.70];
+
+  // First exhaust the true side-centres at every permitted border gap.
+  for (const gap of gaps) {
+    const x = Number(farm.width) + Number(field.width) + gap;
+    const z = Number(farm.depth) + Number(field.depth) + gap;
+    push(anchor[0], anchor[1] - z);  // north
+    push(anchor[0] + x, anchor[1]);  // east
+    push(anchor[0], anchor[1] + z);  // south
+    push(anchor[0] - x, anchor[1]);  // west
+  }
+
+  // Only then slide along an obstructed side.
   for (const gap of gaps) {
     const x = Number(farm.width) + Number(field.width) + gap;
     const z = Number(farm.depth) + Number(field.depth) + gap;
     const spanZ = Number(farm.depth) + Number(field.depth);
     const spanX = Number(farm.width) + Number(field.width);
-    const samples = Math.max(9, Number(request.edgeSamples) || 9);
-    for (let i = 0; i < samples; ++i) {
-      const t = samples === 1 ? 0 : -1 + 2 * i / (samples - 1);
-      const dz = t * spanZ;
-      const dx = t * spanX;
-      push(anchor[0] + x, anchor[1] + dz);
-      push(anchor[0] - x, anchor[1] + dz);
-      push(anchor[0] + dx, anchor[1] + z);
-      push(anchor[0] + dx, anchor[1] - z);
+    for (const fraction of tangentFractions) {
+      const dz = fraction * spanZ;
+      const dx = fraction * spanX;
+      push(anchor[0] + dx, anchor[1] - z);  // north
+      push(anchor[0] + x, anchor[1] + dz);  // east
+      push(anchor[0] + dx, anchor[1] + z);  // south
+      push(anchor[0] - x, anchor[1] + dz);  // west
     }
   }
   return out;

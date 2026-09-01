@@ -182,3 +182,21 @@ Replay regressions locked by IT14:
 - Newly-created civilians that are still part of the opening wood tranche help finish storehouse #2 if its foundation is live; on completion that crew is committed to the new woodsite.
 - Storehouse construction prefers melee/hoplite citizen-soldiers over javelin/ranged citizen-soldiers when both are reasonable candidates, leaving the faster ranged units on the repeated wood walking loop.
 - `farmCapacitySnapshot()` must create its own merged policy before referencing farm-reuse settings; the IT14.24 `policy is not defined` runtime spam is forbidden.
+
+
+## IT14.26 FARM NON-REGRESSION LOCK
+- IT14.25 proved the farm planner can deadlock when four permanent fields are split across two existing food districts (for example 2+2): both farmsteads report zero legal field slots, but neither single hub reaches the old 3-field saturation threshold.
+- This is now a forbidden state. If permanent food still needs more fields, there are no pending field builds, all measured field slots are exhausted, and the existing farm network already contains at least four permanent fields across two or more farmsteads, a new permanent farm hub is authorized.
+- The preferred rule remains unchanged: use current farmsteads first, and normally require a saturated hub with at least 3 fields before another farm hub. The network fallback exists only to escape a genuine all-hubs-full deadlock.
+- Do not change the natural-food -> field timing, field demand, field placement geometry, worker ownership, food/wood feedback governor, or house/barracks farm-ring protection in a patch whose purpose is unrelated to farming.
+- Farm regression invariant: when desired permanent fields exceed completed+pending fields and measured open field capacity is zero, the planner must either have an active field/farmstead capacity build or explicitly reserve the resources for one. It may never silently sit at 4 fields while wantFld continues climbing.
+
+
+## IT14.27 CANONICAL FARM PACKING LOCK
+- A completed farmstead's permanent-field capacity contract is four compact side slots, not six speculative perimeter slots.
+- Field placement tests the canonical N/E/S/W side-centres first at near-zero border gap. Only when a canonical side is obstructed may it search small tangential offsets along that same side, followed by the established modest border-gap fallback.
+- The field candidate generator must never begin at farmstead corners. Corner-first placement is forbidden because one awkward first field can consume the geometry of two later side slots and falsely report the hub as full.
+- Houses, barracks and markets reserve the same four canonical future field footprints even while temporary berries/fruit still occupy them.
+- Capacity accounting assigns each completed field to its nearest farmstead; one field may not make two nearby farmsteads both appear saturated.
+- `fieldsPerFarmstead` is 4. The normal target is 3-4 compact fields around the existing farmstead before a new permanent farm hub.
+- The IT14.26 all-hubs-full escape remains only as a true deadlock fallback after the canonical four-side scanner has been exhausted.

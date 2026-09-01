@@ -69,7 +69,10 @@ const DEFAULT_POLICY = Object.freeze({
   fieldTransitionLeadSeconds: 55,
   naturalFoodRunwaySafetySeconds: 45,
   farmersPerField: 3,
-  fieldsPerFarmstead: 6,
+  // IT14.27: compact human-like farm blocks target the four farmstead sides.
+  // Do not plan six speculative perimeter slots; four reliable N/E/S/W positions
+  // are the capacity contract, with small tangential fallback only if one side is blocked.
+  fieldsPerFarmstead: 4,
   minimumFarmHubFieldSlots: 4,
   // IT14.21 user contract: a NEW permanent farmstead is not allowed merely because
   // field demand is high. The current compact block must have at least three completed

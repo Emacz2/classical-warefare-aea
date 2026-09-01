@@ -3303,10 +3303,34 @@ export class ExpertDecisionController
 		let openFieldSlots = 0;
 		let maxSaturatedHubFields = 0;
 		const builtFields = this.builtByClass(gameState, "Field");
+
+		// IT14.27: a field belongs to its NEAREST farmstead for capacity accounting.
+		// The old 42m-radius count could credit the same field to two nearby food districts,
+		// making both hubs appear more saturated than they really were.
+		const fieldHome = new Map();
+		for (const field of builtFields)
+		{
+			if (!entityPosition(field))
+				continue;
+			let bestFarm;
+			let bestDistance = Infinity;
+			for (const candidateFarm of farms)
+			{
+				if (!entityPosition(candidateFarm))
+					continue;
+				const distance = SquareVectorDistance(field.position(), candidateFarm.position());
+				if (distance < bestDistance)
+				{
+					bestDistance = distance;
+					bestFarm = candidateFarm;
+				}
+			}
+			if (bestFarm && bestDistance <= 50*50)
+				fieldHome.set(field.id(), bestFarm.id());
+		}
 		for (const farm of farms)
 		{
-			const builtFieldCount = builtFields.filter(field =>
-				entityPosition(field) && SquareVectorDistance(field.position(), farm.position()) <= 42*42).length;
+			const builtFieldCount = builtFields.filter(field => fieldHome.get(field.id()) === farm.id()).length;
 			let slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared);
 			let fieldGapLimit = this.fieldRequestAt(gameState, farm.position(), farm.id()).maxBorderGap;
 			// Dedicated farm hubs still prefer near-touching fields. Existing natural-food
@@ -3795,12 +3819,33 @@ export class ExpertDecisionController
 				...this.foundationsByClass(gameState, "Farmstead")
 			].filter(ent => ent && entityPosition(ent));
 			const reservedSlots = [];
+			const reservedKeys = new Set();
+			const reserveSlot = (slot, farmsteadId) =>
+			{
+				if (!Array.isArray(slot) || slot.length < 2)
+					return;
+				const key = farmsteadId + ":" + Number(slot[0]).toFixed(2) + ":" + Number(slot[1]).toFixed(2);
+				if (reservedKeys.has(key))
+					return;
+				reservedKeys.add(key);
+				reservedSlots.push({ "position": slot, "farmsteadId": farmsteadId });
+			};
 			for (const farm of farmsteads)
 			{
+				// Reserve the four IDEAL N/E/S/W field footprints even if berries currently
+				// occupy one of them. Houses/barracks must not steal a future canonical slot.
+				const idealRequest = this.fieldRequestAt(gameState, farm.position(), farm.id());
+				idealRequest.gaps = [0.0];
+				idealRequest.maxBorderGap = 0.80;
+				const idealSlots = generatePlacementCandidates(idealRequest).slice(0, 4);
+				for (const slot of idealSlots)
+					reserveSlot(slot, farm.id());
+
+				// Also reserve any currently legal fallback slot proved by the live scanner.
 				const slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared,
 					policy.fieldsPerFarmstead, Math.max(2.0, Number(policy.existingFarmsteadReuseMaxBorderGap) || 4.0));
 				for (const slot of slots)
-					reservedSlots.push({ "position": slot, "farmsteadId": farm.id() });
+					reserveSlot(slot, farm.id());
 			}
 			farmDistrictReservation = {
 				"farmsteads": farmsteads,
@@ -5144,6 +5189,7 @@ export class ExpertDecisionController
 		const woodsite = this.collectWoodsite(gameState, cc, accessIndex);
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		const farmCapacity = this.farmCapacitySnapshot(gameState, accessIndex);
+		this.lastFarmCapacitySnapshot = farmCapacity;
 		const foodThroughput = this.foodThroughputMetrics(gameState, cc, foodNetwork);
 		const aiPending = countPendingCivilianTraining(gameState);
 		const livePending = this.countLiveCivilianTraining(gameState);
@@ -5282,7 +5328,7 @@ export class ExpertDecisionController
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.25] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.27] t=" + Math.round(gameState.ai.elapsedTime) +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" res=" + Math.round(res.food) + "/" + Math.round(res.wood) + "/" + Math.round(res.stone) + "/" + Math.round(res.metal) +
 			" desired f=" + workers.food + " farm=" + workers.farm + " w=" + workers.wood + " woodCiv=" + workers.woodCivilians + " overflow=" + workers.overflowWood + " b=" + workers.builders +
@@ -5310,7 +5356,9 @@ export class ExpertDecisionController
 			" natRatio=" + Math.round((Number(frame.state.food.territoryNaturalRatio) || 0) * 100) + "%" +
 			" runway=" + Math.round(frame.state.food.naturalRunwaySeconds) + "s" +
 			" burn=" + frame.state.food.ccFoodBurnRate.toFixed(1) + "/" + frame.state.food.oneBarracksFoodBurnRate.toFixed(1) + "/" + frame.state.food.twoBarracksFoodBurnRate.toFixed(1) +
-			" fieldCap=" + frame.state.food.supportedFieldSlots + "/" + frame.state.food.openFieldSlots);
+			" fieldCap=" + frame.state.food.supportedFieldSlots + "/" + frame.state.food.openFieldSlots +
+			" hubCap=" + (this.lastFarmCapacitySnapshot && this.lastFarmCapacitySnapshot.hubs ?
+				this.lastFarmCapacitySnapshot.hubs.map(hub => hub.builtFieldCount + "+" + hub.slots.length).join(",") : "-"));
 	}
 
 	releaseAll(gameState, reason)
@@ -5333,7 +5381,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.25] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.27] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

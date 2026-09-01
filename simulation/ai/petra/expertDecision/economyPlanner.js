@@ -455,8 +455,15 @@ function planEconomy(rawState, overrides = {}) {
     //    at least 3 completed fields around that saturated hub and no legal touching slot.
     // High field demand by itself is NEVER permission to spam another farmstead.
     const saturatedHubReady = state.food.maxSaturatedHubFields >= policy.minimumFieldsBeforeNextFarmHub;
+    // FARM NON-REGRESSION LOCK (IT14.26): never deadlock merely because the first
+    // permanent fields were split across two natural-food districts. If the *entire*
+    // existing farm network is measured full and we already paid for four permanent
+    // fields, that is enough evidence that the current farmsteads have been used before
+    // buying another hub. This preserves the normal 3-fields-on-one-hub rule while
+    // escaping the 2+2 saturation pattern seen in IT14.25.
+    const saturatedNetworkReady = currentFarmsteads >= 2 && existingFields >= 4 && openFieldSlots <= 0;
     const permanentHubNeeded = farm.missingFields > 0 && openFieldSlots <= 0 &&
-      pendingFields === 0 && saturatedHubReady;
+      pendingFields === 0 && (saturatedHubReady || saturatedNetworkReady);
     if (permanentHubNeeded &&
         state.foundations.farmstead + state.queued.farmstead === 0 && farm.mode !== "natural_expand") {
       const cost = costOf(state, policy, "farmstead");
