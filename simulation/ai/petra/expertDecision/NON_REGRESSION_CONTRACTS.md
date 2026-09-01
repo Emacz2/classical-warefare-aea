@@ -218,3 +218,10 @@ Replay regressions locked by IT14:
 - Forges inherit the IT14.28 independent-building layout rule: >=50 m from the primary CC and outside reserved farm districts.
 - The Town market remains one market, but placement is resource-aware: owned same-land stone/metal deposits and the active wood district are preferred before the existing outer-developed-settlement fallback. The >=50 m CC and farm-district protections remain mandatory.
 - Athens Town-phase barracks production follows a deterministic 2 Hoplite : 1 Athenian Marine : 1 Javelineer cycle. P1 opening military selection and CC training behavior are unchanged.
+
+
+## IT14.30 additive farm-packing contract
+- IT14.29 opening, berry retention, P2 gate, 50m CC exclusion, second-barracks timing, forge layer, market resource placement, and Athens P2 2:1:1 roster are frozen.
+- Existing farmsteads are exhausted before buying another permanent farm hub: normal compact slots first, then the 4m reuse ring, then a bounded 10m corner/fill-in pass, still capped at 4 fields per hub.
+- The wide fill-in pass may search diagonally around an obstructed side; it does not relax normal first-choice touching placement.
+- In Town Phase, completed Markets are valid food hubs for field placement and reserve their immediate field faces from later independent construction.

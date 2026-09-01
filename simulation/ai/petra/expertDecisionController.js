@@ -3213,15 +3213,17 @@ export class ExpertDecisionController
 		return `expert:${kind}:${this.taskCounters[kind]}`;
 	}
 
-	fieldRequestAt(gameState, farmPosition, farmsteadId)
+	fieldRequestAt(gameState, farmPosition, farmsteadId, hubKind = "farmstead")
 	{
 		const geometry = readTemplateGeometry(gameState, "field");
-		const farmGeom = readTemplateGeometry(gameState, "farmstead");
+		const farmGeom = readTemplateGeometry(gameState, hubKind);
 		const failures = Number(this.fieldPlacementFailures[farmsteadId] || 0);
 		return {
 			"kind": "field",
 			"anchor": farmPosition,
 			"farmsteadId": farmsteadId,
+			"foodHubId": farmsteadId,
+			"foodHubKind": hubKind,
 			"anchorHalfExtents": farmGeom.halfExtents || { "width": farmGeom.radius, "depth": farmGeom.radius },
 			"templateHalfExtents": geometry.halfExtents || { "width": geometry.radius, "depth": geometry.radius },
 			"templateRadius": geometry.radius,
@@ -3232,12 +3234,12 @@ export class ExpertDecisionController
 		};
 	}
 
-	fieldSlotsAt(gameState, farmPosition, farmsteadId, accessIndex, shared = undefined, slotLimit = undefined, maxBorderGapOverride = undefined)
+	fieldSlotsAt(gameState, farmPosition, farmsteadId, accessIndex, shared = undefined, slotLimit = undefined, maxBorderGapOverride = undefined, hubKind = "farmstead")
 	{
 		if (!Array.isArray(farmPosition))
 			return [];
 		const policy = mergePolicy();
-		const request = this.fieldRequestAt(gameState, farmPosition, farmsteadId);
+		const request = this.fieldRequestAt(gameState, farmPosition, farmsteadId, hubKind);
 		if (Number.isFinite(Number(maxBorderGapOverride)))
 		{
 			const limit = Math.max(0, Number(maxBorderGapOverride));
@@ -3246,9 +3248,12 @@ export class ExpertDecisionController
 			const step = limit <= 1.5 ? 0.25 : 0.5;
 			for (let gap = 0; gap <= limit + 0.001; gap += step)
 				request.gaps.push(Number(gap.toFixed(2)));
+			if (limit > 4.0)
+				request.allowWideTangents = true;
 		}
 		const fieldGeom = shared && shared.fieldGeom || readTemplateGeometry(gameState, "field");
-		const farmGeom = shared && shared.farmGeom || readTemplateGeometry(gameState, "farmstead");
+		const farmGeom = shared && shared.hubGeomByKind && shared.hubGeomByKind[hubKind] ||
+			readTemplateGeometry(gameState, hubKind);
 		const ports = shared && shared.ports || createPetraPlacementPorts(gameState, "field", {
 			"HQ": this.HQ,
 			"createObstructionMap": createObstructionMap,
@@ -3262,7 +3267,7 @@ export class ExpertDecisionController
 			Number(farmHalf.depth) + Number(fieldHalf.depth)
 		);
 		const minCenterDistance = Math.max(8, nominal - 3);
-		const maxCenterDistance = nominal + 7;
+		const maxCenterDistance = nominal + Math.max(7, request.allowWideTangents ? Number(request.maxBorderGap || 0) + 8 : 7);
 		const minSeparation = Math.max(16, 1.8 * Math.max(Number(fieldHalf.width), Number(fieldHalf.depth)));
 		const blockedPositions = [
 			...this.builtByClass(gameState, "Field").map(ent => ent.position()),
@@ -3311,13 +3316,22 @@ export class ExpertDecisionController
 	farmCapacitySnapshot(gameState, accessIndex)
 	{
 		const policy = mergePolicy();
+		const phase = typeof gameState.currentPhase === "function" ? Number(gameState.currentPhase()) || 1 : 1;
 		const farms = this.builtByClass(gameState, "Farmstead");
+		const markets = phase >= 2 ? this.builtByClass(gameState, "Market") : [];
+		const foodHubs = [
+			...farms.map(farm => ({ "entity": farm, "kind": "farmstead" })),
+			...markets.map(market => ({ "entity": market, "kind": "market" }))
+		];
 		const committedFields = this.builtByClass(gameState, "Field").length + this.activeFieldTasks.length;
-		if (!farms.length)
+		if (!foodHubs.length)
 			return { "known": true, "supportedFieldSlots": committedFields, "openFieldSlots": 0, "hubs": [] };
 		let shared;
 		try
 		{
+			const hubGeomByKind = { "farmstead": readTemplateGeometry(gameState, "farmstead") };
+			if (markets.length)
+				hubGeomByKind.market = readTemplateGeometry(gameState, "market");
 			shared = {
 				"ports": createPetraPlacementPorts(gameState, "field", {
 					"HQ": this.HQ,
@@ -3325,7 +3339,7 @@ export class ExpertDecisionController
 					"accessIndex": accessIndex
 				}),
 				"fieldGeom": readTemplateGeometry(gameState, "field"),
-				"farmGeom": readTemplateGeometry(gameState, "farmstead")
+				"hubGeomByKind": hubGeomByKind
 			};
 		}
 		catch (e)
@@ -3345,39 +3359,42 @@ export class ExpertDecisionController
 		{
 			if (!entityPosition(field))
 				continue;
-			let bestFarm;
+			let bestHub;
 			let bestDistance = Infinity;
-			for (const candidateFarm of farms)
+			for (const candidate of foodHubs)
 			{
-				if (!entityPosition(candidateFarm))
+				const candidateHub = candidate.entity;
+				if (!entityPosition(candidateHub))
 					continue;
-				const distance = SquareVectorDistance(field.position(), candidateFarm.position());
+				const distance = SquareVectorDistance(field.position(), candidateHub.position());
 				if (distance < bestDistance)
 				{
 					bestDistance = distance;
-					bestFarm = candidateFarm;
+					bestHub = candidateHub;
 				}
 			}
-			if (bestFarm && bestDistance <= 50*50)
-				fieldHome.set(field.id(), bestFarm.id());
+			if (bestHub && bestDistance <= 60*60)
+				fieldHome.set(field.id(), bestHub.id());
 		}
-		for (const farm of farms)
+		for (const descriptor of foodHubs)
 		{
+			const farm = descriptor.entity;
+			const hubKind = descriptor.kind;
 			const builtFieldCount = builtFields.filter(field => fieldHome.get(field.id()) === farm.id()).length;
-			let slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared);
-			let fieldGapLimit = this.fieldRequestAt(gameState, farm.position(), farm.id()).maxBorderGap;
+			let slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared, undefined, undefined, hubKind);
+			let fieldGapLimit = this.fieldRequestAt(gameState, farm.position(), farm.id(), hubKind).maxBorderGap;
 			// Dedicated farm hubs still prefer near-touching fields. Existing natural-food
 			// dropsites, however, must be reusable after their berries/fruit disappear.
 			// Probe progressively wider but still-local rings before declaring the district full.
 			if (!slots.length)
 			{
-				slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared, undefined, 1.30);
+				slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared, undefined, 1.30, hubKind);
 				if (slots.length)
 					fieldGapLimit = 1.30;
 			}
 			if (!slots.length)
 			{
-				slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared, undefined, 2.00);
+				slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared, undefined, 2.00, hubKind);
 				if (slots.length)
 					fieldGapLimit = 2.00;
 			}
@@ -3385,22 +3402,35 @@ export class ExpertDecisionController
 			{
 				const reuseGap = Math.max(2.0, Number(policy.existingFarmsteadReuseMaxBorderGap) || 4.0);
 				slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared,
-					Math.max(1, policy.fieldsPerFarmstead - builtFieldCount), reuseGap);
+					Math.max(1, policy.fieldsPerFarmstead - builtFieldCount), reuseGap, hubKind);
 				if (slots.length)
 					fieldGapLimit = reuseGap;
 			}
-			let homeDemand = 0;
-			for (const worker of gameState.getOwnUnits().values())
+			// IT14.30: if the normal compact/reuse ring is geometrically blocked but the hub
+			// still has fewer than four fields, probe the nearby corner/fill-in space before
+			// declaring it saturated and paying for another farmstead.
+			if (!slots.length && builtFieldCount < policy.fieldsPerFarmstead)
 			{
-				if (!worker || !worker.getMetadata || !hasClass(worker, "Civilian") || hasClass(worker, "CitizenSoldier"))
-					continue;
-				if (Number(worker.getMetadata(PlayerID, FOOD_HOME_FARMSTEAD)) !== farm.id())
-					continue;
-				const lock = Number(worker.getMetadata(PlayerID, FARM_LOCK));
-				if (!Number.isFinite(lock))
-					++homeDemand;
+				const fillGap = Math.max(Number(policy.existingFarmsteadReuseMaxBorderGap) || 4.0,
+					Number(policy.existingFarmsteadFillInMaxBorderGap) || 10.0);
+				slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared,
+					Math.max(1, policy.fieldsPerFarmstead - builtFieldCount), fillGap, hubKind);
+				if (slots.length)
+					fieldGapLimit = fillGap;
 			}
-			hubs.push({ "farm": farm, "slots": slots, "builtFieldCount": builtFieldCount, fieldGapLimit, homeDemand });
+			let homeDemand = 0;
+			if (hubKind === "farmstead")
+				for (const worker of gameState.getOwnUnits().values())
+				{
+					if (!worker || !worker.getMetadata || !hasClass(worker, "Civilian") || hasClass(worker, "CitizenSoldier"))
+						continue;
+					if (Number(worker.getMetadata(PlayerID, FOOD_HOME_FARMSTEAD)) !== farm.id())
+						continue;
+					const lock = Number(worker.getMetadata(PlayerID, FARM_LOCK));
+					if (!Number.isFinite(lock))
+						++homeDemand;
+				}
+			hubs.push({ "farm": farm, "hubKind": hubKind, "slots": slots, "builtFieldCount": builtFieldCount, fieldGapLimit, homeDemand });
 			openFieldSlots += slots.length;
 			if (!slots.length)
 				maxSaturatedHubFields = Math.max(maxSaturatedHubFields, builtFieldCount);
@@ -3743,11 +3773,14 @@ export class ExpertDecisionController
 			const hub = this.farmsteadForNextField(gameState, accessIndex, offset);
 			if (!hub || !hub.farm || !hub.slots.length)
 				return undefined;
-			const fieldIntent = this.fieldRequestAt(gameState, hub.farm.position(), hub.farm.id());
+			const hubKind = hub.hubKind || "farmstead";
+			const fieldIntent = this.fieldRequestAt(gameState, hub.farm.position(), hub.farm.id(), hubKind);
 			request = {
 				kind,
 				"candidates": hub.slots,
 				"farmsteadId": hub.farm.id(),
+				"foodHubId": hub.farm.id(),
+				"foodHubKind": hubKind,
 				"templateRadius": geometry.radius,
 				"maxBorderGap": Number.isFinite(Number(hub.fieldGapLimit)) ? Number(hub.fieldGapLimit) : fieldIntent.maxBorderGap
 			};
@@ -3958,6 +3991,25 @@ export class ExpertDecisionController
 				for (const slot of slots)
 					reserveSlot(slot, farm.id());
 			}
+
+			// IT14.30: once Town Phase is reached, a market is also a food dropsite.
+			// Reserve its four immediate field faces so later houses/forges do not consume
+			// the exact space that permanent food can use.
+			const phase = typeof gameState.currentPhase === "function" ? Number(gameState.currentPhase()) || 1 : 1;
+			if (phase >= 2)
+				for (const market of this.builtByClass(gameState, "Market").filter(ent => ent && entityPosition(ent)))
+				{
+					const marketRequest = this.fieldRequestAt(gameState, market.position(), market.id(), "market");
+					marketRequest.gaps = [0.0];
+					marketRequest.maxBorderGap = 0.80;
+					for (const slot of generatePlacementCandidates(marketRequest).slice(0, 4))
+						reserveSlot(slot, market.id());
+					const marketSlots = this.fieldSlotsAt(gameState, market.position(), market.id(), accessIndex,
+						{ "ports": fieldPorts, "fieldGeom": fieldGeom, "hubGeomByKind": { "farmstead": farmGeom, "market": readTemplateGeometry(gameState, "market") } },
+						policy.fieldsPerFarmstead, Math.max(2.0, Number(policy.existingFarmsteadReuseMaxBorderGap) || 4.0), "market");
+					for (const slot of marketSlots)
+						reserveSlot(slot, market.id());
+				}
 			farmDistrictReservation = {
 				"farmsteads": farmsteads,
 				"reservedSlots": reservedSlots,
@@ -3979,7 +4031,7 @@ export class ExpertDecisionController
 			const shared = {
 				"ports": fieldPorts,
 				"fieldGeom": readTemplateGeometry(gameState, "field"),
-				"farmGeom": readTemplateGeometry(gameState, "farmstead")
+				"hubGeomByKind": { "farmstead": readTemplateGeometry(gameState, "farmstead") }
 			};
 			const cache = new Map();
 			farmCapacityAt = position =>
@@ -4040,11 +4092,12 @@ export class ExpertDecisionController
 				// A field is useful only when it is genuinely adjacent to its farmstead.
 				// Engine snapping is allowed, but the snapped footprint may not drift beyond
 				// the selected farmstead's approved local border-gap limit.
-				const farmsteadId = Number(request && request.farmsteadId);
+				const farmsteadId = Number(request && (request.foodHubId !== undefined ? request.foodHubId : request.farmsteadId));
 				const farmstead = Number.isFinite(farmsteadId) ? gameState.getEntityById(farmsteadId) : undefined;
 				if (!farmstead || !entityPosition(farmstead))
 					return false;
-				const farmGeom = readTemplateGeometry(gameState, "farmstead");
+				const hubKind = request && request.foodHubKind || "farmstead";
+				const farmGeom = readTemplateGeometry(gameState, hubKind);
 				const fieldGeom = readTemplateGeometry(gameState, "field");
 				const farmHalf = farmGeom.halfExtents || { "width": farmGeom.radius, "depth": farmGeom.radius };
 				const fieldHalf = fieldGeom.halfExtents || { "width": fieldGeom.radius, "depth": fieldGeom.radius };
@@ -5464,7 +5517,7 @@ export class ExpertDecisionController
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.29] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.30] t=" + Math.round(gameState.ai.elapsedTime) +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" res=" + Math.round(res.food) + "/" + Math.round(res.wood) + "/" + Math.round(res.stone) + "/" + Math.round(res.metal) +
 			" desired f=" + workers.food + " farm=" + workers.farm + " w=" + workers.wood + " woodCiv=" + workers.woodCivilians + " overflow=" + workers.overflowWood + " b=" + workers.builders +
@@ -5518,7 +5571,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.29] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.30] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

@@ -289,6 +289,10 @@ const DEFAULT_POLICY = Object.freeze({
   // farm hub. Dedicated hubs still prefer near-touching fields; exhausted natural
   // dropsites may use a modestly wider ring if that is what the terrain allows.
   existingFarmsteadReuseMaxBorderGap: 4.0,
+  // IT14.30: before buying another farm hub, make one last local packing pass.
+  // This is deliberately wider than the normal 4m reuse ring, but still local enough
+  // that the field uses the existing dropsite rather than behaving like a remote farm.
+  existingFarmsteadFillInMaxBorderGap: 10.0,
   farmWorkerHomeRadius: 55,
   storehouseMinimumCCDistance: 18,
   // A forest is a work district, but repeated dropsites require a genuinely large,

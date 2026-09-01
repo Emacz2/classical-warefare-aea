@@ -85,6 +85,11 @@ function generateFieldCandidates(request) {
   // giving up. These offsets stay inside the farmstead/field overlap span, preserving
   // direct adjacency instead of drifting into a loose ring.
   const tangentFractions = [0.18, -0.18, 0.36, -0.36, 0.54, -0.54, 0.70, -0.70];
+  // IT14.30: a blocked side can still have a perfectly usable corner/fill-in slot.
+  // These wider tangential probes are enabled ONLY by the controller's last-chance
+  // existing-hub packing pass; normal fields remain in the tight side-centre layout.
+  if (request.allowWideTangents)
+    tangentFractions.push(0.88, -0.88, 1.06, -1.06, 1.22, -1.22);
 
   // First exhaust the true side-centres at every permitted border gap.
   for (const gap of gaps) {
