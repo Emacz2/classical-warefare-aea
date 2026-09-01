@@ -35,6 +35,12 @@ const BUILDING_SPECS = Object.freeze({
     queue: "economicBuilding",
     allowedBuilderJobs: ["wood", "citizenSoldierWood"]
   },
+  forge: {
+    className: "Forge",
+    template: "structures/{civ}/forge",
+    queue: "militaryBuilding",
+    allowedBuilderJobs: ["wood", "citizenSoldierWood"]
+  },
   tower: {
     className: "Tower",
     template: "structures/{civ}/sentry_tower",

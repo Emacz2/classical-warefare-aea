@@ -200,3 +200,21 @@ Replay regressions locked by IT14:
 - Capacity accounting assigns each completed field to its nearest farmstead; one field may not make two nearby farmsteads both appear saturated.
 - `fieldsPerFarmstead` is 4. The normal target is 3-4 compact fields around the existing farmstead before a new permanent farm hub.
 - The IT14.26 all-hubs-full escape remains only as a true deadlock fallback after the canonical four-side scanner has been exhausted.
+
+
+## IT14.28 replay-regression lock
+- Opening storehouse builder selection is type-priority, not a soft distance preference: melee/Hoplite citizen-soldiers outrank ranged/Javelineer citizen-soldiers for storehouse construction whenever both are legal.
+- A NATURAL_FOOD_LOCK is released only after the actual locked supply entities report zero remaining food. A temporary cluster-network omission may never force live second-berry workers onto fields.
+- Barracks #2 hard deadline is a true deadline: after the deadline and with the minimum field pipeline, measured food capacity may not veto construction.
+- Village phase has an 8:00 absolute reservation failsafe once two barracks, >=4 field pipeline and >=80 population exist. It may reserve resources before the full phase cost is banked.
+- Houses, barracks, markets and towers are independent structures and must be >=50 m from the primary CC. Storehouses and farmsteads remain resource-driven exceptions.
+
+
+## IT14.29 additive Town-economy layer
+- Built directly on IT14.28. The IT14.28 P2 failsafe, live-supply berry lock, opening storehouse type-priority, true barracks #2 deadline, and >=50 m CC exclusion for independent buildings are frozen and may not regress.
+- A permanent farm hub still prefers four compact legal touching-field slots. After at least 6 failed live farm-hub placement attempts, the hard requirement may relax to exactly 3 slots; one-field/two-field farmstead spam remains forbidden.
+- When permanent farming is materially behind and either Town Phase is reached or wood is already >=1000, up to 5 field foundations may be active concurrently instead of 3. This changes throughput only; desired-field math and field geometry remain unchanged.
+- Forges are a surplus-wood sink after farm reservations, never a replacement for permanent food. One forge may be requested late P1 only under an extreme wood surplus; Town Phase may scale progressively to at most 3 forges as population and wood bank grow.
+- Forges inherit the IT14.28 independent-building layout rule: >=50 m from the primary CC and outside reserved farm districts.
+- The Town market remains one market, but placement is resource-aware: owned same-land stone/metal deposits and the active wood district are preferred before the existing outer-developed-settlement fallback. The >=50 m CC and farm-district protections remain mandatory.
+- Athens Town-phase barracks production follows a deterministic 2 Hoplite : 1 Athenian Marine : 1 Javelineer cycle. P1 opening military selection and CC training behavior are unchanged.

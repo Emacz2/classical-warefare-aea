@@ -47,12 +47,13 @@ function builderScore(ent, request) {
   let score = request.targetPosition ? squareDistance(pos, request.targetPosition) : 0;
   if (request.preferCitizenSoldiers && typeof ent.hasClass === "function" && ent.hasClass("CitizenSoldier"))
     score -= 400;
-  // IT14.25 storehouse micro: keep the faster javelin/ranged soldiers on the repeated
-  // tree<->dropsite walking loop and use the slower melee/hoplite soldiers for the
-  // one-time construction walk whenever both are reasonable candidates.
+  // IT14.28 opening/storehouse contract: melee/hoplite citizen-soldiers ALWAYS get
+  // construction priority over ranged/javelineer citizen-soldiers when both are legal.
+  // IT14.25 used only -225 score, which a modest distance difference could overwhelm,
+  // producing exactly the regression of javelineers building while hoplites chopped.
   if (request.preferMeleeCitizenSoldiers && typeof ent.hasClass === "function" &&
       ent.hasClass("CitizenSoldier") && (ent.hasClass("Hoplite") || ent.hasClass("Melee")))
-    score -= 225;
+    score -= 100000000;
   if (request.existingBuilderIds && request.existingBuilderIds.includes(ent.id()))
     score -= 1e9;
   return score;
@@ -123,7 +124,7 @@ function selectMaintenanceTeam(gameState, kind, targetPosition, count, action = 
     taskId: options.taskId,
     existingBuilderIds: options.existingBuilderIds || [],
     requireEmptyHands: false,
-    preferCitizenSoldiers: kind === "house" || kind === "storehouse" || kind === "barracks" || kind === "market",
+    preferCitizenSoldiers: kind === "house" || kind === "storehouse" || kind === "barracks" || kind === "market" || kind === "forge",
     preferMeleeCitizenSoldiers: kind === "storehouse",
     requiredBuilderIds: action.requiredBuilderIds
   });

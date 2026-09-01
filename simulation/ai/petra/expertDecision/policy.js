@@ -31,6 +31,10 @@ const DEFAULT_POLICY = Object.freeze({
   targetWoodCivilians: 20,
   maxConcurrentBuilders: 6,
   maxConcurrentFieldTasks: 3,
+  // IT14.29: once permanent food is badly behind and wood is abundant, place more
+  // fields in parallel. P1/opening behavior keeps the old three-task ceiling.
+  maxConcurrentFieldTasksSurplus: 5,
+  fieldParallelExpansionWoodBank: 1000,
   civilianCap: 75,
   farmPrebuildWoodCivilians: 12,
   farmSecondPrebuildWoodCivilians: 16,
@@ -74,6 +78,10 @@ const DEFAULT_POLICY = Object.freeze({
   // are the capacity contract, with small tangential fallback only if one side is blocked.
   fieldsPerFarmstead: 4,
   minimumFarmHubFieldSlots: 4,
+  // IT14.29: keep four-slot farm hubs as the normal standard, but after repeated
+  // real-map placement failures accept a compact three-field hub rather than deadlock.
+  minimumFarmHubFieldSlotsFallback: 3,
+  farmHubFallbackAfterFailures: 6,
   // IT14.21 user contract: a NEW permanent farmstead is not allowed merely because
   // field demand is high. The current compact block must have at least three completed
   // fields and no remaining touching slot. Natural-food dropsites are the only exception.
@@ -139,6 +147,13 @@ const DEFAULT_POLICY = Object.freeze({
   phase2MaturePopulation: 100,
   phase2LatePopulation: 110,
   phase2OverduePopulation: 120,
+  // IT14.28 failsafe: once the base has two barracks, a minimally established farm
+  // economy and a mature population, P2 must be reserved by 8:00 even if the
+  // measured-food model is pessimistic. Queueing the phase lets the queue manager
+  // reserve resources instead of allowing Village-phase spending forever.
+  phase2AbsoluteTime: 480,
+  phase2AbsolutePopulation: 80,
+  phase2AbsoluteMinimumFields: 4,
   phase2PreferredFields: 8,
   phase2LateMinimumFields: 7,
   phase2ExceptionalCostCoverage: 0.80,
@@ -157,6 +172,20 @@ const DEFAULT_POLICY = Object.freeze({
   phase2MilitaryTechMetalReserve: 100,
   phase2MarketPopulation: 90,
   phase2MarketWoodReserve: 450,
+  // Surplus wood should become useful infrastructure instead of a 5k bank.
+  // One forge may appear late P1 only under an extreme surplus; Town phase can
+  // progressively grow to three while permanent food remains higher priority.
+  lateP1ForgeTime: 330,
+  lateP1ForgePopulation: 70,
+  lateP1ForgeWoodBank: 1500,
+  lateP1ForgeWoodFoodRatio: 3.0,
+  phase2Forge1Population: 90,
+  phase2Forge2Population: 110,
+  phase2Forge3Population: 135,
+  phase2Forge1WoodBank: 700,
+  phase2Forge2WoodBank: 1400,
+  phase2Forge3WoodBank: 2400,
+  forgeWoodReserve: 600,
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
   // emergency force multipliers, never routine border spam.
@@ -239,12 +268,15 @@ const DEFAULT_POLICY = Object.freeze({
   resourceReserveWeightStone: 0.80,
   // Keep the civic-center movement/assembly core open. Opening resource dropsites are
   // resource-driven exceptions; later housing/military/farm hubs stay outside the core.
-  houseMinimumCCDistance: 24,
+  // IT14.28: Expert has no true city-block planner, so keep the CC movement/core area open.
+  // Resource dropsites (storehouse/farmstead) remain resource-driven exceptions.
+  independentBuildingMinimumCCDistance: 50,
+  houseMinimumCCDistance: 50,
   // P2 houses stop extending a single P1 line forever. Search developed edges and
   // wider rings while retaining the same open CC core.
   phase2HouseSearchMaximumDistance: 96,
   phase2HouseDistrictRadius: 34,
-  barracksMinimumCCDistance: 28,
+  barracksMinimumCCDistance: 50,
   barracksAwaitingFoundationRetrySeconds: 20,
   farmHubMinimumCCDistance: 40,
   // Independent buildings should live outside the food-production core. Fields keep
@@ -281,7 +313,8 @@ const DEFAULT_POLICY = Object.freeze({
     farmstead: { wood: 100 },
     field: { wood: 100 },
     barracks: { wood: 200 },
-    market: { wood: 300 }
+    market: { wood: 300 },
+    forge: { wood: 200 }
   })
 });
 

@@ -49,7 +49,8 @@ function normalizeState(input = {}) {
       farmstead: n(structures.farmstead),
       field: n(structures.field),
       barracks: n(structures.barracks),
-      market: n(structures.market)
+      market: n(structures.market),
+      forge: n(structures.forge)
     },
     foundations: {
       house: n(foundations.house),
@@ -57,7 +58,8 @@ function normalizeState(input = {}) {
       farmstead: n(foundations.farmstead),
       field: n(foundations.field),
       barracks: n(foundations.barracks),
-      market: n(foundations.market)
+      market: n(foundations.market),
+      forge: n(foundations.forge)
     },
     queued: {
       house: n(queued.house),
@@ -65,7 +67,8 @@ function normalizeState(input = {}) {
       farmstead: n(queued.farmstead),
       field: n(queued.field),
       barracks: n(queued.barracks),
-      market: n(queued.market)
+      market: n(queued.market),
+      forge: n(queued.forge)
     },
     food: {
       primaryRatio: Number.isFinite(food.primaryRatio) ? food.primaryRatio : 1,

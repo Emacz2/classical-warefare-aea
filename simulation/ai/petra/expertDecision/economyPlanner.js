@@ -293,7 +293,7 @@ function planEconomy(rawState, overrides = {}) {
   const woodsite = woodWorksiteDecision(state, policy);
 
   // 1. Existing foundations are obligations, not optional projects.
-  for (const kind of ["house", "farmstead", "field", "storehouse", "barracks", "market"]) {
+  for (const kind of ["house", "farmstead", "field", "storehouse", "barracks", "market", "forge"]) {
     if (state.foundations[kind] > 0)
       actions.push({ type: "MAINTAIN_CONSTRUCTION", kind, priority: 100, reason: "foundation exists" });
   }
@@ -360,8 +360,11 @@ function planEconomy(rawState, overrides = {}) {
   const naturalFoodRemaining = Math.max(0, Number(state.food.totalNaturalRemaining) || 0);
   const secondEarlyReady = fieldPipeline >= policy.secondBarracksEarlyFieldPipeline &&
     (naturalFoodRemaining >= policy.secondBarracksEarlyNaturalFood || state.resources.food >= policy.secondBarracksEarlyFoodBank);
-  const secondHardReady = secondHardWindow && fieldPipeline >= policy.secondBarracksHardFieldPipeline &&
-    (naturalFoodRemaining >= policy.secondBarracksHardNaturalFood || state.resources.food >= policy.secondBarracksEarlyFoodBank);
+  // IT14.28: hard means hard. IT14.27 still let the measured-food model veto the
+  // second barracks after the deadline, which delayed Athens until ~8:15 despite a
+  // huge wood bank. At the hard deadline, two fields in the pipeline are enough; the
+  // building should exist so production can scale as food recovers.
+  const secondHardReady = secondHardWindow && fieldPipeline >= policy.secondBarracksHardFieldPipeline;
   const secondCapacityReady = farm.secondBarracksFoodReady || secondEarlyReady || secondHardReady;
   if (completedBarracks === 1 && pendingBarracks === 0 && hasHouse && secondReserveWindow && secondCapacityReady) {
     const cost = costOf(state, policy, "barracks");
@@ -476,9 +479,11 @@ function planEconomy(rawState, overrides = {}) {
       }
     }
 
-    if (farm.missingFields > 0 && openFieldSlots > 0 && pendingFields < policy.maxConcurrentFieldTasks) {
+    const parallelFieldCap = (state.phase >= 2 || state.resources.wood >= policy.fieldParallelExpansionWoodBank) &&
+      farm.missingFields >= 4 ? policy.maxConcurrentFieldTasksSurplus : policy.maxConcurrentFieldTasks;
+    if (farm.missingFields > 0 && openFieldSlots > 0 && pendingFields < parallelFieldCap) {
       const fieldCost = costOf(state, policy, "field");
-      const availableStarts = Math.max(0, policy.maxConcurrentFieldTasks - pendingFields);
+      const availableStarts = Math.max(0, parallelFieldCap - pendingFields);
       // When permanent food is materially behind (for example 6 built vs 14 wanted),
       // use several idle civilians to create capacity in parallel instead of waiting for
       // one field to finish before placing the next. Existing hubs are always filled
@@ -495,6 +500,39 @@ function planEconomy(rawState, overrides = {}) {
         actions.push({ type: "BUILD", kind: "field", role: `capacity_${i+1}`, priority: 95, builderPool: ["food", "food_owned", "farm"], reason: farm.prebuild ? "natural-food runway says permanent food should be prepared now" : `${farm.mode} food mode needs field capacity (${i+1}/${starts})` });
         addReservation(reservations, fieldCost);
       }
+    }
+  }
+
+
+  // 8. Forge expansion is a SURPLUS sink, never a substitute for food capacity.
+  // This block runs after permanent farm reservations, so a weak farm economy gets
+  // first claim on wood. Late P1 may add one forge only under a severe wood surplus;
+  // Town phase can progressively grow to three.
+  const forgePipeline = state.structures.forge + state.foundations.forge + state.queued.forge;
+  const woodFoodRatio = state.resources.wood / Math.max(250, state.resources.food);
+  let desiredForges = 0;
+  if (state.phase < 2) {
+    if (state.time >= policy.lateP1ForgeTime && state.population.used >= policy.lateP1ForgePopulation &&
+        state.structures.barracks >= 2 && state.resources.wood >= policy.lateP1ForgeWoodBank &&
+        woodFoodRatio >= policy.lateP1ForgeWoodFoodRatio)
+      desiredForges = 1;
+  } else {
+    if (state.population.used >= policy.phase2Forge1Population && state.resources.wood >= policy.phase2Forge1WoodBank)
+      desiredForges = 1;
+    if (state.population.used >= policy.phase2Forge2Population && state.resources.wood >= policy.phase2Forge2WoodBank)
+      desiredForges = 2;
+    if (state.population.used >= policy.phase2Forge3Population && state.resources.wood >= policy.phase2Forge3WoodBank)
+      desiredForges = 3;
+  }
+  if (forgePipeline < desiredForges && state.foundations.forge + state.queued.forge === 0) {
+    const cost = costOf(state, policy, "forge");
+    const reserveEnough = state.resources.wood >= (cost.wood || 0) + policy.forgeWoodReserve;
+    if (reserveEnough && resourceEnough(state.resources, cost, reservations)) {
+      const next = forgePipeline + 1;
+      actions.push({ type: "BUILD", kind: "forge", role: `forge_${next}`, priority: next === 1 ? 93 : 90,
+        builderPool: ["wood", "citizenSoldierWood"], reason: state.phase >= 2 ?
+          `Town surplus forge ${next}/${desiredForges}` : "late-P1 extreme wood surplus forge" });
+      addReservation(reservations, cost);
     }
   }
 
