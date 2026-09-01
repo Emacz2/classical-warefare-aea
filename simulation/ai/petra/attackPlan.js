@@ -562,14 +562,15 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 	if (!this.overseas)
 		this.getPathToTarget(gameState);
 
+	const expertFastAssembly = this.Config.difficulty >= difficulty.EXPERT;
 	if (this.type === AttackPlan.TYPE_RAID)
-		this.maxCompletingTime = this.forced ? 0 : gameState.ai.elapsedTime + 20;
+		this.maxCompletingTime = this.forced ? 0 : gameState.ai.elapsedTime + (expertFastAssembly ? 8 : 20);
 	else
 	{
 		if (this.type === AttackPlan.TYPE_RUSH || this.forced)
-			this.maxCompletingTime = gameState.ai.elapsedTime + 40;
+			this.maxCompletingTime = gameState.ai.elapsedTime + (expertFastAssembly ? 10 : 40);
 		else
-			this.maxCompletingTime = gameState.ai.elapsedTime + 60;
+			this.maxCompletingTime = gameState.ai.elapsedTime + (expertFastAssembly ? 15 : 60);
 		// warn our allies so that they can help if possible
 		if (!this.requested)
 			Engine.PostCommand(PlayerID, { "type": "attack-request", "source": PlayerID, "player": this.targetPlayer });
@@ -770,9 +771,24 @@ AttackPlan.prototype.assignUnits = function(gameState)
 	let keep = this.type !== AttackPlan.TYPE_RUSH ?
 		6 + 4 * gameState.getNumPlayerEnemies() + 8 * this.Config.personality.defensive : 8;
 	keep = Math.round(this.Config.popScaling * keep);
+	const expertProductiveAssembly = this.Config.difficulty >= difficulty.EXPERT && this.type !== AttackPlan.TYPE_RUSH;
+	let expertProductiveAdded = 0;
+	// IT14.38: Expert citizen-soldiers are deliberately productive workers. Petra's
+	// stock attack planner only recruited ROLE_WORKER units whose subrole was IDLE,
+	// so the better Expert economy paradoxically meant its existing army was never
+	// organized. Keep a home reserve of ~12 soldiers, then claim productive gatherers
+	// for the attack plan. The Expert controller keeps them gathering while the plan
+	// remains UNEXECUTED and releases them only for the short final rally.
+	if (expertProductiveAssembly)
+		keep = Math.min(keep, Math.round(this.Config.popScaling * 12));
 	for (const ent of gameState.getOwnEntitiesByRole(Worker.ROLE_WORKER, true).values())
 	{
 		if (!ent.hasClass("CitizenSoldier") || !this.isAvailableUnit(gameState, ent))
+			continue;
+		if (expertProductiveAssembly &&
+		    (ent.getMetadata(PlayerID, "expertDecisionTaskId") !== undefined ||
+		     ent.getMetadata(PlayerID, "expertDefenseMobilized") !== undefined ||
+		     ent.getMetadata(PlayerID, "garrisonHolder") !== undefined))
 			continue;
 		const baseID = ent.getMetadata(PlayerID, "base");
 		if (baseID)
@@ -785,12 +801,18 @@ AttackPlan.prototype.assignUnits = function(gameState)
 		}
 		if (num++ < keep || numbase[baseID] < 5)
 			continue;
-		if (this.type !== AttackPlan.TYPE_RUSH && ent.getMetadata(PlayerID, "subrole") !== Worker.SUBROLE_IDLE)
+		if (!expertProductiveAssembly && this.type !== AttackPlan.TYPE_RUSH &&
+		    ent.getMetadata(PlayerID, "subrole") !== Worker.SUBROLE_IDLE)
 			continue;
 		ent.setMetadata(PlayerID, "plan", plan);
 		this.unitCollection.updateEnt(ent);
+		if (expertProductiveAssembly)
+			++expertProductiveAdded;
 		added = true;
 	}
+	if (expertProductiveAdded)
+		aiWarn("[EXPERT-ATTACK] plan=" + plan + " claimed-working-soldiers=" + expertProductiveAdded +
+			" total=" + this.unitCollection.length + " homeReserve=" + keep);
 	return added;
 };
 

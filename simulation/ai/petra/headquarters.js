@@ -523,9 +523,16 @@ Headquarters.prototype.findBestTrainableUnit = function(gameState, classes, requ
 	let units;
 	if (classes.indexOf("Hero") != -1)
 		units = gameState.findTrainableUnits(classes, []);
-	// We do not want siege tower as AI does not know how to use it nor hero when not explicitely specified.
 	else
-		units = gameState.findTrainableUnits(classes, ["Hero", "SiegeTower"]);
+	{
+		// IT14.33: Expert keeps its starting cavalry but does not spend production
+		// on new horsemen until cavalry control is deliberately improved. This applies
+		// to Petra attack-plan recruitment only; Very Hard and lower are unchanged.
+		const excluded = ["Hero", "SiegeTower"];
+		if (this.expertDecisionController && this.expertDecisionController.isActive(gameState))
+			excluded.push("Cavalry");
+		units = gameState.findTrainableUnits(classes, excluded);
+	}
 
 	if (!units.length)
 		return undefined;
@@ -2280,6 +2287,14 @@ Headquarters.prototype.update = function(gameState, queues, events)
 	{
 		this.expertDecisionController.update(gameState, queues, events);
 
+		// IT14.35: Expert intentionally skips Petra's generic trade planner, but it must
+		// not also lose Petra's proven barter safety valve. Once a market exists, allow
+		// performBarter() only: no generic market placement, trader training, or route
+		// planning re-enters the Expert economy. This converts pathological 3kF/100W
+		// banks into the wood actually required by production, techs and infrastructure.
+		if (this.canBarter && this.tradeManager && this.tradeManager.performBarter)
+			this.tradeManager.performBarter(gameState);
+
 		// Defensive systems can react to attacks without becoming an economic planner.
 		this.garrisonManager.update(gameState, events);
 		this.defenseManager.update(gameState, events);
@@ -2290,6 +2305,20 @@ Headquarters.prototype.update = function(gameState, queues, events)
 		if (gameState.currentPhase() > 1 && this.Config.difficulty > difficulty.SANDBOX &&
 		    (this.hasActiveBase() || !this.canBuildUnits))
 			this.attackManager.update(gameState, queues, events);
+
+		// IT14.33: once Expert is in Town Phase, allow Petra's proven phase researcher
+		// to consider City Phase, but only AFTER Expert's exact-placement infrastructure
+		// has already satisfied every entity requirement. This prevents generic Petra
+		// construction from re-entering and cluttering the base.
+		if (gameState.currentPhase() === 2 && !this.phasing && typeof gameState.getPhaseEntityRequirements === "function")
+		{
+			const requirements = gameState.getPhaseEntityRequirements(3) || [];
+			const requirementsMet = requirements.every(requirement =>
+				!requirement || requirement.class === "Village" || requirement.class === "NotField" ||
+				gameState.getOwnEntitiesByClass(requirement.class, true).length >= requirement.count);
+			if (requirementsMet)
+				this.researchManager.checkPhase(gameState, queues);
+		}
 
 		if (gameState.ai.elapsedTime - this.capturableTargetsTime > 3)
 			this.updateCaptureStrength(gameState);

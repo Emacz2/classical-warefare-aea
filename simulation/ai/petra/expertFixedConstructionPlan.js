@@ -74,10 +74,10 @@ ExpertFixedConstructionPlan.prototype.start = function(gameState)
 	}
 	this.metadata.access = gameState.ai.accessibility.getAccessValue(this.position);
 
-	// expertBuilderId is a queue/runtime selector, not simulation task metadata.
+	// Queue/runtime builder selectors are not simulation task metadata.
 	const commandMetadata = {};
 	for (const key in this.metadata)
-		if (key !== "expertBuilderId")
+		if (key !== "expertBuilderId" && key !== "expertBuilderPool")
 			commandMetadata[key] = this.metadata[key];
 
 	builder.construct(this.type, pos.x, pos.z, pos.angle, commandMetadata);

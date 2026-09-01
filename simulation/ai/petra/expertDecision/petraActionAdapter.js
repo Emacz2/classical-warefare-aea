@@ -63,6 +63,7 @@ function constructionMetadata(action, execution, starterId) {
     expertDecisionKind: action.kind,
     expertDecisionRole: action.role || "primary",
     expertTaskId: execution.taskId || `${action.kind}:${action.role || "primary"}`,
+    expertBuilderPool: [...(action.builderPool || BUILDING_SPECS[action.kind].allowedBuilderJobs)],
     expertBuilderId: starterId
   };
 }

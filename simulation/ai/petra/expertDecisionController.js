@@ -124,6 +124,10 @@ export class ExpertDecisionController
 		this.pendingWoodSelectionByTask = {};
 		this.pendingFoodSelectionByTask = {};
 		this.readyNextFoodCluster = undefined;
+		// IT14.37: natural-food expansion is sequential. Once Expert pays for a
+		// farmstead at a new fruit/berry district, that district must be consumed
+		// before another 100-wood natural-food farmstead may be started.
+		this.activeNaturalExpansionCluster = undefined;
 		this.orderDiagnostics = {};
 		this.taskDiagnostics = {};
 		this.openingChickenIds = [];
@@ -166,6 +170,8 @@ export class ExpertDecisionController
 		// IT14.29 Athens Town-phase barracks doctrine: two Hoplites, one Marine,
 		// one Javelineer. The cursor advances only after a successful queued batch.
 		this.athensP2TrainingCursor = 0;
+		this.lastStrategicMetalRebalanceTime = -99999;
+		this.lastMilitaryTechHoldDiag = -99999;
 	}
 
 	isExpert()
@@ -186,6 +192,54 @@ export class ExpertDecisionController
 	isExpertEconomyEntity(ent)
 	{
 		return isExpertOpeningEconomyEntity(ent, { "playerId": PlayerID });
+	}
+
+	attackPlanAllowsEconomicWork(gameState, ent)
+	{
+		if (!ent || !ent.getMetadata)
+			return true;
+		const planId = ent.getMetadata(PlayerID, "plan");
+		if (planId === undefined || planId === -1)
+			return true;
+		if (!this.HQ.attackManager || !this.HQ.attackManager.getPlan)
+			return false;
+		const plan = this.HQ.attackManager.getPlan(planId);
+		// Units keep gathering for the entire recruitment/assembly phase. The short
+		// STATE_COMPLETING regroup window is deliberately left to Petra so Expert
+		// never fights the launch movement orders. IT14.37 shortens that window in
+		// attackPlan.js instead of making workers overwrite regroup commands.
+		return !!(plan && plan.state === "unexecuted");
+	}
+
+	economyWorkerMetrics(gameState)
+	{
+		const out = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+		out.attackCommitted = 0;
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !ent.getMetadata || !this.isExpertEconomyEntity(ent))
+				continue;
+			const unavailable = ent.getMetadata(PlayerID, "PartOfArmy") ||
+				ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
+				!this.attackPlanAllowsEconomicWork(gameState, ent);
+			if (!unavailable)
+				continue;
+			++out.attackCommitted;
+			const job = ent.getMetadata(PlayerID, JOB_METADATA);
+			if (job === "food" || job === "food_owned")
+				out.food = Math.max(0, out.food - 1);
+			else if (job === "farm")
+				out.farm = Math.max(0, out.farm - 1);
+			else if (job === "wood" || job === "citizenSoldierWood" || job === "food_overflow_wood")
+				out.wood = Math.max(0, out.wood - 1);
+			else if (job === "stone")
+				out.stone = Math.max(0, out.stone - 1);
+			else if (job === "metal")
+				out.metal = Math.max(0, out.metal - 1);
+			if (ent.isIdle && ent.isIdle())
+				out.idle = Math.max(0, out.idle - 1);
+		}
+		return out;
 	}
 
 	claimWorker(gameState, ent)
@@ -325,6 +379,24 @@ export class ExpertDecisionController
 		return total;
 	}
 
+	naturalFoodSupplyWorkerLimit(gameState, supplyId, cluster)
+	{
+		const policy = mergePolicy();
+		const supply = gameState.getEntityById(Number(supplyId));
+		const name = supply && supply.templateName ? String(supply.templateName()).toLowerCase() : "";
+		// Apple trees are a single, larger source: up to three civilians is efficient.
+		// Berry bushes remain one-per-bush after Wicker. Use template names when the
+		// simulation exposes them, with a safe three-worker fallback for an isolated
+		// unknown single fruit source.
+		if (name.includes("apple"))
+			return Math.max(1, Number(policy.naturalFoodAppleTreeMaxWorkers) || 3);
+		if (name.includes("berry") || name.includes("berries"))
+			return this.wickerCompleted(gameState) ? Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1) : Infinity;
+		if ((cluster && cluster.ids || []).length === 1)
+			return Math.max(1, Number(policy.naturalFoodSingleSupplyMaxWorkers) || 3);
+		return this.wickerCompleted(gameState) ? Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1) : Infinity;
+	}
+
 	naturalFoodClusterHasPreferredSlot(gameState, cluster, ent)
 	{
 		if (!cluster || !ent || !ent.getMetadata)
@@ -336,15 +408,11 @@ export class ExpertDecisionController
 		const active = this.naturalFoodClusterActiveWorkers(gameState, cluster);
 		if (active >= mergePolicy().naturalFoodMaxWorkersPerCluster)
 			return false;
-		// Preserve the proven pre-Wicker opening and single-source fruit branches. The
-		// one-per-supply rule is specifically for multi-bush/multi-tree patches after
-		// Wicker, where piling workers onto the same berry is wasted movement.
-		const enforcePerSupply = this.wickerCompleted(gameState) && (cluster.ids || []).length > 1;
-		if (!enforcePerSupply)
-			return !!(cluster.availableIds && cluster.availableIds.length);
 		const loads = this.naturalFoodSupplyLoads(gameState, cluster, ent.id());
-		const perSupply = Math.max(1, Number(mergePolicy().naturalFoodMaxWorkersPerSupply) || 1);
-		return (cluster.availableIds || []).some(id => (loads.get(Number(id)) || 0) < perSupply);
+		return (cluster.availableIds || []).some(id => {
+			const limit = this.naturalFoodSupplyWorkerLimit(gameState, id, cluster);
+			return !Number.isFinite(limit) || (loads.get(Number(id)) || 0) < limit;
+		});
 	}
 
 	naturalFoodClusterAllowsWorker(gameState, cluster, ent)
@@ -393,8 +461,6 @@ export class ExpertDecisionController
 			const loads = this.naturalFoodSupplyLoads(gameState, cluster);
 			const activeAssigned = [...loads.values()].reduce((sum, value) => sum + value, 0);
 			let preferredSupplySlots = 0;
-			const perSupply = Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1);
-			const enforcePerSupply = this.wickerCompleted(gameState) && (cluster.ids || []).length > 1;
 			for (const id of cluster.ids || [])
 			{
 				const supply = gameState.getEntityById(id);
@@ -405,8 +471,11 @@ export class ExpertDecisionController
 				const queued = this.HQ.basesManager && this.HQ.basesManager.GetTCGatherer ? Number(this.HQ.basesManager.GetTCGatherer(id)) || 0 : 0;
 				const engineOpen = Number.isFinite(hard) && hard > 0 ? Math.max(0, hard - live - queued) : 1;
 				if (engineOpen > 0)
-					preferredSupplySlots += enforcePerSupply ?
-						Math.max(0, perSupply - (loads.get(Number(id)) || 0)) : engineOpen;
+				{
+					const limit = this.naturalFoodSupplyWorkerLimit(gameState, id, cluster);
+					preferredSupplySlots += Number.isFinite(limit) ?
+						Math.max(0, Math.min(engineOpen, limit - (loads.get(Number(id)) || 0))) : engineOpen;
+				}
 			}
 			const clusterSlots = Math.max(0, policy.naturalFoodMaxWorkersPerCluster - activeAssigned);
 			slots += Math.min(preferredSupplySlots, clusterSlots);
@@ -552,7 +621,24 @@ export class ExpertDecisionController
 	{
 		const current = new Set(foodObservation && foodObservation.ids || []);
 		const policy = mergePolicy();
-		const alternatives = this.foodClusters(gameState, foodContext).filter(cluster =>
+		const allClusters = this.foodClusters(gameState, foodContext);
+		if (this.activeNaturalExpansionCluster)
+		{
+			const active = allClusters.find(cluster => this.clustersOverlap(cluster, this.activeNaturalExpansionCluster));
+			const remaining = active ? Math.max(0, Number(active.remaining) || 0) : 0;
+			if (active && remaining > (Number(policy.naturalExpansionDepletionThreshold) || 10))
+			{
+				// The newly-served source is still productive. Report it as covered so the
+				// planner cannot leapfrog to source #3 while source #2 is barely started.
+				return {
+					"clusters": [active], "next": active, "remaining": remaining,
+					"covered": true, "physicallyCovered": true, "farmsteadWorthwhile": false
+				};
+			}
+			aiWarn("[EXPERT-FOOD] serviced natural district exhausted; next expansion unlocked remaining=" + Math.round(remaining));
+			this.activeNaturalExpansionCluster = undefined;
+		}
+		const alternatives = allClusters.filter(cluster =>
 			cluster.remaining >= policy.minimumAlternativeNaturalFood && !cluster.ids.some(id => current.has(id)));
 		const details = alternatives.map(cluster => {
 			const physicallyCovered = this.foodClusterCovered(gameState, cluster);
@@ -1144,21 +1230,205 @@ export class ExpertDecisionController
 		aiWarn("[EXPERT-TECH] queued surplus eco upgrade " + pick);
 	}
 
+
+	researchExpertHopliteTradition(gameState, queues, frame)
+	{
+		if (!gameState || !gameState.currentPhase || !queues || !queues.minorTech ||
+		    queues.minorTech.hasQueuedUnits())
+			return false;
+		const civ = gameState.getPlayerCiv && gameState.getPlayerCiv();
+		if (!new Set(["athen", "spart", "theb"]).has(civ))
+			return false;
+		const techName = "citystate/hoplite_tradition";
+		if (gameState.isResearched(techName) || gameState.isResearching(techName))
+			return false;
+
+		const available = new Map(gameState.findAvailableTech() || []);
+		const tech = available.get(techName);
+		if (!tech || !tech._template)
+			return false;
+
+		const phase = gameState.currentPhase();
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const barracks = this.builtByClass(gameState, "Barracks").length;
+		const fields = this.builtByClass(gameState, "Field").length;
+		const fieldPipeline = fields + this.foundationsByClass(gameState, "Field").length +
+			(gameState.ai.queues.field ? gameState.ai.queues.field.countQueuedUnits() : 0);
+		const templePipeline = this.builtByClass(gameState, "Temple").length +
+			this.foundationsByClass(gameState, "Temple").length +
+			(gameState.ai.queues.economicBuilding && gameState.ai.queues.economicBuilding.plans ?
+			 gameState.ai.queues.economicBuilding.plans.filter(plan =>
+				plan && plan.metadata && plan.metadata.expertDecisionKind === "temple").length : 0);
+		if (barracks < 2 || templePipeline < 1)
+			return false;
+
+		const raw = tech._template.cost || {};
+		const cost = {
+			food: Math.max(0, Number(raw.food) || 0),
+			wood: Math.max(0, Number(raw.wood) || 0),
+			stone: Math.max(0, Number(raw.stone) || 0),
+			metal: Math.max(0, Number(raw.metal) || 0)
+		};
+		const resources = gameState.getResources();
+
+		if (phase === 1)
+		{
+			if (now < policy.hopliteTraditionMinimumTime ||
+			    now > policy.hopliteTraditionLatestP1StartTime ||
+			    gameState.getPopulation() < policy.hopliteTraditionMinimumPopulation ||
+			    fieldPipeline < policy.hopliteTraditionMinimumFieldPipeline)
+				return false;
+
+			// Town Phase always wins once it is actually ready. Before that point, only
+			// buy Hoplite Tradition if the bank can also preserve the full current P2
+			// resource cost plus a modest operating reserve. This prevents the 600-resource
+			// tradition tech from recreating the old "Village forever" failure.
+			const phaseDecision = this.phase2Readiness(gameState, frame);
+			if (phaseDecision && phaseDecision.ready)
+				return false;
+			const phaseInfo = this.phaseTechInfo(gameState);
+			const phaseCost = phaseInfo && phaseInfo.cost || {};
+			if (resources.food < cost.food + (phaseCost.food || 0) + policy.hopliteTraditionFoodReserve ||
+			    resources.wood < cost.wood + (phaseCost.wood || 0) + policy.hopliteTraditionWoodReserve ||
+			    resources.stone < cost.stone + (phaseCost.stone || 0) ||
+			    resources.metal < cost.metal + (phaseCost.metal || 0) + policy.hopliteTraditionMetalReserve)
+				return false;
+		}
+		else if (phase === 2)
+		{
+			// If the strict P1 window was missed, make this the first dedicated City-State
+			// doctrine tech once Town is reached and the bank can support it.
+			if (resources.food < cost.food + policy.phase2MilitaryTechFoodReserve ||
+			    resources.wood < cost.wood + policy.phase2MilitaryTechWoodReserve ||
+			    resources.stone < cost.stone ||
+			    resources.metal < cost.metal + policy.phase2MilitaryTechMetalReserve)
+				return false;
+		}
+		else
+			return false;
+
+		const plan = new ResearchPlan(gameState, techName, false);
+		if (!plan)
+			return false;
+		plan.metadata = { "expertDecisionLayer": true, "expertMilitaryTech": "hoplite_tradition", "phase": phase };
+		queues.minorTech.addPlan(plan);
+		gameState.ai.queueManager.changePriority("minorTech", Math.max(this.HQ.Config.priorities.minorTech || 1, phase === 1 ? 780 : 760));
+		aiWarn("[EXPERT-TECH] queued " + techName + " phase=" + phase +
+			" bank=" + Math.round(resources.food) + "/" + Math.round(resources.wood) + "/" +
+			Math.round(resources.stone) + "/" + Math.round(resources.metal));
+		return true;
+	}
+
+	researchExpertP2CoreEcoTech(gameState, queues)
+	{
+		if (!gameState || !gameState.currentPhase || gameState.currentPhase() < 2 || !gameState.ai || !gameState.ai.queueManager)
+			return false;
+		const queueManager = gameState.ai.queueManager;
+		const policy = mergePolicy();
+		const laneDefs = [
+			{ name: "expertEcoTechFood", kind: "food", priority: 820 },
+			{ name: "expertEcoTechWood", kind: "wood", priority: 815 }
+		];
+		for (const lane of laneDefs)
+			queueManager.addQueue(lane.name, lane.priority);
+
+		const resources = gameState.getResources();
+		let remaining = { food: resources.food, wood: resources.wood, stone: resources.stone, metal: resources.metal };
+		let coreAvailable = false;
+		let queued = 0;
+		for (const lane of laneDefs)
+		{
+			const queue = gameState.ai.queues[lane.name];
+			if (queue && queue.hasQueuedUnits())
+			{
+				coreAvailable = true;
+				continue;
+			}
+			const candidates = [];
+			for (const tech of gameState.findAvailableTech() || [])
+			{
+				const name = tech && tech[0], data = tech && tech[1];
+				if (!name || !data || !data._template || !Array.isArray(data._template.modifications) ||
+				    (gameState.isResearching && gameState.isResearching(name)))
+					continue;
+				const values = data._template.modifications.map(mod => String(mod && mod.value || ""));
+				const foodTech = String(name).startsWith("gather_farming_") || values.some(value => value.includes("food.grain"));
+				const woodTech = String(name).startsWith("gather_lumbering_") || values.some(value => value.includes("wood.tree"));
+				if (lane.kind === "food" ? !foodTech : !woodTech)
+					continue;
+				coreAvailable = true;
+				const raw = data._template.cost || {};
+				const cost = { food: Number(raw.food) || 0, wood: Number(raw.wood) || 0, stone: Number(raw.stone) || 0, metal: Number(raw.metal) || 0 };
+				const total = cost.food + cost.wood + cost.stone + cost.metal;
+				let score = 0;
+				for (const value of values)
+				{
+					if (lane.kind === "food" && value.includes("food.grain")) score += 140;
+					else if (lane.kind === "wood" && value.includes("wood.tree")) score += 140;
+					else if (value.startsWith("ResourceGatherer/")) score += 35;
+				}
+				candidates.push({ name, cost, score: score * 1000 - total });
+			}
+			if (!candidates.length)
+				continue;
+			candidates.sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+			const pick = candidates.find(c =>
+				remaining.food >= c.cost.food + policy.phase2CoreEcoFoodReserve &&
+				remaining.wood >= c.cost.wood + policy.phase2CoreEcoWoodReserve &&
+				remaining.stone >= c.cost.stone &&
+				remaining.metal >= c.cost.metal + policy.phase2CoreEcoMetalReserve);
+			if (!pick)
+				continue;
+			const plan = new ResearchPlan(gameState, pick.name, false);
+			if (!plan)
+				continue;
+			plan.metadata = { "expertDecisionLayer": true, "expertEcoTech": "p2-core-" + lane.kind, "lane": lane.name };
+			queue.addPlan(plan);
+			queueManager.changePriority(lane.name, lane.priority);
+			remaining.food -= pick.cost.food; remaining.wood -= pick.cost.wood;
+			remaining.stone -= pick.cost.stone; remaining.metal -= pick.cost.metal;
+			++queued;
+			aiWarn("[EXPERT-P2-ECO] queued " + pick.name + " lane=" + lane.name);
+		}
+		return coreAvailable || queued > 0;
+	}
+
 	researchExpertP2MilitaryTech(gameState, queues)
 	{
-		if (!gameState || !gameState.currentPhase || gameState.currentPhase() < 2 ||
-		    !queues || !queues.minorTech || queues.minorTech.hasQueuedUnits())
+		this.lastP2MilitaryTechCandidateAvailable = false;
+		if (!gameState || !gameState.currentPhase || gameState.currentPhase() < 2 || !gameState.ai || !gameState.ai.queueManager)
+			return false;
+
+		const forgeCount = this.builtByClass(gameState, "Forge").length;
+		if (!forgeCount)
 			return false;
 		const policy = mergePolicy();
+		const queueManager = gameState.ai.queueManager;
+		const laneNames = ["expertMilitaryTech1", "expertMilitaryTech2"].slice(0, Math.min(2, forgeCount));
+		for (let i = 0; i < laneNames.length; ++i)
+			queueManager.addQueue(laneNames[i], 780 - i * 5);
+
 		const resources = gameState.getResources();
+		const alreadyQueued = new Set();
+		for (const qName of laneNames)
+		{
+			const queue = gameState.ai.queues[qName];
+			if (!queue || !queue.plans)
+				continue;
+			for (const qPlan of queue.plans)
+				if (qPlan && qPlan.type) alreadyQueued.add(qPlan.type);
+		}
+
 		const candidates = [];
 		for (const tech of gameState.findAvailableTech() || [])
 		{
 			const name = tech && tech[0], data = tech && tech[1];
-			if (!name || !data || !data._template || !Array.isArray(data._template.modifications))
+			if (!name || alreadyQueued.has(name) || (gameState.isResearching && gameState.isResearching(name)) ||
+			    !data || !data._template || !Array.isArray(data._template.modifications))
 				continue;
 			const affects = String(data._template.affects || "");
-			if (!/(CitizenSoldier|Infantry|Soldier|Spearman|Javelineer|Cavalry)/i.test(affects))
+			if (!/(CitizenSoldier|Infantry|Soldier|Spearman|Javelineer|Cavalry|Hoplite)/i.test(affects))
 				continue;
 			let score = 0;
 			for (const mod of data._template.modifications)
@@ -1171,6 +1441,7 @@ export class ExpertDecisionController
 			}
 			if (!score)
 				continue;
+			this.lastP2MilitaryTechCandidateAvailable = true;
 			const raw = data._template.cost || {};
 			const cost = { food: Number(raw.food) || 0, wood: Number(raw.wood) || 0, stone: Number(raw.stone) || 0, metal: Number(raw.metal) || 0 };
 			if (resources.food < cost.food + policy.phase2MilitaryTechFoodReserve ||
@@ -1179,20 +1450,44 @@ export class ExpertDecisionController
 			    resources.stone < cost.stone)
 				continue;
 			const totalCost = cost.food + cost.wood + cost.stone + cost.metal;
-			candidates.push({ name, score: score * 1000 - totalCost });
+			candidates.push({ name, cost, score: score * 1000 - totalCost });
 		}
 		if (!candidates.length)
 			return false;
 		candidates.sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
-		const pick = candidates[0].name;
-		const plan = new ResearchPlan(gameState, pick, false);
-		if (!plan)
-			return false;
-		plan.metadata = { "expertDecisionLayer": true, "expertMilitaryTech": "p2" };
-		queues.minorTech.addPlan(plan);
-		gameState.ai.queueManager.changePriority("minorTech", Math.max(this.HQ.Config.priorities.minorTech || 1, 720));
-		aiWarn("[EXPERT-P2] queued military tech " + pick);
-		return true;
+
+		let queued = 0;
+		let remaining = { food: resources.food, wood: resources.wood, stone: resources.stone, metal: resources.metal };
+		for (const qName of laneNames)
+		{
+			const queue = gameState.ai.queues[qName];
+			if (!queue || queue.hasQueuedUnits())
+				continue;
+			let pickIndex = -1;
+			for (let i = 0; i < candidates.length; ++i)
+			{
+				const c = candidates[i];
+				if (remaining.food >= c.cost.food + policy.phase2MilitaryTechFoodReserve &&
+				    remaining.wood >= c.cost.wood + policy.phase2MilitaryTechWoodReserve &&
+				    remaining.stone >= c.cost.stone &&
+				    remaining.metal >= c.cost.metal + policy.phase2MilitaryTechMetalReserve)
+				{ pickIndex = i; break; }
+			}
+			if (pickIndex < 0)
+				continue;
+			const pick = candidates.splice(pickIndex, 1)[0];
+			const plan = new ResearchPlan(gameState, pick.name, false);
+			if (!plan)
+				continue;
+			plan.metadata = { "expertDecisionLayer": true, "expertMilitaryTech": "p2", "lane": qName };
+			queue.addPlan(plan);
+			queueManager.changePriority(qName, qName === "expertMilitaryTech1" ? 780 : 775);
+			remaining.food -= pick.cost.food; remaining.wood -= pick.cost.wood;
+			remaining.stone -= pick.cost.stone; remaining.metal -= pick.cost.metal;
+			++queued;
+			aiWarn("[EXPERT-P2] queued military tech " + pick.name + " lane=" + qName);
+		}
+		return queued > 0;
 	}
 
 	phaseTechInfo(gameState)
@@ -1467,7 +1762,12 @@ export class ExpertDecisionController
 			strength += this.combatStrength(ent);
 			nearest = Math.min(nearest, dist);
 		}
-		if (enemies.length < policy.defenseThreatMinimumUnits)
+		// IT14.38: do not ignore a small raid once it is already inside the economy.
+		// Farther threats still need a meaningful group, but 3 attackers inside ~85m
+		// are enough to mobilize. This prevents concentrated human armies from killing
+		// scattered working citizen-soldiers before the old 12-unit gate trips.
+		const required = nearest <= 85 ? 3 : policy.defenseThreatMinimumUnits;
+		if (enemies.length < required)
 			return undefined;
 		const position = centerOf(enemies) || ccPos;
 		return { "entities": enemies, "count": enemies.length, strength, position, nearest };
@@ -1789,7 +2089,7 @@ export class ExpertDecisionController
 			ready = true, lane = "mature";
 		else if (productionReady && fieldPipeline >= policy.phase2AbsoluteMinimumFields &&
 		         now >= policy.phase2AbsoluteTime && pop >= policy.phase2AbsolutePopulation)
-			ready = true, lane = "absolute-8m";
+			ready = true, lane = "absolute-7m";
 		else if (productionReady && lateFoodFloor && now >= policy.phase2LateTime &&
 		         pop >= policy.phase2LatePopulation)
 			ready = true, lane = "late";
@@ -1833,6 +2133,12 @@ export class ExpertDecisionController
 			this.lastPhase2Decision = { "state": "queued", "reason": "phase research already queued" };
 			return true;
 		}
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		// IT14.38: the economic temple is still built aggressively after Barracks #2,
+		// but never hold Town phase hostage for it. IT14.37 spent ~2.5 minutes in
+		// temple-hold and the temple still completed only after P2. Phase progression
+		// and temple construction are independent lanes.
 		const decision = this.phase2Readiness(gameState, frame);
 		this.lastPhase2Decision = decision;
 		if (!decision.ready)
@@ -1959,7 +2265,7 @@ export class ExpertDecisionController
 		const policy = mergePolicy();
 		const resources = gameState.getResources();
 		const fields = this.builtByClass(gameState, "Field").length;
-		let metrics = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+		let metrics = this.economyWorkerMetrics(gameState);
 		let farmWorkers = metrics.farm;
 		let woodCivilians = metrics.woodCivilians;
 		let foodWorkers = metrics.food + metrics.farm;
@@ -2044,8 +2350,7 @@ export class ExpertDecisionController
 			this.claimWorker(gameState, ent);
 			if (ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined)
 				continue;
-			const attackPlan = ent.getMetadata(PlayerID, "plan");
-			if (attackPlan !== undefined && attackPlan !== -1)
+			if (!this.attackPlanAllowsEconomicWork(gameState, ent))
 				continue;
 			if (hasClass(ent, "Civilian") && !hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry"))
 			{
@@ -2245,6 +2550,7 @@ export class ExpertDecisionController
 		// another civilian peel on the same tick.
 		if (foodWoodFeedback.mode !== "food_recovery")
 			this.rebalanceExistingWorkers(gameState, openingEnd, genericBalance);
+		this.applyStrategicMetalRebalance(gameState, openingEnd);
 	}
 
 	applyFoodRecoveryRebalance(gameState, feedback)
@@ -2312,6 +2618,10 @@ export class ExpertDecisionController
 		const fields = this.builtByClass(gameState, "Field");
 		if (!fields.length)
 			return;
+		const extremeWoodStarvation =
+			fields.length >= policy.extremeFoodWoodReleaseMinimumFields &&
+			feedback.food >= policy.extremeFoodWoodReleaseFoodBank &&
+			feedback.wood <= policy.extremeFoodWoodReleaseWoodBankCeiling;
 		const fieldIds = new Set(fields.map(field => field.id()));
 		const loads = new Map(fields.map(field => [field.id(), 0]));
 		// Count EVERY permanent lock first, including the protected opening civilians.
@@ -2343,8 +2653,9 @@ export class ExpertDecisionController
 			workers.push({ ent, ordinal, lockedId });
 		}
 
-		// Release temporary overflow farmers first, then only the 4th/5th locked gatherer
-		// from overloaded fields. The preferred three-per-field crew remains untouched.
+		// Release temporary overflow farmers first. Under ordinary surplus only the
+		// 4th/5th gatherer is eligible. Under an extreme 10-field food/wood imbalance,
+		// IT14.35 may also release the third farmer, but never below two per field.
 		const candidates = [];
 		for (const item of workers)
 		{
@@ -2353,15 +2664,21 @@ export class ExpertDecisionController
 				continue;
 			if (!Number.isFinite(item.lockedId))
 			{
-				candidates.push({ ...item, overflow: 999 });
+				candidates.push({ ...item, overflow: 999, emergency: false });
 				continue;
 			}
 			const load = loads.get(item.lockedId) || 0;
 			if (load > policy.farmersPerField)
-				candidates.push({ ...item, overflow: load - policy.farmersPerField });
+				candidates.push({ ...item, overflow: load - policy.farmersPerField, emergency: false });
+			else if (extremeWoodStarvation && load > policy.extremeFoodWoodReleaseMinimumFarmersPerField)
+				candidates.push({ ...item, overflow: load - policy.extremeFoodWoodReleaseMinimumFarmersPerField, emergency: true });
 		}
-		candidates.sort((a, b) => b.overflow - a.overflow || b.ordinal - a.ordinal || b.ent.id() - a.ent.id());
-		const count = Math.min(policy.foodSurplusFarmerReleaseBatch, candidates.length);
+		candidates.sort((a, b) => Number(a.emergency) - Number(b.emergency) ||
+			b.overflow - a.overflow || b.ordinal - a.ordinal || b.ent.id() - a.ent.id());
+		const releaseBatch = extremeWoodStarvation ?
+			Math.max(policy.foodSurplusFarmerReleaseBatch, policy.extremeFoodWoodReleaseBatch) :
+			policy.foodSurplusFarmerReleaseBatch;
+		const count = Math.min(releaseBatch, candidates.length);
 		if (!count)
 			return;
 
@@ -2381,9 +2698,131 @@ export class ExpertDecisionController
 			aiWarn("[EXPERT-FEEDBACK] release farmer=" + ent.id() + " farm->wood mode=wood_release bank=" +
 				Math.round(feedback.food) + "/" + Math.round(feedback.wood) +
 				" rate=" + feedback.rateRatio.toFixed(2) +
-				(Number.isFinite(item.lockedId) ? " field=" + item.lockedId : " temporary-overflow"));
+				(Number.isFinite(item.lockedId) ? " field=" + item.lockedId : " temporary-overflow") +
+				(item.emergency ? " emergency-two-per-field" : ""));
 		}
 		this.lastFoodSurplusWoodReleaseTime = now;
+	}
+
+	applyStrategicMetalRebalance(gameState, openingEnd)
+	{
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		if (now < policy.strategicMetalRebalanceStartTime ||
+		    now - (Number(this.lastStrategicMetalRebalanceTime) || 0) < policy.strategicMetalReassignCooldownSeconds)
+			return;
+
+		const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
+		const pop = Number(gameState.getPopulation()) || 0;
+		const barracks = this.builtByClass(gameState, "Barracks").length;
+		// IT14.38 metal floor: three miners once the two-barracks P1 economy exists,
+		// six immediately in Town, and eight in a mature two-forge Town economy.
+		// Forge research should not wait for a giant food bank before metal exists.
+		let target = 0;
+		if (phase >= 2)
+			target = pop >= 120 && this.builtByClass(gameState, "Forge").length >= 2 ? 8 : 6;
+		else if (barracks >= 2 && pop >= 65)
+			target = 3;
+		if (!target)
+			return;
+
+		const bank = gameState.getResources();
+		let metalWorkers = 0;
+		const stoneCandidates = [];
+		const woodSoldiers = [];
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !entityPosition(ent) || !this.isExpertEconomyEntity(ent) ||
+			    ent.getMetadata(PlayerID, TASK_KEY) !== undefined || ent.getMetadata(PlayerID, PENDING_JOB_METADATA) ||
+			    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined ||
+			    !this.attackPlanAllowsEconomicWork(gameState, ent))
+				continue;
+			const job = ent.getMetadata(PlayerID, JOB_METADATA);
+			if (job === "metal")
+				++metalWorkers;
+			else if (job === "stone")
+				stoneCandidates.push(ent);
+			else if (hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry") &&
+			         (job === "wood" || job === "citizenSoldierWood" || job === "food_overflow_wood"))
+				woodSoldiers.push(ent);
+		}
+		if (metalWorkers >= target && bank.metal >= policy.strategicMetalBankFloor * 0.75)
+			return;
+
+		let needed = Math.max(0, Math.min(policy.strategicMetalReassignBatch, target - metalWorkers));
+		if (!needed)
+			return;
+		let moved = 0;
+
+		// Stone is the first donor whenever it is ahead of metal.
+		if (bank.stone >= Math.max(200, bank.metal * 1.10))
+		{
+			stoneCandidates.sort((a, b) => b.id() - a.id());
+			for (const ent of stoneCandidates)
+			{
+				if (moved >= needed) break;
+				this.setDesiredJob(gameState, ent, "metal");
+				++moved;
+				aiWarn("[EXPERT-METAL] stone->metal worker=" + ent.id() + " target=" + target + " bank=" + Math.round(bank.stone) + "/" + Math.round(bank.metal));
+			}
+		}
+
+		// If metal is critically absent, peel a small number of citizen-soldier
+		// lumberjacks. Never do this wholesale: wood remains the infrastructure fuel.
+		if (moved < needed && (bank.wood >= 350 || metalWorkers + moved < 2))
+		{
+			woodSoldiers.sort((a, b) => b.id() - a.id());
+			for (const ent of woodSoldiers)
+			{
+				if (moved >= needed) break;
+				this.setDesiredJob(gameState, ent, "metal");
+				++moved;
+				aiWarn("[EXPERT-METAL] wood-soldier->metal worker=" + ent.id() + " target=" + target + " bank=" + Math.round(bank.wood) + "/" + Math.round(bank.metal));
+			}
+		}
+
+		// Last resort: a mature food economy may release only the third farmer.
+		if (moved < needed && bank.food >= Math.max(700, policy.strategicMetalFoodBank))
+		{
+			const fields = this.builtByClass(gameState, "Field");
+			const fieldIds = new Set(fields.map(f => f.id()));
+			const loads = new Map(fields.map(f => [f.id(), 0]));
+			for (const ent of gameState.getOwnUnits().values())
+			{
+				if (!ent || !ent.getMetadata) continue;
+				const id = Number(ent.getMetadata(PlayerID, FARM_LOCK));
+				if (Number.isFinite(id) && fieldIds.has(id)) loads.set(id, (loads.get(id) || 0) + 1);
+			}
+			const farmers = [];
+			for (const ent of gameState.getOwnUnits().values())
+			{
+				if (!ent || !entityPosition(ent) || !hasClass(ent, "Civilian") || hasClass(ent, "CitizenSoldier") ||
+				    ent.getMetadata(PlayerID, JOB_METADATA) !== "farm" || ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
+				    ent.getMetadata(PlayerID, PENDING_JOB_METADATA) || !this.attackPlanAllowsEconomicWork(gameState, ent))
+					continue;
+				const ordinal = Number(ent.getMetadata(PlayerID, CIVILIAN_ORDINAL));
+				if (!Number.isFinite(ordinal) || ordinal <= openingEnd) continue;
+				const lockedId = Number(ent.getMetadata(PlayerID, FARM_LOCK));
+				if (!Number.isFinite(lockedId) || (loads.get(lockedId) || 0) <= policy.strategicMetalMinimumFarmersPerField) continue;
+				farmers.push({ ent, lockedId, ordinal });
+			}
+			farmers.sort((a,b) => b.ordinal-a.ordinal || b.ent.id()-a.ent.id());
+			for (const item of farmers)
+			{
+				if (moved >= needed) break;
+				if ((loads.get(item.lockedId) || 0) <= policy.strategicMetalMinimumFarmersPerField) continue;
+				item.ent.setMetadata(PlayerID, FARM_LOCK, undefined);
+				item.ent.setMetadata(PlayerID, FOOD_HOME_FARMSTEAD, undefined);
+				item.ent.setMetadata(PlayerID, FOOD_HOME_PERMANENT, undefined);
+				this.setDesiredJob(gameState, item.ent, "metal");
+				loads.set(item.lockedId, (loads.get(item.lockedId) || 1) - 1);
+				++moved;
+				aiWarn("[EXPERT-METAL] farm->metal worker=" + item.ent.id() + " target=" + target + " field=" + item.lockedId);
+			}
+		}
+
+		if (moved)
+			this.lastStrategicMetalRebalanceTime = now;
 	}
 
 	resourceJobForEntity(ent, generic)
@@ -2823,7 +3262,12 @@ export class ExpertDecisionController
 							this.primaryWoodWorksite = { "entityId": ent.id(), "position": ent.position(), "taskId": taskId };
 					}
 					if (observed.state === "completed" && kind === "farmstead" && this.pendingFoodSelectionByTask[taskId])
+					{
 						this.readyNextFoodCluster = this.pendingFoodSelectionByTask[taskId];
+						this.activeNaturalExpansionCluster = this.pendingFoodSelectionByTask[taskId];
+						aiWarn("[EXPERT-FOOD] sequential natural district locked remaining=" +
+							Math.round(Number(this.activeNaturalExpansionCluster.remaining) || 0));
+					}
 				}
 				delete this.pendingWoodSelectionByTask[taskId];
 				delete this.pendingFoodSelectionByTask[taskId];
@@ -2889,8 +3333,10 @@ export class ExpertDecisionController
 				if (!BUILDING_SPECS[kind])
 					continue;
 				const branch = kind === "farmstead" && plan.metadata.expertDecisionRole === "wicker_branch";
+				const savedPool = Array.isArray(plan.metadata.expertBuilderPool) && plan.metadata.expertBuilderPool.length ?
+					plan.metadata.expertBuilderPool : BUILDING_SPECS[kind].allowedBuilderJobs;
 				const action = branch ? { "builderPool": ["food", "food_owned"], "requiredBuilderIds": [...this.postWickerBranchWorkerIds] } :
-					{ "builderPool": BUILDING_SPECS[kind].allowedBuilderJobs };
+					{ "builderPool": savedPool };
 				const options = { "playerId": PlayerID, "taskId": plan.metadata.expertTaskId };
 				const starter = selectFoundationStarter(gameState, kind, plan.position, action, options);
 				if (starter)
@@ -3217,7 +3663,7 @@ export class ExpertDecisionController
 		const free = gameState.getPopulationLimit() - this.HQ.getAccountedPopulation(gameState) - queuedCivilians - queuedSoldiers;
 		const doctrineBatch = Number.isFinite(Number(selected.recommendedBatch)) ?
 			Math.max(1, Math.floor(Number(selected.recommendedBatch))) : Math.floor(requestedBatch);
-		const batch = Math.max(0, Math.min(Math.floor(requestedBatch), doctrineBatch, free));
+		let batch = Math.max(0, Math.min(Math.floor(requestedBatch), doctrineBatch, free));
 		if (batch <= 0)
 			return false;
 
@@ -3226,9 +3672,13 @@ export class ExpertDecisionController
 		// civilians after the deliberate ~3:00 soldier pulse.  At the cap, the CC is
 		// military production and no civilian reserve is necessary.
 		const reserve = workers.civilians >= policy.civilianCap ? 0 : policy.soldierFoodReserve;
-		if (resources.food < reserve + selected.cost.food * batch ||
+		// IT14.35: do not idle a trainer merely because the preferred 2/3/4-unit batch
+		// is one unit too expensive. Shrink to the largest affordable batch first.
+		while (batch > 0 && (resources.food < reserve + selected.cost.food * batch ||
 		    resources.wood < selected.cost.wood * batch || resources.stone < selected.cost.stone * batch ||
-		    resources.metal < selected.cost.metal * batch)
+		    resources.metal < selected.cost.metal * batch))
+			--batch;
+		if (batch <= 0)
 			return false;
 
 		const plan = new TrainingPlan(gameState, selected.type, {
@@ -3634,7 +4084,9 @@ export class ExpertDecisionController
 			{
 				const local = initialStorehousePlacementCandidates({ "action": "SELECT_INITIAL_WOODSITE", ...site },
 					{ "distances": [0, 4, 6, 8, 10, 12], "angleCount": 16 });
-				for (const candidate of local)
+				const outer = initialStorehousePlacementCandidates({ "action": "SELECT_INITIAL_WOODSITE", ...site },
+					{ "distances": [14, 18, 22, 26, 30], "angleCount": 32 });
+				for (const candidate of [...local, ...outer])
 					candidates.push(candidate);
 			}
 			if (!candidates.length)
@@ -3719,9 +4171,9 @@ export class ExpertDecisionController
 					// Expand progressively into owned territory rather than rejecting candidates
 					// forever while civilians idle. The 30m hub-spacing contract remains intact.
 					"distances": failures >= 4 ?
-						[24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 104, 112, 120, 128] :
+						[24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 104, 112, 120, 128, 136, 144, 152] :
 						[28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96],
-					"angleCount": 32,
+					"angleCount": failures >= 4 ? 48 : 32,
 					"templateRadius": geometry.radius,
 					"minimumCCDistance": policy.farmHubMinimumCCDistance,
 					"pathSources": [],
@@ -3915,6 +4367,14 @@ export class ExpertDecisionController
 					"kind": "barracks", "anchor": ccPos, "toward": outward,
 					"distances": [52, 58, 64, 72, 80, 88, 96, 108, 120], "angleCount": 48, "templateRadius": geometry.radius
 				}));
+				// IT14.34 repeatedly rejected all 944 local/outer candidates on a live
+				// Athens map. Add a dense outer-settlement sweep without relaxing the
+				// 50m CC core or farm-district validation.
+				barracksCandidates.push(...generatePlacementCandidates({
+					"kind": "barracks", "anchor": ccPos, "toward": outward,
+					"distances": [54, 60, 66, 72, 78, 84, 90, 96, 104, 112, 120, 128, 136],
+					"angleCount": 96, "templateRadius": geometry.radius
+				}));
 			}
 			request = { kind, "candidates": barracksCandidates, "templateRadius": geometry.radius,
 				"minimumCCDistance": policy.independentBuildingMinimumCCDistance };
@@ -4007,8 +4467,26 @@ export class ExpertDecisionController
 			candidates.push(...generatePlacementCandidates({ "kind": "market", "anchor": ccPos,
 				"toward": woodPos || [ccPos[0] + 1, ccPos[1]],
 				"distances": [50, 56, 62, 68, 74, 80, 88, 96, 108], "angleCount": 48, "templateRadius": geometry.radius }));
+			// IT14.35: the resource-aware anchors are still preferred, but a market is
+			// too strategically important (dropsite + barter + P3 requirement) to fail
+			// forever if every compact candidate is obstructed.
+			candidates.push(...generatePlacementCandidates({ "kind": "market", "anchor": ccPos,
+				"toward": woodPos || [ccPos[0] + 1, ccPos[1]],
+				"distances": [54, 60, 66, 72, 78, 84, 90, 96, 104, 112, 120, 128, 136],
+				"angleCount": 96, "templateRadius": geometry.radius }));
 			request = { kind, candidates, "templateRadius": geometry.radius,
 				"minimumCCDistance": policy.independentBuildingMinimumCCDistance };
+			if (action.role === "phase3_town_support")
+			{
+				// IT14.38: the second Town building is phase progression, not decoration.
+				// If the developed resource district is packed, search a farther owned-territory
+				// belt instead of retrying the same 3,456 impossible positions forever.
+				candidates.push(...generatePlacementCandidates({ "kind": "market", "anchor": ccPos,
+					"toward": woodPos || [ccPos[0] + 1, ccPos[1]],
+					"distances": [112, 120, 128, 136, 144, 152, 160, 168, 176],
+					"angleCount": 128, "templateRadius": geometry.radius }));
+				request.minimumMarketSpacing = policy.phase2SecondMarketSpacing;
+			}
 		}
 
 		else if (kind === "temple")
@@ -4021,14 +4499,50 @@ export class ExpertDecisionController
 			if (!this.HQ.canBuild || !templeTypes.some(type => this.HQ.canBuild(gameState, type)))
 				return undefined;
 			const candidates = [];
-			// The market is already deliberately placed as a resource dropsite. Put the
-			// temple in that same economic district first so its 75m worker aura covers
-			// farms/mines/wood without consuming the CC core.
+			// IT14.34: P1 has no market yet, so choose the economic district by actual
+			// worker coverage rather than structure type alone. The 75m aura should land
+			// where the current farm/mining/wood workforce is densest. In P2 the market
+			// remains a natural candidate because it was itself resource-placed.
+			const workers = [];
+			for (const ent of gameState.getOwnUnits().values())
+				if (ent && entityPosition(ent) && hasClass(ent, "Worker"))
+					workers.push(ent);
+			const auraRadiusSquared = 75 * 75;
+			const resourceAnchorPositions = [];
+			if (gameState.getResourceSupplies)
+				for (const generic of ["metal", "stone"])
+					for (const supply of gameState.getResourceSupplies(generic).values())
+					{
+						const pos = entityPosition(supply);
+						if (!pos || !supply.resourceSupplyAmount || supply.resourceSupplyAmount() <= 0 ||
+						    getLandAccess(gameState, supply) !== accessIndex || this.HQ.territoryMap.getOwner(pos) !== PlayerID)
+							continue;
+						const coverage = workers.reduce((sum, worker) =>
+							sum + (SquareVectorDistance(pos, worker.position()) <= auraRadiusSquared ? 1 : 0), 0);
+						resourceAnchorPositions.push({ pos, score: coverage * 1000 + Math.max(0, Number(supply.resourceSupplyAmount()) || 0) });
+					}
+			resourceAnchorPositions.sort((a,b) => b.score-a.score);
+			for (const anchor of resourceAnchorPositions.slice(0, 6))
+			{
+				const pos = anchor.pos;
+				let dx = pos[0] - ccPos[0], dz = pos[1] - ccPos[1];
+				const len = Math.hypot(dx, dz) || 1;
+				const outward = [pos[0] + dx / len * 18, pos[1] + dz / len * 18];
+				candidates.push(...generatePlacementCandidates({ "kind": "market", "anchor": pos, "toward": outward,
+					"distances": [8, 12, 16, 20, 24, 28, 34], "angleCount": 32, "templateRadius": geometry.radius }));
+			}
 			const anchors = [
 				...this.builtByClass(gameState, "Market"),
 				...this.builtByClass(gameState, "Farmstead"),
 				...this.builtByClass(gameState, "Storehouse")
-			].filter(ent => ent && entityPosition(ent));
+			].filter(ent => ent && entityPosition(ent))
+			 .map(ent => ({
+				ent,
+				score: workers.reduce((sum, worker) =>
+					sum + (SquareVectorDistance(ent.position(), worker.position()) <= auraRadiusSquared ? 1 : 0), 0)
+			 }))
+			 .sort((a, b) => b.score - a.score || a.ent.id() - b.ent.id())
+			 .map(entry => entry.ent);
 			for (const ent of anchors)
 			{
 				const pos = ent.position();
@@ -4061,8 +4575,13 @@ export class ExpertDecisionController
 		}
 		if (!request)
 			return undefined;
-		if (kind === "house" || kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple")
+		const matureFarmDistrict = this.builtByClass(gameState, "Field").length >= mergePolicy().matureFarmDistrictRelaxFieldCount;
+		if (kind === "house" || kind === "forge")
 			request.preserveFarmDistrict = true;
+		else if (kind === "barracks")
+			request.preserveFarmDistrict = !(action.role === "third_p2" && matureFarmDistrict);
+		else if (kind === "market" || kind === "temple")
+			request.preserveFarmDistrict = false;
 		request.taskId = taskId;
 		request.role = request.role || action.role || "primary";
 		return request;
@@ -4265,6 +4784,13 @@ export class ExpertDecisionController
 				const spacing = mergePolicy().woodStorehouseMinimumSpacing;
 				for (const ent of this.builtByClass(gameState, "Storehouse"))
 					if (SquareVectorDistance(position, ent.position()) < spacing * spacing)
+						return false;
+			}
+			if (kind === "market" && Number(request && request.minimumMarketSpacing) > 0)
+			{
+				const spacing = Number(request.minimumMarketSpacing);
+				for (const ent of [...this.builtByClass(gameState, "Market"), ...this.foundationsByClass(gameState, "Market")])
+					if (entityPosition(ent) && SquareVectorDistance(position, ent.position()) < spacing * spacing)
 						return false;
 			}
 			if (kind === "tower")
@@ -4672,10 +5198,10 @@ export class ExpertDecisionController
 			// When every bush/tree already has its preferred worker, the next food-owned
 			// civilian starts/helps a field instead of becoming worker #2 on a berry.
 			const loads = this.naturalFoodSupplyLoads(gameState, cluster, ent.id());
-			const perSupply = Math.max(1, Number(mergePolicy().naturalFoodMaxWorkersPerSupply) || 1);
-			const enforcePerSupply = this.wickerCompleted(gameState) && (cluster.ids || []).length > 1;
-			if (enforcePerSupply)
-				candidates = candidates.filter(s => (loads.get(s.id()) || 0) < perSupply);
+			candidates = candidates.filter(s => {
+				const limit = this.naturalFoodSupplyWorkerLimit(gameState, s.id(), cluster);
+				return !Number.isFinite(limit) || (loads.get(s.id()) || 0) < limit;
+			});
 			candidates.sort((a, b) =>
 				(loads.get(a.id()) || 0) - (loads.get(b.id()) || 0) ||
 				SquareVectorDistance(ent.position(), a.position()) - SquareVectorDistance(ent.position(), b.position()) ||
@@ -5009,9 +5535,33 @@ export class ExpertDecisionController
 		this.diagnoseWorkerOrder(ent, "wood", target.id(), order.status);
 	}
 
+	woodDropsiteForSupply(gameState, supply, radius)
+	{
+		if (!supply || !entityPosition(supply))
+			return undefined;
+		const r2 = radius * radius;
+		const dropsites = [
+			...this.builtByClass(gameState, "Storehouse"),
+			...this.builtByClass(gameState, "Market")
+		].filter(ent => ent && entityPosition(ent));
+		let best;
+		let bestDist = Infinity;
+		for (const dropsite of dropsites)
+		{
+			const d = SquareVectorDistance(supply.position(), dropsite.position());
+			if (d <= r2 && d < bestDist)
+			{
+				best = dropsite;
+				bestDist = d;
+			}
+		}
+		return best ? { dropsite: best, distance: bestDist } : undefined;
+	}
+
 	resourceCandidatesInOwnTerritory(gameState, ent, accessIndex, generic)
 	{
 		const out = [];
+		const woodServiceDistance = new Map();
 		if (!ent || !entityPosition(ent) || !gameState.getResourceSupplies)
 			return out;
 		if (ent.canGather && !ent.canGather(generic))
@@ -5027,9 +5577,24 @@ export class ExpertDecisionController
 				continue;
 			if (this.HQ.territoryMap.getOwner(pos) !== PlayerID)
 				continue;
+			if (generic === "wood")
+			{
+				const service = this.woodDropsiteForSupply(gameState, supply, Math.max(20, Number(mergePolicy().fallbackWoodDropsiteRadius) || 36));
+				if (!service)
+					continue;
+				woodServiceDistance.set(supply.id(), service.distance);
+			}
 			out.push(supply);
 		}
-		out.sort((a, b) => SquareVectorDistance(ent.position(), a.position()) - SquareVectorDistance(ent.position(), b.position()) || a.id() - b.id());
+		out.sort((a, b) => {
+			if (generic === "wood")
+			{
+				const da = Number(woodServiceDistance.get(a.id())) || 0;
+				const db = Number(woodServiceDistance.get(b.id())) || 0;
+				if (da !== db) return da - db;
+			}
+			return SquareVectorDistance(ent.position(), a.position()) - SquareVectorDistance(ent.position(), b.position()) || a.id() - b.id();
+		});
 		return out;
 	}
 
@@ -5047,6 +5612,29 @@ export class ExpertDecisionController
 
 	assignSafeFallback(gameState, ent, accessIndex, preferred = ["wood", "food", "stone", "metal"])
 	{
+		// IT14.39: temporary fallback work is still real work. If the worker already
+		// has a live, legal gather order in one of the requested resource classes,
+		// finish that target instead of recomputing the nearest supply every decision
+		// tick. This removes the visible A->B->A walking churn while an army is away.
+		const currentId = Number(ent.getMetadata(PlayerID, SUPPLY_ID));
+		const current = Number.isFinite(currentId) ? gameState.getEntityById(currentId) : undefined;
+		if (current && entityPosition(current) && current.resourceSupplyAmount && current.resourceSupplyAmount() > 0 &&
+		    current.resourceSupplyType && getLandAccess(gameState, current) === accessIndex &&
+		    this.HQ.territoryMap.getOwner(current.position()) === PlayerID)
+		{
+			const type = current.resourceSupplyType();
+			const generic = type && type.generic;
+			const woodServiced = generic !== "wood" || !!this.woodDropsiteForSupply(gameState, current,
+				Math.max(20, Number(mergePolicy().fallbackWoodDropsiteRadius) || 36));
+			if (preferred.includes(generic) && woodServiced && hasLiveGatherOrder(ent, current.id()))
+			{
+				ent.setMetadata(PlayerID, "gather-type", generic);
+				ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
+				this.diagnoseWorkerOrder(ent, "fallback:" + generic, current.id(), "CONFIRMED_STICKY");
+				return true;
+			}
+		}
+
 		for (const generic of preferred)
 		{
 			const candidates = this.resourceCandidatesInOwnTerritory(gameState, ent, accessIndex, generic);
@@ -5274,7 +5862,7 @@ export class ExpertDecisionController
 		}
 		if (kind === "field")
 		{
-			const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+			const workers = this.economyWorkerMetrics(gameState);
 			const builtFields = this.builtByClass(gameState, "Field").length;
 			const capacity = builtFields * policy.farmersPerField;
 			const freeSlots = Math.max(0, capacity - workers.farm);
@@ -5424,9 +6012,8 @@ export class ExpertDecisionController
 			}
 			if (pendingDecision.action === "COMMIT_PENDING")
 				this.finishPendingJob(ent);
-			const attackPlan = ent.getMetadata(PlayerID, "plan");
 			if (ent.getMetadata(PlayerID, TASK_KEY) !== undefined || ent.getMetadata(PlayerID, "transport") !== undefined ||
-			    ent.getMetadata(PlayerID, "PartOfArmy") || attackPlan !== undefined && attackPlan !== -1)
+			    ent.getMetadata(PlayerID, "PartOfArmy") || !this.attackPlanAllowsEconomicWork(gameState, ent))
 				continue;
 			const state = ent.unitAIState ? ent.unitAIState() : "";
 			if (state && state.includes(".COMBAT."))
@@ -5523,7 +6110,7 @@ export class ExpertDecisionController
 		this.applyPostWickerBerryPeel(gameState, foodObservation, foodAlternative);
 		const allFoodClusters = foodNetwork.clusters;
 		const woodsite = this.collectWoodsite(gameState, cc, accessIndex);
-		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+		const workers = this.economyWorkerMetrics(gameState);
 		const farmCapacity = this.farmCapacitySnapshot(gameState, accessIndex);
 		this.lastFarmCapacitySnapshot = farmCapacity;
 		const foodThroughput = this.foodThroughputMetrics(gameState, cc, foodNetwork);
@@ -5539,6 +6126,16 @@ export class ExpertDecisionController
 		const templeCandidates = [gameState.applyCiv("structures/{civ}/temple"), gameState.applyCiv("structures/{civ}/temple_vesta")];
 		const templeBuildable = !!(this.HQ.canBuild && templeCandidates.some(type =>
 			gameState.getTemplate(type) && this.HQ.canBuild(gameState, type)));
+		const marketType = gameState.applyCiv("structures/{civ}/market");
+		const marketBuildable = !!(this.HQ.canBuild && gameState.getTemplate(marketType) && this.HQ.canBuild(gameState, marketType));
+		let phase3TownRequired = 0;
+		if (typeof gameState.getPhaseEntityRequirements === "function" && typeof gameState.currentPhase === "function" && gameState.currentPhase() === 2)
+		{
+			for (const requirement of gameState.getPhaseEntityRequirements(3) || [])
+				if (requirement && requirement.class === "Town")
+					phase3TownRequired = Math.max(phase3TownRequired, Number(requirement.count) || 0);
+		}
+		const phase3TownCount = this.builtByClass(gameState, "Town").length;
 		const observation = observePetra(gameState, {
 			"HQ": this.HQ,
 			"filters": filters,
@@ -5570,7 +6167,12 @@ export class ExpertDecisionController
 				"alternativeExistingWorksite": this.alternativeWoodWorksiteExists(gameState, accessIndex)
 			},
 			"workers": workers,
-			"flags": { "templeBuildable": templeBuildable }
+			"flags": {
+				"templeBuildable": templeBuildable,
+				"marketBuildable": marketBuildable,
+				"phase3TownRequired": phase3TownRequired,
+				"phase3TownCount": phase3TownCount
+			}
 		});
 		let frame = stepDecision(this.memory, observation);
 		this.memory = frame.memory;
@@ -5581,8 +6183,13 @@ export class ExpertDecisionController
 		const phasePending = this.researchExpertPhase2(gameState, queues, frame);
 		if (!phasePending && !(defenseState && defenseState.active))
 		{
-			const militaryTech = this.researchExpertP2MilitaryTech(gameState, queues);
-			if (!militaryTech)
+			// IT14.39: once Town is reached, the first available food and wood economy
+			// upgrades reserve resources before forge upgrades. They use independent
+			// queues/researchers, so economy and military can still advance in parallel.
+			const coreP2Eco = this.researchExpertP2CoreEcoTech(gameState, queues);
+			const hopliteTradition = this.researchExpertHopliteTradition(gameState, queues, frame);
+			this.researchExpertP2MilitaryTech(gameState, queues);
+			if (!hopliteTradition && !coreP2Eco)
 				this.researchExpertEcoTech(gameState, queues, allFoodClusters, cc);
 		}
 		frame = this.filterFrameForOpeningTech(gameState, queues, allFoodClusters, frame);
@@ -5614,6 +6221,9 @@ export class ExpertDecisionController
 		for (const ent of gameState.getOwnUnits().values())
 		{
 			if (!ent || !ent.getMetadata || !this.isExpertEconomyEntity(ent))
+				continue;
+			if (ent.getMetadata(PlayerID, "PartOfArmy") || ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
+			    !this.attackPlanAllowsEconomicWork(gameState, ent))
 				continue;
 			if (ent.isIdle && ent.isIdle())
 				++out.idle;
@@ -5665,13 +6275,13 @@ export class ExpertDecisionController
 		if (gameState.ai.elapsedTime - this.lastDiag < 15)
 			return;
 		this.lastDiag = gameState.ai.elapsedTime;
-		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+		const workers = this.economyWorkerMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.32] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.39] t=" + Math.round(gameState.ai.elapsedTime) +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" res=" + Math.round(res.food) + "/" + Math.round(res.wood) + "/" + Math.round(res.stone) + "/" + Math.round(res.metal) +
-			" desired f=" + workers.food + " farm=" + workers.farm + " w=" + workers.wood + " woodCiv=" + workers.woodCivilians + " overflow=" + workers.overflowWood + " b=" + workers.builders +
+			" desired f=" + workers.food + " farm=" + workers.farm + " w=" + workers.wood + " woodCiv=" + workers.woodCivilians + " overflow=" + workers.overflowWood + " b=" + workers.builders + " army=" + (workers.attackCommitted || 0) +
 			" actual f=" + actual.food + " farm=" + actual.farm + " w=" + actual.wood + " hunt=" + actual.chicken + " scout=" + actual.scout + " b=" + actual.builders + " walk=" + actual.approaching + " ret=" + actual.returning + " idle=" + actual.idle + " unprod=" + actual.unproductive +
 			" built H=" + this.builtByClass(gameState, "House").length + " F=" + this.builtByClass(gameState, "Farmstead").length +
 			" fld=" + this.builtByClass(gameState, "Field").length + " S=" + this.builtByClass(gameState, "Storehouse").length +
@@ -5723,7 +6333,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.32] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.39] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -5746,6 +6356,7 @@ export class ExpertDecisionController
 			"pendingWoodSelectionByTask": { ...this.pendingWoodSelectionByTask },
 			"pendingFoodSelectionByTask": { ...this.pendingFoodSelectionByTask },
 			"readyNextFoodCluster": this.readyNextFoodCluster,
+			"activeNaturalExpansionCluster": this.activeNaturalExpansionCluster,
 			"openingChickenIds": [...this.openingChickenIds],
 			"openingChickensCaptured": this.openingChickensCaptured,
 			"openingChickenPhaseComplete": this.openingChickenPhaseComplete,
@@ -5774,7 +6385,8 @@ export class ExpertDecisionController
 			"naturalFoodDiscoveredAmounts": { ...this.naturalFoodDiscoveredAmounts },
 			"lastTerritoryNaturalFoodRatio": this.lastTerritoryNaturalFoodRatio,
 			"trainerIdleSince": { ...this.trainerIdleSince },
-			"athensP2TrainingCursor": this.athensP2TrainingCursor
+			"athensP2TrainingCursor": this.athensP2TrainingCursor,
+			"lastStrategicMetalRebalanceTime": this.lastStrategicMetalRebalanceTime
 		};
 	}
 
@@ -5799,6 +6411,7 @@ export class ExpertDecisionController
 		this.pendingWoodSelectionByTask = { ...(data.pendingWoodSelectionByTask || {}) };
 		this.pendingFoodSelectionByTask = { ...(data.pendingFoodSelectionByTask || {}) };
 		this.readyNextFoodCluster = data.readyNextFoodCluster;
+		this.activeNaturalExpansionCluster = data.activeNaturalExpansionCluster;
 		this.openingChickenIds = Array.isArray(data.openingChickenIds) ? [...data.openingChickenIds] : [];
 		this.openingChickensCaptured = !!data.openingChickensCaptured;
 		this.openingChickenPhaseComplete = !!data.openingChickenPhaseComplete;
@@ -5828,6 +6441,7 @@ export class ExpertDecisionController
 		this.lastTerritoryNaturalFoodRatio = Number.isFinite(data.lastTerritoryNaturalFoodRatio) ? data.lastTerritoryNaturalFoodRatio : 1;
 		this.trainerIdleSince = { ...(data.trainerIdleSince || {}) };
 		this.athensP2TrainingCursor = Math.max(0, Math.min(2, Number(data.athensP2TrainingCursor) || 0));
+		this.lastStrategicMetalRebalanceTime = Number.isFinite(data.lastStrategicMetalRebalanceTime) ? data.lastStrategicMetalRebalanceTime : -99999;
 		this.lastUpdateTurn = -1;
 	}
 }

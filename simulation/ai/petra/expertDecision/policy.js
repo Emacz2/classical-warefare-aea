@@ -28,6 +28,12 @@ const DEFAULT_POLICY = Object.freeze({
   // intentionally stricter than the connected-patch ceiling: a five-bush patch wants
   // five civilians, not eight civilians piled onto those same five bushes.
   naturalFoodMaxWorkersPerSupply: 1,
+  // IT14.37: distinguish larger single fruit trees from berry bushes. Apples may
+  // support three workers; an unknown isolated fruit source uses the same safe cap.
+  naturalFoodAppleTreeMaxWorkers: 3,
+  naturalFoodSingleSupplyMaxWorkers: 3,
+  // Finish the newly-served natural-food district before purchasing the next one.
+  naturalExpansionDepletionThreshold: 10,
   targetWoodCivilians: 20,
   maxConcurrentBuilders: 6,
   maxConcurrentFieldTasks: 3,
@@ -151,7 +157,7 @@ const DEFAULT_POLICY = Object.freeze({
   // economy and a mature population, P2 must be reserved by 8:00 even if the
   // measured-food model is pessimistic. Queueing the phase lets the queue manager
   // reserve resources instead of allowing Village-phase spending forever.
-  phase2AbsoluteTime: 480,
+  phase2AbsoluteTime: 420,
   phase2AbsolutePopulation: 80,
   phase2AbsoluteMinimumFields: 4,
   phase2PreferredFields: 8,
@@ -163,20 +169,49 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.12: once Town Phase is actually reached, production should scale with the
   // economy instead of remaining frozen at the two-barracks P1 footprint. This is
   // deliberately conservative so P1 timing is untouched.
-  phase2ThirdBarracksPopulation: 110,
-  phase2ThirdBarracksMinimumFields: 10,
-  phase2ThirdBarracksFoodBank: 500,
-  phase2ThirdBarracksWoodBank: 500,
-  phase2MilitaryTechFoodReserve: 550,
-  phase2MilitaryTechWoodReserve: 350,
-  phase2MilitaryTechMetalReserve: 100,
-  phase2MarketPopulation: 90,
-  phase2MarketWoodReserve: 450,
+  phase2ThirdBarracksPopulation: 100,
+  phase2ThirdBarracksMinimumFields: 6,
+  phase2ThirdBarracksFoodBank: 300,
+  phase2ThirdBarracksWoodBank: 200,
+  // IT14.39: Town-phase food/wood productivity techs are core infrastructure, not
+  // late-game surplus spending. They get first reservation priority alongside the
+  // first forge upgrades so the home economy keeps scaling while the army is away.
+  phase2CoreEcoFoodReserve: 150,
+  phase2CoreEcoWoodReserve: 100,
+  phase2CoreEcoMetalReserve: 0,
+  phase2MilitaryTechFoodReserve: 250,
+  phase2MilitaryTechWoodReserve: 50,
+  phase2MilitaryTechMetalReserve: 25,
+  phase2MarketPopulation: 85,
+  phase2MarketWoodReserve: 50,
+  phase2SecondMarketPopulation: 115,
+  phase2SecondMarketWoodReserve: 75,
+  phase2SecondMarketSpacing: 45,
+  // IT14.35: the worker-efficiency temple is a Village-phase economic structure.
+  // Normally establish it after barracks #2, once a small permanent-food base exists.
+  p1TemplePopulation: 65,
+  p1TempleMinimumFieldPipeline: 4,
+  p1TempleWoodReserve: 25,
+  // Give the post-barracks P1 temple a short protected construction window before
+  // Town Phase reserves the same wood.  This is a maximum hold, not a phase gate.
+  // IT14.38: Temple remains a high P1 priority, but it no longer blocks Town phase.
+  p1TemplePhaseHoldUntil: 0,
   phase2TemplePopulation: 100,
   phase2TempleMinimumFields: 8,
+  // Greek City States may buy Hoplite Tradition in late P1 when it can be paid for
+  // without consuming the resource reserve needed for Town Phase. If that window is
+  // missed, it becomes the first dedicated City-State military tech in P2.
+  hopliteTraditionMinimumTime: 300,
+  hopliteTraditionLatestP1StartTime: 390,
+  hopliteTraditionMinimumPopulation: 70,
+  hopliteTraditionMinimumFieldPipeline: 4,
+  hopliteTraditionFoodReserve: 100,
+  hopliteTraditionWoodReserve: 100,
+  hopliteTraditionMetalReserve: 0,
   // Surplus wood should become useful infrastructure instead of a 5k bank.
-  // One forge may appear late P1 only under an extreme surplus; forge #1 is a
-  // Town-transition obligation, while forge #2/#3 are reserved for City phase.
+  // One forge may appear late P1 only under an extreme surplus. Forge #1 is part
+  // of the P2 transition, forge #2 follows as soon as Town is reached, and forge
+  // #3 remains a City-phase expansion.
   lateP1ForgeTime: 330,
   lateP1ForgePopulation: 70,
   lateP1ForgeWoodBank: 1500,
@@ -184,12 +219,12 @@ const DEFAULT_POLICY = Object.freeze({
   phase2Forge1Population: 90,
   phase2Forge2Population: 100,
   phase2Forge3Population: 135,
-  // IT14.32: forge #1 is Town-transition infrastructure, not a luxury surplus sink.
-  // Forge #2/#3 wait for City phase so P2 wood stays available for the core economy.
+  // IT14.34 preserves IT14.33: forge #1 is Town-transition infrastructure, forge #2 is immediate
+  // Town infrastructure, and only forge #3 waits for City phase.
   phase2ForgeTransitionTime: 420,
-  phase2ForgeTransitionMinimumFields: 8,
-  phase2ForgeSecondMinimumFields: 10,
-  phase2ForgeSecondFoodBank: 1200,
+  phase2ForgeTransitionMinimumFields: 6,
+  phase2ForgeSecondMinimumFields: 8,
+  phase2ForgeSecondFoodBank: 250,
   phase2Forge1WoodBank: 200,
   phase2Forge2WoodBank: 200,
   phase2Forge3WoodBank: 2400,
@@ -197,14 +232,14 @@ const DEFAULT_POLICY = Object.freeze({
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
   // emergency force multipliers, never routine border spam.
-  defenseThreatMinimumUnits: 12,
-  defenseAwarenessRadius: 190,
-  defenseAutomaticDangerRadius: 115,
+  defenseThreatMinimumUnits: 8,
+  defenseAwarenessRadius: 220,
+  defenseAutomaticDangerRadius: 135,
   defenseApproachImprovement: 18,
   defenseAssemblyRadius: 24,
-  defenseAssemblyFraction: 0.78,
-  defenseAssemblyMaxWaitSeconds: 35,
-  defenseImmediateEngageRadius: 32,
+  defenseAssemblyFraction: 0.55,
+  defenseAssemblyMaxWaitSeconds: 18,
+  defenseImmediateEngageRadius: 55,
   defenseOrderRefreshSeconds: 3,
   defenseThreatReleaseSeconds: 12,
   defenseTowerOutmatchedRatio: 1.12,
@@ -249,8 +284,28 @@ const DEFAULT_POLICY = Object.freeze({
   foodSurplusFarmerReleaseStartTime: 360,
   foodSurplusFarmerReleaseFoodBank: 1400,
   foodSurplusFarmerReleaseWoodBankCeiling: 550,
-  foodSurplusFarmerReleaseBatch: 2,
-  foodSurplusFarmerReleaseCooldownSeconds: 8,
+  foodSurplusFarmerReleaseBatch: 3,
+  foodSurplusFarmerReleaseCooldownSeconds: 6,
+  // IT14.35: if a ten-field economy is sitting on thousands of food while wood is
+  // critically starved, temporarily release the third farmer from fields down to a
+  // two-per-field floor. This is the emergency valve that prevents 3kF/100W lockups.
+  extremeFoodWoodReleaseFoodBank: 2200,
+  extremeFoodWoodReleaseWoodBankCeiling: 300,
+  extremeFoodWoodReleaseMinimumFields: 10,
+  extremeFoodWoodReleaseMinimumFarmersPerField: 2,
+  extremeFoodWoodReleaseBatch: 3,
+  // When the mature food engine is rich but metal has collapsed, shift a tiny
+  // amount of established labor instead of waiting for a new civilian that may
+  // never exist at the population cap.  Stone workers are preferred, then a
+  // third farmer may leave a field, but fields never fall below two workers.
+  strategicMetalRebalanceStartTime: 300,
+  strategicMetalFoodBank: 300,
+  strategicMetalBankFloor: 600,
+  strategicMetalMinimumWorkers: 6,
+  strategicMetalStoneSurplusRatio: 1.35,
+  strategicMetalMinimumFarmersPerField: 2,
+  strategicMetalReassignBatch: 2,
+  strategicMetalReassignCooldownSeconds: 10,
   foodWoodFeedbackStartTime: 180,
   foodRecoveryFoodBank: 500,
   foodRecoveryWoodBank: 450,
@@ -276,8 +331,8 @@ const DEFAULT_POLICY = Object.freeze({
   // 17-18 field target and a runaway food bank.
   maximumPermanentFields: 12,
   // Do not open generic mines until the permanent food economy has at least six completed fields.
-  miningMinimumCompletedFields: 6,
-  miningStartCivilians: 45,
+  miningMinimumCompletedFields: 4,
+  miningStartCivilians: 35,
   miningFoodFloor: 750,
   miningWoodFloor: 300,
   miningTargetStoneWorkers: 3,
@@ -307,6 +362,10 @@ const DEFAULT_POLICY = Object.freeze({
   farmDistrictIndependentBuildingMinimumDistance: 28,
   farmDistrictIndependentBuildingPreferredDistance: 38,
   farmDistrictReservedSlotMargin: 2,
+  // Once the normal 10-field economy is physically complete, military/civic
+  // expansion no longer reserves hypothetical future field faces.  Real fields
+  // remain protected by the obstruction map; 11-12 fields are emergency capacity.
+  matureFarmDistrictRelaxFieldCount: 10,
   // Reuse natural-food farmsteads as permanent farm districts before buying another
   // farm hub. Dedicated hubs still prefer near-touching fields; exhausted natural
   // dropsites may use a modestly wider ring if that is what the terrain allows.
@@ -317,6 +376,9 @@ const DEFAULT_POLICY = Object.freeze({
   existingFarmsteadFillInMaxBorderGap: 10.0,
   farmWorkerHomeRadius: 55,
   storehouseMinimumCCDistance: 18,
+  // Temporary/fallback lumberjacks may only use trees actually serviced by a
+  // completed storehouse or market. This prevents remote no-dropsite wood camps.
+  fallbackWoodDropsiteRadius: 36,
   // A forest is a work district, but repeated dropsites require a genuinely large,
   // actively-worked CONNECTED forest and a meaningful drop-distance improvement.
   woodClusterSearchRadius: 110,
@@ -344,9 +406,9 @@ const DEFAULT_POLICY = Object.freeze({
     farmstead: { wood: 100 },
     field: { wood: 100 },
     barracks: { wood: 200 },
-    market: { wood: 300 },
+    market: { wood: 200, stone: 25, metal: 25 },
     forge: { wood: 200 },
-    temple: { wood: 200, stone: 100 }
+    temple: { food: 50, wood: 200 }
   })
 });
 

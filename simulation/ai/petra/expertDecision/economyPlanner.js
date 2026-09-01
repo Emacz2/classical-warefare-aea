@@ -385,70 +385,77 @@ function planEconomy(rawState, overrides = {}) {
       actions.push({ type: "RESERVE", kind: "barracks", role: "second", priority: 97, cost, reason: "reserve wood for pre-5:00 second barracks" });
   }
 
-  // IT14.32 forge staging. Forge #1 is a P2-transition obligation and reserves its
-  // real cost before optional expansion. Forge #2 waits for City phase.
+  const strategicBuilderPool = ["wood", "citizenSoldierWood", "food", "food_owned", "food_overflow_wood", "farm", "stone", "metal"];
+
+  // IT14.37: the P1 temple is an ACTION, not merely a reservation that blocks Forge #1.
+  // Once Barracks #2 is complete, give the economic aura a real protected build window
+  // before optional expansion can consume the same 200 wood.
+  const earlyTemplePipeline = state.structures.temple + state.foundations.temple + state.queued.temple;
+  const p1TempleReadyNow = state.phase === 1 && state.flags.templeBuildable && completedBarracks >= 2 &&
+    earlyTemplePipeline === 0 && state.population.used >= policy.p1TemplePopulation &&
+    fieldPipeline >= policy.p1TempleMinimumFieldPipeline;
+  if (p1TempleReadyNow) {
+    const cost = costOf(state, policy, "temple");
+    const protectedCost = { ...cost, wood: (cost.wood || 0) + policy.p1TempleWoodReserve };
+    const canBuild = resourceEnough(state.resources, protectedCost, reservations);
+    addReservation(reservations, cost);
+    if (canBuild)
+      actions.push({ type: "BUILD", kind: "temple", role: "p1_resource_aura", priority: 98,
+        builderPool: strategicBuilderPool, reason: "Village worker-efficiency temple after barracks 2" });
+    else
+      actions.push({ type: "RESERVE", kind: "temple", role: "p1_resource_aura", priority: 98, cost,
+        reason: "protect P1 worker-efficiency temple before forge/expansion spending" });
+  }
+
+  // IT14.35 keeps the two-forge staging, but Village-phase City States get their
+  // worker-efficiency temple first once its normal post-barracks window is open.
+  // This matches the intended Barracks #2 -> Temple -> P2/Forge transition without
+  // changing the second-barracks timing or blocking Forge #1 once Town is reached.
+  const preForgeTemplePipeline = state.structures.temple + state.foundations.temple + state.queued.temple;
+  const p1TemplePriorityPending = state.phase === 1 && state.flags.templeBuildable &&
+    completedBarracks >= 2 && preForgeTemplePipeline === 0 &&
+    state.population.used >= policy.p1TemplePopulation &&
+    fieldPipeline >= policy.p1TempleMinimumFieldPipeline;
+
   const forgePipeline = state.structures.forge + state.foundations.forge + state.queued.forge;
   const forgePending = state.foundations.forge + state.queued.forge;
   let transitionForgeTarget = 0;
   const forgeOneReady = state.structures.barracks >= 2 &&
     state.population.used >= policy.phase2Forge1Population &&
     state.structures.field >= policy.phase2ForgeTransitionMinimumFields &&
-    (state.phase >= 2 || state.time >= policy.phase2ForgeTransitionTime);
+    (state.phase >= 2 || state.time >= policy.phase2ForgeTransitionTime) &&
+    !p1TemplePriorityPending;
   if (forgeOneReady)
     transitionForgeTarget = 1;
-  const forgeTwoReady = state.phase >= 3 &&
+  const forgeTwoReady = state.phase >= 2 &&
+    state.structures.barracks >= 2 &&
     state.population.used >= policy.phase2Forge2Population &&
     state.structures.field >= policy.phase2ForgeSecondMinimumFields &&
     state.resources.food >= policy.phase2ForgeSecondFoodBank;
   if (forgeTwoReady)
     transitionForgeTarget = 2;
-
   if (forgePipeline < transitionForgeTarget && forgePending === 0) {
     const cost = costOf(state, policy, "forge");
     const canBuild = resourceEnough(state.resources, cost, reservations);
     addReservation(reservations, cost);
     const next = forgePipeline + 1;
+    const priority = next === 1 ? 96 : next === 2 ? 95 : 90;
     if (canBuild)
-      actions.push({ type: "BUILD", kind: "forge", role: `transition_forge_${next}`, priority: next === 1 ? 96 : 94,
-        builderPool: ["wood", "citizenSoldierWood"], reason: `P2 transition forge ${next}/${transitionForgeTarget}` });
+      actions.push({ type: "BUILD", kind: "forge", role: `transition_forge_${next}`, priority,
+        builderPool: strategicBuilderPool, reason: `phase infrastructure forge ${next}/${transitionForgeTarget}` });
     else
-      actions.push({ type: "RESERVE", kind: "forge", role: `transition_forge_${next}`, priority: next === 1 ? 96 : 94,
-        cost, reason: `reserve P2 transition forge ${next}/${transitionForgeTarget} before optional expansion` });
+      actions.push({ type: "RESERVE", kind: "forge", role: `transition_forge_${next}`, priority,
+        cost, reason: `reserve forge ${next}/${transitionForgeTarget} before optional expansion` });
   }
 
-  // IT14.13 Town market: P1 is frozen. Once Town is complete, two barracks exist and
-  // the economy has a healthy wood reserve, establish one market before optional late
-  // infrastructure consumes the surplus.
-  const marketPending = state.structures.market + state.foundations.market + state.queued.market;
-  if (state.phase >= 2 && state.structures.barracks >= 2 && marketPending === 0 &&
-      state.population.used >= policy.phase2MarketPopulation) {
-    const cost = costOf(state, policy, "market");
-    const canBuildMarket = state.resources.wood >= (cost.wood || 0) + policy.phase2MarketWoodReserve &&
-      state.resources.food >= (cost.food || 0) && state.resources.stone >= (cost.stone || 0) && state.resources.metal >= (cost.metal || 0);
-    if (canBuildMarket) {
-      actions.push({ type: "BUILD", kind: "market", role: "town_market", priority: 92, builderPool: ["wood", "citizenSoldierWood"], reason: "establish Town market" });
-      addReservation(reservations, cost);
-    }
-  }
-
-  // Temples provide a worker-efficiency aura in CWA. Once the Town market is established,
-  // add one temple to that same resource district so the 75m aura covers real gatherers.
-  const templePending = state.structures.temple + state.foundations.temple + state.queued.temple;
-  if (state.phase >= 2 && state.flags.templeBuildable && state.structures.market >= 1 && templePending === 0 &&
-      state.population.used >= policy.phase2TemplePopulation &&
-      state.structures.field >= policy.phase2TempleMinimumFields) {
-    const cost = costOf(state, policy, "temple");
-    if (resourceEnough(state.resources, cost, reservations)) {
-      actions.push({ type: "BUILD", kind: "temple", role: "resource_aura", priority: 91,
-        builderPool: ["wood", "citizenSoldierWood"], reason: "place worker-efficiency temple in established resource district" });
-      addReservation(reservations, cost);
-    }
-  }
-
-  // IT14.12 Town-phase production ramp. P1 remains exactly two barracks. Once P2 is
-  // complete, population and permanent food capacity may justify a third barracks.
-  // This is demand/capacity driven, not a hard clock, and preserves a useful wood bank.
+  // Town-phase production ramp. P1 remains exactly two barracks. Once P2 is
+  // complete, eight established fields and a modest resource bank are enough to
+  // justify barracks #3; this should not wait for the full ten-field mature goal.
   const thirdBarracksReady = state.phase >= 2 && completedBarracks === 2 && pendingBarracks === 0 &&
+    // Get the first market online before barracks #3 so Expert gains a dropsite,
+    // barter safety valve and one Town-class structure instead of letting a difficult
+    // barracks placement reserve the same wood every frame.
+    (state.structures.market + state.foundations.market + state.queued.market) >= 1 &&
     state.population.used >= policy.phase2ThirdBarracksPopulation &&
     state.structures.field >= policy.phase2ThirdBarracksMinimumFields &&
     state.resources.food >= policy.phase2ThirdBarracksFoodBank &&
@@ -456,9 +463,69 @@ function planEconomy(rawState, overrides = {}) {
   if (thirdBarracksReady) {
     const cost = costOf(state, policy, "barracks");
     if (resourceEnough(state.resources, cost, reservations)) {
-      actions.push({ type: "BUILD", kind: "barracks", role: "third_p2", priority: 93, builderPool: ["wood", "citizenSoldierWood"], reason: `Town production ramp (${state.population.used} pop, ${state.structures.field} fields)` });
+      actions.push({ type: "BUILD", kind: "barracks", role: "third_p2", priority: 93, builderPool: strategicBuilderPool, reason: `Town production ramp (${state.population.used} pop, ${state.structures.field} fields)` });
       addReservation(reservations, cost);
     }
+  }
+
+  // First Town market: retain the resource-dropsite behavior that worked well in
+  // IT14.32.
+  const marketPipeline = state.structures.market + state.foundations.market + state.queued.market;
+  if (state.phase >= 2 && state.structures.barracks >= 2 && marketPipeline === 0 &&
+      state.population.used >= policy.phase2MarketPopulation) {
+    const cost = costOf(state, policy, "market");
+    const canBuildMarket = state.resources.wood >= (cost.wood || 0) + policy.phase2MarketWoodReserve &&
+      state.resources.food >= (cost.food || 0) && state.resources.stone >= (cost.stone || 0) && state.resources.metal >= (cost.metal || 0) &&
+      resourceEnough(state.resources, cost, reservations);
+    addReservation(reservations, cost);
+    if (canBuildMarket)
+      actions.push({ type: "BUILD", kind: "market", role: "town_market", priority: 94, builderPool: strategicBuilderPool, reason: "establish Town market and barter/dropsite capacity" });
+    else
+      actions.push({ type: "RESERVE", kind: "market", role: "town_market", priority: 94, cost, reason: "protect first Town market before optional P2 spending" });
+  }
+
+  // If the next phase still needs another Town-class structure, add a second
+  // strategically placed market after the core P2 military infrastructure exists.
+  // This gives Athens the useful 2-market path to City Phase without invoking Petra's
+  // generic building planner or disturbing the first market placement.
+  const needsTownStructure = state.phase === 2 &&
+    Number(state.flags.phase3TownRequired || 0) > Number(state.flags.phase3TownCount || 0);
+  if (needsTownStructure && state.flags.marketBuildable && state.structures.market === 1 &&
+      state.foundations.market + state.queued.market === 0 &&
+      state.structures.barracks >= 2 &&
+      state.population.used >= policy.phase2SecondMarketPopulation) {
+    const cost = costOf(state, policy, "market");
+    const canBuildSecondMarket = state.resources.wood >= (cost.wood || 0) + policy.phase2SecondMarketWoodReserve &&
+      state.resources.food >= (cost.food || 0) && state.resources.stone >= (cost.stone || 0) && state.resources.metal >= (cost.metal || 0) &&
+      resourceEnough(state.resources, cost, reservations);
+    addReservation(reservations, cost);
+    if (canBuildSecondMarket)
+      actions.push({ type: "BUILD", kind: "market", role: "phase3_town_support", priority: 91,
+        builderPool: strategicBuilderPool, reason: `satisfy Town requirement ${state.flags.phase3TownCount}/${state.flags.phase3TownRequired} for P3` });
+    else
+      actions.push({ type: "RESERVE", kind: "market", role: "phase3_town_support", priority: 91, cost,
+        reason: `reserve second Town building for P3 (${state.flags.phase3TownCount}/${state.flags.phase3TownRequired})` });
+  }
+
+  // IT14.35: temples are economic infrastructure, not a P2 luxury. They are buildable
+  // in Village phase in CWA and their 75m worker aura pays back while the economy is
+  // still growing. Barracks #2 remains the hard military priority; after it is complete,
+  // establish one temple once a modest permanent-food pipeline exists. If the P1 window
+  // was missed, retain a P2 fallback around the established market/resource district.
+  const templePending = state.structures.temple + state.foundations.temple + state.queued.temple;
+  const p2TempleReady = state.phase >= 2 && state.structures.market >= 1 &&
+    state.population.used >= policy.phase2TemplePopulation &&
+    state.structures.field >= policy.phase2TempleMinimumFields;
+  if (state.flags.templeBuildable && templePending === 0 && p2TempleReady) {
+    const cost = costOf(state, policy, "temple");
+    const canBuildTemple = resourceEnough(state.resources, cost, reservations);
+    addReservation(reservations, cost);
+    if (canBuildTemple)
+      actions.push({ type: "BUILD", kind: "temple", role: "resource_aura", priority: 93,
+        builderPool: strategicBuilderPool, reason: "place worker-efficiency temple in established resource district" });
+    else
+      actions.push({ type: "RESERVE", kind: "temple", role: "resource_aura", priority: 93, cost,
+        reason: "protect worker-efficiency temple from optional spending" });
   }
 
   // 5. Wood rollover is a hard economic continuity obligation. Once a large
@@ -560,8 +627,8 @@ function planEconomy(rawState, overrides = {}) {
   }
 
 
-  // 8. Forge #3 remains an optional City-phase surplus sink. Forge #1 is handled
-  // above as the P2-transition obligation; forge #2/#3 do not consume Town-phase wood.
+  // 8. Forge #3 remains an optional City-phase surplus sink. Forge #1 is the
+  // transition forge and forge #2 is the Town-phase parallel-tech forge above.
   if (state.phase >= 3 && forgePipeline === 2 && forgePending === 0 &&
       state.population.used >= policy.phase2Forge3Population &&
       state.resources.wood >= policy.phase2Forge3WoodBank) {
@@ -569,7 +636,7 @@ function planEconomy(rawState, overrides = {}) {
     const reserveEnough = state.resources.wood >= (cost.wood || 0) + policy.forgeWoodReserve;
     if (reserveEnough && resourceEnough(state.resources, cost, reservations)) {
       actions.push({ type: "BUILD", kind: "forge", role: "forge_3", priority: 90,
-        builderPool: ["wood", "citizenSoldierWood"], reason: "City-phase surplus forge 3/3" });
+        builderPool: strategicBuilderPool, reason: "City-phase surplus forge 3/3" });
       addReservation(reservations, cost);
     }
   }

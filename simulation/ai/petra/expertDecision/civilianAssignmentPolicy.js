@@ -243,7 +243,13 @@ function foodWoodFeedbackDirective(input = {}) {
 
   const bankRecovery = food < recoveryFoodBank && wood >= recoveryWoodBank && bankRatio >= recoveryWoodFoodRatio;
   const rateRecovery = foodBurnRate > 0 && rateRatio < recoveryRateRatio && food < recoveryFoodBank + 200 && wood > food;
-  const capacityRecovery = overflowWood >= 4;
+  // Overflow capacity only signals food recovery while the food bank is actually
+  // under pressure.  In IT14.34 a mature 10-field economy with 3k food / 100 wood
+  // still reported food_recovery solely because several food-owned workers were
+  // overflowing.  That suppressed the farmer->wood emergency valve forever.
+  const capacityRecovery = overflowWood >= 4 &&
+    food < recoveryFoodBank + 300 &&
+    (foodBurnRate <= 0 || rateRatio < Math.max(recoveryRateRatio, 1.15));
   const recovery = time >= startTime && (bankRecovery || rateRecovery || capacityRecovery);
 
   const strongRecovery = recovery && (

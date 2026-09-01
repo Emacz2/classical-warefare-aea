@@ -235,3 +235,23 @@ Replay regressions locked by IT14:
 - Forge #1 is a P2-transition obligation once two barracks, 8 fields, ~90 population and the P2 timing corridor are present. Its actual wood cost is reserved before optional farm/storehouse expansion.
 - Forge #2 becomes a Town transition obligation at ~100 population, 10 fields and a healthy food bank. Forge #3 remains an optional late surplus sink.
 - Woodsite rollover is phase-capped at five storehouses in Village and seven in Town. Once the cap is reached, reuse existing worksites rather than spending scarce wood chasing every thinning patch.
+
+
+## IT14.33 additive P2/P3 contracts
+- IT14.32 opening, berry, farm, housing, market placement and attack-manager handoff remain frozen.
+- Expert does not deliberately train new Cavalry while cavalry-control work is deferred; starting cavalry remains usable.
+- Forge #1 belongs to the P2 transition; forge #2 follows in Town Phase; forge #3 is City-only.
+- Barracks #3 is a Town-phase production ramp and may start once eight fields and modest food/wood banks exist.
+- A second market may satisfy an unmet Town-class phase requirement, but must remain at least 55m from the first market.
+- Normal Petra may research City Phase only after Expert-placed structures already satisfy all entity requirements; generic Petra construction remains blocked.
+
+
+## IT14.34 additive Village-temple / City-State doctrine contracts
+
+- IT14.33's working attack-manager handoff, cavalry-production freeze, two-forge P2 plan, third P2 barracks, market placement, farm limits, civilian cap, phase watchdog, and 50m independent-building core are frozen.
+- One worker-efficiency temple is now eligible in Village phase after barracks #2, with a modest permanent-food pipeline and a protected wood reserve. If missed, the Town-phase temple fallback remains.
+- Temple placement ranks existing market/farmstead/storehouse districts by current Worker coverage inside the 75m aura before generating candidates.
+- Forge #1 remains transition infrastructure. Forge #2 remains immediate Town infrastructure; its food-bank gate is modest so a wood-only forge is not delayed by a temporarily low food bank.
+- Athens/Sparta/Thebes may research citystate/hoplite_tradition in late Village phase only when barracks #2 and the temple are secured, Town Phase is not already ready, and the current bank can pay both Hoplite Tradition and the full observed Town-phase cost plus reserves. If that safe P1 window is missed, Hoplite Tradition becomes the first dedicated City-State doctrine-tech candidate in Town phase.
+
+- IT14.39: Expert gather/trade multiplier reduced to 1.35; attack-committed citizen-soldiers are excluded from home-economy workforce counts once they stop economic work; temporary fallback gather targets are sticky while legal/live; Town-phase food and wood gather upgrades use dedicated higher-priority queues before/alongside forge military upgrades.
