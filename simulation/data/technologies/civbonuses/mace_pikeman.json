@@ -4,11 +4,10 @@
 	"description": "The Macedonian infantry levy drew heavily upon rural communities accustomed to hardship and collective service. Newly raised soldiers entered the army as inexpensive conscripts before developing through battlefield experience into trained Foot Companions.",
 	"requirements": { "civ": "mace" },
 	"icon": "wooden_walls.png",
-	"tooltip": "Macedonian Citizen Pikemen begin as Conscripts. Conscripts train 10% faster, cost 5 less Food, Wood, and Metal, and deal 5% less melee damage. After gaining 60 experience, they promote into full-strength Foot Companions.",
+	"tooltip": "Macedonian Citizen Pikemen begin as Conscripts. Conscripts train 10% faster, cost 10 less metal, but attack slower. After gaining 60 experience, they promote into full-strength Foot Companions.",
 	"modifications": [
 
 
-		{ "value": "Cost/Resources/metal", "add": -5 }
 		
 
 	],

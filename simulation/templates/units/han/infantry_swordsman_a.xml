@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity parent="han|armor_medium|shield_medium|helmet_open|template_unit_infantry_melee_swordsman">
   <Identity>
-    <GenericName>Han Swordsman</GenericName>
     <Rank>Advanced</Rank>
-   <Icon>units/han/infantry_swordsman.png</Icon>
+    <SelectionGroupName>units/han/infantry_swordsman_b</SelectionGroupName>
+    <GenericName>Han Swordsman</GenericName>
+    <SpecificName>Dāo Bīng</SpecificName>
+    <Icon>units/han/infantry_swordsman.png</Icon>
+     <Requirements>
+      <Techs datatype="tokens">unlock_swordsmen</Techs>
+    </Requirements>
   </Identity>
   <Promotion>
     <Entity>units/han/infantry_swordsman_e</Entity>

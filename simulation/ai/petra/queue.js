@@ -1,6 +1,7 @@
 import { ResourcesManager } from "simulation/ai/common-api/resources.js";
 import { aiWarn } from "simulation/ai/common-api/utils.js";
 import { ConstructionPlan } from "simulation/ai/petra/queueplanBuilding.js";
+import { ExpertFixedConstructionPlan } from "simulation/ai/petra/expertFixedConstructionPlan.js";
 import { ResearchPlan } from "simulation/ai/petra/queueplanResearch.js";
 import { TrainingPlan } from "simulation/ai/petra/queueplanTraining.js";
 
@@ -152,7 +153,9 @@ Queue.prototype.Deserialize = function(gameState, data)
 		if (dataPlan.category == "unit")
 			plan = new TrainingPlan(gameState, dataPlan.type);
 		else if (dataPlan.category == "building")
-			plan = new ConstructionPlan(gameState, dataPlan.type);
+			plan = dataPlan.expertFixedConstruction || dataPlan.metadata && dataPlan.metadata.expertDecisionLayer ?
+				new ExpertFixedConstructionPlan(gameState, dataPlan.type) :
+				new ConstructionPlan(gameState, dataPlan.type);
 		else if (dataPlan.category == "technology")
 			plan = new ResearchPlan(gameState, dataPlan.type);
 		else

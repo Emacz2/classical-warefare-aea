@@ -5,6 +5,8 @@ import { SquareVectorDistance, aiWarn, getMapIndices } from "simulation/ai/commo
 import { BaseManager } from "simulation/ai/petra/baseManager.js";
 import { getBestBase, getLandAccess } from "simulation/ai/petra/entityExtend.js";
 import { Worker } from "simulation/ai/petra/worker.js";
+import { suppressAssignEntityWorkerCommands, suppressTrainingFinishedWorkerCommands } from
+	"simulation/ai/petra/expertDecision/petraOwnershipGate.js";
 
 /**
  * Bases Manager
@@ -314,6 +316,12 @@ BasesManager.prototype.checkEvents = function(gameState, events)
 				}
 				else
 					base = this.getBaseByID(ent.getMetadata(PlayerID, "base"));
+				const controller = gameState.ai.HQ.expertDecisionController;
+				if (suppressTrainingFinishedWorkerCommands(gameState, ent, controller))
+				{
+					controller.claimWorker(gameState, ent);
+					continue;
+				}
 				base.reassignIdleWorkers(gameState, [ent]);
 				base.workerObject.update(gameState, ent);
 			}
@@ -622,6 +630,12 @@ BasesManager.prototype.assignEntity = function(gameState, ent, territoryIndex)
 		bestbase.assignRolelessUnits(gameState, [ent]);
 		if (ent.getMetadata(PlayerID, "role") === Worker.ROLE_WORKER)
 		{
+			const controller = gameState.ai.HQ.expertDecisionController;
+			if (suppressAssignEntityWorkerCommands(gameState, ent, controller))
+			{
+				controller.claimWorker(gameState, ent);
+				return;
+			}
 			bestbase.reassignIdleWorkers(gameState, [ent]);
 			bestbase.workerObject.update(gameState, ent);
 		}

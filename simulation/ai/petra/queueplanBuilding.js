@@ -123,6 +123,7 @@ ConstructionPlan.prototype.findGoodPosition = function(gameState)
 		return this.findDockPosition(gameState);
 
 	const HQ = gameState.ai.HQ;
+
 	if (template.hasClass("Storehouse") && this.metadata && this.metadata.base)
 	{
 		// recompute the best dropsite location in case some conditions have changed

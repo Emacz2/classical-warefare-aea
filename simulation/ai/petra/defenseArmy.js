@@ -305,6 +305,13 @@ DefenseArmy.prototype.assignUnit = function(gameState, entID)
 	if (!ent || !ent.position())
 		return false;
 
+	// Expert does not let the first woodcutters to arrive fight a larger army alone.
+	// Its coordinator owns the retreat/assembly/engage sequence for default defense armies.
+	const expert = gameState.ai && gameState.ai.HQ && gameState.ai.HQ.expertDecisionController;
+	if (this.type === "default" && expert && expert.isActive && expert.isActive(gameState) &&
+	    expert.hasActiveExpertDefense && expert.hasActiveExpertDefense() && expert.assignExpertDefenseUnit)
+		return expert.assignExpertDefenseUnit(gameState, this, ent);
+
 	// try to return its resources, and if any, the attack order will be queued
 	const queued = returnResources(gameState, ent);
 

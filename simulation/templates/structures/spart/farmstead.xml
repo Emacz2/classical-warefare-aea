@@ -18,6 +18,7 @@
     <RegenRate>1</RegenRate>
     <GarrisonRegenRate>1</GarrisonRegenRate>
   </Capturable>
+  <RallyPoint/>
   <Cost>
     <BuildTime>40</BuildTime>
     <Resources>

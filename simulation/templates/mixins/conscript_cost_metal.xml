@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Entity>
+  <Cost>
+    <Resources>
+      <metal op="add">-10</metal>
+    </Resources>
+  </Cost>
+</Entity>
