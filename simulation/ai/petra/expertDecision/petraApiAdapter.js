@@ -41,6 +41,12 @@ const BUILDING_SPECS = Object.freeze({
     queue: "militaryBuilding",
     allowedBuilderJobs: ["wood", "citizenSoldierWood"]
   },
+  temple: {
+    className: "Temple",
+    template: "structures/{civ}/temple",
+    queue: "economicBuilding",
+    allowedBuilderJobs: ["wood", "citizenSoldierWood"]
+  },
   tower: {
     className: "Tower",
     template: "structures/{civ}/sentry_tower",
@@ -94,6 +100,25 @@ function resolvedTemplate(gameState, kind) {
   const spec = BUILDING_SPECS[kind];
   if (!spec)
     throw new Error(`Unknown building kind: ${kind}`);
+  if (kind === "temple") {
+    const generic = gameState.applyCiv("structures/{civ}/temple");
+    const vesta = gameState.applyCiv("structures/{civ}/temple_vesta");
+    const genericTemplate = gameState.getTemplate && gameState.getTemplate(generic);
+    const vestaTemplate = gameState.getTemplate && gameState.getTemplate(vesta);
+    const canBuild = gameState.ai && gameState.ai.HQ && typeof gameState.ai.HQ.canBuild === "function" ?
+      type => gameState.ai.HQ.canBuild(gameState, type) :
+      type => !!(gameState.getTemplate && gameState.getTemplate(type));
+    if (vestaTemplate && canBuild(vesta))
+      return vesta;
+    if (genericTemplate && canBuild(generic))
+      return generic;
+    // Cost/count observation must remain safe before the temple's phase unlock.
+    if (genericTemplate)
+      return generic;
+    if (vestaTemplate)
+      return vesta;
+    return generic;
+  }
   if (kind === "tower") {
     const sentry = gameState.applyCiv("structures/{civ}/sentry_tower");
     const defense = gameState.applyCiv("structures/{civ}/defense_tower");
@@ -150,6 +175,10 @@ function countPendingCivilianTraining(gameState, context = {}) {
 
 function templateCost(gameState, kind) {
   const template = gameState.getTemplate(resolvedTemplate(gameState, kind));
+  // Temple support is optional across civs; do not break the whole Expert observer for
+  // a civ that lacks a normal temple template. The planner is gated by templeBuildable.
+  if ((!template || typeof template.cost !== "function") && kind === "temple")
+    return {};
   if (!template || typeof template.cost !== "function")
     throw new Error(`Missing template/cost() for ${kind}`);
   return cloneResources(template.cost());
@@ -182,6 +211,7 @@ function housingMetrics(gameState, context = {}) {
 function observePetra(gameState, context = {}) {
   const getPopulation = requireMethod(gameState, "getPopulation", "gameState");
   const getPopulationLimit = requireMethod(gameState, "getPopulationLimit", "gameState");
+  const getPopulationMax = requireMethod(gameState, "getPopulationMax", "gameState");
   const getResources = requireMethod(gameState, "getResources", "gameState");
   const getOwnStructures = requireMethod(gameState, "getOwnStructures", "gameState");
   const getOwnFoundations = requireMethod(gameState, "getOwnFoundations", "gameState");
@@ -200,6 +230,7 @@ function observePetra(gameState, context = {}) {
   const HQ = context.HQ || gameState.ai && gameState.ai.HQ;
   const used = finite(getPopulation(), "population.used");
   const limit = finite(getPopulationLimit(), "population.limit");
+  const max = finite(getPopulationMax(), "population.max");
   let queuedPopulation = Number(context.queuedPopulation);
   if (!Number.isFinite(queuedPopulation)) {
     if (!HQ || typeof HQ.getAccountedPopulation !== "function")
@@ -224,7 +255,7 @@ function observePetra(gameState, context = {}) {
   return {
     time: finite(Number(context.time ?? ((gameState.ai && gameState.ai.elapsedTime) ?? 0)), "time"),
     phase: typeof gameState.currentPhase === "function" ? Math.max(1, Number(gameState.currentPhase()) || 1) : 1,
-    population: { used, limit, queued: queuedPopulation },
+    population: { used, limit, max, queued: queuedPopulation },
     training: countPendingCivilianTraining(gameState, context),
     housing: housingMetrics(gameState, context),
     resources: cloneResources(getResources()),
@@ -232,6 +263,7 @@ function observePetra(gameState, context = {}) {
     foundations,
     queued,
     costs,
+    flags: { ...(context.flags || {}) },
     food: {
       primaryRatio: finite(Number(context.food.primaryRatio), "food.primaryRatio"),
       primaryRemaining: finite(Number(context.food.primaryRemaining), "food.primaryRemaining"),

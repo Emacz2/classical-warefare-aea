@@ -5,7 +5,7 @@ function decideCivilianTraining(rawState, overrides = {}) {
   const state = normalizeState(rawState);
   const policy = mergePolicy(overrides);
   const free = accountedFreePopulation(state);
-  const cap = Math.max(1, Number(policy.civilianCap) || 75);
+  const cap = Math.max(1, Number(policy.civilianCap) || 70);
   const civilianRoom = Math.max(0, cap - state.workers.civilians - state.training.pendingCivilians);
   if (civilianRoom <= 0)
     return { action: "STOP_CIVILIANS", batch: 0, reason: `civilian cap ${cap} reached; CC is released for soldiers` };

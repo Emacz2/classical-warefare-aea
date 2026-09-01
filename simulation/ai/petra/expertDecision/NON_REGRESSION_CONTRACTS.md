@@ -30,7 +30,7 @@ These are hard contracts for future Expert updates. Do not remove or weaken them
 
 5. New-worker-only resource balancing
    - Existing farmers, woodcutters and miners stay on their assigned resource/site unless their supply is exhausted, inaccessible, unsafe, or the army is deliberately mobilized.
-   - CC trains civilians to 75 when housing allows.
+   - CC trains civilians to 70 when housing allows.
    - After the opening 20 civilian woodcutters, NEW civilians go where the production math says they are needed.
    - Once food burn is covered and wood is functional, NEW civilians begin stone/metal instead of becoming surplus farmers.
 
@@ -47,7 +47,7 @@ These are hard contracts for future Expert updates. Do not remove or weaken them
    - A natural-food farmstead must also be useful later: placement scoring includes future touching-field capacity.
 
 8. Military/economy pacing preserved
-   - CC trains civilians continuously to 75 when housing allows.
+   - CC trains civilians continuously to 70 when housing allows.
    - Barracks #1 is not gated by an arbitrary field count; reserve ~2:15, target ~2:30, hard ~3:00.
    - Barracks #2 requires at least 5 COMPLETE fields, then uses measured/pending food income + bank-runway math. It must NOT demand 11-12 fields before construction.
    - Target barracks #2 around 5-6 minutes when the bank can bridge the short-term two-barracks deficit.
@@ -225,3 +225,13 @@ Replay regressions locked by IT14:
 - Existing farmsteads are exhausted before buying another permanent farm hub: normal compact slots first, then the 4m reuse ring, then a bounded 10m corner/fill-in pass, still capped at 4 fields per hub.
 - The wide fill-in pass may search diagonally around an obstructed side; it does not relax normal first-choice touching placement.
 - In Town Phase, completed Markets are valid food hubs for field placement and reserve their immediate field faces from later independent construction.
+
+
+## IT14.31 economy-balance / P2 infrastructure contract
+- IT14.30 opening, berry retention, phase-up, 50m CC exclusion, farm packing, market-as-P2-food-hub, second-barracks timing, and Athens P2 2:1:1 roster remain frozen.
+- Permanent fields have a hard strategic ceiling of 12. `desiredFields` may not recursively grow past 12 merely because extra civilians were already assigned to food.
+- Preferred permanent field staffing remains three civilians per field. Emergency 4th/5th gatherers are temporary overflow and may not become sacred permanent farm locks.
+- When mature food is strongly surplus and wood is weak, release temporary/overflow farmers toward wood in small cooldown-controlled batches; never peel the protected opening food tranche or reduce a normally staffed field below the preferred three through this path.
+- Forge #1 is a P2-transition obligation once two barracks, 8 fields, ~90 population and the P2 timing corridor are present. Its actual wood cost is reserved before optional farm/storehouse expansion.
+- Forge #2 becomes a Town transition obligation at ~100 population, 10 fields and a healthy food bank. Forge #3 remains an optional late surplus sink.
+- Woodsite rollover is phase-capped at five storehouses in Village and seven in Town. Once the cap is reached, reuse existing worksites rather than spending scarce wood chasing every thinning patch.

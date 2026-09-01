@@ -40,6 +40,8 @@ function predictiveHouseTrigger(state, policy) {
 function housingDecision(state, policy) {
   const free = accountedFreePopulation(state);
   let trigger = predictiveHouseTrigger(state, policy);
+  if (state.population.max > 0 && state.population.limit >= state.population.max)
+    return { needed: false, maintain: false, free, trigger, reason: `population limit ${state.population.limit} already reaches maximum ${state.population.max}` };
   const militaryExtra = state.housing.activeMilitaryTrainers * policy.houseMilitaryExtraHeadroomPerBarracks +
     (state.housing.ccSoldierActive ? policy.houseCCSoldierExtraHeadroom : 0);
   trigger = Math.min(policy.houseMaximumMilitaryHeadroom, trigger + militaryExtra);
@@ -199,7 +201,14 @@ function fieldDemand(state, policy) {
   if (naturalFirstHold)
     desiredFields = existingFields;
 
-  desiredFields = Math.max(0, Math.ceil(desiredFields));
+  // IT14.32: ten permanent fields is the normal mature target. Fields 11-12 are
+  // emergency reserve capacity only when the live food bank is actually short.
+  const preferredFieldCeiling = Math.max(1, Number(policy.preferredPermanentFields) || 10);
+  const emergencyFieldCeiling = Math.max(preferredFieldCeiling, Number(policy.maximumPermanentFields) || 12);
+  const foodShortForReserveFields = totalNatural <= 0 && completedFields >= preferredFieldCeiling &&
+    state.resources.food < (Number(policy.emergencyPermanentFieldsFoodBank) || 500);
+  const liveFieldCeiling = foodShortForReserveFields ? emergencyFieldCeiling : preferredFieldCeiling;
+  desiredFields = Math.min(liveFieldCeiling, Math.max(0, Math.ceil(desiredFields)));
   const missingFields = Math.max(0, desiredFields - existingFields);
 
   // Barracks #2 launch math: five COMPLETE fields is the physical minimum. After that,
@@ -293,7 +302,7 @@ function planEconomy(rawState, overrides = {}) {
   const woodsite = woodWorksiteDecision(state, policy);
 
   // 1. Existing foundations are obligations, not optional projects.
-  for (const kind of ["house", "farmstead", "field", "storehouse", "barracks", "market", "forge"]) {
+  for (const kind of ["house", "farmstead", "field", "storehouse", "barracks", "market", "forge", "temple"]) {
     if (state.foundations[kind] > 0)
       actions.push({ type: "MAINTAIN_CONSTRUCTION", kind, priority: 100, reason: "foundation exists" });
   }
@@ -376,6 +385,37 @@ function planEconomy(rawState, overrides = {}) {
       actions.push({ type: "RESERVE", kind: "barracks", role: "second", priority: 97, cost, reason: "reserve wood for pre-5:00 second barracks" });
   }
 
+  // IT14.32 forge staging. Forge #1 is a P2-transition obligation and reserves its
+  // real cost before optional expansion. Forge #2 waits for City phase.
+  const forgePipeline = state.structures.forge + state.foundations.forge + state.queued.forge;
+  const forgePending = state.foundations.forge + state.queued.forge;
+  let transitionForgeTarget = 0;
+  const forgeOneReady = state.structures.barracks >= 2 &&
+    state.population.used >= policy.phase2Forge1Population &&
+    state.structures.field >= policy.phase2ForgeTransitionMinimumFields &&
+    (state.phase >= 2 || state.time >= policy.phase2ForgeTransitionTime);
+  if (forgeOneReady)
+    transitionForgeTarget = 1;
+  const forgeTwoReady = state.phase >= 3 &&
+    state.population.used >= policy.phase2Forge2Population &&
+    state.structures.field >= policy.phase2ForgeSecondMinimumFields &&
+    state.resources.food >= policy.phase2ForgeSecondFoodBank;
+  if (forgeTwoReady)
+    transitionForgeTarget = 2;
+
+  if (forgePipeline < transitionForgeTarget && forgePending === 0) {
+    const cost = costOf(state, policy, "forge");
+    const canBuild = resourceEnough(state.resources, cost, reservations);
+    addReservation(reservations, cost);
+    const next = forgePipeline + 1;
+    if (canBuild)
+      actions.push({ type: "BUILD", kind: "forge", role: `transition_forge_${next}`, priority: next === 1 ? 96 : 94,
+        builderPool: ["wood", "citizenSoldierWood"], reason: `P2 transition forge ${next}/${transitionForgeTarget}` });
+    else
+      actions.push({ type: "RESERVE", kind: "forge", role: `transition_forge_${next}`, priority: next === 1 ? 96 : 94,
+        cost, reason: `reserve P2 transition forge ${next}/${transitionForgeTarget} before optional expansion` });
+  }
+
   // IT14.13 Town market: P1 is frozen. Once Town is complete, two barracks exist and
   // the economy has a healthy wood reserve, establish one market before optional late
   // infrastructure consumes the surplus.
@@ -387,6 +427,20 @@ function planEconomy(rawState, overrides = {}) {
       state.resources.food >= (cost.food || 0) && state.resources.stone >= (cost.stone || 0) && state.resources.metal >= (cost.metal || 0);
     if (canBuildMarket) {
       actions.push({ type: "BUILD", kind: "market", role: "town_market", priority: 92, builderPool: ["wood", "citizenSoldierWood"], reason: "establish Town market" });
+      addReservation(reservations, cost);
+    }
+  }
+
+  // Temples provide a worker-efficiency aura in CWA. Once the Town market is established,
+  // add one temple to that same resource district so the 75m aura covers real gatherers.
+  const templePending = state.structures.temple + state.foundations.temple + state.queued.temple;
+  if (state.phase >= 2 && state.flags.templeBuildable && state.structures.market >= 1 && templePending === 0 &&
+      state.population.used >= policy.phase2TemplePopulation &&
+      state.structures.field >= policy.phase2TempleMinimumFields) {
+    const cost = costOf(state, policy, "temple");
+    if (resourceEnough(state.resources, cost, reservations)) {
+      actions.push({ type: "BUILD", kind: "temple", role: "resource_aura", priority: 91,
+        builderPool: ["wood", "citizenSoldierWood"], reason: "place worker-efficiency temple in established resource district" });
       addReservation(reservations, cost);
     }
   }
@@ -411,7 +465,9 @@ function planEconomy(rawState, overrides = {}) {
   // wood workforce is outgrowing the current site, reserve/build the next dropsite
   // before optional farm expansion can spend the same wood.
   const totalStores = state.structures.storehouse + state.foundations.storehouse + state.queued.storehouse;
-  if (totalStores >= 1 && woodsite.expand && state.foundations.storehouse + state.queued.storehouse === 0) {
+  const maximumWoodStores = state.phase >= 2 ? policy.maximumTownWoodStorehouses : policy.maximumVillageWoodStorehouses;
+  if (totalStores >= 1 && totalStores < maximumWoodStores && woodsite.expand &&
+      state.foundations.storehouse + state.queued.storehouse === 0) {
     const cost = costOf(state, policy, "storehouse");
     const canBuild = resourceEnough(state.resources, cost, reservations);
     addReservation(reservations, cost);
@@ -504,34 +560,16 @@ function planEconomy(rawState, overrides = {}) {
   }
 
 
-  // 8. Forge expansion is a SURPLUS sink, never a substitute for food capacity.
-  // This block runs after permanent farm reservations, so a weak farm economy gets
-  // first claim on wood. Late P1 may add one forge only under a severe wood surplus;
-  // Town phase can progressively grow to three.
-  const forgePipeline = state.structures.forge + state.foundations.forge + state.queued.forge;
-  const woodFoodRatio = state.resources.wood / Math.max(250, state.resources.food);
-  let desiredForges = 0;
-  if (state.phase < 2) {
-    if (state.time >= policy.lateP1ForgeTime && state.population.used >= policy.lateP1ForgePopulation &&
-        state.structures.barracks >= 2 && state.resources.wood >= policy.lateP1ForgeWoodBank &&
-        woodFoodRatio >= policy.lateP1ForgeWoodFoodRatio)
-      desiredForges = 1;
-  } else {
-    if (state.population.used >= policy.phase2Forge1Population && state.resources.wood >= policy.phase2Forge1WoodBank)
-      desiredForges = 1;
-    if (state.population.used >= policy.phase2Forge2Population && state.resources.wood >= policy.phase2Forge2WoodBank)
-      desiredForges = 2;
-    if (state.population.used >= policy.phase2Forge3Population && state.resources.wood >= policy.phase2Forge3WoodBank)
-      desiredForges = 3;
-  }
-  if (forgePipeline < desiredForges && state.foundations.forge + state.queued.forge === 0) {
+  // 8. Forge #3 remains an optional City-phase surplus sink. Forge #1 is handled
+  // above as the P2-transition obligation; forge #2/#3 do not consume Town-phase wood.
+  if (state.phase >= 3 && forgePipeline === 2 && forgePending === 0 &&
+      state.population.used >= policy.phase2Forge3Population &&
+      state.resources.wood >= policy.phase2Forge3WoodBank) {
     const cost = costOf(state, policy, "forge");
     const reserveEnough = state.resources.wood >= (cost.wood || 0) + policy.forgeWoodReserve;
     if (reserveEnough && resourceEnough(state.resources, cost, reservations)) {
-      const next = forgePipeline + 1;
-      actions.push({ type: "BUILD", kind: "forge", role: `forge_${next}`, priority: next === 1 ? 93 : 90,
-        builderPool: ["wood", "citizenSoldierWood"], reason: state.phase >= 2 ?
-          `Town surplus forge ${next}/${desiredForges}` : "late-P1 extreme wood surplus forge" });
+      actions.push({ type: "BUILD", kind: "forge", role: "forge_3", priority: 90,
+        builderPool: ["wood", "citizenSoldierWood"], reason: "City-phase surplus forge 3/3" });
       addReservation(reservations, cost);
     }
   }

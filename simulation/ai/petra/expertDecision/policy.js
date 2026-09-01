@@ -35,7 +35,7 @@ const DEFAULT_POLICY = Object.freeze({
   // fields in parallel. P1/opening behavior keeps the old three-task ceiling.
   maxConcurrentFieldTasksSurplus: 5,
   fieldParallelExpansionWoodBank: 1000,
-  civilianCap: 75,
+  civilianCap: 70,
   farmPrebuildWoodCivilians: 12,
   farmSecondPrebuildWoodCivilians: 16,
   farmFullPrebuildWoodCivilians: 20,
@@ -47,7 +47,7 @@ const DEFAULT_POLICY = Object.freeze({
   soldierTrainingStartTime: 150,
   soldierTrainingBatch: 2,
   soldierFoodReserve: 100,
-  // The CC stays on civilians until the 75-civilian cap; barracks carry military production.
+  // The CC stays on civilians until the 70-civilian cap; barracks carry military production.
   ccOpeningSoldierStartTime: 99999,
   ccSecondEmergencySoldierTime: 99999,
   barracksReserveTime: 135,
@@ -172,20 +172,28 @@ const DEFAULT_POLICY = Object.freeze({
   phase2MilitaryTechMetalReserve: 100,
   phase2MarketPopulation: 90,
   phase2MarketWoodReserve: 450,
+  phase2TemplePopulation: 100,
+  phase2TempleMinimumFields: 8,
   // Surplus wood should become useful infrastructure instead of a 5k bank.
-  // One forge may appear late P1 only under an extreme surplus; Town phase can
-  // progressively grow to three while permanent food remains higher priority.
+  // One forge may appear late P1 only under an extreme surplus; forge #1 is a
+  // Town-transition obligation, while forge #2/#3 are reserved for City phase.
   lateP1ForgeTime: 330,
   lateP1ForgePopulation: 70,
   lateP1ForgeWoodBank: 1500,
   lateP1ForgeWoodFoodRatio: 3.0,
   phase2Forge1Population: 90,
-  phase2Forge2Population: 110,
+  phase2Forge2Population: 100,
   phase2Forge3Population: 135,
-  phase2Forge1WoodBank: 700,
-  phase2Forge2WoodBank: 1400,
+  // IT14.32: forge #1 is Town-transition infrastructure, not a luxury surplus sink.
+  // Forge #2/#3 wait for City phase so P2 wood stays available for the core economy.
+  phase2ForgeTransitionTime: 420,
+  phase2ForgeTransitionMinimumFields: 8,
+  phase2ForgeSecondMinimumFields: 10,
+  phase2ForgeSecondFoodBank: 1200,
+  phase2Forge1WoodBank: 200,
+  phase2Forge2WoodBank: 200,
   phase2Forge3WoodBank: 2400,
-  forgeWoodReserve: 600,
+  forgeWoodReserve: 100,
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
   // emergency force multipliers, never routine border spam.
@@ -235,6 +243,14 @@ const DEFAULT_POLICY = Object.freeze({
   matureFoodWoodReleaseRatio: 1.75,
   matureFoodWoodReleaseRateRatio: 1.30,
   matureFoodWoodReleaseWoodBankCeiling: 550,
+  // IT14.31: overflow farm slots (4th/5th gatherers) are emergency productivity only.
+  // Under a mature food surplus, peel those overflow farmers back to wood before
+  // creating yet more permanent food capacity. Preferred three-per-field crews remain.
+  foodSurplusFarmerReleaseStartTime: 360,
+  foodSurplusFarmerReleaseFoodBank: 1400,
+  foodSurplusFarmerReleaseWoodBankCeiling: 550,
+  foodSurplusFarmerReleaseBatch: 2,
+  foodSurplusFarmerReleaseCooldownSeconds: 8,
   foodWoodFeedbackStartTime: 180,
   foodRecoveryFoodBank: 500,
   foodRecoveryWoodBank: 450,
@@ -252,7 +268,13 @@ const DEFAULT_POLICY = Object.freeze({
   fieldFloorSixPopulation: 70,
   fieldFloorEightPopulation: 90,
   fieldFloorTenPopulation: 120,
-  fieldFloorTwelvePopulation: 150,
+  fieldFloorTwelvePopulation: 9999,
+  preferredPermanentFields: 10,
+  emergencyPermanentFieldsFoodBank: 500,
+  // IT14.31: twelve permanent fields is the strategic ceiling. The live replay showed
+  // that letting current food ownership recursively inflate desiredFields created a
+  // 17-18 field target and a runaway food bank.
+  maximumPermanentFields: 12,
   // Do not open generic mines until the permanent food economy has at least six completed fields.
   miningMinimumCompletedFields: 6,
   miningStartCivilians: 45,
@@ -305,6 +327,11 @@ const DEFAULT_POLICY = Object.freeze({
   woodDeepenExtraRemainingPerStorehouse: 300,
   woodDeepenMinimumDistanceImprovement: 5,
   woodStorehouseMinimumSpacing: 24,
+  // IT14.31: IT14.30 reached ten storehouses while wood income collapsed. Chasing every
+  // thinning patch with another 100-wood dropsite is self-defeating. Reuse existing
+  // worksites after these phase-scaled caps.
+  maximumVillageWoodStorehouses: 5,
+  maximumTownWoodStorehouses: 7,
   ecoTechFoodReserve: 600,
   ecoTechWoodReserve: 300,
   ecoTechSurplusFood: 900,
@@ -318,7 +345,8 @@ const DEFAULT_POLICY = Object.freeze({
     field: { wood: 100 },
     barracks: { wood: 200 },
     market: { wood: 300 },
-    forge: { wood: 200 }
+    forge: { wood: 200 },
+    temple: { wood: 200, stone: 100 }
   })
 });
 

@@ -2284,6 +2284,13 @@ Headquarters.prototype.update = function(gameState, queues, events)
 		this.garrisonManager.update(gameState, events);
 		this.defenseManager.update(gameState, events);
 
+		// IT14.32: once Town Phase is reached, let Petra's proven attack manager claim
+		// military units while Expert keeps sole ownership of the economy. P1 remains
+		// untouched. Expert worker code ignores units with an active attack-plan metadata.
+		if (gameState.currentPhase() > 1 && this.Config.difficulty > difficulty.SANDBOX &&
+		    (this.hasActiveBase() || !this.canBuildUnits))
+			this.attackManager.update(gameState, queues, events);
+
 		if (gameState.ai.elapsedTime - this.capturableTargetsTime > 3)
 			this.updateCaptureStrength(gameState);
 		Engine.ProfileStop();

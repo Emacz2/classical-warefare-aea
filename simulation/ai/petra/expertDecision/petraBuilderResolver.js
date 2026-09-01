@@ -124,7 +124,7 @@ function selectMaintenanceTeam(gameState, kind, targetPosition, count, action = 
     taskId: options.taskId,
     existingBuilderIds: options.existingBuilderIds || [],
     requireEmptyHands: false,
-    preferCitizenSoldiers: kind === "house" || kind === "storehouse" || kind === "barracks" || kind === "market" || kind === "forge",
+    preferCitizenSoldiers: kind === "house" || kind === "storehouse" || kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple",
     preferMeleeCitizenSoldiers: kind === "storehouse",
     requiredBuilderIds: action.requiredBuilderIds
   });
