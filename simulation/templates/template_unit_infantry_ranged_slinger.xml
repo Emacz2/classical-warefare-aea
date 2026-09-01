@@ -31,9 +31,8 @@
   </Resistance>
   <Cost>
     <Resources>
-      <food op="add">15</food>
+      <food op="add">25</food>
       <stone>25</stone>
-      <wood>10</wood>
     </Resources>
   </Cost>
   <Identity>

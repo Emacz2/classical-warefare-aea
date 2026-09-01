@@ -5,21 +5,17 @@
       <MaxRange op="mul">0.9</MaxRange>
       <Projectile>
         <Spread op="mul">1.1</Spread>
-    </Projectile>
-  </Ranged>
+      </Projectile>
+    </Ranged>
   </Attack>
- <Cost>
+  <Cost>
     <BuildTime op="mul">0.9</BuildTime>
-    <Resources>
-      <food op="add">-5</food>
-      <wood op="add">-5</wood>
-    </Resources>
   </Cost>
   <Promotion>
     <RequiredXp>60</RequiredXp>
   </Promotion>
   <Identity>
     <VisibleClasses datatype="tokens">Conscript</VisibleClasses>
-    <Tooltip>Conscript ranged soldiers train 10% faster and cost 5 less food and wood, but have 10% less range and 10% greater spread. They lose Conscript status when promoted to Basic rank.</Tooltip>
+    <Tooltip>Conscript ranged soldiers train 10% faster, but have 10% less range and 10% greater spread. They lose Conscript status when promoted to Basic rank after earning 60 experience.</Tooltip>
   </Identity>
 </Entity>
