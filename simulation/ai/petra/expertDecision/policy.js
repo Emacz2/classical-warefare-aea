@@ -184,8 +184,11 @@ const DEFAULT_POLICY = Object.freeze({
   resourceBalanceReassignBatch: 2,
   resourceBalanceReassignCooldownSeconds: 15,
   resourceBalanceExtremeRatio: 3.5,
-  resourceBalanceExtremeBatch: 3,
-  resourceBalanceExtremeCooldownSeconds: 10,
+  // IT14.51: extreme bank mismatches need a decisive labor move, not three workers
+  // every ten seconds. This is especially important when stone has become effectively
+  // dead stock while a live war economy is starved for wood.
+  resourceBalanceExtremeBatch: 8,
+  resourceBalanceExtremeCooldownSeconds: 5,
   // P2 is readiness-driven, not a hard clock. 90-120 population and 7-11 minutes is
   // the normal corridor; exceptional economies may begin slightly earlier and an
   // overdue economy reserves the phase rather than remaining in Village forever.
@@ -237,15 +240,22 @@ const DEFAULT_POLICY = Object.freeze({
   phase2SecondMarketSpacing: 30,
   // IT14.35: the worker-efficiency temple is a Village-phase economic structure.
   // Normally establish it after barracks #2, once a small permanent-food base exists.
-  p1TemplePopulation: 65,
-  p1TempleMinimumFieldPipeline: 4,
+  // IT14.52: the worker-aura Temple is core economic infrastructure, not a late
+  // luxury. A non-rush/P2-tech opening may reserve it once the basic two-barracks
+  // economy is established; rush doctrines still suppress it until the rush launches.
+  p1TemplePopulation: 55,
+  p1TempleMinimumFieldPipeline: 3,
   p1TempleWoodReserve: 25,
   // Give the post-barracks P1 temple a short protected construction window before
   // Town Phase reserves the same wood.  This is a maximum hold, not a phase gate.
   // IT14.38: Temple remains a high P1 priority, but it no longer blocks Town phase.
   p1TemplePhaseHoldUntil: 0,
-  phase2TemplePopulation: 100,
-  phase2TempleMinimumFields: 8,
+  // IT14.52: never deadlock the Temple behind an arbitrary eight-field count.
+  // If the P1 window was missed, Town-phase Expert should still establish the aura
+  // while the economy is growing, normally around the 8-10 minute window.
+  phase2TemplePopulation: 75,
+  phase2TempleMinimumFields: 3,
+  phase2TempleWoodReserve: 75,
   // Greek City States may buy Hoplite Tradition in late P1 when it can be paid for
   // without consuming the resource reserve needed for Town Phase. If that window is
   // missed, it becomes the first dedicated City-State military tech in P2.
@@ -339,9 +349,9 @@ const DEFAULT_POLICY = Object.freeze({
   // two-per-field floor. This is the emergency valve that prevents 3kF/100W lockups.
   extremeFoodWoodReleaseFoodBank: 2200,
   extremeFoodWoodReleaseWoodBankCeiling: 300,
-  extremeFoodWoodReleaseMinimumFields: 10,
+  extremeFoodWoodReleaseMinimumFields: 6,
   extremeFoodWoodReleaseMinimumFarmersPerField: 2,
-  extremeFoodWoodReleaseBatch: 3,
+  extremeFoodWoodReleaseBatch: 8,
   // When the mature food engine is rich but metal has collapsed, shift a tiny
   // amount of established labor instead of waiting for a new civilian that may
   // never exist at the population cap.  Stone workers are preferred, then a
@@ -443,6 +453,21 @@ const DEFAULT_POLICY = Object.freeze({
   existingFarmsteadFillInMaxBorderGap: 10.0,
   farmWorkerHomeRadius: 55,
   storehouseMinimumCCDistance: 18,
+  // IT14.52 generic resource-district service.  Wood already had sophisticated
+  // dropsite logic; stone, metal and natural food now get the same human-like
+  // expectation that workers should not carry resources across the settlement.
+  resourceServiceStartTime: 120,
+  resourceServiceIdealDropDistance: 8,
+  resourceServiceHardDropDistance: 11,
+  resourceServiceObservedRoundTripSeconds: 3.5,
+  resourceServiceClusterRadius: 18,
+  resourceServiceMinimumWorkers: 3,
+  resourceServiceMinimumMineralRemaining: 250,
+  resourceServiceMinimumNaturalFoodRemaining: 300,
+  resourceServiceStorehouseMinimumSpacing: 10,
+  resourceServiceWoodReserve: 100,
+  resourceServiceRetryCooldownSeconds: 16,
+  resourceCorridorClearance: 3.5,
   // Temporary/fallback lumberjacks may only use trees actually serviced by a
   // completed storehouse or market. This prevents remote no-dropsite wood camps.
   fallbackWoodDropsiteRadius: 36,
@@ -452,7 +477,7 @@ const DEFAULT_POLICY = Object.freeze({
   temporaryFallbackLeaseSeconds: 30,
   // IT14.41 finishing doctrine. Once the opponent has been broken, convert the lead
   // into a victory instead of dissolving pressure and assembling another full wave.
-  expertFinishingEnemyPopulation: 50,
+  expertFinishingEnemyPopulation: 28,
   expertFinishingMinimumOwnPopulation: 80,
   expertFinishingMinimumPopulationLead: 30,
   expertFinishingHomeCitizenSoldierReserve: 12,
@@ -473,15 +498,60 @@ const DEFAULT_POLICY = Object.freeze({
   expertDepletedAttackDefendedRadius: 155,
   expertDepletedAttackReboomSeconds: 60,
   expertDepletedAttackResumePopulation: 130,
+  // IT14.49 P1 combat discipline. A rush is allowed to fail, but it may not feed
+  // the same bad fight indefinitely. Attrition is compared with the opponent's
+  // population damage, then local force/static-defense pressure can force a retreat.
+  expertRushAbortLossFraction: 0.35,
+  expertRushAbortPressureLossFraction: 0.25,
+  expertRushAbortEnemyDamageCredit: 0.75,
+  expertRushAbortMinimumOwnLosses: 5,
+  expertRushAbortMinimumFightSeconds: 10,
+  expertRushAbortLocalOutnumberRatio: 1.25,
+  expertRushLocalBalanceRadius: 80,
+  expertRushDefensiveThreatRadius: 90,
+  expertRushRetreatCooldownSeconds: 105,
+  // IT14.50: a broken melee screen is first a tactical-regroup signal, not an
+  // automatic strategic surrender. Only true local pressure / bad exchange should
+  // send the whole army home.
+  expertRushTacticalRegroupSeconds: 7,
+  expertRushTacticalRegroupCooldownSeconds: 25,
+  expertRushTacticalRegroupDistance: 24,
+  // IT14.51: normal P2 attacks also need to preserve the ranged body once their
+  // melee screen has genuinely collapsed under local pressure. This is a strategic
+  // retreat only after the army has already fallen below the healthy attack size.
+  expertCombatScreenRetreatArmyCeiling: 48,
+  expertCombatScreenRetreatRangedMinimum: 12,
+  expertCombatScreenRetreatMeleeToRanged: 0.38,
+  expertCombatScreenRetreatEnemyMinimum: 4,
+  expertCombatScreenReboomSeconds: 45,
+  expertRecentGarrisonThreatSeconds: 25,
+  // Keep ranged infantry behind the melee centroid instead of letting pathing put
+  // javeliners/archers on the front edge of a mixed infantry army.
+  expertRangedScreenBehindMeleeDistance: 8,
+  expertRangedScreenTolerance: 4,
+  expertRangedScreenUpdateSeconds: 3,
   // IT14.45: preserve veteran manpower.  Badly wounded citizen-soldiers peel out of
   // an active attack, run home, and return to economic work while fresh soldiers
   // replace them.  The full-army retreat remains the fallback when the whole push
   // has actually collapsed.
   expertWoundedRetreatHealth: 0.25,
-  expertWoundedRetreatBatch: 6,
+  // IT14.50: do not constantly dismantle an army in the middle of combat. During
+  // contact only critically wounded troops peel; in a lull we may rotate a few more.
+  expertWoundedRetreatHealthCombat: 0.18,
+  expertWoundedRetreatHealthLull: 0.30,
+  expertWoundedRetreatBatchCombat: 2,
+  expertWoundedRetreatBatchLull: 6,
   expertWoundedReturnSeconds: 90,
-  expertWoundedReplacementBatch: 4,
+  expertWoundedReplacementBatch: 8,
+  expertWoundedReplacementWaveMinimum: 6,
+  expertWoundedReplacementWaveCooldownSeconds: 14,
   expertWoundedReplacementHomeReserve: 12,
+  // One coherent Town-phase offensive. Fresh troops leave in waves instead of
+  // spawning a second independent attack plan or dribbling forward one at a time.
+  expertPrimaryOffensiveTargetArmy: 58,
+  expertPrimaryReinforcementWaveMinimum: 6,
+  expertPrimaryReinforcementWaveMaximum: 8,
+  expertPrimaryReinforcementWaveCooldownSeconds: 16,
   // Rams are the finishing tool. Fill a modest number of seats so their movement/damage
   // bonus matters without hiding the whole infantry army inside them.
   expertRamGarrisonTarget: 5,
@@ -503,21 +573,40 @@ const DEFAULT_POLICY = Object.freeze({
   // the siege-finisher pipeline as soon as the civ's own tech tree actually permits
   // an arsenal/ram. Availability checks remain authoritative, so this cannot invent
   // P2 siege for civs that only receive it in City Phase.
-  expertBrokenEnemySiegePopulation: 30,
-  expertBrokenEnemySiegeArmy: 40,
+  expertBrokenEnemySiegePopulation: 45,
+  expertBrokenEnemySiegeArmy: 55,
   // Zero-pop traders are a small passive multiplier, not a new boom strategy.
   expertTradeInitialTraders: 2,
   expertTradeStrongRouteTraders: 4,
   expertTradeStrongRouteGain: 8,
+  // The CWA trader is zero-pop, so even a short legal land route is worth using.
+  expertTradeMinimumGain: 2,
+  // IT14.51 emergency war-economy barter. Generic Petra barter remains available,
+  // but a 4k-stone/50-wood bank needs an explicit wood rescue before queue needs
+  // happen to expose the deficit. One transaction per cooldown keeps market price
+  // feedback authoritative while restoring a usable production reserve quickly.
+  expertEmergencyWoodBarterStartTime: 540,
+  expertEmergencyWoodBarterTrigger: 250,
+  expertEmergencyWoodBarterCritical: 100,
+  expertEmergencyWoodBarterTarget: 700,
+  expertEmergencyWoodBarterCooldownSeconds: 4,
+  expertEmergencyWoodBarterBatch: 500,
+  expertEmergencyWoodBarterStoneFloor: 800,
+  expertEmergencyWoodBarterFoodFloor: 1400,
+  expertEmergencyWoodBarterMetalFloor: 800,
+  // Expert timing doctrines are benchmarked around a normal 200-pop operating
+  // economy. A larger lobby cap may be exploited later, but may not inflate the
+  // timing attack into an endless house/army boom before the first kill attempt.
+  expertOperatingPopulationCap: 200,
   // IT14.44 P2 research package: during an actual P2 push, buy the first two broad
   // military upgrades before spending deeper into the forge tree, then immediately
   // establish the food+wood eco pair. Higher military tiers wait for eco continuity.
   expertP2MilitaryTechsBeforeEco: 2,
   expertP2MilitaryTechsBeforeSecondEcoPair: 2,
-  // IT14.47: after the first Town food+wood eco pair is protected, a live push may
-  // spend true surplus on deeper military upgrades instead of waiting for the entire
-  // long-game eco ladder. The larger reserves protect the next reinforcement cycle.
-  expertP2WarMilitaryTechMaximum: 6,
+  // IT14.50: after the first Town food+wood eco pair is protected, a live push may
+  // keep converting genuine surplus into useful military techs. IT14.49's six-tech
+  // ceiling left Melee Attack II unresearched while >1k metal sat idle, so there is
+  // deliberately no military-tech count cap here.
   expertP2WarTechFoodReserve: 500,
   expertP2WarTechWoodReserve: 250,
   expertP2WarTechStoneReserve: 0,
@@ -527,6 +616,10 @@ const DEFAULT_POLICY = Object.freeze({
   // launching. If the same plan reaches launch strength while Town is still
   // researching, it may go early as a P1 timing attack.
   expertP2AttackRequiredMilitaryTechs: 2,
+  // A rush-doctrine follow-up may preserve momentum with one completed upgrade so
+  // long as a second dedicated military tech is actively researching.
+  expertP2RushFollowupCompletedMilitaryTechs: 1,
+  expertP2RushFollowupActiveMilitaryTechs: 2,
   expertP1TimingAttackMinimumUnits: 28,
   // Forward infrastructure may deliberately claim territory toward useful neutral
   // resources. Buildings must still pass the normal own-territory legality test.
@@ -551,6 +644,11 @@ const DEFAULT_POLICY = Object.freeze({
   ecoTechWoodReserve: 300,
   ecoTechSurplusFood: 900,
   ecoTechSurplusWood: 500,
+  // IT14.48: Athens uses a broad army-composition target instead of a rigid
+  // 2 Hoplite : 1 Marine : 1 Javeliner sequence. Leave other civ defaults alone
+  // until their own rosters/doctrines are audited.
+  athensMeleeShare: 0.58,
+  athensMarineShareOfMelee: 0.30,
   cityStateMeleeShare: 0.67,
   genericMeleeShare: 0.50,
   costs: Object.freeze({

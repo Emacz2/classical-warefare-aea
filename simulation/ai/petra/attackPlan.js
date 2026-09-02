@@ -210,12 +210,17 @@ export function AttackPlan(gameState, config, uniqueID, type = AttackPlan.TYPE_D
 		}
 	}
 
-	// change the sizes according to max population
-	this.neededShips = Math.ceil(this.Config.popScaling * this.neededShips);
+	// change the sizes according to max population. IT14.51 caps Expert's timing-plan
+	// scaling at the normal 200-pop operating economy, so an accidental 300-pop lobby
+	// cannot silently demand a larger first/second attack before the same strategy fires.
+	const expertOperatingScale = this.Config.difficulty >= difficulty.EXPERT ?
+		Math.sqrt(Math.min(300, Number(mergePolicy().expertOperatingPopulationCap) || 200) / 300) : this.Config.popScaling;
+	const attackPopScale = this.Config.difficulty >= difficulty.EXPERT ? Math.min(this.Config.popScaling, expertOperatingScale) : this.Config.popScaling;
+	this.neededShips = Math.ceil(attackPopScale * this.neededShips);
 	for (const cat in this.unitStat)
 	{
-		this.unitStat[cat].targetSize = Math.ceil(this.Config.popScaling * this.unitStat[cat].targetSize);
-		this.unitStat[cat].minSize = Math.ceil(this.Config.popScaling * this.unitStat[cat].minSize);
+		this.unitStat[cat].targetSize = Math.ceil(attackPopScale * this.unitStat[cat].targetSize);
+		this.unitStat[cat].minSize = Math.ceil(attackPopScale * this.unitStat[cat].minSize);
 	}
 
 	// TODO: there should probably be one queue per type of training building
@@ -539,8 +544,9 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 				{
 					am.expertLastTechGateLog = gameState.ai.elapsedTime;
 					aiWarn("[EXPERT-ATTACK] P2 tech gate holding plan=" + this.name +
-						" completed=" + expertP2TechGate.completed + "/" + expertP2TechGate.required +
-						" army=" + this.unitCollection.length);
+						" completed=" + expertP2TechGate.completed + " researching=" + (expertP2TechGate.researching || 0) +
+						" active=" + (expertP2TechGate.active || expertP2TechGate.completed) + "/" + expertP2TechGate.required +
+						" mode=" + (expertP2TechGate.mode || "standard") + " army=" + this.unitCollection.length);
 				}
 				return AttackPlan.PREPARATION_KEEP_GOING;
 			}
@@ -573,8 +579,9 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 			{
 				am.expertLastTechGateLog = gameState.ai.elapsedTime;
 				aiWarn("[EXPERT-ATTACK] P2 tech gate holding plan=" + this.name +
-					" completed=" + expertP2TechGate.completed + "/" + expertP2TechGate.required +
-					" army=" + this.unitCollection.length);
+					" completed=" + expertP2TechGate.completed + " researching=" + (expertP2TechGate.researching || 0) +
+					" active=" + (expertP2TechGate.active || expertP2TechGate.completed) + "/" + expertP2TechGate.required +
+					" mode=" + (expertP2TechGate.mode || "standard") + " army=" + this.unitCollection.length);
 			}
 			return AttackPlan.PREPARATION_KEEP_GOING;
 		}
@@ -986,6 +993,107 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 			" objective=" + cc.id() + " stage=" + Math.round(out.stagingPos[0]) + "," + Math.round(out.stagingPos[1]));
 	}
 	return out;
+};
+
+// IT14.49: remember defended CC/tower zones even while garrisoned units briefly
+// pop out and duck back in. Infantry should fight those units outside the umbrella,
+// not immediately resume attacking the holder.
+AttackPlan.prototype.expertDefensiveThreatState = function(gameState)
+{
+	const out = { active: false, recent: false, structure: undefined, nearbyCombat: 0 };
+	if (this.Config.difficulty < difficulty.EXPERT || !this.isStarted() || this.targetPlayer === undefined)
+		return out;
+	const centre = this.unitCollection.getCentrePosition() || this.position || this.targetPos;
+	if (!centre)
+		return out;
+	const policy = mergePolicy();
+	const radius2 = Math.pow(Number(policy.expertRushDefensiveThreatRadius) || 90, 2);
+	const dangerousStructures = [];
+	for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+	{
+		if (!struct || !struct.position() || SquareVectorDistance(struct.position(), centre) > radius2)
+			continue;
+		const dangerous = struct.hasClass("CivCentre") || struct.hasClass("Tower") || struct.hasClass("WallTower") ||
+			struct.hasClass("Fortress") || struct.hasDefensiveFire && struct.hasDefensiveFire();
+		if (!dangerous)
+			continue;
+		dangerousStructures.push(struct);
+		const garrisoned = struct.isGarrisonHolder && struct.isGarrisonHolder() && struct.garrisoned ? struct.garrisoned().length : 0;
+		if (garrisoned > 0)
+		{
+			out.active = true;
+			out.structure = struct;
+		}
+	}
+	const combatNearDefense = new Set();
+	if (dangerousStructures.length)
+		for (const enemy of gameState.getEnemyUnits(this.targetPlayer).values())
+		{
+			if (!enemy || !enemy.position() || !(enemy.attackTypes && enemy.attackTypes()))
+				continue;
+			for (const struct of dangerousStructures)
+				if (SquareVectorDistance(enemy.position(), struct.position()) <= 45 * 45)
+				{
+					combatNearDefense.add(enemy.id());
+					if (!out.structure) out.structure = struct;
+					out.active = true;
+					break;
+				}
+		}
+	out.nearbyCombat = combatNearDefense.size;
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	if (out.active)
+		this.expertDefensiveThreatUntil = now + (Number(policy.expertRecentGarrisonThreatSeconds) || 25);
+	out.recent = out.active || now < (Number(this.expertDefensiveThreatUntil) || -99999);
+	return out;
+};
+
+AttackPlan.prototype.maintainExpertInfantryScreen = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !this.isStarted() || !this.targetPos || this.hasSiegeUnits())
+		return 0;
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	if (now - (Number(this.expertLastScreenUpdate) || -99999) < (Number(policy.expertRangedScreenUpdateSeconds) || 3))
+		return 0;
+	this.expertLastScreenUpdate = now;
+	const melee = [], ranged = [];
+	for (const ent of this.unitCollection.values())
+	{
+		if (!ent || !ent.position() || ent.hasClass("Siege"))
+			continue;
+		if (ent.hasClass("Melee")) melee.push(ent);
+		else if (ent.hasClass("Ranged")) ranged.push(ent);
+	}
+	if (melee.length < 4 || ranged.length < 2)
+		return 0;
+	const centre = list => [list.reduce((s,e) => s + e.position()[0], 0) / list.length,
+		list.reduce((s,e) => s + e.position()[1], 0) / list.length];
+	const mc = centre(melee);
+	let dx = mc[0] - this.targetPos[0], dz = mc[1] - this.targetPos[1];
+	const len = Math.hypot(dx, dz) || 1;
+	dx /= len; dz /= len;
+	const behind = Number(policy.expertRangedScreenBehindMeleeDistance) || 8;
+	const guard = [mc[0] + dx * behind, mc[1] + dz * behind];
+	const meleeDistance = Math.sqrt(SquareVectorDistance(mc, this.targetPos));
+	const tolerance = Number(policy.expertRangedScreenTolerance) || 4;
+	let moved = 0;
+	for (const ent of ranged)
+	{
+		const rangedDistance = Math.sqrt(SquareVectorDistance(ent.position(), this.targetPos));
+		if (rangedDistance + tolerance >= meleeDistance)
+			continue;
+		ent.moveToRange(guard[0], guard[1], 0, 5);
+		ent.setMetadata(PlayerID, "lastAttackPlanUpdateTime", now);
+		++moved;
+	}
+	if (moved && now - (Number(this.expertLastScreenLog) || -99999) >= 15)
+	{
+		this.expertLastScreenLog = now;
+		aiWarn("[EXPERT-SCREEN] plan=" + this.name + " pulled-ranged=" + moved +
+			" melee=" + melee.length + " ranged=" + ranged.length);
+	}
+	return moved;
 };
 
 // IT14.41: add a newly-trained/working unit directly to a battle that is already
@@ -1824,6 +1932,38 @@ AttackPlan.prototype.update = function(gameState, events)
 		const expertRamAssault = this.expertRamAssaultState(gameState);
 		const enemyUnits = gameState.getEnemyUnits(this.targetPlayer);
 		const enemyStructures = gameState.getEnemyStructures(this.targetPlayer);
+		const expertDefenseThreat = this.expertDefensiveThreatState(gameState);
+		this.maintainExpertInfantryScreen(gameState);
+		// If a no-siege infantry plan somehow inherited a defended CC/tower as its
+		// strategic target, immediately look again for exposed workers/production.
+		if (expertDefenseThreat.recent && !expertRamAssault.active && this.target && this.target.hasClass("Structure") &&
+		    (this.target.hasClass("CivCentre") || this.target.hasClass("Tower") || this.target.hasClass("WallTower") ||
+		     this.target.hasClass("Fortress") || this.target.hasDefensiveFire && this.target.hasDefensiveFire()))
+		{
+			const safer = this.getNearestTarget(gameState, this.position);
+			if (safer && !(safer.hasClass("CivCentre") || safer.hasClass("Tower") || safer.hasClass("WallTower") || safer.hasClass("Fortress")))
+			{
+				this.target = safer;
+				this.targetPlayer = safer.owner();
+				this.targetPos = safer.position();
+			}
+			else if (expertDefenseThreat.structure && expertDefenseThreat.structure.position())
+			{
+				const danger = expertDefenseThreat.structure.position();
+				let dx = this.position[0] - danger[0], dz = this.position[1] - danger[1];
+				const len = Math.hypot(dx, dz) || 1;
+				const hold = (Number(mergePolicy().expertRushDefensiveThreatRadius) || 90) + 8;
+				this.targetPos = [danger[0] + dx / len * hold, danger[1] + dz / len * hold];
+				const now = Number(gameState.ai.elapsedTime) || 0;
+				if (now - (Number(this.expertLastDefenseHoldLog) || -99999) >= 15)
+				{
+					this.expertLastDefenseHoldLog = now;
+					aiWarn("[EXPERT-THREAT] perimeter-hold plan=" + this.name +
+						" structure=" + expertDefenseThreat.structure.id() +
+						" nearbyCombat=" + expertDefenseThreat.nearbyCombat);
+				}
+			}
+		}
 
 		// Count the number of times an enemy is targeted, to prevent all units to follow the same target
 		const unitTargets = {};
@@ -1878,7 +2018,7 @@ AttackPlan.prototype.update = function(gameState, events)
 			targetClassesUnit.avoid = targetClassesUnit.avoid.concat("House", "Storehouse", "Farmstead", "Field", "Forge");
 			targetClassesSiege.avoid = targetClassesSiege.avoid.concat("House", "Storehouse", "Farmstead", "Field", "Forge");
 		}
-		if (expertRamAssault.waiting)
+		if (expertRamAssault.waiting || expertDefenseThreat.recent)
 			targetClassesUnit.avoid = targetClassesUnit.avoid.concat("CivCentre", "Tower", "WallTower", "Fortress");
 		if (this.Config.difficulty >= difficulty.EXPERT && !expertRamAssault.active)
 		{
@@ -1936,7 +2076,7 @@ AttackPlan.prototype.update = function(gameState, events)
 					needsUpdate = true;
 					--unitTargets[targetId];
 				}
-				else if (expertRamAssault.waiting && target.hasClass("Structure") &&
+				else if ((expertRamAssault.waiting || expertDefenseThreat.recent) && target.hasClass("Structure") &&
 				    (target.hasClass("CivCentre") || target.hasClass("Fortress") || target.hasClass("Tower") ||
 				     target.hasClass("WallTower") || target.hasDefensiveFire && target.hasDefensiveFire()))
 					maybeUpdate = true;
@@ -2644,7 +2784,20 @@ AttackPlan.prototype.Serialize = function()
 		"target": this.target !== undefined ? this.target.id() : undefined,
 		"targetPos": this.targetPos,
 		"uniqueTargetId": this.uniqueTargetId,
-		"path": this.path
+		"path": this.path,
+		"expertLaunchSize": this.expertLaunchSize,
+		"expertLaunchTime": this.expertLaunchTime,
+		"expertLaunchEnemyPopulation": this.expertLaunchEnemyPopulation,
+		"expertOwnLosses": this.expertOwnLosses,
+		"expertDefensiveThreatUntil": this.expertDefensiveThreatUntil,
+		"expertLastScreenUpdate": this.expertLastScreenUpdate,
+		"expertLastScreenLog": this.expertLastScreenLog,
+		"expertLastDefenseHoldLog": this.expertLastDefenseHoldLog,
+		"expertLastTacticalRegroup": this.expertLastTacticalRegroup,
+		"expertTacticalRegroupUntil": this.expertTacticalRegroupUntil,
+		"expertWoundedReplacementDemand": this.expertWoundedReplacementDemand,
+		"expertLastWoundedReplacementWave": this.expertLastWoundedReplacementWave,
+		"expertLastPrimaryReinforcementWave": this.expertLastPrimaryReinforcementWave
 	};
 
 	return { "properties": properties };

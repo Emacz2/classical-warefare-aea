@@ -2292,8 +2292,16 @@ Headquarters.prototype.update = function(gameState, queues, events)
 		// performBarter() only: no generic market placement, trader training, or route
 		// planning re-enters the Expert economy. This converts pathological 3kF/100W
 		// banks into the wood actually required by production, techs and infrastructure.
-		if (this.canBarter && this.tradeManager && this.tradeManager.performBarter)
-			this.tradeManager.performBarter(gameState);
+		if (this.canBarter && this.tradeManager)
+		{
+			// IT14.51: emergency war-economy wood rescue runs first. If it trades this
+			// turn, let market prices update before generic queue-need barter considers
+			// another transaction.
+			const emergencyTrade = this.tradeManager.performExpertEmergencyWoodBarter &&
+				this.tradeManager.performExpertEmergencyWoodBarter(gameState);
+			if (!emergencyTrade && this.tradeManager.performBarter)
+				this.tradeManager.performBarter(gameState);
+		}
 		// IT14.47: allow only route maintenance + a tiny zero-pop trader contingent.
 		// Market construction remains entirely Expert-owned; generic trade prospection
 		// and trade-tech spending are still disabled.

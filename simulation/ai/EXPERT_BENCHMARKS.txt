@@ -9,9 +9,9 @@ Definitions
 
 Last 3 completed games
 Patch      Gather Bonus   Break       Victory          Finish Gap
-IT14.43    +35%           11:30       22:58.8          11:28.8
 IT14.44    +35%           17:00       25:00-25:30       8:00-8:30
 IT14.46    +35%           11:30       19:25.6           7:55.6
+IT14.49    +35%           13:00       22:31.6           9:31.6
 
 IT14.44 notes
 - Very Hard was 51 pop at 16:00, rebounded to 59 at 16:30, then fell to 48 at 17:00 and never returned to 50+, so BREAK=17:00.
@@ -27,8 +27,8 @@ Current tuning ladder
 - Reassess before reducing below +20%.
 
 Current +35% trend
-- Latest three completed victories are 22:58.8, 25:00-25:30, and 19:25.6.
-- Median is 22:58.8. +35% remains frozen; IT14.46 is the first sub-20 clean win in the confirmation set.
+- Latest three completed victories are 25:00-25:30, 19:25.6, and 22:31.6.
+- Median is 22:31.6. +35% remains frozen; IT14.46 is still the first sub-20 clean win in the confirmation set.
 
 IT14.45 target
 - Rotate <=25% health citizen-soldiers out of active attacks; once home they return to work while fresh >=75% health soldiers replace them.
@@ -62,3 +62,65 @@ IT14.47 target
 - If an opponent is <=30 population against a >=40-unit active army in P2, begin the Arsenal/ram finisher only if that civ's current-phase templates actually permit it.
 - Repeat concise strategy telemetry for arming, launch, and P2 follow-up so doctrine execution is visible in the replay log.
 - Keep +35% gather/trade unchanged.
+
+IT14.48 target
+- Fix the IT14.47 Market #2 crash (`request is not defined` in `placementPorts`) without changing Market #1's farm-district protection or the trade-route intent of Market #2.
+- Athens no longer waits on an exact 2 Hoplite : 1 Marine : 1 Javelineer sequence. Maintain a broad ~58% melee / ~42% ranged infantry mix; Hoplites remain the core melee line and Marines are a soft preference only.
+- The oldest completed barracks is a production-floor barracks: keep one unit training plus one Expert soldier plan queued when population/resources permit. Other barracks remain adaptive and may train larger batches.
+- If the preferred melee/ranged unit is temporarily unaffordable but the opposite class has a useful affordable option, train the affordable option instead of leaving the barracks idle.
+- Measure trainer-gap telemetry again; IT14.47's aborted P2 Tech Push run showed repeated ~3.2-12.8 s barracks gaps even with sufficient long-run economy.
+- Preserve IT14.47 strategy execution, P1 eco sweep, opportunistic P2 forge spending, trader logic, early siege, construction geometry, and +35% gather/trade unchanged.
+
+
+IT14.49 combat-discipline pass:
+- failed P1 rush abort/recovery (loss + enemy-pop-damage + local pressure)
+- no default follow-up trickle while the rush is still live; 105s recovery after abort
+- retreating survivors are protected from economy reassignment until back in friendly territory
+- melee-screen/ranged-body spacing and recent CC/tower garrison threat memory
+- natural_expand suppresses new fields except emergency food-bank bridge
+- rush strategies unlock the worker-aura temple sooner after their rush window/recovery
+
+IT14.49 completed replay
+- Doctrine: Late P1 Timing Rush.
+- BREAK=13:00 (enemy 50 at 12:30, 44 at 13:00 and never returned to 50+).
+- VICTORY=22:31.6.
+- The first rush was aborted at 16/24 remaining on `melee_screen_broken` despite a local 10v0 / 0-defense reading, showing IT14.49 over-weighted formation shape as a strategic retreat signal.
+- Later combat fragmented into several simultaneous plans (1/2/3/4/6/7), with repeated small retreats and finishing reinforcement beginning while enemy population was still in the 40s.
+- War-surplus research hit the six-tech ceiling after Melee Attack I / Melee Resistance I; Melee Attack II never queued despite later four-digit metal banks.
+
+IT14.50 target
+- Preserve the IT14.49 economy, natural-food sequencing, temple timing, Athens ~58/42 production, production-floor barracks, trade, siege, placement logic, and +35% gather/trade unchanged.
+- A broken melee screen first triggers a 7-second tactical regroup toward home; it does not cause a full rush abort without genuine pressure. Full retreat remains for bad exchange + serious loss, outnumbering, defended traps, or army collapse.
+- Late P1 Timing Rush requires ~26 of its 28 target infantry before launch; Early P1 remains more opportunistic.
+- Expert may have only one started Default/Huge infantry offensive. Fresh troops reinforce that primary army in 6-8 unit waves instead of creating independent small follow-up attacks.
+- During close combat only <=18% health infantry peel; during lulls <=30% may rotate. Replacement waves have a minimum size/cooldown to reduce constant army churn.
+- Finishing/cleanup reinforcement begins only at <=28 enemy population with the existing population-lead checks; the <=8 deterministic conquest cleanup remains unchanged.
+- P2 Forge-Tech Push still waits for two completed military upgrades. A P1-rush doctrine's P2 follow-up may launch with one completed upgrade plus a second actively researching.
+- Remove the six-tech war-surplus ceiling. Continue buying useful military upgrades while the reinforcement reserve is protected; rank melee/ranged attack/resistance tiers by the current army mix. If a Market exists and only a modest resource deficit blocks a high-value war tech, queue it as a barter bridge so Petra's existing barter safety valve buys the missing resource.
+
+
+IT14.50 accidental 300-pop replay (NON-BENCHMARK)
+- Doctrine: P2 Forge-Tech Push. Lobby PopulationCap=300, so timing behavior was allowed to expand well past the normal benchmark economy.
+- Around 18:23 Expert held ~2150F/95W/4370S/1429M with ~124 army; by ~18:55 it was ~2695F/51W/4798S/1609M. The controller detected stone>wood by >20x and wanted 58-73 wood workers, but actual chopping lagged badly.
+- Melee Attack II and III did queue, confirming IT14.50's removal of the six-tech cap worked.
+- Two markets completed, but no trader route/traders appeared.
+- The first P2 push deteriorated from a healthy mixed screen to only ~4 melee protecting ~22 ranged before the old ~20-army retreat fired.
+
+IT14.51 target
+- Preserve +35%, P1/P2 doctrine selection, P1 eco sweep, Athens ~58/42 production, tech spending, natural-food/temple/storehouse logic.
+- Add direct Expert emergency wood barter after a market exists: if war-economy wood falls below 250, sell the largest disposable stone/food/metal surplus in market-sized steps until wood is usable again; preserve resource floors and allow market prices to update between trades.
+- Extreme bank imbalance moves up to 8 workers per 5s correction. Post-opening civilian miners may leave an extreme finite-resource surplus for wood, and 6+ field economies may release farmers down to the existing two-per-field emergency floor.
+- Cap the timing economy's house expansion at a 200-pop operating ceiling even in 300-pop lobbies. Long games may still exploit the larger lobby cap after the timing phase in a future policy; IT14.51 prioritizes benchmark consistency.
+- A P2/City attack below ~48 troops retreats before the melee line reaches near-zero when >=12 ranged units are exposed behind a genuinely collapsed melee screen under enemy/static-defense pressure. No-threat geometry still cannot force retreat.
+- Target the coherent primary offensive around 58 troops; if a second Default/Huge field plan somehow starts, recall a sub-45 sibling when the primary is already >=50.
+- P2 broken-enemy siege cue becomes <=45 enemy pop with >=55 field army; P3 siege remains active with a healthy push. Emergency wood recovery should let the ram actually enter the queue when siege mode first becomes active.
+- Expert trade accepts legal zero-pop routes down to gain 2 and logs no-route diagnostics. Market #2 is scored more strongly for safe route distance.
+
+IT14.52 target
+- Preserve IT14.51 strategy/combat/resource-spending behavior and the +35% gather/trade multiplier.
+- Generalize dropsite service beyond wood: active stone/metal/natural-food districts with >=3 workers and useful remaining resources should normally have a compatible dropsite within roughly 8-11m.
+- Measure the actual worker return/deposit/back-to-resource round trip; a sustained >3.5s cycle may trigger a new dropsite even when straight-line distance looks acceptable, catching Workshop/Forge/Barracks obstacle detours.
+- Resource-service Storehouses/Farmsteads may be added independently of the normal wood/farm-hub expansion caps, with local spacing and a protected 100-wood reserve.
+- Active stone/metal/natural-food resource-to-dropsite lanes are protected from later independent-building footprints so strategic structures do not create needless carry detours.
+- Remove the old eight-field Temple deadlock. Non-rush P1 Temple may start around 55 population/3-field pipeline after core barracks; an actual P1 rush launch immediately relaxes Temple eligibility; missed P1 Temple has a Town fallback around 75 population/3 fields with no Market requirement. Temple uses four builders and must cover a useful worker cluster.
+- Target first useful Temple around 8-10 minutes rather than the 25+ minute IT14.51 failure.

@@ -22,6 +22,8 @@ export function TradeManager(config)
 	this.targetNumTraders = this.Config.Economy.targetNumTraders;
 	this.warnedAllies = {};
 	this.expertLastTradeLog = -99999;
+	this.expertLastEmergencyBarter = -99999;
+	this.expertEmergencyWoodRecoveryActive = false;
 }
 
 TradeManager.prototype.init = function(gameState)
@@ -233,6 +235,74 @@ TradeManager.prototype.setTradingGoods = function(gameState)
  * Try to barter unneeded resources for needed resources.
  * only once per turn because the info is not updated within a turn
  */
+
+// IT14.51: direct war-economy wood rescue. Generic Petra barter is queue-need driven;
+// that is not enough when the army has 2-5k surplus food/stone/metal but the current
+// queues have not yet exposed the wood deficit for the next reinforcement/ram/house.
+// Sell the most disposable large surplus first, one market transaction per cooldown.
+TradeManager.prototype.performExpertEmergencyWoodBarter = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !gameState || !gameState.ai)
+		return false;
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	if (now < (Number(policy.expertEmergencyWoodBarterStartTime) || 540) ||
+	    now < (Number(this.expertLastEmergencyBarter) || -99999) + (Number(policy.expertEmergencyWoodBarterCooldownSeconds) || 4))
+		return false;
+	const bank = gameState.getResources();
+	const trigger = Number(policy.expertEmergencyWoodBarterTrigger) || 250;
+	const target = Number(policy.expertEmergencyWoodBarterTarget) || 700;
+	if (!bank)
+		return false;
+	if (Number(bank.wood) < trigger)
+		this.expertEmergencyWoodRecoveryActive = true;
+	if (!this.expertEmergencyWoodRecoveryActive)
+		return false;
+	if (Number(bank.wood) >= target)
+	{
+		this.expertEmergencyWoodRecoveryActive = false;
+		aiWarn("[EXPERT-BARTER] wood-recovered bank=" + Math.round(bank.wood) + " target=" + target);
+		return false;
+	}
+	const barterers = gameState.getOwnEntitiesByClass("Barter", true).filter(filters.isBuilt()).toEntityArray();
+	if (!barterers.length || !Resources.GetBarterableCodes().includes("wood"))
+		return false;
+
+	const floors = {
+		stone: Number(policy.expertEmergencyWoodBarterStoneFloor) || 800,
+		food: Number(policy.expertEmergencyWoodBarterFoodFloor) || 1400,
+		metal: Number(policy.expertEmergencyWoodBarterMetalFloor) || 800
+	};
+	const order = ["stone", "food", "metal"];
+	let sell, disposable = 0;
+	for (const resource of order)
+	{
+		if (!Resources.GetBarterableCodes().includes(resource))
+			continue;
+		const spare = Math.max(0, Number(bank[resource]) - floors[resource]);
+		if (spare > disposable)
+		{
+			disposable = spare;
+			sell = resource;
+		}
+	}
+	if (!sell || disposable < 100)
+		return false;
+	const critical = Number(bank.wood) <= (Number(policy.expertEmergencyWoodBarterCritical) || 100);
+	const batchMax = Number(policy.expertEmergencyWoodBarterBatch) || 500;
+	// Critical starvation may sell a full 500 immediately; otherwise a 100/500 step
+	// is chosen from the amount of disposable stock. Existing market price feedback
+	// is allowed to update before the next transaction.
+	const sellAmount = Math.min(disposable, (critical || target - Number(bank.wood) > 300) ? batchMax : 100);
+	const amount = Math.max(100, Math.floor(sellAmount / 100) * 100);
+	barterers[0].barter("wood", sell, amount);
+	this.expertLastEmergencyBarter = now;
+	aiWarn("[EXPERT-BARTER] emergency wood=" + Math.round(bank.wood) + " target=" + target +
+		" sold=" + sell + ":" + amount + " bank=" + Math.round(bank.food) + "/" + Math.round(bank.wood) +
+		"/" + Math.round(bank.stone) + "/" + Math.round(bank.metal));
+	return true;
+};
+
 TradeManager.prototype.performBarter = function(gameState)
 {
 	const barterers = gameState.getOwnEntitiesByClass("Barter", true).filter(filters.isBuilt())
@@ -717,6 +787,12 @@ TradeManager.prototype.updateExpertTrade = function(gameState, events, queues)
 	if (this.Config.difficulty <= difficulty.VERY_EASY)
 		return;
 
+	const policy = mergePolicy();
+	// IT14.51: CWA traders cost no population. Accept a smaller route than stock Petra
+	// would require; two already-built markets should not sit idle merely because the
+	// gain is 2-4 instead of 5+.
+	this.minimalGain = Math.min(Number(this.minimalGain) || 5, Number(policy.expertTradeMinimumGain) || 2);
+
 	if (this.checkEvents(gameState, events))
 	{
 		this.routeProspection = false;
@@ -727,10 +803,17 @@ TradeManager.prototype.updateExpertTrade = function(gameState, events, queues)
 		this.checkRoutes(gameState);
 
 	if (!this.tradeRoute)
+	{
+		if (gameState.ai.elapsedTime >= this.expertLastTradeLog + 60)
+		{
+			this.expertLastTradeLog = gameState.ai.elapsedTime;
+			const markets = gameState.getOwnEntitiesByClass("Trade", true).filter(filters.isBuilt()).toEntityArray();
+			aiWarn("[EXPERT-TRADE] no-route builtMarkets=" + markets.length + " minGain=" + this.minimalGain);
+		}
 		return;
+	}
 
 	this.traders.forEach(ent => { this.updateTrader(gameState, ent); });
-	const policy = mergePolicy();
 	const desired = this.tradeRoute.gain >= policy.expertTradeStrongRouteGain ?
 		policy.expertTradeStrongRouteTraders : policy.expertTradeInitialTraders;
 	this.targetNumTraders = Math.max(0, Math.round(Number(desired) || 0));
@@ -795,7 +878,9 @@ TradeManager.prototype.Serialize = function()
 		"routeProspection": this.routeProspection,
 		"targetNumTraders": this.targetNumTraders,
 		"warnedAllies": this.warnedAllies,
-		"expertLastTradeLog": this.expertLastTradeLog
+		"expertLastTradeLog": this.expertLastTradeLog,
+		"expertLastEmergencyBarter": this.expertLastEmergencyBarter,
+		"expertEmergencyWoodRecoveryActive": this.expertEmergencyWoodRecoveryActive
 	};
 };
 

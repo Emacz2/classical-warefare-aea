@@ -98,9 +98,14 @@ function policyOverridesForDoctrine(doctrine, time = 0)
 {
   const d = doctrineById(doctrine && doctrine.id || doctrine);
   const now = Math.max(0, Number(time) || 0);
-  const civilianCap = d.softCapUntil > 0 && now < d.softCapUntil ? d.softCivilianCap : 70;
+  const rushWindow = d.softCapUntil > 0 && now < d.softCapUntil;
+  const civilianCap = rushWindow ? d.softCivilianCap : 70;
+  const rushTemple = Number(d.rushes) > 0 ?
+    (rushWindow ? { p1TemplePopulation: 9999 } :
+      { p1TemplePopulation: 52, p1TempleMinimumFieldPipeline: 2 }) : {};
   return {
     ...d.policy,
+    ...rushTemple,
     civilianCap,
     soldierTrainingStartTime: d.soldierTrainingStartTime
   };

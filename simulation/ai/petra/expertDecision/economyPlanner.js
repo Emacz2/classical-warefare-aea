@@ -491,7 +491,7 @@ function planEconomy(rawState, overrides = {}) {
     const canBuild = resourceEnough(state.resources, protectedCost, reservations);
     addReservation(reservations, cost);
     if (canBuild)
-      actions.push({ type: "BUILD", kind: "temple", role: "p1_resource_aura", priority: 98,
+      actions.push({ type: "BUILD", kind: "temple", role: "p1_resource_aura", priority: 98, builderCount: 4,
         builderPool: strategicBuilderPool, reason: "Village worker-efficiency temple after barracks 2" });
     else
       actions.push({ type: "RESERVE", kind: "temple", role: "p1_resource_aura", priority: 98, cost,
@@ -602,21 +602,22 @@ function planEconomy(rawState, overrides = {}) {
   // in Village phase in CWA and their 75m worker aura pays back while the economy is
   // still growing. Barracks #2 remains the hard military priority; after it is complete,
   // establish one temple once a modest permanent-food pipeline exists. If the P1 window
-  // was missed, retain a P2 fallback around the established market/resource district.
+  // was missed, retain a P2 fallback around the established worker/resource district.
   const templePending = state.structures.temple + state.foundations.temple + state.queued.temple;
-  const p2TempleReady = state.phase >= 2 && state.structures.market >= 1 &&
+  const p2TempleReady = state.phase >= 2 && state.structures.barracks >= 2 &&
     state.population.used >= policy.phase2TemplePopulation &&
-    (state.structures.field >= policy.phase2TempleMinimumFields || infrastructureNaturalReady);
+    (fieldPipeline >= policy.phase2TempleMinimumFields || infrastructureNaturalReady);
   if (state.flags.templeBuildable && templePending === 0 && p2TempleReady) {
     const cost = costOf(state, policy, "temple");
-    const canBuildTemple = resourceEnough(state.resources, cost, reservations);
+    const protectedCost = { ...cost, wood: (cost.wood || 0) + (policy.phase2TempleWoodReserve || 0) };
+    const canBuildTemple = resourceEnough(state.resources, protectedCost, reservations);
     addReservation(reservations, cost);
     if (canBuildTemple)
-      actions.push({ type: "BUILD", kind: "temple", role: "resource_aura", priority: 93,
-        builderPool: strategicBuilderPool, reason: "place worker-efficiency temple in established resource district" });
+      actions.push({ type: "BUILD", kind: "temple", role: "resource_aura", priority: 97, builderCount: 4,
+        builderPool: strategicBuilderPool, reason: "establish worker-efficiency temple during Town growth" });
     else
-      actions.push({ type: "RESERVE", kind: "temple", role: "resource_aura", priority: 93, cost,
-        reason: "protect worker-efficiency temple from optional spending" });
+      actions.push({ type: "RESERVE", kind: "temple", role: "resource_aura", priority: 97, cost,
+        reason: "protect early worker-efficiency temple from optional spending" });
   }
 
   // 5. Wood rollover is a hard economic continuity obligation. Once a large
@@ -713,7 +714,14 @@ function planEconomy(rawState, overrides = {}) {
 
     const parallelFieldCap = (state.phase >= 2 || state.resources.wood >= policy.fieldParallelExpansionWoodBank) &&
       farm.missingFields >= 4 ? policy.maxConcurrentFieldTasksSurplus : policy.maxConcurrentFieldTasks;
-    if (farm.missingFields > 0 && openFieldSlots > 0 && pendingFields < parallelFieldCap) {
+    // IT14.49: uncovered worthwhile natural food is now a sequencing veto, not merely
+    // a higher-priority reservation. If the planner has selected natural_expand, spend
+    // the next wood on that farmstead before starting another field. Only a genuinely
+    // critical food bank may use a field as an emergency bridge while placement retries.
+    const naturalExpansionFieldEmergency = farm.mode === "natural_expand" &&
+      state.resources.food < policy.naturalFoodEmergencyFieldFoodBank;
+    if (farm.missingFields > 0 && openFieldSlots > 0 && pendingFields < parallelFieldCap &&
+        (farm.mode !== "natural_expand" || naturalExpansionFieldEmergency)) {
       const fieldCost = costOf(state, policy, "field");
       const availableStarts = Math.max(0, parallelFieldCap - pendingFields);
       // When permanent food is materially behind (for example 6 built vs 14 wanted),
