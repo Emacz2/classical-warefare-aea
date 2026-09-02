@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_structure_roadset">
+  <Identity>
+    <Civ>rome</Civ>
+    <SpecificName>Stone road</SpecificName>
+  </Identity>
+  <WallSet>
+    <Templates>
+      <Tower>structures/rome/road_intersection</Tower>
+      <WallLong>structures/rome/road_long</WallLong>
+      <Gate>structures/rome/wall_gate</Gate>
+      <WallMedium>structures/rome/road_medium</WallMedium>
+      <WallShort>structures/rome/road_short</WallShort>
+    </Templates>
+    <MaxTowerOverlap>0.80</MaxTowerOverlap>
+    <MinTowerOverlap>0.05</MinTowerOverlap>
+  </WallSet>
+</Entity>
