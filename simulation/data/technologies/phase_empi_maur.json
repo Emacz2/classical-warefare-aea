@@ -29,7 +29,7 @@
     "requirementsTooltip": "Requires 1 City Structure and 1 Imperial Structure.",
     "supersedes": "phase_city_maur",
     "replaces": [
-        "phase_city"
+        "phase_empi"
     ],
     "icon": "empire_phase.png",
     "researchTime": 75,

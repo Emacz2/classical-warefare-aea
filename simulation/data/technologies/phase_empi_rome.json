@@ -29,7 +29,7 @@
     "requirementsTooltip": "Requires 2 City Structures and 1 Reform Structure.",
     "supersedes": "phase_city_rome",
     "replaces": [
-        "phase_city"
+        "phase_empi"
     ],
     "icon": "empire_phase.png",
     "researchTime": 75,
