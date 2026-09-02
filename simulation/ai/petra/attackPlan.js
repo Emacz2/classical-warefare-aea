@@ -899,10 +899,21 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 	const centre = this.unitCollection.getCentrePosition() || this.position || this.rallyPoint || this.targetPos;
 	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[this.targetPlayer];
 	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : 999;
-	// IT14.46 cleanup: if only a handful of enemy units remain, a garrison holder is a
-	// better ram objective than an arbitrary CC. This catches the "three units in the
-	// last tower" endgame without needing to see the hidden occupants directly.
-	if (enemyPop > 0 && enemyPop <= mergePolicy().expertCleanupEnemyPopulation)
+	const policy = mergePolicy();
+	const executeCC = enemyPop > 0 && enemyPop <= policy.expertCCExecutionEnemyPopulation;
+	// IT14.53: a living CC becomes the hard execution objective once the opponent is
+	// down to a literal handful of population. IT14.46's garrison-holder cleanup is
+	// still valuable, but only AFTER the CC is gone. This prevents rams from spending
+	// the final minute on a storehouse/barracks/tower while conquest can be ended now.
+	if (executeCC)
+		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+		{
+			if (!struct || !struct.position() || !struct.hasClass("CivCentre") || !this.isValidTarget(struct))
+				continue;
+			const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
+			if (dist < ccDist) { ccDist = dist; cc = struct; }
+		}
+	if (!cc && enemyPop > 0 && enemyPop <= policy.expertCleanupEnemyPopulation)
 		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
 		{
 			if (!struct || !struct.position() || !this.isValidTarget(struct) || !struct.isGarrisonHolder ||
@@ -949,7 +960,22 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 	out.active = true;
 	out.objective = cc;
 	out.objectivePos = cc.position();
-	const policy = mergePolicy();
+	// At execution population there is no reason to wait on the old perimeter staging
+	// choreography. Rams and infantry commit to the CC together immediately.
+	if (executeCC)
+	{
+		out.ready = true;
+		this.expertRamHoldSince = undefined;
+		this.expertRamHoldLogged = false;
+		if (this.expertRamExecutionObjective !== cc.id())
+		{
+			this.expertRamExecutionObjective = cc.id();
+			aiWarn("[EXPERT-RAM] execute-cc plan=" + this.name + " rams=" + rams.length +
+				" enemyPop=" + enemyPop + " objective=" + cc.id());
+		}
+		return out;
+	}
+	this.expertRamExecutionObjective = undefined;
 	const arrival2 = Math.pow(Number(policy.expertRamArrivalRadius) || 65, 2);
 	let nearest = Infinity;
 	for (const ram of rams)
@@ -1116,8 +1142,20 @@ AttackPlan.prototype.forceExpertFinishingRetarget = function(gameState)
 	const centre = this.unitCollection.getCentrePosition() || this.position || this.rallyPoint;
 	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[this.targetPlayer];
 	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : 999;
-	const cleanup = enemyPop > 0 && enemyPop <= mergePolicy().expertCleanupEnemyPopulation;
-	if (cleanup)
+	const policy = mergePolicy();
+	const cleanup = enemyPop > 0 && enemyPop <= policy.expertCleanupEnemyPopulation;
+	const executeCC = enemyPop > 0 && enemyPop <= policy.expertCCExecutionEnemyPopulation;
+	// IT14.53 execution mode: if the opponent still owns a CC at <=8 population,
+	// that CC outranks every side building and visible cleanup target. Once it dies,
+	// fall through to the old hidden-unit/garrison-holder cleanup.
+	if (executeCC)
+		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+		{
+			if (!struct || !struct.position() || !struct.hasClass("CivCentre") || !this.isValidTarget(struct)) continue;
+			const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
+			if (dist < bestDist) { bestDist = dist; best = struct; }
+		}
+	if (cleanup && !best)
 	{
 		// Visible conquest-critical humans first. If the final humans are hidden, destroy
 		// their garrison holder next. This target remains sticky until it dies.

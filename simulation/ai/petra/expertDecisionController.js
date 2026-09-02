@@ -207,6 +207,10 @@ export class ExpertDecisionController
 		this.resourceRoundTripBySupply = {};
 		this.lastResourceServiceBuildTime = -99999;
 		this.lastResourceServiceDiag = -99999;
+		// IT14.53: Athens special production is deliberately small and opportunistic.
+		// These diagnostics/cooldowns keep it from spamming champion/hero queue attempts.
+		this.lastAthenianSpecialBuildDiag = -99999;
+		this.lastAthenianSpecialTrainingDiag = -99999;
 		// IT14.44: remember which dedicated P2 package technologies Expert has paid for.
 		// This lets research ordering be human-like: two forge upgrades for the push,
 		// then food/wood continuity before buying ever-deeper military tiers.
@@ -2549,6 +2553,56 @@ export class ExpertDecisionController
 		return out;
 	}
 
+	structuresByTemplate(gameState, type, foundations = false)
+	{
+		const out = [];
+		const collection = foundations ? gameState.getOwnFoundations() : gameState.getOwnStructures();
+		for (const ent of collection.values())
+		{
+			if (!ent || !entityPosition(ent) || !ent.templateName)
+				continue;
+			const name = String(ent.templateName() || "");
+			// Foundations may expose either the built template name or foundation|<type>.
+			if (name === type || name.endsWith("|" + type) || name.includes(type))
+			{
+				if (!foundations && ent.foundationProgress && ent.foundationProgress() !== undefined)
+					continue;
+				out.push(ent);
+			}
+		}
+		return out;
+	}
+
+	specialStructurePipeline(gameState, kind)
+	{
+		const spec = BUILDING_SPECS[kind];
+		if (!spec)
+			return 0;
+		const type = gameState.applyCiv(spec.template);
+		let queued = 0;
+		const queue = gameState.ai.queues && gameState.ai.queues[spec.queue];
+		if (queue && Array.isArray(queue.plans))
+			for (const plan of queue.plans)
+				if (plan && (plan.type === type || plan.metadata && plan.metadata.expertDecisionKind === kind))
+					++queued;
+		return this.structuresByTemplate(gameState, type).length +
+			this.structuresByTemplate(gameState, type, true).length +
+			(this.activeTaskByKind[kind] ? 1 : 0) + queued;
+	}
+
+	specialBuildingAffordable(gameState, type, reserve = {})
+	{
+		const template = gameState.getTemplate(type);
+		if (!template || typeof template.cost !== "function")
+			return false;
+		const cost = template.cost();
+		const bank = gameState.getResources();
+		for (const resource of ["food", "wood", "stone", "metal"])
+			if ((Number(bank[resource]) || 0) < (Number(cost && cost[resource]) || 0) + (Number(reserve[resource]) || 0))
+				return false;
+		return true;
+	}
+
 	getPrimaryWoodPosition(gameState)
 	{
 		if (this.primaryWoodWorksite && Array.isArray(this.primaryWoodWorksite.position))
@@ -3543,7 +3597,7 @@ export class ExpertDecisionController
 			try { observed = this.foundationTracker.observeTask(gameState, taskId); }
 			catch (e) { return; }
 
-			if (!isField && (kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple" || kind === "arsenal") && this.retryStalledBarracksTask(gameState, taskId, observed, kind))
+			if (!isField && (kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple" || kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion") && this.retryStalledBarracksTask(gameState, taskId, observed, kind))
 				return;
 
 			// IT14.25 storehouse handoff contract: as soon as storehouse #2 has a real
@@ -4055,6 +4109,300 @@ export class ExpertDecisionController
 			++queued;
 			aiWarn("[EXPERT-SIEGE] queued siege=" + selected.type + " trainer=" + arsenal.id() + " enemyPop=" + siegeContext.enemyPopulation +
 				" mode=" + (siegeContext.finishing ? "finish" : siegeContext.brokenTown ? "broken-p2" : "p3-push"));
+		}
+	}
+
+
+	lowestEnemyPopulation(gameState)
+	{
+		let best = Infinity;
+		if (!gameState.sharedScript || !gameState.sharedScript.playersData)
+			return best;
+		for (let i = 1; i < gameState.sharedScript.playersData.length; ++i)
+		{
+			if (!gameState.isPlayerEnemy(i))
+				continue;
+			const data = gameState.sharedScript.playersData[i];
+			if (!data || data.state === "defeated")
+				continue;
+			best = Math.min(best, Math.max(0, Number(data.popCount) || 0));
+		}
+		return best;
+	}
+
+	applyAthenianSpecialInfrastructure(gameState, frame)
+	{
+		if (gameState.getPlayerCiv() !== "athen" || !gameState.currentPhase)
+			return frame;
+		const phase = gameState.currentPhase();
+		if (phase < 2)
+			return frame;
+		const policy = mergePolicy();
+		const enemyPop = this.lowestEnemyPopulation(gameState);
+		// When the opponent is already in finishing range, spend on the kill rather than
+		// adding long-payback special infrastructure.
+		if (Number.isFinite(enemyPop) && enemyPop <= policy.expertFinishingEnemyPopulation)
+			return frame;
+		const actions = [...(frame.actions || [])];
+		const hasAction = kind => actions.some(action => action && action.kind === kind &&
+			(action.type === "BUILD" || action.type === "MAINTAIN_CONSTRUCTION"));
+		const pop = Number(gameState.getPopulation()) || 0;
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+
+		const gymType = gameState.applyCiv("structures/{civ}/gymnasium");
+		const gymTemplate = gameState.getTemplate(gymType);
+		const gymMinTime = doctrine.id === "p2_tech_push" ?
+			policy.athensGymnasiumMinimumTime : policy.athensGymnasiumRushMinimumTime;
+		const gymReady = phase >= 2 && now >= gymMinTime &&
+			pop >= policy.athensGymnasiumMinimumPopulation &&
+			this.builtByClass(gameState, "Barracks").length >= 2 &&
+			this.builtByClass(gameState, "Forge").length >= 1 &&
+			this.builtByClass(gameState, "Temple").length >= 1;
+		if (gymTemplate && gymReady && !hasAction("gymnasium") &&
+		    this.specialStructurePipeline(gameState, "gymnasium") === 0 &&
+		    this.HQ.canBuild && this.HQ.canBuild(gameState, gymType) &&
+		    this.specialBuildingAffordable(gameState, gymType, {
+			    food: policy.athensGymnasiumFoodReserve,
+			    wood: policy.athensGymnasiumWoodReserve,
+			    metal: policy.athensGymnasiumMetalReserve
+		    }))
+		{
+			actions.push({
+				type: "BUILD", kind: "gymnasium", role: "athens_p2_champions", priority: 94,
+				builderCount: 4,
+				builderPool: ["citizenSoldierWood", "wood", "food_overflow_wood", "farm", "food_owned", "food", "stone", "metal"],
+				reason: "Athens Town-phase champion production after the timing army is established"
+			});
+			if (now - this.lastAthenianSpecialBuildDiag >= 15)
+			{
+				this.lastAthenianSpecialBuildDiag = now;
+				aiWarn("[EXPERT-ATHENS] build=gymnasium phase=" + phase + " pop=" + pop +
+					" strategy=" + doctrine.id);
+			}
+		}
+
+		const pryType = gameState.applyCiv("structures/{civ}/prytaneion");
+		const pryTemplate = gameState.getTemplate(pryType);
+		if (phase >= 3 && pop >= 120 && pryTemplate && !hasAction("prytaneion") &&
+		    this.specialStructurePipeline(gameState, "prytaneion") === 0 &&
+		    this.HQ.canBuild && this.HQ.canBuild(gameState, pryType) &&
+		    this.specialBuildingAffordable(gameState, pryType, {
+			    food: policy.athensPrytaneionFoodReserve,
+			    wood: policy.athensPrytaneionWoodReserve,
+			    metal: policy.athensPrytaneionMetalReserve
+		    }))
+		{
+			actions.push({
+				type: "BUILD", kind: "prytaneion", role: "athens_p3_heroes", priority: 96,
+				builderCount: 4,
+				builderPool: ["citizenSoldierWood", "wood", "food_overflow_wood", "farm", "food_owned", "food", "stone", "metal"],
+				reason: "Athens City-phase hero/command infrastructure"
+			});
+			if (now - this.lastAthenianSpecialBuildDiag >= 15)
+			{
+				this.lastAthenianSpecialBuildDiag = now;
+				aiWarn("[EXPERT-ATHENS] build=prytaneion phase=3 pop=" + pop);
+			}
+		}
+		return { ...frame, actions };
+	}
+
+	specialTrainableCandidates(gameState, trainer, predicate)
+	{
+		const out = [];
+		if (!trainer || !trainer.trainableEntities)
+			return out;
+		for (const type of trainer.trainableEntities(gameState.getPlayerCiv()) || [])
+		{
+			if (gameState.isTemplateDisabled(type))
+				continue;
+			const template = gameState.getTemplate(type);
+			if (!template || !template.available(gameState) || !predicate(template, type))
+				continue;
+			const cost = template.cost(trainer);
+			out.push({
+				type, template,
+				cost: {
+					food: Number(cost && cost.food) || 0,
+					wood: Number(cost && cost.wood) || 0,
+					stone: Number(cost && cost.stone) || 0,
+					metal: Number(cost && cost.metal) || 0
+				}
+			});
+		}
+		return out;
+	}
+
+	hasQueuedHero(gameState)
+	{
+		for (const queue of Object.values(gameState.ai.queues || {}))
+		{
+			if (!queue || !Array.isArray(queue.plans))
+				continue;
+			for (const plan of queue.plans)
+			{
+				if (!plan || !plan.type)
+					continue;
+				const template = gameState.getTemplate(plan.type);
+				if (template && template.hasClasses && template.hasClasses(["Hero"]))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	queueAthenianSpecialUnit(gameState, queues, trainer, selected, label, reserve = {})
+	{
+		if (!selected || !trainer || !queues || !queues.citizenSoldier ||
+		    this.trainerHasExpertSoldierWork(queues, trainer))
+			return false;
+		const bank = gameState.getResources();
+		for (const resource of ["food", "wood", "stone", "metal"])
+			if ((Number(bank[resource]) || 0) < (Number(selected.cost[resource]) || 0) + (Number(reserve[resource]) || 0))
+				return false;
+		const queuedCivilians = queues.villager ? queues.villager.countQueuedUnits() : 0;
+		const queuedSoldiers = queues.citizenSoldier ? queues.citizenSoldier.countQueuedUnits() : 0;
+		const free = gameState.getPopulationLimit() - this.HQ.getAccountedPopulation(gameState) -
+			queuedCivilians - queuedSoldiers;
+		if (free < 2)
+			return false;
+		const plan = new TrainingPlan(gameState, selected.type, {
+			"role": Worker.ROLE_ATTACK, "base": 0, "plan": -1, "trainer": trainer.id(),
+			"expertDecisionLayer": true, "expertDecisionTraining": "special",
+			"expertDecisionMilitary": true, "expertDecisionSpecial": label
+		}, 1, 1);
+		if (!plan)
+			return false;
+		queues.citizenSoldier.addPlan(plan);
+		gameState.ai.queueManager.changePriority("citizenSoldier",
+			Math.max(this.HQ.Config.priorities.citizenSoldier || 1, label.includes("hero") ? 975 : 955));
+		aiWarn("[EXPERT-ATHENS] queued " + label + "=" + selected.type + " trainer=" + trainer.id());
+		return true;
+	}
+
+	trainAthenianSpecialUnits(gameState, queues)
+	{
+		if (gameState.getPlayerCiv() !== "athen" || !gameState.currentPhase || !queues || !queues.citizenSoldier)
+			return;
+		const phase = gameState.currentPhase();
+		if (phase < 2)
+			return;
+		const policy = mergePolicy();
+		const enemyPop = this.lowestEnemyPopulation(gameState);
+		if (Number.isFinite(enemyPop) && enemyPop <= policy.expertCCExecutionEnemyPopulation)
+			return;
+		const heroAlive = [...gameState.getOwnUnits().values()].some(ent => ent && hasClass(ent, "Hero"));
+		const heroQueued = heroAlive || this.hasQueuedHero(gameState);
+		const now = Number(gameState.ai.elapsedTime) || 0;
+
+		// P2 Forge-Tech Push gets a deliberate Hippocrates option if the current CWA
+		// Temple exposes him. This preserves the user's liked healer-support behavior
+		// without inventing a trainable unit on civ versions that do not offer it.
+		if (!heroQueued && phase === 2 && this.ensureStrategicDoctrine(gameState).id === "p2_tech_push" &&
+		    now >= policy.athensHippocratesMinimumTime)
+		{
+			for (const temple of this.builtByClass(gameState, "Temple").sort((a, b) => a.id() - b.id()))
+			{
+				const healers = this.specialTrainableCandidates(gameState, temple, (template, type) =>
+					template.hasClasses(["Hero"]) &&
+					(template.hasClasses(["Healer"]) || String(type).toLowerCase().includes("hippocr")));
+				if (!healers.length)
+					continue;
+				healers.sort((a, b) => (a.cost.food + a.cost.wood + a.cost.stone + a.cost.metal) -
+					(b.cost.food + b.cost.wood + b.cost.stone + b.cost.metal));
+				if (this.queueAthenianSpecialUnit(gameState, queues, temple, healers[0], "p2-healer-hero",
+					{ food: 300, wood: 250, metal: 150 }))
+					return;
+			}
+		}
+
+		// Gymnasium champions are a supplement, not the new army backbone. Dynamically
+		// inspect the current CWA trainer roster: if an Epilektoi/champion spearman is
+		// exposed here, prefer enough melee champions to reinforce the screen; otherwise
+		// use only a few ranged Gastraphetes/javelineer champions and stop.
+		const gymType = gameState.applyCiv("structures/{civ}/gymnasium");
+		for (const gym of this.structuresByTemplate(gameState, gymType).sort((a, b) => a.id() - b.id()))
+		{
+			if (this.trainerHasExpertSoldierWork(queues, gym))
+				continue;
+			const candidates = this.specialTrainableCandidates(gameState, gym, template =>
+				template.hasClasses(["Champion"]) && template.hasClasses(["Infantry"]));
+			if (!candidates.length)
+				continue;
+			for (const c of candidates)
+			{
+				c.melee = c.template.hasClasses(["Melee"]);
+				c.ranged = c.template.hasClasses(["Ranged"]);
+				c.spear = c.template.hasClasses(["Spearman"]) || c.template.hasClasses(["Hoplite"]) ||
+					/\/champion_infantry$/.test(c.type);
+				c.crossbow = c.template.hasClasses(["Crossbowman"]) || String(c.type).toLowerCase().includes("crossbow");
+				c.javelineer = c.template.hasClasses(["Javelineer"]) || String(c.type).toLowerCase().includes("javelineer");
+			}
+			const types = new Set(candidates.map(c => c.type));
+			let existing = 0, melee = 0, ranged = 0, crossbows = 0;
+			for (const ent of gameState.getOwnUnits().values())
+			{
+				if (!ent || !ent.templateName || !types.has(ent.templateName()))
+					continue;
+				++existing;
+				if (hasClass(ent, "Melee")) ++melee;
+				if (hasClass(ent, "Ranged")) ++ranged;
+				if (hasClass(ent, "Crossbowman") || String(ent.templateName()).toLowerCase().includes("crossbow")) ++crossbows;
+			}
+			for (const plan of queues.citizenSoldier.plans || [])
+				if (plan && types.has(plan.type))
+				{
+					++existing;
+					const c = candidates.find(item => item.type === plan.type);
+					if (c && c.melee) ++melee;
+					if (c && c.ranged) ++ranged;
+					if (c && c.crossbow) ++crossbows;
+				}
+			const meleeCandidates = candidates.filter(c => c.melee);
+			let target = phase >= 3 ? policy.athensGymnasiumP3ChampionTarget : policy.athensGymnasiumP2ChampionTarget;
+			if (!meleeCandidates.length)
+				target = Math.min(target, policy.athensGymnasiumRangedCapWithoutMelee);
+			if (existing >= target)
+				break;
+
+			const oneCost = c => c.cost.food + c.cost.wood + 2*c.cost.stone + 2*c.cost.metal;
+			let preferred = [];
+			const currentMeleeShare = existing > 0 ? melee / existing : 0;
+			if (meleeCandidates.length && currentMeleeShare < policy.athensMeleeShare)
+				preferred = meleeCandidates.filter(c => c.spear).length ?
+					meleeCandidates.filter(c => c.spear) : meleeCandidates;
+			else if (crossbows < policy.athensGymnasiumCrossbowTarget && candidates.some(c => c.crossbow))
+				preferred = candidates.filter(c => c.crossbow);
+			else if (candidates.some(c => c.ranged))
+				preferred = candidates.filter(c => c.ranged);
+			else
+				preferred = candidates;
+			preferred.sort((a, b) => oneCost(a) - oneCost(b) || a.type.localeCompare(b.type));
+			const selected = preferred[0];
+			if (this.queueAthenianSpecialUnit(gameState, queues, gym, selected, "gymnasium-champion",
+				{ food: 300, wood: 300, metal: 125 }))
+				return;
+		}
+
+		// City Phase: build/use the Prytaneion for Iphicrates when no hero is alive or
+		// already queued. If Hippocrates survived the P2 push, keep him rather than
+		// suiciding a useful support hero merely to switch names.
+		if (phase >= 3 && ![...gameState.getOwnUnits().values()].some(ent => ent && hasClass(ent, "Hero")) &&
+		    !this.hasQueuedHero(gameState))
+		{
+			const pryType = gameState.applyCiv("structures/{civ}/prytaneion");
+			for (const pry of this.structuresByTemplate(gameState, pryType).sort((a, b) => a.id() - b.id()))
+			{
+				const heroes = this.specialTrainableCandidates(gameState, pry, (template, type) =>
+					template.hasClasses(["Hero"]) && String(type).toLowerCase().includes("iphicrates"));
+				if (!heroes.length)
+					continue;
+				heroes.sort((a, b) => a.type.localeCompare(b.type));
+				if (this.queueAthenianSpecialUnit(gameState, queues, pry, heroes[0], "p3-hero-iphicrates",
+					{ food: 300, wood: 300, metal: 150 }))
+					return;
+			}
 		}
 	}
 
@@ -4570,7 +4918,7 @@ export class ExpertDecisionController
 		const placementFailureKey = kind + ":" + (action.role || "primary");
 		const placementFailures = Number(this.placementFailureCounts[placementFailureKey] || 0);
 		const strategicFallback = placementFailures >= mergePolicy().strategicPlacementFallbackAfterFailures &&
-			(kind === "barracks" || kind === "forge" || kind === "market" || kind === "temple" || kind === "arsenal");
+			(kind === "barracks" || kind === "forge" || kind === "market" || kind === "temple" || kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion");
 		const taskId = kind === "field" ? this.newTaskId(kind) : (this.activeTaskByKind[kind] || this.newTaskId(kind));
 		let request;
 		const geometry = readTemplateGeometry(gameState, kind);
@@ -5198,7 +5546,7 @@ export class ExpertDecisionController
 		}
 
 
-		else if (kind === "arsenal")
+		else if (kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion")
 		{
 			const policy = mergePolicy();
 			const ccPos = cc.position();
@@ -5306,7 +5654,7 @@ export class ExpertDecisionController
 		if (!request)
 			return undefined;
 		const matureFarmDistrict = this.builtByClass(gameState, "Field").length >= mergePolicy().matureFarmDistrictRelaxFieldCount;
-		if (!strategicFallback && (kind === "house" || kind === "forge" || kind === "arsenal"))
+		if (!strategicFallback && (kind === "house" || kind === "forge" || kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion"))
 			request.preserveFarmDistrict = true;
 		else if (!strategicFallback && kind === "barracks")
 			request.preserveFarmDistrict = action.role !== "third_p2";
@@ -5334,7 +5682,7 @@ export class ExpertDecisionController
 		let farmCapacityAt;
 		let farmDistrictReservation;
 		const resourceCorridors = this.activeResourceCorridors(gameState, accessIndex);
-		if (kind === "house" || kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple" || kind === "arsenal")
+		if (kind === "house" || kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple" || kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion")
 		{
 			const policy = mergePolicy();
 			const fieldGeom = readTemplateGeometry(gameState, "field");
@@ -5639,7 +5987,7 @@ export class ExpertDecisionController
 				score -= (request && (request.openingNaturalFood || request.naturalExpansionFood) ? 15 : 120) * capacity;
 				return score / Math.max(1, sources.length || 1);
 			};
-		else if ((kind === "house" || kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple" || kind === "arsenal") && farmDistrictReservation)
+		else if ((kind === "house" || kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple" || kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion") && farmDistrictReservation)
 			ports.scoreCandidate = (position, request, index) =>
 			{
 				// Preserve each building's existing candidate ordering once it is outside the
@@ -6996,6 +7344,10 @@ export class ExpertDecisionController
 			return { "urgent": false };
 		if (kind === "arsenal")
 			return { "urgent": true };
+		if (kind === "gymnasium")
+			return { "urgent": false };
+		if (kind === "prytaneion")
+			return { "urgent": true };
 		if (kind === "tower")
 			return { "emergency": true, "urgent": true };
 		return {};
@@ -7182,8 +7534,9 @@ export class ExpertDecisionController
 
 	setDecisionPriorities(gameState, frame)
 	{
-		const map = { house: "house", storehouse: "dropsites", farmstead: "dropsites", field: "field", barracks: "militaryBuilding", forge: "militaryBuilding", market: "economicBuilding", temple: "economicBuilding", arsenal: "militaryBuilding", tower: "defenseBuilding" };
-		if (this.activeTaskByKind.barracks || this.activeTaskByKind.forge)
+		const map = { house: "house", storehouse: "dropsites", farmstead: "dropsites", field: "field", barracks: "militaryBuilding", forge: "militaryBuilding", market: "economicBuilding", temple: "economicBuilding", arsenal: "militaryBuilding", gymnasium: "militaryBuilding", prytaneion: "militaryBuilding", tower: "defenseBuilding" };
+		if (this.activeTaskByKind.barracks || this.activeTaskByKind.forge || this.activeTaskByKind.arsenal ||
+		    this.activeTaskByKind.gymnasium || this.activeTaskByKind.prytaneion)
 			gameState.ai.queueManager.changePriority("militaryBuilding", Math.max(this.HQ.Config.priorities.militaryBuilding || 1, 990));
 		for (const action of frame.actions)
 		{
@@ -7347,6 +7700,9 @@ export class ExpertDecisionController
 		frame = this.applySecondaryDepletionFieldTrigger(gameState, frame);
 		// IT14.52: resource-service construction is a hard logistics correction.
 		frame = this.applyResourceServiceConstruction(gameState, frame, accessIndex);
+		// IT14.53: Athens may add one Gymnasium in Town and one Prytaneion in City,
+		// but only from genuine surplus after the core timing infrastructure exists.
+		frame = this.applyAthenianSpecialInfrastructure(gameState, frame);
 		if (defenseState && defenseState.shouldBuildTower)
 			frame = { ...frame, "actions": [...frame.actions, { "type": "BUILD", "kind": "tower", "role": "emergency_defense",
 				"builderPool": ["wood", "citizenSoldierWood"] }] };
@@ -7379,6 +7735,7 @@ export class ExpertDecisionController
 			aiWarn("[EXPERT-DECISION] execution blocked: " + e);
 		}
 		this.trainExpertMilitary(gameState, queues, cc);
+		this.trainAthenianSpecialUnits(gameState, queues);
 		this.trainExpertSiegeFinisher(gameState, queues, siegeContext);
 		this.ensureConstructionOrders(gameState);
 		this.updateWorkers(gameState, cc, foodNetwork, woodsite, accessIndex);
@@ -7449,7 +7806,7 @@ export class ExpertDecisionController
 		const workers = this.economyWorkerMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.52] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.53] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -7506,7 +7863,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.52] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.53] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

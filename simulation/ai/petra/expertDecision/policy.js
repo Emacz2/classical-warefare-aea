@@ -418,6 +418,27 @@ const DEFAULT_POLICY = Object.freeze({
   templeMinimumWorkerCoverage: 8,
   houseWoodWorksiteExclusionRadius: 24,
   expertCleanupEnemyPopulation: 8,
+  // IT14.53: when the enemy is down to a literal handful of population and still
+  // owns a Civic Centre, siege and the finishing army stop cleaning side buildings
+  // and execute the CC. If the CC is already gone, the prior garrison-holder/critical
+  // unit cleanup logic remains authoritative.
+  expertCCExecutionEnemyPopulation: 8,
+  // Athens special-infrastructure timing. These are surplus investments layered on
+  // top of the proven P2 attack economy; they may not pre-empt the initial timing.
+  athensGymnasiumMinimumTime: 540,
+  athensGymnasiumRushMinimumTime: 600,
+  athensGymnasiumMinimumPopulation: 90,
+  athensGymnasiumWoodReserve: 300,
+  athensGymnasiumFoodReserve: 350,
+  athensGymnasiumMetalReserve: 125,
+  athensGymnasiumP2ChampionTarget: 6,
+  athensGymnasiumP3ChampionTarget: 8,
+  athensGymnasiumRangedCapWithoutMelee: 4,
+  athensGymnasiumCrossbowTarget: 2,
+  athensHippocratesMinimumTime: 600,
+  athensPrytaneionWoodReserve: 300,
+  athensPrytaneionFoodReserve: 300,
+  athensPrytaneionMetalReserve: 150,
   p1EcoSweepStartTime: 330,
   p1EcoSweepMaxQueued: 6,
   houseMinimumCCDistance: 50,

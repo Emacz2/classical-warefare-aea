@@ -124,3 +124,18 @@ IT14.52 target
 - Active stone/metal/natural-food resource-to-dropsite lanes are protected from later independent-building footprints so strategic structures do not create needless carry detours.
 - Remove the old eight-field Temple deadlock. Non-rush P1 Temple may start around 55 population/3-field pipeline after core barracks; an actual P1 rush launch immediately relaxes Temple eligibility; missed P1 Temple has a Town fallback around 75 population/3 fields with no Market requirement. Temple uses four builders and must cover a useful worker cluster.
 - Target first useful Temple around 8-10 minutes rather than the 25+ minute IT14.51 failure.
+
+IT14.52 completed replay
+- Doctrine: Late P1 Timing Rush.
+- Normal 200-pop benchmark lobby. VICTORY=21:35.2.
+- Resource-service/Temple pass ran without error spam.
+- Endgame inefficiency remained: with enemy population around 5-6, two rams temporarily selected a non-CC cleanup objective (2213) before later switching to the Civic Centre objective (150).
+- This exposed a conflict between IT14.46 hidden-garrison cleanup priority and the newer "convert a broken opponent into a fast kill" goal.
+
+IT14.53 target
+- Preserve IT14.52 economy, Temple timing, resource-service logistics, combat coordination, tech spending, production-floor barracks, emergency barter, and +35% gather/trade.
+- At <=8 enemy population, if a valid enemy Civic Centre still exists, the Civic Centre is the hard objective for both ram assault and finishing retarget. Only after the CC is gone does the prior ConquestCritical-unit / occupied-garrison-holder cleanup resume.
+- Athens may build one Gymnasium from Town-phase surplus after the core timing infrastructure/army is established; do not let it pre-empt the initial P1/P2 timing.
+- Gymnasium production is discovered dynamically from the live trainer. If the current CWA roster exposes a champion melee/spearman there, prefer it to reinforce the melee screen; otherwise add only a small complement of ranged champions (including Gastraphetes when available), not a champion-heavy replacement army.
+- During P2 Forge-Tech Push, a built Temple may deliberately train Hippocrates if the live trainer exposes him and no hero already exists/queues.
+- Athens may build one Prytaneion in City Phase from surplus. If no hero survives/queues, prefer Iphicrates when the live Prytaneion exposes him; a surviving Hippocrates is retained rather than deliberately replaced.

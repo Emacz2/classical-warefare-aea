@@ -6,6 +6,8 @@ const ALLOWED_POOLS = Object.freeze({
   forge: ["wood", "citizenSoldierWood"],
   temple: ["wood", "citizenSoldierWood"],
   arsenal: ["wood", "citizenSoldierWood"],
+  gymnasium: ["wood", "citizenSoldierWood"],
+  prytaneion: ["wood", "citizenSoldierWood"],
   tower: ["wood", "citizenSoldierWood"],
   farmstead: ["food", "food_owned", "farm"],
   field: ["food", "food_owned", "farm"]
@@ -31,6 +33,8 @@ function desiredBuilders(kind, context = {}) {
     case "forge": return 3;
     case "temple": return 3;
     case "arsenal": return 4;
+    case "gymnasium": return 4;
+    case "prytaneion": return 4;
     case "tower": return 4;
     default: return 2;
   }
@@ -47,6 +51,8 @@ function constructionPriority(kind, context = {}) {
     case "forge": return 90;
     case "temple": return 91;
     case "arsenal": return 97;
+    case "gymnasium": return 94;
+    case "prytaneion": return 96;
     case "tower": return context.emergency ? 100 : 94;
     default: return 50;
   }

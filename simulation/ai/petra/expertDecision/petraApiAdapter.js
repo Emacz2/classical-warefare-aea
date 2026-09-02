@@ -53,6 +53,24 @@ const BUILDING_SPECS = Object.freeze({
     queue: "militaryBuilding",
     allowedBuilderJobs: ["wood", "citizenSoldierWood"]
   },
+  // IT14.53 Athens-only special infrastructure. `observe:false` is deliberate:
+  // unlike House/Barracks/etc these templates do not expose a unique reliable class
+  // across every civilization, so the generic economy snapshot must not count them
+  // by a broad CivSpecific class. The controller tracks them by exact template name.
+  gymnasium: {
+    className: "CivSpecific",
+    template: "structures/{civ}/gymnasium",
+    queue: "militaryBuilding",
+    allowedBuilderJobs: ["wood", "citizenSoldierWood"],
+    observe: false
+  },
+  prytaneion: {
+    className: "CivSpecific",
+    template: "structures/{civ}/prytaneion",
+    queue: "militaryBuilding",
+    allowedBuilderJobs: ["wood", "citizenSoldierWood"],
+    observe: false
+  },
   tower: {
     className: "Tower",
     template: "structures/{civ}/sentry_tower",
@@ -252,6 +270,8 @@ function observePetra(gameState, context = {}) {
   const costs = {};
 
   for (const [kind, spec] of Object.entries(BUILDING_SPECS)) {
+    if (spec.observe === false)
+      continue;
     structures[kind] = countByClass(structuresCollection, spec.className, context.filters.byClass);
     foundations[kind] = countByClass(foundationsCollection, spec.className, context.filters.byClass);
     queued[kind] = countQueued(gameState, kind);
