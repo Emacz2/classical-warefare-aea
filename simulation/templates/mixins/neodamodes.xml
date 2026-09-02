@@ -11,8 +11,7 @@
  <Cost>
   <Population>0</Population>
   <Resources>
-      <food>0</food>
-      <metal>25</metal>
+      <food>59</food>
       <wood>25</wood>
     </Resources>
   </Cost>
