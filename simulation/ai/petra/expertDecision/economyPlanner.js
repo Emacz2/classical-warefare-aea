@@ -104,14 +104,15 @@ function fieldDemand(state, policy) {
   const totalNatural = Math.max(0, Number(state.food.totalNaturalRemaining) || 0);
   const runway = Math.max(0, Number(state.food.naturalRunwaySeconds) || 0);
   const territoryRatio = Number.isFinite(state.food.territoryNaturalRatio) ? state.food.territoryNaturalRatio : 1;
-  const immediateFoodSlots = Math.max(0, Number(state.food.immediateFoodSlots) || 0);
-  const woodSurplusFarmOverride = state.population.used >= policy.woodSurplusFarmExpansionPopulation &&
-    state.resources.wood >= policy.woodSurplusFarmExpansionBank;
-  const naturalCapacityPressure = state.food.naturalFoodWorkers >= policy.naturalFoodMaxWorkersPerCluster &&
-    immediateFoodSlots <= policy.naturalFoodFieldPressureSlots;
+  // IT14.42: a full berry patch is not a reason to buy farms while the combined
+  // natural-food network is still healthy. Extra civilians can work wood temporarily;
+  // that wood is more valuable as barracks/tech/infrastructure. Only a genuine food
+  // emergency may override the natural-food hold above the normal transition ratio.
+  const naturalFoodEmergency = state.resources.food < policy.naturalFoodEmergencyFieldFoodBank &&
+    runway <= policy.naturalFoodEmergencyFieldRunwaySeconds;
   const naturalFirstHold = totalNatural > 0 &&
     (mode === "natural_expand" || territoryRatio > policy.territoryNaturalFarmTransitionRatio) &&
-    !woodSurplusFarmOverride && !naturalCapacityPressure;
+    !naturalFoodEmergency;
   const margin = Math.max(1, Number(policy.foodRateSafetyMargin) || 1.12);
   const farmerRate = state.food.averageFarmerRate > 0 ? state.food.averageFarmerRate : 0.7;
   const fieldIncome = Math.max(0.01, farmerRate * policy.farmersPerField);
@@ -198,8 +199,19 @@ function fieldDemand(state, policy) {
   // IT14.17: preserve IT14.15's natural-food-first opening, but never let it strand
   // civilians behind a full eight-worker patch or bank 800+ wood while food capacity
   // is the bottleneck. Those two conditions may start fields in parallel with natural food.
-  if (naturalFirstHold)
-    desiredFields = existingFields;
+  if (naturalFirstHold) {
+    // IT14.43 JIT farm staircase.  Keep exploiting natural food, but prepare enough
+    // permanent capacity that the last berries and the first farms overlap instead of
+    // leaving a 4k-wood / 0-food hole. Either runway OR depletion ratio may advance the
+    // staircase because replay-derived runway can become temporarily optimistic when
+    // military production pauses.
+    let stagedFloor = 0;
+    if (runway <= policy.naturalFoodStageTwoRunwaySeconds || territoryRatio <= policy.naturalFoodStageTwoRatio) stagedFloor = 2;
+    if (runway <= policy.naturalFoodStageFourRunwaySeconds || territoryRatio <= policy.naturalFoodStageFourRatio) stagedFloor = 4;
+    if (runway <= policy.naturalFoodStageSixRunwaySeconds || territoryRatio <= policy.naturalFoodStageSixRatio) stagedFloor = 6;
+    if (runway <= policy.naturalFoodStageEightRunwaySeconds || territoryRatio <= policy.naturalFoodStageEightRatio) stagedFloor = 8;
+    desiredFields = Math.max(existingFields, Math.min(stagedFloor, policy.preferredPermanentFields));
+  }
 
   // IT14.32: ten permanent fields is the normal mature target. Fields 11-12 are
   // emergency reserve capacity only when the live food bank is actually short.
@@ -291,6 +303,72 @@ function woodWorksiteDecision(state, policy) {
   return { status: "observe", expand: false, reason: "insufficient sustained evidence for a strategic expansion" };
 }
 
+function efficientBuilderIntent(action, state, policy) {
+  if (!action || action.type !== "BUILD") return action;
+  if (!["house", "barracks", "market", "forge", "temple", "arsenal", "tower"].includes(action.kind)) return action;
+
+  const food = Math.max(0, Number(state.resources.food) || 0);
+  const wood = Math.max(0, Number(state.resources.wood) || 0);
+  const stone = Math.max(0, Number(state.resources.stone) || 0);
+  const metal = Math.max(0, Number(state.resources.metal) || 0);
+  const bank = { food, wood, stone, metal };
+  const floor = Math.max(200, Math.min(food || 999999, wood || 999999, stone || 999999, metal || 999999));
+  const ratio = Math.max(1.1, Number(policy.lopsidedConstructionResourceRatio) || 2.25);
+  const rich = Object.entries(bank).filter(([, value]) => value >= policy.surplusConstructionResourceBank && value >= floor * ratio)
+    .sort((a, b) => b[1] - a[1]);
+  const woodSurplus = wood >= policy.surplusConstructionResourceBank;
+  const severeWood = wood >= policy.severeConstructionResourceBank;
+  const jobPriority = {};
+  if (rich.length) {
+    const resource = rich[0][0];
+    if (resource === "wood") { jobPriority.citizenSoldierWood = 8; jobPriority.wood = 7; jobPriority.food_overflow_wood = 6; }
+    else if (resource === "food") { jobPriority.farm = 8; jobPriority.food_owned = 7; jobPriority.food = 6; }
+    else jobPriority[resource] = 8;
+  }
+
+  let builderPool = action.builderPool ? [...action.builderPool] : ["wood", "citizenSoldierWood"];
+  let builderCount = Number(action.builderCount) || undefined;
+  let preferFarmDistrictHouse = false;
+
+  if (action.kind === "barracks") {
+    const first = !action.role && state.structures.barracks + state.foundations.barracks + state.queued.barracks === 0;
+    if (first) {
+      // User contract: all four opening citizen-soldiers throw up Barracks #1 together.
+      builderPool = ["citizenSoldierWood"];
+      builderCount = policy.firstBarracksBuilders;
+      jobPriority.citizenSoldierWood = 20;
+    } else {
+      builderPool = ["citizenSoldierWood", "wood", "food_overflow_wood", "farm", "food_owned", "food", "stone", "metal"];
+      builderCount = woodSurplus ? policy.surplusBarracksBuilders : policy.normalBarracksBuilders;
+      jobPriority.citizenSoldierWood = Math.max(jobPriority.citizenSoldierWood || 0, woodSurplus ? 12 : 8);
+      jobPriority.wood = Math.max(jobPriority.wood || 0, woodSurplus ? 10 : 6);
+    }
+  } else if (action.kind === "house") {
+    builderPool = ["farm", "food_owned", "food", "citizenSoldierWood", "wood", "food_overflow_wood", "stone", "metal"];
+    builderCount = severeWood ? policy.emergencyHouseBuilders : woodSurplus ? policy.surplusHouseBuilders : policy.normalHouseBuilders;
+    // Once fields exist, nearby farmers are ideal house builders: short walk, build,
+    // return to the same field. A food-heavy bank strengthens that preference.
+    preferFarmDistrictHouse = state.structures.field > 0 && state.workers.farm >= 3;
+    if (preferFarmDistrictHouse) {
+      jobPriority.farm = Math.max(jobPriority.farm || 0, food >= wood ? 10 : 5);
+      jobPriority.food_owned = Math.max(jobPriority.food_owned || 0, food >= wood ? 8 : 4);
+    }
+    if (woodSurplus) {
+      jobPriority.citizenSoldierWood = Math.max(jobPriority.citizenSoldierWood || 0, 9);
+      jobPriority.wood = Math.max(jobPriority.wood || 0, 8);
+    }
+  } else {
+    builderPool = ["citizenSoldierWood", "wood", "food_overflow_wood", "farm", "food_owned", "food", "stone", "metal"];
+    builderCount = woodSurplus ? policy.surplusStrategicBuilders : policy.normalStrategicBuilders;
+    if (woodSurplus) {
+      jobPriority.citizenSoldierWood = Math.max(jobPriority.citizenSoldierWood || 0, 9);
+      jobPriority.wood = Math.max(jobPriority.wood || 0, 8);
+    }
+  }
+
+  return { ...action, builderPool, builderCount, builderJobPriority: jobPriority, preferFarmDistrictHouse };
+}
+
 function planEconomy(rawState, overrides = {}) {
   const policy = mergePolicy(overrides);
   const state = normalizeState(rawState);
@@ -367,8 +445,14 @@ function planEconomy(rawState, overrides = {}) {
   const secondBuildWindow = state.time >= policy.secondBarracksTargetTime;
   const secondHardWindow = state.time >= policy.secondBarracksHardDeadline;
   const naturalFoodRemaining = Math.max(0, Number(state.food.totalNaturalRemaining) || 0);
-  const secondEarlyReady = fieldPipeline >= policy.secondBarracksEarlyFieldPipeline &&
-    (naturalFoodRemaining >= policy.secondBarracksEarlyNaturalFood || state.resources.food >= policy.secondBarracksEarlyFoodBank);
+  const naturalFoodRunway = Math.max(0, Number(state.food.naturalRunwaySeconds) || 0);
+  const infrastructureNaturalReady = naturalFoodRemaining >= policy.naturalFoodInfrastructureRemaining &&
+    naturalFoodRunway >= policy.naturalFoodInfrastructureRunwaySeconds;
+  const secondNaturalReady = naturalFoodRemaining >= policy.secondBarracksEarlyNaturalFood &&
+    naturalFoodRunway >= policy.secondBarracksEarlyNaturalRunwaySeconds;
+  const secondEarlyReady = secondNaturalReady ||
+    (fieldPipeline >= policy.secondBarracksEarlyFieldPipeline &&
+     (naturalFoodRemaining >= policy.secondBarracksEarlyNaturalFood || state.resources.food >= policy.secondBarracksEarlyFoodBank));
   // IT14.28: hard means hard. IT14.27 still let the measured-food model veto the
   // second barracks after the deadline, which delayed Athens until ~8:15 despite a
   // huge wood bank. At the hard deadline, two fields in the pipeline are enough; the
@@ -380,7 +464,7 @@ function planEconomy(rawState, overrides = {}) {
     const canBuild = (secondBuildWindow || secondHardWindow) && resourceEnough(state.resources, cost, reservations);
     addReservation(reservations, cost);
     if (canBuild)
-      actions.push({ type: "BUILD", kind: "barracks", role: "second", priority: 97, builderPool: ["wood", "citizenSoldierWood"], reason: `second barracks capacity-ready (fields ${state.structures.field}/${fieldPipeline} built/pipeline, natural ${Math.round(naturalFoodRemaining)}, bridge ${Math.round(farm.secondBarracksBridgeSeconds)}s)` });
+      actions.push({ type: "BUILD", kind: "barracks", role: "second", priority: 97, builderPool: ["wood", "citizenSoldierWood"], reason: `second barracks capacity-ready (fields ${state.structures.field}/${fieldPipeline} built/pipeline, natural ${Math.round(naturalFoodRemaining)}, naturalRunway ${Math.round(Number(state.food.naturalRunwaySeconds) || 0)}s, bridge ${Math.round(farm.secondBarracksBridgeSeconds)}s)` });
     else
       actions.push({ type: "RESERVE", kind: "barracks", role: "second", priority: 97, cost, reason: "reserve wood for pre-5:00 second barracks" });
   }
@@ -393,7 +477,7 @@ function planEconomy(rawState, overrides = {}) {
   const earlyTemplePipeline = state.structures.temple + state.foundations.temple + state.queued.temple;
   const p1TempleReadyNow = state.phase === 1 && state.flags.templeBuildable && completedBarracks >= 2 &&
     earlyTemplePipeline === 0 && state.population.used >= policy.p1TemplePopulation &&
-    fieldPipeline >= policy.p1TempleMinimumFieldPipeline;
+    (fieldPipeline >= policy.p1TempleMinimumFieldPipeline || infrastructureNaturalReady);
   if (p1TempleReadyNow) {
     const cost = costOf(state, policy, "temple");
     const protectedCost = { ...cost, wood: (cost.wood || 0) + policy.p1TempleWoodReserve };
@@ -415,14 +499,14 @@ function planEconomy(rawState, overrides = {}) {
   const p1TemplePriorityPending = state.phase === 1 && state.flags.templeBuildable &&
     completedBarracks >= 2 && preForgeTemplePipeline === 0 &&
     state.population.used >= policy.p1TemplePopulation &&
-    fieldPipeline >= policy.p1TempleMinimumFieldPipeline;
+    (fieldPipeline >= policy.p1TempleMinimumFieldPipeline || infrastructureNaturalReady);
 
   const forgePipeline = state.structures.forge + state.foundations.forge + state.queued.forge;
   const forgePending = state.foundations.forge + state.queued.forge;
   let transitionForgeTarget = 0;
   const forgeOneReady = state.structures.barracks >= 2 &&
     state.population.used >= policy.phase2Forge1Population &&
-    state.structures.field >= policy.phase2ForgeTransitionMinimumFields &&
+    (state.structures.field >= policy.phase2ForgeTransitionMinimumFields || infrastructureNaturalReady) &&
     (state.phase >= 2 || state.time >= policy.phase2ForgeTransitionTime) &&
     !p1TemplePriorityPending;
   if (forgeOneReady)
@@ -430,7 +514,7 @@ function planEconomy(rawState, overrides = {}) {
   const forgeTwoReady = state.phase >= 2 &&
     state.structures.barracks >= 2 &&
     state.population.used >= policy.phase2Forge2Population &&
-    state.structures.field >= policy.phase2ForgeSecondMinimumFields &&
+    (state.structures.field >= policy.phase2ForgeSecondMinimumFields || infrastructureNaturalReady) &&
     state.resources.food >= policy.phase2ForgeSecondFoodBank;
   if (forgeTwoReady)
     transitionForgeTarget = 2;
@@ -457,7 +541,7 @@ function planEconomy(rawState, overrides = {}) {
     // barracks placement reserve the same wood every frame.
     (state.structures.market + state.foundations.market + state.queued.market) >= 1 &&
     state.population.used >= policy.phase2ThirdBarracksPopulation &&
-    state.structures.field >= policy.phase2ThirdBarracksMinimumFields &&
+    (state.structures.field >= policy.phase2ThirdBarracksMinimumFields || infrastructureNaturalReady) &&
     state.resources.food >= policy.phase2ThirdBarracksFoodBank &&
     state.resources.wood >= policy.phase2ThirdBarracksWoodBank;
   if (thirdBarracksReady) {
@@ -515,7 +599,7 @@ function planEconomy(rawState, overrides = {}) {
   const templePending = state.structures.temple + state.foundations.temple + state.queued.temple;
   const p2TempleReady = state.phase >= 2 && state.structures.market >= 1 &&
     state.population.used >= policy.phase2TemplePopulation &&
-    state.structures.field >= policy.phase2TempleMinimumFields;
+    (state.structures.field >= policy.phase2TempleMinimumFields || infrastructureNaturalReady);
   if (state.flags.templeBuildable && templePending === 0 && p2TempleReady) {
     const cost = costOf(state, policy, "temple");
     const canBuildTemple = resourceEnough(state.resources, cost, reservations);
@@ -660,6 +744,8 @@ function planEconomy(rawState, overrides = {}) {
   }
 
 
+  for (let i = 0; i < actions.length; ++i)
+    actions[i] = efficientBuilderIntent(actions[i], state, policy);
   actions.sort((a, b) => b.priority - a.priority);
 
   return {

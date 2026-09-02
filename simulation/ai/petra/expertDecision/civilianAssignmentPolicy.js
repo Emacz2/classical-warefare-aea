@@ -114,6 +114,8 @@ function decidePostOpeningCivilianJob(input = {}) {
   const farmCapacity = Math.max(0, fields * farmersPerField);
   const requiredFoodWorkers = Math.max(0, finiteNonNegativeInteger(input.requiredFoodWorkers, 10));
   const naturalFoodAvailable = !!input.naturalFoodAvailable;
+  const surplusWoodFoodBank = Math.max(0, Number(input.foodSurplusNewCivilianWoodBank) || 1200);
+  const surplusWoodFoodRatio = Math.max(1, Number(input.foodSurplusNewCivilianWoodRatio) || 1.75);
 
   const foodFloor = Math.max(0, Number(input.postOpeningFoodFloor) || 300);
   const miningStart = Math.max(0, finiteNonNegativeInteger(input.miningStartCivilians, 45));
@@ -136,6 +138,12 @@ function decidePostOpeningCivilianJob(input = {}) {
       return { job: "farm", reason: `food workforce ${foodWorkers}/${requiredFoodWorkers}; take completed farm capacity` };
     return { job: "food_owned", reason: `food workforce ${foodWorkers}/${requiredFoodWorkers}; wait productively for permanent food capacity` };
   }
+
+  // IT14.43 human-like surplus rule: after current food demand is already staffed,
+  // a gross food bank advantage makes the next civilian a lumberjack. Do not strip
+  // established preferred farmers here; this only changes the marginal/new worker.
+  if (food >= surplusWoodFoodBank && food >= Math.max(1, wood) * surplusWoodFoodRatio)
+    return { job: "wood", reason: `food bank ${Math.round(food)} is grossly ahead of wood ${Math.round(wood)}; new civilian reinforces wood` };
 
   // Generic mining still opens only after six completed fields. Once that durable
   // food base exists, NEW civilians may establish metal first and then a small stone

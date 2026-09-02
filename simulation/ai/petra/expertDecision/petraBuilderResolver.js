@@ -45,6 +45,13 @@ function eligibleBuilder(ent, request) {
 function builderScore(ent, request) {
   const pos = entityPosition(ent);
   let score = request.targetPosition ? squareDistance(pos, request.targetPosition) : 0;
+  // IT14.43: distance still matters, but a grossly overstocked resource is the human
+  // player's natural temporary builder pool.  Larger priority numbers win strongly
+  // enough to beat modest walking differences without dragging workers across the map.
+  const playerId = request.playerId || 1;
+  const job = ent.getMetadata(playerId, request.jobKey || JOB_KEY);
+  const jobPriority = request.jobPriority && Number(request.jobPriority[job]) || 0;
+  score -= 600 * jobPriority;
   if (request.preferCitizenSoldiers && typeof ent.hasClass === "function" && ent.hasClass("CitizenSoldier"))
     score -= 400;
   // IT14.28 opening/storehouse contract: melee/hoplite citizen-soldiers ALWAYS get
@@ -94,7 +101,8 @@ function selectFoundationStarter(gameState, kind, targetPosition, action = {}, o
     requireEmptyHands: true,
     preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood"),
     preferMeleeCitizenSoldiers: kind === "storehouse",
-    requiredBuilderIds: action.requiredBuilderIds
+    requiredBuilderIds: action.requiredBuilderIds,
+    jobPriority: action.builderJobPriority
   });
   return selected[0];
 }
@@ -111,7 +119,8 @@ function selectFoundationStarterCandidate(gameState, kind, targetPosition, actio
     requireEmptyHands: false,
     preferCitizenSoldiers: allowedJobs.includes("citizenSoldierWood"),
     preferMeleeCitizenSoldiers: kind === "storehouse",
-    requiredBuilderIds: action.requiredBuilderIds
+    requiredBuilderIds: action.requiredBuilderIds,
+    jobPriority: action.builderJobPriority
   });
   return selected[0];
 }
@@ -126,7 +135,8 @@ function selectMaintenanceTeam(gameState, kind, targetPosition, count, action = 
     requireEmptyHands: false,
     preferCitizenSoldiers: kind === "house" || kind === "storehouse" || kind === "barracks" || kind === "market" || kind === "forge" || kind === "temple",
     preferMeleeCitizenSoldiers: kind === "storehouse",
-    requiredBuilderIds: action.requiredBuilderIds
+    requiredBuilderIds: action.requiredBuilderIds,
+    jobPriority: action.builderJobPriority
   });
 }
 

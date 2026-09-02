@@ -5,6 +5,7 @@ import * as chat from "simulation/ai/petra/chatHelper.js";
 import { Config } from "simulation/ai/petra/config.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { allowCapture, getLandAccess } from "simulation/ai/petra/entityExtend.js";
+import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
 import { Worker } from "simulation/ai/petra/worker.js";
 
 export function AttackManager(config)
@@ -33,6 +34,14 @@ export function AttackManager(config)
 	this.rushSize = [];
 	this.currentEnemyPlayer = undefined; // enemy player we are currently targeting
 	this.defeated = {};
+	// IT14.42: remember the P2 military upgrades Expert has actually queued so an
+	// ordinary Town-phase attack can wait for a small force-multiplier package.
+	// This is deliberately observation-only: the research controller still chooses
+	// the technologies and pays their full cost.
+	this.expertObservedMilitaryTechs = {};
+	this.expertLastTechGateLog = 0;
+	// IT14.43 finish watchdog: population/target progress, not army size, drives cleanup.
+	this.expertFinishingProgress = undefined;
 }
 
 /** More initialisation for stuff that needs the gameState */
@@ -284,6 +293,51 @@ AttackManager.prototype.getExpertFinishingTarget = function(gameState)
 	return { targetPlayer, enemyPopulation, ownPopulation };
 };
 
+// Observe the dedicated Expert forge lanes while their plans are visible. Once a
+// plan leaves the queue we still retain its technology name and can ask gameState
+// whether research actually completed. This avoids hard-coding civ-specific techs.
+AttackManager.prototype.observeExpertMilitaryTechs = function(gameState, queues)
+{
+	if (this.Config.difficulty < difficulty.EXPERT)
+		return;
+	if (!this.expertObservedMilitaryTechs)
+		this.expertObservedMilitaryTechs = {};
+	const sourceQueues = gameState.ai && gameState.ai.queues ? gameState.ai.queues : queues;
+	if (!sourceQueues)
+		return;
+	for (const name of ["expertMilitaryTech1", "expertMilitaryTech2"])
+	{
+		const queue = sourceQueues[name];
+		if (!queue || !queue.plans)
+			continue;
+		for (const plan of queue.plans)
+			if (plan && plan.type)
+				this.expertObservedMilitaryTechs[plan.type] = true;
+	}
+};
+
+// P1 timing attacks remain legal: if the army is ready while Town Phase is still
+// researching, Expert may hit immediately and try to exploit numbers/surprise.
+// Once Town Phase is actually complete, however, a normal/huge attack waits until
+// two dedicated P2 military upgrades have FINISHED. Finishing mode bypasses this
+// gate because an already-broken opponent should be closed out immediately.
+AttackManager.prototype.getExpertP2AttackTechGate = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !gameState.currentPhase || gameState.currentPhase() !== 2)
+		return { ready: true, completed: 0, required: 0 };
+	if (this.getExpertFinishingTarget(gameState))
+		return { ready: true, completed: 0, required: 0, finishing: true };
+	const policy = mergePolicy();
+	const required = Math.max(0, Number(policy.expertP2AttackRequiredMilitaryTechs) || 0);
+	if (!required)
+		return { ready: true, completed: 0, required: 0 };
+	let completed = 0;
+	for (const name of Object.keys(this.expertObservedMilitaryTechs || {}))
+		if (gameState.isResearched && gameState.isResearched(name))
+			++completed;
+	return { ready: completed >= required, completed, required };
+};
+
 AttackManager.prototype.reinforceExpertFinishingAttack = function(gameState, finishing)
 {
 	if (!finishing || gameState.ai.playedTurn % 5 !== 0)
@@ -314,7 +368,12 @@ AttackManager.prototype.reinforceExpertFinishingAttack = function(gameState, fin
 		else if (ent.hasClass("CitizenSoldier") && !ent.hasClass("Cavalry"))
 			citizen.push(ent);
 	}
-	const reserve = 12;
+	const policy = mergePolicy();
+	const reserve = Math.max(0, Number(policy.expertFinishingHomeCitizenSoldierReserve) || 12);
+	const desiredArmy = Math.max(Number(policy.expertFinishingMinimumArmy) || 36,
+		Math.min(Number(policy.expertFinishingMaximumArmy) || 50, Math.ceil(finishing.enemyPopulation * (Number(policy.expertFinishingArmyPerEnemy) || 3))));
+	if (attack.unitCollection.length >= desiredArmy)
+		return 0;
 	const availableCitizens = Math.max(0, citizen.length - reserve);
 	const rally = attack.position && Number.isFinite(attack.position[0]) && Number.isFinite(attack.position[1]) &&
 		(attack.position[0] !== 0 || attack.position[1] !== 0) ? attack.position : attack.targetPos;
@@ -323,15 +382,67 @@ AttackManager.prototype.reinforceExpertFinishingAttack = function(gameState, fin
 	else
 		citizen.sort((a, b) => a.id() - b.id());
 	siege.sort((a, b) => a.id() - b.id());
-	const selected = [...siege.slice(0, 2), ...citizen.slice(0, Math.min(6, availableCitizens))];
+	const room = Math.max(0, desiredArmy - attack.unitCollection.length);
+	const batch = Math.min(room, Math.max(1, Number(policy.expertFinishingReinforcementBatch) || 6));
+	const selectedSiege = siege.slice(0, Math.min(2, batch));
+	const selected = [...selectedSiege, ...citizen.slice(0, Math.min(batch - selectedSiege.length, availableCitizens))];
 	let added = 0;
 	for (const ent of selected)
 		if (attack.addExpertReinforcement && attack.addExpertReinforcement(gameState, ent))
 			++added;
 	if (added)
 		aiWarn("[EXPERT-FINISH] reinforced plan=" + attack.name + " added=" + added + " army=" + attack.unitCollection.length +
-			" enemyPop=" + finishing.enemyPopulation + " homeCitizenReserve=" + reserve);
+			" enemyPop=" + finishing.enemyPopulation + " targetArmy=" + desiredArmy + " homeCitizenReserve=" + reserve);
 	return added;
+};
+
+AttackManager.prototype.expertFinishingTargetProgress = function(attack)
+{
+	if (!attack || !attack.target)
+		return { targetId: undefined, health: 1, capture: 0 };
+	let capture = 0;
+	if (attack.target.capturePoints)
+	{
+		const points = attack.target.capturePoints();
+		if (Array.isArray(points)) capture = Number(points[PlayerID]) || 0;
+	}
+	return {
+		targetId: attack.target.id(),
+		health: attack.target.healthLevel ? Number(attack.target.healthLevel()) || 0 : 1,
+		capture
+	};
+};
+
+AttackManager.prototype.updateExpertFinishingProgress = function(gameState, finishing)
+{
+	if (!finishing) { this.expertFinishingProgress = undefined; return; }
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	let attack;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH, AttackPlan.TYPE_RAID])
+		for (const plan of this.startedAttacks[type])
+			if (plan.targetPlayer === finishing.targetPlayer && (!attack || plan.unitCollection.length > attack.unitCollection.length)) attack = plan;
+	const metric = this.expertFinishingTargetProgress(attack);
+	let progress = this.expertFinishingProgress;
+	if (!progress || progress.targetPlayer !== finishing.targetPlayer)
+	{
+		this.expertFinishingProgress = { targetPlayer: finishing.targetPlayer, enemyPop: finishing.enemyPopulation,
+			targetId: metric.targetId, health: metric.health, capture: metric.capture, lastProgressTime: now, lastRetargetTime: -99999 };
+		return;
+	}
+	const advanced = finishing.enemyPopulation < progress.enemyPop || metric.targetId !== progress.targetId ||
+		metric.health < progress.health - 0.015 || metric.capture > progress.capture + 5;
+	if (advanced)
+		progress.lastProgressTime = now;
+	progress.enemyPop = finishing.enemyPopulation; progress.targetId = metric.targetId; progress.health = metric.health; progress.capture = metric.capture;
+	const policy = mergePolicy();
+	if (!attack || now - progress.lastProgressTime < policy.expertFinishingStallSeconds ||
+		now - progress.lastRetargetTime < policy.expertFinishingRetargetCooldownSeconds)
+		return;
+	progress.lastRetargetTime = now;
+	progress.lastProgressTime = now;
+	const changed = attack.forceExpertFinishingRetarget ? attack.forceExpertFinishingRetarget(gameState) : false;
+	aiWarn("[EXPERT-FINISH] watchdog plan=" + attack.name + " army=" + attack.unitCollection.length + " enemyPop=" + finishing.enemyPopulation +
+		" retarget=" + (changed ? "changed" : "reissued"));
 };
 
 AttackManager.prototype.update = function(gameState, queues, events)
@@ -361,6 +472,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	}
 
 	this.checkEvents(gameState, events);
+	this.observeExpertMilitaryTechs(gameState, queues);
 	const expertFinishing = this.getExpertFinishingTarget(gameState);
 	const unexecutedAttacks = {
 		[AttackPlan.TYPE_RUSH]: 0,
@@ -374,7 +486,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 		{
 			const attack = this.upcomingAttacks[attackType][i];
 			attack.checkEvents(gameState, events);
-			if (expertFinishing && attack.state === AttackPlan.STATE_UNEXECUTED && attack.unitCollection.length >= 10)
+			if (expertFinishing && attack.state === AttackPlan.STATE_UNEXECUTED &&
+			    attack.unitCollection.length >= Math.max(1, Number(mergePolicy().expertFinishingForceStartSize) || 8))
 			{
 				attack.targetPlayer = expertFinishing.targetPlayer;
 				attack.forceStart();
@@ -447,6 +560,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 		}
 	}
 
+	this.updateExpertFinishingProgress(gameState, expertFinishing);
 	if (expertFinishing)
 		this.reinforceExpertFinishingAttack(gameState, expertFinishing);
 
@@ -480,7 +594,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 		this.startedAttacks[AttackPlan.TYPE_DEFAULT].length +
 			this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length <
 			Math.min(2, 1 + Math.round(gameState.getPopulationMax() / 100)) &&
-		(this.startedAttacks[AttackPlan.TYPE_DEFAULT].length +
+		(expertFinishing || this.startedAttacks[AttackPlan.TYPE_DEFAULT].length +
 			this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length == 0 ||
 		gameState.getPopulationMax() - gameState.getPopulation() > 12))
 	{
@@ -900,7 +1014,10 @@ AttackManager.prototype.Serialize = function()
 		"maxRushes": this.maxRushes,
 		"rushSize": this.rushSize,
 		"currentEnemyPlayer": this.currentEnemyPlayer,
-		"defeated": this.defeated
+		"defeated": this.defeated,
+		"expertObservedMilitaryTechs": this.expertObservedMilitaryTechs,
+		"expertLastTechGateLog": this.expertLastTechGateLog,
+		"expertFinishingProgress": this.expertFinishingProgress
 	};
 
 	const upcomingAttacks = {};

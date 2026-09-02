@@ -35,7 +35,21 @@ const DEFAULT_POLICY = Object.freeze({
   // Finish the newly-served natural-food district before purchasing the next one.
   naturalExpansionDepletionThreshold: 10,
   targetWoodCivilians: 20,
-  maxConcurrentBuilders: 6,
+  // IT14.43: humans turn a gross resource surplus into construction tempo.  Allow
+  // several workers to peel off a rich resource long enough to finish the structure,
+  // then the sticky construction lifecycle returns them to normal economic work.
+  maxConcurrentBuilders: 10,
+  surplusConstructionResourceBank: 1000,
+  severeConstructionResourceBank: 2200,
+  lopsidedConstructionResourceRatio: 2.25,
+  firstBarracksBuilders: 4,
+  normalBarracksBuilders: 4,
+  surplusBarracksBuilders: 6,
+  normalHouseBuilders: 3,
+  surplusHouseBuilders: 4,
+  emergencyHouseBuilders: 5,
+  normalStrategicBuilders: 3,
+  surplusStrategicBuilders: 5,
   maxConcurrentFieldTasks: 3,
   // IT14.29: once permanent food is badly behind and wood is abundant, place more
   // fields in parallel. P1/opening behavior keeps the old three-task ceiling.
@@ -65,9 +79,21 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.15 baseline: permanent fields normally begin when the COMBINED natural food
   // discovered in our territory falls to roughly 30%. IT14.17 adds two safe overrides:
   // spend a large wood bank on fields, or add field capacity when natural patches are full.
-  territoryNaturalFarmTransitionRatio: 0.30,
+  territoryNaturalFarmTransitionRatio: 0.25,
+  // IT14.42: natural food remains the preferred opening food engine. Do not let a
+  // large wood bank or a temporarily full berry patch force early fields while the
+  // combined in-territory natural-food pool is still healthy; overflow civilians can
+  // work wood until the natural pool approaches the real transition threshold.
   woodSurplusFarmExpansionBank: 800,
   woodSurplusFarmExpansionPopulation: 45,
+  naturalFoodEmergencyFieldFoodBank: 120,
+  naturalFoodEmergencyFieldRunwaySeconds: 70,
+  // Healthy natural food can substitute for an already-mature farm block when
+  // deciding whether to spend wood on core military/economic infrastructure.
+  // Otherwise "natural food first" would paradoxically delay the Temple/Forges/
+  // Barracks that the saved field wood was supposed to accelerate.
+  naturalFoodInfrastructureRemaining: 600,
+  naturalFoodInfrastructureRunwaySeconds: 90,
   naturalFoodFieldPressureSlots: 2,
   minimumAlternativeNaturalFood: 120,
   foodSiteMinimumCommitSeconds: 20,
@@ -76,8 +102,19 @@ const DEFAULT_POLICY = Object.freeze({
   naturalFoodFarmsteadAssumedWalkSpeed: 8,
   naturalFoodFarmsteadCarryCapacity: 10,
   naturalFoodFarmsteadPaybackWorkerSeconds: 120,
+  // IT14.43 staged natural-food -> farm transition.  Natural food remains the
+  // efficient first choice, but permanent capacity starts coming online BEFORE the
+  // last berries disappear instead of jumping from natural food to starvation.
   fieldTransitionLeadSeconds: 55,
   naturalFoodRunwaySafetySeconds: 45,
+  naturalFoodStageTwoRunwaySeconds: 120,
+  naturalFoodStageFourRunwaySeconds: 90,
+  naturalFoodStageSixRunwaySeconds: 60,
+  naturalFoodStageEightRunwaySeconds: 35,
+  naturalFoodStageTwoRatio: 0.40,
+  naturalFoodStageFourRatio: 0.30,
+  naturalFoodStageSixRatio: 0.22,
+  naturalFoodStageEightRatio: 0.14,
   farmersPerField: 3,
   // IT14.27: compact human-like farm blocks target the four farmstead sides.
   // Do not plan six speculative perimeter slots; four reliable N/E/S/W positions
@@ -124,6 +161,9 @@ const DEFAULT_POLICY = Object.freeze({
   secondBarracksEarlyFieldPipeline: 3,
   secondBarracksHardFieldPipeline: 2,
   secondBarracksEarlyNaturalFood: 1200,
+  // If natural food alone can safely bridge two production buildings, do not require
+  // speculative fields merely to unlock Barracks #2.
+  secondBarracksEarlyNaturalRunwaySeconds: 120,
   secondBarracksHardNaturalFood: 800,
   secondBarracksEarlyFoodBank: 350,
   minimumCompletedFieldsBeforeSecondBarracks: 5,
@@ -192,7 +232,9 @@ const DEFAULT_POLICY = Object.freeze({
   phase2MarketWoodReserve: 50,
   phase2SecondMarketPopulation: 115,
   phase2SecondMarketWoodReserve: 75,
-  phase2SecondMarketSpacing: 45,
+  // IT14.43: two markets need separation, not a perfect city plan. Thirty metres
+  // still creates distinct Town structures while avoiding the 7k-candidate deadlock.
+  phase2SecondMarketSpacing: 30,
   // IT14.35: the worker-efficiency temple is a Village-phase economic structure.
   // Normally establish it after barracks #2, once a small permanent-food base exists.
   p1TemplePopulation: 65,
@@ -324,6 +366,12 @@ const DEFAULT_POLICY = Object.freeze({
   dynamicWoodShortageBank: 350,
   foodSurplusRedirectThreshold: 900,
   foodSurplusPauseFarmExpansion: 1000,
+  // IT14.43: once the required food workforce is already covered, a large food
+  // bank should make NEW civilians behave like a human surplus-management choice:
+  // reinforce wood instead of creating yet more permanent food ownership. Existing
+  // preferred farmers stay on their fields (or may briefly build a nearby house).
+  foodSurplusNewCivilianWoodBank: 1200,
+  foodSurplusNewCivilianWoodRatio: 1.75,
   // Permanent-food floors: natural food and a temporary food bank may delay expansion,
   // but they may not collapse the long-term farm economy below these population-scaled floors.
   fieldFloorSixPopulation: 70,
@@ -364,7 +412,8 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.41: Barracks #3 is throughput infrastructure. If its first exact-placement
   // attempt does not create a foundation quickly, retry with the broad frontier sweep
   // instead of burning repeated 20-second dead windows.
-  thirdBarracksAwaitingFoundationRetrySeconds: 8,
+  thirdBarracksAwaitingFoundationRetrySeconds: 6,
+  strategicPlacementFallbackAfterFailures: 1,
   farmHubMinimumCCDistance: 40,
   // Independent buildings should live outside the food-production core. Fields keep
   // first claim on the legal ring immediately around every farmstead; houses/barracks/
@@ -400,8 +449,21 @@ const DEFAULT_POLICY = Object.freeze({
   expertFinishingMinimumPopulationLead: 30,
   expertFinishingHomeCitizenSoldierReserve: 12,
   expertFinishingReinforcementBatch: 6,
-  expertFinishingForceStartSize: 10,
+  expertFinishingForceStartSize: 8,
+  // Once the opponent is broken, a 100-man blob is not smarter than a 45-man
+  // cleanup army. Cap reinforcement and use watchdog retargets instead.
+  expertFinishingMinimumArmy: 36,
+  expertFinishingMaximumArmy: 50,
+  expertFinishingArmyPerEnemy: 3,
+  expertFinishingStallSeconds: 45,
+  expertFinishingRetargetCooldownSeconds: 30,
   expertFinishingSiegeTarget: 2,
+  // IT14.42: a Town-phase default/huge attack may assemble while techs research, but
+  // once P2 is complete it waits for two completed Expert forge upgrades before
+  // launching. If the same plan reaches launch strength while Town is still
+  // researching, it may go early as a P1 timing attack.
+  expertP2AttackRequiredMilitaryTechs: 2,
+  expertP1TimingAttackMinimumUnits: 28,
   // Forward infrastructure may deliberately claim territory toward useful neutral
   // resources. Buildings must still pass the normal own-territory legality test.
   forwardAnchorMinimumCCDistance: 58,

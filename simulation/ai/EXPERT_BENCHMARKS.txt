@@ -1,0 +1,39 @@
+Expert AI Petra Benchmark History
+=================================
+Benchmark matchup: Athens Expert (difficulty 6) vs Athens Very Hard (difficulty 5), Mainland Balanced, 200 population.
+
+Definitions
+- BREAK: first sustained point after 10:00 where Very Hard falls below 50 population and never recovers to 50+.
+- VICTORY: match end / Very Hard defeated.
+- If a replay was intentionally left running after the decisive fight, record the narrowest supported victory window instead of the final metadata clock.
+- Gather bonus remains +35% until the median of the last 3 clean +35% wins is under 20:00.
+
+Recent completed games
+Patch      Gather Bonus   Break       Victory          Finish Gap
+IT14.40    +35%           13:30       21:21.2           7:51.2
+IT14.41    +35%           13:00       19:30-20:00*      6:30-7:00*
+IT14.42    +35%           10:00       25:00-25:30**    15:00-15:30**
+
+* IT14.41 was left running after the decisive fight. The 30-second statistics samples show Very Hard at 7 population at 19:30 and 0 at 20:00, so the final 29:45 metadata clock is not the victory time.
+** IT14.42 formally breaks at 10:00; the opponent actually fell below 50 at 9:30 and never recovered. Very Hard remained at 13 population for a long cleanup stall, then reached 0 between the 25:00 and 25:30 samples.
+
+Current tuning ladder
+- +35% -> +30% when median of last 3 clean +35% wins is under 20:00.
+- +30% -> +25% when median of last 3 clean +30% wins is under 18:00.
+- +25% -> +20% when median of last 3 clean +25% wins is under 16:00.
+- Reassess before reducing below +20%.
+
+Current +35% sample
+- IT14.40: 21:21.2 victory.
+- IT14.41: victory between 19:30 and 20:00.
+- IT14.42: victory between 25:00 and 25:30 after a very early 10:00 break but a severe cleanup stall.
+- Three-game median is still about 21:21, so +35% remains frozen.
+
+IT14.43 target
+- Preserve IT14.42's ~10:00 break while cutting the finishing stall sharply.
+- Cap cleanup reinforcement around 36-50 troops and use a 45-second progress watchdog to retarget/reissue stalled attacks.
+- Stage farms by natural-food runway/depletion so natural food stays first-choice without reaching 4k wood / no food.
+- After one failed strategic placement search, accept any legal developed-district site for Barracks #3 / Forge / Market / Temple / Arsenal.
+- Use human-like temporary builder labor: all 4 opening soldiers on Barracks #1; 5-6 surplus-wood workers on later barracks/strategic buildings; nearby farmers may build farm-district houses then return to farming.
+- When the required food workforce is already covered and food is grossly ahead of wood, new civilians reinforce wood instead of adding unnecessary food ownership.
+- Keep the P2 two-completed-military-tech attack gate and +35% gather/trade bonus unchanged.

@@ -5,6 +5,7 @@ import { Config } from "simulation/ai/petra/config.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { allowCapture, dumpEntity, getHolder, getLandAccess, isSiegeUnit, returnResources } from
 	"simulation/ai/petra/entityExtend.js";
+import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
 import { TrainingPlan } from "simulation/ai/petra/queueplanTraining.js";
 import { Worker } from "simulation/ai/petra/worker.js";
 
@@ -484,6 +485,29 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 	if (this.type !== AttackPlan.TYPE_RAID && gameState.ai.HQ.attackManager.getAttackInPreparation(AttackPlan.TYPE_RAID) !== undefined)
 		this.reassignFastUnit(gameState);    // reassign some fast units (if any) to fasten raid preparations
 
+	// IT14.42: distinguish a genuine P1 timing attack from a Town-phase attack.
+	// While Town is only RESEARCHING this returns ready, so a P1 army that reaches
+	// launch strength can still hit early. Once phase 2 is complete, ordinary/huge
+	// attacks keep their soldiers working/recruiting until two forge upgrades finish.
+	const expertP2TechGate = this.Config.difficulty >= difficulty.EXPERT &&
+		(this.type === AttackPlan.TYPE_DEFAULT || this.type === AttackPlan.TYPE_HUGE_ATTACK) &&
+		gameState.ai.HQ.attackManager.getExpertP2AttackTechGate ?
+		gameState.ai.HQ.attackManager.getExpertP2AttackTechGate(gameState) : { ready: true, completed: 0, required: 0 };
+	const expertP2TechBlocked = !expertP2TechGate.ready;
+	// If the minimum army is already assembled while Town Phase is still researching,
+	// take the timing window instead of idling until the phase completes and then
+	// pretending the same un-upgraded army is a P2 attack. If the army misses this
+	// window, the completed-P2 tech gate above applies.
+	if (this.Config.difficulty >= difficulty.EXPERT && !this.forced &&
+		(this.type === AttackPlan.TYPE_DEFAULT || this.type === AttackPlan.TYPE_HUGE_ATTACK) &&
+		gameState.currentPhase && gameState.currentPhase() === 1 && gameState.getPhaseName &&
+		gameState.isResearching && gameState.isResearching(gameState.getPhaseName(2)) &&
+		this.canStart() && this.unitCollection.length >= mergePolicy().expertP1TimingAttackMinimumUnits)
+	{
+		aiWarn("[EXPERT-ATTACK] taking P1 timing window plan=" + this.name + " army=" + this.unitCollection.length);
+		this.forceStart();
+	}
+
 	// Fasten the end game.
 	if (gameState.ai.playedTurn % 5 == 0 && this.hasSiegeUnits())
 	{
@@ -508,6 +532,18 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 			lengthMin -= Math.floor(8 * (300 - gameState.getPopulationMax()) / 300);
 		if (this.canStart() || this.unitCollection.length > lengthMin)
 		{
+			if (expertP2TechBlocked)
+			{
+				const am = gameState.ai.HQ.attackManager;
+				if (!am.expertLastTechGateLog || gameState.ai.elapsedTime >= am.expertLastTechGateLog + 20)
+				{
+					am.expertLastTechGateLog = gameState.ai.elapsedTime;
+					aiWarn("[EXPERT-ATTACK] P2 tech gate holding plan=" + this.name +
+						" completed=" + expertP2TechGate.completed + "/" + expertP2TechGate.required +
+						" army=" + this.unitCollection.length);
+				}
+				return AttackPlan.PREPARATION_KEEP_GOING;
+			}
 			this.emptyQueues();
 		}
 		else	// Abort the plan so that its units will be reassigned to other plans.
@@ -530,6 +566,18 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 	}
 	else if (this.mustStart())
 	{
+		if (expertP2TechBlocked)
+		{
+			const am = gameState.ai.HQ.attackManager;
+			if (!am.expertLastTechGateLog || gameState.ai.elapsedTime >= am.expertLastTechGateLog + 20)
+			{
+				am.expertLastTechGateLog = gameState.ai.elapsedTime;
+				aiWarn("[EXPERT-ATTACK] P2 tech gate holding plan=" + this.name +
+					" completed=" + expertP2TechGate.completed + "/" + expertP2TechGate.required +
+					" army=" + this.unitCollection.length);
+			}
+			return AttackPlan.PREPARATION_KEEP_GOING;
+		}
 		if (gameState.countOwnQueuedEntitiesWithMetadata("plan", +this.name) > 0)
 		{
 			// keep on while the units finish being trained, then we'll start
@@ -554,6 +602,8 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 	}
 
 	// if we're here, it means we must start
+	if (expertP2TechBlocked)
+		return AttackPlan.PREPARATION_KEEP_GOING;
 	this.state = AttackPlan.STATE_COMPLETING;
 
 	// Raids have their predefined target
@@ -833,6 +883,49 @@ AttackPlan.prototype.isAvailableUnit = function(gameState, ent)
 // underway. This is intentionally separate from preparation recruitment: once the
 // opponent is broken, reinforcements stream forward instead of waiting for another
 // full army to assemble at home.
+// IT14.43: a broken opponent should not survive because a 50-man blob keeps
+// pathing toward one stale/blocked target. Choose another legal conquest target if
+// possible; otherwise reissue direct orders to the current target to wake the plan up.
+AttackPlan.prototype.forceExpertFinishingRetarget = function(gameState)
+{
+	if (!this.isStarted() || this.targetPlayer === undefined)
+		return false;
+	const oldId = this.target && this.target.id();
+	this.gameState = gameState;
+	this.sameLand = false;
+	const candidates = this.defaultTargetFinder(gameState, this.targetPlayer);
+	let best;
+	let bestDist = Infinity;
+	const centre = this.unitCollection.getCentrePosition() || this.position || this.rallyPoint;
+	if (candidates && candidates.hasEntities())
+		for (const ent of candidates.values())
+		{
+			if (!ent || !ent.position() || ent.id() === oldId || !this.isValidTarget(ent)) continue;
+			const dist = SquareVectorDistance(ent.position(), centre);
+			if (dist < bestDist) { bestDist = dist; best = ent; }
+		}
+	if (best)
+	{
+		this.target = best;
+		this.targetPlayer = best.owner();
+		this.targetPos = best.position();
+	}
+	const target = this.target && gameState.getEntityById(this.target.id()) ? this.target : undefined;
+	if (!target || !target.position())
+		return false;
+	this.targetPos = target.position();
+	for (const ent of this.unitCollection.values())
+	{
+		if (!ent || !ent.position()) continue;
+		const capture = allowCapture(gameState, ent, target);
+		if (ent.canAttackTarget && ent.canAttackTarget(target, capture))
+			ent.attack(target.id(), capture);
+		else
+			ent.moveToRange(this.targetPos[0], this.targetPos[1], 0, 12);
+	}
+	return !!best;
+};
+
 AttackPlan.prototype.addExpertReinforcement = function(gameState, ent)
 {
 	if (!ent || !ent.position() || !this.isStarted() || !this.isAvailableUnit(gameState, ent))

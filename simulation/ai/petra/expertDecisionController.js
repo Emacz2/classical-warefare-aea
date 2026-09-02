@@ -119,6 +119,9 @@ export class ExpertDecisionController
 		this.initialWoodSelection = undefined;
 		this.primaryWoodWorksite = undefined;
 		this.activeTaskByKind = {};
+		// IT14.43: keep the planner's crew/pool preference for the life of the foundation.
+		this.activeTaskBuildIntent = {};
+		this.placementFailureCounts = {};
 		this.activeFieldTasks = [];
 		this.pendingFieldPositions = {};
 		this.taskCounters = {};
@@ -2075,8 +2078,15 @@ export class ExpertDecisionController
 		const barracks = this.builtByClass(gameState, "Barracks").length;
 		const resources = gameState.getResources();
 		const coverage = this.phaseCostCoverage(resources, info.cost);
-		const foodInfrastructureHealthy = fieldPipeline >= policy.phase2PreferredFields;
-		const lateFoodFloor = fieldPipeline >= policy.phase2LateMinimumFields;
+		const naturalRemaining = frame && frame.state && frame.state.food ?
+			Math.max(0, Number(frame.state.food.totalNaturalRemaining) || 0) : 0;
+		const naturalRunway = frame && frame.state && frame.state.food ?
+			Math.max(0, Number(frame.state.food.naturalRunwaySeconds) || 0) : 0;
+		const naturalInfrastructureHealthy = naturalRemaining >= policy.naturalFoodInfrastructureRemaining &&
+			naturalRunway >= policy.naturalFoodInfrastructureRunwaySeconds;
+		const foodInfrastructureHealthy = fieldPipeline >= policy.phase2PreferredFields || naturalInfrastructureHealthy;
+		const lateFoodFloor = fieldPipeline >= policy.phase2LateMinimumFields || naturalInfrastructureHealthy;
+		const absoluteFoodFloor = fieldPipeline >= policy.phase2AbsoluteMinimumFields || naturalInfrastructureHealthy;
 		const productionReady = barracks >= 2;
 
 		let ready = false;
@@ -2090,7 +2100,7 @@ export class ExpertDecisionController
 		else if (productionReady && foodInfrastructureHealthy && now >= policy.phase2MatureTime &&
 		         pop >= policy.phase2MaturePopulation)
 			ready = true, lane = "mature";
-		else if (productionReady && fieldPipeline >= policy.phase2AbsoluteMinimumFields &&
+		else if (productionReady && absoluteFoodFloor &&
 		         now >= policy.phase2AbsoluteTime && pop >= policy.phase2AbsolutePopulation)
 			ready = true, lane = "absolute-7m";
 		else if (productionReady && lateFoodFloor && now >= policy.phase2LateTime &&
@@ -2111,7 +2121,7 @@ export class ExpertDecisionController
 		return {
 			ready: ready && info.canResearch,
 			state: ready ? (info.canResearch ? lane : "blocked-no-researcher") : "waiting",
-			reason: `t=${Math.round(now)} pop=${pop} fields=${fields}/${fieldPipeline} barracks=${barracks} coverage=${coverage.toFixed(2)} canResearch=${info.canResearch}`,
+			reason: `t=${Math.round(now)} pop=${pop} fields=${fields}/${fieldPipeline} natural=${Math.round(naturalRemaining)} runway=${Math.round(naturalRunway)}s barracks=${barracks} coverage=${coverage.toFixed(2)} canResearch=${info.canResearch}`,
 			name: info.name, cost: info.cost, coverage, fields, fieldPipeline, barracks, pop, time: now
 		};
 	}
@@ -2468,7 +2478,9 @@ export class ExpertDecisionController
 						"farmersPerField": policy.farmersPerField, "postOpeningFoodFloor": policy.postOpeningFoodFloor,
 						"postOpeningWoodFloor": policy.postOpeningWoodFloor, "postOpeningFoodWoodRatioForWood": policy.postOpeningFoodWoodRatioForWood,
 						"maxDynamicWoodCivilians": policy.maxDynamicWoodCivilians, "dynamicWoodShortageBank": policy.dynamicWoodShortageBank,
-						"foodSurplusRedirectThreshold": policy.foodSurplusRedirectThreshold, "miningStartCivilians": policy.miningStartCivilians,
+						"foodSurplusRedirectThreshold": policy.foodSurplusRedirectThreshold,
+						"foodSurplusNewCivilianWoodBank": policy.foodSurplusNewCivilianWoodBank, "foodSurplusNewCivilianWoodRatio": policy.foodSurplusNewCivilianWoodRatio,
+						"miningStartCivilians": policy.miningStartCivilians,
 						"miningMinimumCompletedFields": policy.miningMinimumCompletedFields,
 						"miningFoodFloor": policy.miningFoodFloor, "miningWoodFloor": policy.miningWoodFloor,
 						"miningTargetStoneWorkers": policy.miningTargetStoneWorkers, "miningTargetMetalWorkers": policy.miningTargetMetalWorkers
@@ -2500,7 +2512,9 @@ export class ExpertDecisionController
 						"farmersPerField": policy.farmersPerField, "postOpeningFoodFloor": policy.postOpeningFoodFloor,
 						"postOpeningWoodFloor": policy.postOpeningWoodFloor, "postOpeningFoodWoodRatioForWood": policy.postOpeningFoodWoodRatioForWood,
 						"maxDynamicWoodCivilians": policy.maxDynamicWoodCivilians, "dynamicWoodShortageBank": policy.dynamicWoodShortageBank,
-						"foodSurplusRedirectThreshold": policy.foodSurplusRedirectThreshold, "miningStartCivilians": policy.miningStartCivilians,
+						"foodSurplusRedirectThreshold": policy.foodSurplusRedirectThreshold,
+						"foodSurplusNewCivilianWoodBank": policy.foodSurplusNewCivilianWoodBank, "foodSurplusNewCivilianWoodRatio": policy.foodSurplusNewCivilianWoodRatio,
+						"miningStartCivilians": policy.miningStartCivilians,
 						"miningMinimumCompletedFields": policy.miningMinimumCompletedFields,
 						"miningFoodFloor": policy.miningFoodFloor, "miningWoodFloor": policy.miningWoodFloor,
 						"miningTargetStoneWorkers": policy.miningTargetStoneWorkers, "miningTargetMetalWorkers": policy.miningTargetMetalWorkers
@@ -3174,6 +3188,7 @@ export class ExpertDecisionController
 		const removed = this.cancelQueuedConstructionTask(gameState, taskId);
 		this.releaseConstructionTeam(gameState, taskId);
 		delete this.activeTaskByKind[kind];
+		delete this.activeTaskBuildIntent[taskId];
 		delete this.taskStartedAt[taskId];
 		delete this.pendingWoodSelectionByTask[taskId];
 		delete this.taskDiagnostics[taskId];
@@ -3251,6 +3266,7 @@ export class ExpertDecisionController
 					aiWarn("[EXPERT-BERRIES] secondary food farmstead complete; branch workers locked");
 				}
 				delete this.taskStartedAt[taskId];
+				delete this.activeTaskBuildIntent[taskId];
 
 				if (isField)
 				{
@@ -4149,6 +4165,10 @@ export class ExpertDecisionController
 	placementRequest(gameState, action, cc, accessIndex, foodObservation)
 	{
 		const kind = action.kind;
+		const placementFailureKey = kind + ":" + (action.role || "primary");
+		const placementFailures = Number(this.placementFailureCounts[placementFailureKey] || 0);
+		const strategicFallback = placementFailures >= mergePolicy().strategicPlacementFallbackAfterFailures &&
+			(kind === "barracks" || kind === "forge" || kind === "market" || kind === "temple" || kind === "arsenal");
 		const taskId = kind === "field" ? this.newTaskId(kind) : (this.activeTaskByKind[kind] || this.newTaskId(kind));
 		let request;
 		const geometry = readTemplateGeometry(gameState, kind);
@@ -4346,6 +4366,21 @@ export class ExpertDecisionController
 				const firstPos = first && entityPosition(first) ? first.position() : cc.position();
 				const woodPos = this.getPrimaryWoodPosition(gameState) || [cc.position()[0] + 1, cc.position()[1]];
 
+				// IT14.43: when farmers are the efficient temporary crew, put the house on the
+				// outside of an existing farm district first. They can build it with almost no
+				// travel and immediately return to their fields.
+				const farmHouseCandidates = [];
+				if (action.preferFarmDistrictHouse)
+					for (const farm of this.builtByClass(gameState, "Farmstead").filter(ent => ent && entityPosition(ent)).slice(0, 6))
+					{
+						const pos = farm.position();
+						let fdx = pos[0] - cc.position()[0], fdz = pos[1] - cc.position()[1];
+						const flen = Math.hypot(fdx, fdz) || 1;
+						const outwardFarm = [pos[0] + fdx / flen * 28, pos[1] + fdz / flen * 28];
+						farmHouseCandidates.push(...generatePlacementCandidates({ "kind": "barracks", "anchor": pos, "toward": outwardFarm,
+							"distances": [30, 34, 38, 42, 46], "angleCount": 20, "templateRadius": geometry.radius }));
+					}
+
 				if (phase >= 2)
 				{
 					// IT14.12 P2 housing: the P1 house line is a preference, not a prison.
@@ -4358,7 +4393,7 @@ export class ExpertDecisionController
 						...this.builtByClass(gameState, "Storehouse")
 					].filter(ent => ent && entityPosition(ent));
 					developed.sort((a, b) => SquareVectorDistance(b.position(), ccPos) - SquareVectorDistance(a.position(), ccPos) || a.id() - b.id());
-					const candidates = [];
+					const candidates = [...farmHouseCandidates];
 					for (const anchorEnt of developed.slice(0, 8))
 					{
 						const pos = anchorEnt.position();
@@ -4402,7 +4437,7 @@ export class ExpertDecisionController
 					dx /= len; dz /= len;
 					const tangent = [-dz, dx];
 					const spacing = Math.max(10, 2 * Number(geometry.radius || 4) + 2);
-					const lineCandidates = [];
+					const lineCandidates = [...farmHouseCandidates];
 					for (let step = 1; step <= 10; ++step)
 					{
 						lineCandidates.push([firstPos[0] + tangent[0] * spacing * step, firstPos[1] + tangent[1] * spacing * step]);
@@ -4488,7 +4523,27 @@ export class ExpertDecisionController
 				"kind": "barracks", "anchor": fallbackAnchor, "toward": outward,
 				"distances": [0, 6, 10, 14, 18, 22, 26], "angleCount": 32, "templateRadius": geometry.radius
 			});
-			let barracksCandidates = [...primary, ...fallback];
+			let barracksCandidates = [];
+			// IT14.43: Barracks #1/#2 may be economic territory tools, not just home-base
+			// production boxes. If a worthwhile neutral berry/fruit/wood district sits just
+			// beyond the border, first test legal inside-edge positions toward that resource.
+			// This can bring the resource into territory without spending 100 wood on a
+			// premature farmstead/field transition. Keep the normal lumber-side placement
+			// immediately behind these candidates so bad frontier geometry cannot delay the
+			// barracks timing.
+			if (action.role !== "third_p2")
+			{
+				const earlyAnchors = this.frontierResourceAnchors(gameState, ccPos, accessIndex)
+					.filter(anchor => anchor.generic === "food" || anchor.generic === "wood")
+					.filter(anchor => Math.sqrt(SquareVectorDistance(anchor.position, ccPos)) <= 120)
+					.slice(0, 4);
+				for (const anchor of earlyAnchors)
+					barracksCandidates.push(...generatePlacementCandidates({
+						"kind": "barracks", "anchor": anchor.position, "toward": ccPos,
+						"distances": [12, 16, 20, 24, 28, 32, 36, 40], "angleCount": 48, "templateRadius": geometry.radius
+					}));
+			}
+			barracksCandidates.push(...primary, ...fallback);
 			if (action.role === "second")
 			{
 				// IT14.32: the 3:50 second-barracks decision was correct, but every local
@@ -4757,13 +4812,42 @@ export class ExpertDecisionController
 				"minimumCCDistance": policy.independentBuildingMinimumCCDistance
 			};
 		}
+		// IT14.43 emergency placement: after one failed strategic search, stop demanding a
+		// beautiful city.  Add dense legal rings around every developed own structure;
+		// engine obstruction/territory checks still decide legality.
+		if (request && strategicFallback && kind !== "field" && kind !== "farmstead" && kind !== "storehouse" && kind !== "house")
+		{
+			const emergency = [];
+			const ccPos = cc.position();
+			const developed = [
+				...this.builtByClass(gameState, "House"), ...this.builtByClass(gameState, "Barracks"),
+				...this.builtByClass(gameState, "Storehouse"), ...this.builtByClass(gameState, "Farmstead"),
+				...this.builtByClass(gameState, "Forge"), ...this.builtByClass(gameState, "Market")
+			].filter(ent => ent && entityPosition(ent));
+			for (const ent of developed.slice(0, 16))
+			{
+				const pos = ent.position();
+				emergency.push(...generatePlacementCandidates({ "kind": kind === "market" ? "market" : "barracks",
+					"anchor": pos, "toward": ccPos, "distances": [8, 12, 16, 20, 24, 28, 32, 36, 40],
+					"angleCount": 32, "templateRadius": geometry.radius }));
+			}
+			emergency.push(...generatePlacementCandidates({ "kind": kind === "market" ? "market" : "barracks",
+				"anchor": ccPos, "toward": this.getPrimaryWoodPosition(gameState) || [ccPos[0] + 1, ccPos[1]],
+				"distances": [50, 54, 58, 62, 66, 70, 74, 78, 82, 86, 90, 96, 104], "angleCount": 72,
+				"templateRadius": geometry.radius }));
+			request.candidates = [...(request.candidates || []), ...emergency];
+			if (kind === "market" && action.role === "phase3_town_support")
+				request.minimumMarketSpacing = Math.min(Number(request.minimumMarketSpacing) || 999, mergePolicy().phase2SecondMarketSpacing);
+			request.preserveFarmDistrict = false;
+		}
+
 		if (!request)
 			return undefined;
 		const matureFarmDistrict = this.builtByClass(gameState, "Field").length >= mergePolicy().matureFarmDistrictRelaxFieldCount;
-		if (kind === "house" || kind === "forge" || kind === "arsenal")
+		if (!strategicFallback && (kind === "house" || kind === "forge" || kind === "arsenal"))
 			request.preserveFarmDistrict = true;
-		else if (kind === "barracks")
-			request.preserveFarmDistrict = !(action.role === "third_p2" && matureFarmDistrict);
+		else if (!strategicFallback && kind === "barracks")
+			request.preserveFarmDistrict = action.role !== "third_p2";
 		else if (kind === "market" || kind === "temple")
 			request.preserveFarmDistrict = false;
 		request.taskId = taskId;
@@ -5075,6 +5159,8 @@ export class ExpertDecisionController
 						this.fieldPlacementFailures[request.farmsteadId] = Number(this.fieldPlacementFailures[request.farmsteadId] || 0) + 1;
 					if (action.kind === "farmstead" && ((action.role || "") === "farm_hub" || (action.role || "") === "farm_hub_constrained"))
 						++this.farmsteadPlacementFailures;
+					const placementKey = action.kind + ":" + (action.role || "primary");
+					this.placementFailureCounts[placementKey] = Number(this.placementFailureCounts[placementKey] || 0) + 1;
 					aiWarn("[EXPERT-PLACE] blocked kind=" + action.kind + " role=" + (action.role || "primary") +
 						" reason=" + (blocked && blocked.reason || "unknown") + " rejected=" + rejected.length);
 					delete this.pendingWoodSelectionByTask[request.taskId];
@@ -5090,6 +5176,14 @@ export class ExpertDecisionController
 					aiWarn("[EXPERT-DEF] emergency tower queued count=" + this.emergencyTowerCount +
 						" foe=" + (this.expertDefenseState.foeCount || 0));
 				}
+				this.placementFailureCounts[action.kind + ":" + (action.role || "primary")] = 0;
+				this.activeTaskBuildIntent[exec.taskId] = {
+					"builderPool": Array.isArray(action.builderPool) ? [...action.builderPool] : undefined,
+					"builderCount": Number(action.builderCount) || undefined,
+					"builderJobPriority": action.builderJobPriority ? { ...action.builderJobPriority } : undefined,
+					"priority": Number(action.priority) || undefined,
+					"role": action.role || "primary"
+				};
 				if (action.kind === "field")
 				{
 					if (Number.isFinite(Number(request.farmsteadId)))
@@ -6117,10 +6211,11 @@ export class ExpertDecisionController
 			if (!foundation || !entityPosition(foundation))
 				continue;
 			const context = this.constructionBuilderContext(gameState, kind);
+			const intent = this.activeTaskBuildIntent[taskId] || {};
 			foundations.push({
-				key: taskId, kind, taskId, observed, foundation, context,
-				wanted: Math.max(1, desiredBuilders(kind, context)),
-				priority: constructionPriority(kind, context)
+				key: taskId, kind, taskId, observed, foundation, context, intent,
+				wanted: Math.max(1, Number(intent.builderCount) || desiredBuilders(kind, context)),
+				priority: Math.max(constructionPriority(kind, context), Number(intent.priority) || 0)
 			});
 		}
 		// EVERY construction crew is sticky now. Once a worker starts a foundation, that
@@ -6152,7 +6247,7 @@ export class ExpertDecisionController
 			let team = [...existingWorkers];
 			if (team.length < wanted)
 			{
-				const candidates = selectMaintenanceTeam(gameState, kind, foundation.position(), wanted, {}, {
+				const candidates = selectMaintenanceTeam(gameState, kind, foundation.position(), wanted, item.intent || {}, {
 					"playerId": PlayerID, "taskId": taskId, "existingBuilderIds": existingWorkers.map(ent => ent.id())
 				});
 				const seen = new Set(team.map(ent => ent.id()));
@@ -6510,7 +6605,7 @@ export class ExpertDecisionController
 		const workers = this.economyWorkerMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.41] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.43] t=" + Math.round(gameState.ai.elapsedTime) +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" res=" + Math.round(res.food) + "/" + Math.round(res.wood) + "/" + Math.round(res.stone) + "/" + Math.round(res.metal) +
 			" desired f=" + workers.food + " farm=" + workers.farm + " w=" + workers.wood + " woodCiv=" + workers.woodCivilians + " overflow=" + workers.overflowWood + " b=" + workers.builders + " army=" + (workers.attackCommitted || 0) +
@@ -6565,7 +6660,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.41] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.43] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -6581,6 +6676,8 @@ export class ExpertDecisionController
 			"initialWoodSelection": this.initialWoodSelection,
 			"primaryWoodWorksite": this.primaryWoodWorksite,
 			"activeTaskByKind": { ...this.activeTaskByKind },
+			"activeTaskBuildIntent": { ...this.activeTaskBuildIntent },
+			"placementFailureCounts": { ...this.placementFailureCounts },
 			"activeFieldTasks": [...this.activeFieldTasks],
 			"pendingFieldPositions": { ...this.pendingFieldPositions },
 			"taskCounters": { ...this.taskCounters },
@@ -6636,6 +6733,8 @@ export class ExpertDecisionController
 		this.initialWoodSelection = data.initialWoodSelection;
 		this.primaryWoodWorksite = data.primaryWoodWorksite;
 		this.activeTaskByKind = { ...(data.activeTaskByKind || {}) };
+		this.activeTaskBuildIntent = { ...(data.activeTaskBuildIntent || {}) };
+		this.placementFailureCounts = { ...(data.placementFailureCounts || {}) };
 		this.activeFieldTasks = Array.isArray(data.activeFieldTasks) ? [...data.activeFieldTasks] : [];
 		this.pendingFieldPositions = { ...(data.pendingFieldPositions || {}) };
 		this.taskCounters = { ...(data.taskCounters || {}) };
