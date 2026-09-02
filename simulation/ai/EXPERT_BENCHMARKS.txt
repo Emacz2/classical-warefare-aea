@@ -3,19 +3,22 @@ Expert AI Petra Benchmark History
 Benchmark matchup: Athens Expert (difficulty 6) vs Athens Very Hard (difficulty 5), Mainland Balanced, 200 population.
 
 Definitions
-- BREAK: first sustained point after 10:00 where Very Hard falls below 50 population and never recovers to 50+.
-- VICTORY: match end / Very Hard defeated.
-- If a replay was intentionally left running after the decisive fight, record the narrowest supported victory window instead of the final metadata clock.
-- Gather bonus remains +35% until the median of the last 3 clean +35% wins is under 20:00.
+- BREAK: first sustained sample after 10:00 where Very Hard is below 50 population and never recovers to 50+.
+- VICTORY: match end / Very Hard defeated. If only 30-second statistics samples support the finish, record the narrowest supported window.
+- Gather/trade bonus remains +35% until the median of the last 3 clean +35% wins is under 20:00.
 
-Recent completed games
+Last 3 completed games
 Patch      Gather Bonus   Break       Victory          Finish Gap
-IT14.40    +35%           13:30       21:21.2           7:51.2
-IT14.41    +35%           13:00       19:30-20:00*      6:30-7:00*
-IT14.42    +35%           10:00       25:00-25:30**    15:00-15:30**
+IT14.42    +35%           10:00       25:00-25:30      15:00-15:30
+IT14.43    +35%           11:30       22:58.8          11:28.8
+IT14.44    +35%           17:00       25:00-25:30       8:00-8:30
 
-* IT14.41 was left running after the decisive fight. The 30-second statistics samples show Very Hard at 7 population at 19:30 and 0 at 20:00, so the final 29:45 metadata clock is not the victory time.
-** IT14.42 formally breaks at 10:00; the opponent actually fell below 50 at 9:30 and never recovered. Very Hard remained at 13 population for a long cleanup stall, then reached 0 between the 25:00 and 25:30 samples.
+IT14.44 notes
+- Very Hard was 51 pop at 16:00, rebounded to 59 at 16:30, then fell to 48 at 17:00 and never returned to 50+, so BREAK=17:00.
+- Very Hard was still 6 pop at 25:00 and 0 at 25:30, so VICTORY=25:00-25:30.
+- Full depleted-army reboom logic did fire several times, including a 21-unit retreat around 12:04. The next improvement is selective wounded rotation so healthy survivors do not have to wait for the whole army to collapse.
+- Forge #1 completed around 8:30 and Forge #2 around 10:15. The first P2 food eco upgrade queued around 9:35 and first P2 wood upgrade around 10:23; the second food+wood pair did not appear until roughly 24:15.
+- Expert reached City Phase but trained no siege before victory. The second Town-support Market spent hundreds of attempts rejecting placement positions, delaying City Phase/Arsenal timing badly.
 
 Current tuning ladder
 - +35% -> +30% when median of last 3 clean +35% wins is under 20:00.
@@ -23,17 +26,29 @@ Current tuning ladder
 - +25% -> +20% when median of last 3 clean +25% wins is under 16:00.
 - Reassess before reducing below +20%.
 
-Current +35% sample
-- IT14.40: 21:21.2 victory.
-- IT14.41: victory between 19:30 and 20:00.
-- IT14.42: victory between 25:00 and 25:30 after a very early 10:00 break but a severe cleanup stall.
-- Three-game median is still about 21:21, so +35% remains frozen.
+Current +35% trend
+- Latest three victories are 25:00-25:30, 22:58.8, and 25:00-25:30.
+- Median is therefore still about 25:00-25:30. +35% remains frozen.
 
-IT14.43 target
-- Preserve IT14.42's ~10:00 break while cutting the finishing stall sharply.
-- Cap cleanup reinforcement around 36-50 troops and use a 45-second progress watchdog to retarget/reissue stalled attacks.
-- Stage farms by natural-food runway/depletion so natural food stays first-choice without reaching 4k wood / no food.
-- After one failed strategic placement search, accept any legal developed-district site for Barracks #3 / Forge / Market / Temple / Arsenal.
-- Use human-like temporary builder labor: all 4 opening soldiers on Barracks #1; 5-6 surplus-wood workers on later barracks/strategic buildings; nearby farmers may build farm-district houses then return to farming.
-- When the required food workforce is already covered and food is grossly ahead of wood, new civilians reinforce wood instead of adding unnecessary food ownership.
-- Keep the P2 two-completed-military-tech attack gate and +35% gather/trade bonus unchanged.
+IT14.45 target
+- Rotate <=25% health citizen-soldiers out of active attacks; once home they return to work while fresh >=75% health soldiers replace them.
+- Preserve the full ~22-unit retreat/reboom as the fallback for a genuinely collapsed defended push.
+- Active attack infantry may garrison rams. Ram passengers remember the attack plan and rejoin after unloading.
+- While a ram is approaching the enemy CC, the bulk army fights on the perimeter and avoids diving under the CC/tower/fortress envelope. Once the ram reaches the assault radius, the army pivots inward with it.
+- In P3, a healthy active attack can trigger one ram before formal finishing mode; finishing mode still targets up to two.
+- After the first strategic placement failure, the second Town-support Market samples the actual owned territory grid for any legal phase-progress location.
+- The second P2 food+wood eco pair is allowed after the first two military upgrades are in the pipeline instead of waiting for four military upgrades.
+- Keep +35% gather/trade unchanged.
+
+IT14.46 target
+- Select one replay-deterministic Expert doctrine per match: Early P1 Rush (20%), Late P1 Timing Rush (25%), or P2 Forge-Tech Push (55%).
+- Early/late P1 doctrines use temporary civilian soft caps (42/55) and earlier soldier/barracks timings so the rush is a real economic commitment; the cap returns to 70 after the timing window.
+- P2 Forge-Tech Push keeps the 70-civilian boom and sweeps all currently available Village-phase ResourceGatherer technologies before/while Town Phase is researched, while preserving the phase cost until it is reserved.
+- Start food/wood balance correction earlier and with smaller hysteretic batches so the ~5:00 food surplus does not become the ~8:00 wood surplus seen in IT14.45.
+- Houses require less speculative headroom, need a larger true wood surplus for prebuild, and may not occupy the immediate storehouse worksite ring.
+- Large 16+ worker forests can request a second same-patch dropsite before depletion; deepen-patch placement accepts a useful smaller distance gain and slightly tighter storehouse spacing.
+- Smaller worthwhile natural-food branches may earn a farmstead before permanent fields; markets no longer count as permanent field hubs.
+- Temple placement may use the CC economic core and is ranked primarily by live worker coverage inside its planning aura.
+- Infantry-only Expert pressure avoids CC/tower/fortress strongpoints while the opponent still has a meaningful population; rushes seek undefended economic targets.
+- At <=8 enemy population, finishing retargets visible ConquestCritical units first, then occupied garrison holders, then ConquestCritical structures. Rams use the same cleanup exception instead of repeatedly staging on a surviving CC.
+- Keep +35% gather/trade unchanged; benchmark doctrine selection, BREAK, VICTORY, resource banks, P1 eco completion at Town transition, and last-target cleanup separately.

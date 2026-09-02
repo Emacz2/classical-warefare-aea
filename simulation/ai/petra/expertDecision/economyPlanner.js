@@ -277,9 +277,16 @@ function woodWorksiteDecision(state, policy) {
     w.averageDropDistance > policy.targetWoodDropDistance;
   const workforcePressure = state.workers.wood >= policy.woodExpansionWorkerThreshold &&
     w.localWoodAmount <= policy.woodExpansionAmount;
+  // IT14.46: a large crew on one rich forest can justify a second dropsite even before
+  // depletion. This is the human "work both faces of the same forest" pattern.
+  const denseWorksite = state.workers.wood >= Math.max(16, policy.woodExpansionWorkerThreshold + 4) &&
+    w.localWoodAmount >= 1800 && w.averageDropDistance > 14;
 
   if (w.alternativeExistingWorksite && (criticallyLow || poorDelivery || workforcePressure))
     return { status: "switch_existing_worksite", expand: false, reason: "reuse an existing storehouse before constructing another" };
+
+  if (denseWorksite)
+    return { status: "dense_forest_deepen", expand: true, reason: "large wood crew has enough connected forest to benefit from a second dropsite on the same patch" };
 
   if (workforcePressure)
     return { status: "workforce_expand", expand: true, reason: "wood workforce is large relative to remaining local wood; establish the next in-territory dropsite now" };

@@ -42,6 +42,9 @@ export function AttackManager(config)
 	this.expertLastTechGateLog = 0;
 	// IT14.43 finish watchdog: population/target progress, not army size, drives cleanup.
 	this.expertFinishingProgress = undefined;
+	// IT14.44: after a depleted push retreats, give the economy/production a short
+	// reboom window before Petra immediately assembles another understrength wave.
+	this.expertReboomUntil = -99999;
 }
 
 /** More initialisation for stuff that needs the gameState */
@@ -425,8 +428,13 @@ AttackManager.prototype.updateExpertFinishingProgress = function(gameState, fini
 	let progress = this.expertFinishingProgress;
 	if (!progress || progress.targetPlayer !== finishing.targetPlayer)
 	{
+		// Immediately point cleanup at the strategic objective (normally the CC) rather
+		// than waiting 45 seconds for the first watchdog cycle.
+		if (attack && attack.forceExpertFinishingRetarget)
+			attack.forceExpertFinishingRetarget(gameState);
+		const initialMetric = this.expertFinishingTargetProgress(attack);
 		this.expertFinishingProgress = { targetPlayer: finishing.targetPlayer, enemyPop: finishing.enemyPopulation,
-			targetId: metric.targetId, health: metric.health, capture: metric.capture, lastProgressTime: now, lastRetargetTime: -99999 };
+			targetId: initialMetric.targetId, health: initialMetric.health, capture: initialMetric.capture, lastProgressTime: now, lastRetargetTime: now };
 		return;
 	}
 	const advanced = finishing.enemyPopulation < progress.enemyPop || metric.targetId !== progress.targetId ||
@@ -443,6 +451,321 @@ AttackManager.prototype.updateExpertFinishingProgress = function(gameState, fini
 	const changed = attack.forceExpertFinishingRetarget ? attack.forceExpertFinishingRetarget(gameState) : false;
 	aiWarn("[EXPERT-FINISH] watchdog plan=" + attack.name + " army=" + attack.unitCollection.length + " enemyPop=" + finishing.enemyPopulation +
 		" retarget=" + (changed ? "changed" : "reissued"));
+};
+
+AttackManager.prototype.expertWoundedHomePosition = function(gameState, from)
+{
+	let best;
+	let bestDist = Infinity;
+	for (const ent of gameState.getOwnStructures().values())
+	{
+		if (!ent || !ent.position() || !ent.hasClass("CivCentre"))
+			continue;
+		const dist = from ? SquareVectorDistance(from, ent.position()) : 0;
+		if (dist < bestDist)
+		{
+			bestDist = dist;
+			best = ent.position();
+		}
+	}
+	if (best)
+		return best;
+	for (const ent of gameState.getOwnStructures().values())
+	{
+		if (!ent || !ent.position())
+			continue;
+		const dist = from ? SquareVectorDistance(from, ent.position()) : 0;
+		if (dist < bestDist)
+		{
+			bestDist = dist;
+			best = ent.position();
+		}
+	}
+	return best;
+};
+
+// IT14.45: preserve wounded veterans instead of leaving every damaged soldier in the
+// grinder until the entire attack qualifies for a retreat.  Units below the health
+// threshold leave the plan, run home, and become normal economic workers once they
+// reach friendly territory.  The attack records a replacement demand for fresh troops.
+AttackManager.prototype.peelExpertWoundedUnits = function(gameState, attack)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !attack || !attack.isStarted() ||
+	    gameState.ai.playedTurn % 5 !== 0)
+		return 0;
+	const policy = mergePolicy();
+	const threshold = Math.max(0.05, Math.min(0.9, Number(policy.expertWoundedRetreatHealth) || 0.25));
+	const candidates = [];
+	for (const ent of attack.unitCollection.values())
+	{
+		if (!ent || !ent.position() || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry") ||
+		    ent.hasClass("Siege") || !ent.healthLevel || ent.healthLevel() > threshold)
+			continue;
+		candidates.push(ent);
+	}
+	if (!candidates.length)
+		return 0;
+	candidates.sort((a, b) => a.healthLevel() - b.healthLevel() || a.id() - b.id());
+	const batch = Math.max(1, Number(policy.expertWoundedRetreatBatch) || 6);
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	let peeled = 0;
+	for (const ent of candidates.slice(0, batch))
+	{
+		const pos = ent.position();
+		const home = this.expertWoundedHomePosition(gameState, pos);
+		if (!home)
+			continue;
+		attack.removeUnit(ent, true);
+		ent.setMetadata(PlayerID, "expertWoundedReturnUntil", now + (Number(policy.expertWoundedReturnSeconds) || 90));
+		ent.setMetadata(PlayerID, "expertWoundedFromPlan", attack.name);
+		ent.moveToRange(home[0], home[1], 0, 20);
+		++peeled;
+	}
+	if (peeled)
+	{
+		attack.expertWoundedReplacementDemand = Math.max(0, Number(attack.expertWoundedReplacementDemand) || 0) + peeled;
+		aiWarn("[EXPERT-WOUNDED] peel plan=" + attack.name + " units=" + peeled +
+			" army=" + attack.unitCollection.length + " replace=" + attack.expertWoundedReplacementDemand);
+	}
+	return peeled;
+};
+
+AttackManager.prototype.reinforceExpertWoundedReplacements = function(gameState, attack)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !attack || !attack.isStarted() ||
+	    gameState.ai.playedTurn % 5 !== 0 || !(Number(attack.expertWoundedReplacementDemand) > 0))
+		return 0;
+	const policy = mergePolicy();
+	const reserve = Math.max(0, Number(policy.expertWoundedReplacementHomeReserve) || 12);
+	const candidates = [];
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position() || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry") || ent.hasClass("Siege") ||
+		    !ent.healthLevel || ent.healthLevel() < 0.75 || ent.getMetadata(PlayerID, "expertWoundedReturnUntil") !== undefined ||
+		    ent.getMetadata(PlayerID, "expertDecisionTaskId") !== undefined || ent.getMetadata(PlayerID, "expertDefenseMobilized") !== undefined ||
+		    ent.getMetadata(PlayerID, "garrisonHolder") !== undefined)
+			continue;
+		const plan = ent.getMetadata(PlayerID, "plan");
+		if (plan !== undefined && plan !== -1)
+			continue;
+		candidates.push(ent);
+	}
+	const available = Math.max(0, candidates.length - reserve);
+	if (!available)
+		return 0;
+	const rally = attack.position && Number.isFinite(attack.position[0]) ? attack.position : attack.targetPos;
+	candidates.sort((a, b) => {
+		const da = rally ? SquareVectorDistance(a.position(), rally) : 0;
+		const db = rally ? SquareVectorDistance(b.position(), rally) : 0;
+		return da - db || b.healthLevel() - a.healthLevel() || a.id() - b.id();
+	});
+	const batch = Math.min(available, Math.max(1, Number(policy.expertWoundedReplacementBatch) || 4),
+		Math.max(0, Number(attack.expertWoundedReplacementDemand) || 0));
+	let added = 0;
+	for (const ent of candidates.slice(0, batch))
+		if (attack.addExpertReinforcement && attack.addExpertReinforcement(gameState, ent))
+			++added;
+	if (added)
+	{
+		attack.expertWoundedReplacementDemand = Math.max(0, attack.expertWoundedReplacementDemand - added);
+		aiWarn("[EXPERT-WOUNDED] replace plan=" + attack.name + " added=" + added +
+			" remaining=" + attack.expertWoundedReplacementDemand + " army=" + attack.unitCollection.length);
+	}
+	return added;
+};
+
+// Attach newly-created siege to the largest active field army even before the opponent
+// formally enters finishing mode.  This lets a P3 ram become part of the current push
+// instead of waiting for a separate cleanup plan.
+AttackManager.prototype.attachExpertSiegeToActiveAttack = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || gameState.ai.playedTurn % 5 !== 0)
+		return 0;
+	let attack;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH, AttackPlan.TYPE_RAID])
+		for (const plan of this.startedAttacks[type])
+			if (plan && plan.targetPlayer !== undefined && (!attack || plan.unitCollection.length > attack.unitCollection.length))
+				attack = plan;
+	if (!attack)
+		return 0;
+	let added = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (added >= 2 || !ent || !ent.position() || !ent.hasClass("Siege"))
+			continue;
+		const plan = ent.getMetadata(PlayerID, "plan");
+		if (plan !== undefined && plan !== -1)
+			continue;
+		if (attack.addExpertReinforcement && attack.addExpertReinforcement(gameState, ent))
+			++added;
+	}
+	if (added)
+		aiWarn("[EXPERT-RAM] attached-siege plan=" + attack.name + " added=" + added + " army=" + attack.unitCollection.length);
+	return added;
+};
+
+// GarrisonManager temporarily replaces attack-plan metadata while a passenger is in a
+// holder.  Restore active-army passengers to their original attack after they unload.
+AttackManager.prototype.recoverExpertRamPassengers = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || gameState.ai.playedTurn % 5 !== 0)
+		return;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position())
+			continue;
+		const originalPlan = ent.getMetadata(PlayerID, "expertRamAttackPlan");
+		if (originalPlan === undefined || ent.getMetadata(PlayerID, "garrisonHolder") !== undefined)
+			continue;
+		const currentPlan = ent.getMetadata(PlayerID, "plan");
+		if (currentPlan === -2 || currentPlan === -3)
+			continue;
+		const attack = this.getPlan(originalPlan);
+		if (attack && attack.isStarted() && ent.healthLevel && ent.healthLevel() > mergePolicy().expertWoundedRetreatHealth &&
+		    attack.addExpertReinforcement && attack.addExpertReinforcement(gameState, ent))
+			aiWarn("[EXPERT-RAM] passenger-rejoined unit=" + ent.id() + " plan=" + originalPlan);
+		ent.setMetadata(PlayerID, "expertRamAttackPlan", undefined);
+	}
+};
+
+AttackManager.prototype.shouldExpertRetreatDepletedAttack = function(gameState, attack)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !attack || !attack.isStarted() ||
+	    !gameState.currentPhase || gameState.currentPhase() < 2)
+		return false;
+	const policy = mergePolicy();
+	if (attack.unitCollection.length > policy.expertDepletedAttackRetreatArmy || attack.hasSiegeUnits && attack.hasSiegeUnits())
+		return false;
+	const pos = attack.unitCollection && attack.unitCollection.getCentrePosition && attack.unitCollection.getCentrePosition() ||
+		attack.position || attack.targetPos;
+	if (!pos)
+		return false;
+	// IT14.45: do not rely only on territory ownership here.  A depleted army can sit
+	// on a border cell while still being fully exposed to an enemy CC/tower/fortress;
+	// proximity to a surviving defensive objective is enough evidence that continuing
+	// the push will just donate the remaining units.
+	const defendedRadius2 = Math.pow(Number(policy.expertDepletedAttackDefendedRadius) || 155, 2);
+	const owner = gameState.ai.HQ.territoryMap.getOwner(pos);
+	let defendedObjective = false;
+	for (const struct of gameState.getEnemyStructures(attack.targetPlayer).values())
+	{
+		if (!struct || !struct.position())
+			continue;
+		if (!(struct.hasClass("CivCentre") || struct.hasClass("Fortress") || struct.hasClass("Tower") ||
+		      struct.hasClass("WallTower") || struct.hasDefensiveFire && struct.hasDefensiveFire()))
+			continue;
+		if (owner === attack.targetPlayer || SquareVectorDistance(pos, struct.position()) <= defendedRadius2)
+		{
+			defendedObjective = true;
+			break;
+		}
+	}
+	return defendedObjective;
+};
+
+AttackManager.prototype.manageExpertRamGarrisons = function(gameState, finishing)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || gameState.ai.playedTurn % 5 !== 0 ||
+	    !gameState.ai.HQ.garrisonManager)
+		return;
+	const policy = mergePolicy();
+	const defaultTargetPlayer = finishing && finishing.targetPlayer !== undefined ? finishing.targetPlayer : this.currentEnemyPlayer;
+	const search2 = Math.pow(Number(policy.expertRamGarrisonSearchRadius) || 90, 2);
+	const activeSearch2 = Math.pow(Number(policy.expertRamActiveArmySearchRadius) || 180, 2);
+	const release2 = Math.pow(Number(policy.expertRamCavalryReleaseRadius) || 48, 2);
+
+	for (const ram of gameState.getOwnUnits().values())
+	{
+		if (!ram || !ram.position() || !ram.hasClass("Siege") ||
+		    !(ram.hasClass("Ram") || String(ram.genericName && ram.genericName() || "").toLowerCase().includes("ram")) ||
+		    !ram.isGarrisonHolder || !ram.isGarrisonHolder())
+			continue;
+
+		const ramPlanId = ram.getMetadata(PlayerID, "plan");
+		const ramAttack = ramPlanId !== undefined && ramPlanId !== -1 ? this.getPlan(ramPlanId) : undefined;
+		const targetPlayer = ramAttack && ramAttack.targetPlayer !== undefined ? ramAttack.targetPlayer : defaultTargetPlayer;
+		if (targetPlayer === undefined)
+			continue;
+		const enemyCavalry = [];
+		for (const ent of gameState.getEnemyUnits(targetPlayer).values())
+			if (ent && ent.position() && ent.hasClass("Cavalry"))
+				enemyCavalry.push(ent);
+		const preferSpears = enemyCavalry.length >= policy.expertRamCavalryThreatCount;
+
+		// If cavalry is actually on top of the ram, unload spear passengers so they can
+		// body-block/kill the horses instead of remaining hidden.  Passengers remember
+		// their original attack plan and rejoin it on a later manager tick.
+		let closeCavalry = false;
+		for (const cav of enemyCavalry)
+			if (SquareVectorDistance(cav.position(), ram.position()) <= release2)
+			{
+				closeCavalry = true;
+				break;
+			}
+		if (closeCavalry)
+		{
+			let released = 0;
+			for (const id of [...ram.garrisoned()])
+			{
+				const ent = gameState.getEntityById(id);
+				if (!ent || !ent.hasClass("Spearman"))
+					continue;
+				ent.setMetadata(PlayerID, "garrisonType", undefined);
+				ram.unload(id);
+				++released;
+			}
+			if (released)
+				aiWarn("[EXPERT-RAM] cavalry-threat ram=" + ram.id() + " released-spears=" + released);
+			continue;
+		}
+
+		const occupied = gameState.ai.HQ.garrisonManager.numberOfGarrisonedSlots(ram);
+		const wanted = Math.min(policy.expertRamGarrisonTarget, Math.max(0, ram.garrisonMax ? ram.garrisonMax() : 0));
+		let room = wanted - occupied;
+		if (room <= 0)
+			continue;
+		const candidates = [];
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !ent.position() || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry") ||
+			    ent.getMetadata(PlayerID, "garrisonHolder") !== undefined || !ent.canGarrison || !ent.canGarrison())
+				continue;
+			const entPlan = ent.getMetadata(PlayerID, "plan");
+			const sameAttack = !!(ramAttack && entPlan === ramAttack.name);
+			const free = entPlan === undefined || entPlan === -1;
+			if (!sameAttack && !free)
+				continue;
+			const dist = SquareVectorDistance(ent.position(), ram.position());
+			if (dist > (sameAttack ? activeSearch2 : search2))
+				continue;
+			const preferred = preferSpears ? ent.hasClass("Spearman") : ent.hasClass("Javelineer");
+			if (!preferred)
+				continue;
+			// A modest same-army bonus means nearby reinforcements can still fill instantly,
+			// but the field army is now a legitimate source instead of being categorically banned.
+			candidates.push({ ent, sameAttack, score: dist - (sameAttack ? 2500 : 0) });
+		}
+		candidates.sort((a, b) => a.score - b.score || a.ent.id() - b.ent.id());
+		let ordered = 0;
+		let fromArmy = 0;
+		for (const candidate of candidates)
+		{
+			if (room-- <= 0)
+				break;
+			const ent = candidate.ent;
+			if (candidate.sameAttack && ramAttack)
+			{
+				ent.setMetadata(PlayerID, "expertRamAttackPlan", ramAttack.name);
+				ramAttack.removeUnit(ent, true);
+				++fromArmy;
+			}
+			gameState.ai.HQ.garrisonManager.garrison(gameState, ent, ram, "expert_ram");
+			++ordered;
+		}
+		if (ordered)
+			aiWarn("[EXPERT-RAM] garrison ram=" + ram.id() + " added=" + ordered + " fromArmy=" + fromArmy +
+				" type=" + (preferSpears ? "spears" : "javelineers"));
+	}
 };
 
 AttackManager.prototype.update = function(gameState, queues, events)
@@ -473,6 +796,14 @@ AttackManager.prototype.update = function(gameState, queues, events)
 
 	this.checkEvents(gameState, events);
 	this.observeExpertMilitaryTechs(gameState, queues);
+	// IT14.46: Expert's opening attack behavior follows the single doctrine selected
+	// by ExpertDecisionController instead of Petra personality rolling a second strategy.
+	const doctrine = gameState.ai.HQ && gameState.ai.HQ.expertDoctrine;
+	if (this.Config.difficulty >= difficulty.EXPERT && doctrine)
+	{
+		this.maxRushes = Math.max(0, Number(doctrine.rushes) || 0);
+		this.rushSize = this.maxRushes ? [Math.max(12, Number(doctrine.rushSize) || 20)] : [];
+	}
 	const expertFinishing = this.getExpertFinishingTarget(gameState);
 	const unexecutedAttacks = {
 		[AttackPlan.TYPE_RUSH]: 0,
@@ -543,6 +874,38 @@ AttackManager.prototype.update = function(gameState, queues, events)
 		{
 			const attack = this.startedAttacks[attackType][i];
 			attack.checkEvents(gameState, events);
+			// IT14.45: peel critically wounded soldiers first and replace them with healthy
+			// reinforcements.  A whole-army retreat is reserved for an actually collapsed push.
+			this.peelExpertWoundedUnits(gameState, attack);
+			this.reinforceExpertWoundedReplacements(gameState, attack);
+			// IT14.44/45: do not donate the last ~20 infantry to a defended enemy CC. Pull
+			// them home, reboom briefly, then return with a rebuilt army/siege.
+			if (this.shouldExpertRetreatDepletedAttack(gameState, attack))
+			{
+				const policy = mergePolicy();
+				this.expertReboomUntil = Math.max(this.expertReboomUntil || -99999,
+					(Number(gameState.ai.elapsedTime) || 0) + policy.expertDepletedAttackReboomSeconds);
+				aiWarn("[EXPERT-REBOOM] retreat plan=" + attack.name + " army=" + attack.unitCollection.length +
+					" targetPlayer=" + attack.targetPlayer + " until=" + Math.round(this.expertReboomUntil));
+				attack.Abort(gameState);
+				this.startedAttacks[attackType].splice(i--, 1);
+				// A second plan may already be assembling when the field army collapses. Cancel
+				// those normal/huge preparations too; otherwise it can launch during the very
+				// reboom window we just created and repeat the same piecemeal failure.
+				let cancelled = 0;
+				for (const prepType of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK])
+				{
+					for (const prep of this.upcomingAttacks[prepType] || [])
+					{
+						prep.Abort(gameState);
+						++cancelled;
+					}
+					this.upcomingAttacks[prepType] = [];
+				}
+				if (cancelled)
+					aiWarn("[EXPERT-REBOOM] cancelled-preparations=" + cancelled);
+				continue;
+			}
 			// okay so then we'll update the attack.
 			if (attack.isPaused())
 				continue;
@@ -561,8 +924,13 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	}
 
 	this.updateExpertFinishingProgress(gameState, expertFinishing);
+	// Siege trained for a healthy P3 push joins the field army before the opponent is
+	// formally broken.  Finishing reinforcement can then top up the same plan.
+	this.attachExpertSiegeToActiveAttack(gameState);
 	if (expertFinishing)
 		this.reinforceExpertFinishingAttack(gameState, expertFinishing);
+	this.recoverExpertRamPassengers(gameState);
+	this.manageExpertRamGarrisons(gameState, expertFinishing);
 
 	// creating plans after updating because an aborted plan might be reused in that case.
 
@@ -589,7 +957,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			this.rushNumber++;
 		}
 	}
-	else if (unexecutedAttacks[AttackPlan.TYPE_DEFAULT] == 0 &&
+	else if (!((Number(gameState.ai.elapsedTime) || 0) < (this.expertReboomUntil || -99999)) &&
+		unexecutedAttacks[AttackPlan.TYPE_DEFAULT] == 0 &&
 		unexecutedAttacks[AttackPlan.TYPE_HUGE_ATTACK] == 0 &&
 		this.startedAttacks[AttackPlan.TYPE_DEFAULT].length +
 			this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length <
@@ -1017,7 +1386,8 @@ AttackManager.prototype.Serialize = function()
 		"defeated": this.defeated,
 		"expertObservedMilitaryTechs": this.expertObservedMilitaryTechs,
 		"expertLastTechGateLog": this.expertLastTechGateLog,
-		"expertFinishingProgress": this.expertFinishingProgress
+		"expertFinishingProgress": this.expertFinishingProgress,
+		"expertReboomUntil": this.expertReboomUntil
 	};
 
 	const upcomingAttacks = {};

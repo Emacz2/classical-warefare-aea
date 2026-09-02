@@ -22,6 +22,7 @@ GarrisonManager.TYPE_TRADE = "trade";
 GarrisonManager.TYPE_PROTECTION = "protection";
 GarrisonManager.TYPE_DECAY = "decay";
 GarrisonManager.TYPE_EMERGENCY = "emergency";
+GarrisonManager.TYPE_EXPERT_RAM = "expert_ram";
 
 GarrisonManager.prototype.update = function(gameState, events)
 {
@@ -324,6 +325,10 @@ GarrisonManager.prototype.keepGarrisoned = function(ent, holder, around)
 	}
 	case GarrisonManager.TYPE_DECAY:
 		return ent.captureStrength() && this.decayingStructures.has(holder.id());
+	case GarrisonManager.TYPE_EXPERT_RAM:
+		// Expert explicitly manages ram passengers. Do not auto-unload them merely because
+		// a normal defensive garrison heuristic sees no nearby threat.
+		return true;
 	case GarrisonManager.TYPE_EMERGENCY: // f.e. hero in regicide mode
 		if (holder.buffHeal() && ent.isHealable() && ent.healthLevel() < this.Config.garrisonHealthLevel.high)
 			return true;

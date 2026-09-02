@@ -879,6 +879,115 @@ AttackPlan.prototype.isAvailableUnit = function(gameState, ent)
 };
 
 
+// IT14.45 ram assault state.  Once a ram has actually joined this attack, the CC is
+// the strategic objective.  Infantry pressure the perimeter until a ram is close
+// enough to participate, then the plan releases the whole army inward.
+AttackPlan.prototype.expertRamAssaultState = function(gameState)
+{
+	const out = { active: false, waiting: false, ready: false, objective: undefined, objectivePos: undefined, stagingPos: undefined };
+	if (this.Config.difficulty < difficulty.EXPERT || !this.isStarted() || this.targetPlayer === undefined)
+		return out;
+	let cc;
+	let ccDist = Infinity;
+	const centre = this.unitCollection.getCentrePosition() || this.position || this.rallyPoint || this.targetPos;
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[this.targetPlayer];
+	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : 999;
+	// IT14.46 cleanup: if only a handful of enemy units remain, a garrison holder is a
+	// better ram objective than an arbitrary CC. This catches the "three units in the
+	// last tower" endgame without needing to see the hidden occupants directly.
+	if (enemyPop > 0 && enemyPop <= mergePolicy().expertCleanupEnemyPopulation)
+		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+		{
+			if (!struct || !struct.position() || !this.isValidTarget(struct) || !struct.isGarrisonHolder ||
+			    !struct.isGarrisonHolder() || !struct.garrisoned || !struct.garrisoned().length)
+				continue;
+			const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
+			if (dist < ccDist) { ccDist = dist; cc = struct; }
+		}
+	if (!cc)
+		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+		{
+			if (!struct || !struct.position() || !struct.hasClass("CivCentre") || !this.isValidTarget(struct))
+				continue;
+			const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
+			if (dist < ccDist) { ccDist = dist; cc = struct; }
+		}
+	if (!cc)
+	{
+		this.expertRamHoldSince = undefined;
+		this.expertRamHoldLogged = false;
+		return out;
+	}
+	const rams = [];
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position() || !ent.hasClass("Siege") ||
+		    !(ent.hasClass("Ram") || String(ent.genericName && ent.genericName() || "").toLowerCase().includes("ram")))
+			continue;
+		const plan = ent.getMetadata(PlayerID, "plan");
+		if (plan === this.name)
+			rams.push(ent);
+	}
+	if (!rams.length)
+	{
+		this.expertRamHoldSince = undefined;
+		this.expertRamHoldLogged = false;
+		return out;
+	}
+	// A ram in the plan turns the CC into the shared strategic objective.  The
+	// infantry-side update below prevents the foot army from diving too soon.
+	this.target = cc;
+	this.targetPlayer = cc.owner();
+	this.targetPos = cc.position();
+	out.active = true;
+	out.objective = cc;
+	out.objectivePos = cc.position();
+	const policy = mergePolicy();
+	const arrival2 = Math.pow(Number(policy.expertRamArrivalRadius) || 65, 2);
+	let nearest = Infinity;
+	for (const ram of rams)
+		nearest = Math.min(nearest, SquareVectorDistance(ram.position(), out.objectivePos));
+	out.ready = nearest <= arrival2;
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	if (out.ready)
+	{
+		if (this.expertRamHoldLogged)
+			aiWarn("[EXPERT-RAM] assault-ready plan=" + this.name + " rams=" + rams.length + " objective=" + cc.id());
+		this.expertRamHoldSince = undefined;
+		this.expertRamHoldLogged = false;
+		return out;
+	}
+	if (!Number.isFinite(this.expertRamHoldSince))
+		this.expertRamHoldSince = now;
+	const maxHold = Math.max(20, Number(policy.expertRamStagingMaxHoldSeconds) || 75);
+	if (now - this.expertRamHoldSince > maxHold)
+	{
+		out.waiting = false;
+		return out;
+	}
+	out.waiting = true;
+	const stageDistance = Math.max(50, Number(policy.expertRamStagingDistance) || 88);
+	let dx = centre ? centre[0] - out.objectivePos[0] : 1;
+	let dz = centre ? centre[1] - out.objectivePos[1] : 0;
+	let len = Math.hypot(dx, dz);
+	if (!len && this.rallyPoint)
+	{
+		dx = this.rallyPoint[0] - out.objectivePos[0];
+		dz = this.rallyPoint[1] - out.objectivePos[1];
+		len = Math.hypot(dx, dz);
+	}
+	if (!len) { dx = 1; dz = 0; len = 1; }
+	out.stagingPos = [out.objectivePos[0] + dx / len * stageDistance,
+		out.objectivePos[1] + dz / len * stageDistance];
+	if (!this.expertRamHoldLogged)
+	{
+		this.expertRamHoldLogged = true;
+		aiWarn("[EXPERT-RAM] perimeter-hold plan=" + this.name + " rams=" + rams.length +
+			" objective=" + cc.id() + " stage=" + Math.round(out.stagingPos[0]) + "," + Math.round(out.stagingPos[1]));
+	}
+	return out;
+};
+
 // IT14.41: add a newly-trained/working unit directly to a battle that is already
 // underway. This is intentionally separate from preparation recruitment: once the
 // opponent is broken, reinforcements stream forward instead of waiting for another
@@ -897,7 +1006,42 @@ AttackPlan.prototype.forceExpertFinishingRetarget = function(gameState)
 	let best;
 	let bestDist = Infinity;
 	const centre = this.unitCollection.getCentrePosition() || this.position || this.rallyPoint;
-	if (candidates && candidates.hasEntities())
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[this.targetPlayer];
+	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : 999;
+	const cleanup = enemyPop > 0 && enemyPop <= mergePolicy().expertCleanupEnemyPopulation;
+	if (cleanup)
+	{
+		// Visible conquest-critical humans first. If the final humans are hidden, destroy
+		// their garrison holder next. This target remains sticky until it dies.
+		for (const ent of gameState.getEnemyUnits(this.targetPlayer).values())
+		{
+			if (!ent || !ent.position() || !ent.hasClass("ConquestCritical") || !this.isValidTarget(ent)) continue;
+			const dist = centre ? SquareVectorDistance(ent.position(), centre) : 0;
+			if (dist < bestDist) { bestDist = dist; best = ent; }
+		}
+		if (!best)
+			for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+			{
+				if (!struct || !struct.position() || !this.isValidTarget(struct) || !struct.isGarrisonHolder ||
+				    !struct.isGarrisonHolder() || !struct.garrisoned || !struct.garrisoned().length) continue;
+				const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
+				if (dist < bestDist) { bestDist = dist; best = struct; }
+			}
+		if (!best)
+			for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+			{
+				if (!struct || !struct.position() || !struct.hasClass("ConquestCritical") || !this.isValidTarget(struct)) continue;
+				const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
+				if (dist < bestDist) { bestDist = dist; best = struct; }
+			}
+	}
+	if (!best)
+		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+		{
+			if (!struct || !struct.position() || !struct.hasClass("CivCentre") || !this.isValidTarget(struct)) continue;
+			best = struct; bestDist = -1; break;
+		}
+	if (!best && candidates && candidates.hasEntities())
 		for (const ent of candidates.values())
 		{
 			if (!ent || !ent.position() || ent.id() === oldId || !this.isValidTarget(ent)) continue;
@@ -1520,6 +1664,7 @@ AttackPlan.prototype.update = function(gameState, events)
 
 		const time = gameState.ai.elapsedTime;
 		const attackedByStructure = {};
+		const threateningStructures = {};
 		for (const evt of events.Attacked)
 		{
 			if (!this.unitCollection.hasEntId(evt.target))
@@ -1531,6 +1676,7 @@ AttackPlan.prototype.update = function(gameState, events)
 			if (!attacker.hasClass("Unit"))
 			{
 				attackedByStructure[evt.target] = true;
+				threateningStructures[attacker.id()] = true;
 				continue;
 			}
 			if (isSiegeUnit(ourUnit))
@@ -1623,6 +1769,7 @@ AttackPlan.prototype.update = function(gameState, events)
 			}
 		}
 
+		const expertRamAssault = this.expertRamAssaultState(gameState);
 		const enemyUnits = gameState.getEnemyUnits(this.targetPlayer);
 		const enemyStructures = gameState.getEnemyStructures(this.targetPlayer);
 
@@ -1679,6 +1826,15 @@ AttackPlan.prototype.update = function(gameState, events)
 			targetClassesUnit.avoid = targetClassesUnit.avoid.concat("House", "Storehouse", "Farmstead", "Field", "Forge");
 			targetClassesSiege.avoid = targetClassesSiege.avoid.concat("House", "Storehouse", "Farmstead", "Field", "Forge");
 		}
+		if (expertRamAssault.waiting)
+			targetClassesUnit.avoid = targetClassesUnit.avoid.concat("CivCentre", "Tower", "WallTower", "Fortress");
+		if (this.Config.difficulty >= difficulty.EXPERT && !expertRamAssault.active)
+		{
+			const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[this.targetPlayer];
+			const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : 999;
+			if (enemyPop > mergePolicy().expertCleanupEnemyPopulation)
+				targetClassesUnit.avoid = targetClassesUnit.avoid.concat("CivCentre", "Tower", "WallTower", "Fortress");
+		}
 
 		if (this.unitCollUpdateArray === undefined || !this.unitCollUpdateArray.length)
 			this.unitCollUpdateArray = this.unitCollection.toIdArray();
@@ -1728,6 +1884,10 @@ AttackPlan.prototype.update = function(gameState, events)
 					needsUpdate = true;
 					--unitTargets[targetId];
 				}
+				else if (expertRamAssault.waiting && target.hasClass("Structure") &&
+				    (target.hasClass("CivCentre") || target.hasClass("Fortress") || target.hasClass("Tower") ||
+				     target.hasClass("WallTower") || target.hasDefensiveFire && target.hasDefensiveFire()))
+					maybeUpdate = true;
 				else if (target.hasClass("Ship") && !ent.hasClass("Ship"))
 					maybeUpdate = true;
 				else if (attackedByStructure[ent.id()] && target.hasClass("Field"))
@@ -1782,21 +1942,26 @@ AttackPlan.prototype.update = function(gameState, events)
 				if (mStruct.length)
 				{
 					mStruct.sort((structa, structb) => {
-						let vala = structa.costSum();
-						if (structa.hasClass("Gate") && ent.canAttackClass("Wall"))
-							vala += 10000;
-						else if (structa.hasDefensiveFire())
-							vala += 1000;
-						else if (structa.hasClass("ConquestCritical"))
-							vala += 200;
-						let valb = structb.costSum();
-						if (structb.hasClass("Gate") && ent.canAttackClass("Wall"))
-							valb += 10000;
-						else if (structb.hasDefensiveFire())
-							valb += 1000;
-						else if (structb.hasClass("ConquestCritical"))
-							valb += 200;
-						return valb - vala;
+						const score = struct => {
+							let val = struct.costSum();
+							if (struct.hasClass("Gate") && ent.canAttackClass("Wall"))
+								val += 1000000;
+							// Expert ram doctrine: CC first, except a tower/fortress that is
+							// actively firing on this army gets immediate suppression priority.
+							else if (this.Config.difficulty >= difficulty.EXPERT && threateningStructures[struct.id()] &&
+								(struct.hasClass("Fortress") || struct.hasClass("Tower") || struct.hasClass("WallTower") || struct.hasDefensiveFire()))
+								val += 900000;
+							else if (this.Config.difficulty >= difficulty.EXPERT && struct.hasClass("CivCentre"))
+								val += 800000;
+							else if (this.Config.difficulty >= difficulty.EXPERT && struct.hasClass("ConquestCritical"))
+								val += 600000;
+							else if (struct.hasDefensiveFire())
+								val += 1000;
+							else if (struct.hasClass("ConquestCritical"))
+								val += 200;
+							return val;
+						};
+						return score(structb) - score(structa);
 					});
 					if (mStruct[0].hasClass("Gate"))
 						ent.attack(mStruct[0].id(), allowCapture(gameState, ent, mStruct[0]));
@@ -1808,13 +1973,15 @@ AttackPlan.prototype.update = function(gameState, events)
 				}
 				else
 				{
+					const siegeDestination = expertRamAssault.active && expertRamAssault.objectivePos ?
+						expertRamAssault.objectivePos : this.targetPos;
 					if (!ent.hasClass("Ranged"))
 					{
 						const targetClasses = { "attack": targetClassesSiege.attack, "avoid": targetClassesSiege.avoid.concat("Ship"), "vetoEntities": veto };
-						ent.attackMove(this.targetPos[0], this.targetPos[1], targetClasses);
+						ent.attackMove(siegeDestination[0], siegeDestination[1], targetClasses);
 					}
 					else
-						ent.attackMove(this.targetPos[0], this.targetPos[1], targetClassesSiege);
+						ent.attackMove(siegeDestination[0], siegeDestination[1], targetClassesSiege);
 				}
 			}
 			else
@@ -1824,6 +1991,12 @@ AttackPlan.prototype.update = function(gameState, events)
 					if (!enemy.position() || !ent.canAttackTarget(enemy, allowCapture(gameState, ent, enemy)))
 						return false;
 					if (enemy.hasClass("Animal"))
+						return false;
+					// While the ram is still approaching, do not chase defenders deep under
+					// the CC/tower umbrella.  Fight enemies that come out to the perimeter,
+					// but preserve the infantry mass for the coordinated ram arrival.
+					if (expertRamAssault.waiting && expertRamAssault.objectivePos &&
+					    SquareVectorDistance(enemy.position(), expertRamAssault.objectivePos) < 65 * 65)
 						return false;
 					if (nearby && enemy.hasClass("Civilian") && enemy.unitAIState().split(".")[1] == "FLEEING")
 						return false;
@@ -1868,28 +2041,42 @@ AttackPlan.prototype.update = function(gameState, events)
 				}
 				// This may prove dangerous as we may be blocked by something we
 				// cannot attack. See similar behaviour at #5741.
-				else if (this.isBlocked && ent.canAttackTarget(this.target, false))
+				else if (!expertRamAssault.waiting && this.isBlocked && ent.canAttackTarget(this.target, false))
 					ent.attack(this.target.id(), false);
-				else if (SquareVectorDistance(this.targetPos, ent.position()) > 2500)
-				{
-					let targetClasses = targetClassesUnit;
-					if (maybeUpdate && ent.unitAIState() === "INDIVIDUAL.COMBAT.APPROACHING")	// we may be blocked by walls, attack everything
-					{
-						if (!ent.hasClasses(["Ranged", "Ship"]))
-							targetClasses = { "attack": ["Unit", "Structure"], "avoid": ["Ship"], "vetoEntities": veto };
-						else
-							targetClasses = { "attack": ["Unit", "Structure"], "vetoEntities": veto };
-					}
-					else if (!ent.hasClasses(["Ranged", "Ship"]))
-						targetClasses = { "attack": targetClassesUnit.attack, "avoid": targetClassesUnit.avoid.concat("Ship"), "vetoEntities": veto };
-					ent.attackMove(this.targetPos[0], this.targetPos[1], targetClasses);
-				}
 				else
 				{
+					const infantryDestination = expertRamAssault.waiting && expertRamAssault.stagingPos ?
+						expertRamAssault.stagingPos : this.targetPos;
+					const moveThreshold = expertRamAssault.waiting ? 18 * 18 : 2500;
+					if (SquareVectorDistance(infantryDestination, ent.position()) > moveThreshold)
+					{
+						let targetClasses = targetClassesUnit;
+						if (!expertRamAssault.waiting && maybeUpdate && ent.unitAIState() === "INDIVIDUAL.COMBAT.APPROACHING")	// we may be blocked by walls, attack everything
+						{
+							if (!ent.hasClasses(["Ranged", "Ship"]))
+								targetClasses = { "attack": ["Unit", "Structure"], "avoid": ["Ship"], "vetoEntities": veto };
+							else
+								targetClasses = { "attack": ["Unit", "Structure"], "vetoEntities": veto };
+						}
+						else if (!ent.hasClasses(["Ranged", "Ship"]))
+							targetClasses = { "attack": targetClassesUnit.attack, "avoid": targetClassesUnit.avoid.concat("Ship"), "vetoEntities": veto };
+						ent.attackMove(infantryDestination[0], infantryDestination[1], targetClasses);
+						continue;
+					}
 					const mStruct = enemyStructures.filter(enemy => {
-						if (this.isBlocked && enemy.id() != this.target.id())
+						if (!expertRamAssault.waiting && this.isBlocked && enemy.id() != this.target.id())
 							return false;
 						if (!enemy.position() || !ent.canAttackTarget(enemy, allowCapture(gameState, ent, enemy)))
+							return false;
+						// Perimeter doctrine: before the ram arrives, infantry may burn down
+						// exposed economic/military buildings, but not the CC or defensive
+						// strongpoints and not anything buried inside the CC kill zone.
+						if (expertRamAssault.waiting &&
+						    (enemy.hasClass("CivCentre") || enemy.hasClass("Fortress") || enemy.hasClass("Tower") ||
+						     enemy.hasClass("WallTower") || enemy.hasDefensiveFire && enemy.hasDefensiveFire()))
+							return false;
+						if (expertRamAssault.waiting && expertRamAssault.objectivePos &&
+						    SquareVectorDistance(enemy.position(), expertRamAssault.objectivePos) < 68 * 68)
 							return false;
 						if (SquareVectorDistance(enemy.position(), ent.position()) > range)
 							return false;
@@ -1919,6 +2106,12 @@ AttackPlan.prototype.update = function(gameState, events)
 							const rand = randIntExclusive(0, mStruct.length * 0.2);
 							ent.attack(mStruct[rand].id(), allowCapture(gameState, ent, mStruct[rand]));
 						}
+					}
+					else if (expertRamAssault.waiting && expertRamAssault.stagingPos)
+					{
+						// Nothing useful is exposed on the perimeter.  Hold the staging ring
+						// instead of following a friendly unit that may already be under the CC.
+						ent.moveToRange(expertRamAssault.stagingPos[0], expertRamAssault.stagingPos[1], 0, 12);
 					}
 					else if (needsUpdate)  // really nothing   let's try to help our nearest unit
 					{

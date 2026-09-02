@@ -8,9 +8,9 @@ const DEFAULT_POLICY = Object.freeze({
   houseMaximumPredictiveHeadroom: 14,
   houseMilitaryExtraHeadroomPerBarracks: 4,
   houseCCSoldierExtraHeadroom: 4,
-  houseMaximumMilitaryHeadroom: 24,
-  houseSurplusPrebuildWood: 800,
-  houseSurplusExtraHeadroom: 12,
+  houseMaximumMilitaryHeadroom: 20,
+  houseSurplusPrebuildWood: 1400,
+  houseSurplusExtraHeadroom: 4,
   // Replay-derived Athens opening sequence:
   // starting 4 civilians -> food; first trained batch of 3 -> wood;
   // second trained batch of 3 -> food; then wood until 20 civilian woodcutters.
@@ -95,13 +95,13 @@ const DEFAULT_POLICY = Object.freeze({
   naturalFoodInfrastructureRemaining: 600,
   naturalFoodInfrastructureRunwaySeconds: 90,
   naturalFoodFieldPressureSlots: 2,
-  minimumAlternativeNaturalFood: 120,
+  minimumAlternativeNaturalFood: 60,
   foodSiteMinimumCommitSeconds: 20,
   naturalFoodDropsiteComfortDistance: 15,
   naturalFoodFarmsteadIdealDistance: 5,
   naturalFoodFarmsteadAssumedWalkSpeed: 8,
   naturalFoodFarmsteadCarryCapacity: 10,
-  naturalFoodFarmsteadPaybackWorkerSeconds: 120,
+  naturalFoodFarmsteadPaybackWorkerSeconds: 85,
   // IT14.43 staged natural-food -> farm transition.  Natural food remains the
   // efficient first choice, but permanent capacity starts coming online BEFORE the
   // last berries disappear instead of jumping from natural food to starvation.
@@ -175,17 +175,17 @@ const DEFAULT_POLICY = Object.freeze({
   // Post-opening bank governor. A 1k+ resource is allowed, but once it is far richer
   // than the weak side of the bank, NEW units repair the deficit first. Existing
   // workers move only as a slow secondary correction, one worker every 20 seconds.
-  resourceBalanceStartTime: 210,
-  resourceBalanceActivationBank: 1000,
+  resourceBalanceStartTime: 165,
+  resourceBalanceActivationBank: 650,
   resourceBalanceRatioFloor: 250,
   resourceBalanceNewWorkerRatio: 1.5,
-  resourceBalanceStrongRatio: 3.0,
+  resourceBalanceStrongRatio: 2.5,
   resourceBalanceFoodPriorityBank: 700,
-  resourceBalanceReassignBatch: 1,
-  resourceBalanceReassignCooldownSeconds: 20,
-  resourceBalanceExtremeRatio: 4.0,
-  resourceBalanceExtremeBatch: 2,
-  resourceBalanceExtremeCooldownSeconds: 15,
+  resourceBalanceReassignBatch: 2,
+  resourceBalanceReassignCooldownSeconds: 15,
+  resourceBalanceExtremeRatio: 3.5,
+  resourceBalanceExtremeBatch: 3,
+  resourceBalanceExtremeCooldownSeconds: 10,
   // P2 is readiness-driven, not a hard clock. 90-120 population and 7-11 minutes is
   // the normal corridor; exceptional economies may begin slightly earlier and an
   // overdue economy reserves the phase rather than remaining in Village forever.
@@ -402,6 +402,14 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.28: Expert has no true city-block planner, so keep the CC movement/core area open.
   // Resource dropsites (storehouse/farmstead) remain resource-driven exceptions.
   independentBuildingMinimumCCDistance: 50,
+  // IT14.46 temples are economic aura buildings, not generic edge buildings.
+  templeMinimumCCDistance: 14,
+  templeAuraPlanningRadius: 72,
+  templeMinimumWorkerCoverage: 8,
+  houseWoodWorksiteExclusionRadius: 24,
+  expertCleanupEnemyPopulation: 8,
+  p1EcoSweepStartTime: 330,
+  p1EcoSweepMaxQueued: 6,
   houseMinimumCCDistance: 50,
   // P2 houses stop extending a single P1 line forever. Search developed edges and
   // wider rings while retaining the same open CC core.
@@ -458,6 +466,44 @@ const DEFAULT_POLICY = Object.freeze({
   expertFinishingStallSeconds: 45,
   expertFinishingRetargetCooldownSeconds: 30,
   expertFinishingSiegeTarget: 2,
+  // IT14.44: a depleted Town-phase push should not donate its last infantry to a CC/tower.
+  // If the field army falls to this size while standing in enemy territory and no siege
+  // finisher is present, withdraw and spend a short window rebuilding economy/army.
+  expertDepletedAttackRetreatArmy: 22,
+  expertDepletedAttackDefendedRadius: 155,
+  expertDepletedAttackReboomSeconds: 60,
+  expertDepletedAttackResumePopulation: 130,
+  // IT14.45: preserve veteran manpower.  Badly wounded citizen-soldiers peel out of
+  // an active attack, run home, and return to economic work while fresh soldiers
+  // replace them.  The full-army retreat remains the fallback when the whole push
+  // has actually collapsed.
+  expertWoundedRetreatHealth: 0.25,
+  expertWoundedRetreatBatch: 6,
+  expertWoundedReturnSeconds: 90,
+  expertWoundedReplacementBatch: 4,
+  expertWoundedReplacementHomeReserve: 12,
+  // Rams are the finishing tool. Fill a modest number of seats so their movement/damage
+  // bonus matters without hiding the whole infantry army inside them.
+  expertRamGarrisonTarget: 5,
+  expertRamGarrisonSearchRadius: 90,
+  expertRamActiveArmySearchRadius: 180,
+  expertRamCavalryThreatCount: 4,
+  expertRamCavalryReleaseRadius: 48,
+  // Once a ram is physically part of the attack, infantry work the perimeter rather
+  // than diving under the CC.  When a ram reaches this arrival radius the whole army
+  // pivots inward.  The hold has a safety timeout so a stuck ram cannot freeze a win.
+  expertRamArrivalRadius: 65,
+  expertRamStagingDistance: 88,
+  expertRamStagingMaxHoldSeconds: 75,
+  // Build one siege finisher as soon as a healthy P3 attack exists; finishing mode
+  // still raises the desired total to expertFinishingSiegeTarget.
+  expertP3SiegePrepArmy: 40,
+  expertP3SiegePrepTarget: 1,
+  // IT14.44 P2 research package: during an actual P2 push, buy the first two broad
+  // military upgrades before spending deeper into the forge tree, then immediately
+  // establish the food+wood eco pair. Higher military tiers wait for eco continuity.
+  expertP2MilitaryTechsBeforeEco: 2,
+  expertP2MilitaryTechsBeforeSecondEcoPair: 2,
   // IT14.42: a Town-phase default/huge attack may assemble while techs research, but
   // once P2 is complete it waits for two completed Expert forge upgrades before
   // launching. If the same plan reaches launch strength while Town is still
@@ -472,12 +518,12 @@ const DEFAULT_POLICY = Object.freeze({
   // actively-worked CONNECTED forest and a meaningful drop-distance improvement.
   woodClusterSearchRadius: 110,
   woodClusterLinkDistance: 22,
-  woodDeepenMinimumWorkers: 12,
+  woodDeepenMinimumWorkers: 14,
   woodDeepenExtraWorkersPerStorehouse: 8,
-  woodDeepenMinimumRemaining: 1500,
+  woodDeepenMinimumRemaining: 1200,
   woodDeepenExtraRemainingPerStorehouse: 300,
-  woodDeepenMinimumDistanceImprovement: 5,
-  woodStorehouseMinimumSpacing: 24,
+  woodDeepenMinimumDistanceImprovement: 3.5,
+  woodStorehouseMinimumSpacing: 20,
   // IT14.31: IT14.30 reached ten storehouses while wood income collapsed. Chasing every
   // thinning patch with another 100-wood dropsite is self-defeating. Reuse existing
   // worksites after these phase-scaled caps.
