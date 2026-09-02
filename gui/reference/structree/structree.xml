@@ -20,7 +20,7 @@
 			<translatableAttribute id="caption">Structure Tree</translatableAttribute>
 		</object>
 
-		<!-- Civ selection -368-->
+		<!-- Civ selection -->
 		<include file="gui/reference/common/Dropdowns/CivSelectDropdown.xml"/>
 
 		<object
