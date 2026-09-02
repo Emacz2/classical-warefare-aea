@@ -29,7 +29,7 @@
     "requirementsTooltip": "Requires 3 Town Structures and 2 City Structures.",
     "supersedes": "phase_city_generic",
     "replaces": [
-        "phase_empi"
+        "phase_chity"
     ],
     "icon": "empire_phase.png",
     "researchTime": 75,
