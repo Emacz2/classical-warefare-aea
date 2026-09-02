@@ -828,6 +828,31 @@ AttackPlan.prototype.isAvailableUnit = function(gameState, ent)
 	return true;
 };
 
+
+// IT14.41: add a newly-trained/working unit directly to a battle that is already
+// underway. This is intentionally separate from preparation recruitment: once the
+// opponent is broken, reinforcements stream forward instead of waiting for another
+// full army to assemble at home.
+AttackPlan.prototype.addExpertReinforcement = function(gameState, ent)
+{
+	if (!ent || !ent.position() || !this.isStarted() || !this.isAvailableUnit(gameState, ent))
+		return false;
+	ent.setMetadata(PlayerID, "plan", this.name);
+	ent.setMetadata(PlayerID, "role", Worker.ROLE_ATTACK);
+	ent.setMetadata(PlayerID, "subrole", this.state === "walking" ? Worker.SUBROLE_WALKING : Worker.SUBROLE_ATTACKING);
+	const stance = ent.isPackable && ent.isPackable() ? "standground" : "aggressive";
+	if (ent.getStance && ent.setStance && ent.getStance() != stance)
+		ent.setStance(stance);
+	this.unitCollection.updateEnt(ent);
+	if (Array.isArray(this.unitCollUpdateArray) && !this.unitCollUpdateArray.includes(ent.id()))
+		this.unitCollUpdateArray.push(ent.id());
+	const rendezvous = this.position && Number.isFinite(this.position[0]) && Number.isFinite(this.position[1]) &&
+		(this.position[0] !== 0 || this.position[1] !== 0) ? this.position : this.targetPos;
+	if (rendezvous && Number.isFinite(rendezvous[0]) && Number.isFinite(rendezvous[1]))
+		ent.moveToRange(rendezvous[0], rendezvous[1], 0, 18);
+	return true;
+};
+
 /** Reassign one (at each turn) FastMoving unit to fasten raid preparation. */
 AttackPlan.prototype.reassignFastUnit = function(gameState)
 {

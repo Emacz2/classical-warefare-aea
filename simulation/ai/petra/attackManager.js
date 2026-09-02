@@ -253,6 +253,87 @@ AttackManager.prototype.assignBombers = function(gameState)
  * Some functions are run every turn
  * Others once in a while
  */
+
+// IT14.41 finishing mode: once an enemy has been driven below 50 population and
+// Expert still has a healthy lead, preserve pressure instead of restarting the normal
+// full-wave cycle. This uses only units/resources Expert actually owns.
+AttackManager.prototype.getExpertFinishingTarget = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT)
+		return undefined;
+	let targetPlayer;
+	let enemyPopulation = Infinity;
+	for (let i = 1; i < gameState.sharedScript.playersData.length; ++i)
+	{
+		if (!gameState.isPlayerEnemy(i))
+			continue;
+		const data = gameState.sharedScript.playersData[i];
+		if (!data || data.state === "defeated")
+			continue;
+		const pop = Math.max(0, Number(data.popCount) || 0);
+		if (pop < enemyPopulation)
+		{
+			enemyPopulation = pop;
+			targetPlayer = i;
+		}
+	}
+	const ownPopulation = Math.max(0, Number(gameState.getPopulation()) || 0);
+	if (!Number.isFinite(enemyPopulation) || enemyPopulation <= 0 || enemyPopulation > 50 ||
+	    ownPopulation < 80 || ownPopulation - enemyPopulation < 30)
+		return undefined;
+	return { targetPlayer, enemyPopulation, ownPopulation };
+};
+
+AttackManager.prototype.reinforceExpertFinishingAttack = function(gameState, finishing)
+{
+	if (!finishing || gameState.ai.playedTurn % 5 !== 0)
+		return 0;
+	let attack;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH, AttackPlan.TYPE_RAID])
+		for (const plan of this.startedAttacks[type])
+			if (plan.targetPlayer === finishing.targetPlayer && (!attack || plan.unitCollection.length > attack.unitCollection.length))
+				attack = plan;
+	if (!attack)
+		return 0;
+
+	const citizen = [];
+	const siege = [];
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position() || ent.attackTypes() === undefined ||
+		    ent.getMetadata(PlayerID, "expertDecisionTaskId") !== undefined ||
+		    ent.getMetadata(PlayerID, "expertDefenseMobilized") !== undefined ||
+		    ent.getMetadata(PlayerID, "garrisonHolder") !== undefined ||
+		    ent.getMetadata(PlayerID, "transport") !== undefined || ent.getMetadata(PlayerID, "transporter") !== undefined)
+			continue;
+		const plan = ent.getMetadata(PlayerID, "plan");
+		if (plan !== undefined && plan !== -1)
+			continue;
+		if (ent.hasClass("Siege"))
+			siege.push(ent);
+		else if (ent.hasClass("CitizenSoldier") && !ent.hasClass("Cavalry"))
+			citizen.push(ent);
+	}
+	const reserve = 12;
+	const availableCitizens = Math.max(0, citizen.length - reserve);
+	const rally = attack.position && Number.isFinite(attack.position[0]) && Number.isFinite(attack.position[1]) &&
+		(attack.position[0] !== 0 || attack.position[1] !== 0) ? attack.position : attack.targetPos;
+	if (rally && Number.isFinite(rally[0]) && Number.isFinite(rally[1]))
+		citizen.sort((a, b) => SquareVectorDistance(a.position(), rally) - SquareVectorDistance(b.position(), rally) || a.id() - b.id());
+	else
+		citizen.sort((a, b) => a.id() - b.id());
+	siege.sort((a, b) => a.id() - b.id());
+	const selected = [...siege.slice(0, 2), ...citizen.slice(0, Math.min(6, availableCitizens))];
+	let added = 0;
+	for (const ent of selected)
+		if (attack.addExpertReinforcement && attack.addExpertReinforcement(gameState, ent))
+			++added;
+	if (added)
+		aiWarn("[EXPERT-FINISH] reinforced plan=" + attack.name + " added=" + added + " army=" + attack.unitCollection.length +
+			" enemyPop=" + finishing.enemyPopulation + " homeCitizenReserve=" + reserve);
+	return added;
+};
+
 AttackManager.prototype.update = function(gameState, queues, events)
 {
 	if (this.Config.debug > 2 && gameState.ai.elapsedTime > this.debugTime + 60)
@@ -280,6 +361,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	}
 
 	this.checkEvents(gameState, events);
+	const expertFinishing = this.getExpertFinishingTarget(gameState);
 	const unexecutedAttacks = {
 		[AttackPlan.TYPE_RUSH]: 0,
 		[AttackPlan.TYPE_RAID]: 0,
@@ -292,6 +374,11 @@ AttackManager.prototype.update = function(gameState, queues, events)
 		{
 			const attack = this.upcomingAttacks[attackType][i];
 			attack.checkEvents(gameState, events);
+			if (expertFinishing && attack.state === AttackPlan.STATE_UNEXECUTED && attack.unitCollection.length >= 10)
+			{
+				attack.targetPlayer = expertFinishing.targetPlayer;
+				attack.forceStart();
+			}
 
 			if (attack.isStarted())
 			{
@@ -360,6 +447,9 @@ AttackManager.prototype.update = function(gameState, queues, events)
 		}
 	}
 
+	if (expertFinishing)
+		this.reinforceExpertFinishingAttack(gameState, expertFinishing);
+
 	// creating plans after updating because an aborted plan might be reused in that case.
 
 	const barracksNb = gameState.getOwnEntitiesByClass("Barracks", true).filter(filters.isBuilt()).length;
@@ -397,9 +487,9 @@ AttackManager.prototype.update = function(gameState, queues, events)
 		if (barracksNb >= 1 && (gameState.currentPhase() > 1 || gameState.isResearching(gameState.getPhaseName(2))) ||
 			!gameState.ai.HQ.hasPotentialBase())	// if we have no base ... nothing else to do than attack
 		{
-			const type = this.attackNumber < 2 ||
-				this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length > 0 ?
-				AttackPlan.TYPE_DEFAULT : AttackPlan.TYPE_HUGE_ATTACK;
+			const type = expertFinishing ? AttackPlan.TYPE_DEFAULT :
+				(this.attackNumber < 2 || this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length > 0 ?
+				AttackPlan.TYPE_DEFAULT : AttackPlan.TYPE_HUGE_ATTACK);
 			const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber, type);
 			if (attackPlan.failed)
 				this.attackPlansEncounteredWater = true; // hack
@@ -412,6 +502,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				}
 				this.totalNumber++;
 				attackPlan.init(gameState);
+				if (expertFinishing)
+					attackPlan.targetPlayer = expertFinishing.targetPlayer;
 				this.upcomingAttacks[type].push(attackPlan);
 			}
 			this.attackNumber++;

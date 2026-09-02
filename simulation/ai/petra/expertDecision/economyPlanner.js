@@ -588,16 +588,34 @@ function planEconomy(rawState, overrides = {}) {
     // buying another hub. This preserves the normal 3-fields-on-one-hub rule while
     // escaping the 2+2 saturation pattern seen in IT14.25.
     const saturatedNetworkReady = currentFarmsteads >= 2 && existingFields >= 4 && openFieldSlots <= 0;
+    // IT14.40: the opening berry/fruit farmstead is deliberately placed as a dropsite,
+    // not a perfect farm hub. On some maps it has exactly two legal field slots. Waiting
+    // for three completed fields before permitting hub #2 creates a hard food deadlock:
+    // 10 fields wanted, 2 possible, thousands of wood banked. Once natural food is
+    // exhausted, two genuinely saturated fields are enough to prove the opening hub is
+    // fully utilized. This exception applies only to the single opening-farmstead case.
+    const constrainedOpeningHubReady = currentFarmsteads === 1 &&
+      existingFields >= policy.minimumFieldsBeforeConstrainedOpeningFarmHub &&
+      state.food.maxSaturatedHubFields >= policy.minimumFieldsBeforeConstrainedOpeningFarmHub &&
+      openFieldSlots <= 0 &&
+      Math.max(0, Number(state.food.totalNaturalRemaining) || 0) <= policy.naturalExpansionDepletionThreshold;
     const permanentHubNeeded = farm.missingFields > 0 && openFieldSlots <= 0 &&
-      pendingFields === 0 && (saturatedHubReady || saturatedNetworkReady);
+      pendingFields === 0 && (saturatedHubReady || saturatedNetworkReady || constrainedOpeningHubReady);
     if (permanentHubNeeded &&
         state.foundations.farmstead + state.queued.farmstead === 0 && farm.mode !== "natural_expand") {
       const cost = costOf(state, policy, "farmstead");
+      const constrainedRole = constrainedOpeningHubReady && !saturatedHubReady && !saturatedNetworkReady;
+      const role = constrainedRole ? "farm_hub_constrained" : "farm_hub";
+      const reason = constrainedRole ?
+        `opening food hub saturated at ${state.food.maxSaturatedHubFields} fields; ${farm.missingFields} fields still missing` :
+        `completed farm layout has no touching field slots; ${farm.missingFields} fields still missing`;
       if (resourceEnough(state.resources, cost, reservations)) {
-        actions.push({ type: "BUILD", kind: "farmstead", role: "farm_hub", priority: 94, builderPool: ["food", "food_owned", "farm"], reason: `completed farm layout has no touching field slots; ${farm.missingFields} fields still missing` });
+        actions.push({ type: "BUILD", kind: "farmstead", role, priority: 96, builderPool: ["food", "food_owned", "farm"], reason });
         addReservation(reservations, cost);
       } else {
-        actions.push({ type: "RESERVE", kind: "farmstead", role: "farm_hub", priority: 94, cost, reason: "reserve wood for next compact farm hub after current fields finish" });
+        actions.push({ type: "RESERVE", kind: "farmstead", role, priority: 96, cost, reason: constrainedRole ?
+          "reserve wood to escape saturated two-field opening food hub" :
+          "reserve wood for next compact farm hub after current fields finish" });
         addReservation(reservations, cost);
       }
     }

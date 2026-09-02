@@ -92,6 +92,12 @@ const DEFAULT_POLICY = Object.freeze({
   // field demand is high. The current compact block must have at least three completed
   // fields and no remaining touching slot. Natural-food dropsites are the only exception.
   minimumFieldsBeforeNextFarmHub: 3,
+  // IT14.40: the opening natural-food farmstead is a dropsite first and can be
+  // geometrically limited to only two permanent fields. Once its natural food is
+  // exhausted and those two slots are genuinely saturated, permit a dedicated
+  // permanent farm hub instead of deadlocking forever waiting for an impossible
+  // third opening field. Dedicated later farm hubs still use the normal 3-field rule.
+  minimumFieldsBeforeConstrainedOpeningFarmHub: 2,
   minimumNaturalExpansionFieldSlots: 2,
   maxFarmHubDistanceFromCC: 70,
   minimumPrebuildFields: 2,
@@ -355,6 +361,10 @@ const DEFAULT_POLICY = Object.freeze({
   phase2HouseDistrictRadius: 34,
   barracksMinimumCCDistance: 50,
   barracksAwaitingFoundationRetrySeconds: 20,
+  // IT14.41: Barracks #3 is throughput infrastructure. If its first exact-placement
+  // attempt does not create a foundation quickly, retry with the broad frontier sweep
+  // instead of burning repeated 20-second dead windows.
+  thirdBarracksAwaitingFoundationRetrySeconds: 8,
   farmHubMinimumCCDistance: 40,
   // Independent buildings should live outside the food-production core. Fields keep
   // first claim on the legal ring immediately around every farmstead; houses/barracks/
@@ -379,6 +389,23 @@ const DEFAULT_POLICY = Object.freeze({
   // Temporary/fallback lumberjacks may only use trees actually serviced by a
   // completed storehouse or market. This prevents remote no-dropsite wood camps.
   fallbackWoodDropsiteRadius: 36,
+  // IT14.41: temporary overflow work should be genuinely productive, not a one-tick
+  // waypoint between food capacity checks. Keep a temporary wood assignment for this
+  // long unless food has entered explicit recovery mode.
+  temporaryFallbackLeaseSeconds: 30,
+  // IT14.41 finishing doctrine. Once the opponent has been broken, convert the lead
+  // into a victory instead of dissolving pressure and assembling another full wave.
+  expertFinishingEnemyPopulation: 50,
+  expertFinishingMinimumOwnPopulation: 80,
+  expertFinishingMinimumPopulationLead: 30,
+  expertFinishingHomeCitizenSoldierReserve: 12,
+  expertFinishingReinforcementBatch: 6,
+  expertFinishingForceStartSize: 10,
+  expertFinishingSiegeTarget: 2,
+  // Forward infrastructure may deliberately claim territory toward useful neutral
+  // resources. Buildings must still pass the normal own-territory legality test.
+  forwardAnchorMinimumCCDistance: 58,
+  forwardAnchorMaximumCCDistance: 155,
   // A forest is a work district, but repeated dropsites require a genuinely large,
   // actively-worked CONNECTED forest and a meaningful drop-distance improvement.
   woodClusterSearchRadius: 110,
