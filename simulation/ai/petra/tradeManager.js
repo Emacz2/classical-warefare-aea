@@ -3,6 +3,7 @@ import { SquareVectorDistance, aiWarn } from "simulation/ai/common-api/utils.js"
 import { newTradeRoute as chatNewTradeRoute } from "simulation/ai/petra/chatHelper.js";
 import { Config } from "simulation/ai/petra/config.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
+import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
 import { gatherTreasure, getBestBase, getLandAccess, getSeaAccess, isLineInsideEnemyTerritory } from
 	"simulation/ai/petra/entityExtend.js";
 import { ConstructionPlan } from "simulation/ai/petra/queueplanBuilding.js";
@@ -20,6 +21,7 @@ export function TradeManager(config)
 	this.routeProspection = false;
 	this.targetNumTraders = this.Config.Economy.targetNumTraders;
 	this.warnedAllies = {};
+	this.expertLastTradeLog = -99999;
 }
 
 TradeManager.prototype.init = function(gameState)
@@ -705,6 +707,46 @@ TradeManager.prototype.update = function(gameState, events, queues)
 		this.prospectForNewMarket(gameState, queues);
 };
 
+// IT14.47: Expert keeps sole ownership of market construction, but once two built
+// markets form a legal route it may use Petra's mature route/order mechanics for a
+// tiny zero-pop trader contingent.  This deliberately excludes market prospection
+// and trade-bonus research so the new passive income cannot re-enter generic Petra
+// construction or drain the military timing into an unrelated trade boom.
+TradeManager.prototype.updateExpertTrade = function(gameState, events, queues)
+{
+	if (this.Config.difficulty <= difficulty.VERY_EASY)
+		return;
+
+	if (this.checkEvents(gameState, events))
+	{
+		this.routeProspection = false;
+		this.traders.forEach(ent => { this.checkTrader(gameState, ent); });
+		this.checkRoutes(gameState);
+	}
+	else if (!this.tradeRoute || gameState.ai.playedTurn % 20 === 0)
+		this.checkRoutes(gameState);
+
+	if (!this.tradeRoute)
+		return;
+
+	this.traders.forEach(ent => { this.updateTrader(gameState, ent); });
+	const policy = mergePolicy();
+	const desired = this.tradeRoute.gain >= policy.expertTradeStrongRouteGain ?
+		policy.expertTradeStrongRouteTraders : policy.expertTradeInitialTraders;
+	this.targetNumTraders = Math.max(0, Math.round(Number(desired) || 0));
+	if (queues && queues.trader && gameState.ai.playedTurn % 5 === 0)
+		this.trainMoreTraders(gameState, queues);
+	if (gameState.ai.playedTurn % 60 === 0)
+		this.setTradingGoods(gameState);
+
+	if (gameState.ai.elapsedTime >= this.expertLastTradeLog + 60)
+	{
+		this.expertLastTradeLog = gameState.ai.elapsedTime;
+		aiWarn("[EXPERT-TRADE] routeGain=" + this.tradeRoute.gain +
+			" traders=" + this.traders.length + "/" + this.targetNumTraders + " mode=zero-pop");
+	}
+};
+
 TradeManager.prototype.routeEntToId = function(route)
 {
 	if (!route)
@@ -752,7 +794,8 @@ TradeManager.prototype.Serialize = function()
 		"potentialTradeRoute": this.routeEntToId(this.potentialTradeRoute),
 		"routeProspection": this.routeProspection,
 		"targetNumTraders": this.targetNumTraders,
-		"warnedAllies": this.warnedAllies
+		"warnedAllies": this.warnedAllies,
+		"expertLastTradeLog": this.expertLastTradeLog
 	};
 };
 

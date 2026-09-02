@@ -1341,8 +1341,49 @@ AttackPlan.prototype.rushTargetFinder = function(gameState, playerEnemy)
 	if (!this.position)
 		this.position = this.rallyPoint;
 
+	// IT14.47: an Expert doctrine rush is economic harassment, not a house-burning
+	// expedition.  Take exposed workers first, but do not chase them under a CC/tower.
+	// If no safe worker is visible, fall through to exposed production/economic
+	// structures below. Stock Petra behavior is unchanged for non-Expert rushes.
+	const expertDoctrine = gameState.ai.HQ && gameState.ai.HQ.expertDoctrine;
+	if (this.Config.difficulty >= difficulty.EXPERT && expertDoctrine && Number(expertDoctrine.rushes) > 0)
+	{
+		let workerTarget;
+		let workerDist = Infinity;
+		const enemyUnits = playerEnemy !== undefined ? gameState.getEnemyUnits(playerEnemy) : gameState.getEnemyUnits();
+		for (const worker of enemyUnits.values())
+		{
+			if (!worker || !worker.position() || !worker.hasClass("Worker") || !this.isValidTarget(worker))
+				continue;
+			let defended = false;
+			for (const defense of buildings)
+			{
+				if (!defense || !defense.position() || !defense.hasDefensiveFire())
+					continue;
+				if (SquareVectorDistance(worker.position(), defense.position()) < 4900) // 70m
+				{
+					defended = true;
+					break;
+				}
+			}
+			if (defended)
+				continue;
+			const dist = SquareVectorDistance(worker.position(), this.position);
+			if (dist < workerDist)
+			{
+				workerDist = dist;
+				workerTarget = worker;
+			}
+		}
+		if (workerTarget)
+		{
+			targets.addEnt(workerTarget);
+			return targets;
+		}
+	}
+
 	let target;
-	let minDist = Math.min();
+	let minDist = Infinity;
 	for (const building of buildings)
 	{
 		if (building.owner() == 0)
@@ -1366,7 +1407,18 @@ AttackPlan.prototype.rushTargetFinder = function(gameState, playerEnemy)
 		}
 		if (defended)
 			continue;
-		const dist = SquareVectorDistance(pos, this.position);
+		let dist = SquareVectorDistance(pos, this.position);
+		if (this.Config.difficulty >= difficulty.EXPERT && expertDoctrine && Number(expertDoctrine.rushes) > 0)
+		{
+			// Prefer production and economic infrastructure to arbitrary housing.
+			if (building.hasClass("Barracks") || building.hasClass("Stable") || building.hasClass("Market") ||
+			    building.hasClass("Farmstead") || building.hasClass("Storehouse"))
+				dist -= 12000;
+			else if (building.hasClass("House"))
+				dist += 18000;
+			else if (building.hasClass("Field"))
+				dist += 26000;
+		}
 		if (dist > minDist)
 			continue;
 		minDist = dist;

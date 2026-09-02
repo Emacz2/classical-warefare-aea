@@ -45,6 +45,9 @@ export function AttackManager(config)
 	// IT14.44: after a depleted push retreats, give the economy/production a short
 	// reboom window before Petra immediately assembles another understrength wave.
 	this.expertReboomUntil = -99999;
+	// IT14.47: concise doctrine telemetry so a replay immediately shows whether a
+	// selected P1 rush is merely arming, has launched, or has rolled into its P2 follow-up.
+	this.expertLastStrategyStatusLog = -99999;
 }
 
 /** More initialisation for stuff that needs the gameState */
@@ -804,6 +807,29 @@ AttackManager.prototype.update = function(gameState, queues, events)
 		this.maxRushes = Math.max(0, Number(doctrine.rushes) || 0);
 		this.rushSize = this.maxRushes ? [Math.max(12, Number(doctrine.rushSize) || 20)] : [];
 	}
+	if (this.Config.difficulty >= difficulty.EXPERT && doctrine && Number(doctrine.rushes) > 0 &&
+	    gameState.currentPhase && gameState.currentPhase() === 1 &&
+	    gameState.ai.elapsedTime >= this.expertLastStrategyStatusLog + 20)
+	{
+		this.expertLastStrategyStatusLog = gameState.ai.elapsedTime;
+		const prep = this.upcomingAttacks[AttackPlan.TYPE_RUSH] && this.upcomingAttacks[AttackPlan.TYPE_RUSH][0];
+		const live = this.startedAttacks[AttackPlan.TYPE_RUSH] && this.startedAttacks[AttackPlan.TYPE_RUSH][0];
+		let army = 0;
+		let state = "waiting-barracks";
+		if (live && live.unitCollection)
+		{
+			army = live.unitCollection.length;
+			state = "launched";
+		}
+		else if (prep && prep.unitCollection)
+		{
+			army = prep.unitCollection.length;
+			state = "arming";
+		}
+		const civilians = gameState.getOwnEntitiesByClass("Civilian", true).length;
+		aiWarn("[EXPERT-STRATEGY] " + doctrine.id + " state=" + state +
+			" civilians=" + civilians + " army=" + army + "/" + (Number(doctrine.rushSize) || 0));
+	}
 	const expertFinishing = this.getExpertFinishingTarget(gameState);
 	const unexecutedAttacks = {
 		[AttackPlan.TYPE_RUSH]: 0,
@@ -852,6 +878,9 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			{
 				if (attack.StartAttack(gameState))
 				{
+					if (this.Config.difficulty >= difficulty.EXPERT && attackType === AttackPlan.TYPE_RUSH && doctrine)
+						aiWarn("[EXPERT-STRATEGY] launch=" + doctrine.id + " plan=" + attack.name +
+							" army=" + attack.unitCollection.length + " target=" + attack.targetPlayer);
 					if (this.Config.debug > 1)
 					{
 						aiWarn("Attack Manager: Starting " + attack.getType() + " plan " +
@@ -945,6 +974,23 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				AttackPlan.TYPE_RUSH, data);
 			if (!attackPlan.failed)
 			{
+				// IT14.47 Expert rushes are infantry timings.  Stock Petra's Rush plan
+				// requires two FastMoving units, which Athens cannot reliably provide in
+				// Village Phase and which caused the selected IT14.46 rush never to exist.
+				// Lock the infantry target to the doctrine and make cavalry optional.
+				if (this.Config.difficulty >= difficulty.EXPERT && doctrine)
+				{
+					const target = Math.max(12, Number(doctrine.rushSize) || 20);
+					if (attackPlan.unitStat.Infantry)
+					{
+						attackPlan.unitStat.Infantry.targetSize = target;
+						attackPlan.unitStat.Infantry.minSize = Math.max(10, Math.min(target, Math.round(target * 0.75)));
+					}
+					if (attackPlan.unitStat.FastMoving)
+						delete attackPlan.unitStat.FastMoving;
+					aiWarn("[EXPERT-STRATEGY] create-rush=" + doctrine.id + " targetArmy=" + target +
+						" infantryMin=" + attackPlan.unitStat.Infantry.minSize);
+				}
 				if (this.Config.debug > 1)
 				{
 					aiWarn("Military Manager: Rushing plan " + this.totalNumber +
@@ -1387,7 +1433,8 @@ AttackManager.prototype.Serialize = function()
 		"expertObservedMilitaryTechs": this.expertObservedMilitaryTechs,
 		"expertLastTechGateLog": this.expertLastTechGateLog,
 		"expertFinishingProgress": this.expertFinishingProgress,
-		"expertReboomUntil": this.expertReboomUntil
+		"expertReboomUntil": this.expertReboomUntil,
+		"expertLastStrategyStatusLog": this.expertLastStrategyStatusLog
 	};
 
 	const upcomingAttacks = {};

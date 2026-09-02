@@ -189,6 +189,7 @@ export class ExpertDecisionController
 		// existing economy, placement and combat mechanics remain shared.
 		this.strategyDoctrine = undefined;
 		this.strategyLogged = false;
+		this.strategyP2TransitionLogged = false;
 		this.lastP1EcoSweepDiag = -99999;
 	}
 
@@ -1610,18 +1611,34 @@ export class ExpertDecisionController
 		const policy = mergePolicy();
 		const militaryProgress = this.expertObservedTechCount(gameState, this.expertObservedP2MilitaryTechs);
 		const ecoProgress = this.expertObservedTechCount(gameState, this.expertObservedCoreEcoTechs);
-		// Once the first two push upgrades have been purchased, do not keep draining the
-		// bank into forge tier after forge tier while the long-game food/wood package is absent.
+		const p2Push = this.expertP2PushInPreparation();
+		const bank = gameState.getResources();
+		// IT14.47: the first food+wood Town eco pair remains mandatory after the opening
+		// two military upgrades.  After that continuity package is protected, however,
+		// an army that is already assembling/fighting may convert a genuine bank surplus
+		// into additional military techs instead of waiting for every second-tier eco tech.
 		if (militaryProgress.queued >= policy.expertP2MilitaryTechsBeforeEco && ecoProgress.queued < 2)
 			return false;
-		if (militaryProgress.queued >= policy.expertP2MilitaryTechsBeforeSecondEcoPair && ecoProgress.queued < 4)
+		const warMode = p2Push && militaryProgress.queued >= policy.expertP2MilitaryTechsBeforeEco && ecoProgress.queued >= 2;
+		const warSurplus = warMode &&
+			bank.food >= policy.expertP2WarTechFoodReserve &&
+			bank.wood >= policy.expertP2WarTechWoodReserve &&
+			bank.stone >= policy.expertP2WarTechStoneReserve &&
+			bank.metal >= policy.expertP2WarTechMetalReserve;
+		if (militaryProgress.queued >= policy.expertP2MilitaryTechsBeforeSecondEcoPair && ecoProgress.queued < 4 && !warSurplus)
+			return false;
+		if (warMode && militaryProgress.queued >= policy.expertP2WarMilitaryTechMaximum)
 			return false;
 		const queueManager = gameState.ai.queueManager;
 		const laneNames = ["expertMilitaryTech1", "expertMilitaryTech2"].slice(0, Math.min(2, forgeCount));
 		for (let i = 0; i < laneNames.length; ++i)
 			queueManager.addQueue(laneNames[i], 780 - i * 5);
 
-		const resources = gameState.getResources();
+		const resources = bank;
+		const foodReserve = warMode ? policy.expertP2WarTechFoodReserve : policy.phase2MilitaryTechFoodReserve;
+		const woodReserve = warMode ? policy.expertP2WarTechWoodReserve : policy.phase2MilitaryTechWoodReserve;
+		const stoneReserve = warMode ? policy.expertP2WarTechStoneReserve : 0;
+		const metalReserve = warMode ? policy.expertP2WarTechMetalReserve : policy.phase2MilitaryTechMetalReserve;
 		const alreadyQueued = new Set();
 		for (const qName of laneNames)
 		{
@@ -1662,10 +1679,10 @@ export class ExpertDecisionController
 			this.lastP2MilitaryTechCandidateAvailable = true;
 			const raw = data._template.cost || {};
 			const cost = { food: Number(raw.food) || 0, wood: Number(raw.wood) || 0, stone: Number(raw.stone) || 0, metal: Number(raw.metal) || 0 };
-			if (resources.food < cost.food + policy.phase2MilitaryTechFoodReserve ||
-			    resources.wood < cost.wood + policy.phase2MilitaryTechWoodReserve ||
-			    resources.metal < cost.metal + policy.phase2MilitaryTechMetalReserve ||
-			    resources.stone < cost.stone)
+			if (resources.food < cost.food + foodReserve ||
+			    resources.wood < cost.wood + woodReserve ||
+			    resources.metal < cost.metal + metalReserve ||
+			    resources.stone < cost.stone + stoneReserve)
 				continue;
 			const totalCost = cost.food + cost.wood + cost.stone + cost.metal;
 			candidates.push({ name, cost, score: score * 1000 - totalCost });
@@ -1685,10 +1702,10 @@ export class ExpertDecisionController
 			for (let i = 0; i < candidates.length; ++i)
 			{
 				const c = candidates[i];
-				if (remaining.food >= c.cost.food + policy.phase2MilitaryTechFoodReserve &&
-				    remaining.wood >= c.cost.wood + policy.phase2MilitaryTechWoodReserve &&
-				    remaining.stone >= c.cost.stone &&
-				    remaining.metal >= c.cost.metal + policy.phase2MilitaryTechMetalReserve)
+				if (remaining.food >= c.cost.food + foodReserve &&
+				    remaining.wood >= c.cost.wood + woodReserve &&
+				    remaining.stone >= c.cost.stone + stoneReserve &&
+				    remaining.metal >= c.cost.metal + metalReserve)
 				{ pickIndex = i; break; }
 			}
 			if (pickIndex < 0)
@@ -1704,7 +1721,8 @@ export class ExpertDecisionController
 			remaining.food -= pick.cost.food; remaining.wood -= pick.cost.wood;
 			remaining.stone -= pick.cost.stone; remaining.metal -= pick.cost.metal;
 			++queued;
-			aiWarn("[EXPERT-P2] queued military tech " + pick.name + " lane=" + qName);
+			aiWarn("[EXPERT-P2] queued military tech " + pick.name + " lane=" + qName +
+				(warSurplus ? " mode=war-surplus" : " mode=core-push"));
 		}
 		return queued > 0;
 	}
@@ -3812,9 +3830,11 @@ export class ExpertDecisionController
 	// game is strategically over.
 	p3SiegeContext(gameState, finishing)
 	{
-		if (!gameState.currentPhase || gameState.currentPhase() < 3)
+		if (!gameState.currentPhase || gameState.currentPhase() < 2)
 			return { active: false };
-		if (finishing && finishing.active)
+		const policy = mergePolicy();
+		const phase = gameState.currentPhase();
+		if (phase >= 3 && finishing && finishing.active)
 			return { ...finishing, active: true, finishing: true, desiredSiege: mergePolicy().expertFinishingSiegeTarget };
 		const manager = this.HQ && this.HQ.attackManager;
 		if (!manager)
@@ -3823,7 +3843,7 @@ export class ExpertDecisionController
 		for (const type of Object.keys(manager.startedAttacks || {}))
 			for (const plan of manager.startedAttacks[type] || [])
 				if (plan && plan.targetPlayer !== undefined && plan.unitCollection &&
-				    plan.unitCollection.length >= mergePolicy().expertP3SiegePrepArmy &&
+				    plan.unitCollection.length >= Math.min(policy.expertP3SiegePrepArmy, policy.expertBrokenEnemySiegeArmy) &&
 				    (!best || plan.unitCollection.length > best.unitCollection.length))
 					best = plan;
 		if (!best)
@@ -3832,6 +3852,14 @@ export class ExpertDecisionController
 		const data = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[best.targetPlayer];
 		if (data)
 			enemyPopulation = Math.max(0, Number(data.popCount) || 0);
+		if (phase === 2)
+		{
+			if (best.unitCollection.length < policy.expertBrokenEnemySiegeArmy ||
+			    enemyPopulation > policy.expertBrokenEnemySiegePopulation)
+				return { active: false };
+			return { active: true, finishing: false, brokenTown: true, targetPlayer: best.targetPlayer, enemyPopulation,
+				ownPopulation: gameState.getPopulation(), desiredSiege: 1 };
+		}
 		return { active: true, finishing: false, targetPlayer: best.targetPlayer, enemyPopulation,
 			ownPopulation: gameState.getPopulation(), desiredSiege: mergePolicy().expertP3SiegePrepTarget };
 	}
@@ -3902,7 +3930,7 @@ export class ExpertDecisionController
 
 	trainExpertSiegeFinisher(gameState, queues, siegeContext)
 	{
-		if (!siegeContext || !siegeContext.active || typeof gameState.currentPhase !== "function" || gameState.currentPhase() < 3 ||
+		if (!siegeContext || !siegeContext.active || typeof gameState.currentPhase !== "function" || gameState.currentPhase() < 2 ||
 		    !queues || !queues.citizenSoldier)
 			return;
 		const policy = mergePolicy();
@@ -3939,7 +3967,7 @@ export class ExpertDecisionController
 			gameState.ai.queueManager.changePriority("citizenSoldier", Math.max(this.HQ.Config.priorities.citizenSoldier || 1, 980));
 			++queued;
 			aiWarn("[EXPERT-SIEGE] queued siege=" + selected.type + " trainer=" + arsenal.id() + " enemyPop=" + siegeContext.enemyPopulation +
-				" mode=" + (siegeContext.finishing ? "finish" : "p3-push"));
+				" mode=" + (siegeContext.finishing ? "finish" : siegeContext.brokenTown ? "broken-p2" : "p3-push"));
 		}
 	}
 
@@ -5350,6 +5378,23 @@ export class ExpertDecisionController
 				// worth much more than a small geometric preference.
 				return (Number(index) || 0) - covered * 10000;
 			};
+		else if (kind === "market" && request && request.role === "phase3_town_support")
+			ports.scoreCandidate = (position, request, index) =>
+			{
+				// IT14.47: Market #1 remains the useful resource/barter market. Market #2
+				// is a trade endpoint, so maximize safe route length rather than merely
+				// satisfying the Town-structure count. Danger/territory/obstruction tests
+				// have already run before this score. A soft 150m CC leash prevents an
+				// absurd builder walk when a nearly-as-good interior endpoint exists.
+				const first = this.builtByClass(gameState, "Market").find(ent => ent && entityPosition(ent));
+				const cc = this.findCC(gameState);
+				const firstPos = first && first.position();
+				const ccPos = cc && cc.position();
+				const marketDistance = firstPos ? Math.sqrt(SquareVectorDistance(position, firstPos)) : 0;
+				const ccDistance = ccPos ? Math.sqrt(SquareVectorDistance(position, ccPos)) : 0;
+				const leashPenalty = Math.max(0, ccDistance - 150);
+				return (Number(index) || 0) - 200 * marketDistance + 20 * ccDistance + 1000 * leashPenalty;
+			};
 		else if (kind === "farmstead")
 			ports.scoreCandidate = (position, request) =>
 			{
@@ -6673,6 +6718,14 @@ export class ExpertDecisionController
 		if (this.lastUpdateTurn === gameState.ai.playedTurn)
 			return true;
 		this.lastUpdateTurn = gameState.ai.playedTurn;
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		if (!this.strategyP2TransitionLogged && gameState.currentPhase && gameState.currentPhase() >= 2)
+		{
+			this.strategyP2TransitionLogged = true;
+			aiWarn("[EXPERT-STRATEGY] transition=" +
+				(doctrine.id === "p2_tech_push" ? "p2_tech_push" : "p2_followup") +
+				" from=" + doctrine.id + " civ=" + gameState.getPlayerCiv());
+		}
 		if (this.HQ.basesManager)
 			this.HQ.basesManager.turnCache = {};
 
@@ -6805,19 +6858,20 @@ export class ExpertDecisionController
 				"builderPool": ["wood", "citizenSoldierWood"] }] };
 		const finishing = this.finishingState(gameState);
 		const siegeContext = this.p3SiegeContext(gameState, finishing);
-		if (siegeContext.active && gameState.currentPhase && gameState.currentPhase() >= 3)
+		if (siegeContext.active && gameState.currentPhase && gameState.currentPhase() >= 2)
 		{
 			const arsenalType = gameState.applyCiv("structures/{civ}/arsenal");
 			const arsenalBuildable = !!(gameState.getTemplate(arsenalType) && this.HQ.canBuild && this.HQ.canBuild(gameState, arsenalType));
 			const arsenalPipeline = this.builtByClass(gameState, "Arsenal").length + this.foundationsByClass(gameState, "Arsenal").length + (this.activeTaskByKind.arsenal ? 1 : 0);
 			if (arsenalBuildable && !arsenalPipeline)
-				frame = { ...frame, "actions": [...frame.actions, { "type": "BUILD", "kind": "arsenal", "role": siegeContext.finishing ? "finishing_siege" : "p3_attack_siege",
+				frame = { ...frame, "actions": [...frame.actions, { "type": "BUILD", "kind": "arsenal", "role": siegeContext.finishing ? "finishing_siege" : siegeContext.brokenTown ? "broken_p2_siege" : "p3_attack_siege",
 					"priority": siegeContext.finishing ? 99 : 96, "builderPool": ["wood", "citizenSoldierWood", "food", "farm", "stone", "metal"] }] };
 			if (gameState.ai.elapsedTime - this.lastFinishingDiag >= 15)
 			{
 				this.lastFinishingDiag = gameState.ai.elapsedTime;
 				aiWarn("[EXPERT-SIEGE] active enemy=" + siegeContext.targetPlayer + " enemyPop=" + siegeContext.enemyPopulation +
-					" ownPop=" + siegeContext.ownPopulation + " arsenal=" + arsenalPipeline + " mode=" + (siegeContext.finishing ? "finish" : "p3-push"));
+					" ownPop=" + siegeContext.ownPopulation + " arsenal=" + arsenalPipeline + " mode=" +
+					(siegeContext.finishing ? "finish" : siegeContext.brokenTown ? "broken-p2" : "p3-push"));
 			}
 		}
 		this.setDecisionPriorities(gameState, frame);
@@ -6901,7 +6955,7 @@ export class ExpertDecisionController
 		const workers = this.economyWorkerMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.46] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.47] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" res=" + Math.round(res.food) + "/" + Math.round(res.wood) + "/" + Math.round(res.stone) + "/" + Math.round(res.metal) +
@@ -6957,7 +7011,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.46] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.47] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -7015,7 +7069,8 @@ export class ExpertDecisionController
 			"lastStrategicMetalRebalanceTime": this.lastStrategicMetalRebalanceTime,
 			"expertObservedP2MilitaryTechs": { ...this.expertObservedP2MilitaryTechs },
 			"expertObservedCoreEcoTechs": { ...this.expertObservedCoreEcoTechs },
-			"strategyDoctrine": this.strategyDoctrine ? { "id": this.strategyDoctrine.id } : undefined
+			"strategyDoctrine": this.strategyDoctrine ? { "id": this.strategyDoctrine.id } : undefined,
+			"strategyP2TransitionLogged": this.strategyP2TransitionLogged
 		};
 	}
 
@@ -7077,6 +7132,7 @@ export class ExpertDecisionController
 		this.expertObservedCoreEcoTechs = { ...(data.expertObservedCoreEcoTechs || {}) };
 		this.strategyDoctrine = data.strategyDoctrine && data.strategyDoctrine.id ? doctrineById(data.strategyDoctrine.id) : undefined;
 		this.strategyLogged = !!this.strategyDoctrine;
+		this.strategyP2TransitionLogged = !!data.strategyP2TransitionLogged;
 		this.lastUpdateTurn = -1;
 	}
 }

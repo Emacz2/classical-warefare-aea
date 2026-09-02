@@ -9,9 +9,9 @@ Definitions
 
 Last 3 completed games
 Patch      Gather Bonus   Break       Victory          Finish Gap
-IT14.42    +35%           10:00       25:00-25:30      15:00-15:30
 IT14.43    +35%           11:30       22:58.8          11:28.8
 IT14.44    +35%           17:00       25:00-25:30       8:00-8:30
+IT14.46    +35%           11:30       19:25.6           7:55.6
 
 IT14.44 notes
 - Very Hard was 51 pop at 16:00, rebounded to 59 at 16:30, then fell to 48 at 17:00 and never returned to 50+, so BREAK=17:00.
@@ -27,8 +27,8 @@ Current tuning ladder
 - Reassess before reducing below +20%.
 
 Current +35% trend
-- Latest three victories are 25:00-25:30, 22:58.8, and 25:00-25:30.
-- Median is therefore still about 25:00-25:30. +35% remains frozen.
+- Latest three completed victories are 22:58.8, 25:00-25:30, and 19:25.6.
+- Median is 22:58.8. +35% remains frozen; IT14.46 is the first sub-20 clean win in the confirmation set.
 
 IT14.45 target
 - Rotate <=25% health citizen-soldiers out of active attacks; once home they return to work while fresh >=75% health soldiers replace them.
@@ -52,3 +52,13 @@ IT14.46 target
 - Infantry-only Expert pressure avoids CC/tower/fortress strongpoints while the opponent still has a meaningful population; rushes seek undefended economic targets.
 - At <=8 enemy population, finishing retargets visible ConquestCritical units first, then occupied garrison holders, then ConquestCritical structures. Rams use the same cleanup exception instead of repeatedly staging on a surviving CC.
 - Keep +35% gather/trade unchanged; benchmark doctrine selection, BREAK, VICTORY, resource banks, P1 eco completion at Town transition, and last-target cleanup separately.
+
+IT14.47 target
+- Make Early/Late P1 Rush executable in Village Phase without enabling generic P1 attacks for the P2 Tech Push doctrine.
+- Expert rushes use an infantry-only launch requirement; FastMoving cavalry is optional. Prefer exposed workers, then undefended production/economic structures, and avoid defensive-fire zones.
+- After the first two P2 military upgrades and the first Town food+wood eco pair, an active push may buy deeper military upgrades from true surplus while preserving a 500F/250W/150M reinforcement reserve; cap this war package at six observed military upgrades.
+- Expert still owns Market construction. Market #2 is scored as a distant safe trade endpoint; Petra trade prospection/building remains disabled.
+- Once two built markets create a legal route, train 2 zero-pop traders (4 on strong routes) and maintain their route/trading-goods orders. Do not research generic trade bonuses from this path.
+- If an opponent is <=30 population against a >=40-unit active army in P2, begin the Arsenal/ram finisher only if that civ's current-phase templates actually permit it.
+- Repeat concise strategy telemetry for arming, launch, and P2 follow-up so doctrine execution is visible in the replay log.
+- Keep +35% gather/trade unchanged.

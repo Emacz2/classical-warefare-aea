@@ -499,11 +499,29 @@ const DEFAULT_POLICY = Object.freeze({
   // still raises the desired total to expertFinishingSiegeTarget.
   expertP3SiegePrepArmy: 40,
   expertP3SiegePrepTarget: 1,
+  // IT14.47: if the opponent is already strategically broken in Town Phase, begin
+  // the siege-finisher pipeline as soon as the civ's own tech tree actually permits
+  // an arsenal/ram. Availability checks remain authoritative, so this cannot invent
+  // P2 siege for civs that only receive it in City Phase.
+  expertBrokenEnemySiegePopulation: 30,
+  expertBrokenEnemySiegeArmy: 40,
+  // Zero-pop traders are a small passive multiplier, not a new boom strategy.
+  expertTradeInitialTraders: 2,
+  expertTradeStrongRouteTraders: 4,
+  expertTradeStrongRouteGain: 8,
   // IT14.44 P2 research package: during an actual P2 push, buy the first two broad
   // military upgrades before spending deeper into the forge tree, then immediately
   // establish the food+wood eco pair. Higher military tiers wait for eco continuity.
   expertP2MilitaryTechsBeforeEco: 2,
   expertP2MilitaryTechsBeforeSecondEcoPair: 2,
+  // IT14.47: after the first Town food+wood eco pair is protected, a live push may
+  // spend true surplus on deeper military upgrades instead of waiting for the entire
+  // long-game eco ladder. The larger reserves protect the next reinforcement cycle.
+  expertP2WarMilitaryTechMaximum: 6,
+  expertP2WarTechFoodReserve: 500,
+  expertP2WarTechWoodReserve: 250,
+  expertP2WarTechStoneReserve: 0,
+  expertP2WarTechMetalReserve: 150,
   // IT14.42: a Town-phase default/huge attack may assemble while techs research, but
   // once P2 is complete it waits for two completed Expert forge upgrades before
   // launching. If the same plan reaches launch strength while Town is still

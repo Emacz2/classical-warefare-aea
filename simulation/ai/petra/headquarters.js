@@ -2294,15 +2294,26 @@ Headquarters.prototype.update = function(gameState, queues, events)
 		// banks into the wood actually required by production, techs and infrastructure.
 		if (this.canBarter && this.tradeManager && this.tradeManager.performBarter)
 			this.tradeManager.performBarter(gameState);
+		// IT14.47: allow only route maintenance + a tiny zero-pop trader contingent.
+		// Market construction remains entirely Expert-owned; generic trade prospection
+		// and trade-tech spending are still disabled.
+		if (this.tradeManager && this.tradeManager.updateExpertTrade)
+			this.tradeManager.updateExpertTrade(gameState, events, queues);
 
 		// Defensive systems can react to attacks without becoming an economic planner.
 		this.garrisonManager.update(gameState, events);
 		this.defenseManager.update(gameState, events);
 
-		// IT14.32: once Town Phase is reached, let Petra's proven attack manager claim
-		// military units while Expert keeps sole ownership of the economy. P1 remains
-		// untouched. Expert worker code ignores units with an active attack-plan metadata.
-		if (gameState.currentPhase() > 1 && this.Config.difficulty > difficulty.SANDBOX &&
+		// IT14.47: Town Phase still enables Petra's proven attack manager for every
+		// Expert doctrine, but a doctrine that explicitly selected a P1 rush may use the
+		// Rush plan while still in Village Phase.  This is intentionally NOT a generic
+		// P1 AttackManager handoff: non-rush doctrines remain completely untouched until
+		// Town, preserving the successful IT14.46 economic opening.
+		const expertDoctrine = this.expertDoctrine;
+		const expertP1RushWindow = gameState.currentPhase() === 1 && expertDoctrine &&
+			Number(expertDoctrine.rushes) > 0 &&
+			gameState.ai.elapsedTime >= Math.max(0, Number(expertDoctrine.soldierTrainingStartTime) || 0);
+		if ((gameState.currentPhase() > 1 || expertP1RushWindow) && this.Config.difficulty > difficulty.SANDBOX &&
 		    (this.hasActiveBase() || !this.canBuildUnits))
 			this.attackManager.update(gameState, queues, events);
 
