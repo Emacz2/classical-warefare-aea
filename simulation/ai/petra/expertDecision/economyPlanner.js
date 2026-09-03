@@ -281,8 +281,18 @@ function woodWorksiteDecision(state, policy) {
   // depletion. This is the human "work both faces of the same forest" pattern.
   const denseWorksite = state.workers.wood >= Math.max(16, policy.woodExpansionWorkerThreshold + 4) &&
     w.localWoodAmount >= 1800 && w.averageDropDistance > 14;
+  const continuityEmergency = !!(state.flags.phaseWoodCrisis || state.flags.woodIncomeStalled);
 
-  if (w.alternativeExistingWorksite && (criticallyLow || poorDelivery || workforcePressure))
+  // IT14.54: never allow a measured wood-economy failure to sit in "observe" merely
+  // because the old low-wood observation counter has not caught up yet. The controller
+  // only raises these flags after a real phase shortfall or delivered-wood stall.
+  if (continuityEmergency && !w.alternativeExistingWorksite &&
+      (criticallyLow || w.availableTargets <= 0 || poorDelivery || workforcePressure))
+    return { status: state.flags.phaseWoodCrisis ? "phase_wood_recovery" : "income_stall_recovery", expand: true,
+      reason: state.flags.phaseWoodCrisis ? "Town Phase is queued but wood-starved; restore a serviced forest immediately" :
+        "assigned lumberjacks have stopped delivering wood; restore a serviced forest immediately" };
+
+  if (w.alternativeExistingWorksite && (criticallyLow || poorDelivery || workforcePressure || continuityEmergency))
     return { status: "switch_existing_worksite", expand: false, reason: "reuse an existing storehouse before constructing another" };
 
   if (denseWorksite)
@@ -385,6 +395,16 @@ function planEconomy(rawState, overrides = {}) {
   const housing = housingDecision(state, policy);
   const farm = fieldDemand(state, policy);
   const woodsite = woodWorksiteDecision(state, policy);
+  // IT14.55: detect the impossible food-layout state directly. Natural-food dropsites
+  // are not proof that the permanent farm network has usable field geometry.
+  const foodCapacityDeadlock = farm.missingFields > 0 &&
+    state.food.fieldCapacityKnown && state.food.openFieldSlots <= 0 &&
+    state.foundations.field + state.queued.field === 0 &&
+    Math.max(0, Number(state.food.totalNaturalRemaining) || 0) <= policy.foodCapacityDeadlockNaturalRemaining;
+  const severeFoodCapacityDeadlock = foodCapacityDeadlock &&
+    (state.workers.overflowWood >= policy.foodCapacityDeadlockPauseOverflow ||
+     state.workers.idle >= policy.foodCapacityDeadlockPauseOverflow ||
+     state.resources.food < policy.foodCapacityDeadlockFoodBank);
 
   // 1. Existing foundations are obligations, not optional projects.
   for (const kind of ["house", "farmstead", "field", "storehouse", "barracks", "market", "forge", "temple"]) {
@@ -625,15 +645,27 @@ function planEconomy(rawState, overrides = {}) {
   // before optional farm expansion can spend the same wood.
   const totalStores = state.structures.storehouse + state.foundations.storehouse + state.queued.storehouse;
   const maximumWoodStores = state.phase >= 2 ? policy.maximumTownWoodStorehouses : policy.maximumVillageWoodStorehouses;
-  if (totalStores >= 1 && totalStores < maximumWoodStores && woodsite.expand &&
+  const liveWoodServiceStores = Math.max(0, Number(state.flags.woodServiceStorehouses) || 0);
+  const continuityEmergency = !!(state.flags.phaseWoodCrisis || state.flags.woodIncomeStalled);
+  const underSoftWoodDistrictCap = liveWoodServiceStores < maximumWoodStores;
+  // When food capacity is deadlocked and wood is already abundant, another ordinary
+  // forest Storehouse is not the bottleneck. A true phase/wood-income emergency can
+  // still override this brake.
+  const woodExpansionBrake = foodCapacityDeadlock && !continuityEmergency &&
+    state.resources.wood >= policy.foodCapacityDeadlockWoodSurplus;
+  if (totalStores >= 1 && !woodExpansionBrake && (underSoftWoodDistrictCap || continuityEmergency) && woodsite.expand &&
       state.foundations.storehouse + state.queued.storehouse === 0) {
     const cost = costOf(state, policy, "storehouse");
     const canBuild = resourceEnough(state.resources, cost, reservations);
+    const priority = continuityEmergency ? (Number(policy.phaseWoodRecoveryDropsiteActionPriority) || 125) : 92;
     addReservation(reservations, cost);
     if (canBuild)
-      actions.push({ type: "BUILD", kind: "storehouse", role: "expansion", priority: 92, builderPool: ["wood", "citizenSoldierWood"], reason: woodsite.reason });
+      actions.push({ type: "BUILD", kind: "storehouse", role: "expansion", priority, builderPool: ["wood", "citizenSoldierWood"],
+        reason: woodsite.reason + ` (live wood districts ${liveWoodServiceStores}/${maximumWoodStores})` });
     else
-      actions.push({ type: "RESERVE", kind: "storehouse", role: "expansion", priority: 92, cost, reason: "reserve wood for the next worksite before optional spending" });
+      actions.push({ type: "RESERVE", kind: "storehouse", role: "expansion", priority, cost,
+        reason: continuityEmergency ? "wood continuity emergency: reserve the next 100 wood for a forest dropsite" :
+          "reserve wood for the next worksite before optional spending" });
   }
 
   // 6. Natural food outranks additional farming. If another worthwhile in-territory
@@ -691,21 +723,30 @@ function planEconomy(rawState, overrides = {}) {
       state.food.maxSaturatedHubFields >= policy.minimumFieldsBeforeConstrainedOpeningFarmHub &&
       openFieldSlots <= 0 &&
       Math.max(0, Number(state.food.totalNaturalRemaining) || 0) <= policy.naturalExpansionDepletionThreshold;
+    // IT14.55 hard escape: if natural food is gone, fields are still missing, and the
+    // measured network has zero legal slots, build a dedicated farm hub regardless of
+    // how the earlier natural-food farmsteads split their first 1-3 fields. Requiring
+    // field #4 before allowing the Farmstead that makes field #4 possible is a deadlock.
+    const forcedCapacityHubReady = foodCapacityDeadlock;
     const permanentHubNeeded = farm.missingFields > 0 && openFieldSlots <= 0 &&
-      pendingFields === 0 && (saturatedHubReady || saturatedNetworkReady || constrainedOpeningHubReady);
+      pendingFields === 0 && (saturatedHubReady || saturatedNetworkReady || constrainedOpeningHubReady || forcedCapacityHubReady);
     if (permanentHubNeeded &&
         state.foundations.farmstead + state.queued.farmstead === 0 && farm.mode !== "natural_expand") {
       const cost = costOf(state, policy, "farmstead");
-      const constrainedRole = constrainedOpeningHubReady && !saturatedHubReady && !saturatedNetworkReady;
-      const role = constrainedRole ? "farm_hub_constrained" : "farm_hub";
-      const reason = constrainedRole ?
+      const forcedRole = forcedCapacityHubReady && !saturatedHubReady && !saturatedNetworkReady && !constrainedOpeningHubReady;
+      const constrainedRole = !forcedRole && constrainedOpeningHubReady && !saturatedHubReady && !saturatedNetworkReady;
+      const role = forcedRole ? "farm_hub_deadlock" : constrainedRole ? "farm_hub_constrained" : "farm_hub";
+      const reason = forcedRole ?
+        `FOOD CAPACITY DEADLOCK fields=${existingFields}/${farm.desiredFields} open=0 natural=${Math.round(state.food.totalNaturalRemaining)}; force dedicated farm hub` :
+        constrainedRole ?
         `opening food hub saturated at ${state.food.maxSaturatedHubFields} fields; ${farm.missingFields} fields still missing` :
         `completed farm layout has no touching field slots; ${farm.missingFields} fields still missing`;
       if (resourceEnough(state.resources, cost, reservations)) {
-        actions.push({ type: "BUILD", kind: "farmstead", role, priority: 96, builderPool: ["food", "food_owned", "farm"], reason });
+        actions.push({ type: "BUILD", kind: "farmstead", role, priority: forcedRole ? 112 : 96, builderCount: forcedRole ? 6 : undefined, builderPool: ["food", "food_owned", "farm"], reason });
         addReservation(reservations, cost);
       } else {
-        actions.push({ type: "RESERVE", kind: "farmstead", role, priority: 96, cost, reason: constrainedRole ?
+        actions.push({ type: "RESERVE", kind: "farmstead", role, priority: forcedRole ? 112 : 96, cost, reason: forcedRole ?
+          "reserve wood immediately to escape zero-slot permanent-food deadlock" : constrainedRole ?
           "reserve wood to escape saturated two-field opening food hub" :
           "reserve wood for next compact farm hub after current fields finish" });
         addReservation(reservations, cost);
@@ -743,6 +784,12 @@ function planEconomy(rawState, overrides = {}) {
     }
   }
 
+
+  // IT14.55: do not manufacture dozens of civilians into a zero-slot food network.
+  // Existing workers immediately build the forced hub/fields; civilian production
+  // resumes automatically as soon as legal food capacity exists again.
+  if (severeFoodCapacityDeadlock)
+    actions.push({ type: "PAUSE_POPULATION_TRAINING", priority: 111, reason: `food capacity deadlock: open=0 missing=${farm.missingFields} overflow=${state.workers.overflowWood} idle=${state.workers.idle}` });
 
   // 8. Forge #3 remains an optional City-phase surplus sink. Forge #1 is the
   // transition forge and forge #2 is the Town-phase parallel-tech forge above.

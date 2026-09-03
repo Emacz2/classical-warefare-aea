@@ -481,6 +481,12 @@ const DEFAULT_POLICY = Object.freeze({
   resourceServiceIdealDropDistance: 8,
   resourceServiceHardDropDistance: 11,
   resourceServiceObservedRoundTripSeconds: 3.5,
+  // IT14.55: natural food uses a stricter payback/spatial rule than minerals.
+  // A 12-13m berry carry is not enough reason to litter the base with farmsteads;
+  // genuinely separate food districts still get local dropsites.
+  resourceServiceFoodHardDropDistance: 15,
+  resourceServiceFoodObservedRoundTripSeconds: 4.5,
+  resourceServiceFoodFarmsteadSpacing: 30,
   resourceServiceClusterRadius: 18,
   resourceServiceMinimumWorkers: 3,
   resourceServiceMinimumMineralRemaining: 250,
@@ -489,6 +495,29 @@ const DEFAULT_POLICY = Object.freeze({
   resourceServiceWoodReserve: 100,
   resourceServiceRetryCooldownSeconds: 16,
   resourceCorridorClearance: 3.5,
+  // IT14.55 food-capacity deadlock escape. If natural food is exhausted and the
+  // measured farm network has no legal slot for a missing field, a dedicated farm
+  // hub is mandatory even when earlier natural-food farmsteads each have <3 fields.
+  foodCapacityDeadlockNaturalRemaining: 30,
+  foodCapacityDeadlockPauseOverflow: 8,
+  foodCapacityDeadlockFoodBank: 500,
+  foodCapacityDeadlockWoodSurplus: 1000,
+  // IT14.55 dedicated first-tier mining-tech lane. Food/wood remain primary, so the
+  // Village pair only spends genuine surplus after preserving Town Phase and operating
+  // reserves; any missed Village mining upgrades are deliberately caught early in P2.
+  miningTechP1StartTime: 300,
+  miningTechP1MinimumPopulation: 45,
+  miningTechP1MinimumFields: 2,
+  miningTechP1FoodReserve: 300,
+  miningTechP1WoodReserve: 250,
+  miningTechP2FoodReserve: 500,
+  miningTechP2WoodReserve: 300,
+  miningTechPriority: 805,
+  miningTechBootstrapStartTime: 270,
+  miningTechBootstrapMinimumPopulation: 45,
+  miningTechBootstrapMinimumFields: 2,
+  miningTechBootstrapStoneWorkers: 2,
+  miningTechBootstrapStoneBankTarget: 300,
   // Temporary/fallback lumberjacks may only use trees actually serviced by a
   // completed storehouse or market. This prevents remote no-dropsite wood camps.
   fallbackWoodDropsiteRadius: 36,
@@ -656,15 +685,39 @@ const DEFAULT_POLICY = Object.freeze({
   woodDeepenExtraRemainingPerStorehouse: 300,
   woodDeepenMinimumDistanceImprovement: 3.5,
   woodStorehouseMinimumSpacing: 20,
-  // IT14.31: IT14.30 reached ten storehouses while wood income collapsed. Chasing every
-  // thinning patch with another 100-wood dropsite is self-defeating. Reuse existing
-  // worksites after these phase-scaled caps.
+  // IT14.54: these are SOFT caps on LIVE WOOD-SERVICE DISTRICTS, not global
+  // Storehouse counts. Mineral-service Storehouses and exhausted old wood dropsites do
+  // not consume the wood cap. A phase/wood-income continuity emergency may bypass it.
   maximumVillageWoodStorehouses: 5,
   maximumTownWoodStorehouses: 7,
+  woodIncomeWatchMinimumWorkers: 8,
+  woodIncomeStallSeconds: 12,
+  phase2QueueStallSeconds: 8,
+  // Tiny phase shortfalls are cheaper to bridge with one/two emergency wood deliveries
+  // than by spending another 100 wood before the phase can start.
+  phaseWoodBridgeShortfall: 25,
+  phaseWoodRecoveryDropsiteActionPriority: 125,
+  // Athens can turn a food/stone surplus into zero-wood ranged production once the
+  // Forge exposes unlock_slingers. Costs are read LIVE; these are only strategic floors.
+  athensSlingerLowWood: 300,
+  athensSlingerUnlockFoodReserve: 600,
+  athensSlingerUnlockStoneReserve: 75,
+  athensSlingerUnlockMinimumFoodBank: 900,
   ecoTechFoodReserve: 600,
   ecoTechWoodReserve: 300,
   ecoTechSurplusFood: 900,
   ecoTechSurplusWood: 500,
+  // IT14.55 smart eco-tech ordering. Research priorities react to the current primary-
+  // resource bank rather than following a fixed farm-before-lumber list. These are
+  // operating targets, not hard reservations; phase costs and explicit queue reserves
+  // still decide whether a technology is actually affordable.
+  ecoSmartFoodBankTargetP1: 650,
+  ecoSmartWoodBankTargetP1: 550,
+  ecoSmartFoodBankTargetP2: 900,
+  ecoSmartWoodBankTargetP2: 750,
+  ecoSmartAbundanceRatio: 1.6,
+  ecoSmartBottleneckPressureBonus: 0.9,
+  ecoSmartBottleneckScoreBonus: 110,
   // IT14.48: Athens uses a broad army-composition target instead of a rigid
   // 2 Hoplite : 1 Marine : 1 Javeliner sequence. Leave other civ defaults alone
   // until their own rosters/doctrines are audited.

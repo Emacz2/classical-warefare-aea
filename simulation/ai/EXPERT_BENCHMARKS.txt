@@ -139,3 +139,36 @@ IT14.53 target
 - Gymnasium production is discovered dynamically from the live trainer. If the current CWA roster exposes a champion melee/spearman there, prefer it to reinforce the melee screen; otherwise add only a small complement of ranged champions (including Gastraphetes when available), not a champion-heavy replacement army.
 - During P2 Forge-Tech Push, a built Temple may deliberately train Hippocrates if the live trainer exposes him and no hero already exists/queues.
 - Athens may build one Prytaneion in City Phase from surplus. If no hero survives/queues, prefer Iphicrates when the live Prytaneion exposes him; a surviving Hippocrates is retained rather than deliberately replaced.
+
+IT14.54 target
+- Fix the IT14.53 phase/wood deadlock without rolling back the resource-service system: the Village/Town wood-Storehouse limits are soft caps on LIVE wood-service districts, not global Storehouse counts. Mineral-service Storehouses and exhausted forest camps do not consume the wood cap.
+- A queued Town Phase that has not started after 8 seconds reports its exact live shortfall. Tiny wood shortfalls (<=25; the failed replay was 298/300) are bridge-chopped first so a 2-wood gap is not turned into a 102-wood gap. Larger wood failures may authorize one forest-continuity Storehouse and transfer only that Storehouse's exact cost from the sticky majorTech account into the dropsites account; do not broadly demote the phase queue or expose its reservation to houses/optional spending.
+- Permanent wood workers may no longer silently fall back to stone/metal. A delivered-wood watchdog detects assigned lumberjacks with stalled wood income and forces serviced-forest recovery (or emergency long-haul wood while the new worksite is being established).
+- Diagnostics separate desired jobs from actual current gather resource and report actual wood/stone/metal plus measured delivered-wood rate and phase/wood crisis state.
+- Food and wood remain the primary economy. During a phase-wood crisis military training protects wood; Athens may instead use a live-trainable zero-wood ranged option.
+- Athens checks the live Forge `unlock_slingers` technology under high-food/low-wood pressure. The AI never hardcodes the tech price: while the current tech still costs wood it waits; once the data-side cost is changed to the intended four-slinger price (300F/100S), it may buy the unlock from food/stone surplus and prefer zero-wood slingers until wood recovers.
+- Athens Late P1 Rush uses an explicit ~58/42 infantry screen: target 28 => 16 melee / 12 ranged; minimum launch screen 26 => 15 melee / 11 ranged. Early P1 remains more opportunistic while preserving the same target share.
+- Preserve IT14.53 Temple/Gymnasium/Prytaneion, IT14.52 resource-service geometry, prior combat/trade/siege logic, and keep +35% gather/trade unchanged.
+
+IT14.54 diagnostic replay (NON-BENCHMARK / ABORTED)
+- Doctrine: P2 Forge-Tech Push. Normal 200-pop lobby.
+- Regression was a permanent-food capacity deadlock, not a raw gather-rate problem: by ~6:23 Expert had five Farmsteads, only three Fields, natural food exhausted, and measured field capacity 3/0 while ten fields were wanted.
+- By ~8:47 the deadlock had produced ~42 idle / 60 unproductive units with ~4253 wood banked; by ~12:47 it was ~53 idle / 57 unproductive with ~5314 wood and still Village/P2-waiting.
+- Root cause: IT14.52 natural-food service created several dropsite Farmsteads, while the older permanent-farm anti-spam rule required >=4 network fields (or >=3 on one hub) before authorizing another hub. The network had zero legal field slots at three fields, so field #4 required a new Farmstead while the new Farmstead required field #4.
+- Very Hard reached Town and gathered roughly 22.3k total resources versus Expert roughly 17.3k despite Expert's +35%; this run is rejected as a regression benchmark.
+- The same review also found why the Village mining upgrades rarely appear: Servants and Wedge and Mallet are Village techs costing 200F/100S each, but the broad P1 eco sweep preserves the full Town-Phase reservation and the ordinary finite-resource mining gate waits for four completed fields. With no small pre-P2 stone bootstrap, the extra 100-200 stone for the mining pair often never exists; P2 core eco scheduling then deliberately buys food/wood first and has no dedicated mining lane.
+
+IT14.55 target
+- Preserve the +35% gather/trade multiplier and all working IT14.54 phase/wood-continuity, slinger pressure-valve, Athens special-building, combat, trade and siege contracts.
+- Natural-food resource service must not create a new Farmstead for every ~12-13m carry. Food-service Farmsteads require a more meaningful logistics problem (~15m or >4.5s observed cycle) and a genuinely separate district, normally >=30m from an existing Farmstead.
+- Natural-food dropsites and permanent farm hubs are distinct concepts. If natural food is exhausted, permanent fields are missing, measured open field slots are zero, and no field is pending, force a dedicated `farm_hub_deadlock` regardless of how earlier natural-food Farmsteads split their fields. The forced hub gets priority 112, six builders, and may accept a site with three immediate legal field slots so field expansion can restart at once.
+- During a severe zero-slot food deadlock, pause new civilian production instead of manufacturing dozens of idle workers. Existing workers build the forced Farmstead/fields; normal population training resumes automatically when capacity opens. Ordinary wood-worksite expansion is braked when food is deadlocked and >=1000 wood is already banked, unless a true phase/wood-income emergency exists.
+- Give the two first-tier Village mining technologies (`gather_mining_servants`, `gather_mining_wedgemallet`) their own protected eco lane. Food/wood stay primary: in P1 the lane preserves the full Town-Phase cost plus 300F/250W operating reserves and never delays a ready Town click; in P2 any missed Village pair is caught early behind the core food/wood lanes.
+- Break the mining-tech stone circularity with a tiny Village bootstrap: from ~4:30, pop>=45 and two completed fields, at most two flexible citizen-soldier lumberjacks may temporarily mine stone until ~300 stone is banked, only while wood itself is healthy. Protect that bootstrap stone from the P1 metal rebalance. Higher Town/City mining tiers remain ordinary later surplus choices.
+
+IT14.55 smart eco-tech addendum
+- Food and wood remain the primary economy, but their gather-tech ordering is now bank-responsive rather than fixed.
+- A low-wood/high-food bank makes an affordable lumbering upgrade outrank farming; the inverse applies when food is the bottleneck.
+- P1 eco-sweep candidate scoring, Town core food/wood lanes, and later surplus eco-tech scoring share the same primary-resource pressure model.
+- Town core processes the higher-pressure lane first and reserves its live cost before evaluating the second lane.
+- Phase reservations and affordability gates remain authoritative; dynamic priority cannot spend resources that are protected for Town Phase or other hard reserves.

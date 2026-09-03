@@ -1376,19 +1376,36 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				if (this.Config.difficulty >= difficulty.EXPERT && doctrine)
 				{
 					const target = Math.max(12, Number(doctrine.rushSize) || 20);
-					if (attackPlan.unitStat.Infantry)
+					// IT14.50: Late P1 is a timing push, not an early gamble. Require 26/28
+					// before it can leave; Early P1 remains deliberately more opportunistic.
+					const minFraction = doctrine.id === "late_p1_rush" ? 0.93 : 0.78;
+					const minTotal = Math.max(10, Math.min(target, Math.round(target * minFraction)));
+					let screenLabel = "infantryMin=" + minTotal;
+					if (gameState.getPlayerCiv() === "athen")
+					{
+						// IT14.54: Athens' rush is a screened infantry timing, not whatever 28
+						// infantry happened to finish first. The 28-man Late P1 target becomes
+						// 16 melee / 12 ranged, with a 15/11 minimum launch screen.
+						const meleeShare = Number(mergePolicy().athensMeleeShare) || 0.58;
+						const meleeTarget = Math.max(1, Math.min(target - 1, Math.round(target * meleeShare)));
+						const rangedTarget = Math.max(1, target - meleeTarget);
+						const meleeMin = Math.max(1, Math.min(meleeTarget, Math.round(minTotal * meleeShare)));
+						const rangedMin = Math.max(1, Math.min(rangedTarget, minTotal - meleeMin));
+						delete attackPlan.unitStat.Infantry;
+						attackPlan.unitStat.MeleeInfantry = { "priority": 1.1, "minSize": meleeMin, "targetSize": meleeTarget, "batchSize": 2,
+							"classes": ["Infantry+Melee+CitizenSoldier"], "interests": [["strength", 1], ["costsResource", 0.5, "stone"], ["costsResource", 0.6, "metal"]] };
+						attackPlan.unitStat.RangedInfantry = { "priority": 1, "minSize": rangedMin, "targetSize": rangedTarget, "batchSize": 2,
+							"classes": ["Infantry+Ranged+CitizenSoldier"], "interests": [["strength", 1], ["costsResource", 0.5, "stone"], ["costsResource", 0.6, "metal"]] };
+						screenLabel = "screen=" + meleeTarget + "M/" + rangedTarget + "R min=" + meleeMin + "M/" + rangedMin + "R";
+					}
+					else if (attackPlan.unitStat.Infantry)
 					{
 						attackPlan.unitStat.Infantry.targetSize = target;
-						// IT14.50: Late P1 is a timing push, not an early gamble. IT14.49 launched
-						// the 28-man doctrine at 24; require 26 before it can leave. Early P1
-						// remains deliberately more opportunistic.
-						const minFraction = doctrine.id === "late_p1_rush" ? 0.93 : 0.78;
-						attackPlan.unitStat.Infantry.minSize = Math.max(10, Math.min(target, Math.round(target * minFraction)));
+						attackPlan.unitStat.Infantry.minSize = minTotal;
 					}
 					if (attackPlan.unitStat.FastMoving)
 						delete attackPlan.unitStat.FastMoving;
-					aiWarn("[EXPERT-STRATEGY] create-rush=" + doctrine.id + " targetArmy=" + target +
-						" infantryMin=" + attackPlan.unitStat.Infantry.minSize);
+					aiWarn("[EXPERT-STRATEGY] create-rush=" + doctrine.id + " targetArmy=" + target + " " + screenLabel);
 				}
 				if (this.Config.debug > 1)
 				{
