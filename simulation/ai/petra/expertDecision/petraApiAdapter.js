@@ -29,6 +29,16 @@ const BUILDING_SPECS = Object.freeze({
     queue: "militaryBuilding",
     allowedBuilderJobs: ["wood", "citizenSoldierWood"]
   },
+  // IT14.61 optional hunting-cavalry infrastructure.  `observe:false` keeps the
+  // generic economy snapshot civ-agnostic; the controller only uses a Stable when
+  // the current civ really exposes one and nearby safe hunt justifies the cost.
+  stable: {
+    className: "Stable",
+    template: "structures/{civ}/stable",
+    queue: "militaryBuilding",
+    allowedBuilderJobs: ["wood", "citizenSoldierWood"],
+    observe: false
+  },
   market: {
     className: "Market",
     template: "structures/{civ}/market",
@@ -313,6 +323,9 @@ function observePetra(gameState, context = {}) {
       immediateFoodSlots: Number.isFinite(Number(context.food.immediateFoodSlots)) ? Math.max(0, Number(context.food.immediateFoodSlots)) : 0,
       naturalRunwaySeconds: Number.isFinite(Number(context.food.naturalRunwaySeconds)) ? Math.max(0, Number(context.food.naturalRunwaySeconds)) : 0,
       averageFarmerRate: Number.isFinite(Number(context.food.averageFarmerRate)) ? Math.max(0, Number(context.food.averageFarmerRate)) : 0,
+      preferredFarmersPerField: Number.isFinite(Number(context.food.preferredFarmersPerField)) ? Math.max(1, Number(context.food.preferredFarmersPerField)) : 4,
+      fieldDiminishingReturns: Number.isFinite(Number(context.food.fieldDiminishingReturns)) ? Math.max(0, Math.min(1, Number(context.food.fieldDiminishingReturns))) : 0.90,
+      foodInfrastructureDeficitSeconds: Number.isFinite(Number(context.food.foodInfrastructureDeficitSeconds)) ? Math.max(0, Number(context.food.foodInfrastructureDeficitSeconds)) : 0,
       ccFoodBurnRate: Number.isFinite(Number(context.food.ccFoodBurnRate)) ? Math.max(0, Number(context.food.ccFoodBurnRate)) : 0,
       oneBarracksFoodBurnRate: Number.isFinite(Number(context.food.oneBarracksFoodBurnRate)) ? Math.max(0, Number(context.food.oneBarracksFoodBurnRate)) : 0,
       twoBarracksFoodBurnRate: Number.isFinite(Number(context.food.twoBarracksFoodBurnRate)) ? Math.max(0, Number(context.food.twoBarracksFoodBurnRate)) : 0

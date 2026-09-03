@@ -94,6 +94,24 @@ function foodMode(state, policy) {
   return "prepare";
 }
 
+
+function effectiveFieldWorkerUnits(workers, diminishing = 0.90) {
+  const count = Math.max(0, Math.floor(Number(workers) || 0));
+  if (!count)
+    return 0;
+  const ratio = Number.isFinite(Number(diminishing)) ? Math.max(0, Math.min(1, Number(diminishing))) : 0.90;
+  if (ratio === 1)
+    return count;
+  if (ratio === 0)
+    return 1;
+  return (1 - Math.pow(ratio, count)) / (1 - ratio);
+}
+
+function preferredFieldCrew(state, policy) {
+  const observed = Math.max(1, Math.floor(Number(state.food.preferredFarmersPerField) || Number(policy.farmersPerField) || 4));
+  return Math.max(1, Math.min(Math.floor(Number(policy.farmersPerField) || 4), observed));
+}
+
 function fieldDemand(state, policy) {
   const mode = foodMode(state, policy);
   const currentFarmsteads = state.structures.farmstead + state.foundations.farmstead + state.queued.farmstead;
@@ -115,7 +133,12 @@ function fieldDemand(state, policy) {
     !naturalFoodEmergency;
   const margin = Math.max(1, Number(policy.foodRateSafetyMargin) || 1.12);
   const farmerRate = state.food.averageFarmerRate > 0 ? state.food.averageFarmerRate : 0.7;
-  const fieldIncome = Math.max(0.01, farmerRate * policy.farmersPerField);
+  const farmersPerField = preferredFieldCrew(state, policy);
+  const diminishing = Number.isFinite(Number(state.food.fieldDiminishingReturns)) ? state.food.fieldDiminishingReturns : policy.fieldDiminishingReturns;
+  const effectiveWorkersPerField = effectiveFieldWorkerUnits(farmersPerField, diminishing);
+  // IT14.60: pending-field throughput uses the engine's geometric diminishing-return
+  // curve instead of pretending four farmers each contribute 100% gather rate.
+  const fieldIncome = Math.max(0.01, farmerRate * effectiveWorkersPerField);
   const measuredIncome = Math.max(0, Number(state.food.measuredFoodIncomeRate) || 0);
   const actualNatural = Math.max(0, Number(state.food.naturalIncomeRate) || 0);
   const actualFarm = Math.max(0, Number(state.food.farmIncomeRate) || 0);
@@ -168,7 +191,7 @@ function fieldDemand(state, policy) {
   let capacityFields = 0;
   if (totalNatural <= 0) {
     const committedFoodWorkers = Math.max(0, state.workers.food + state.workers.farm);
-    capacityFields = Math.ceil(committedFoodWorkers / Math.max(1, policy.farmersPerField));
+    capacityFields = Math.ceil(committedFoodWorkers / Math.max(1, farmersPerField));
     desiredFields = Math.max(desiredFields, capacityFields);
   }
 
@@ -210,7 +233,11 @@ function fieldDemand(state, policy) {
     if (runway <= policy.naturalFoodStageFourRunwaySeconds || territoryRatio <= policy.naturalFoodStageFourRatio) stagedFloor = 4;
     if (runway <= policy.naturalFoodStageSixRunwaySeconds || territoryRatio <= policy.naturalFoodStageSixRatio) stagedFloor = 6;
     if (runway <= policy.naturalFoodStageEightRunwaySeconds || territoryRatio <= policy.naturalFoodStageEightRatio) stagedFloor = 8;
-    desiredFields = Math.max(existingFields, Math.min(stagedFloor, policy.preferredPermanentFields));
+    const sustainedDeliveredFoodDeficit = Number(state.food.foodInfrastructureDeficitSeconds || 0) >=
+      Number(policy.foodInfrastructureEmergencySustainSeconds || 15);
+    desiredFields = sustainedDeliveredFoodDeficit ?
+      Math.max(desiredFields, existingFields, Math.min(stagedFloor, policy.preferredPermanentFields)) :
+      Math.max(existingFields, Math.min(stagedFloor, policy.preferredPermanentFields));
   }
 
   // IT14.32: ten permanent fields is the normal mature target. Fields 11-12 are
@@ -258,6 +285,8 @@ function fieldDemand(state, policy) {
     secondBarracksFoodReady,
     secondBarracksBridgeSeconds: Number.isFinite(bridgeSeconds) ? bridgeSeconds : 99999,
     secondBarracksProjectedRate: projectedSecondRate,
+    farmersPerField,
+    effectiveWorkersPerField,
     measuredIncome,
     actualNatural,
     actualFarm,
@@ -406,8 +435,12 @@ function planEconomy(rawState, overrides = {}) {
   // are not proof that the permanent farm network has usable field geometry.
   const foodCapacityDeadlock = farm.missingFields > 0 &&
     state.food.fieldCapacityKnown && state.food.openFieldSlots <= 0 &&
-    state.foundations.field + state.queued.field === 0 &&
-    Math.max(0, Number(state.food.totalNaturalRemaining) || 0) <= policy.foodCapacityDeadlockNaturalRemaining;
+    state.foundations.field + state.queued.field === 0;
+  // IT14.60: measured delivered food is the final authority. A sustained shortfall
+  // while permanent fields are missing makes food infrastructure an emergency even
+  // when the biome still reports natural food somewhere on the map.
+  const foodInfrastructureEmergency = farm.missingFields > 0 &&
+    Number(state.food.foodInfrastructureDeficitSeconds || 0) >= Number(policy.foodInfrastructureEmergencySustainSeconds || 15);
   const severeFoodCapacityDeadlock = foodCapacityDeadlock &&
     (state.workers.overflowWood >= policy.foodCapacityDeadlockPauseOverflow ||
      state.workers.idle >= policy.foodCapacityDeadlockPauseOverflow ||
@@ -755,22 +788,23 @@ function planEconomy(rawState, overrides = {}) {
     const forcedCapacityHubReady = foodCapacityDeadlock;
     const permanentHubNeeded = farm.missingFields > 0 && openFieldSlots <= 0 &&
       pendingFields === 0 && (saturatedHubReady || saturatedNetworkReady || constrainedOpeningHubReady || forcedCapacityHubReady);
-    if (permanentHubNeeded &&
-        state.foundations.farmstead + state.queued.farmstead === 0 && farm.mode !== "natural_expand") {
+    const farmsteadActionAlreadyPlanned = actions.some(action => action && action.kind === "farmstead" && (action.type === "BUILD" || action.type === "RESERVE"));
+    if (permanentHubNeeded && !farmsteadActionAlreadyPlanned &&
+        state.foundations.farmstead + state.queued.farmstead === 0) {
       const cost = costOf(state, policy, "farmstead");
-      const forcedRole = forcedCapacityHubReady && !saturatedHubReady && !saturatedNetworkReady && !constrainedOpeningHubReady;
+      const forcedRole = forcedCapacityHubReady;
       const constrainedRole = !forcedRole && constrainedOpeningHubReady && !saturatedHubReady && !saturatedNetworkReady;
       const role = forcedRole ? "farm_hub_deadlock" : constrainedRole ? "farm_hub_constrained" : "farm_hub";
       const reason = forcedRole ?
-        `FOOD CAPACITY DEADLOCK fields=${existingFields}/${farm.desiredFields} open=0 natural=${Math.round(state.food.totalNaturalRemaining)}; force dedicated farm hub` :
+        `FOOD CAPACITY DEADLOCK fields=${existingFields}/${farm.desiredFields} open=0 natural=${Math.round(state.food.totalNaturalRemaining)}; force dedicated farm hub now` :
         constrainedRole ?
         `opening food hub saturated at ${state.food.maxSaturatedHubFields} fields; ${farm.missingFields} fields still missing` :
         `completed farm layout has no touching field slots; ${farm.missingFields} fields still missing`;
       if (resourceEnough(state.resources, cost, reservations)) {
-        actions.push({ type: "BUILD", kind: "farmstead", role, priority: forcedRole ? 112 : 96, builderCount: forcedRole ? 6 : undefined, builderPool: ["food", "food_owned", "farm"], reason });
+        actions.push({ type: "BUILD", kind: "farmstead", role, priority: forcedRole ? 114 : 96, builderCount: forcedRole ? 6 : undefined, builderPool: ["food", "food_owned", "farm"], reason });
         addReservation(reservations, cost);
       } else {
-        actions.push({ type: "RESERVE", kind: "farmstead", role, priority: forcedRole ? 112 : 96, cost, reason: forcedRole ?
+        actions.push({ type: "RESERVE", kind: "farmstead", role, priority: forcedRole ? 114 : 96, cost, reason: forcedRole ?
           "reserve wood immediately to escape zero-slot permanent-food deadlock" : constrainedRole ?
           "reserve wood to escape saturated two-field opening food hub" :
           "reserve wood for next compact farm hub after current fields finish" });
@@ -787,7 +821,7 @@ function planEconomy(rawState, overrides = {}) {
     const naturalExpansionFieldEmergency = farm.mode === "natural_expand" &&
       state.resources.food < policy.naturalFoodEmergencyFieldFoodBank;
     if (farm.missingFields > 0 && openFieldSlots > 0 && pendingFields < parallelFieldCap &&
-        (farm.mode !== "natural_expand" || naturalExpansionFieldEmergency)) {
+        (farm.mode !== "natural_expand" || naturalExpansionFieldEmergency || foodInfrastructureEmergency)) {
       const fieldCost = costOf(state, policy, "field");
       const availableStarts = Math.max(0, parallelFieldCap - pendingFields);
       // When permanent food is materially behind (for example 6 built vs 14 wanted),
@@ -798,12 +832,12 @@ function planEconomy(rawState, overrides = {}) {
       for (let i = 0; i < starts; ++i) {
         if (!resourceEnough(state.resources, fieldCost, reservations)) {
           if (i === 0) {
-            actions.push({ type: "RESERVE", kind: "field", priority: 95, cost: fieldCost, reason: "reserve wood for just-in-time permanent food capacity" });
+            actions.push({ type: "RESERVE", kind: "field", priority: foodInfrastructureEmergency ? 113 : 95, cost: fieldCost, reason: foodInfrastructureEmergency ? "sustained delivered-food deficit: reserve emergency field capacity" : "reserve wood for just-in-time permanent food capacity" });
             addReservation(reservations, fieldCost);
           }
           break;
         }
-        actions.push({ type: "BUILD", kind: "field", role: `capacity_${i+1}`, priority: 95, builderPool: ["food", "food_owned", "farm"], reason: farm.prebuild ? "natural-food runway says permanent food should be prepared now" : `${farm.mode} food mode needs field capacity (${i+1}/${starts})` });
+        actions.push({ type: "BUILD", kind: "field", role: `capacity_${i+1}`, priority: foodInfrastructureEmergency ? 113 : 95, builderPool: ["food", "food_owned", "farm"], reason: foodInfrastructureEmergency ? `sustained delivered-food deficit needs field capacity (${i+1}/${starts})` : farm.prebuild ? "natural-food runway says permanent food should be prepared now" : `${farm.mode} food mode needs field capacity (${i+1}/${starts})` });
         addReservation(reservations, fieldCost);
       }
     }
@@ -844,6 +878,9 @@ function planEconomy(rawState, overrides = {}) {
       foodMode: farm.mode,
       desiredFields: farm.desiredFields,
       desiredFarmsteads: farm.desiredFarmsteads,
+      preferredFarmersPerField: farm.farmersPerField,
+      effectiveWorkersPerField: farm.effectiveWorkersPerField,
+      foodInfrastructureEmergency,
       farmPrebuild: farm.prebuild,
       maxSaturatedHubFields: state.food.maxSaturatedHubFields,
       fieldsForOneBarracks: farm.fieldsForOneBarracks,
@@ -872,6 +909,7 @@ export {
   hasWorthwhileAlternativeFood,
   foodMode,
   fieldDemand,
+  effectiveFieldWorkerUnits,
   woodWorksiteDecision,
   resourceEnough
 };

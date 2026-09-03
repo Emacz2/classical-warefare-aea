@@ -97,6 +97,9 @@ function normalizeState(input = {}) {
       immediateFoodSlots: n(food.immediateFoodSlots),
       naturalRunwaySeconds: n(food.naturalRunwaySeconds),
       averageFarmerRate: n(food.averageFarmerRate),
+      preferredFarmersPerField: Math.max(1, n(food.preferredFarmersPerField, 4)),
+      fieldDiminishingReturns: Number.isFinite(food.fieldDiminishingReturns) ? Math.max(0, Math.min(1, food.fieldDiminishingReturns)) : 0.90,
+      foodInfrastructureDeficitSeconds: n(food.foodInfrastructureDeficitSeconds),
       ccFoodBurnRate: n(food.ccFoodBurnRate),
       oneBarracksFoodBurnRate: n(food.oneBarracksFoodBurnRate),
       twoBarracksFoodBurnRate: n(food.twoBarracksFoodBurnRate)

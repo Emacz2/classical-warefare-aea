@@ -87,7 +87,7 @@ function decideCivilianJob(input = {}) {
 
   // Once the 20-civilian wood workforce is filled, every NEW civilian is food-owned.
   // Completed farm slots are preferred; safe natural food remains a temporary bridge.
-  const farmersPerField = Math.max(1, finiteNonNegativeInteger(input.farmersPerField, 5));
+  const farmersPerField = Math.max(1, finiteNonNegativeInteger(input.farmersPerField, 4));
   const fields = finiteNonNegativeInteger(input.fields, 0);
   const farmWorkers = finiteNonNegativeInteger(input.farmWorkers, 0);
   const farmCapacity = Number.isFinite(Number(input.farmCapacity)) ? Math.max(0, Number(input.farmCapacity)) : fields * farmersPerField;
@@ -110,7 +110,7 @@ function decidePostOpeningCivilianJob(input = {}) {
   const metalWorkers = finiteNonNegativeInteger(input.metalWorkers, 0);
   const fields = finiteNonNegativeInteger(input.fields, 0);
   const farmWorkers = finiteNonNegativeInteger(input.farmWorkers, 0);
-  const farmersPerField = Math.max(1, finiteNonNegativeInteger(input.farmersPerField, 3));
+  const farmersPerField = Math.max(1, finiteNonNegativeInteger(input.farmersPerField, 4));
   const farmCapacity = Math.max(0, fields * farmersPerField);
   const requiredFoodWorkers = Math.max(0, finiteNonNegativeInteger(input.requiredFoodWorkers, 10));
   const naturalFoodAvailable = !!input.naturalFoodAvailable;

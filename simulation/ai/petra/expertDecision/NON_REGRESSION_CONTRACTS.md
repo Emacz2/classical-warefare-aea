@@ -326,3 +326,25 @@ Replay regressions locked by IT14:
 - Missing Village mining upgrades remain a dedicated lane in City Phase as high-priority tech debt. Reaching P3 with `gather_mining_servants` or `gather_mining_wedgemallet` still missing must trigger the lane when affordable.
 - P1 remains exactly two Barracks; Town may reach three. Barracks #4 is City-only at roughly 140+ population with a healthy bank; Barracks #5 is City-only at roughly 165+ population with a stronger bank.
 - After one failed strategic placement, emergency fallback may ignore economic corridor/resource-comfort exclusions while retaining territory, accessibility and engine obstruction legality. This specifically prevents Gymnasium/Prytaneion from retrying thousands of impossible "pretty" positions.
+
+## IT14.60 biome-proof food-capacity / four-farmer / siege-cap contract
+
+- Expert gather/trade multiplier remains 1.35.
+- Standard permanent fields use four preferred permanent farmers, clamped to the live/template `MaxGatherers`; lower-cap fields (for example Han rice paddies) keep their real lower cap. A fifth standard-field farmer is emergency overflow only.
+- Field throughput planning uses the engine diminishing-return curve geometrically (`1 + d + d^2 + ...`) rather than `farmers × baseRate`. With the current standard `d=0.90`, four farmers provide 3.439 unsaturated-worker equivalents.
+- If `desiredFields > existingFields`, field placement capacity is known, zero legal field slots remain, and no field is pending, another farm hub is a hard geometry obligation immediately; natural-food remaining may not postpone it.
+- A sustained delivered-food shortfall of at least 15 seconds while permanent fields are missing raises new Field spending to emergency priority. Biome labels never override measured food throughput.
+- Existing 6/8/10 permanent-field population floors remain unchanged for this test; 14.60 fixes execution before raising field-count floors.
+- Legacy Petra Expert siege scaling is capped at two rams for normal attacks and three for Huge attacks. The dedicated Expert finishing lane remains two rams; the army must never wait for a five-to-seven-ram siege park.
+- Preserve IT14.59 rally/worker-stability/P3-production behavior, IT14.58 benchmark multiplier, and all prior combat, phase and logistics contracts unless explicitly superseded above.
+
+## IT14.61 construction-robustness / Wicker-release / map-hunt contract
+
+- The opening Storehouse is mandatory. An Expert exact Storehouse plan that remains `awaiting-foundation` beyond the opening watchdog is cancelled and replanned; each recovery widens candidate rings and considers more of the ranked opening woodsites.
+- Storehouse/Farmstead exact construction plans may not remain permanently queued without a foundation. Economic-task retries preserve the same Expert ownership/builder contracts and may adopt a real orphan foundation before cancelling anything.
+- A Wicker secondary-food Farmstead is opportunistic, not a global lock. Its placement search broadens after failures, and an unfounded branch is released after repeated failures/time/food emergency or when permanent food declares `farm_hub_deadlock`. Peeled civilians then work the discovered food directly while the permanent Farmstead lane is free.
+- A zero-slot `farm_hub_deadlock` may accept a two-field emergency hub after three failed searches. Normal permanent hubs retain the stricter four-slot ideal / three-slot fallback contract and >=30m Farmstead spacing.
+- Athens `late_p1_rush` treats Village Melee-I as an obligation once the attack is ready: the army remains productive until Melee-I completes or the existing absolute launch deadline is reached. `early_p1_rush` is not held for Forge/Melee-I.
+- Additional hunting cavalry are map-aware and are never trained from the Civic Centre. If sufficiently rich safe nearby hunt exists after roughly population 30, a buildable Stable may train up to two extra non-champion cavalry (three hunters total). The Stable requires core Barracks infrastructure and genuine surplus; food-capacity emergencies always veto the investment. Early-P1 uses substantially higher hunt thresholds to protect the proven rush timing.
+- Four preferred farmers per standard field, diminishing-return-aware food math, existing permanent-field floors, P1/P2 Barracks ceilings, and the 1-3 ram finishing behavior remain unchanged from IT14.60.
+- Benchmark gather/trade multiplier remains 1.35.

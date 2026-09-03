@@ -214,3 +214,22 @@ IT14.59 target
 - Treat missed P1 mining technologies as P3 tech debt.
 - P3 all-in production: three Barracks remains the Town ceiling; add #4 around 140 pop and #5 around 165 pop only with healthy food/wood banks.
 - Strategic fallback for Gymnasium/Prytaneion must actually find a legal site instead of repeatedly failing resource-corridor aesthetics.
+
+
+IT14.60 three-replay validation
+- Benchmark multiplier remained +35% / 1.35.
+- Nubia / Late P1 Timing Rush: rejected diagnostic. A Wicker-branch Farmstead repeatedly failed placement and monopolized the Farmstead slot; permanent food wanted 6-8 fields but produced only one, creating a large wood bank and an invalid Late-P1 launch without the promised Forge/Melee-I package.
+- Nubia / P2 Forge-Tech Push: rejected diagnostic. The opening Storehouse was queued but never created a foundation; by roughly 6:55 Expert was around 92 population with no Storehouse, two fields, and extreme idle/unproductive counts. This is a stalled construction invariant, not an acceptable biome penalty.
+- Savanna / Early P1 Rush: CLEAN WIN in 1002.4s = 16:42.4, the fastest recent benchmark. Around 5:03 Expert had 6 Fields, 2 Farmsteads, 3 Storehouses and 2 Barracks; the 20-unit P1 rush launched around 5:35 against ~38 enemy population. By ~10:39 Expert had 8 Fields and ~21 delivered food/sec. Finishing siege correctly used a single ram against an already broken opponent instead of waiting for 5-7.
+- The Savanna win counts as the first of the two additional dominant +35% validation wins requested after IT14.58. One more similarly clean/dominant +35% win is required before dropping directly to +25%; +30% remains skipped.
+
+IT14.61 target
+- Preserve the successful IT14.60 four-preferred-farmers / diminishing-return math, 6/8/10 field floors, P1<=2 Barracks, and 1-3 ram finishing behavior.
+- Opening Storehouse is a hard invariant. If an exact queued Storehouse does not create a foundation within ~10s, cancel/replan it and progressively widen across additional ranked woodsites; placement failures also widen the search.
+- Economic fixed-plan watchdog: stalled Farmstead/Storehouse exact plans may not remain awaiting-foundation indefinitely.
+- Wicker branch may not hold the only Farmstead slot hostage. Broaden its natural-food placement after failures; after repeated failures, ~14s, a sustained food-infrastructure deficit, or a forced permanent-food deadlock, abandon the unfounded branch Farmstead, send the peeled civilians to the discovered food itself, and release the Farmstead slot to permanent food.
+- `farm_hub_deadlock` receives a faster emergency fallback: after three failed zero-slot hub searches it may accept a useful two-field hub, while ordinary hubs retain the stricter normal 4->3 behavior.
+- Athens Late-P1 Melee-I becomes a real strategic obligation. If the timing army is ready but Melee-I is still missing, keep the army economically productive and hold until the tech completes or the existing absolute ~7:45 hard deadline; Early-P1 is unchanged.
+- Map-aware hunt investment: the CC remains civilian-only. Around population 30, if safe same-land own/neutral hunt within the existing hunt radius is rich enough, Expert may build a real Stable from surplus and train 1-2 additional cavalry there, targeting up to three hunting cavalry total. Early-P1 uses much higher hunt thresholds so the proven 16:42 rush is not casually delayed. Food-capacity emergencies always outrank the Stable/hunters.
+- Restore and continue this EXPERT_BENCHMARKS.txt file in the release ZIP.
+- Benchmark multiplier remains +35% / 1.35 for testing IT14.61.

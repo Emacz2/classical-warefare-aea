@@ -119,7 +119,12 @@ const DEFAULT_POLICY = Object.freeze({
   naturalFoodStageFourRatio: 0.30,
   naturalFoodStageSixRatio: 0.22,
   naturalFoodStageEightRatio: 0.14,
-  farmersPerField: 3,
+  // IT14.60: four workers is the normal density for a standard five-slot field.
+  // With the CWA 0.90 diminishing-return curve the 4th farmer still contributes
+  // 72.9% of an unsaturated worker; the 5th (65.6%) is emergency overflow only.
+  // Runtime code clamps this preferred crew to the field template's real MaxGatherers.
+  farmersPerField: 4,
+  fieldDiminishingReturns: 0.90,
   // IT14.27: compact human-like farm blocks target the four farmstead sides.
   // Do not plan six speculative perimeter slots; four reliable N/E/S/W positions
   // are the capacity contract, with small tangential fallback only if one side is blocked.
@@ -128,7 +133,12 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.29: keep four-slot farm hubs as the normal standard, but after repeated
   // real-map placement failures accept a compact three-field hub rather than deadlock.
   minimumFarmHubFieldSlotsFallback: 3,
+  minimumFarmHubFieldSlotsEmergency: 2,
   farmHubFallbackAfterFailures: 6,
+  // IT14.61: when the economy has already proved a zero-slot permanent-food
+  // deadlock, accept a two-field emergency hub after only a few failures instead
+  // of repeating the normal 4->3 search six times.
+  farmHubDeadlockEmergencyFallbackAfterFailures: 3,
   // IT14.21 user contract: a NEW permanent farmstead is not allowed merely because
   // field demand is high. The current compact block must have at least three completed
   // fields and no remaining touching slot. Natural-food dropsites are the only exception.
@@ -156,6 +166,18 @@ const DEFAULT_POLICY = Object.freeze({
   requiredLowWoodObservations: 2,
   woodWorksiteRadius: 30,
   cavalryHuntSearchRadius: 220,
+  // IT14.61 map-aware hunting cavalry.  The CC remains civilian-only; Expert may
+  // add a Stable and 1-2 extra cavalry from that Stable only when nearby own/neutral
+  // hunt is rich enough to repay the infrastructure without starving the core build.
+  huntingCavalryPopulation: 30,
+  huntingCavalryMinimumHuntForTwo: 450,
+  huntingCavalryMinimumHuntForThree: 800,
+  huntingCavalryEarlyRushMinimumHuntForTwo: 900,
+  huntingCavalryEarlyRushMinimumHuntForThree: 1400,
+  huntingCavalryStableWoodReserve: 250,
+  huntingCavalryStableStoneReserve: 50,
+  huntingCavalryFoodReserve: 250,
+  huntingCavalryTrainingPriority: 965,
   firstBarracksPopulation: 30,
   minimumFieldsBeforeBarracks: 2,
   secondBarracksPopulation: 0,
@@ -351,9 +373,8 @@ const DEFAULT_POLICY = Object.freeze({
   matureFoodWoodReleaseRatio: 1.75,
   matureFoodWoodReleaseRateRatio: 1.30,
   matureFoodWoodReleaseWoodBankCeiling: 550,
-  // IT14.31: overflow farm slots (4th/5th gatherers) are emergency productivity only.
-  // Under a mature food surplus, peel those overflow farmers back to wood before
-  // creating yet more permanent food capacity. Preferred three-per-field crews remain.
+  // IT14.60: the preferred 1st-4th farmers are permanent. The fifth engine slot
+  // is emergency productivity only and remains releasable when wood becomes constrained.
   foodSurplusFarmerReleaseStartTime: 360,
   foodSurplusFarmerReleaseFoodBank: 1400,
   foodSurplusFarmerReleaseWoodBankCeiling: 550,
@@ -369,8 +390,8 @@ const DEFAULT_POLICY = Object.freeze({
   extremeFoodWoodReleaseBatch: 8,
   // When the mature food engine is rich but metal has collapsed, shift a tiny
   // amount of established labor instead of waiting for a new civilian that may
-  // never exist at the population cap.  Stone workers are preferred, then a
-  // third farmer may leave a field, but fields never fall below two workers.
+  // never exist at the population cap. Stone workers are preferred, then upper
+  // field workers may leave, but fields never fall below two workers.
   strategicMetalRebalanceStartTime: 300,
   strategicMetalFoodBank: 300,
   strategicMetalBankFloor: 600,
@@ -487,6 +508,14 @@ const DEFAULT_POLICY = Object.freeze({
   phase2HouseSearchMaximumDistance: 96,
   phase2HouseDistrictRadius: 34,
   barracksMinimumCCDistance: 50,
+  // IT14.61 economic foundations are opening invariants, not best-effort tasks.
+  // A fixed construction plan that never creates a foundation is cancelled and
+  // replanned quickly so one queue/builder/pathing stall cannot destroy the build.
+  openingStorehouseAwaitingFoundationRetrySeconds: 10,
+  wickerFarmsteadAwaitingFoundationRetrySeconds: 10,
+  economicAwaitingFoundationRetrySeconds: 18,
+  wickerFarmsteadPlacementFailureLimit: 4,
+  wickerFarmsteadPlacementTimeoutSeconds: 14,
   barracksAwaitingFoundationRetrySeconds: 20,
   // IT14.41: Barracks #3 is throughput infrastructure. If its first exact-placement
   // attempt does not create a foundation quickly, retry with the broad frontier sweep
@@ -535,10 +564,11 @@ const DEFAULT_POLICY = Object.freeze({
   resourceServiceWoodReserve: 100,
   resourceServiceRetryCooldownSeconds: 16,
   resourceCorridorClearance: 3.5,
-  // IT14.55 food-capacity deadlock escape. If natural food is exhausted and the
-  // measured farm network has no legal slot for a missing field, a dedicated farm
-  // hub is mandatory even when earlier natural-food farmsteads each have <3 fields.
-  foodCapacityDeadlockNaturalRemaining: 30,
+  // IT14.60 food-capacity invariant. If permanent fields are missing and the measured
+  // farm network has no legal field-placement slot, a dedicated farm hub is mandatory
+  // immediately. Natural-food remaining no longer postpones solving impossible geometry.
+  foodCapacityDeadlockNaturalRemaining: 30, // legacy diagnostic threshold; not a build gate
+  foodInfrastructureEmergencySustainSeconds: 15,
   foodCapacityDeadlockPauseOverflow: 8,
   foodCapacityDeadlockFoodBank: 500,
   foodCapacityDeadlockWoodSurplus: 1000,

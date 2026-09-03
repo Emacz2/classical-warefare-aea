@@ -439,11 +439,30 @@ AttackPlan.prototype.addSiegeUnits = function(gameState)
 
 	this.siegeState = AttackPlan.SIEGE_ADDED;
 	let targetSize;
-	if (this.Config.difficulty < difficulty.MEDIUM)
+	if (this.Config.difficulty >= difficulty.EXPERT)
+	{
+		// IT14.60: Expert's controller already runs a dedicated siege-finisher lane.
+		// Do not let legacy Petra difficulty scaling turn a healthy push into a wait for
+		// five-to-seven rams. Two rams are enough to launch; Huge attacks may plan a
+		// third as reinforcement, but never require a larger siege park. Count siege
+		// already alive or queued anywhere so legacy and Expert lanes cannot stack.
+		const cap = this.type === AttackPlan.TYPE_HUGE_ATTACK ? 3 : 2;
+		let already = 0;
+		for (const ent of gameState.getOwnUnits().values())
+			if (ent && ent.hasClass("Siege"))
+				++already;
+		for (const queue of Object.values(gameState.ai.queues || {}))
+			for (const plan of queue && queue.plans || [])
+				if (plan && plan.category === "unit" && plan.template && plan.template.hasClass && plan.template.hasClass("Siege"))
+					already += Math.max(1, Number(plan.number) || 1);
+		targetSize = Math.max(0, cap - already);
+	}
+	else if (this.Config.difficulty < difficulty.MEDIUM)
 		targetSize = this.type === AttackPlan.TYPE_HUGE_ATTACK ? Math.max(this.Config.difficulty, 1) : Math.max(this.Config.difficulty - 1, 0);
 	else
 		targetSize = this.type === AttackPlan.TYPE_HUGE_ATTACK ? this.Config.difficulty + 1 : this.Config.difficulty - 1;
-	targetSize = Math.max(Math.round(this.Config.popScaling * targetSize), this.type === AttackPlan.TYPE_HUGE_ATTACK ? 1 : 0);
+	if (this.Config.difficulty < difficulty.EXPERT)
+		targetSize = Math.max(Math.round(this.Config.popScaling * targetSize), this.type === AttackPlan.TYPE_HUGE_ATTACK ? 1 : 0);
 	if (!targetSize)
 		return true;
 	// no minsize as we don't want the plan to fail at the last minute though.

@@ -1225,24 +1225,33 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			{
 				const techName = "citystate/city_state_attack_melee_01";
 				const techQueue = gameState.ai.queues && gameState.ai.queues.expertAthensP1Melee;
-				const techPending = !(gameState.isResearched && gameState.isResearched(techName)) &&
-					((gameState.isResearching && gameState.isResearching(techName)) || techQueue && techQueue.hasQueuedUnits && techQueue.hasQueuedUnits());
+				const researched = !!(gameState.isResearched && gameState.isResearched(techName));
+				const researching = !!(gameState.isResearching && gameState.isResearching(techName));
+				const queued = !!(techQueue && techQueue.hasQueuedUnits && techQueue.hasQueuedUnits());
 				const p = mergePolicy();
 				const absolute = Number(p.athensP1MeleeAbsoluteLaunchTime) || 465;
-				if (techPending && gameState.ai.elapsedTime < absolute)
+				const start = Number(p.athensP1MeleeTechStartTime) || 250;
+				// IT14.61: Melee-I is a Late-P1 strategic obligation, not merely a reason to
+				// wait when a research plan happened to queue successfully.  A ready army stays
+				// economically productive while Forge/research catches up, with the same hard
+				// absolute launch ceiling as the safety valve. Early-P1 is intentionally untouched.
+				if (!researched && gameState.ai.elapsedTime >= start && gameState.ai.elapsedTime < absolute)
 				{
-					if (!Number.isFinite(Number(attack.expertAthensP1MeleeHoldUntil)))
-						attack.expertAthensP1MeleeHoldUntil = Math.min(absolute, gameState.ai.elapsedTime + (Number(p.athensP1MeleeReadyHoldSeconds) || 20));
-					if (gameState.ai.elapsedTime < attack.expertAthensP1MeleeHoldUntil)
-					{
-						if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
-						{
-							this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
-							aiWarn("[EXPERT-ATHENS-P1] hold ready late-rush for melee-I plan=" + attack.name + " army=" + attack.unitCollection.length + " until=" + Math.round(attack.expertAthensP1MeleeHoldUntil));
-						}
-						++unexecutedAttacks[attackType];
-						continue;
+					if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
+				{
+						this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
+						const status = researching ? "researching" : queued ? "queued" : "waiting-for-forge-or-tech";
+						aiWarn("[EXPERT-ATHENS-P1] hold late-rush melee-obligation plan=" + attack.name +
+							" army=" + attack.unitCollection.length + " status=" + status + " absolute=" + Math.round(absolute));
 					}
+					++unexecutedAttacks[attackType];
+					continue;
+				}
+				if (!researched && gameState.ai.elapsedTime >= absolute && gameState.ai.elapsedTime < absolute + 2 &&
+				    gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 1)
+				{
+					this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
+					aiWarn("[EXPERT-ATHENS-P1] launch-without-melee hard-deadline plan=" + attack.name + " army=" + attack.unitCollection.length);
 				}
 			}
 
