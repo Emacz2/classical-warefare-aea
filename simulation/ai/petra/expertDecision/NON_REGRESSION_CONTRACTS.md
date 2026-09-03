@@ -314,3 +314,15 @@ Replay regressions locked by IT14:
 - Large lumber crews pre-build the next serviced forest district before depletion.
 - Strategic construction tasks adopt matching orphan foundations rather than abandoning a real foundation after a tracker mismatch.
 - The +35% Expert multiplier remains 1.35.
+
+
+## IT14.59 execution-efficiency / City-throughput contract
+- Preserve the IT14.58 1.35 benchmark multiplier and all working phase, combat, siege, food-capacity and operating-population contracts.
+- The active engine training item, not a merely AI-queued future batch, owns the trainer rally point. Expert reconciles current training metadata every update and visibly rallies economy batches directly to a live gather target.
+- Cross-resource worker moves use a 30-second lease. Ordinary `food_recovery` does not automatically break the lease; only strong recovery or a true emergency bank may. Temporary overflow wood receives a 36-second lease under the same rule.
+- A rejected `setDesiredJob` request may not mutate FARM_LOCK/home/adaptive ownership, increment rebalance counters, start cooldowns, or emit a success log. Permanent farmers remain locked unless an actual transition is accepted.
+- A worthwhile third natural-food district may be pipelined once the currently serviced district falls to roughly 350 food; literal exhaustion is no longer required. A resource-service food Farmstead preempts same-frame new Field spending unless food is critically low.
+- Athens City-State attack tech follows its melee-majority/Hoplite doctrine: the intended 58% melee share is considered even during an opening ranged pulse, and a same-tier ranged attack does not outrank its missing melee counterpart.
+- Missing Village mining upgrades remain a dedicated lane in City Phase as high-priority tech debt. Reaching P3 with `gather_mining_servants` or `gather_mining_wedgemallet` still missing must trigger the lane when affordable.
+- P1 remains exactly two Barracks; Town may reach three. Barracks #4 is City-only at roughly 140+ population with a healthy bank; Barracks #5 is City-only at roughly 165+ population with a stronger bank.
+- After one failed strategic placement, emergency fallback may ignore economic corridor/resource-comfort exclusions while retaining territory, accessibility and engine obstruction legality. This specifically prevents Gymnasium/Prytaneion from retrying thousands of impossible "pretty" positions.

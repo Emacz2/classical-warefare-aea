@@ -203,3 +203,14 @@ IT14.58 target
 - Keep independent buildings clear of valuable mines/natural food.
 - Adopt orphan strategic foundations and give Forge/Temple/Arsenal/Gymnasium/Prytaneion a 45s grace period.
 - Preserve Expert 1.35 benchmark multiplier.
+
+
+IT14.59 target
+- Preserve +35% / 1.35 gather-trade benchmark for the next two validation games; do not change difficulty bonus yet. If both are similarly decisive, the next benchmark step is directly +25%, skipping +30%.
+- Make CC/economy rally visibly active by reconciling the current engine training item every AI update.
+- Eliminate false worker rebalances: no FARM_LOCK/adaptive metadata mutation or success log unless setDesiredJob accepts the move; 30s cross-resource lease, 36s temporary-fallback lease, strong-recovery-only lease override.
+- Pipeline the next worthwhile natural-food Farmstead at ~350 remaining on the active serviced district and let a food-service Farmstead preempt same-frame Field spending.
+- Athens melee attack tiers should beat same-tier ranged attack while the doctrine remains melee-majority/Hoplite-heavy.
+- Treat missed P1 mining technologies as P3 tech debt.
+- P3 all-in production: three Barracks remains the Town ceiling; add #4 around 140 pop and #5 around 165 pop only with healthy food/wood banks.
+- Strategic fallback for Gymnasium/Prytaneion must actually find a legal site instead of repeatedly failing resource-corridor aesthetics.

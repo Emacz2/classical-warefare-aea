@@ -586,6 +586,24 @@ function planEconomy(rawState, overrides = {}) {
     }
   }
 
+  // IT14.59: City boom converts the mature bank into production throughput. The
+  // fourth/fifth Barracks are impossible before P3 by construction.
+  if (state.phase >= 3 && pendingBarracks === 0 && completedBarracks >= 3 && completedBarracks < 5) {
+    const fourth = completedBarracks === 3;
+    const popGate = fourth ? policy.cityFourthBarracksPopulation : policy.cityFifthBarracksPopulation;
+    const foodGate = fourth ? policy.cityFourthBarracksFoodBank : policy.cityFifthBarracksFoodBank;
+    const woodGate = fourth ? policy.cityFourthBarracksWoodBank : policy.cityFifthBarracksWoodBank;
+    if (state.population.used >= popGate && state.resources.food >= foodGate && state.resources.wood >= woodGate) {
+      const cost = costOf(state, policy, "barracks");
+      if (resourceEnough(state.resources, cost, reservations)) {
+        actions.push({ type: "BUILD", kind: "barracks", role: fourth ? "fourth_p3" : "fifth_p3",
+          priority: fourth ? 94 : 92, builderPool: strategicBuilderPool,
+          reason: `City all-in production ramp ${completedBarracks + 1}/5 (${state.population.used} pop)` });
+        addReservation(reservations, cost);
+      }
+    }
+  }
+
   // First Town market: retain the resource-dropsite behavior that worked well in
   // IT14.32.
   const marketPipeline = state.structures.market + state.foundations.market + state.queued.market;

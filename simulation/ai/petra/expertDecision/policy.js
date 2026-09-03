@@ -32,7 +32,11 @@ const DEFAULT_POLICY = Object.freeze({
   // support three workers; an unknown isolated fruit source uses the same safe cap.
   naturalFoodAppleTreeMaxWorkers: 3,
   naturalFoodSingleSupplyMaxWorkers: 3,
-  // Finish the newly-served natural-food district before purchasing the next one.
+  // A serviced natural-food district remains the immediate worker target, but IT14.59
+  // no longer waits for literal exhaustion before scouting/building the NEXT worthwhile
+  // district. This lets a third fruit/berry source receive its Farmstead before a field
+  // consumes the same 100 wood. The old depletion threshold still defines true exhaustion.
+  naturalExpansionNextDistrictUnlockRemaining: 350,
   naturalExpansionDepletionThreshold: 10,
   targetWoodCivilians: 20,
   // IT14.43: humans turn a gross resource surplus into construction tempo.  Allow
@@ -225,6 +229,14 @@ const DEFAULT_POLICY = Object.freeze({
   phase2ThirdBarracksMinimumFields: 6,
   phase2ThirdBarracksFoodBank: 300,
   phase2ThirdBarracksWoodBank: 200,
+  // IT14.59 City all-in throughput. P1 stays at two Barracks and P2 at three; the
+  // fourth/fifth are explicitly City-only so the early phase/tech timing cannot regress.
+  cityFourthBarracksPopulation: 140,
+  cityFourthBarracksFoodBank: 500,
+  cityFourthBarracksWoodBank: 600,
+  cityFifthBarracksPopulation: 165,
+  cityFifthBarracksFoodBank: 700,
+  cityFifthBarracksWoodBank: 900,
   // IT14.39: Town-phase food/wood productivity techs are core infrastructure, not
   // late-game surplus spending. They get first reservation priority alongside the
   // first forge upgrades so the home economy keeps scaling while the army is away.
@@ -540,7 +552,11 @@ const DEFAULT_POLICY = Object.freeze({
   miningTechP1WoodReserve: 200,
   miningTechP2FoodReserve: 300,
   miningTechP2WoodReserve: 200,
+  // Any first-tier mining upgrade still missing in City is tech debt, not a luxury.
+  miningTechP3FoodReserve: 200,
+  miningTechP3WoodReserve: 150,
   miningTechPriority: 805,
+  miningTechP3DebtPriority: 900,
   // IT14.56: bootstrap mining only when the actual first-tier tech is plausibly
   // affordable soon. The controller projects the primary-resource bank over this
   // short horizon instead of moving miners just because the clock reached 4:30.
@@ -555,7 +571,7 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.41: temporary overflow work should be genuinely productive, not a one-tick
   // waypoint between food capacity checks. Keep a temporary wood assignment for this
   // long unless food has entered explicit recovery mode.
-  temporaryFallbackLeaseSeconds: 30,
+  temporaryFallbackLeaseSeconds: 36,
   // IT14.41 finishing doctrine. Once the opponent has been broken, convert the lead
   // into a victory instead of dissolving pressure and assembling another full wave.
   expertFinishingEnemyPopulation: 28,
@@ -688,7 +704,7 @@ const DEFAULT_POLICY = Object.freeze({
 
   // IT14.58 worker stability / neutral-food annexing. Primary food/wood emergencies
   // may override a lease; ordinary balancing may not turn a worker around mid-walk.
-  resourceJobLeaseSeconds: 24,
+  resourceJobLeaseSeconds: 30,
   resourceJobEmergencyFoodBank: 250,
   resourceJobEmergencyWoodBank: 250,
   neutralFoodAnnexMinimumRemaining: 300,

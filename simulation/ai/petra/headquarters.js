@@ -212,10 +212,16 @@ Headquarters.prototype.checkEvents = function(gameState, events)
 			continue;
 		const metadata = ent._entity.trainingQueue[0].metadata;
 		if (metadata && metadata.garrisonType)
+		{
+			// A garrison rally supersedes any Expert gather rally.  Clear our marker
+			// without unsetting the garrison point itself, so the following batch
+			// cannot mistake an old gather target for the currently active rally.
+			ent.setMetadata(PlayerID, "expertRallyActiveTarget", undefined);
 			ent.setRallyPoint(ent, "garrison");  // trained units will autogarrison
+		}
 		else if (this.Config.difficulty >= difficulty.EXPERT && metadata && metadata.expertRallyCommand === "gather")
 		{
-			// IT14.58: metadata records the intended job, but resolve the actual supply when
+			// IT14.59: metadata records the intended job, but resolve the actual supply when
 			// training starts so a tree/bush that depleted while queued cannot become a stale rally.
 			let target = this.expertDecisionController && metadata.expertRallyJob ?
 				this.expertDecisionController.trainingRallyTarget(gameState, ent, metadata.expertRallyJob) : undefined;
@@ -224,12 +230,72 @@ Headquarters.prototype.checkEvents = function(gameState, events)
 			if (target && target.position && target.position())
 			{
 				ent.setRallyPoint(target, "gather");
-				aiWarn("[EXPERT-RALLY] trainer=" + ent.id() + " job=" + (metadata.expertRallyJob || "resource") + " target=" + target.id());
+				ent.setMetadata(PlayerID, "expertRallyActiveTarget", target.id());
+				aiWarn("[EXPERT-RALLY] trainer=" + ent.id() + " job=" + (metadata.expertRallyJob || "resource") + " target=" + target.id() + " source=event");
 			}
 			else ent.unsetRallyPoint();
 		}
 		else
 			ent.unsetRallyPoint();
+	}
+
+
+	// IT14.59: TrainingStarted is not guaranteed to surface on every Petra AI turn.
+	// Reconcile the trainer's CURRENT engine queue item every update, so the visible
+	// rally point follows the batch that is actually training (not a later AI-queued batch).
+	// This avoids both the missing-rally bug and the stale-rally hazard of setting a
+	// trainer-wide rally when merely enqueuing the next batch.
+	if (this.Config.difficulty >= difficulty.EXPERT)
+	{
+		for (const trainer of gameState.getOwnStructures().values())
+		{
+			if (!trainer || !trainer.getMetadata || !trainer.setMetadata)
+				continue;
+			const queue = trainer._entity && trainer._entity.trainingQueue;
+			const applied = trainer.getMetadata(PlayerID, "expertRallyActiveTarget");
+			if (!queue || !queue.length)
+			{
+				if (applied !== undefined)
+				{
+					trainer.unsetRallyPoint();
+					trainer.setMetadata(PlayerID, "expertRallyActiveTarget", undefined);
+				}
+				continue;
+			}
+			const metadata = queue[0].metadata;
+			if (!metadata || metadata.garrisonType || metadata.expertRallyCommand !== "gather")
+			{
+				if (applied !== undefined)
+				{
+					// Do not unset an active garrison rally; just forget the old Expert
+					// gather marker.  Ordinary non-gather queues can safely clear both.
+					if (!(metadata && metadata.garrisonType))
+						trainer.unsetRallyPoint();
+					trainer.setMetadata(PlayerID, "expertRallyActiveTarget", undefined);
+				}
+				continue;
+			}
+
+			let target = this.expertDecisionController && metadata.expertRallyJob ?
+				this.expertDecisionController.trainingRallyTarget(gameState, trainer, metadata.expertRallyJob) : undefined;
+			if (!target && Number.isFinite(Number(metadata.expertRallyTarget)))
+				target = gameState.getEntityById(Number(metadata.expertRallyTarget));
+			if (target && target.position && target.position())
+			{
+				if (Number(applied) !== Number(target.id()))
+				{
+					trainer.setRallyPoint(target, "gather");
+					trainer.setMetadata(PlayerID, "expertRallyActiveTarget", target.id());
+					aiWarn("[EXPERT-RALLY] trainer=" + trainer.id() + " job=" + (metadata.expertRallyJob || "resource") +
+						" target=" + target.id() + " source=active-queue");
+				}
+			}
+			else if (applied !== undefined)
+			{
+				trainer.unsetRallyPoint();
+				trainer.setMetadata(PlayerID, "expertRallyActiveTarget", undefined);
+			}
+		}
 	}
 
 	for (const evt of events.TrainingFinished)
