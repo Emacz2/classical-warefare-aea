@@ -282,6 +282,13 @@ function woodWorksiteDecision(state, policy) {
   const denseWorksite = state.workers.wood >= Math.max(16, policy.woodExpansionWorkerThreshold + 4) &&
     w.localWoodAmount >= 1800 && w.averageDropDistance > 14;
   const continuityEmergency = !!(state.flags.phaseWoodCrisis || state.flags.woodIncomeStalled);
+  const proactiveHandoff = state.workers.wood >= (policy.woodProactiveHandoffWorkers || 12) &&
+    w.localWoodAmount <= (policy.woodProactiveHandoffAmount || 1300) && !w.alternativeExistingWorksite;
+
+  // IT14.58: do not wait for a large lumber camp to hit single-digit connected wood.
+  // The new dropsite can be built while the old cohort finishes the current patch.
+  if (proactiveHandoff)
+    return { status: "prebuild_next_worksite", expand: true, reason: "large lumber crew is approaching end-of-patch; pre-build the next wood district" };
 
   // IT14.54: never allow a measured wood-economy failure to sit in "observe" merely
   // because the old low-wood observation counter has not caught up yet. The controller

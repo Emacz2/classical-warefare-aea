@@ -213,6 +213,21 @@ Headquarters.prototype.checkEvents = function(gameState, events)
 		const metadata = ent._entity.trainingQueue[0].metadata;
 		if (metadata && metadata.garrisonType)
 			ent.setRallyPoint(ent, "garrison");  // trained units will autogarrison
+		else if (this.Config.difficulty >= difficulty.EXPERT && metadata && metadata.expertRallyCommand === "gather")
+		{
+			// IT14.58: metadata records the intended job, but resolve the actual supply when
+			// training starts so a tree/bush that depleted while queued cannot become a stale rally.
+			let target = this.expertDecisionController && metadata.expertRallyJob ?
+				this.expertDecisionController.trainingRallyTarget(gameState, ent, metadata.expertRallyJob) : undefined;
+			if (!target && Number.isFinite(Number(metadata.expertRallyTarget)))
+				target = gameState.getEntityById(Number(metadata.expertRallyTarget));
+			if (target && target.position && target.position())
+			{
+				ent.setRallyPoint(target, "gather");
+				aiWarn("[EXPERT-RALLY] trainer=" + ent.id() + " job=" + (metadata.expertRallyJob || "resource") + " target=" + target.id());
+			}
+			else ent.unsetRallyPoint();
+		}
 		else
 			ent.unsetRallyPoint();
 	}

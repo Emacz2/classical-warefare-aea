@@ -304,3 +304,13 @@ Replay regressions locked by IT14:
 - The Athens Village Forge/Melee affordability gate protects only resources the purchase actually spends; a wood-only Forge cannot be blocked by an unrelated unbanked food phase cost.
 - Finishing-range opponents may trigger legal Town-phase siege preparation. The normal target is one ram in P2 and the existing finishing target in P3.
 - At enemy population <=20, finishing watchdog retargets prioritize Civic Centre, then other ConquestCritical structures, then genuine military-production structures before ordinary cleanup.
+
+
+## IT14.58 efficiency / rally / annex contract
+- Resource reassignment is sticky: ordinary balancing may not reverse a worker during a short job lease or while approaching a valid gather target. Food/wood emergencies may override.
+- Newly trained economic units receive trainer rally points toward the intended resource before they spawn. Citizen soldiers remain productive reserve workers until mobilized.
+- Visible neutral natural food near the border is a strategic future food source: Wicker and influence expansion may claim it before permanent farms.
+- Athens Late-P1 can exploit its Village Melee-I; when melee is the army majority, Melee-I precedes Ranged-I if still missing.
+- Large lumber crews pre-build the next serviced forest district before depletion.
+- Strategic construction tasks adopt matching orphan foundations rather than abandoning a real foundation after a tracker mismatch.
+- The +35% Expert multiplier remains 1.35.

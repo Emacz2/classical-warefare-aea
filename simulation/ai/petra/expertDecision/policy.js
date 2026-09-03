@@ -142,11 +142,14 @@ const DEFAULT_POLICY = Object.freeze({
   minimumTransitionFields: 4,
   localWoodHealthyAmount: 700,
   localWoodCriticalAmount: 300,
-  woodExpansionAmount: 700,
-  woodDistanceExpansionAmount: 1400,
-  woodExpansionWorkerThreshold: 10,
+  // IT14.58: pre-build the next lumber district before the current line collapses.
+  woodExpansionAmount: 1000,
+  woodDistanceExpansionAmount: 1800,
+  woodExpansionWorkerThreshold: 8,
+  woodProactiveHandoffAmount: 1300,
+  woodProactiveHandoffWorkers: 12,
   targetWoodDropDistance: 24,
-  requiredLowWoodObservations: 3,
+  requiredLowWoodObservations: 2,
   woodWorksiteRadius: 30,
   cavalryHuntSearchRadius: 220,
   firstBarracksPopulation: 30,
@@ -440,7 +443,11 @@ const DEFAULT_POLICY = Object.freeze({
   athensP1MeleeFoodReserve: 225,
   athensP1MeleeWoodReserve: 150,
   athensP1MeleeMetalReserve: 0,
-  athensP1MeleeLateRushLatestHold: 390,
+  // IT14.58: Late-P1 Athens keeps the Forge window open until the timing army is
+  // actually ready. A ready army waits only briefly for an already-active melee-I.
+  athensP1MeleeLateRushLatestHold: 455,
+  athensP1MeleeReadyHoldSeconds: 20,
+  athensP1MeleeAbsoluteLaunchTime: 465,
   athensGymnasiumMinimumTime: 480,
   athensGymnasiumRushMinimumTime: 540,
   athensGymnasiumMinimumPopulation: 80,
@@ -678,6 +685,23 @@ const DEFAULT_POLICY = Object.freeze({
   // economy. IT14.57 makes this a HARD production ceiling: civilian, citizen-soldier,
   // champion/hero and siege queues all count current + engine-training + AI-planned
   // population before another batch is authorized.
+
+  // IT14.58 worker stability / neutral-food annexing. Primary food/wood emergencies
+  // may override a lease; ordinary balancing may not turn a worker around mid-walk.
+  resourceJobLeaseSeconds: 24,
+  resourceJobEmergencyFoodBank: 250,
+  resourceJobEmergencyWoodBank: 250,
+  neutralFoodAnnexMinimumRemaining: 300,
+  neutralFoodAnnexMinimumCCDistance: 32,
+  neutralFoodAnnexMaximumCCDistance: 125,
+  neutralFoodAnnexClusterRadius: 18,
+  neutralFoodAnnexOwnFoodThreshold: 1000,
+  neutralFoodAnnexWickerBonus: 1,
+  strategicFoundationGraceSeconds: 45,
+  resourceFootprintMineralClearance: 14,
+  resourceFootprintFoodClearance: 11,
+  resourceFootprintMinimumMineralRemaining: 250,
+  resourceFootprintMinimumFoodRemaining: 120,
   expertOperatingPopulationCap: 200,
   // IT14.44 P2 research package: during an actual P2 push, buy the first two broad
   // military upgrades before spending deeper into the forge tree, then immediately

@@ -191,3 +191,15 @@ IT14.57 target
 - Enforce operating population cap as a hard current+queued ceiling (especially 300-pop accidental tests).
 - Convert a broken opponent into a kill faster: <=20 strategic objective targeting and earlier legal Town-phase ram preparation.
 - Benchmark remains 200-pop lobby at +35% gather/trade bonus; accidental 300-pop runs are diagnostic only.
+
+
+IT14.58 target
+- Reduce worker job thrash with a 24s cross-resource lease and approach protection; food/wood emergencies may override.
+- Trainer rally points: early CC civilians go directly to planned food/wood, citizen soldiers to productive wood/mining work until mobilized.
+- Detect neutral non-animal food just outside territory, value Wicker Baskets, and bias House/Barracks influence placement toward it before farms.
+- Athens Late-P1 Forge window follows actual rush readiness; a ready army waits at most ~20s for active Melee-I.
+- Athens Melee-I outranks Ranged-I by default while the live army is melee-majority.
+- Pre-build next lumber district before a large current patch collapses.
+- Keep independent buildings clear of valuable mines/natural food.
+- Adopt orphan strategic foundations and give Forge/Temple/Arsenal/Gymnasium/Prytaneion a 45s grace period.
+- Preserve Expert 1.35 benchmark multiplier.

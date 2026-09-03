@@ -1227,16 +1227,22 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				const techQueue = gameState.ai.queues && gameState.ai.queues.expertAthensP1Melee;
 				const techPending = !(gameState.isResearched && gameState.isResearched(techName)) &&
 					((gameState.isResearching && gameState.isResearching(techName)) || techQueue && techQueue.hasQueuedUnits && techQueue.hasQueuedUnits());
-				const latest = Number(mergePolicy().athensP1MeleeLateRushLatestHold) || 390;
-				if (techPending && gameState.ai.elapsedTime < latest)
+				const p = mergePolicy();
+				const absolute = Number(p.athensP1MeleeAbsoluteLaunchTime) || 465;
+				if (techPending && gameState.ai.elapsedTime < absolute)
 				{
-					if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
+					if (!Number.isFinite(Number(attack.expertAthensP1MeleeHoldUntil)))
+						attack.expertAthensP1MeleeHoldUntil = Math.min(absolute, gameState.ai.elapsedTime + (Number(p.athensP1MeleeReadyHoldSeconds) || 20));
+					if (gameState.ai.elapsedTime < attack.expertAthensP1MeleeHoldUntil)
 					{
-						this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
-						aiWarn("[EXPERT-ATHENS-P1] hold late-rush for melee-I plan=" + attack.name + " army=" + attack.unitCollection.length + " until<=" + latest);
+						if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
+						{
+							this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
+							aiWarn("[EXPERT-ATHENS-P1] hold ready late-rush for melee-I plan=" + attack.name + " army=" + attack.unitCollection.length + " until=" + Math.round(attack.expertAthensP1MeleeHoldUntil));
+						}
+						++unexecutedAttacks[attackType];
+						continue;
 					}
-					++unexecutedAttacks[attackType];
-					continue;
 				}
 			}
 
