@@ -52,6 +52,12 @@ export function AttackManager(config)
 	// than dribbling fresh batches into the same lost engagement.
 	this.expertRushRecoveryMode = false;
 	this.expertRushRecoveryUntil = -99999;
+	// IT14.56: remember the last P1 timing target/pop so the P2 follow-up can decide
+	// whether the opponent is genuinely wounded rather than launching solely by army size.
+	this.expertLastRushTargetPlayer = undefined;
+	this.expertLastRushLaunchEnemyPopulation = 0;
+	this.expertLastRushLaunchTime = -99999;
+	this.expertLastAthensP1MeleeHoldLog = -99999;
 	// IT14.52: the economy uses this one-way signal to unlock the worker-aura
 	// Temple immediately after a committed P1 rush leaves home.
 	this.expertRushHasLaunched = false;
@@ -370,16 +376,38 @@ AttackManager.prototype.getExpertP2AttackTechGate = function(gameState)
 		else if (gameState.isResearching && gameState.isResearching(name))
 			++researching;
 	}
+	// Athens can uniquely buy the first melee upgrade in Village. Count that real
+	// completed advantage toward the follow-up package even though it did not pass
+	// through the two Town-only observation queues above.
+	const athensP1Melee = "citystate/city_state_attack_melee_01";
+	if (gameState.getPlayerCiv && gameState.getPlayerCiv() === "athen" &&
+	    gameState.isResearched && gameState.isResearched(athensP1Melee) &&
+	    !Object.prototype.hasOwnProperty.call(this.expertObservedMilitaryTechs || {}, athensP1Melee))
+		++completed;
 	const active = completed + researching;
-	// IT14.50: P2 Forge-Tech Push deliberately waits for two completed upgrades. A
-	// P1-rush doctrine, however, should preserve the damage window: one completed
-	// upgrade plus a second actively researching is enough to launch the follow-up.
 	if (doctrine && Number(doctrine.rushes) > 0)
 	{
+		const targetPlayer = Number.isFinite(Number(this.expertLastRushTargetPlayer)) ? Number(this.expertLastRushTargetPlayer) : this.currentEnemyPlayer;
+		const pdata = Number.isFinite(Number(targetPlayer)) && gameState.sharedScript && gameState.sharedScript.playersData ?
+			gameState.sharedScript.playersData[targetPlayer] : undefined;
+		const enemyPop = pdata && pdata.state !== "defeated" ? Math.max(0, Number(pdata.popCount) || 0) : Infinity;
+		const launchPop = Math.max(0, Number(this.expertLastRushLaunchEnemyPopulation) || 0);
+		const damageFraction = launchPop > 0 && Number.isFinite(enemyPop) ? Math.max(0, (launchPop - enemyPop) / launchPop) : 0;
+		const critical = Number.isFinite(enemyPop) && enemyPop <= (Number(policy.expertP2RushFollowupCriticalEnemyPopulation) || 30);
+		const opportunity = critical || (Number.isFinite(enemyPop) && enemyPop <= (Number(policy.expertP2RushFollowupWeakEnemyPopulation) || 42)) ||
+			(launchPop > 0 && damageFraction >= (Number(policy.expertP2RushFollowupDamageFraction) || 0.20));
+		if (critical)
+			return { ready: true, completed, researching, active, required: 0, mode: "rush-followup", opportunity: "critical-pop", enemyPop, launchPop };
+		if (opportunity)
+		{
+			const required = Math.max(0, Number(policy.expertP2RushFollowupOpportunityActiveTechs) || 1);
+			return { ready: active >= required, completed, researching, active, required, mode: "rush-followup",
+				opportunity: enemyPop <= policy.expertP2RushFollowupWeakEnemyPopulation ? "weak-pop" : "rush-damage", enemyPop, launchPop };
+		}
 		const requiredCompleted = Math.max(0, Number(policy.expertP2RushFollowupCompletedMilitaryTechs) || 1);
 		const requiredActive = Math.max(requiredCompleted, Number(policy.expertP2RushFollowupActiveMilitaryTechs) || 2);
 		return { ready: completed >= requiredCompleted && active >= requiredActive, completed, researching, active,
-			required: requiredActive, mode: "rush-followup" };
+			required: requiredActive, mode: "rush-followup", opportunity: "stable-enemy", enemyPop, launchPop };
 	}
 	const required = Math.max(0, Number(policy.expertP2AttackRequiredMilitaryTechs) || 0);
 	if (!required)
@@ -1187,6 +1215,31 @@ AttackManager.prototype.update = function(gameState, queues, events)
 					"started ???");
 			}
 
+			// IT14.56 Athens can deliberately time its Late-P1 rush with the unique Village
+			// melee upgrade. Keep the soldiers economically active in STATE_UNEXECUTED while
+			// that already-queued/researching tech finishes, but never hold past the hard
+			// timing ceiling if the research becomes stuck.
+			if (this.Config.difficulty >= difficulty.EXPERT && attackType === AttackPlan.TYPE_RUSH && doctrine &&
+			    doctrine.id === "late_p1_rush" && gameState.getPlayerCiv && gameState.getPlayerCiv() === "athen" &&
+			    gameState.currentPhase && gameState.currentPhase() === 1 && attack.state === AttackPlan.STATE_UNEXECUTED && attack.canStart && attack.canStart())
+			{
+				const techName = "citystate/city_state_attack_melee_01";
+				const techQueue = gameState.ai.queues && gameState.ai.queues.expertAthensP1Melee;
+				const techPending = !(gameState.isResearched && gameState.isResearched(techName)) &&
+					((gameState.isResearching && gameState.isResearching(techName)) || techQueue && techQueue.hasQueuedUnits && techQueue.hasQueuedUnits());
+				const latest = Number(mergePolicy().athensP1MeleeLateRushLatestHold) || 390;
+				if (techPending && gameState.ai.elapsedTime < latest)
+				{
+					if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
+					{
+						this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
+						aiWarn("[EXPERT-ATHENS-P1] hold late-rush for melee-I plan=" + attack.name + " army=" + attack.unitCollection.length + " until<=" + latest);
+					}
+					++unexecutedAttacks[attackType];
+					continue;
+				}
+			}
+
 			const updateStep = attack.updatePreparation(gameState);
 			// now we're gonna check if the preparation time is over
 			if (updateStep === AttackPlan.PREPARATION_KEEP_GOING || attack.isPaused())
@@ -1217,6 +1270,9 @@ AttackManager.prototype.update = function(gameState, queues, events)
 						const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
 						attack.expertLaunchEnemyPopulation = pdata ? Math.max(0, Number(pdata.popCount) || 0) : 0;
 						this.expertRushHasLaunched = true;
+						this.expertLastRushTargetPlayer = attack.targetPlayer;
+						this.expertLastRushLaunchEnemyPopulation = attack.expertLaunchEnemyPopulation;
+						this.expertLastRushLaunchTime = attack.expertLaunchTime;
 						aiWarn("[EXPERT-STRATEGY] launch=" + doctrine.id + " plan=" + attack.name +
 							" army=" + attack.unitCollection.length + " target=" + attack.targetPlayer +
 							" enemyPop=" + attack.expertLaunchEnemyPopulation);
@@ -1855,7 +1911,11 @@ AttackManager.prototype.Serialize = function()
 		"expertLastStrategyStatusLog": this.expertLastStrategyStatusLog,
 		"expertRushRecoveryMode": this.expertRushRecoveryMode,
 		"expertRushRecoveryUntil": this.expertRushRecoveryUntil,
-		"expertRushHasLaunched": this.expertRushHasLaunched
+		"expertRushHasLaunched": this.expertRushHasLaunched,
+		"expertLastRushTargetPlayer": this.expertLastRushTargetPlayer,
+		"expertLastRushLaunchEnemyPopulation": this.expertLastRushLaunchEnemyPopulation,
+		"expertLastRushLaunchTime": this.expertLastRushLaunchTime,
+		"expertLastAthensP1MeleeHoldLog": this.expertLastAthensP1MeleeHoldLog
 	};
 
 	const upcomingAttacks = {};

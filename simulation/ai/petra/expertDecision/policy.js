@@ -423,24 +423,42 @@ const DEFAULT_POLICY = Object.freeze({
   // and execute the CC. If the CC is already gone, the prior garrison-holder/critical
   // unit cleanup logic remains authoritative.
   expertCCExecutionEnemyPopulation: 8,
-  // Athens special-infrastructure timing. These are surplus investments layered on
-  // top of the proven P2 attack economy; they may not pre-empt the initial timing.
-  athensGymnasiumMinimumTime: 540,
-  athensGymnasiumRushMinimumTime: 600,
-  athensGymnasiumMinimumPopulation: 90,
-  athensGymnasiumWoodReserve: 300,
-  athensGymnasiumFoodReserve: 350,
-  athensGymnasiumMetalReserve: 125,
+  // Athens special-infrastructure timing. IT14.56 gives Athens a real Village-
+  // phase Forge option so its unique P1 melee upgrade can become part of a Late-P1
+  // timing or the P2-tech setup. The Town Gymnasium remains a surplus investment and
+  // may not pre-empt the initial timing army.
+  athensP1ForgeLateRushStartTime: 250,
+  athensP1ForgeTechPushStartTime: 270,
+  athensP1ForgeMinimumPopulation: 50,
+  athensP1ForgeFoodReserve: 250,
+  athensP1ForgeWoodReserve: 180,
+  athensP1ForgeMetalReserve: 0,
+  athensP1MeleeTechStartTime: 285,
+  athensP1MeleeFoodReserve: 225,
+  athensP1MeleeWoodReserve: 150,
+  athensP1MeleeMetalReserve: 0,
+  athensP1MeleeLateRushLatestHold: 390,
+  athensGymnasiumMinimumTime: 480,
+  athensGymnasiumRushMinimumTime: 540,
+  athensGymnasiumMinimumPopulation: 80,
+  athensGymnasiumWoodReserve: 225,
+  athensGymnasiumFoodReserve: 250,
+  athensGymnasiumMetalReserve: 100,
   athensGymnasiumP2ChampionTarget: 6,
   athensGymnasiumP3ChampionTarget: 8,
   athensGymnasiumRangedCapWithoutMelee: 4,
   athensGymnasiumCrossbowTarget: 2,
   athensHippocratesMinimumTime: 600,
-  athensPrytaneionWoodReserve: 300,
-  athensPrytaneionFoodReserve: 300,
-  athensPrytaneionMetalReserve: 150,
+  athensPrytaneionWoodReserve: 250,
+  athensPrytaneionFoodReserve: 250,
+  athensPrytaneionMetalReserve: 125,
+  // Gymnasium/Prytaneion are strategic production buildings, not edge-expansion
+  // anchors. A legal safe site in the developed home district is good enough.
+  athensSpecialMinimumCCDistance: 20,
+  athensSpecialPreferredCCDistance: 42,
+  athensSpecialFallbackMaximumCCDistance: 120,
   p1EcoSweepStartTime: 330,
-  p1EcoSweepMaxQueued: 6,
+  p1EcoSweepMaxQueued: 1,
   houseMinimumCCDistance: 50,
   // P2 houses stop extending a single P1 line forever. Search developed edges and
   // wider rings while retaining the same open CC core.
@@ -508,12 +526,15 @@ const DEFAULT_POLICY = Object.freeze({
   miningTechP1StartTime: 300,
   miningTechP1MinimumPopulation: 45,
   miningTechP1MinimumFields: 2,
-  miningTechP1FoodReserve: 300,
-  miningTechP1WoodReserve: 250,
-  miningTechP2FoodReserve: 500,
-  miningTechP2WoodReserve: 300,
+  miningTechP1FoodReserve: 225,
+  miningTechP1WoodReserve: 200,
+  miningTechP2FoodReserve: 300,
+  miningTechP2WoodReserve: 200,
   miningTechPriority: 805,
-  miningTechBootstrapStartTime: 270,
+  // IT14.56: bootstrap mining only when the actual first-tier tech is plausibly
+  // affordable soon. The controller projects the primary-resource bank over this
+  // short horizon instead of moving miners just because the clock reached 4:30.
+  miningTechBootstrapProjectionSeconds: 35,
   miningTechBootstrapMinimumPopulation: 45,
   miningTechBootstrapMinimumFields: 2,
   miningTechBootstrapStoneWorkers: 2,
@@ -666,10 +687,16 @@ const DEFAULT_POLICY = Object.freeze({
   // launching. If the same plan reaches launch strength while Town is still
   // researching, it may go early as a P1 timing attack.
   expertP2AttackRequiredMilitaryTechs: 2,
-  // A rush-doctrine follow-up may preserve momentum with one completed upgrade so
-  // long as a second dedicated military tech is actively researching.
+  // A rush-doctrine follow-up normally preserves momentum with one completed
+  // upgrade plus a second active. IT14.56 adds an opportunity exception: a clearly
+  // damaged/low-pop opponent may be hit with a smaller active-tech package while the
+  // citizen-soldier reserve is still economically productive at home.
   expertP2RushFollowupCompletedMilitaryTechs: 1,
   expertP2RushFollowupActiveMilitaryTechs: 2,
+  expertP2RushFollowupOpportunityActiveTechs: 1,
+  expertP2RushFollowupWeakEnemyPopulation: 42,
+  expertP2RushFollowupCriticalEnemyPopulation: 30,
+  expertP2RushFollowupDamageFraction: 0.20,
   expertP1TimingAttackMinimumUnits: 28,
   // Forward infrastructure may deliberately claim territory toward useful neutral
   // resources. Buildings must still pass the normal own-territory legality test.
@@ -718,6 +745,17 @@ const DEFAULT_POLICY = Object.freeze({
   ecoSmartAbundanceRatio: 1.6,
   ecoSmartBottleneckPressureBonus: 0.9,
   ecoSmartBottleneckScoreBonus: 110,
+  // IT14.56: food/wood productivity research is sequential. One primary eco tech is
+  // allowed to enter research, then the economy is re-evaluated before buying the
+  // other lane. This prevents "smart ordering" from immediately reserving both techs.
+  ecoSequentialMissingPlanGraceSeconds: 30,
+  // Once 7-8 productive fields are carrying the war economy, a failed optional farm-
+  // hub placement is cooled down instead of retrying every decision tick. A true
+  // zero-slot food-capacity deadlock always bypasses this cooldown.
+  farmHubRetryCooldownSeconds: 45,
+  farmHubRetryMinimumFields: 7,
+  farmHubRetryFoodRateFraction: 0.90,
+  farmHubRetryFoodBank: 300,
   // IT14.48: Athens uses a broad army-composition target instead of a rigid
   // 2 Hoplite : 1 Marine : 1 Javeliner sequence. Leave other civ defaults alone
   // until their own rosters/doctrines are audited.

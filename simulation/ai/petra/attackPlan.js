@@ -546,7 +546,7 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 					aiWarn("[EXPERT-ATTACK] P2 tech gate holding plan=" + this.name +
 						" completed=" + expertP2TechGate.completed + " researching=" + (expertP2TechGate.researching || 0) +
 						" active=" + (expertP2TechGate.active || expertP2TechGate.completed) + "/" + expertP2TechGate.required +
-						" mode=" + (expertP2TechGate.mode || "standard") + " army=" + this.unitCollection.length);
+						" mode=" + (expertP2TechGate.mode || "standard") + " opportunity=" + (expertP2TechGate.opportunity || "-") + " army=" + this.unitCollection.length);
 				}
 				return AttackPlan.PREPARATION_KEEP_GOING;
 			}
@@ -581,7 +581,7 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 				aiWarn("[EXPERT-ATTACK] P2 tech gate holding plan=" + this.name +
 					" completed=" + expertP2TechGate.completed + " researching=" + (expertP2TechGate.researching || 0) +
 					" active=" + (expertP2TechGate.active || expertP2TechGate.completed) + "/" + expertP2TechGate.required +
-					" mode=" + (expertP2TechGate.mode || "standard") + " army=" + this.unitCollection.length);
+					" mode=" + (expertP2TechGate.mode || "standard") + " opportunity=" + (expertP2TechGate.opportunity || "-") + " army=" + this.unitCollection.length);
 			}
 			return AttackPlan.PREPARATION_KEEP_GOING;
 		}

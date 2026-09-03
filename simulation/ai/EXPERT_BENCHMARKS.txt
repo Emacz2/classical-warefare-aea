@@ -172,3 +172,14 @@ IT14.55 smart eco-tech addendum
 - P1 eco-sweep candidate scoring, Town core food/wood lanes, and later surplus eco-tech scoring share the same primary-resource pressure model.
 - Town core processes the higher-pressure lane first and reserves its live cost before evaluating the second lane.
 - Phase reservations and affordability gates remain authoritative; dynamic priority cannot spend resources that are protected for Town Phase or other hard reserves.
+
+
+IT14.56 target
+- Treat pre-launch citizen-soldiers as a productive military reserve, not as idle army. Diagnostics now separate permanent civilians, reserve military, gathering reserve, and committed army so a 70-90 soldier home reserve is only considered wasteful if it actually stops working.
+- Rush->P2 follow-up is opportunity-aware: a stable opponent still asks for the existing one-completed-plus-second-active package, while a clearly wounded/low-pop opponent may be hit with a smaller active-tech package. P2 Forge-Tech Push keeps the strict two-completed-tech gate.
+- Athens may build Forge #1 in Village for Late-P1 Rush or P2 Forge-Tech Push when the live bank can support it. `citystate/city_state_attack_melee_01` gets a dedicated P1 research lane; a Late-P1 rush that already queued the tech may wait briefly for completion while its citizen-soldiers continue gathering, but never beyond the hard timing ceiling. The completed P1 melee tech counts toward the later P2 package.
+- Food/wood eco research is genuinely sequential: choose the higher-pressure affordable primary-resource tech, let it enter research, then re-evaluate the bank before buying the other lane. P1 sweep likewise stops bulk-reserving several eco technologies at once.
+- First-tier mining bootstrap is affordability-driven instead of clock-driven. One/two soldier-lumberjacks move to stone only when a live Village mining tech is stone-short and projected food/wood over a short horizon can support the tech plus Town/operating reserves. P2 mining reserves are reduced so missed Village upgrades can appear earlier without outranking food/wood continuity.
+- Optional farm-hub retries cool down after a failed placement once >=7 productive fields and adequate food throughput/bank exist; a true zero-slot FOOD CAPACITY DEADLOCK bypasses the cooldown.
+- Athens Gymnasium/Prytaneion use a simpler developed-home placement rule and territory-grid fallback after a failed strategic search. Gymnasium surplus timing is pulled earlier, but it still may not pre-empt the core army/Forge/Temple economy.
+- Preserve +35% gather/trade, IT14.55 food-capacity escape, IT14.54 wood-continuity, Temple timing, resource-service geometry, slinger pressure valve, siege/CC execution and wounded/reboom behavior.
