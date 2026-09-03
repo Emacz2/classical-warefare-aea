@@ -7,7 +7,6 @@
       <Pierce op="mul">1.5</Pierce>
       <Crush op="add">1</Crush>
   </Damage>
-    <MaxRange op="add">-10</MaxRange>
     <PrepareTime op="add">500</PrepareTime>
     <RepeatTime op="mul">2</RepeatTime>
     <Projectile>
@@ -19,16 +18,8 @@
       </Projectile>
   </Ranged>
 </Attack>
-  <Resistance>
-    <Entity>
-      <Damage>
-        <Hack op="add">1.5</Hack>
-        <Pierce op="add">1.5</Pierce>
-      </Damage>
-    </Entity>
-  </Resistance>
   <Cost>
-    <BuildTime op="mul">1.5</BuildTime>
+    <BuildTime op="mul">1.25</BuildTime>
   </Cost>
   <Identity>
    <Classes>Mechanical Bow</Classes>
