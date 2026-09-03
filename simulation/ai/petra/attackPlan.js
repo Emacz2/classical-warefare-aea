@@ -1145,13 +1145,42 @@ AttackPlan.prototype.forceExpertFinishingRetarget = function(gameState)
 	const policy = mergePolicy();
 	const cleanup = enemyPop > 0 && enemyPop <= policy.expertCleanupEnemyPopulation;
 	const executeCC = enemyPop > 0 && enemyPop <= policy.expertCCExecutionEnemyPopulation;
-	// IT14.53 execution mode: if the opponent still owns a CC at <=8 population,
-	// that CC outranks every side building and visible cleanup target. Once it dies,
-	// fall through to the old hidden-unit/garrison-holder cleanup.
-	if (executeCC)
+	const brokenObjective = enemyPop > 0 && enemyPop <= (Number(policy.expertBrokenEnemyObjectivePopulation) || 20);
+	// IT14.57 strategic finishing objectives. Once the enemy is down around twenty pop,
+	// stop spending watchdog retargets on incidental side buildings: kill the CC first,
+	// then other ConquestCritical structures, then structures that can actually produce
+	// soldiers/champions/siege. The <=8 execution rule remains the hard ram commit.
+	if (brokenObjective || executeCC)
 		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
 		{
 			if (!struct || !struct.position() || !struct.hasClass("CivCentre") || !this.isValidTarget(struct)) continue;
+			const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
+			if (dist < bestDist) { bestDist = dist; best = struct; }
+		}
+	if (brokenObjective && !best)
+		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+		{
+			if (!struct || !struct.position() || !struct.hasClass("ConquestCritical") || !this.isValidTarget(struct)) continue;
+			const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
+			if (dist < bestDist) { bestDist = dist; best = struct; }
+		}
+	if (brokenObjective && !best)
+		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
+		{
+			if (!struct || !struct.position() || !this.isValidTarget(struct) || !struct.trainableEntities) continue;
+			let militaryProducer = false;
+			try
+			{
+				for (const type of struct.trainableEntities(gameState.getPlayerCiv(this.targetPlayer)) || [])
+				{
+					const template = gameState.getTemplate(type);
+					if (template && template.hasClasses &&
+					    (template.hasClasses(["CitizenSoldier"]) || template.hasClasses(["Champion"]) || template.hasClasses(["Siege"])))
+					{ militaryProducer = true; break; }
+				}
+			}
+			catch (e) { militaryProducer = false; }
+			if (!militaryProducer) continue;
 			const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
 			if (dist < bestDist) { bestDist = dist; best = struct; }
 		}
@@ -1196,6 +1225,9 @@ AttackPlan.prototype.forceExpertFinishingRetarget = function(gameState)
 		}
 	if (best)
 	{
+		if (brokenObjective && best.id() !== oldId)
+			aiWarn("[EXPERT-FINISH] objective-mode plan=" + this.name + " enemyPop=" + enemyPop +
+				" target=" + best.id() + (best.hasClass("CivCentre") ? " class=CC" : best.hasClass("ConquestCritical") ? " class=ConquestCritical" : " class=MilitaryProduction"));
 		this.target = best;
 		this.targetPlayer = best.owner();
 		this.targetPos = best.position();

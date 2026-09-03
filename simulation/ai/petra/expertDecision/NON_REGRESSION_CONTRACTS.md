@@ -294,3 +294,13 @@ Replay regressions locked by IT14:
 - Food/wood productivity research is sequential across the P1 sweep, Town core lanes and later surplus research: one primary eco technology enters research, then pressure is re-evaluated before another primary eco tech is reserved. Mining remains subordinate to food/wood.
 - The first-tier mining bootstrap is affordability-driven rather than clock-driven and may peel at most two flexible soldier-lumberjacks only when the live mining tech is stone-short and projected primary-resource income can support the technology plus protected reserves.
 - A failed optional farm-hub placement may be cooled down when at least seven productive fields and adequate food throughput/bank already exist; `farm_hub_deadlock` is never cooled down. Gymnasium/Prytaneion may use a safe developed-home/territory-grid fallback instead of repeatedly failing edge-placement searches. IT14.55 food-capacity, IT14.54 wood continuity, IT14.53 special-unit behavior and all combat/trade/siege contracts remain in force.
+
+
+## IT14.57 hard-cap / Athens-P1 / decisive-finish contract
+
+- The configured Expert operating population ceiling is a **hard production ceiling**. Current population, live engine training, and AI-planned unit queues all count before civilians, citizen soldiers, Athens special units, or siege may be queued.
+- `population.limit` and `population.max` are both capped in the Expert decision observation, so a 300-pop lobby cannot silently turn a 200-pop timing build into a 220+ boom.
+- Athens `p2_tech_push` gets a genuine Village Forge + `citystate/city_state_attack_melee_01` attempt. A Forge already in progress may briefly hold Town, but never beyond the absolute Town timing.
+- The Athens Village Forge/Melee affordability gate protects only resources the purchase actually spends; a wood-only Forge cannot be blocked by an unrelated unbanked food phase cost.
+- Finishing-range opponents may trigger legal Town-phase siege preparation. The normal target is one ram in P2 and the existing finishing target in P3.
+- At enemy population <=20, finishing watchdog retargets prioritize Civic Centre, then other ConquestCritical structures, then genuine military-production structures before ordinary cleanup.

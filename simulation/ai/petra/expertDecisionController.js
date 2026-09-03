@@ -3054,6 +3054,27 @@ export class ExpertDecisionController
 		this.lastPhase2Decision = decision;
 		if (!decision.ready)
 			return false;
+
+		// IT14.57 Athens P2-Tech-Push soft hold: if the Village Forge is already being
+		// built, give it a short chance to expose/queue Melee I before Town. Never hold
+		// beyond the absolute phase timing; a failed Forge attempt must not derail P2.
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		const athensForgeCommitted = this.specialStructurePipeline(gameState, "forge") > 0 ||
+			(frame && frame.actions || []).some(action => action && action.kind === "forge" && action.role === "athens_p1_forge");
+		if (gameState.getPlayerCiv() === "athen" && doctrine && doctrine.id === "p2_tech_push" &&
+		    now < (Number(policy.phase2AbsoluteTime) || 420) && athensForgeCommitted)
+		{
+			const melee = "citystate/city_state_attack_melee_01";
+			const meleeQueue = gameState.ai.queues && gameState.ai.queues.expertAthensP1Melee;
+			const committed = (gameState.isResearched && gameState.isResearched(melee)) ||
+				(gameState.isResearching && gameState.isResearching(melee)) || !!(meleeQueue && meleeQueue.hasQueuedUnits());
+			if (!committed)
+			{
+				this.lastPhase2Decision = { ...decision, state: "athens-p1-melee-hold",
+					reason: "Village Forge in pipeline; brief hold for Athens Melee I before absolute Town timing" };
+				return false;
+			}
+		}
 		const plan = new ResearchPlan(gameState, decision.name, true);
 		if (!plan)
 			return false;
@@ -3168,12 +3189,14 @@ export class ExpertDecisionController
 			return frame;
 		if (doctrine.id === "late_p1_rush" && now > policy.athensP1MeleeLateRushLatestHold)
 			return frame;
-		// The non-rush tech build keeps the earlier worker-aura Temple contract. It may
-		// establish the Village Forge once the Temple is built/under construction rather
-		// than stealing the same first surplus wood.
-		if (doctrine.id === "p2_tech_push" && this.specialStructurePipeline(gameState, "temple") === 0)
+		// IT14.57: the old Temple-first gate made the Athens P1 Forge contract impossible
+		// in the exact P2-Tech-Push benchmark we wanted to exploit. Forge construction
+		// now gets the first chance at the relevant resource, while Town Phase remains
+		// protected by the live-cost check below and an absolute 7-minute escape hatch.
+		if (doctrine.id === "p2_tech_push" && gameState.ai.queues && gameState.ai.queues.majorTech &&
+		    gameState.ai.queues.majorTech.hasQueuedUnits())
 			return frame;
-		const actions = [...(frame.actions || [])];
+		let actions = [...(frame.actions || [])];
 		if (actions.some(action => action && action.kind === "forge" && (action.type === "BUILD" || action.type === "MAINTAIN_CONSTRUCTION" || action.type === "RESERVE")) ||
 		    this.specialStructurePipeline(gameState, "forge") > 0)
 			return frame;
@@ -3200,9 +3223,17 @@ export class ExpertDecisionController
 			stone: phaseReserve.stone,
 			metal: phaseReserve.metal + policy.athensP1ForgeMetalReserve
 		};
+		// Only a resource this action actually SPENDS can delay Town Phase. Requiring a
+		// full food phase bank before paying a wood-only Forge was an accidental deadlock.
 		for (const resource of ["food", "wood", "stone", "metal"])
-			if ((Number(bank[resource]) || 0) < (Number(cost && cost[resource]) || 0) + (Number(reserve[resource]) || 0))
+		{
+			const spend = Number(cost && cost[resource]) || 0;
+			if (spend > 0 && (Number(bank[resource]) || 0) < spend + (Number(reserve[resource]) || 0))
 				return frame;
+		}
+		if (doctrine.id === "p2_tech_push")
+			actions = actions.filter(action => !(action && action.kind === "temple" &&
+				(action.type === "BUILD" || action.type === "RESERVE")));
 		actions.push({
 			type: "BUILD", kind: "forge", role: "athens_p1_forge", priority: doctrine.id === "late_p1_rush" ? 101 : 99,
 			builderCount: 3,
@@ -3269,9 +3300,14 @@ export class ExpertDecisionController
 			stone: phaseReserve.stone,
 			metal: phaseReserve.metal + policy.athensP1MeleeMetalReserve
 		};
+		// As with the Forge, protect Town only on resources this technology consumes.
+		// A zero-wood melee tech must not wait for an unrelated full wood phase bank.
 		for (const resource of ["food", "wood", "stone", "metal"])
-			if ((Number(bank[resource]) || 0) < (Number(cost && cost[resource]) || 0) + (Number(reserve[resource]) || 0))
+		{
+			const spend = Number(cost && cost[resource]) || 0;
+			if (spend > 0 && (Number(bank[resource]) || 0) < spend + (Number(reserve[resource]) || 0))
 				return false;
+		}
 		plan.metadata = { "expertDecisionLayer": true, "expertMilitaryTech": "athens-p1-melee", "strategy": doctrine.id };
 		queue.addPlan(plan);
 		this.expertObservedP2MilitaryTechs[techName] = "athens-p1";
@@ -4786,8 +4822,12 @@ export class ExpertDecisionController
 			return { active: false };
 		const policy = mergePolicy();
 		const phase = gameState.currentPhase();
-		if (phase >= 3 && finishing && finishing.active)
-			return { ...finishing, active: true, finishing: true, desiredSiege: mergePolicy().expertFinishingSiegeTarget };
+		// IT14.57: finishing is a strategic state, not a City-phase privilege. If the
+		// opponent is already <=28 with a decisive population lead, start the legal siege
+		// pipeline in Town instead of waiting until the enemy has only a handful left.
+		if (finishing && finishing.active)
+			return { ...finishing, active: true, finishing: true,
+				desiredSiege: phase >= 3 ? policy.expertFinishingSiegeTarget : policy.expertFinishingTownSiegeTarget };
 		const manager = this.HQ && this.HQ.attackManager;
 		if (!manager)
 			return { active: false };
@@ -4908,6 +4948,8 @@ export class ExpertDecisionController
 				continue;
 			const bank = gameState.getResources();
 			if (bank.food < selected.cost.food || bank.wood < selected.cost.wood || bank.stone < selected.cost.stone || bank.metal < selected.cost.metal)
+				continue;
+			if (this.operatingPopulationHeadroom(gameState) < this.unitPopulationCost(gameState, selected.type))
 				continue;
 			const plan = new TrainingPlan(gameState, selected.type, {
 				"plan": -1, "trainer": arsenal.id(), "expertDecisionLayer": true,
@@ -5097,6 +5139,46 @@ export class ExpertDecisionController
 		return false;
 	}
 
+	unitPopulationCost(gameState, type)
+	{
+		let template;
+		try { template = gameState.getTemplate(type); } catch (e) { template = undefined; }
+		const raw = template && template._template && template._template.Cost ? Number(template._template.Cost.Population) : NaN;
+		return Number.isFinite(raw) && raw >= 0 ? raw : 1;
+	}
+
+	expertQueuedPlanPopulation(gameState)
+	{
+		let population = 0;
+		for (const queue of Object.values(gameState.ai && gameState.ai.queues || {}))
+		{
+			if (!queue || !Array.isArray(queue.plans))
+				continue;
+			for (const plan of queue.plans)
+			{
+				if (!plan || plan.category !== "unit" || !plan.type)
+					continue;
+				population += Math.max(0, Number(plan.number) || 0) * this.unitPopulationCost(gameState, plan.type);
+			}
+		}
+		return population;
+	}
+
+	effectiveOperatingPopulationCap(gameState)
+	{
+		return Math.max(1, Math.min(Number(gameState.getPopulationMax()) || 200,
+			Number(mergePolicy().expertOperatingPopulationCap) || 200));
+	}
+
+	operatingPopulationHeadroom(gameState)
+	{
+		const accounted = Math.max(0, Number(this.HQ.getAccountedPopulation(gameState)) || 0);
+		const queuedPlans = this.expertQueuedPlanPopulation(gameState);
+		const operating = this.effectiveOperatingPopulationCap(gameState);
+		const housing = Math.max(0, Number(gameState.getPopulationLimit()) || 0);
+		return Math.max(0, Math.min(operating, housing) - accounted - queuedPlans);
+	}
+
 	queueAthenianSpecialUnit(gameState, queues, trainer, selected, label, reserve = {})
 	{
 		if (!selected || !trainer || !queues || !queues.citizenSoldier ||
@@ -5106,11 +5188,8 @@ export class ExpertDecisionController
 		for (const resource of ["food", "wood", "stone", "metal"])
 			if ((Number(bank[resource]) || 0) < (Number(selected.cost[resource]) || 0) + (Number(reserve[resource]) || 0))
 				return false;
-		const queuedCivilians = queues.villager ? queues.villager.countQueuedUnits() : 0;
-		const queuedSoldiers = queues.citizenSoldier ? queues.citizenSoldier.countQueuedUnits() : 0;
-		const free = gameState.getPopulationLimit() - this.HQ.getAccountedPopulation(gameState) -
-			queuedCivilians - queuedSoldiers;
-		if (free < 2)
+		const unitPop = this.unitPopulationCost(gameState, selected.type);
+		if (this.operatingPopulationHeadroom(gameState) < unitPop)
 			return false;
 		const plan = new TrainingPlan(gameState, selected.type, {
 			"role": Worker.ROLE_ATTACK, "base": 0, "plan": -1, "trainer": trainer.id(),
@@ -5422,9 +5501,8 @@ export class ExpertDecisionController
 		if (!selected)
 			return false;
 
-		const queuedCivilians = queues.villager ? queues.villager.countQueuedUnits() : 0;
-		const queuedSoldiers = queues.citizenSoldier ? queues.citizenSoldier.countQueuedUnits() : 0;
-		const free = gameState.getPopulationLimit() - this.HQ.getAccountedPopulation(gameState) - queuedCivilians - queuedSoldiers;
+		const unitPop = this.unitPopulationCost(gameState, selected.type);
+		const free = Math.floor(this.operatingPopulationHeadroom(gameState) / Math.max(1, unitPop));
 		const doctrineBatch = Number.isFinite(Number(selected.recommendedBatch)) ?
 			Math.max(1, Math.floor(Number(selected.recommendedBatch))) : Math.floor(requestedBatch);
 		let batch = Math.max(0, Math.min(Math.floor(requestedBatch), doctrineBatch, free));
@@ -8580,9 +8658,11 @@ export class ExpertDecisionController
 			"pendingCivilians": aiPending.pendingCivilians + livePending.pendingCivilians,
 			"pendingBatches": aiPending.pendingBatches + livePending.pendingBatches
 		};
-		const queuedExpertSoldiers = queues.citizenSoldier ? queues.citizenSoldier.countQueuedUnits() : 0;
+		// IT14.57 count exact population cost for ALL AI-planned units. The old unit-count
+		// approximation undercounted multi-pop siege and could still slip civilians over
+		// the operating ceiling while a ram was waiting in the citizen-soldier queue.
 		const queuedPopulation = Math.max(0, this.HQ.getAccountedPopulation(gameState) - gameState.getPopulation()) +
-			aiPending.pendingCivilians + queuedExpertSoldiers;
+			this.expertQueuedPlanPopulation(gameState);
 		const templeCandidates = [gameState.applyCiv("structures/{civ}/temple"), gameState.applyCiv("structures/{civ}/temple_vesta")];
 		const templeBuildable = !!(this.HQ.canBuild && templeCandidates.some(type =>
 			gameState.getTemplate(type) && this.HQ.canBuild(gameState, type)));
@@ -8646,6 +8726,11 @@ export class ExpertDecisionController
 		const operatingPopulationCap = Math.min(Number(observation.population.max) || 200,
 			Number(mergePolicy().expertOperatingPopulationCap) || 200);
 		observation.population.max = Math.max(1, operatingPopulationCap);
+		// IT14.57: trainingPolicy uses population.limit (not max) for free-space math.
+		// Cap BOTH so a 300-pop lobby cannot keep queuing civilians past the 200
+		// operating ceiling after houses have already raised the engine limit to 225+.
+		observation.population.limit = Math.min(Number(observation.population.limit) || operatingPopulationCap,
+			observation.population.max);
 		let frame = stepDecision(this.memory, observation, this.strategyPolicyOverrides(gameState));
 		this.memory = frame.memory;
 		this.lastDesiredFields = Number(frame && frame.derived && frame.derived.desiredFields) || 0;
@@ -8813,7 +8898,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.56] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.57] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -8873,7 +8958,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.56] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.57] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

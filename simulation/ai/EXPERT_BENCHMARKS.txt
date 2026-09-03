@@ -183,3 +183,11 @@ IT14.56 target
 - Optional farm-hub retries cool down after a failed placement once >=7 productive fields and adequate food throughput/bank exist; a true zero-slot FOOD CAPACITY DEADLOCK bypasses the cooldown.
 - Athens Gymnasium/Prytaneion use a simpler developed-home placement rule and territory-grid fallback after a failed strategic search. Gymnasium surplus timing is pulled earlier, but it still may not pre-empt the core army/Forge/Temple economy.
 - Preserve +35% gather/trade, IT14.55 food-capacity escape, IT14.54 wood-continuity, Temple timing, resource-service geometry, slinger pressure valve, siege/CC execution and wounded/reboom behavior.
+
+
+IT14.57 target
+- Preserve IT14.56 productive reserve / adaptive eco / Athens special-unit wins.
+- Athens P2 Tech Push: make a real P1 Forge + Melee I attempt without delaying the absolute Town click.
+- Enforce operating population cap as a hard current+queued ceiling (especially 300-pop accidental tests).
+- Convert a broken opponent into a kill faster: <=20 strategic objective targeting and earlier legal Town-phase ram preparation.
+- Benchmark remains 200-pop lobby at +35% gather/trade bonus; accidental 300-pop runs are diagnostic only.

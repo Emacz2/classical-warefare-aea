@@ -428,12 +428,15 @@ const DEFAULT_POLICY = Object.freeze({
   // timing or the P2-tech setup. The Town Gymnasium remains a surplus investment and
   // may not pre-empt the initial timing army.
   athensP1ForgeLateRushStartTime: 250,
-  athensP1ForgeTechPushStartTime: 270,
-  athensP1ForgeMinimumPopulation: 50,
+  // IT14.57: P2 Tech Push must make a real Village-phase attempt at Athens' unique
+  // Forge advantage. Start early enough to finish the building + melee upgrade before
+  // the absolute 7-minute Town click, but never hold Town beyond that absolute lane.
+  athensP1ForgeTechPushStartTime: 240,
+  athensP1ForgeMinimumPopulation: 45,
   athensP1ForgeFoodReserve: 250,
   athensP1ForgeWoodReserve: 180,
   athensP1ForgeMetalReserve: 0,
-  athensP1MeleeTechStartTime: 285,
+  athensP1MeleeTechStartTime: 250,
   athensP1MeleeFoodReserve: 225,
   athensP1MeleeWoodReserve: 150,
   athensP1MeleeMetalReserve: 0,
@@ -644,8 +647,14 @@ const DEFAULT_POLICY = Object.freeze({
   // the siege-finisher pipeline as soon as the civ's own tech tree actually permits
   // an arsenal/ram. Availability checks remain authoritative, so this cannot invent
   // P2 siege for civs that only receive it in City Phase.
-  expertBrokenEnemySiegePopulation: 45,
-  expertBrokenEnemySiegeArmy: 55,
+  // IT14.57: once the opponent is already in finishing range, prepare the ram while
+  // the winning army is still on the field instead of waiting until enemy pop is ~9.
+  expertBrokenEnemySiegePopulation: 28,
+  expertBrokenEnemySiegeArmy: 40,
+  expertFinishingTownSiegeTarget: 1,
+  // Below this population, finishing retargets use strategic objectives rather than
+  // ordinary nearest-target cleanup: CC -> ConquestCritical -> military production.
+  expertBrokenEnemyObjectivePopulation: 20,
   // Zero-pop traders are a small passive multiplier, not a new boom strategy.
   expertTradeInitialTraders: 2,
   expertTradeStrongRouteTraders: 4,
@@ -666,8 +675,9 @@ const DEFAULT_POLICY = Object.freeze({
   expertEmergencyWoodBarterFoodFloor: 1400,
   expertEmergencyWoodBarterMetalFloor: 800,
   // Expert timing doctrines are benchmarked around a normal 200-pop operating
-  // economy. A larger lobby cap may be exploited later, but may not inflate the
-  // timing attack into an endless house/army boom before the first kill attempt.
+  // economy. IT14.57 makes this a HARD production ceiling: civilian, citizen-soldier,
+  // champion/hero and siege queues all count current + engine-training + AI-planned
+  // population before another batch is authorized.
   expertOperatingPopulationCap: 200,
   // IT14.44 P2 research package: during an actual P2 push, buy the first two broad
   // military upgrades before spending deeper into the forge tree, then immediately
