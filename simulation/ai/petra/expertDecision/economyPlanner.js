@@ -578,7 +578,10 @@ function planEconomy(rawState, overrides = {}) {
     !p1TemplePriorityPending;
   if (forgeOneReady)
     transitionForgeTarget = 1;
+  // IT14.64: Forge #2 is not a milestone. It only exists to open a second *usable*
+  // military-research lane while Forge #1 is already doing useful work.
   const forgeTwoReady = state.phase >= 2 &&
+    state.flags.forgeSecondUseful &&
     state.structures.barracks >= 2 &&
     state.population.used >= policy.phase2Forge2Population &&
     (state.structures.field >= policy.phase2ForgeSecondMinimumFields || infrastructureNaturalReady) &&

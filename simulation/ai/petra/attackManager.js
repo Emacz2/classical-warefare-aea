@@ -92,6 +92,9 @@ export function AttackManager(config)
 	this.expertLastRushLaunchEnemyPopulation = 0;
 	this.expertLastRushLaunchTime = -99999;
 	this.expertLastAthensP1MeleeHoldLog = -99999;
+	// IT14.64: once Athens deliberately abandons an unupgraded Late-P1 timing, do not
+	// let generic Rush creation immediately recreate the same bad plan.
+	this.expertLateP1UnupgradedCancelled = false;
 	// IT14.52: the economy uses this one-way signal to unlock the worker-aura
 	// Temple immediately after a committed P1 rush leaves home.
 	this.expertRushHasLaunched = false;
@@ -858,6 +861,38 @@ AttackManager.prototype.expertRushLocalBalance = function(gameState, attack)
 	return out;
 };
 
+AttackManager.prototype.expertClearlyOutnumberedDecision = function(gameState, attack)
+{
+	const out = { abort: false, balance: undefined };
+	if (this.Config.difficulty < difficulty.EXPERT || !attack || !attack.isStarted() ||
+	    (attack.type !== AttackPlan.TYPE_RUSH && attack.type !== AttackPlan.TYPE_DEFAULT && attack.type !== AttackPlan.TYPE_HUGE_ATTACK) ||
+	    expertAttackHasBuildingSiege(attack))
+		return out;
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	const age = now - (Number(attack.expertLaunchTime) || now);
+	const policy = mergePolicy();
+	if (age < 4 || age > (Number(policy.expertSmartAttackMaximumAgeSeconds) || 22))
+		return out;
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
+	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : Infinity;
+	if (enemyPop <= (Number(policy.expertFinishingEnemyPopulation) || 30))
+		return out;
+	const balance = this.expertRushLocalBalance(gameState, attack);
+	out.balance = balance;
+	const own = Number(balance.ownCombat) || 0;
+	const enemy = Number(balance.enemyCombat) || 0;
+	if (own < (Number(policy.expertSmartAttackMinimumOwnCombat) || 12))
+		return out;
+	const ratio = balance.defenses > 0 ?
+		(Number(policy.expertSmartAttackDefendedOutnumberRatio) || 1.15) :
+		(Number(policy.expertSmartAttackOutnumberRatio) || 1.35);
+	// Require both a ratio disadvantage and a real numeric margin to avoid reacting
+	// to harmless scouting noise or one extra defender crossing the sample radius.
+	if (enemy >= Math.ceil(own * ratio) && enemy >= own + (balance.defenses > 0 ? 5 : 8))
+		out.abort = true;
+	return out;
+};
+
 AttackManager.prototype.expertFailedRushDecision = function(gameState, attack)
 {
 	const out = { abort: false, reason: "", losses: 0, enemyDamage: 0 };
@@ -1246,8 +1281,9 @@ AttackManager.prototype.forceExpertReboomRelaunch = function(gameState)
 
 	const policy = mergePolicy();
 	const reserve = this.expertReserveCombatCount(gameState);
-	if (reserve < (Number(policy.expertReboomRelaunchMinimumReserve) || 40) ||
-	    gameState.getPopulation() < (Number(policy.expertReboomRelaunchMinimumPopulation) || 125))
+	// IT14.64: reserve strength is the relaunch gate. A housing block must not make
+	// 50+ healthy soldiers wait forever for total population to grow.
+	if (reserve < (Number(policy.expertReboomRelaunchMinimumReserve) || 40))
 		return false;
 
 	const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber, AttackPlan.TYPE_DEFAULT);
@@ -1425,6 +1461,9 @@ AttackManager.prototype.update = function(gameState, queues, events)
 					aiWarn("[EXPERT-ATHENS-P1] cancel-unupgraded-late-rush plan=" + attack.name +
 						" army=" + attack.unitCollection.length + " enemyPop=" + enemyPop +
 						" action=transition-p2");
+					this.expertLateP1UnupgradedCancelled = true;
+					this.expertReboomNeedsRelaunch = true;
+					this.expertReboomTargetPlayer = attack.targetPlayer;
 					attack.Abort(gameState);
 					this.upcomingAttacks[attackType].splice(i--, 1);
 					continue;
@@ -1512,6 +1551,32 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				attack.setPaused(false);
 				aiWarn("[EXPERT-RUSH] RESUME plan=" + attack.name + " army=" + attack.unitCollection.length);
 			}
+			const outnumberedBeforeFight = this.expertClearlyOutnumberedDecision(gameState, attack);
+			if (outnumberedBeforeFight.abort)
+			{
+				const policy = mergePolicy();
+				const b = outnumberedBeforeFight.balance || {};
+				this.expertReboomUntil = Math.max(this.expertReboomUntil || -99999,
+					now + (attack.type === AttackPlan.TYPE_RUSH ?
+						(Number(policy.expertRushRetreatCooldownSeconds) || 105) :
+						(Number(policy.expertCombatBadExchangeReboomSeconds) || 55)));
+				if (attack.type === AttackPlan.TYPE_RUSH)
+				{
+					this.expertRushRecoveryMode = true;
+					this.expertRushRecoveryUntil = this.expertReboomUntil;
+				}
+				this.expertReboomNeedsRelaunch = true;
+				this.expertReboomTargetPlayer = attack.targetPlayer;
+				this.markExpertCombatRetreat(gameState, attack, "clearly_outnumbered");
+				const cancelled = this.cancelExpertFollowupPreparations(gameState);
+				aiWarn("[EXPERT-SMART-ATTACK] avoid-outnumbered plan=" + attack.name +
+					" local=" + (b.ownCombat || 0) + "v" + (b.enemyCombat || 0) +
+					" defenses=" + (b.defenses || 0) + " cancelled=" + cancelled +
+					" until=" + Math.round(this.expertReboomUntil));
+				attack.Abort(gameState);
+				this.startedAttacks[attackType].splice(i--, 1);
+				continue;
+			}
 			const failedRush = this.expertFailedRushDecision(gameState, attack);
 			if (failedRush.regroup && this.startExpertTacticalRegroup(gameState, attack, failedRush))
 				continue;
@@ -1522,6 +1587,11 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				this.expertRushRecoveryMode = true;
 				this.expertRushRecoveryUntil = now + (Number(policy.expertRushRetreatCooldownSeconds) || 105);
 				this.expertReboomUntil = Math.max(this.expertReboomUntil || -99999, this.expertRushRecoveryUntil);
+				// IT14.64 Rush recovery also creates a concrete P2 counterattack obligation.
+				// This covers the replay where 50+ healthy reserves defended successfully but
+				// never counterattacked because only Default/Huge retreats set this flag.
+				this.expertReboomNeedsRelaunch = true;
+				this.expertReboomTargetPlayer = attack.targetPlayer;
 				this.markExpertCombatRetreat(gameState, attack, failedRush.reason);
 				const cancelled = this.cancelExpertFollowupPreparations(gameState);
 				const b = failedRush.balance || {};
@@ -1648,6 +1718,22 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	{
 		if (unexecutedAttacks[AttackPlan.TYPE_RUSH] === 0)
 		{
+			// IT14.64: after an Athens Late-P1 timing was deliberately cancelled for
+			// missing Melee-I, do not recreate another unupgraded P1 rush a frame later.
+			if (this.Config.difficulty >= difficulty.EXPERT && doctrine && doctrine.id === "late_p1_rush" &&
+			    gameState.getPlayerCiv && gameState.getPlayerCiv() === "athen" &&
+			    this.expertLateP1UnupgradedCancelled &&
+			    !(gameState.isResearched && gameState.isResearched("citystate/city_state_attack_melee_01")))
+			{
+				if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 15)
+				{
+					this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
+					aiWarn("[EXPERT-ATHENS-P1] replacement-rush-locked action=transition-p2");
+				}
+				this.rushNumber = this.maxRushes;
+			}
+			else
+			{
 			// we have a barracks and we want to rush, rush.
 			const data = { "targetSize": this.rushSize[this.rushNumber] };
 			const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber,
@@ -1702,6 +1788,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				this.upcomingAttacks[AttackPlan.TYPE_RUSH].push(attackPlan);
 			}
 			this.rushNumber++;
+			}
 		}
 	}
 	else if (!expertForcedRelaunch &&
@@ -2148,7 +2235,8 @@ AttackManager.prototype.Serialize = function()
 		"expertLastRushTargetPlayer": this.expertLastRushTargetPlayer,
 		"expertLastRushLaunchEnemyPopulation": this.expertLastRushLaunchEnemyPopulation,
 		"expertLastRushLaunchTime": this.expertLastRushLaunchTime,
-		"expertLastAthensP1MeleeHoldLog": this.expertLastAthensP1MeleeHoldLog
+		"expertLastAthensP1MeleeHoldLog": this.expertLastAthensP1MeleeHoldLog,
+		"expertLateP1UnupgradedCancelled": this.expertLateP1UnupgradedCancelled
 	};
 
 	const upcomingAttacks = {};

@@ -318,14 +318,18 @@ const DEFAULT_POLICY = Object.freeze({
   lateP1ForgeWoodFoodRatio: 3.0,
   phase2Forge1Population: 90,
   phase2Forge2Population: 80,
-  // IT14.63: forge #2 is deliberately early Town infrastructure so Melee/Ranged
-  // attack upgrades can run in parallel while the P2 army is assembling.
+  // IT14.64: Forge #2 is an on-demand second research lane, not scheduled infrastructure.
+  // The planner may request it only while Forge #1 is actually occupied by a useful
+  // military technology and the live bank can fund the building plus another upgrade.
   phase2ForgeTransitionTime: 420,
   phase2ForgeTransitionMinimumFields: 6,
   phase2ForgeSecondMinimumFields: 4,
   phase2ForgeSecondFoodBank: 200,
   phase2Forge1WoodBank: 200,
   phase2Forge2WoodBank: 200,
+  phase2Forge2MetalBank: 175,
+  phase2Forge2FoodBank: 450,
+  phase2Forge2UsefulWoodBank: 450,
   forgeWoodReserve: 100,
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
@@ -497,6 +501,9 @@ const DEFAULT_POLICY = Object.freeze({
   athensGymnasiumRangedCapWithoutMelee: 3,
   athensGymnasiumCrossbowTarget: 2,
   athensGymnasiumCrossbowMaximum: 2,
+  athensGymnasiumPlacementFailureLimit: 3,
+  athensGymnasiumRetryCooldownSeconds: 120,
+  athensGymnasiumMinimumChampionBankMultiplier: 1,
   athensGymnasiumMeleeTargetShare: 0.60,
   athensGymnasiumJavelineerTargetShare: 0.25,
   athensHippocratesMinimumTime: 600,
@@ -537,6 +544,12 @@ const DEFAULT_POLICY = Object.freeze({
   // A fixed construction plan that never creates a foundation is cancelled and
   // replanned quickly so one queue/builder/pathing stall cannot destroy the build.
   openingStorehouseAwaitingFoundationRetrySeconds: 10,
+  // IT14.64 housing is production-critical: an unfounded House cannot monopolize the
+  // one-house task slot indefinitely.
+  houseAwaitingFoundationRetrySeconds: 10,
+  houseEmergencyTechFreePopulation: 6,
+  houseEmergencyTechMinimumHouses: 6,
+  houseEmergencyTechPlacementFailures: 2,
   wickerFarmsteadAwaitingFoundationRetrySeconds: 10,
   economicAwaitingFoundationRetrySeconds: 18,
   wickerFarmsteadPlacementFailureLimit: 4,
@@ -663,6 +676,12 @@ const DEFAULT_POLICY = Object.freeze({
   expertRushAbortMinimumOwnLosses: 4,
   expertRushAbortMinimumFightSeconds: 10,
   expertRushAbortLocalOutnumberRatio: 1.15,
+  // IT14.64 pre-engagement sanity check. This does not alter Petra movement; it only
+  // refuses a clearly losing head-on commitment before the casualty detector has time to fire.
+  expertSmartAttackMinimumOwnCombat: 12,
+  expertSmartAttackOutnumberRatio: 1.35,
+  expertSmartAttackDefendedOutnumberRatio: 1.15,
+  expertSmartAttackMaximumAgeSeconds: 22,
   expertRushLocalBalanceRadius: 80,
   expertRushDefensiveThreatRadius: 90,
   expertRushRetreatCooldownSeconds: 105,
@@ -691,7 +710,7 @@ const DEFAULT_POLICY = Object.freeze({
   // short reboom window ends and enough healthy reserve soldiers exist, create the
   // follow-up plan directly instead of waiting for generic Petra plan creation.
   expertReboomRelaunchMinimumReserve: 40,
-  expertReboomRelaunchMinimumPopulation: 125,
+  expertReboomRelaunchMinimumPopulation: 0,
   expertRecentGarrisonThreatSeconds: 25,
   // Keep ranged infantry behind the melee centroid instead of letting pathing put
   // javeliners/archers on the front edge of a mixed infantry army.
@@ -899,7 +918,7 @@ const DEFAULT_POLICY = Object.freeze({
     field: { wood: 100 },
     barracks: { wood: 200 },
     market: { wood: 200, stone: 25, metal: 25 },
-    forge: { wood: 200 },
+    forge: { wood: 200, metal: 50 },
     temple: { food: 50, wood: 200 }
   })
 });

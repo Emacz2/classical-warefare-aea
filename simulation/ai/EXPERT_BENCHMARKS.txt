@@ -9,21 +9,24 @@ Definitions
 - The rolling last-three median is tracked for context, but the current bonus-change trigger is the user's stricter post-IT14.58 confirmation rule below.
 
 Last 3 clean completed benchmark victories
-Patch / run          Gather Bonus   Victory     Confirmation status
-IT14.61 Arctic       +35%           23:58.4     Clean win, not dominant confirmation #2
-IT14.62 Savanna      +35%           25:34.6     Clean win; slow finishing/cleanup
-IT14.62 Temperate    +35%           24:34.0     Clean Town-phase win; Arsenal placement delayed finish
+Patch / run          Gather Bonus   Victory        Notes
+IT14.62 Temperate    +35%           24:34.0        Clean Town-phase win; Arsenal placement delayed finish
+IT14.63 Replay #1    +35%           ~23:56         Clean win; first major push was defended, recovery/relaunch worked
+IT14.63 Replay #3    +35%           21:19-21:35    Clean dominant strategic win; metadata remained open until 22:23.2
 
 Rolling clean-win context
-- Recent clean victories are 23:58.4, 25:34.6, and 24:34.0; median = 24:34.0.
-- Clean sub-18 victories currently credited: IT14.58 and IT14.60.
-- Post-IT14.58 *similarly dominant* confirmations: 1 of 2 (IT14.60).
-- The two completed IT14.62 wins are strategically clean but too slow to satisfy dominant confirmation #2.
+- Recent clean victories are 24:34.0, ~23:56, and 21:19-21:35; median is approximately 23:56.
+- Historical clean sub-18 victories: IT14.58 (17:46.6) and IT14.60 (16:42.4).
+- IT14.63 Replay #2 is NON-BENCHMARK: the first attack was poor and the AI later deadlocked at 105/105 because an awaiting-foundation House task never recovered.
+- IT14.63 Replay #3 was strategically decisive by roughly the 15-minute mark, but actual conquest was still later than 20:00.
+- Current consecutive clean sub-20 streak: 0.
 
 Current tuning rule
-- Keep +35% / 1.35 until one more similarly clean, dominant post-IT14.58 validation win is recorded.
-- When confirmation #2 arrives, skip +30% entirely and test **+25%** next.
-- Do not reduce the bonus merely because the rolling median is below 20:00; consistency and finishing quality matter.
+- Keep Expert gather/trade at +35% / 1.35.
+- Require **3 consecutive clean sub-20-minute victories** before reducing the bonus.
+- After that streak, reduce only to **+30%** and run another three-game validation set.
+- Consider +25% only if +30% remains consistently too strong.
+- Do not count strategically dominant but >20-minute cleanup results as sub-20 victories.
 
 IT14.44 notes
 - Very Hard was 51 pop at 16:00, rebounded to 59 at 16:30, then fell to 48 at 17:00 and never returned to 50+, so BREAK=17:00.
@@ -283,3 +286,18 @@ IT14.63 target
 - Endgame cleanup retargets more quickly and ordinary infantry production stops filling the cap once a finishing army plus home reserve is already sufficient.
 - Preserve the IT14.62 true-siege classification, food/farm/Storehouse robustness, P1/P2 Barracks ceilings, mining-tech debt recovery, and +35% / 1.35 benchmark multiplier.
 
+
+
+IT14.63 three-replay review
+- Replay #1: CLEAN WIN around 23:56. The first major attack was defended, but the bad-exchange retreat and explicit reboom relaunch worked. Large groups of citizen-soldier reserves still spent too much of the assembly/recovery window idle instead of gathering. Forge #2 was also built before Forge #1 had a genuinely useful parallel research bottleneck.
+- Replay #2: NON-BENCHMARK FAILURE. Athens correctly cancelled its original unupgraded Late-P1 timing, but generic Rush creation immediately recreated a 36-soldier unupgraded attack. That attack eventually deteriorated to a badly outnumbered/defended fight and retreated. Later House #7 remained in `awaiting-foundation` without recovery, producing a 105/105 population block despite thousands of banked resources. The blocked population also prevented a healthy reserve army from counterattacking promptly.
+- Replay #3: CLEAN WIN, supported conquest window 21:19-21:35 (metadata remained open until 22:23.2). By roughly 14:40 Expert was already 173/180 with a 78-unit army and soon drove the opponent to ~28 population. Melee-I timing, House progression, two-real-ram finishing and conquest-target cleanup all worked. Gymnasium placement repeatedly failed and produced no champions.
+- These three runs do not satisfy a sub-20 consistency threshold. IT14.64 therefore remains +35% / 1.35 and starts a fresh three-consecutive-sub-20 validation target.
+
+IT14.64 target / implemented emphasis
+- Smarter attack commitment without rewriting Petra movement: once an unupgraded Athens Late-P1 timing is deliberately cancelled, replacement P1 Rush creation is locked. A newly launched Rush/Default/Huge army also refuses an obviously losing head-on local engagement (large numeric disadvantage, stricter around defenses) before waiting for a casualty disaster.
+- Housing resilience: an unfounded House receives a 10-second watchdog, orphan-foundation adoption and wider P2 retry rings. Repeated House failures near the population cap may trigger the live Town `pop_house_01` (+20% House population) technology instead of remaining permanently blocked.
+- Productive reboom/reserves: citizen-soldiers assigned to an unexecuted attack plan remain economic workers despite Petra's `PartOfArmy` marker. Reboom relaunch is gated by healthy reserve strength rather than total population, so a 105/105 block cannot prevent a counterattack when 40+ healthy soldiers already exist.
+- Spend military infrastructure only when actionable: correct Forge cost accounting to 200 wood + 50 metal; Forge #2 is requested only while Forge #1 is already occupied by Expert military research and the bank can support another lane. Gymnasium construction requires a live champion production candidate plus resources for the first intended champion, and repeated impossible placement enters a cooldown rather than retry-spamming.
+- Resource-flexible Athens production: low wood with strong food/stone explicitly activates the existing slinger pressure valve so Barracks can train useful citizen-soldiers instead of idling while still preserving the desired melee screen when resources allow.
+- Preserve true-siege classification, two-ram finishing, no hunt-only Stable, Cleruchy/all-in sequencing, P1<=2/P2<=3 Barracks constraints, four-farmer food math, mining-tech debt recovery, and +35% / 1.35.

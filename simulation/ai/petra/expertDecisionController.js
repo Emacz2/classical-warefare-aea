@@ -409,8 +409,10 @@ export class ExpertDecisionController
 			}
 			if (!hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry"))
 				continue;
-			const committed = !!ent.getMetadata(PlayerID, "PartOfArmy") ||
-				ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || !this.attackPlanAllowsEconomicWork(gameState, ent);
+			// IT14.64: an unexecuted attack plan may already mark units PartOfArmy.
+			// Those citizen-soldiers should still gather until the plan actually starts.
+			const committed = ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
+				!this.attackPlanAllowsEconomicWork(gameState, ent);
 			if (committed)
 			{
 				++out.committedMilitary;
@@ -423,6 +425,30 @@ export class ExpertDecisionController
 				++out.gatheringReserve;
 		}
 		return out;
+	}
+
+	secondForgeResearchUseful(gameState)
+	{
+		if (!gameState || !gameState.currentPhase || gameState.currentPhase() < 2 ||
+		    this.builtByClass(gameState, "Forge").length !== 1)
+			return false;
+		// Forge #2 only earns its cost if Forge #1 is already occupied by an Expert
+		// military technology. An empty first Forge means the bottleneck is resources,
+		// researchers or tech availability, not research throughput.
+		let militaryBusy = false;
+		for (const name of Object.keys(this.expertObservedP2MilitaryTechs || {}))
+			if (gameState.isResearching && gameState.isResearching(name))
+			{
+				militaryBusy = true;
+				break;
+			}
+		if (!militaryBusy)
+			return false;
+		const policy = mergePolicy();
+		const res = gameState.getResources();
+		return (Number(res.food) || 0) >= (Number(policy.phase2Forge2FoodBank) || 450) &&
+			(Number(res.wood) || 0) >= (Number(policy.phase2Forge2UsefulWoodBank) || 450) &&
+			(Number(res.metal) || 0) >= (Number(policy.phase2Forge2MetalBank) || 175);
 	}
 
 	primaryEcoTechBusy(gameState)
@@ -464,8 +490,7 @@ export class ExpertDecisionController
 		{
 			if (!ent || !ent.getMetadata || !this.isExpertEconomyEntity(ent))
 				continue;
-			const unavailable = ent.getMetadata(PlayerID, "PartOfArmy") ||
-				ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
+			const unavailable = ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
 				!this.attackPlanAllowsEconomicWork(gameState, ent);
 			if (!unavailable)
 				continue;
@@ -4847,6 +4872,36 @@ export class ExpertDecisionController
 		return true;
 	}
 
+	retryStalledHouseTask(gameState, taskId, observed)
+	{
+		if (!taskId || !observed || observed.state !== "awaiting-foundation")
+			return false;
+		const started = Number(this.taskStartedAt[taskId]);
+		const timeout = Number(mergePolicy().houseAwaitingFoundationRetrySeconds) || 10;
+		if (!Number.isFinite(started) || gameState.ai.elapsedTime - started < timeout)
+			return false;
+		if (this.adoptOrphanFoundation(gameState, taskId, "house"))
+			return false;
+		const role = this.activeTaskBuildIntent[taskId] && this.activeTaskBuildIntent[taskId].role || "primary";
+		const removed = this.cancelQueuedConstructionTask(gameState, taskId);
+		this.releaseConstructionTeam(gameState, taskId);
+		delete this.activeTaskByKind.house;
+		delete this.activeTaskBuildIntent[taskId];
+		delete this.taskStartedAt[taskId];
+		delete this.taskDiagnostics[taskId];
+		if (this.foundationTracker && this.foundationTracker.remove)
+			this.foundationTracker.remove(taskId);
+		const key = "house:" + role;
+		this.placementFailureCounts[key] = Number(this.placementFailureCounts[key] || 0) + 1;
+		this.placementFailureCounts["house:primary"] = Math.max(Number(this.placementFailureCounts["house:primary"] || 0),
+			Number(this.placementFailureCounts[key] || 0));
+		this.placementFailureAt[key] = Number(gameState.ai.elapsedTime) || 0;
+		aiWarn("[EXPERT-HOUSING] retry stalled house task=" + taskId + " role=" + role +
+			" waited=" + Math.round(gameState.ai.elapsedTime - started) + "s removedPlans=" + removed +
+			" failures=" + this.placementFailureCounts[key]);
+		return true;
+	}
+
 	retryStalledBarracksTask(gameState, taskId, observed, kind = "barracks")
 	{
 		if (!taskId || !observed || observed.state !== "awaiting-foundation")
@@ -4899,6 +4954,8 @@ export class ExpertDecisionController
 			try { observed = this.foundationTracker.observeTask(gameState, taskId); }
 			catch (e) { return; }
 
+			if (!isField && kind === "house" && this.retryStalledHouseTask(gameState, taskId, observed))
+				return;
 			if (!isField && (kind === "storehouse" || kind === "farmstead") && this.retryStalledEconomicTask(gameState, taskId, observed, kind))
 				return;
 			if (!isField && (kind === "barracks" || kind === "stable" || kind === "market" || kind === "forge" || kind === "temple" || kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion" || kind === "cleruchy") && this.retryStalledBarracksTask(gameState, taskId, observed, kind))
@@ -4953,6 +5010,12 @@ export class ExpertDecisionController
 				else
 				{
 					delete this.activeTaskByKind[kind];
+					if (observed.state === "completed" && kind === "house")
+					{
+						for (const key of Object.keys(this.placementFailureCounts || {}))
+							if (key.startsWith("house:"))
+								this.placementFailureCounts[key] = 0;
+					}
 					if (observed.state === "completed" && kind === "storehouse")
 					{
 						if (this.builtByClass(gameState, "Storehouse").length <= 1)
@@ -5810,6 +5873,81 @@ export class ExpertDecisionController
 		return removed ? { ...frame, actions } : frame;
 	}
 
+	researchExpertHousingCapacityTech(gameState)
+	{
+		if (!gameState || !gameState.currentPhase || gameState.currentPhase() < 2 ||
+		    !gameState.ai || !gameState.ai.queueManager)
+			return false;
+		const policy = mergePolicy();
+		const free = Math.max(0, (Number(gameState.getPopulationLimit()) || 0) - (Number(gameState.getPopulation()) || 0));
+		const houses = this.builtByClass(gameState, "House").length;
+		const failures = Math.max(Number(this.placementFailureCounts["house:primary"] || 0),
+			...Object.entries(this.placementFailureCounts || {}).filter(([key]) => key.startsWith("house:")).map(([, value]) => Number(value) || 0), 0);
+		if (free > (Number(policy.houseEmergencyTechFreePopulation) || 6) ||
+		    houses < (Number(policy.houseEmergencyTechMinimumHouses) || 6) ||
+		    failures < (Number(policy.houseEmergencyTechPlacementFailures) || 2))
+			return false;
+		const techName = "pop_house_01";
+		if ((gameState.isResearched && gameState.isResearched(techName)) ||
+		    (gameState.isResearching && gameState.isResearching(techName)))
+			return true;
+		const available = new Map(gameState.findAvailableTech() || []);
+		if (!available.has(techName) || !(gameState.hasResearchers && gameState.hasResearchers(techName, true)))
+			return false;
+		const queueName = "expertHousingTech";
+		gameState.ai.queueManager.addQueue(queueName, 1030);
+		const queue = gameState.ai.queues[queueName];
+		if (!queue || queue.hasQueuedUnits())
+			return !!(queue && queue.hasQueuedUnits());
+		const plan = new ResearchPlan(gameState, techName, false);
+		if (!plan)
+			return false;
+		const cost = plan.getCost();
+		const res = gameState.getResources();
+		for (const r of ["food", "wood", "stone", "metal"])
+			if ((Number(res[r]) || 0) < (Number(cost[r]) || 0))
+				return false;
+		plan.metadata = { "expertDecisionLayer": true, "expertHousingEmergency": true };
+		queue.addPlan(plan);
+		gameState.ai.queueManager.changePriority(queueName, 1030);
+		aiWarn("[EXPERT-HOUSING] queued=" + techName + " free=" + free + " houses=" + houses +
+			" placementFailures=" + failures + " cost=" + Math.round(cost.food || 0) + "/" +
+			Math.round(cost.wood || 0) + "/" + Math.round(cost.stone || 0) + "/" + Math.round(cost.metal || 0));
+		return true;
+	}
+
+	athenianGymnasiumProductionPlan(gameState, gymTemplate)
+	{
+		if (!gymTemplate || !gymTemplate.trainableEntities)
+			return undefined;
+		let types = [];
+		try { types = gymTemplate.trainableEntities(gameState.getPlayerCiv()) || []; }
+		catch (e) { return undefined; }
+		const candidates = [];
+		for (const type of types)
+		{
+			if (gameState.isTemplateDisabled(type))
+				continue;
+			const template = gameState.getTemplate(type);
+			if (!template || !template.available(gameState) || !template.hasClasses(["Champion+Infantry"]))
+				continue;
+			const cost = template.cost();
+			const role = template.hasClasses(["Melee", "Spearman"]) || template.hasClasses(["Hoplite"]) ? "hoplite" :
+				template.hasClasses(["Javelineer"]) ? "javelineer" :
+				template.hasClasses(["Crossbowman"]) || String(type).includes("crossbow") ? "gastraphetes" : "other";
+			candidates.push({ type, role, cost: { food: Number(cost && cost.food) || 0, wood: Number(cost && cost.wood) || 0,
+				stone: Number(cost && cost.stone) || 0, metal: Number(cost && cost.metal) || 0 } });
+		}
+		if (!candidates.length)
+			return undefined;
+		const rolePriority = { hoplite: 0, javelineer: 1, gastraphetes: 2, other: 3 };
+		candidates.sort((a, b) => (rolePriority[a.role] ?? 3) - (rolePriority[b.role] ?? 3));
+		const res = gameState.getResources();
+		const affordable = candidates.find(candidate => ["food", "wood", "stone", "metal"].every(r =>
+			(Number(res[r]) || 0) >= (Number(candidate.cost[r]) || 0)));
+		return affordable || candidates[0];
+	}
+
 	applyAthenianSpecialInfrastructure(gameState, frame)
 	{
 		if (gameState.getPlayerCiv() !== "athen" || !gameState.currentPhase)
@@ -5834,18 +5972,28 @@ export class ExpertDecisionController
 		const gymTemplate = gameState.getTemplate(gymType);
 		const gymMinTime = doctrine.id === "p2_tech_push" ?
 			policy.athensGymnasiumMinimumTime : policy.athensGymnasiumRushMinimumTime;
+		const gymFailureKey = "gymnasium:athens_p2_champions";
+		const gymFailures = Number(this.placementFailureCounts[gymFailureKey] || 0);
+		const gymFailureAt = Number(this.placementFailureAt[gymFailureKey] || -99999);
+		const gymPlacementCooling = gymFailures >= (Number(policy.athensGymnasiumPlacementFailureLimit) || 3) &&
+			now - gymFailureAt < (Number(policy.athensGymnasiumRetryCooldownSeconds) || 120);
+		const gymProduction = this.athenianGymnasiumProductionPlan(gameState, gymTemplate);
 		const gymReady = phase >= 2 && now >= gymMinTime &&
 			pop >= policy.athensGymnasiumMinimumPopulation &&
 			this.builtByClass(gameState, "Barracks").length >= 2 &&
 			this.builtByClass(gameState, "Forge").length >= 1 &&
-			this.builtByClass(gameState, "Temple").length >= 1;
+			this.builtByClass(gameState, "Temple").length >= 1 &&
+			!!gymProduction && !gymPlacementCooling;
 		if (gymTemplate && gymReady && !hasAction("gymnasium") &&
 		    this.specialStructurePipeline(gameState, "gymnasium") === 0 &&
 		    this.HQ.canBuild && this.HQ.canBuild(gameState, gymType) &&
 		    this.specialBuildingAffordable(gameState, gymType, {
-			    food: policy.athensGymnasiumFoodReserve,
-			    wood: policy.athensGymnasiumWoodReserve,
-			    metal: policy.athensGymnasiumMetalReserve
+			    // Keep enough bank to actually train the first preferred champion after
+			    paying for the Gymnasium; otherwise the building would be decorative.
+			    food: policy.athensGymnasiumFoodReserve + (Number(gymProduction.cost.food) || 0),
+			    wood: policy.athensGymnasiumWoodReserve + (Number(gymProduction.cost.wood) || 0),
+			    stone: Number(gymProduction.cost.stone) || 0,
+			    metal: policy.athensGymnasiumMetalReserve + (Number(gymProduction.cost.metal) || 0)
 		    }))
 		{
 			actions.push({
@@ -5858,7 +6006,7 @@ export class ExpertDecisionController
 			{
 				this.lastAthenianSpecialBuildDiag = now;
 				aiWarn("[EXPERT-ATHENS] build=gymnasium phase=" + phase + " pop=" + pop +
-					" strategy=" + doctrine.id);
+					" strategy=" + doctrine.id + " firstChampion=" + gymProduction.type + " role=" + gymProduction.role);
 			}
 		}
 
@@ -6252,6 +6400,18 @@ export class ExpertDecisionController
 		const currentMeleeShare = total > 0 ? meleeCount / total : 0;
 		const wantMelee = melee.length && (!ranged.length || currentMeleeShare < targetMeleeShare);
 
+		// IT14.64 resource substitution: the composition target is a preference, not a
+		// production deadlock. If Athens wants another melee unit but cannot currently
+		// afford any melee candidate while a zero/low-wood slinger is affordable, train
+		// the slinger now and let future resource-rich batches restore the melee share.
+		if (woodPressure && gameState.getPlayerCiv() === "athen" && wantMelee && !affordable(melee).length)
+		{
+			const slingers = ranged.filter(c => c.slinger);
+			const rangedAffordable = affordable(slingers.length ? slingers : ranged);
+			if (rangedAffordable.length)
+				return cheapest(rangedAffordable);
+		}
+
 		if (wantMelee)
 		{
 			// IT14.48 Athens: keep Hoplites the majority of the melee line, but let Marines
@@ -6319,9 +6479,12 @@ export class ExpertDecisionController
 		// civilians after a military pulse. At the cap the CC may join military production.
 		const reserve = workers.civilians >= this.currentCivilianCap(gameState) ? 0 : policy.soldierFoodReserve;
 		const resources = gameState.getResources();
+		const athensResourceSlingerWindow = gameState.getPlayerCiv() === "athen" &&
+			(Number(resources.wood) || 0) <= (Number(policy.athensSlingerLowWood) || 300) &&
+			(Number(resources.food) || 0) >= (Number(policy.athensSlingerUnlockMinimumFoodBank) || 900) &&
+			(Number(resources.stone) || 0) >= (Number(policy.athensSlingerUnlockStoneReserve) || 75);
 		const protectWood = this.phaseWoodCrisis ||
-			(gameState.getPlayerCiv() === "athen" && this.woodIncomeStalled &&
-			 (Number(resources.wood) || 0) <= (Number(policy.athensSlingerLowWood) || 300));
+			(gameState.getPlayerCiv() === "athen" && (this.woodIncomeStalled || athensResourceSlingerWindow));
 		const resourceBudget = {
 			"food": Math.max(0, (Number(resources.food) || 0) - reserve),
 			"wood": protectWood ? 0 : (Number(resources.wood) || 0),
@@ -7033,6 +7196,8 @@ export class ExpertDecisionController
 
 				if (phase >= 2)
 				{
+					const houseFailures = Math.max(Number(this.placementFailureCounts["house:primary"] || 0),
+						...Object.entries(this.placementFailureCounts || {}).filter(([key]) => key.startsWith("house:")).map(([, value]) => Number(value) || 0), 0);
 					// IT14.12 P2 housing: the P1 house line is a preference, not a prison.
 					// Expand from the OUTER edges of already-developed work/military districts,
 					// which also naturally lets houses push territory toward nearby resources.
@@ -7063,8 +7228,10 @@ export class ExpertDecisionController
 					}));
 					candidates.push(...generatePlacementCandidates({
 						"kind": "barracks", "anchor": ccPos, "toward": woodPos,
-						"distances": [28, 34, 40, 46, 52, 58, 64, 70, 76, 82, 88, policy.phase2HouseSearchMaximumDistance],
-						"angleCount": 48, "templateRadius": geometry.radius
+						"distances": houseFailures > 0 ?
+							[28, 34, 40, 46, 52, 58, 64, 70, 76, 82, 88, 96, 108, 120, 132, 144, 156, 168] :
+							[28, 34, 40, 46, 52, 58, 64, 70, 76, 82, 88, policy.phase2HouseSearchMaximumDistance],
+						"angleCount": houseFailures > 0 ? 64 : 48, "templateRadius": geometry.radius
 					}));
 					const seen = new Set();
 					const unique = candidates.filter(pos => {
@@ -8082,7 +8249,10 @@ export class ExpertDecisionController
 					aiWarn("[EXPERT-DEF] emergency tower queued count=" + this.emergencyTowerCount +
 						" foe=" + (this.expertDefenseState.foeCount || 0));
 				}
-				this.placementFailureCounts[action.kind + ":" + (action.role || "primary")] = 0;
+				// A prepared House plan is not proof that a foundation will actually appear.
+				// Keep housing recovery debt until the House itself completes.
+				if (action.kind !== "house")
+					this.placementFailureCounts[action.kind + ":" + (action.role || "primary")] = 0;
 				this.activeTaskBuildIntent[exec.taskId] = {
 					"builderPool": Array.isArray(action.builderPool) ? [...action.builderPool] : undefined,
 					"builderCount": Number(action.builderCount) || undefined,
@@ -9586,7 +9756,7 @@ export class ExpertDecisionController
 			if (pendingDecision.action === "COMMIT_PENDING")
 				this.finishPendingJob(gameState, ent);
 			if (ent.getMetadata(PlayerID, TASK_KEY) !== undefined || ent.getMetadata(PlayerID, "transport") !== undefined ||
-			    ent.getMetadata(PlayerID, "PartOfArmy") || !this.attackPlanAllowsEconomicWork(gameState, ent))
+			    !this.attackPlanAllowsEconomicWork(gameState, ent))
 				continue;
 			const state = ent.unitAIState ? ent.unitAIState() : "";
 			if (state && state.includes(".COMBAT."))
@@ -9796,7 +9966,8 @@ export class ExpertDecisionController
 				"woodIncomeStalled": this.woodIncomeStalled,
 				"woodServiceStorehouses": woodServiceStorehouses,
 				"measuredWoodIncomeRate": woodContinuity.delivered.rate,
-				"measuredWoodIncomeAvailable": woodContinuity.delivered.measured
+				"measuredWoodIncomeAvailable": woodContinuity.delivered.measured,
+				"forgeSecondUseful": this.secondForgeResearchUseful(gameState)
 			}
 		});
 		// IT14.51: strategy-level operating population ceiling. A 300-pop lobby may
@@ -9866,8 +10037,8 @@ export class ExpertDecisionController
 			aiWarn("[EXPERT-FOOD-CAP] FORCE FARM HUB " + forcedFoodHub.reason +
 				" pop=" + gameState.getPopulation() + " bank=" + Math.round(gameState.getResources().food) + "/" + Math.round(gameState.getResources().wood));
 		}
-		// IT14.61: map-aware hunt investment. The CC remains on its civilian contract;
-		// only a real Stable may add extra hunters, and food-capacity emergencies outrank it.
+		// IT14.63: map-aware hunt investment never buys a Stable by itself. After the
+		// protected opening, rich hunt may add pursuit cavalry one at a time from the CC.
 		frame = this.applyHuntingCavalryInfrastructure(gameState, frame, cc);
 		// IT14.62: a rich neutral frontier may justify one Cleruchy before another chain
 		// of tiny dropsites. It remains optional and finishing mode suppresses it.
@@ -9875,6 +10046,9 @@ export class ExpertDecisionController
 		// IT14.53: Athens may add one Gymnasium in Town and one Prytaneion in City,
 		// but only from genuine surplus after the core timing infrastructure exists.
 		frame = this.applyAthenianSpecialInfrastructure(gameState, frame);
+		// IT14.64 crowded-base escape hatch. Normal House construction stays preferred;
+		// only repeated placement/foundation failures near the cap unlock the +20% House tech.
+		this.researchExpertHousingCapacityTech(gameState);
 		if (defenseState && defenseState.shouldBuildTower)
 			frame = { ...frame, "actions": [...frame.actions, { "type": "BUILD", "kind": "tower", "role": "emergency_defense",
 				"builderPool": ["wood", "citizenSoldierWood"] }] };
@@ -9964,7 +10138,7 @@ export class ExpertDecisionController
 		{
 			if (!ent || !ent.getMetadata || !this.isExpertEconomyEntity(ent))
 				continue;
-			if (ent.getMetadata(PlayerID, "PartOfArmy") || ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
+			if (ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
 			    !this.attackPlanAllowsEconomicWork(gameState, ent))
 				continue;
 			if (ent.isIdle && ent.isIdle())
@@ -10022,7 +10196,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.63] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.64] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -10084,7 +10258,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.63] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.64] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
