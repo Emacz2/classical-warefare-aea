@@ -2378,9 +2378,11 @@ Headquarters.prototype.update = function(gameState, queues, events)
 			// IT14.51: emergency war-economy wood rescue runs first. If it trades this
 			// turn, let market prices update before generic queue-need barter considers
 			// another transaction.
-			const emergencyTrade = this.tradeManager.performExpertEmergencyWoodBarter &&
+			const foodCorrection = this.tradeManager.performExpertEmergencyFoodBarter &&
+				this.tradeManager.performExpertEmergencyFoodBarter(gameState);
+			const emergencyTrade = !foodCorrection && this.tradeManager.performExpertEmergencyWoodBarter &&
 				this.tradeManager.performExpertEmergencyWoodBarter(gameState);
-			if (!emergencyTrade && this.tradeManager.performBarter)
+			if (!foodCorrection && !emergencyTrade && this.tradeManager.performBarter)
 				this.tradeManager.performBarter(gameState);
 		}
 		// IT14.47: allow only route maintenance + a tiny zero-pop trader contingent.

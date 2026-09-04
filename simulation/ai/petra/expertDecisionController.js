@@ -2101,8 +2101,7 @@ export class ExpertDecisionController
 
 	researchExpertHopliteTradition(gameState, queues, frame)
 	{
-		if (!gameState || !gameState.currentPhase || !queues || !queues.minorTech ||
-		    queues.minorTech.hasQueuedUnits())
+		if (!gameState || !gameState.currentPhase || !queues || !gameState.ai || !gameState.ai.queueManager)
 			return false;
 		const civ = gameState.getPlayerCiv && gameState.getPlayerCiv();
 		if (!new Set(["athen", "spart", "theb"]).has(civ))
@@ -2117,18 +2116,13 @@ export class ExpertDecisionController
 			return false;
 
 		const phase = gameState.currentPhase();
-		const policy = mergePolicy();
+		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const barracks = this.builtByClass(gameState, "Barracks").length;
 		const fields = this.builtByClass(gameState, "Field").length;
 		const fieldPipeline = fields + this.foundationsByClass(gameState, "Field").length +
 			(gameState.ai.queues.field ? gameState.ai.queues.field.countQueuedUnits() : 0);
-		const templePipeline = this.builtByClass(gameState, "Temple").length +
-			this.foundationsByClass(gameState, "Temple").length +
-			(gameState.ai.queues.economicBuilding && gameState.ai.queues.economicBuilding.plans ?
-			 gameState.ai.queues.economicBuilding.plans.filter(plan =>
-				plan && plan.metadata && plan.metadata.expertDecisionKind === "temple").length : 0);
-		if (barracks < 2 || templePipeline < 1)
+		if (barracks < 2)
 			return false;
 
 		const raw = tech._template.cost || {};
@@ -2139,35 +2133,65 @@ export class ExpertDecisionController
 			metal: Math.max(0, Number(raw.metal) || 0)
 		};
 		const resources = gameState.getResources();
+		let queueName = "minorTech";
+		let mode = "p2-doctrine";
 
 		if (phase === 1)
 		{
-			if (now < policy.hopliteTraditionMinimumTime ||
+			const doctrine = this.ensureStrategicDoctrine(gameState);
+			const rushDoctrine = doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush");
+			if (!rushDoctrine || now < policy.hopliteTraditionMinimumTime ||
 			    now > policy.hopliteTraditionLatestP1StartTime ||
 			    gameState.getPopulation() < policy.hopliteTraditionMinimumPopulation ||
 			    fieldPipeline < policy.hopliteTraditionMinimumFieldPipeline)
 				return false;
+			if (this.HQ.attackManager && this.HQ.attackManager.expertRushHasLaunched)
+				return false;
+			if (queues.majorTech && queues.majorTech.hasQueuedUnits())
+				return false;
 
-			// Town Phase always wins once it is actually ready. Before that point, only
-			// buy Hoplite Tradition if the bank can also preserve the full current P2
-			// resource cost plus a modest operating reserve. This prevents the 600-resource
-			// tradition tech from recreating the old "Village forever" failure.
+			// IT14.66 makes Hoplite Tradition a real P1 production branch rather than a
+			// late surplus tech.  Only choose it when the current army is actually hoplite-
+			// heavy enough to repay the 60s CC research lock through 8s training and the
+			// recurring -5F/-5W citizen-hoplite discount.
+			let hoplites = 0;
+			let combat = 0;
+			for (const ent of gameState.getOwnUnits().values())
+			{
+				if (!ent || !ent.attackTypes || !ent.attackTypes() || hasClass(ent, "Support") || hasClass(ent, "Animal"))
+					continue;
+				if (hasClass(ent, "CitizenSoldier") || hasClass(ent, "Soldier"))
+					++combat;
+				if (hasClass(ent, "Hoplite") && !hasClass(ent, "Champion"))
+					++hoplites;
+			}
+			const minHoplites = Math.max(1, Number(policy.hopliteTraditionRushMinimumHoplites) || 8);
+			const minShare = Math.max(0, Math.min(1, Number(policy.hopliteTraditionRushMinimumShare) || 0.35));
+			if (hoplites < minHoplites || (combat > 0 && hoplites / combat < minShare))
+				return false;
+
+			// If Town is already a real click this turn, take the phase. Otherwise the rush
+			// doctrine is allowed to spend on its production package without hoarding the
+			// entire future Town cost at the same time; the absolute phase watchdog remains.
 			const phaseDecision = this.phase2Readiness(gameState, frame);
 			if (phaseDecision && phaseDecision.ready)
 				return false;
-			const phaseInfo = this.phaseTechInfo(gameState);
-			const phaseCost = phaseInfo && phaseInfo.cost || {};
-			if (resources.food < cost.food + (phaseCost.food || 0) + policy.hopliteTraditionFoodReserve ||
-			    resources.wood < cost.wood + (phaseCost.wood || 0) + policy.hopliteTraditionWoodReserve ||
-			    resources.stone < cost.stone + (phaseCost.stone || 0) ||
-			    resources.metal < cost.metal + (phaseCost.metal || 0) + policy.hopliteTraditionMetalReserve)
+			if (resources.food < cost.food + policy.hopliteTraditionFoodReserve ||
+			    resources.wood < cost.wood + policy.hopliteTraditionWoodReserve ||
+			    resources.stone < cost.stone ||
+			    resources.metal < cost.metal + policy.hopliteTraditionMetalReserve)
 				return false;
+
+			queueName = "expertHopliteTradition";
+			gameState.ai.queueManager.addQueue(queueName, 1065);
+			mode = doctrine.id + "-p1-production";
 		}
 		else if (phase === 2)
 		{
-			// IT14.62 Athens first locks in its broad Melee-I -> Ranged-I attack pair.
-			// Hoplite Tradition remains high value, but it no longer gets to occupy the
-			// first Town research window while the core attack package is still missing.
+			if (!queues.minorTech || queues.minorTech.hasQueuedUnits())
+				return false;
+			// Athens still locks in the broad Town attack pair before buying Tradition
+			// if the P1 production window was missed.
 			if (civ === "athen")
 			{
 				const coreReady = name => gameState.isResearched(name) || gameState.isResearching(name) ||
@@ -2175,8 +2199,6 @@ export class ExpertDecisionController
 				if (!coreReady("citystate/city_state_attack_melee_01") || !coreReady("citystate/city_state_attack_ranged_01"))
 					return false;
 			}
-			// If the strict P1 window was missed, make this the first dedicated City-State
-			// doctrine tech once Town is reached and the bank can support it.
 			if (resources.food < cost.food + policy.phase2MilitaryTechFoodReserve ||
 			    resources.wood < cost.wood + policy.phase2MilitaryTechWoodReserve ||
 			    resources.stone < cost.stone ||
@@ -2186,13 +2208,17 @@ export class ExpertDecisionController
 		else
 			return false;
 
+		const queue = gameState.ai.queues[queueName];
+		if (!queue || queue.hasQueuedUnits())
+			return !!(queue && queue.hasQueuedUnits());
 		const plan = new ResearchPlan(gameState, techName, false);
 		if (!plan)
 			return false;
-		plan.metadata = { "expertDecisionLayer": true, "expertMilitaryTech": "hoplite_tradition", "phase": phase };
-		queues.minorTech.addPlan(plan);
-		gameState.ai.queueManager.changePriority("minorTech", Math.max(this.HQ.Config.priorities.minorTech || 1, phase === 1 ? 780 : 760));
-		aiWarn("[EXPERT-TECH] queued " + techName + " phase=" + phase +
+		plan.metadata = { "expertDecisionLayer": true, "expertMilitaryTech": "hoplite_tradition", "phase": phase, "mode": mode };
+		queue.addPlan(plan);
+		gameState.ai.queueManager.changePriority(queueName, Math.max(phase === 1 ? 1065 : 760,
+			this.HQ.Config.priorities[queueName] || this.HQ.Config.priorities.minorTech || 1));
+		aiWarn("[EXPERT-HOPLITE] queued " + techName + " phase=" + phase + " mode=" + mode +
 			" bank=" + Math.round(resources.food) + "/" + Math.round(resources.wood) + "/" +
 			Math.round(resources.stone) + "/" + Math.round(resources.metal));
 		return true;
@@ -3174,6 +3200,12 @@ export class ExpertDecisionController
 		const foodInfrastructureHealthy = fieldPipeline >= policy.phase2PreferredFields || naturalInfrastructureHealthy;
 		const lateFoodFloor = fieldPipeline >= policy.phase2LateMinimumFields || naturalInfrastructureHealthy;
 		const absoluteFoodFloor = fieldPipeline >= policy.phase2AbsoluteMinimumFields || naturalInfrastructureHealthy;
+		const openFieldSlots = frame && frame.state && frame.state.food ? Math.max(0, Number(frame.state.food.openFieldSlots) || 0) : 0;
+		const foodDeficitSeconds = frame && frame.state && frame.state.food ?
+			Math.max(0, Number(frame.state.food.foodInfrastructureDeficitSeconds) || 0) : 0;
+		const deadlockFoodFloor = fieldPipeline >= (Number(policy.phase2DeadlockEscapeMinimumFields) || 2) &&
+			openFieldSlots <= 0 && naturalRemaining <= (Number(policy.phase2DeadlockEscapeNaturalFood) || 100) &&
+			foodDeficitSeconds >= (Number(policy.phase2DeadlockEscapeFoodDeficitSeconds) || 180);
 		const productionReady = barracks >= 2;
 
 		let ready = false;
@@ -3190,6 +3222,9 @@ export class ExpertDecisionController
 		else if (productionReady && absoluteFoodFloor &&
 		         now >= policy.phase2AbsoluteTime && pop >= policy.phase2AbsolutePopulation)
 			ready = true, lane = "absolute-7m";
+		else if (productionReady && deadlockFoodFloor &&
+		         now >= (Number(policy.phase2DeadlockEscapeTime) || 540) && pop >= policy.phase2AbsolutePopulation)
+			ready = true, lane = "food-deadlock-escape";
 		else if (productionReady && lateFoodFloor && now >= policy.phase2LateTime &&
 		         pop >= policy.phase2LatePopulation)
 			ready = true, lane = "late";
@@ -3538,6 +3573,15 @@ export class ExpertDecisionController
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const rushDoctrine = doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush";
+		if (rushDoctrine)
+		{
+			const hopliteQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHopliteTradition;
+			const hopliteBranch = (gameState.isResearched && gameState.isResearched("citystate/hoplite_tradition")) ||
+				(gameState.isResearching && gameState.isResearching("citystate/hoplite_tradition")) ||
+				!!(hopliteQueue && hopliteQueue.hasQueuedUnits && hopliteQueue.hasQueuedUnits());
+			if (hopliteBranch)
+				return frame;
+		}
 		const start = doctrine.id === "early_p1_rush" ? policy.athensP1ForgeEarlyRushStartTime :
 			doctrine.id === "late_p1_rush" ? policy.athensP1ForgeLateRushStartTime : policy.athensP1ForgeTechPushStartTime;
 		if (now < start || gameState.getPopulation() < policy.athensP1ForgeMinimumPopulation || this.builtByClass(gameState, "Barracks").length < 2)
@@ -3641,6 +3685,12 @@ export class ExpertDecisionController
 			return false;
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
+		const hopliteQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHopliteTradition;
+		const hopliteBranch = (gameState.isResearched && gameState.isResearched("citystate/hoplite_tradition")) ||
+			(gameState.isResearching && gameState.isResearching("citystate/hoplite_tradition")) ||
+			!!(hopliteQueue && hopliteQueue.hasQueuedUnits && hopliteQueue.hasQueuedUnits());
+		if ((doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush") && hopliteBranch)
+			return false;
 		if (now < policy.athensP1MeleeTechStartTime || !this.builtByClass(gameState, "Forge").length)
 			return false;
 		const techName = "citystate/city_state_attack_melee_01";
@@ -4064,6 +4114,7 @@ export class ExpertDecisionController
 		}
 
 		this.applyFoodRecoveryRebalance(gameState, foodWoodFeedback);
+		this.applyProFoodBankRebalance(gameState, foodWoodFeedback);
 		this.applyFoodSurplusWoodRebalance(gameState, foodWoodFeedback, openingEnd);
 		// The dedicated feedback path deliberately limits food recovery to a small,
 		// cooldown-controlled batch. Do not let the older generic bank balancer stack
@@ -4072,6 +4123,90 @@ export class ExpertDecisionController
 			this.rebalanceExistingWorkers(gameState, openingEnd, genericBalance);
 		this.applyMiningTechBootstrap(gameState);
 		this.applyStrategicMetalRebalance(gameState, openingEnd);
+	}
+
+	// IT14.67 Pro Economy: the normal doctrine keeps citizen-soldiers off food, but an
+	// extreme 1k+ wood / sub-250 food bank is exactly when a strong human breaks that
+	// rule. A small reserve squad temporarily farms or helps finish food infrastructure.
+	// They are released as soon as the bank normalizes, so this never becomes the
+	// default long-run worker model.
+	applyProFoodBankRebalance(gameState, feedback)
+	{
+		const policy = mergePolicy();
+		const bank = gameState.getResources();
+		const food = Number(bank.food) || 0;
+		const wood = Number(bank.wood) || 0;
+		const triggerFood = Number(policy.proFoodEmergencyFoodBank) || 250;
+		const triggerWood = Number(policy.proFoodEmergencyWoodBank) || 1000;
+		const releaseFood = Number(policy.proFoodEmergencyReleaseFoodBank) || 500;
+		const releaseWood = Number(policy.proFoodEmergencyReleaseWoodBank) || 750;
+		const target = Math.max(1, Number(policy.proFoodEmergencySoldierTarget) || 6);
+		const emergency = food < triggerFood && wood >= triggerWood;
+
+		const temporary = [];
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !entityPosition(ent) || !hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry"))
+				continue;
+			if (ent.getMetadata(PlayerID, "expertTemporaryFoodWorker") === true)
+				temporary.push(ent);
+		}
+
+		if (!emergency)
+		{
+			if (food < releaseFood && wood > releaseWood)
+				return;
+			for (const ent of temporary)
+			{
+				if (ent.getMetadata(PlayerID, "PartOfArmy") || ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
+				    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined)
+					continue;
+				if (!this.setDesiredJob(gameState, ent, "citizenSoldierWood"))
+					continue;
+				ent.setMetadata(PlayerID, FARM_LOCK, undefined);
+				ent.setMetadata(PlayerID, FOOD_HOME_FARMSTEAD, undefined);
+				ent.setMetadata(PlayerID, FOOD_HOME_PERMANENT, undefined);
+				ent.setMetadata(PlayerID, "expertTemporaryFoodWorker", undefined);
+				aiWarn("[EXPERT-BANK] release temporary-food soldier=" + ent.id() +
+					" bank=" + Math.round(food) + "/" + Math.round(wood));
+			}
+			return;
+		}
+
+		let need = Math.max(0, target - temporary.length);
+		if (!need)
+			return;
+		const candidates = [];
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !entityPosition(ent) || !hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry") ||
+			    ent.getMetadata(PlayerID, "expertTemporaryFoodWorker") === true ||
+			    ent.getMetadata(PlayerID, TASK_KEY) !== undefined || ent.getMetadata(PlayerID, PENDING_JOB_METADATA) ||
+			    ent.getMetadata(PlayerID, "PartOfArmy") || ent.getMetadata(PlayerID, "transport") !== undefined ||
+			    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined)
+				continue;
+			const state = ent.unitAIState ? String(ent.unitAIState() || "") : "";
+			if (state.includes(".COMBAT."))
+				continue;
+			const current = ent.getMetadata(PlayerID, JOB_METADATA);
+			if (current !== "citizenSoldierWood" && current !== "wood")
+				continue;
+			candidates.push(ent);
+		}
+		candidates.sort((a, b) => b.id() - a.id());
+		for (const ent of candidates)
+		{
+			if (need <= 0) break;
+			const carrying = ent.resourceCarrying ? (ent.resourceCarrying() || []) : [];
+			const carried = carrying.reduce((sum, item) => sum + Math.max(0, Number(item && item.amount) || 0), 0);
+			if (!this.setDesiredJob(gameState, ent, "food_owned"))
+				continue;
+			ent.setMetadata(PlayerID, "expertTemporaryFoodWorker", true);
+			--need;
+			aiWarn("[EXPERT-BANK] soldier wood->food worker=" + ent.id() +
+				" bank=" + Math.round(food) + "/" + Math.round(wood) +
+				(carried > 0 ? " deposit-first=" + Math.round(carried) : ""));
+		}
 	}
 
 	applyFoodRecoveryRebalance(gameState, feedback)
@@ -5535,8 +5670,10 @@ export class ExpertDecisionController
 					const owner = this.HQ.territoryMap.getOwner(pos);
 					if (owner !== 0 && owner !== PlayerID)
 						continue;
-					const amount = Math.max(0, Number(supply.resourceSupplyAmount()) || 0);
-					if (!amount) continue;
+					const rawAmount = Number(supply.resourceSupplyAmount());
+					if (!Number.isFinite(rawAmount) || rawAmount <= 0)
+						continue;
+					const amount = Math.min(rawAmount, Math.max(1, Number(policy.athensCleruchyResourceSupplyCap) || 5000));
 					types.add(generic);
 					resources[generic] += amount;
 					value += amount * weights[generic];
@@ -5552,13 +5689,23 @@ export class ExpertDecisionController
 
 	applyAthenianFrontierCleruchy(gameState, frame, cc, accessIndex, woodsite)
 	{
-		if (gameState.getPlayerCiv() !== "athen" || !gameState.currentPhase || gameState.currentPhase() < 2 || !cc)
+		if (gameState.getPlayerCiv() !== "athen" || !gameState.currentPhase || !cc)
+			return frame;
+		const phase = gameState.currentPhase();
+		if (phase < 1)
 			return frame;
 		const policy = mergePolicy();
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const scarcity = this.scarcityExpansionContext(gameState, frame, woodsite);
-		const minTime = scarcity.active ? policy.athensCleruchyScarcityMinimumTime : policy.athensCleruchyMinimumTime;
-		const minPop = scarcity.active ? policy.athensCleruchyScarcityMinimumPopulation : policy.athensCleruchyMinimumPopulation;
+		// Healthy frontier expansion remains Town-only.  A true P1 scarcity emergency may
+		// use the Cleruchy earlier if the actual template/HQ says it is buildable.
+		if (phase < 2 && !scarcity.active)
+			return frame;
+		const p1Scarcity = phase === 1 && scarcity.active;
+		const minTime = p1Scarcity ? policy.athensCleruchyScarcityP1MinimumTime :
+			scarcity.active ? policy.athensCleruchyScarcityMinimumTime : policy.athensCleruchyMinimumTime;
+		const minPop = p1Scarcity ? policy.athensCleruchyScarcityP1MinimumPopulation :
+			scarcity.active ? policy.athensCleruchyScarcityMinimumPopulation : policy.athensCleruchyMinimumPopulation;
 		if (now < minTime || gameState.getPopulation() < minPop)
 			return frame;
 		const finishing = this.finishingState(gameState);
@@ -5575,10 +5722,14 @@ export class ExpertDecisionController
 		const candidate = this.cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity.active);
 		if (!candidate)
 			return frame;
-		if (!this.specialBuildingAffordable(gameState, type, {
+		const cleruchyReserve = p1Scarcity ? {
+			food: policy.athensCleruchyScarcityP1FoodReserve, wood: policy.athensCleruchyScarcityP1WoodReserve,
+			stone: policy.athensCleruchyScarcityP1StoneReserve, metal: policy.athensCleruchyScarcityP1MetalReserve
+		} : {
 			food: policy.athensCleruchyFoodReserve, wood: policy.athensCleruchyWoodReserve,
 			stone: policy.athensCleruchyStoneReserve, metal: policy.athensCleruchyMetalReserve
-		}))
+		};
+		if (!this.specialBuildingAffordable(gameState, type, cleruchyReserve))
 			return frame;
 		const actions = [...(frame.actions || [])];
 		if (actions.some(action => action && action.kind === "cleruchy"))
@@ -5593,7 +5744,7 @@ export class ExpertDecisionController
 		if (!Number.isFinite(this.lastCleruchyDiag) || now - this.lastCleruchyDiag >= 20)
 		{
 			this.lastCleruchyDiag = now;
-			aiWarn("[EXPERT-EXPAND] build=cleruchy mode=" + (scarcity.active ? "scarcity" : "frontier") +
+			aiWarn("[EXPERT-EXPAND] build=cleruchy mode=" + (p1Scarcity ? "scarcity-p1" : scarcity.active ? "scarcity" : "frontier") +
 				" distance=" + candidate.distance.toFixed(1) + " value=" + Math.round(candidate.value) +
 				" types=" + candidate.resourceTypes + " wood=" + Math.round(candidate.resources.wood || 0) +
 				" localWood=" + Math.round(scarcity.localWood) + " natural=" + Math.round(scarcity.natural));
@@ -6895,6 +7046,24 @@ export class ExpertDecisionController
 				if (slots.length)
 					fieldGapLimit = fillGap;
 			}
+			// IT14.66 Sahara escape: a single natural-food dropsite can be boxed in tightly
+			// enough that the normal 0-10m farm geometry finds only two fields. Before
+			// declaring the entire P1 economy capacity-deadlocked, allow just enough wider
+			// local placement to reach the four-field Town-phase safety floor. This is not
+			// the normal farm layout and disappears once Town/four fields are established.
+			if (!slots.length && builtFieldCount < policy.fieldsPerFarmstead && gameState.currentPhase &&
+			    gameState.currentPhase() === 1 && (Number(gameState.ai.elapsedTime) || 0) >=
+			    (Number(policy.phase2EmergencyFieldExpansionTime) || 330) &&
+			    this.builtByClass(gameState, "Field").length < (Number(policy.phase2AbsoluteMinimumFields) || 4))
+			{
+				const emergencyGap = Math.max(Number(policy.existingFarmsteadFillInMaxBorderGap) || 10.0,
+					Number(policy.phase2EmergencyFieldMaxBorderGap) || 18.0);
+				slots = this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared,
+					Math.max(1, (Number(policy.phase2AbsoluteMinimumFields) || 4) - this.builtByClass(gameState, "Field").length),
+					emergencyGap, hubKind);
+				if (slots.length)
+					fieldGapLimit = emergencyGap;
+			}
 			let homeDemand = 0;
 			if (hubKind === "farmstead")
 				for (const worker of gameState.getOwnUnits().values())
@@ -7573,6 +7742,12 @@ export class ExpertDecisionController
 				"angleCount": 96, "templateRadius": geometry.radius }));
 			request = { kind, candidates, "templateRadius": geometry.radius,
 				"minimumCCDistance": policy.independentBuildingMinimumCCDistance };
+			// IT14.67: after the first failed Market search, utility beats aesthetics. The
+			// strategic fallback may use the inner safe settlement ring; territory and
+			// engine obstruction checks remain authoritative. This prevents a 2k-wood
+			// food-starved economy from losing barter because the preferred 50m ring is full.
+			if (strategicFallback && action.role !== "phase3_town_support")
+				request.minimumCCDistance = 12;
 			if (action.role === "phase3_town_support")
 			{
 				// IT14.62: Market #2 is a trade endpoint, not merely the second Town-class
@@ -7798,20 +7973,20 @@ export class ExpertDecisionController
 				const grid = [];
 				if (territory && Number.isFinite(territory.width) && Number.isFinite(territory.cellSize) && territory.getOwnerIndex)
 				{
-					for (let z = 0; z < territory.width; z += 2)
-						for (let x = 0; x < territory.width; x += 2)
+					for (let z = 0; z < territory.width; ++z)
+						for (let x = 0; x < territory.width; ++x)
 						{
 							const j = x + z * territory.width;
 							if (territory.getOwnerIndex(j) !== PlayerID)
 								continue;
 							const point = [(x + 0.5) * territory.cellSize, (z + 0.5) * territory.cellSize];
 							const d = Math.sqrt(SquareVectorDistance(point, ccPos));
-							if (d < mergePolicy().independentBuildingMinimumCCDistance || d > maximum)
+							if (d < 12 || d > maximum)
 								continue;
 							grid.push({ pos: point, score: Math.abs(d - preferred) });
 						}
 					grid.sort((a,b) => a.score - b.score);
-					emergency.push(...grid.slice(0, 512).map(item => item.pos));
+					emergency.push(...grid.slice(0, 1536).map(item => item.pos));
 				}
 			}
 
@@ -10052,7 +10227,12 @@ export class ExpertDecisionController
 		let frame = stepDecision(this.memory, observation, this.strategyPolicyOverrides(gameState));
 		this.memory = frame.memory;
 		this.lastDesiredFields = Number(frame && frame.derived && frame.derived.desiredFields) || 0;
-		// IT14.56 Athens can exploit its unique Village melee upgrade. Forge construction
+		// IT14.66 Greek rush doctrines first get a chance to choose Hoplite Tradition as
+		// their Village production package. If that branch commits, Athens suppresses the
+		// competing Forge + Melee-I package and spends the 60s CC lock on cheaper/faster
+		// hoplite mass instead.
+		this.researchExpertHopliteTradition(gameState, queues, frame);
+		// Athens can otherwise exploit its unique Village melee upgrade. Forge construction
 		// is strategy-aware and the research lane reads the live technology cost.
 		frame = this.applyAthenianP1ForgeInfrastructure(gameState, frame);
 		this.researchExpertAthenianP1MeleeTech(gameState, queues);
@@ -10266,7 +10446,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.65] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.67] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -10328,7 +10508,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.65] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.67] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

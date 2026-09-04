@@ -314,3 +314,16 @@ IT14.65 target / implementation
 - Non-Athens civs use Petra's existing new-base system as an explicit P2+ scarcity response, with a cooldown, rather than waiting only for the generic population/room expansion rule.
 - IT14.65 diagnostics: [EXPERT-RUSH-GATE] shows hold/cancel/launch logic; [EXPERT-PREMIUM] shows Champion reinforcement; [EXPERT-EXPAND] mode=scarcity shows resource-control expansion.
 - Benchmark gather/trade multiplier remains 1.35.
+
+IT14.66 three-test interpretation / target
+- IT14.65 validation is graded by outcome quality rather than win/loss alone: Sahara scarcity = FAIL; Savanna 17:12.4 = SUCCESS; Temperate 25+ minute first-wave trade = WASH. A victory beyond 25 minutes is now an optimization failure unless the matchup/map provides a specific reason.
+- Preserve the Savanna behavior: if Town is researching and the live army has a favorable matchup, Expert may exploit the P1/P2 timing window immediately without first paying for a Forge.
+- Close the Temperate bypass: a Default/Huge attack may not force-start merely because Town is researching. The timing-window plan checks the opponent's known mobile combat force, nearby defenders/static defenses and a conservative enemy-population risk cap. If a main-base dive is poor, it may retarget an exposed economic structure; otherwise it waits for a better P2 fight.
+- Selected Rush plans use the same broader opponent-strength logic. Athens accepts either completed Melee-I or completed Hoplite Tradition as its intended P1 timing package.
+- Greek Early/Late P1 rush doctrines may choose a dedicated Hoplite Tradition production branch around 4:30-6:00 when two Barracks, at least a four-field pipeline and a meaningfully hoplite-heavy force already exist. This branch is mutually exclusive with Athens' Forge + Melee-I branch. Tradition's 60-second CC lock is justified only when the 8-second hoplite cycle and recurring citizen-hoplite discounts can repay it before the timing attack.
+- Sahara recovery is layered. Before P2, a saturated opening Farmstead may use a wider emergency local field search only until the four-field phase safety floor is reached. If geometry still produces a sustained zero-slot / exhausted-natural-food deadlock, the absolute Town watchdog may reserve phase from a two-field floor around 9:00 so P1 military spending cannot trap Expert indefinitely.
+- Athens scarcity expansion may attempt its buildable Cleruchy in late P1 when local resources are genuinely exhausted; healthy frontier expansion remains Town-only. Frontier resource scoring ignores renewable/infinite supplies and caps single finite supplies, preventing `value=Infinity` sites.
+- Expert gather/trade multiplier remains +35% / 1.35 for IT14.66 testing.
+- Current quality benchmark: sub-20-minute clean victory = success; 20-25 minutes = acceptable but not confirmation; 25+ minutes = improvement target even if Expert eventually wins.
+
+IT14.67 current test report: see IT14.67_TEST_REPORT.txt

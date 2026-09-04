@@ -23,6 +23,7 @@ export function TradeManager(config)
 	this.warnedAllies = {};
 	this.expertLastTradeLog = -99999;
 	this.expertLastEmergencyBarter = -99999;
+	this.expertLastEmergencyFoodBarter = -99999;
 	this.expertEmergencyWoodRecoveryActive = false;
 }
 
@@ -240,6 +241,67 @@ TradeManager.prototype.setTradingGoods = function(gameState)
 // that is not enough when the army has 2-5k surplus food/stone/metal but the current
 // queues have not yet exposed the wood deficit for the next reinforcement/ram/house.
 // Sell the most disposable large surplus first, one market transaction per cooldown.
+// IT14.67: a pro-style inverse of the old wood rescue. If food is the hard
+// bottleneck while another resource is idling in the bank, turn that stockpile into
+// production immediately. Wood is preferred because the replay failure was
+// 74F/1991W, but stone/metal may also be sold when genuinely disposable.
+TradeManager.prototype.performExpertEmergencyFoodBarter = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !gameState || !gameState.ai)
+		return false;
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	if (now < (Number(policy.expertEmergencyFoodBarterStartTime) || 300) ||
+	    now < (Number(this.expertLastEmergencyFoodBarter) || -99999) + (Number(policy.expertEmergencyFoodBarterCooldownSeconds) || 4))
+		return false;
+	const bank = gameState.getResources();
+	if (!bank || Number(bank.food) >= (Number(policy.expertEmergencyFoodBarterTrigger) || 250))
+		return false;
+	const barterers = gameState.getOwnEntitiesByClass("Barter", true).filter(filters.isBuilt()).toEntityArray();
+	const codes = Resources.GetBarterableCodes();
+	if (!barterers.length || !codes.includes("food"))
+		return false;
+
+	const floors = {
+		wood: Number(policy.expertEmergencyFoodBarterWoodFloor) || 700,
+		stone: Number(policy.expertEmergencyFoodBarterStoneFloor) || 500,
+		metal: Number(policy.expertEmergencyFoodBarterMetalFloor) || 400
+	};
+	const woodTrigger = Number(policy.expertEmergencyFoodBarterWoodTrigger) || 1000;
+	let sell, disposable = 0;
+	for (const resource of ["wood", "stone", "metal"])
+	{
+		if (!codes.includes(resource))
+			continue;
+		const raw = Number(bank[resource]) || 0;
+		if (resource === "wood" && raw < woodTrigger)
+			continue;
+		const spare = Math.max(0, raw - floors[resource]);
+		// Bias toward converting surplus wood before consuming finite minerals.
+		const score = spare + (resource === "wood" ? 250 : 0);
+		if (spare >= 100 && score > disposable)
+		{
+			disposable = score;
+			sell = resource;
+		}
+	}
+	if (!sell)
+		return false;
+	const actualSpare = Math.max(0, (Number(bank[sell]) || 0) - floors[sell]);
+	const critical = Number(bank.food) <= (Number(policy.expertEmergencyFoodBarterCritical) || 120);
+	const target = Number(policy.expertEmergencyFoodBarterTarget) || 650;
+	const batchMax = Number(policy.expertEmergencyFoodBarterBatch) || 500;
+	const desired = critical || target - Number(bank.food) > 300 ? batchMax : 300;
+	const amount = Math.max(100, Math.min(Math.floor(actualSpare / 100) * 100, desired));
+	if (amount < 100)
+		return false;
+	barterers[0].barter("food", sell, amount);
+	this.expertLastEmergencyFoodBarter = now;
+	aiWarn("[EXPERT-BANK] barter buy=food sell=" + sell + ":" + amount +
+		" bank=" + Math.round(bank.food) + "/" + Math.round(bank.wood) + "/" + Math.round(bank.stone) + "/" + Math.round(bank.metal));
+	return true;
+};
+
 TradeManager.prototype.performExpertEmergencyWoodBarter = function(gameState)
 {
 	if (this.Config.difficulty < difficulty.EXPERT || !gameState || !gameState.ai)
@@ -880,6 +942,7 @@ TradeManager.prototype.Serialize = function()
 		"warnedAllies": this.warnedAllies,
 		"expertLastTradeLog": this.expertLastTradeLog,
 		"expertLastEmergencyBarter": this.expertLastEmergencyBarter,
+		"expertLastEmergencyFoodBarter": this.expertLastEmergencyFoodBarter,
 		"expertEmergencyWoodRecoveryActive": this.expertEmergencyWoodRecoveryActive
 	};
 };

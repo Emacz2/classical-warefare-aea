@@ -519,7 +519,28 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 		(this.type === AttackPlan.TYPE_DEFAULT || this.type === AttackPlan.TYPE_HUGE_ATTACK) &&
 		gameState.ai.HQ.attackManager.getExpertP2AttackTechGate ?
 		gameState.ai.HQ.attackManager.getExpertP2AttackTechGate(gameState) : { ready: true, completed: 0, required: 0 };
-	const expertP2TechBlocked = !expertP2TechGate.ready;
+	let expertP2TechBlocked = !expertP2TechGate.ready;
+	// IT14.67: P2 Tech Push is still a tech-oriented strategy, but not a ritual. If
+	// one core upgrade is already active and a 45+ army has a clearly favorable fight,
+	// use the same local/global strength test as the P1 timing window instead of idling
+	// for several minutes waiting for 2/2 completed techs.
+	if (expertP2TechBlocked && this.Config.difficulty >= difficulty.EXPERT && !this.forced &&
+	    (this.type === AttackPlan.TYPE_DEFAULT || this.type === AttackPlan.TYPE_HUGE_ATTACK) &&
+	    gameState.currentPhase && gameState.currentPhase() === 2 &&
+	    this.unitCollection.length >= (Number(mergePolicy().expertP2OpportunityMinimumArmy) || 45) &&
+	    (Number(expertP2TechGate.active) || 0) >= (Number(mergePolicy().expertP2OpportunityMinimumActiveTechs) || 1))
+	{
+		const opportunity = gameState.ai.HQ.attackManager.expertP1TimingWindowDecision ?
+			gameState.ai.HQ.attackManager.expertP1TimingWindowDecision(gameState, this) : { launch: false };
+		if (opportunity.launch)
+		{
+			expertP2TechBlocked = false;
+			aiWarn("[EXPERT-ATTACK] P2 opportunity override plan=" + this.name +
+				" army=" + this.unitCollection.length + " activeTechs=" + (expertP2TechGate.active || 0) +
+				" completed=" + expertP2TechGate.completed + " reason=" + opportunity.reason);
+			this.forceStart();
+		}
+	}
 	// If the minimum army is already assembled while Town Phase is still researching,
 	// take the timing window instead of idling until the phase completes and then
 	// pretending the same un-upgraded army is a P2 attack. If the army misses this
@@ -530,8 +551,14 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 		gameState.isResearching && gameState.isResearching(gameState.getPhaseName(2)) &&
 		this.canStart() && this.unitCollection.length >= mergePolicy().expertP1TimingAttackMinimumUnits)
 	{
-		aiWarn("[EXPERT-ATTACK] taking P1 timing window plan=" + this.name + " army=" + this.unitCollection.length);
-		this.forceStart();
+		const timing = gameState.ai.HQ.attackManager.expertP1TimingWindowDecision ?
+			gameState.ai.HQ.attackManager.expertP1TimingWindowDecision(gameState, this) : { launch: true, reason: "legacy" };
+		if (timing.launch)
+		{
+			aiWarn("[EXPERT-ATTACK] taking P1 timing window plan=" + this.name + " army=" + this.unitCollection.length +
+				" reason=" + timing.reason);
+			this.forceStart();
+		}
 	}
 
 	// Fasten the end game.
@@ -634,7 +661,7 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 		return AttackPlan.PREPARATION_KEEP_GOING;
 
 	// Raids have their predefined target. Expert P1 rushes also choose the target before
-	// mobilization so IT14.65 can compare the ready army to the defenders around it while
+	// mobilization so Expert can compare the ready army to the defenders around it while
 	// citizen-soldiers are still allowed to keep gathering.
 	if ((this.targetPlayer === undefined || !this.target || !gameState.getEntityById(this.target.id())) && !this.chooseTarget(gameState))
 		return AttackPlan.PREPARATION_FAILED;
@@ -701,6 +728,41 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 	// reset all queued units
 	this.removeQueues(gameState);
 	return AttackPlan.PREPARATION_KEEP_GOING;
+};
+
+// IT14.67: count the global Champion pipeline across live units, AI plans and
+// engine training. Normal Petra HugeAttack production previously queued 3-at-a-time
+// Champion crossbows toward an 18-unit category target, bypassing Expert's specialist
+// cap and delaying siege.
+AttackPlan.prototype.expertChampionPipeline = function(gameState)
+{
+	const out = { total: 0, ranged: 0, crossbow: 0 };
+	const add = (template, type, count) =>
+	{
+		if (!template || !template.hasClasses || !template.hasClasses(["Champion"]) || template.hasClasses(["Hero"]))
+			return;
+		const n = Math.max(1, Number(count) || 1);
+		out.total += n;
+		if (template.hasClasses(["Ranged"])) out.ranged += n;
+		if (template.hasClasses(["Crossbowman"]) || String(type || "").toLowerCase().includes("crossbow")) out.crossbow += n;
+	};
+	for (const ent of gameState.getOwnUnits().values())
+		if (ent && ent.hasClass && ent.hasClass("Champion") && !ent.hasClass("Hero"))
+		{
+			++out.total;
+			if (ent.hasClass("Ranged")) ++out.ranged;
+			if (ent.hasClass("Crossbowman") || String(ent.templateName && ent.templateName() || "").toLowerCase().includes("crossbow")) ++out.crossbow;
+		}
+	for (const queue of Object.values(gameState.ai.queues || {}))
+		for (const plan of queue && queue.plans || [])
+			if (plan && plan.type)
+				add(gameState.getTemplate(plan.type), plan.type, plan.number);
+	if (gameState.getOwnTrainingFacilities)
+		for (const trainer of gameState.getOwnTrainingFacilities().values())
+			for (const item of trainer.trainingQueue ? trainer.trainingQueue() || [] : [])
+				if (item && item.unitTemplate)
+					add(gameState.getTemplate(item.unitTemplate), item.unitTemplate, item.count);
+	return out;
 };
 
 AttackPlan.prototype.trainMoreUnits = function(gameState)
@@ -772,7 +834,27 @@ AttackPlan.prototype.trainMoreUnits = function(gameState)
 			{
 				if (this.Config.debug > 2)
 					aiWarn("attack template " + template + " added for plan " + this.name);
-				const max = firstOrder[3].batchSize;
+				let max = firstOrder[3].batchSize;
+				const selectedTemplate = gameState.getTemplate(template);
+				if (this.Config.difficulty >= difficulty.EXPERT && selectedTemplate && selectedTemplate.hasClasses(["Champion"]) && !selectedTemplate.hasClasses(["Hero"]))
+				{
+					const caps = mergePolicy();
+					const pipeline = this.expertChampionPipeline(gameState);
+					let remaining = Math.max(0, (Number(caps.expertAttackPlanChampionGlobalCap) || 6) - pipeline.total);
+					if (selectedTemplate.hasClasses(["Ranged"]))
+						remaining = Math.min(remaining, Math.max(0, (Number(caps.expertAttackPlanRangedChampionCap) || 4) - pipeline.ranged));
+					if (selectedTemplate.hasClasses(["Crossbowman"]) || String(template).toLowerCase().includes("crossbow"))
+						remaining = Math.min(remaining, Math.max(0, (Number(caps.expertAttackPlanCrossbowChampionCap) || 3) - pipeline.crossbow));
+					if (remaining <= 0)
+					{
+						aiWarn("[EXPERT-CHAMPION] cap blocks attack-plan production plan=" + this.name +
+							" type=" + template + " total=" + pipeline.total + " ranged=" + pipeline.ranged + " crossbow=" + pipeline.crossbow);
+						delete this.unitStat[firstOrder[4]];
+						this.buildOrders.splice(0, 1);
+						return;
+					}
+					max = Math.max(1, Math.min(max, remaining));
+				}
 				const specialData = "Plan_" + this.name + "_" + firstOrder[4];
 				const data = { "plan": this.name, "special": specialData, "base": 0 };
 				data.role = gameState.getTemplate(template).hasClass("CitizenSoldier") ?

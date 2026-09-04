@@ -775,6 +775,10 @@ AttackManager.prototype.attachExpertPremiumUnitsToActiveAttack = function(gameSt
 		return 0;
 	const policy = mergePolicy();
 	const minimumHealth = Math.max(0.25, Math.min(1, Number(policy.expertPremiumReinforcementHealth) || 0.75));
+	const activePlanNames = new Set();
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH, AttackPlan.TYPE_RAID])
+		for (const plan of this.startedAttacks[type] || [])
+			if (plan) activePlanNames.add(Number(plan.name));
 	const candidates = [];
 	for (const ent of gameState.getOwnUnits().values())
 	{
@@ -785,7 +789,12 @@ AttackManager.prototype.attachExpertPremiumUnitsToActiveAttack = function(gameSt
 		    ent.getMetadata(PlayerID, "garrisonHolder") !== undefined)
 			continue;
 		const plan = ent.getMetadata(PlayerID, "plan");
-		if (plan !== undefined && plan !== -1)
+		// IT14.67: an upcoming/dormant Petra plan does not get to warehouse Champions
+		// while a real offensive is already fighting. Preserve units owned by another
+		// STARTED attack, but steal stale/upcoming assignments into the live army.
+		if (plan !== undefined && plan !== -1 && Number(plan) !== Number(attack.name) && activePlanNames.has(Number(plan)))
+			continue;
+		if (Number(plan) === Number(attack.name))
 			continue;
 		candidates.push(ent);
 	}
@@ -873,10 +882,10 @@ AttackManager.prototype.recoverExpertRamPassengers = function(gameState)
 // the chosen target and require Athens' Village melee upgrade when that tech exists.
 AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 {
-	if (this.Config.difficulty < difficulty.EXPERT || !attack || attack.type !== AttackPlan.TYPE_RUSH)
-		return { launch: true, reason: "not-expert-rush" };
+	if (this.Config.difficulty < difficulty.EXPERT || !attack)
+		return { launch: true, reason: "not-expert" };
 	const doctrine = gameState.ai.HQ && gameState.ai.HQ.expertDoctrine;
-	if (!doctrine || Number(doctrine.rushes) <= 0)
+	if (!doctrine || (doctrine.id !== "early_p1_rush" && doctrine.id !== "late_p1_rush"))
 		return { launch: true, reason: "no-doctrine" };
 	const policy = mergePolicy();
 	const now = Number(gameState.ai.elapsedTime) || 0;
@@ -887,10 +896,33 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	if (phase > 1)
 		return { launch: false, cancel: true, reason: "phase2-transition" };
 
-	let requiredTech;
-	if (gameState.getPlayerCiv && gameState.getPlayerCiv() === "athen")
-		requiredTech = "citystate/city_state_attack_melee_01";
-	const upgradeReady = !requiredTech || !!(gameState.isResearched && gameState.isResearched(requiredTech));
+	// IT14.66: Athens has two legitimate P1 timing packages. Melee-I remains the
+	// direct-combat route, while an already-finished Hoplite Tradition means the rush
+	// deliberately paid for faster/cheaper mass instead of a Forge detour.
+	let upgradeReady = true;
+	let upgradeLabel = "n/a";
+	const civ = gameState.getPlayerCiv && gameState.getPlayerCiv();
+	const greekHopliteCiv = civ === "athen" || civ === "spart" || civ === "theb";
+	const tradition = greekHopliteCiv && !!(gameState.isResearched && gameState.isResearched("citystate/hoplite_tradition"));
+	const traditionQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHopliteTradition;
+	const traditionPending = greekHopliteCiv && !tradition && (
+		!!(gameState.isResearching && gameState.isResearching("citystate/hoplite_tradition")) ||
+		!!(traditionQueue && traditionQueue.hasQueuedUnits && traditionQueue.hasQueuedUnits()));
+	if (civ === "athen")
+	{
+		const melee = !!(gameState.isResearched && gameState.isResearched("citystate/city_state_attack_melee_01"));
+		upgradeReady = melee || tradition;
+		upgradeLabel = melee ? "melee" : tradition ? "hoplite" : traditionPending ? "hoplite-pending" : "missing";
+	}
+	else if (traditionPending)
+	{
+		// Sparta/Thebes do not require a Forge package, but once they voluntarily pay
+		// the P1 Tradition cost, do not launch before the 60-second production tech lands.
+		upgradeReady = false;
+		upgradeLabel = "hoplite-pending";
+	}
+	else if (tradition)
+		upgradeLabel = "hoplite";
 
 	if ((!attack.target || !attack.targetPos || attack.targetPlayer === undefined) && attack.chooseTarget)
 		attack.chooseTarget(gameState);
@@ -911,11 +943,13 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	}
 	const radius2 = Math.pow(Number(policy.expertP1RushDefenderRadius) || 95, 2);
 	let defenders = 0;
+	let knownEnemyCombat = 0;
 	for (const ent of gameState.getEnemyUnits(attack.targetPlayer).values())
 	{
-		if (!ent || !ent.position() || SquareVectorDistance(ent.position(), attack.targetPos) > radius2 || ent.hasClass("Animal"))
+		if (!ent || !ent.position() || ent.hasClass("Animal") || !(ent.attackTypes && ent.attackTypes()) || ent.hasClass("Support") && !ent.hasClass("Soldier"))
 			continue;
-		if (ent.attackTypes && ent.attackTypes() && (!ent.hasClass("Support") || ent.hasClass("Soldier")))
+		++knownEnemyCombat;
+		if (SquareVectorDistance(ent.position(), attack.targetPos) <= radius2)
 			++defenders;
 	}
 	let staticDefenses = 0;
@@ -923,20 +957,27 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	{
 		if (!ent || !ent.position() || SquareVectorDistance(ent.position(), attack.targetPos) > radius2)
 			continue;
-		if (ent.hasClass("CivCentre") || ent.hasClass("Tower") || ent.hasClass("Fortress"))
+		if (ent.hasClass("CivCentre") || ent.hasClass("Tower") || ent.hasClass("Fortress") || ent.hasClass("WallTower"))
 			++staticDefenses;
 	}
 	const equivalentDefenders = defenders + staticDefenses * Math.max(0, Number(policy.expertP1RushStaticDefenseEquivalent) || 3);
 	const ratio = Math.max(1.01, Number(policy.expertP1RushLaunchAdvantageRatio) || 1.15);
 	const lead = Math.max(1, Number(policy.expertP1RushLaunchMinimumLead) || 2);
-	const needed = equivalentDefenders > 0 ? Math.max(equivalentDefenders + lead, Math.ceil(equivalentDefenders * ratio)) : 0;
-	const favorable = attackers > 0 && attackers >= needed;
+	const localNeeded = equivalentDefenders > 0 ? Math.max(equivalentDefenders + lead, Math.ceil(equivalentDefenders * ratio)) : 0;
+	const targetIsCC = !!(attack.target && attack.target.hasClass && attack.target.hasClass("CivCentre"));
+	const mainBase = targetIsCC || staticDefenses > 0;
+	const knownArmyNeeded = mainBase ? Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05)) : 0;
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData ? gameState.sharedScript.playersData[attack.targetPlayer] : undefined;
+	const enemyPop = pdata && pdata.state !== "defeated" ? Math.max(0, Number(pdata.popCount) || 0) : 0;
+	const popSafe = !mainBase || enemyPop <= attackers * Math.max(1.1, Number(policy.expertP1TimingMainBaseEnemyPopPerAttacker) || 1.60);
+	const favorable = attackers > 0 && attackers >= localNeeded && attackers >= knownArmyNeeded && popSafe;
 	const logEvery = Math.max(5, Number(policy.expertP1RushGateLogSeconds) || 12);
 	const shouldLog = now >= (Number(this.expertLastP1RushGateLog) || -99999) + logEvery;
 
 	if (!upgradeReady || !favorable)
 	{
-		const reason = !upgradeReady ? "melee-upgrade" : "no-local-advantage";
+		const reason = !upgradeReady ? "timing-package" : !popSafe ? "enemy-pop-risk" :
+			attackers < knownArmyNeeded ? "enemy-mobile-army" : "no-local-advantage";
 		if (now >= deadline)
 		{
 			if (shouldLog)
@@ -944,29 +985,144 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 				this.expertLastP1RushGateLog = now;
 				aiWarn("[EXPERT-RUSH-GATE] cancel plan=" + attack.name + " strategy=" + doctrine.id +
 					" reason=" + reason + " army=" + attackers + " defenders=" + defenders +
-					" static=" + staticDefenses + " needed=" + needed + " upgrade=" + (upgradeReady ? "ready" : "missing") +
+					" knownEnemy=" + knownEnemyCombat + " enemyPop=" + enemyPop + " static=" + staticDefenses +
+					" needed=" + Math.max(localNeeded, knownArmyNeeded) + " package=" + upgradeLabel +
 					" deadline=" + Math.round(deadline));
 			}
-			return { launch: false, cancel: true, reason, attackers, defenders, staticDefenses, needed, upgradeReady };
+			return { launch: false, cancel: true, reason, attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
+				needed: Math.max(localNeeded, knownArmyNeeded), upgradeReady };
 		}
 		if (shouldLog)
 		{
 			this.expertLastP1RushGateLog = now;
 			aiWarn("[EXPERT-RUSH-GATE] hold plan=" + attack.name + " strategy=" + doctrine.id +
 				" reason=" + reason + " army=" + attackers + " defenders=" + defenders +
-				" static=" + staticDefenses + " needed=" + needed + " upgrade=" + (upgradeReady ? "ready" : "missing") +
+				" knownEnemy=" + knownEnemyCombat + " enemyPop=" + enemyPop + " static=" + staticDefenses +
+				" needed=" + Math.max(localNeeded, knownArmyNeeded) + " package=" + upgradeLabel +
 				" deadline=" + Math.round(deadline));
 		}
-		return { launch: false, reason, attackers, defenders, staticDefenses, needed, upgradeReady };
+		return { launch: false, reason, attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
+			needed: Math.max(localNeeded, knownArmyNeeded), upgradeReady };
 	}
 	if (shouldLog)
 	{
 		this.expertLastP1RushGateLog = now;
 		aiWarn("[EXPERT-RUSH-GATE] launch plan=" + attack.name + " strategy=" + doctrine.id +
-			" army=" + attackers + " defenders=" + defenders + " static=" + staticDefenses +
-			" needed=" + needed + " upgrade=" + (upgradeReady ? "ready" : "n/a"));
+			" army=" + attackers + " defenders=" + defenders + " knownEnemy=" + knownEnemyCombat +
+			" enemyPop=" + enemyPop + " static=" + staticDefenses + " needed=" + Math.max(localNeeded, knownArmyNeeded) +
+			" package=" + upgradeLabel);
 	}
-	return { launch: true, reason: "advantage", attackers, defenders, staticDefenses, needed, upgradeReady };
+	return { launch: true, reason: "advantage", attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
+		needed: Math.max(localNeeded, knownArmyNeeded), upgradeReady };
+};
+
+// IT14.66 closes the second P1-launch path that IT14.65 did not cover: a normal
+// AttackPlan could force-start merely because Town Phase was researching.  This gate
+// compares that army with the opponent's known mobile force and the selected target's
+// defenses.  If the main base is too risky, it may retarget a genuinely exposed
+// economic structure; otherwise it waits and becomes a proper P2 attack.
+AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attack)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !attack)
+		return { launch: true, reason: "not-expert" };
+	if ((!attack.target || !attack.targetPos || attack.targetPlayer === undefined) && attack.chooseTarget)
+		attack.chooseTarget(gameState);
+	if (!attack.targetPos || attack.targetPlayer === undefined)
+		return { launch: false, reason: "no-target" };
+
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	let attackers = 0;
+	for (const ent of attack.unitCollection.values())
+		if (ent && ent.position() && !isExpertBuildingSiegeEntity(ent) && !ent.hasClass("Animal") &&
+		    ent.attackTypes && ent.attackTypes() && (!ent.hasClass("Support") || ent.hasClass("Soldier")))
+			++attackers;
+	if (!attackers)
+		return { launch: false, reason: "no-army" };
+
+	const targetRadius2 = Math.pow(Number(policy.expertP1TimingTargetDefenderRadius) || 95, 2);
+	const defenseRadius2 = Math.pow(Number(policy.expertP1TimingExposedDefenseRadius) || 75, 2);
+	const targetMetrics = pos => {
+		let defenders = 0;
+		for (const ent of gameState.getEnemyUnits(attack.targetPlayer).values())
+			if (ent && ent.position() && !ent.hasClass("Animal") && ent.attackTypes && ent.attackTypes() &&
+			    (!ent.hasClass("Support") || ent.hasClass("Soldier")) && SquareVectorDistance(ent.position(), pos) <= targetRadius2)
+				++defenders;
+		let staticDefenses = 0;
+		for (const ent of gameState.getEnemyStructures(attack.targetPlayer).values())
+			if (ent && ent.position() && SquareVectorDistance(ent.position(), pos) <= defenseRadius2 &&
+			    (ent.hasClass("CivCentre") || ent.hasClass("Tower") || ent.hasClass("Fortress") || ent.hasClass("WallTower")))
+				++staticDefenses;
+		return { defenders, staticDefenses };
+	};
+
+	let knownEnemyCombat = 0;
+	for (const ent of gameState.getEnemyUnits(attack.targetPlayer).values())
+		if (ent && ent.position() && !ent.hasClass("Animal") && ent.attackTypes && ent.attackTypes() &&
+		    (!ent.hasClass("Support") || ent.hasClass("Soldier")))
+			++knownEnemyCombat;
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData ? gameState.sharedScript.playersData[attack.targetPlayer] : undefined;
+	const enemyPop = pdata && pdata.state !== "defeated" ? Math.max(0, Number(pdata.popCount) || 0) : 0;
+
+	let metrics = targetMetrics(attack.targetPos);
+	let targetIsCC = !!(attack.target && attack.target.hasClass && attack.target.hasClass("CivCentre"));
+	let mainBase = targetIsCC || metrics.staticDefenses > 0;
+	const staticEquivalent = Math.max(0, Number(policy.expertP1TimingStaticDefenseEquivalent) || 3);
+	const localNeeded = () => Math.max(metrics.defenders + metrics.staticDefenses * staticEquivalent + 2,
+		Math.ceil((metrics.defenders + metrics.staticDefenses * staticEquivalent) * 1.15));
+	const globalNeeded = () => mainBase ? Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05)) : 0;
+	const popSafe = () => !mainBase || enemyPop <= attackers * Math.max(1.1, Number(policy.expertP1TimingMainBaseEnemyPopPerAttacker) || 1.60);
+	let favorable = attackers >= localNeeded() && attackers >= globalNeeded() && popSafe();
+
+	let retargeted = false;
+	if (!favorable)
+	{
+		const centre = attack.unitCollection.getCentrePosition && attack.unitCollection.getCentrePosition() || attack.rallyPoint || attack.position;
+		const maxExposedDefenders = Math.max(3, Math.floor(attackers * Math.max(0.05, Number(policy.expertP1TimingExposedDefenderRatio) || 0.25)));
+		let best;
+		for (const struct of gameState.getEnemyStructures(attack.targetPlayer).values())
+		{
+			if (!struct || !struct.position() || !struct.hasClass || struct.hasClass("CivCentre") || struct.hasClass("Tower") ||
+			    struct.hasClass("Fortress") || struct.hasClass("WallTower"))
+				continue;
+			const economic = struct.hasClass("Farmstead") || struct.hasClass("Storehouse") || struct.hasClass("Market") ||
+				struct.hasClass("Corral") || struct.hasClass("DropsiteFood") || struct.hasClass("DropsiteWood");
+			if (!economic)
+				continue;
+			const m = targetMetrics(struct.position());
+			if (m.staticDefenses > 0 || m.defenders > maxExposedDefenders)
+				continue;
+			const d = centre ? Math.sqrt(SquareVectorDistance(centre, struct.position())) : 0;
+			const valueBias = struct.hasClass("Farmstead") || struct.hasClass("Storehouse") ? -30 : struct.hasClass("Market") ? -20 : 0;
+			const score = m.defenders * 1000 + d + valueBias;
+			if (!best || score < best.score)
+				best = { struct, metrics: m, score };
+		}
+		if (best)
+		{
+			attack.target = best.struct;
+			attack.targetPos = best.struct.position();
+			metrics = best.metrics;
+			mainBase = false;
+			targetIsCC = false;
+			retargeted = true;
+			favorable = attackers >= Math.max(metrics.defenders + 2, Math.ceil(metrics.defenders * 1.10));
+		}
+	}
+
+	const logEvery = Math.max(5, Number(policy.expertP1TimingLogSeconds) || 10);
+	const shouldLog = now >= (Number(this.expertLastP1TimingLog) || -99999) + logEvery;
+	if (shouldLog)
+	{
+		this.expertLastP1TimingLog = now;
+		aiWarn("[EXPERT-TIMING-GATE] " + (favorable ? retargeted ? "retarget-launch" : "launch" : "hold") +
+			" plan=" + attack.name + " army=" + attackers + " local=" + metrics.defenders +
+			" knownEnemy=" + knownEnemyCombat + " enemyPop=" + enemyPop + " static=" + metrics.staticDefenses +
+			" target=" + (targetIsCC ? "cc" : retargeted ? "exposed-eco" : mainBase ? "defended" : "open") +
+			" needed=" + Math.max(localNeeded(), globalNeeded()));
+	}
+	return { launch: favorable, reason: favorable ? retargeted ? "exposed-economic-target" : "advantage" : "hold-for-better-fight",
+		attackers, defenders: metrics.defenders, knownEnemyCombat, enemyPop, staticDefenses: metrics.staticDefenses, retargeted };
 };
 
 AttackManager.prototype.expertRushLocalBalance = function(gameState, attack)

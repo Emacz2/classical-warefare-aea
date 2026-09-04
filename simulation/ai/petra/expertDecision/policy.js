@@ -133,11 +133,11 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.29: keep four-slot farm hubs as the normal standard, but after repeated
   // real-map placement failures accept a compact three-field hub rather than deadlock.
   minimumFarmHubFieldSlotsFallback: 3,
-  minimumFarmHubFieldSlotsEmergency: 2,
+  minimumFarmHubFieldSlotsEmergency: 1,
   farmHubFallbackAfterFailures: 6,
-  // IT14.61: when the economy has already proved a zero-slot permanent-food
-  // deadlock, accept a two-field emergency hub after only a few failures instead
-  // of repeating the normal 4->3 search six times.
+  // IT14.66: when the economy has already proved a zero-slot permanent-food
+  // deadlock, accept even a one-field emergency hub after only a few failures instead
+  // of repeating the normal 4->3 search while P2 remains blocked.
   farmHubDeadlockEmergencyFallbackAfterFailures: 3,
   // IT14.21 user contract: a NEW permanent farmstead is not allowed merely because
   // field demand is high. The current compact block must have at least three completed
@@ -238,6 +238,16 @@ const DEFAULT_POLICY = Object.freeze({
   phase2AbsoluteTime: 420,
   phase2AbsolutePopulation: 80,
   phase2AbsoluteMinimumFields: 4,
+  // IT14.66 Sahara escape: if the opening food district physically cannot fit four
+  // compact fields, widen the existing farmstead search before spending another hub.
+  // If even that fails, a sustained zero-slot food deadlock may reserve Town from two
+  // fields so P1 military spending cannot keep the AI trapped forever.
+  phase2EmergencyFieldExpansionTime: 330,
+  phase2EmergencyFieldMaxBorderGap: 18,
+  phase2DeadlockEscapeTime: 540,
+  phase2DeadlockEscapeMinimumFields: 2,
+  phase2DeadlockEscapeNaturalFood: 100,
+  phase2DeadlockEscapeFoodDeficitSeconds: 180,
   phase2PreferredFields: 8,
   phase2LateMinimumFields: 7,
   phase2ExceptionalCostCoverage: 0.80,
@@ -297,15 +307,20 @@ const DEFAULT_POLICY = Object.freeze({
   phase2TemplePopulation: 75,
   phase2TempleMinimumFields: 3,
   phase2TempleWoodReserve: 75,
-  // Greek City States may buy Hoplite Tradition in late P1 when it can be paid for
-  // without consuming the resource reserve needed for Town Phase. If that window is
-  // missed, it becomes the first dedicated City-State military tech in P2.
-  hopliteTraditionMinimumTime: 300,
-  hopliteTraditionLatestP1StartTime: 390,
-  hopliteTraditionMinimumPopulation: 70,
+  // Greek City-State rush doctrines may deliberately choose Hoplite Tradition as the P1
+  // production package instead of hoarding the full Town reserve. If that branch is
+  // missed, Tradition remains a later doctrine tech once the core P2 attack pair is ready.
+  // IT14.66: rush doctrines may deliberately choose Hoplite Tradition as the P1
+  // production package instead of paying for a Forge + Melee-I package.  The tech
+  // must finish early enough to repay its 60s CC lock through 8s hoplite production.
+  hopliteTraditionMinimumTime: 270,
+  hopliteTraditionLatestP1StartTime: 360,
+  hopliteTraditionMinimumPopulation: 55,
   hopliteTraditionMinimumFieldPipeline: 4,
-  hopliteTraditionFoodReserve: 100,
-  hopliteTraditionWoodReserve: 100,
+  hopliteTraditionRushMinimumHoplites: 8,
+  hopliteTraditionRushMinimumShare: 0.35,
+  hopliteTraditionFoodReserve: 125,
+  hopliteTraditionWoodReserve: 125,
   hopliteTraditionMetalReserve: 0,
   // Surplus wood should become useful infrastructure instead of a 5k bank.
   // One forge may appear late P1 only under an extreme surplus. Forge #1 is part
@@ -416,6 +431,14 @@ const DEFAULT_POLICY = Object.freeze({
   foodRecoveryMinimumCivilianWood: 12,
   foodRecoveryReassignBatch: 2,
   foodRecoveryReassignCooldownSeconds: 12,
+  // IT14.67 Pro-Economy correction. When food is genuinely starving while wood is
+  // overflowing, reserve citizen-soldiers may temporarily become food workers/builders.
+  // This is deliberately exceptional: normal doctrine still keeps soldiers off farms.
+  proFoodEmergencyFoodBank: 250,
+  proFoodEmergencyWoodBank: 1000,
+  proFoodEmergencyReleaseFoodBank: 500,
+  proFoodEmergencyReleaseWoodBank: 750,
+  proFoodEmergencySoldierTarget: 6,
   dynamicWoodShortageBank: 350,
   foodSurplusRedirectThreshold: 900,
   foodSurplusPauseFarmExpansion: 1000,
@@ -470,7 +493,8 @@ const DEFAULT_POLICY = Object.freeze({
   // phase Forge option so its unique P1 melee upgrade can become part of a Late-P1
   // timing or the P2-tech setup. The Town Gymnasium remains a surplus investment and
   // may not pre-empt the initial timing army.
-  // IT14.65: both P1 rush doctrines must earn the Athens melee timing first.
+  // IT14.66: Athens rush doctrines choose one P1 package: Hoplite Tradition mass,
+  // or the Forge + Melee-I direct-combat route.
   athensP1ForgeEarlyRushStartTime: 210,
   athensP1ForgeLateRushStartTime: 250,
   // IT14.57: P2 Tech Push must make a real Village-phase attempt at Athens' unique
@@ -527,6 +551,10 @@ const DEFAULT_POLICY = Object.freeze({
   athensCleruchyMinimumTime: 480,
   athensCleruchyScarcityMinimumPopulation: 75,
   athensCleruchyScarcityMinimumTime: 420,
+  // The Cleruchy template itself is not Town-gated.  On a genuine P1 scarcity
+  // emergency, allow HQ.canBuild() to decide legality instead of hard-coding P2.
+  athensCleruchyScarcityP1MinimumTime: 390,
+  athensCleruchyScarcityP1MinimumPopulation: 70,
   athensCleruchyScarcityWoodThreshold: 900,
   athensCleruchyScarcityCriticalWoodThreshold: 450,
   athensCleruchyScarcityNaturalFoodThreshold: 250,
@@ -540,6 +568,8 @@ const DEFAULT_POLICY = Object.freeze({
   athensCleruchyStoneValueWeight: 1.20,
   athensCleruchyMetalValueWeight: 1.20,
   athensCleruchyResourceRadius: 55,
+  // Infinite/renewable supplies (notably fields) are never valid frontier-value inputs.
+  athensCleruchyResourceSupplyCap: 5000,
   athensCleruchyMinimumResourceTypes: 2,
   athensCleruchyMinimumCCDistance: 78,
   athensCleruchyMaximumCCDistance: 165,
@@ -547,6 +577,10 @@ const DEFAULT_POLICY = Object.freeze({
   athensCleruchyWoodReserve: 350,
   athensCleruchyStoneReserve: 250,
   athensCleruchyMetalReserve: 150,
+  athensCleruchyScarcityP1FoodReserve: 125,
+  athensCleruchyScarcityP1WoodReserve: 125,
+  athensCleruchyScarcityP1StoneReserve: 0,
+  athensCleruchyScarcityP1MetalReserve: 0,
   // Do not spend on a frontier colony while the main timing army is about to leave
   // or is already fighting.  Resolve the all-in first, then expand.
   athensCleruchyAttackDeferArmy: 44,
@@ -704,6 +738,17 @@ const DEFAULT_POLICY = Object.freeze({
   expertP1RushLaunchAdvantageRatio: 1.15,
   expertP1RushLaunchMinimumLead: 2,
   expertP1RushStaticDefenseEquivalent: 3,
+  // IT14.66: both the selected Rush plan and the separate "Town is researching"
+  // timing-window plan account for the opponent's known mobile army.  A defended
+  // main-base dive also gets a conservative total-population risk cap, while a truly
+  // exposed economic target can still be raided with a smaller force.
+  expertP1TimingKnownArmyRatio: 1.05,
+  expertP1TimingMainBaseEnemyPopPerAttacker: 1.60,
+  expertP1TimingExposedDefenderRatio: 0.25,
+  expertP1TimingExposedDefenseRadius: 75,
+  expertP1TimingTargetDefenderRadius: 95,
+  expertP1TimingStaticDefenseEquivalent: 3,
+  expertP1TimingLogSeconds: 10,
   expertEarlyP1RushOpportunityDeadline: 450,
   expertLateP1RushOpportunityDeadline: 480,
   expertP1RushGateLogSeconds: 12,
@@ -829,6 +874,28 @@ const DEFAULT_POLICY = Object.freeze({
   expertEmergencyWoodBarterStoneFloor: 800,
   expertEmergencyWoodBarterFoodFloor: 1400,
   expertEmergencyWoodBarterMetalFloor: 800,
+  // IT14.67: inverse emergency. A 1k-2k wood bank is not "wealth" if food is too
+  // low to keep production moving. Once a Market exists, convert the most disposable
+  // surplus (wood first, then stone/metal) into a usable food reserve.
+  expertEmergencyFoodBarterStartTime: 300,
+  expertEmergencyFoodBarterTrigger: 250,
+  expertEmergencyFoodBarterCritical: 120,
+  expertEmergencyFoodBarterTarget: 650,
+  expertEmergencyFoodBarterCooldownSeconds: 4,
+  expertEmergencyFoodBarterBatch: 500,
+  expertEmergencyFoodBarterWoodTrigger: 1000,
+  expertEmergencyFoodBarterWoodFloor: 700,
+  expertEmergencyFoodBarterStoneFloor: 500,
+  expertEmergencyFoodBarterMetalFloor: 400,
+  // Attack-plan champions are specialists, not a substitute for siege and citizen
+  // infantry. These caps apply to Petra's normal AttackPlan production path too.
+  expertAttackPlanChampionGlobalCap: 6,
+  expertAttackPlanRangedChampionCap: 4,
+  expertAttackPlanCrossbowChampionCap: 3,
+  // P2 Tech Push may take a clearly favorable fight with one active core tech instead
+  // of idling a 50+ army until both upgrades have fully completed.
+  expertP2OpportunityMinimumArmy: 45,
+  expertP2OpportunityMinimumActiveTechs: 1,
   // Expert timing doctrines are benchmarked around a normal 200-pop operating
   // economy. IT14.57 makes this a HARD production ceiling: civilian, citizen-soldier,
   // champion/hero and siege queues all count current + engine-training + AI-planned
