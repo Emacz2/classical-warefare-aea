@@ -148,6 +148,10 @@ function generatePlacementCandidates(request) {
     case "market": return generateRingCandidates(request, [28, 34, 40, 46, 52]);
     case "storehouse": return generateRingCandidates(request, [20, 24, 28, 32]);
     case "tower": return generateRingCandidates(request, [16, 20, 24, 28, 32]);
+    // IT14.62 hotfix: Cleruchy placement is resource-anchored by the controller,
+    // but still needs the generic ring candidate generator. The missing resolver
+    // case caused every attempted frontier expansion to throw once per update.
+    case "cleruchy": return generateRingCandidates(request, [0, 4, 8, 12, 16, 20, 26, 32]);
     default: throw new Error(`Unsupported placement kind ${request.kind}`);
   }
 }
