@@ -9,6 +9,19 @@ import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
 import { TrainingPlan } from "simulation/ai/petra/queueplanTraining.js";
 import { Worker } from "simulation/ai/petra/worker.js";
 
+// IT14.62: Expert distinguishes true mechanical building wreckers from the broad
+// Siege class. Human/Infantry units carrying a special weapon are combat troops, not
+// rams/catapults for attack planning purposes.
+function isExpertBuildingSiegeEntity(ent)
+{
+	if (!ent || !ent.hasClass || !ent.hasClass("Siege") || ent.hasClass("SiegeTower"))
+		return false;
+	if (ent.hasClass("Ram"))
+		return true;
+	return !ent.hasClass("Human") && !ent.hasClass("Infantry") &&
+		!ent.hasClass("Cavalry") && !ent.hasClass("Organic");
+}
+
 /**
  * This is an attack plan:
  * It deals with everything in an attack, from picking a target to picking a path to it
@@ -441,28 +454,17 @@ AttackPlan.prototype.addSiegeUnits = function(gameState)
 	let targetSize;
 	if (this.Config.difficulty >= difficulty.EXPERT)
 	{
-		// IT14.60: Expert's controller already runs a dedicated siege-finisher lane.
-		// Do not let legacy Petra difficulty scaling turn a healthy push into a wait for
-		// five-to-seven rams. Two rams are enough to launch; Huge attacks may plan a
-		// third as reinforcement, but never require a larger siege park. Count siege
-		// already alive or queued anywhere so legacy and Expert lanes cannot stack.
-		const cap = this.type === AttackPlan.TYPE_HUGE_ATTACK ? 3 : 2;
-		let already = 0;
-		for (const ent of gameState.getOwnUnits().values())
-			if (ent && ent.hasClass("Siege"))
-				++already;
-		for (const queue of Object.values(gameState.ai.queues || {}))
-			for (const plan of queue && queue.plans || [])
-				if (plan && plan.category === "unit" && plan.template && plan.template.hasClass && plan.template.hasClass("Siege"))
-					already += Math.max(1, Number(plan.number) || 1);
-		targetSize = Math.max(0, cap - already);
+		// IT14.62: the dedicated Expert siege-finisher controller selects exact
+		// mechanical templates and caps them at 2 normally / 3 max. Legacy Petra's
+		// class-only build order cannot express "Siege but not Human", which is how the
+		// Gastraphate was mistaken for siege. Let the exact-template controller own it.
+		return true;
 	}
-	else if (this.Config.difficulty < difficulty.MEDIUM)
+	if (this.Config.difficulty < difficulty.MEDIUM)
 		targetSize = this.type === AttackPlan.TYPE_HUGE_ATTACK ? Math.max(this.Config.difficulty, 1) : Math.max(this.Config.difficulty - 1, 0);
 	else
 		targetSize = this.type === AttackPlan.TYPE_HUGE_ATTACK ? this.Config.difficulty + 1 : this.Config.difficulty - 1;
-	if (this.Config.difficulty < difficulty.EXPERT)
-		targetSize = Math.max(Math.round(this.Config.popScaling * targetSize), this.type === AttackPlan.TYPE_HUGE_ATTACK ? 1 : 0);
+	targetSize = Math.max(Math.round(this.Config.popScaling * targetSize), this.type === AttackPlan.TYPE_HUGE_ATTACK ? 1 : 0);
 	if (!targetSize)
 		return true;
 	// no minsize as we don't want the plan to fail at the last minute though.
@@ -533,7 +535,7 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 	}
 
 	// Fasten the end game.
-	if (gameState.ai.playedTurn % 5 == 0 && this.hasSiegeUnits())
+	if (gameState.ai.playedTurn % 5 == 0 && (this.Config.difficulty >= difficulty.EXPERT ? this.hasExpertBuildingSiegeUnits() : this.hasSiegeUnits()))
 	{
 		let totEnemies = 0;
 		let hasEnemies = false;
@@ -1095,7 +1097,7 @@ AttackPlan.prototype.expertDefensiveThreatState = function(gameState)
 
 AttackPlan.prototype.maintainExpertInfantryScreen = function(gameState)
 {
-	if (this.Config.difficulty < difficulty.EXPERT || !this.isStarted() || !this.targetPos || this.hasSiegeUnits())
+	if (this.Config.difficulty < difficulty.EXPERT || !this.isStarted() || !this.targetPos || this.hasExpertBuildingSiegeUnits())
 		return 0;
 	const policy = mergePolicy();
 	const now = Number(gameState.ai.elapsedTime) || 0;
@@ -1105,7 +1107,7 @@ AttackPlan.prototype.maintainExpertInfantryScreen = function(gameState)
 	const melee = [], ranged = [];
 	for (const ent of this.unitCollection.values())
 	{
-		if (!ent || !ent.position() || ent.hasClass("Siege"))
+		if (!ent || !ent.position() || isExpertBuildingSiegeEntity(ent))
 			continue;
 		if (ent.hasClass("Melee")) melee.push(ent);
 		else if (ent.hasClass("Ranged")) ranged.push(ent);
@@ -1413,7 +1415,7 @@ AttackPlan.prototype.getNearestTarget = function(gameState, position, sameLand)
 		else if (this.type === AttackPlan.TYPE_RUSH || this.type === AttackPlan.TYPE_DEFAULT)
 		{
 			targets = this.rushTargetFinder(gameState, this.targetPlayer);
-			if (!targets.hasEntities() && (this.hasSiegeUnits() || this.forced))
+			if (!targets.hasEntities() && ((this.Config.difficulty >= difficulty.EXPERT ? this.hasExpertBuildingSiegeUnits() : this.hasSiegeUnits()) || this.forced))
 				targets = this.defaultTargetFinder(gameState, this.targetPlayer);
 		}
 		else
@@ -1928,13 +1930,13 @@ AttackPlan.prototype.update = function(gameState, events)
 				threateningStructures[attacker.id()] = true;
 				continue;
 			}
-			if (isSiegeUnit(ourUnit))
-			{	// if our siege units are attacked, we'll send some units to deal with enemies.
+			if (this.Config.difficulty >= difficulty.EXPERT ? isExpertBuildingSiegeEntity(ourUnit) : isSiegeUnit(ourUnit))
+			{	// if our actual building-siege units are attacked, we'll send some units to deal with enemies.
 				const collec = this.unitCollection.filter(filters.not(filters.byClass("Siege")))
 					.filterNearest(ourUnit.position(), 5);
 				for (const ent of collec.values())
 				{
-					if (isSiegeUnit(ent))	// needed as mauryan elephants are not filtered out
+					if (this.Config.difficulty >= difficulty.EXPERT ? isExpertBuildingSiegeEntity(ent) : isSiegeUnit(ent))
 						continue;
 
 					const shouldCapture = allowCapture(gameState, ent, attacker);
@@ -1980,7 +1982,8 @@ AttackPlan.prototype.update = function(gameState, events)
 					for (const ent of collec.values())
 					{
 						const shouldCapture = allowCapture(gameState, ent, attacker);
-						if (isSiegeUnit(ent) || !ent.canAttackTarget(attacker, shouldCapture))
+						if ((this.Config.difficulty >= difficulty.EXPERT ? isExpertBuildingSiegeEntity(ent) : isSiegeUnit(ent)) ||
+							!ent.canAttackTarget(attacker, shouldCapture))
 							continue;
 						const orderData = ent.unitAIOrderData();
 						if (orderData && orderData.length && orderData[0].target)
@@ -2139,7 +2142,7 @@ AttackPlan.prototype.update = function(gameState, events)
 			// update the order if needed
 			let needsUpdate = false;
 			let maybeUpdate = false;
-			const siegeUnit = isSiegeUnit(ent);
+			const siegeUnit = this.Config.difficulty >= difficulty.EXPERT ? isExpertBuildingSiegeEntity(ent) : isSiegeUnit(ent);
 			if (ent.isIdle())
 				needsUpdate = true;
 			else if (siegeUnit && targetId)
@@ -2498,7 +2501,7 @@ AttackPlan.prototype.UpdateWalking = function(gameState, events)
 		}
 	}
 	// Are we arrived at destination ?
-	if (attackedNB > 1 && (attackedUnitNB || this.hasSiegeUnits()))
+	if (attackedNB > 1 && (attackedUnitNB || (this.Config.difficulty >= difficulty.EXPERT ? this.hasExpertBuildingSiegeUnits() : this.hasSiegeUnits())))
 	{
 		if (gameState.ai.HQ.territoryMap.getOwner(this.position) === this.targetPlayer || attackedNB > 3)
 		{
@@ -2516,6 +2519,8 @@ AttackPlan.prototype.UpdateWalking = function(gameState, events)
 		let farthestEnt;
 		for (const ent of this.unitCollection.filter(filters.byClass("Siege")).values())
 		{
+			if (this.Config.difficulty >= difficulty.EXPERT && !isExpertBuildingSiegeEntity(ent))
+				continue;
 			const dist = SquareVectorDistance(ent.position(), this.position);
 			if (dist < farthest)
 				continue;
@@ -2805,6 +2810,14 @@ AttackPlan.prototype.waitingForTransport = function()
 	return false;
 };
 
+AttackPlan.prototype.hasExpertBuildingSiegeUnits = function()
+{
+	for (const ent of this.unitCollection.values())
+		if (isExpertBuildingSiegeEntity(ent))
+			return true;
+	return false;
+};
+
 AttackPlan.prototype.hasSiegeUnits = function()
 {
 	for (const ent of this.unitCollection.values())
@@ -2877,6 +2890,7 @@ AttackPlan.prototype.Serialize = function()
 		"expertLaunchSize": this.expertLaunchSize,
 		"expertLaunchTime": this.expertLaunchTime,
 		"expertLaunchEnemyPopulation": this.expertLaunchEnemyPopulation,
+		"expertLowestEnemyPopulation": this.expertLowestEnemyPopulation,
 		"expertOwnLosses": this.expertOwnLosses,
 		"expertDefensiveThreatUntil": this.expertDefensiveThreatUntil,
 		"expertLastScreenUpdate": this.expertLastScreenUpdate,

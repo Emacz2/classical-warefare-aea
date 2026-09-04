@@ -11,6 +11,17 @@ function hasKind(ent, kind, classMap) {
   return !!(ent && typeof ent.hasClass === "function" && ent.hasClass(className));
 }
 
+function matchesExpectedTemplate(ent, expectedTemplate) {
+  if (!ent || !expectedTemplate || typeof ent.templateName !== "function")
+    return false;
+  const name = String(ent.templateName() || "");
+  return name === expectedTemplate || name.endsWith("|" + expectedTemplate);
+}
+
+function matchesTaskKind(ent, task, classMap) {
+  return hasKind(ent, task.kind, classMap) || matchesExpectedTemplate(ent, task.expectedTemplate);
+}
+
 function isFoundationEntity(ent) {
   return !!(ent && typeof ent.foundationProgress === "function" && ent.foundationProgress() !== undefined);
 }
@@ -83,8 +94,8 @@ class FoundationTracker {
     return new FoundationTracker().load(data);
   }
 
-  findMetadataMatch(entities, taskId, kind) {
-    return entities.filter(ent => hasKind(ent, kind, this.classMap) &&
+  findMetadataMatch(entities, taskId, task) {
+    return entities.filter(ent => matchesTaskKind(ent, task, this.classMap) &&
       entityTaskId(ent, this.playerId, this.metadataKey) === taskId);
   }
 
@@ -92,7 +103,7 @@ class FoundationTracker {
     if (!task.position)
       return [];
     const toleranceSq = this.positionTolerance * this.positionTolerance;
-    return entities.filter(ent => hasKind(ent, task.kind, this.classMap) && entityPosition(ent) &&
+    return entities.filter(ent => matchesTaskKind(ent, task, this.classMap) && entityPosition(ent) &&
       squareDistance(entityPosition(ent), task.position) <= toleranceSq);
   }
 
@@ -109,9 +120,9 @@ class FoundationTracker {
     const foundations = toEntities(gameState.getOwnFoundations()).filter(isFoundationEntity);
     const structures = toEntities(gameState.getOwnStructures()).filter(ent => !isFoundationEntity(ent));
 
-    let complete = this.findMetadataMatch(structures, taskId, task.kind);
+    let complete = this.findMetadataMatch(structures, taskId, task);
     if (!complete.length && task.foundationId !== undefined) {
-      const sameId = structures.filter(ent => ent.id() === task.foundationId && hasKind(ent, task.kind, this.classMap));
+      const sameId = structures.filter(ent => ent.id() === task.foundationId && matchesTaskKind(ent, task, this.classMap));
       complete = sameId;
     }
     if (!complete.length && task.everHadFoundation)
@@ -125,9 +136,9 @@ class FoundationTracker {
       return { ...task };
     }
 
-    let found = this.findMetadataMatch(foundations, taskId, task.kind);
+    let found = this.findMetadataMatch(foundations, taskId, task);
     if (!found.length && task.foundationId !== undefined)
-      found = foundations.filter(ent => ent.id() === task.foundationId && hasKind(ent, task.kind, this.classMap));
+      found = foundations.filter(ent => ent.id() === task.foundationId && matchesTaskKind(ent, task, this.classMap));
     if (found.length > 1)
       return { ...task, state: "ambiguous", reason: "multiple foundations match task" };
     if (found.length === 1) {

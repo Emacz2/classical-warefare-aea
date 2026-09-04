@@ -8,6 +8,35 @@ import { allowCapture, getLandAccess } from "simulation/ai/petra/entityExtend.js
 import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
 import { Worker } from "simulation/ai/petra/worker.js";
 
+// IT14.62: "Siege" is a broad gameplay class and can legitimately appear on
+// non-engine units. Expert's structure-finishing logic needs actual mechanical
+// building wreckers instead of treating every Siege-tagged entity as a ram/pult.
+function isExpertBuildingSiegeEntity(ent)
+{
+	if (!ent || !ent.hasClass || !ent.hasClass("Siege") || ent.hasClass("SiegeTower"))
+		return false;
+	if (ent.hasClass("Ram"))
+		return true;
+	return !ent.hasClass("Human") && !ent.hasClass("Infantry") &&
+		!ent.hasClass("Cavalry") && !ent.hasClass("Organic");
+}
+
+function isExpertRamEntity(ent)
+{
+	return !!(ent && ent.hasClass && ent.hasClass("Siege") &&
+		(ent.hasClass("Ram") || String(ent.genericName && ent.genericName() || "").toLowerCase().includes("ram")));
+}
+
+function expertAttackHasBuildingSiege(attack)
+{
+	if (!attack || !attack.unitCollection)
+		return false;
+	for (const ent of attack.unitCollection.values())
+		if (isExpertBuildingSiegeEntity(ent))
+			return true;
+	return false;
+}
+
 export function AttackManager(config)
 {
 	this.Config = config;
@@ -94,9 +123,9 @@ AttackManager.prototype.checkEvents = function(gameState, events)
 	for (const evt of events.PlayerDefeated)
 		this.defeated[evt.playerId] = true;
 
-	// IT14.49: keep exact own-loss accounting for each live rush using the plan
-	// metadata preserved on Destroy events. This is safer than inferring casualties
-	// from current army size, which can be distorted by wounded-unit peel/replacement.
+	// IT14.62: exact own-loss accounting now covers the main P2/P3 field army too.
+	// Reinforcement waves otherwise hide a catastrophically bad exchange by keeping
+	// the visible army near its target size while replacements continuously die.
 	if (this.Config.difficulty >= difficulty.EXPERT)
 		for (const evt of events.Destroy)
 		{
@@ -104,10 +133,12 @@ AttackManager.prototype.checkEvents = function(gameState, events)
 			if (planId === undefined || !evt.entityObj || evt.entityObj.owner() !== PlayerID)
 				continue;
 			const plan = this.getPlan(planId);
-			if (!plan || !plan.isStarted() || plan.type !== AttackPlan.TYPE_RUSH)
+			if (!plan || !plan.isStarted() ||
+			    (plan.type !== AttackPlan.TYPE_RUSH && plan.type !== AttackPlan.TYPE_DEFAULT && plan.type !== AttackPlan.TYPE_HUGE_ATTACK))
 				continue;
 			plan.expertOwnLosses = Math.max(0, Number(plan.expertOwnLosses) || 0) + 1;
 		}
+
 
 	let answer = "decline";
 	let other;
@@ -440,7 +471,7 @@ AttackManager.prototype.reinforceExpertFinishingAttack = function(gameState, fin
 		const plan = ent.getMetadata(PlayerID, "plan");
 		if (plan !== undefined && plan !== -1)
 			continue;
-		if (ent.hasClass("Siege"))
+		if (isExpertBuildingSiegeEntity(ent))
 			siege.push(ent);
 		else if (ent.hasClass("CitizenSoldier") && !ent.hasClass("Cavalry"))
 			citizen.push(ent);
@@ -577,7 +608,7 @@ AttackManager.prototype.peelExpertWoundedUnits = function(gameState, attack)
 	for (const ent of attack.unitCollection.values())
 	{
 		if (!ent || !ent.position() || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry") ||
-		    ent.hasClass("Siege") || !ent.healthLevel || ent.healthLevel() > threshold)
+		    isExpertBuildingSiegeEntity(ent) || !ent.healthLevel || ent.healthLevel() > threshold)
 			continue;
 		candidates.push(ent);
 	}
@@ -620,7 +651,7 @@ AttackManager.prototype.reinforceExpertWoundedReplacements = function(gameState,
 	const candidates = [];
 	for (const ent of gameState.getOwnUnits().values())
 	{
-		if (!ent || !ent.position() || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry") || ent.hasClass("Siege") ||
+		if (!ent || !ent.position() || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry") || isExpertBuildingSiegeEntity(ent) ||
 		    !ent.healthLevel || ent.healthLevel() < 0.75 || ent.getMetadata(PlayerID, "expertWoundedReturnUntil") !== undefined ||
 		    ent.getMetadata(PlayerID, "expertDecisionTaskId") !== undefined || ent.getMetadata(PlayerID, "expertDefenseMobilized") !== undefined ||
 		    ent.getMetadata(PlayerID, "garrisonHolder") !== undefined)
@@ -675,6 +706,8 @@ AttackManager.prototype.reinforceExpertPrimaryAttackWave = function(gameState, a
 		return 0;
 	const policy = mergePolicy();
 	const now = Number(gameState.ai.elapsedTime) || 0;
+	if (this.expertBadExchangeDecision(gameState, attack).abort)
+		return 0;
 	const targetArmy = Math.max(20, Number(policy.expertPrimaryOffensiveTargetArmy) || 50);
 	const deficit = targetArmy - attack.unitCollection.length;
 	const waveMin = Math.max(1, Number(policy.expertPrimaryReinforcementWaveMinimum) || 6);
@@ -685,7 +718,7 @@ AttackManager.prototype.reinforceExpertPrimaryAttackWave = function(gameState, a
 	const candidates = [];
 	for (const ent of gameState.getOwnUnits().values())
 	{
-		if (!ent || !ent.position() || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry") || ent.hasClass("Siege") ||
+		if (!ent || !ent.position() || !ent.hasClass("CitizenSoldier") || ent.hasClass("Cavalry") || isExpertBuildingSiegeEntity(ent) ||
 		    !ent.healthLevel || ent.healthLevel() < 0.75 || ent.getMetadata(PlayerID, "expertWoundedReturnUntil") !== undefined ||
 		    ent.getMetadata(PlayerID, "expertCombatRetreatUntil") !== undefined ||
 		    ent.getMetadata(PlayerID, "expertDecisionTaskId") !== undefined || ent.getMetadata(PlayerID, "expertDefenseMobilized") !== undefined ||
@@ -734,7 +767,7 @@ AttackManager.prototype.attachExpertSiegeToActiveAttack = function(gameState)
 	let added = 0;
 	for (const ent of gameState.getOwnUnits().values())
 	{
-		if (added >= 2 || !ent || !ent.position() || !ent.hasClass("Siege"))
+		if (added >= 2 || !ent || !ent.position() || !isExpertBuildingSiegeEntity(ent))
 			continue;
 		const plan = ent.getMetadata(PlayerID, "plan");
 		if (plan !== undefined && plan !== -1)
@@ -743,7 +776,13 @@ AttackManager.prototype.attachExpertSiegeToActiveAttack = function(gameState)
 			++added;
 	}
 	if (added)
-		aiWarn("[EXPERT-RAM] attached-siege plan=" + attack.name + " added=" + added + " army=" + attack.unitCollection.length);
+	{
+		let rams = 0;
+		for (const ent of attack.unitCollection.values())
+			if (isExpertRamEntity(ent)) ++rams;
+		aiWarn((rams ? "[EXPERT-RAM]" : "[EXPERT-SIEGE]") + " attached-engine plan=" + attack.name +
+			" added=" + added + " army=" + attack.unitCollection.length + " rams=" + rams);
+	}
 	return added;
 };
 
@@ -783,7 +822,7 @@ AttackManager.prototype.expertRushLocalBalance = function(gameState, attack)
 	const radius2 = Math.pow(Number(policy.expertRushLocalBalanceRadius) || 80, 2);
 	for (const ent of attack.unitCollection.values())
 	{
-		if (!ent || !ent.position() || SquareVectorDistance(ent.position(), centre) > radius2 || ent.hasClass("Siege"))
+		if (!ent || !ent.position() || SquareVectorDistance(ent.position(), centre) > radius2 || isExpertBuildingSiegeEntity(ent))
 			continue;
 		const attacks = ent.attackTypes && ent.attackTypes();
 		if (!attacks)
@@ -864,6 +903,38 @@ AttackManager.prototype.expertFailedRushDecision = function(gameState, attack)
 	return out;
 };
 
+// IT14.62: normal Town/City armies need exchange discipline too. A stronger eco
+// must not disguise a 5:1 casualty trade by continuously refilling one doomed plan.
+AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
+{
+	const out = { abort: false, losses: 0, enemyDamage: 0, balance: undefined };
+	if (this.Config.difficulty < difficulty.EXPERT || !attack || !attack.isStarted() ||
+	    (attack.type !== AttackPlan.TYPE_DEFAULT && attack.type !== AttackPlan.TYPE_HUGE_ATTACK) ||
+	    !(Number(attack.expertLaunchTime) >= 0))
+		return out;
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	if (now - Number(attack.expertLaunchTime) < (Number(policy.expertCombatBadExchangeMinimumFightSeconds) || 28))
+		return out;
+	const losses = Math.max(0, Number(attack.expertOwnLosses) || 0);
+	if (losses < (Number(policy.expertCombatBadExchangeMinimumOwnLosses) || 12))
+		return out;
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
+	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : Number(attack.expertLaunchEnemyPopulation) || 0;
+	const priorLow = Number.isFinite(Number(attack.expertLowestEnemyPopulation)) ? Number(attack.expertLowestEnemyPopulation) : Number(attack.expertLaunchEnemyPopulation) || enemyPop;
+	attack.expertLowestEnemyPopulation = Math.min(priorLow, enemyPop);
+	const enemyDamage = Math.max(0, (Number(attack.expertLaunchEnemyPopulation) || enemyPop) - attack.expertLowestEnemyPopulation);
+	const balance = this.expertRushLocalBalance(gameState, attack);
+	const bad = enemyDamage < losses * (Number(policy.expertCombatBadExchangeEnemyDamageCredit) || 0.70);
+	const pressured = balance.defenses > 0 || balance.enemyCombat >= 4 ||
+		balance.enemyCombat >= Math.max(4, Math.ceil(Math.max(1, balance.ownCombat) * 0.8));
+	out.losses = losses;
+	out.enemyDamage = enemyDamage;
+	out.balance = balance;
+	out.abort = bad && pressured;
+	return out;
+};
+
 AttackManager.prototype.startExpertTacticalRegroup = function(gameState, attack, decision)
 {
 	if (!attack || !attack.unitCollection || !attack.unitCollection.hasEntities())
@@ -887,7 +958,7 @@ AttackManager.prototype.startExpertTacticalRegroup = function(gameState, attack,
 	attack.expertTacticalRegroupUntil = now + (Number(policy.expertRushTacticalRegroupSeconds) || 7);
 	attack.setPaused(true);
 	for (const ent of attack.unitCollection.values())
-		if (ent && ent.position() && !ent.hasClass("Siege"))
+		if (ent && ent.position() && !isExpertBuildingSiegeEntity(ent))
 			ent.moveToRange(regroup[0], regroup[1], 0, 7);
 	const b = decision && decision.balance || {};
 	aiWarn("[EXPERT-RUSH] REGROUP plan=" + attack.name + " reason=" + (decision && decision.reason || "screen") +
@@ -913,7 +984,7 @@ AttackManager.prototype.shouldExpertRetreatBrokenScreen = function(gameState, at
 	let melee = 0, ranged = 0;
 	for (const ent of attack.unitCollection.values())
 	{
-		if (!ent || ent.hasClass("Siege") || ent.hasClass("Cavalry"))
+		if (!ent || isExpertBuildingSiegeEntity(ent) || ent.hasClass("Cavalry"))
 			continue;
 		if (ent.hasClass("Melee")) ++melee;
 		else if (ent.hasClass("Ranged")) ++ranged;
@@ -996,7 +1067,7 @@ AttackManager.prototype.shouldExpertRetreatDepletedAttack = function(gameState, 
 	    !gameState.currentPhase || gameState.currentPhase() < 2)
 		return false;
 	const policy = mergePolicy();
-	if (attack.unitCollection.length > policy.expertDepletedAttackRetreatArmy || attack.hasSiegeUnits && attack.hasSiegeUnits())
+	if (attack.unitCollection.length > policy.expertDepletedAttackRetreatArmy || expertAttackHasBuildingSiege(attack))
 		return false;
 	const pos = attack.unitCollection && attack.unitCollection.getCentrePosition && attack.unitCollection.getCentrePosition() ||
 		attack.position || attack.targetPos;
@@ -1038,8 +1109,7 @@ AttackManager.prototype.manageExpertRamGarrisons = function(gameState, finishing
 
 	for (const ram of gameState.getOwnUnits().values())
 	{
-		if (!ram || !ram.position() || !ram.hasClass("Siege") ||
-		    !(ram.hasClass("Ram") || String(ram.genericName && ram.genericName() || "").toLowerCase().includes("ram")) ||
+		if (!ram || !ram.position() || !isExpertRamEntity(ram) ||
 		    !ram.isGarrisonHolder || !ram.isGarrisonHolder())
 			continue;
 
@@ -1231,22 +1301,43 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				const p = mergePolicy();
 				const absolute = Number(p.athensP1MeleeAbsoluteLaunchTime) || 465;
 				const start = Number(p.athensP1MeleeTechStartTime) || 250;
-				// IT14.61: Melee-I is a Late-P1 strategic obligation, not merely a reason to
-				// wait when a research plan happened to queue successfully.  A ready army stays
-				// economically productive while Forge/research catches up, with the same hard
-				// absolute launch ceiling as the safety valve. Early-P1 is intentionally untouched.
+				// IT14.62: do not park a ready timing army for a technology that is not
+				// actually queued/researching. The controller now treats Forge+Melee-I as an
+				// affordable package; here we wait only for a real research pipeline, plus a
+				// brief grace period after Forge completion so the next controller tick can queue it.
+				const forgeBuilt = gameState.getOwnEntitiesByClass("Forge", true).filter(filters.isBuilt()).hasEntities();
 				if (!researched && gameState.ai.elapsedTime >= start && gameState.ai.elapsedTime < absolute)
 				{
-					if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
-				{
-						this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
-						const status = researching ? "researching" : queued ? "queued" : "waiting-for-forge-or-tech";
-						aiWarn("[EXPERT-ATHENS-P1] hold late-rush melee-obligation plan=" + attack.name +
-							" army=" + attack.unitCollection.length + " status=" + status + " absolute=" + Math.round(absolute));
+					if (researching || queued)
+					{
+						if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
+						{
+							this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
+							aiWarn("[EXPERT-ATHENS-P1] hold late-rush melee-obligation plan=" + attack.name +
+								" army=" + attack.unitCollection.length + " status=" + (researching ? "researching" : "queued") +
+								" absolute=" + Math.round(absolute));
+						}
+						++unexecutedAttacks[attackType];
+						continue;
 					}
-					++unexecutedAttacks[attackType];
-					continue;
+					if (forgeBuilt)
+					{
+						if (!Number.isFinite(Number(attack.expertMeleeQueueGraceStart)))
+							attack.expertMeleeQueueGraceStart = gameState.ai.elapsedTime;
+						if (gameState.ai.elapsedTime - attack.expertMeleeQueueGraceStart < 12)
+						{
+							++unexecutedAttacks[attackType];
+							continue;
+						}
+					}
+					if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
+					{
+						this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
+						aiWarn("[EXPERT-ATHENS-P1] timing-window launch: melee not queued plan=" + attack.name +
+							" army=" + attack.unitCollection.length + " forge=" + (forgeBuilt ? "built" : "missing"));
+					}
 				}
+
 				if (!researched && gameState.ai.elapsedTime >= absolute && gameState.ai.elapsedTime < absolute + 2 &&
 				    gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 1)
 				{
@@ -1277,13 +1368,18 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			{
 				if (attack.StartAttack(gameState))
 				{
-					if (this.Config.difficulty >= difficulty.EXPERT && attackType === AttackPlan.TYPE_RUSH && doctrine)
+					if (this.Config.difficulty >= difficulty.EXPERT &&
+					    (attackType === AttackPlan.TYPE_RUSH || attackType === AttackPlan.TYPE_DEFAULT || attackType === AttackPlan.TYPE_HUGE_ATTACK))
 					{
 						attack.expertLaunchSize = attack.unitCollection.length;
 						attack.expertLaunchTime = Number(gameState.ai.elapsedTime) || 0;
 						attack.expertOwnLosses = 0;
-						const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
-						attack.expertLaunchEnemyPopulation = pdata ? Math.max(0, Number(pdata.popCount) || 0) : 0;
+						const launchData = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
+						attack.expertLaunchEnemyPopulation = launchData ? Math.max(0, Number(launchData.popCount) || 0) : 0;
+						attack.expertLowestEnemyPopulation = attack.expertLaunchEnemyPopulation;
+					}
+					if (this.Config.difficulty >= difficulty.EXPERT && attackType === AttackPlan.TYPE_RUSH && doctrine)
+					{
 						this.expertRushHasLaunched = true;
 						this.expertLastRushTargetPlayer = attack.targetPlayer;
 						this.expertLastRushLaunchEnemyPopulation = attack.expertLaunchEnemyPopulation;
@@ -1342,6 +1438,23 @@ AttackManager.prototype.update = function(gameState, queues, events)
 					" local=" + (b.ownCombat || 0) + "v" + (b.enemyCombat || 0) +
 					" defenses=" + (b.defenses || 0) + " cancelled=" + cancelled +
 					" recoveryUntil=" + Math.round(this.expertRushRecoveryUntil));
+				attack.Abort(gameState);
+				this.startedAttacks[attackType].splice(i--, 1);
+				continue;
+			}
+			const badExchange = this.expertBadExchangeDecision(gameState, attack);
+			if (badExchange.abort)
+			{
+				const policy = mergePolicy();
+				this.expertReboomUntil = Math.max(this.expertReboomUntil || -99999,
+					now + (Number(policy.expertCombatBadExchangeReboomSeconds) || 55));
+				this.markExpertCombatRetreat(gameState, attack, "bad_exchange");
+				const cancelled = this.cancelExpertFollowupPreparations(gameState);
+				const b = badExchange.balance || {};
+				aiWarn("[EXPERT-REBOOM] bad-exchange plan=" + attack.name + " army=" + attack.unitCollection.length +
+					" losses=" + badExchange.losses + " enemyDamage=" + badExchange.enemyDamage +
+					" local=" + (b.ownCombat || 0) + "v" + (b.enemyCombat || 0) + " defenses=" + (b.defenses || 0) +
+					" cancelled=" + cancelled + " until=" + Math.round(this.expertReboomUntil));
 				attack.Abort(gameState);
 				this.startedAttacks[attackType].splice(i--, 1);
 				continue;

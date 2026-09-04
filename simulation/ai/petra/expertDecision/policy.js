@@ -272,9 +272,11 @@ const DEFAULT_POLICY = Object.freeze({
   phase2MarketWoodReserve: 50,
   phase2SecondMarketPopulation: 115,
   phase2SecondMarketWoodReserve: 75,
-  // IT14.43: two markets need separation, not a perfect city plan. Thirty metres
-  // still creates distinct Town structures while avoiding the 7k-candidate deadlock.
-  phase2SecondMarketSpacing: 30,
+  // IT14.62: Market #2 is a trade endpoint, not just a second Town-class box.
+  // Keep it well clear of Market #1 and prefer a long, safe land route.
+  phase2SecondMarketSpacing: 70,
+  phase2SecondMarketPreferredDistance: 120,
+  phase2SecondMarketMaximumCCDistance: 210,
   // IT14.35: the worker-efficiency temple is a Village-phase economic structure.
   // Normally establish it after barracks #2, once a small permanent-food base exists.
   // IT14.52: the worker-aura Temple is core economic infrastructure, not a late
@@ -312,13 +314,13 @@ const DEFAULT_POLICY = Object.freeze({
   lateP1ForgeWoodBank: 1500,
   lateP1ForgeWoodFoodRatio: 3.0,
   phase2Forge1Population: 90,
-  phase2Forge2Population: 100,
+  phase2Forge2Population: 90,
   phase2Forge3Population: 135,
   // IT14.34 preserves IT14.33: forge #1 is Town-transition infrastructure, forge #2 is immediate
   // Town infrastructure, and only forge #3 waits for City phase.
   phase2ForgeTransitionTime: 420,
   phase2ForgeTransitionMinimumFields: 6,
-  phase2ForgeSecondMinimumFields: 8,
+  phase2ForgeSecondMinimumFields: 6,
   phase2ForgeSecondFoodBank: 250,
   phase2Forge1WoodBank: 200,
   phase2Forge2WoodBank: 200,
@@ -499,7 +501,21 @@ const DEFAULT_POLICY = Object.freeze({
   // anchors. A legal safe site in the developed home district is good enough.
   athensSpecialMinimumCCDistance: 20,
   athensSpecialPreferredCCDistance: 42,
-  athensSpecialFallbackMaximumCCDistance: 120,
+  athensSpecialFallbackMaximumCCDistance: 190,
+  // IT14.62: Athens may replace endless frontier dropsites with one real neutral-territory
+  // expansion when the visible resource district is rich enough to repay the colony.
+  athensCleruchyMinimumPopulation: 105,
+  athensCleruchyMinimumTime: 600,
+  athensCleruchyMaximumCount: 1,
+  athensCleruchyMinimumResourceValue: 1800,
+  athensCleruchyResourceRadius: 55,
+  athensCleruchyMinimumResourceTypes: 2,
+  athensCleruchyMinimumCCDistance: 78,
+  athensCleruchyMaximumCCDistance: 165,
+  athensCleruchyFoodReserve: 500,
+  athensCleruchyWoodReserve: 350,
+  athensCleruchyStoneReserve: 250,
+  athensCleruchyMetalReserve: 150,
   p1EcoSweepStartTime: 330,
   p1EcoSweepMaxQueued: 1,
   houseMinimumCCDistance: 50,
@@ -618,6 +634,10 @@ const DEFAULT_POLICY = Object.freeze({
   expertFinishingStallSeconds: 45,
   expertFinishingRetargetCooldownSeconds: 30,
   expertFinishingSiegeTarget: 2,
+  // Keep enough population headroom for one real ram/catapult once the finishing
+  // pipeline is active. Rams are 2 pop in the current CWA templates; four gives room
+  // for the weapon plus one queued replacement without filling to 180/180 first.
+  expertSiegePopulationReserve: 4,
   // IT14.44: a depleted Town-phase push should not donate its last infantry to a CC/tower.
   // If the field army falls to this size while standing in enemy territory and no siege
   // finisher is present, withdraw and spend a short window rebuilding economy/army.
@@ -651,6 +671,13 @@ const DEFAULT_POLICY = Object.freeze({
   expertCombatScreenRetreatMeleeToRanged: 0.38,
   expertCombatScreenRetreatEnemyMinimum: 4,
   expertCombatScreenReboomSeconds: 45,
+  // IT14.62: normal P2/P3 pushes also abandon sustained losing exchanges rather
+  // than letting the stronger economy feed the same defended position indefinitely.
+  expertCombatBadExchangeMinimumOwnLosses: 12,
+  expertCombatBadExchangeEnemyDamageCredit: 0.70,
+  expertCombatBadExchangeMinimumFightSeconds: 28,
+  expertCombatBadExchangeReboomSeconds: 55,
+  expertCombatBadExchangeCooldownSeconds: 35,
   expertRecentGarrisonThreatSeconds: 25,
   // Keep ranged infantry behind the melee centroid instead of letting pathing put
   // javeliners/archers on the front edge of a mixed infantry army.

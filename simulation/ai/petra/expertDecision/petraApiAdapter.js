@@ -81,6 +81,15 @@ const BUILDING_SPECS = Object.freeze({
     allowedBuilderJobs: ["wood", "citizenSoldierWood"],
     observe: false
   },
+  // IT14.62 Athens frontier expansion.  Cleruchy is template-tracked because its
+  // broad CivSpecific/Polis classes are not unique enough for generic observation.
+  cleruchy: {
+    className: "CivSpecific",
+    template: "structures/{civ}/cleruchy",
+    queue: "economicBuilding",
+    allowedBuilderJobs: ["wood", "citizenSoldierWood", "stone", "metal"],
+    observe: false
+  },
   tower: {
     className: "Tower",
     template: "structures/{civ}/sentry_tower",

@@ -5,13 +5,25 @@ Benchmark matchup: Athens Expert (difficulty 6) vs Athens Very Hard (difficulty 
 Definitions
 - BREAK: first sustained sample after 10:00 where Very Hard is below 50 population and never recovers to 50+.
 - VICTORY: match end / Very Hard defeated. If only 30-second statistics samples support the finish, record the narrowest supported window.
-- Gather/trade bonus remains +35% until the median of the last 3 clean +35% wins is under 20:00.
+- CLEAN WIN: a completed benchmark match without a known AI execution regression invalidating the result.
+- The rolling last-three median is tracked for context, but the current bonus-change trigger is the user's stricter post-IT14.58 confirmation rule below.
 
-Last 3 completed games
-Patch      Gather Bonus   Break       Victory          Finish Gap
-IT14.44    +35%           17:00       25:00-25:30       8:00-8:30
-IT14.46    +35%           11:30       19:25.6           7:55.6
-IT14.49    +35%           13:00       22:31.6           9:31.6
+Last 3 clean completed benchmark victories
+Patch / run          Gather Bonus   Victory     Confirmation status
+IT14.58 Temperate    +35%           17:46.6     Baseline dominant sub-18 win
+IT14.60 Savanna      +35%           16:42.4     Post-14.58 dominant confirmation #1
+IT14.61 Arctic       +35%           23:58.4     Clean win, but too slow to count as dominant confirmation #2
+
+Rolling clean-win context
+- Recent clean victories are 17:46.6, 16:42.4, and 23:58.4; median = 17:46.6.
+- Clean sub-18 victories currently credited: IT14.58 and IT14.60.
+- Post-IT14.58 *similarly dominant* confirmations: 1 of 2 (IT14.60).
+- IT14.61 Arctic remains a real benchmark win, but its 23:58.4 finish does not satisfy the requested dominant-confirmation standard.
+
+Current tuning rule
+- Keep +35% / 1.35 until one more similarly clean, dominant post-IT14.58 validation win is recorded.
+- When confirmation #2 arrives, skip +30% entirely and test **+25%** next.
+- Do not reduce the bonus merely because the rolling median is below 20:00; consistency and finishing quality matter.
 
 IT14.44 notes
 - Very Hard was 51 pop at 16:00, rebounded to 59 at 16:30, then fell to 48 at 17:00 and never returned to 50+, so BREAK=17:00.
@@ -20,15 +32,8 @@ IT14.44 notes
 - Forge #1 completed around 8:30 and Forge #2 around 10:15. The first P2 food eco upgrade queued around 9:35 and first P2 wood upgrade around 10:23; the second food+wood pair did not appear until roughly 24:15.
 - Expert reached City Phase but trained no siege before victory. The second Town-support Market spent hundreds of attempts rejecting placement positions, delaying City Phase/Arsenal timing badly.
 
-Current tuning ladder
-- +35% -> +30% when median of last 3 clean +35% wins is under 20:00.
-- +30% -> +25% when median of last 3 clean +30% wins is under 18:00.
-- +25% -> +20% when median of last 3 clean +25% wins is under 16:00.
-- Reassess before reducing below +20%.
-
-Current +35% trend
-- Latest three completed victories are 25:00-25:30, 19:25.6, and 22:31.6.
-- Median is 22:31.6. +35% remains frozen; IT14.46 is still the first sub-20 clean win in the confirmation set.
+Historical tuning note
+- The earlier median-only +35 -> +30 -> +25 ladder is superseded by the explicit IT14.58 validation rule above. Historical sections below are retained as development history, not as the current bonus trigger.
 
 IT14.45 target
 - Rotate <=25% health citizen-soldiers out of active attacks; once home they return to work while fresh >=75% health soldiers replace them.
@@ -204,6 +209,11 @@ IT14.58 target
 - Adopt orphan strategic foundations and give Forge/Temple/Arsenal/Gymnasium/Prytaneion a 45s grace period.
 - Preserve Expert 1.35 benchmark multiplier.
 
+IT14.58 completed replay
+- Temperate / Athens mirror: CLEAN WIN in 1066.6s = 17:46.6.
+- Expert gathered roughly 18.0k food / 25.4k wood / 5.7k metal and trained 240 units versus Very Hard's 136, producing the first recent sub-18 demolition benchmark.
+- This became the baseline for the explicit validation rule: keep +35% for two additional similarly dominant wins, then jump directly to +25%.
+
 
 IT14.59 target
 - Preserve +35% / 1.35 gather-trade benchmark for the next two validation games; do not change difficulty bonus yet. If both are similarly decisive, the next benchmark step is directly +25%, skipping +30%.
@@ -233,3 +243,23 @@ IT14.61 target
 - Map-aware hunt investment: the CC remains civilian-only. Around population 30, if safe same-land own/neutral hunt within the existing hunt radius is rich enough, Expert may build a real Stable from surplus and train 1-2 additional cavalry there, targeting up to three hunting cavalry total. Early-P1 uses much higher hunt thresholds so the proven 16:42 rush is not casually delayed. Food-capacity emergencies always outrank the Stable/hunters.
 - Restore and continue this EXPERT_BENCHMARKS.txt file in the release ZIP.
 - Benchmark multiplier remains +35% / 1.35 for testing IT14.61.
+
+
+IT14.61 three-replay review
+- Arctic / Late P1 Timing Rush: CLEAN WIN, VICTORY=23:58.4. Opening Storehouse/Farmstead robustness held and mining-tech recovery improved, but a ready ~31-man P1 timing army waited too long for Melee-I that was not actually in the research pipeline. Finishing also left population saturated with infantry before siege could close the game. This is a benchmark win, but not dominant confirmation #2.
+- Sahara / P2 Forge-Tech Push: NON-BENCHMARK / USER QUIT around 44:41. Expert's economy overwhelmingly out-produced Very Hard, but combat exchanges were extremely poor and a broad `Siege` class on the Gastraphetophoros poisoned ram/siege detection and retreat logic. A Prytaneion foundation was adopted and then lost by class-based foundation tracking.
+- Steppe / P2 Forge-Tech Push: NON-BENCHMARK / INCOMPLETE at roughly 26:50.2. Expert had the opponent broken near ~21 population and held a massive economic lead, but failed to convert it into a timely kill. Two built Markets repeatedly reported no legal/useful trade route; the economy eventually produced 18 Storehouses; military attack upgrades arrived late/out of doctrinal order; finishing mode still queued infantry instead of promptly reserving room for real siege.
+- Across Arctic, Sahara and Steppe the permanent-food economy itself was substantially more robust than IT14.60's failed Nubia cases. IT14.62 therefore shifts the main work from basic economy survival toward military decision quality, finishing, expansion and logistics efficiency.
+- Bonus remains +35% / 1.35. Post-IT14.58 dominant confirmations remain 1 of 2.
+
+IT14.62 target
+- Treat broad `Siege` as a descriptive gameplay class, not proof that an entity is a building-wrecking siege engine. Expert's finishing, retreat, garrison and production logic counts real mechanical siege only: Rams and non-Human/non-Organic siege engines such as catapults. The user's data-side Gastraphetophoros change from `Siege Bow` to `Mechanical Bow` remains appropriate, but Expert no longer depends on it for correctness.
+- Normal finishing package is two real building wreckers; three remains the maximum, while one real ram/pult may be enough against an already nearly eliminated opponent. Once finishing siege is missing, reserve population headroom before infantry fills the operating cap. Siege uses its own high-priority queue and is queued before ordinary infantry each controller turn.
+- Extend exchange discipline to normal P2/P3 Default/Huge attacks. Sustained bad casualty trades under real enemy/static-defense pressure trigger disengage/reboom, and reinforcement logic must not keep feeding the same losing fight.
+- Fix Prytaneion lifecycle by matching strategic foundations/finished structures to their exact expected template as well as broad class. Broaden Athens special-building fallback so a legal developed-territory site can actually be used.
+- Athens core military progression becomes explicit: Melee Attack I -> Ranged Attack I -> Melee II -> Ranged II -> Melee III -> Ranged III when those technologies are live/available. Same-tier Ranged may not leapfrog missing Melee. Narrow cavalry/javelineer technologies require a meaningful matching force. Forge #2 may come online from ~90 population / six established fields so the second military-tech lane exists while the P2 army is still relevant.
+- Late-P1 Forge spending becomes a real Forge+Melee-I package. Do not buy the Forge unless the live bank can plausibly fund the Forge, Melee-I and protected operating reserves. Once the timing army is ready, only wait meaningfully for Melee-I when the technology is actually queued/researching; otherwise launch after a short Forge grace window rather than parking the army for a minute.
+- Market #1 remains a useful resource dropsite/barter hub. Market #2 is a separated, safe trade endpoint: target meaningful route length instead of satisfying a minimal spacing check. Do not place two Markets beside one another merely for phase/support counts.
+- All built `DropsiteWood` structures, including Markets/CC/expansion centres, count as lumber-service coverage. Refuse another tiny late Storehouse district once many literal Storehouses already exist; the Steppe Storehouse #18 / 43-wood case must not recur.
+- Athens may conditionally build at most one Town-phase Cleruchy when a safe neutral frontier contains a genuinely rich multi-resource district. The Cleruchy is an expansion/dropsite/pop/military anchor, not a scheduled mandatory structure, and finishing mode suppresses it. A frontier Cleruchy may provide a useful distant anchor for a later Market #2 trade endpoint.
+- Preserve IT14.61 opening Storehouse/Wicker robustness, IT14.60 four-farmer diminishing-return food math, 6/8/10 field floors, P1<=2 / P2<=3 Barracks constraints, mining-tech debt recovery, and the +35% / 1.35 benchmark multiplier.

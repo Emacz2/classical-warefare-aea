@@ -21,7 +21,8 @@ function prepareBuild(gameState, action, request, ports, tracker, options) {
     starter = selectFoundationStarterCandidate(gameState, action.kind, resolved.position, action, { playerId: options.playerId, taskId });
   if (!starter)
     return { key, blocked: "no-eligible-starter", diagnostics: resolved.rejected };
-  tracker.register({ taskId, kind: action.kind, role: action.role || "primary", position: resolved.position });
+  tracker.register({ taskId, kind: action.kind, role: action.role || "primary", position: resolved.position,
+    expectedTemplate: request.expectedTemplate });
   commitBuilders([starter], taskId, options.playerId);
   return {
     key,
