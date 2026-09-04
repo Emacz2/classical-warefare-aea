@@ -470,6 +470,8 @@ const DEFAULT_POLICY = Object.freeze({
   // phase Forge option so its unique P1 melee upgrade can become part of a Late-P1
   // timing or the P2-tech setup. The Town Gymnasium remains a surplus investment and
   // may not pre-empt the initial timing army.
+  // IT14.65: both P1 rush doctrines must earn the Athens melee timing first.
+  athensP1ForgeEarlyRushStartTime: 210,
   athensP1ForgeLateRushStartTime: 250,
   // IT14.57: P2 Tech Push must make a real Village-phase attempt at Athens' unique
   // Forge advantage. Start early enough to finish the building + melee upgrade before
@@ -501,6 +503,8 @@ const DEFAULT_POLICY = Object.freeze({
   athensGymnasiumRangedCapWithoutMelee: 3,
   athensGymnasiumCrossbowTarget: 2,
   athensGymnasiumCrossbowMaximum: 2,
+  // IT14.65: stop buying premium specialists once the opponent is already in cleanup range.
+  athensGymnasiumStopEnemyPopulation: 28,
   athensGymnasiumPlacementFailureLimit: 3,
   athensGymnasiumRetryCooldownSeconds: 120,
   athensGymnasiumMinimumChampionBankMultiplier: 1,
@@ -517,10 +521,24 @@ const DEFAULT_POLICY = Object.freeze({
   athensSpecialFallbackMaximumCCDistance: 230,
   // IT14.62: Athens may replace endless frontier dropsites with one real neutral-territory
   // expansion when the visible resource district is rich enough to repay the colony.
-  athensCleruchyMinimumPopulation: 105,
-  athensCleruchyMinimumTime: 600,
+  // IT14.65: normal rich-frontier expansion is still optional, but resource-scarcity
+  // may pull the trigger earlier so a Steppe-style base does not exhaust itself first.
+  athensCleruchyMinimumPopulation: 90,
+  athensCleruchyMinimumTime: 480,
+  athensCleruchyScarcityMinimumPopulation: 75,
+  athensCleruchyScarcityMinimumTime: 420,
+  athensCleruchyScarcityWoodThreshold: 900,
+  athensCleruchyScarcityCriticalWoodThreshold: 450,
+  athensCleruchyScarcityNaturalFoodThreshold: 250,
+  athensCleruchyScarcityPlacementFailures: 2,
+  athensCleruchyScarcityFailureWindowSeconds: 120,
   athensCleruchyMaximumCount: 1,
   athensCleruchyMinimumResourceValue: 1800,
+  athensCleruchyScarcityMinimumResourceValue: 1400,
+  athensCleruchyWoodValueWeight: 1.50,
+  athensCleruchyFoodValueWeight: 1.00,
+  athensCleruchyStoneValueWeight: 1.20,
+  athensCleruchyMetalValueWeight: 1.20,
   athensCleruchyResourceRadius: 55,
   athensCleruchyMinimumResourceTypes: 2,
   athensCleruchyMinimumCCDistance: 78,
@@ -532,6 +550,10 @@ const DEFAULT_POLICY = Object.freeze({
   // Do not spend on a frontier colony while the main timing army is about to leave
   // or is already fighting.  Resolve the all-in first, then expand.
   athensCleruchyAttackDeferArmy: 44,
+  // Scarcity is allowed to override the old "attack first, expand later" sequencing.
+  athensCleruchyScarcityBuilderCount: 8,
+  athensCleruchyScarcityPriority: 108,
+  expertScarcityBaseExpansionCooldownSeconds: 75,
   p1EcoSweepStartTime: 330,
   p1EcoSweepMaxQueued: 1,
   houseMinimumCCDistance: 50,
@@ -676,6 +698,15 @@ const DEFAULT_POLICY = Object.freeze({
   expertRushAbortMinimumOwnLosses: 4,
   expertRushAbortMinimumFightSeconds: 10,
   expertRushAbortLocalOutnumberRatio: 1.15,
+  // IT14.65 P1 rushes are opportunities, not obligations. Before mobilizing, compare
+  // the ready army with the visible defending military around the chosen target.
+  expertP1RushDefenderRadius: 95,
+  expertP1RushLaunchAdvantageRatio: 1.15,
+  expertP1RushLaunchMinimumLead: 2,
+  expertP1RushStaticDefenseEquivalent: 3,
+  expertEarlyP1RushOpportunityDeadline: 450,
+  expertLateP1RushOpportunityDeadline: 480,
+  expertP1RushGateLogSeconds: 12,
   // IT14.64 pre-engagement sanity check. This does not alter Petra movement; it only
   // refuses a clearly losing head-on commitment before the casualty detector has time to fire.
   expertSmartAttackMinimumOwnCombat: 12,
@@ -739,6 +770,9 @@ const DEFAULT_POLICY = Object.freeze({
   expertPrimaryReinforcementWaveMinimum: 6,
   expertPrimaryReinforcementWaveMaximum: 8,
   expertPrimaryReinforcementWaveCooldownSeconds: 16,
+  // IT14.65 premium units do not sit at home while a primary army is already fighting.
+  expertPremiumReinforcementBatch: 8,
+  expertPremiumReinforcementHealth: 0.75,
   // Rams are the finishing tool. Fill a modest number of seats so their movement/damage
   // bonus matters without hiding the whole infantry army inside them.
   expertRamGarrisonTarget: 5,

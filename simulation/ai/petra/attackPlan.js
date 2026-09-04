@@ -632,11 +632,20 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 	// if we're here, it means we must start
 	if (expertP2TechBlocked)
 		return AttackPlan.PREPARATION_KEEP_GOING;
-	this.state = AttackPlan.STATE_COMPLETING;
 
-	// Raids have their predefined target
-	if (!this.target && !this.chooseTarget(gameState))
+	// Raids have their predefined target. Expert P1 rushes also choose the target before
+	// mobilization so IT14.65 can compare the ready army to the defenders around it while
+	// citizen-soldiers are still allowed to keep gathering.
+	if ((this.targetPlayer === undefined || !this.target || !gameState.getEntityById(this.target.id())) && !this.chooseTarget(gameState))
 		return AttackPlan.PREPARATION_FAILED;
+	if (this.Config.difficulty >= difficulty.EXPERT && this.type === AttackPlan.TYPE_RUSH &&
+	    gameState.ai.HQ.attackManager.expertP1RushLaunchDecision)
+	{
+		const decision = gameState.ai.HQ.attackManager.expertP1RushLaunchDecision(gameState, this);
+		if (!decision.launch)
+			return decision.cancel ? AttackPlan.PREPARATION_FAILED : AttackPlan.PREPARATION_KEEP_GOING;
+	}
+	this.state = AttackPlan.STATE_COMPLETING;
 	if (!this.overseas)
 		this.getPathToTarget(gameState);
 

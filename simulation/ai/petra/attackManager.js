@@ -92,6 +92,7 @@ export function AttackManager(config)
 	this.expertLastRushLaunchEnemyPopulation = 0;
 	this.expertLastRushLaunchTime = -99999;
 	this.expertLastAthensP1MeleeHoldLog = -99999;
+	this.expertLastP1RushGateLog = -99999;
 	// IT14.64: once Athens deliberately abandons an unupgraded Late-P1 timing, do not
 	// let generic Rush creation immediately recreate the same bad plan.
 	this.expertLateP1UnupgradedCancelled = false;
@@ -758,6 +759,55 @@ AttackManager.prototype.reinforceExpertPrimaryAttackWave = function(gameState, a
 	return added;
 };
 
+// IT14.65: newly-trained champions are combat assets, not a home reserve.  Attach
+// healthy unassigned premium infantry directly to the largest active offensive even if
+// that army is already above the normal citizen-soldier reinforcement target.
+AttackManager.prototype.attachExpertPremiumUnitsToActiveAttack = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || gameState.ai.playedTurn % 5 !== 0)
+		return 0;
+	let attack;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH])
+		for (const plan of this.startedAttacks[type] || [])
+			if (plan && plan.targetPlayer !== undefined && (!attack || plan.unitCollection.length > attack.unitCollection.length))
+				attack = plan;
+	if (!attack || this.expertBadExchangeDecision(gameState, attack).abort)
+		return 0;
+	const policy = mergePolicy();
+	const minimumHealth = Math.max(0.25, Math.min(1, Number(policy.expertPremiumReinforcementHealth) || 0.75));
+	const candidates = [];
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position() || !ent.hasClass("Champion") || ent.hasClass("Hero") || ent.hasClass("Support") ||
+		    isExpertBuildingSiegeEntity(ent) || !ent.attackTypes || !ent.attackTypes() || !ent.healthLevel || ent.healthLevel() < minimumHealth ||
+		    ent.getMetadata(PlayerID, "expertWoundedReturnUntil") !== undefined || ent.getMetadata(PlayerID, "expertCombatRetreatUntil") !== undefined ||
+		    ent.getMetadata(PlayerID, "expertDecisionTaskId") !== undefined || ent.getMetadata(PlayerID, "expertDefenseMobilized") !== undefined ||
+		    ent.getMetadata(PlayerID, "garrisonHolder") !== undefined)
+			continue;
+		const plan = ent.getMetadata(PlayerID, "plan");
+		if (plan !== undefined && plan !== -1)
+			continue;
+		candidates.push(ent);
+	}
+	if (!candidates.length)
+		return 0;
+	const rally = attack.position && Number.isFinite(attack.position[0]) ? attack.position : attack.targetPos;
+	candidates.sort((a, b) => {
+		const da = rally ? SquareVectorDistance(a.position(), rally) : 0;
+		const db = rally ? SquareVectorDistance(b.position(), rally) : 0;
+		return da - db || b.healthLevel() - a.healthLevel() || a.id() - b.id();
+	});
+	const batch = Math.min(candidates.length, Math.max(1, Number(policy.expertPremiumReinforcementBatch) || 8));
+	let added = 0;
+	for (const ent of candidates.slice(0, batch))
+		if (attack.addExpertReinforcement && attack.addExpertReinforcement(gameState, ent))
+			++added;
+	if (added)
+		aiWarn("[EXPERT-PREMIUM] reinforced plan=" + attack.name + " added=" + added +
+			" army=" + attack.unitCollection.length + " waiting=" + Math.max(0, candidates.length - added));
+	return added;
+};
+
 // Attach newly-created siege to the largest active field army even before the opponent
 // formally enters finishing mode.  This lets a P3 ram become part of the current push
 // instead of waiting for a separate cleanup plan.
@@ -816,6 +866,107 @@ AttackManager.prototype.recoverExpertRamPassengers = function(gameState)
 			aiWarn("[EXPERT-RAM] passenger-rejoined unit=" + ent.id() + " plan=" + originalPlan);
 		ent.setMetadata(PlayerID, "expertRamAttackPlan", undefined);
 	}
+};
+
+// IT14.65: a selected P1 rush is an opportunity, not an obligation.  Before the
+// army leaves the economy, compare the ready force to the visible military defending
+// the chosen target and require Athens' Village melee upgrade when that tech exists.
+AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !attack || attack.type !== AttackPlan.TYPE_RUSH)
+		return { launch: true, reason: "not-expert-rush" };
+	const doctrine = gameState.ai.HQ && gameState.ai.HQ.expertDoctrine;
+	if (!doctrine || Number(doctrine.rushes) <= 0)
+		return { launch: true, reason: "no-doctrine" };
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	const phase = gameState.currentPhase ? gameState.currentPhase() : 1;
+	const deadline = doctrine.id === "early_p1_rush" ?
+		(Number(policy.expertEarlyP1RushOpportunityDeadline) || 450) :
+		(Number(policy.expertLateP1RushOpportunityDeadline) || 480);
+	if (phase > 1)
+		return { launch: false, cancel: true, reason: "phase2-transition" };
+
+	let requiredTech;
+	if (gameState.getPlayerCiv && gameState.getPlayerCiv() === "athen")
+		requiredTech = "citystate/city_state_attack_melee_01";
+	const upgradeReady = !requiredTech || !!(gameState.isResearched && gameState.isResearched(requiredTech));
+
+	if ((!attack.target || !attack.targetPos || attack.targetPlayer === undefined) && attack.chooseTarget)
+		attack.chooseTarget(gameState);
+	if (!attack.targetPos || attack.targetPlayer === undefined)
+	{
+		if (now >= deadline)
+			return { launch: false, cancel: true, reason: "no-scouted-target" };
+		return { launch: false, reason: "no-scouted-target" };
+	}
+
+	let attackers = 0;
+	for (const ent of attack.unitCollection.values())
+	{
+		if (!ent || !ent.position() || isExpertBuildingSiegeEntity(ent) || ent.hasClass("Animal") || ent.hasClass("Support") && !ent.hasClass("Soldier"))
+			continue;
+		if (ent.attackTypes && ent.attackTypes())
+			++attackers;
+	}
+	const radius2 = Math.pow(Number(policy.expertP1RushDefenderRadius) || 95, 2);
+	let defenders = 0;
+	for (const ent of gameState.getEnemyUnits(attack.targetPlayer).values())
+	{
+		if (!ent || !ent.position() || SquareVectorDistance(ent.position(), attack.targetPos) > radius2 || ent.hasClass("Animal"))
+			continue;
+		if (ent.attackTypes && ent.attackTypes() && (!ent.hasClass("Support") || ent.hasClass("Soldier")))
+			++defenders;
+	}
+	let staticDefenses = 0;
+	for (const ent of gameState.getEnemyStructures(attack.targetPlayer).values())
+	{
+		if (!ent || !ent.position() || SquareVectorDistance(ent.position(), attack.targetPos) > radius2)
+			continue;
+		if (ent.hasClass("CivCentre") || ent.hasClass("Tower") || ent.hasClass("Fortress"))
+			++staticDefenses;
+	}
+	const equivalentDefenders = defenders + staticDefenses * Math.max(0, Number(policy.expertP1RushStaticDefenseEquivalent) || 3);
+	const ratio = Math.max(1.01, Number(policy.expertP1RushLaunchAdvantageRatio) || 1.15);
+	const lead = Math.max(1, Number(policy.expertP1RushLaunchMinimumLead) || 2);
+	const needed = equivalentDefenders > 0 ? Math.max(equivalentDefenders + lead, Math.ceil(equivalentDefenders * ratio)) : 0;
+	const favorable = attackers > 0 && attackers >= needed;
+	const logEvery = Math.max(5, Number(policy.expertP1RushGateLogSeconds) || 12);
+	const shouldLog = now >= (Number(this.expertLastP1RushGateLog) || -99999) + logEvery;
+
+	if (!upgradeReady || !favorable)
+	{
+		const reason = !upgradeReady ? "melee-upgrade" : "no-local-advantage";
+		if (now >= deadline)
+		{
+			if (shouldLog)
+			{
+				this.expertLastP1RushGateLog = now;
+				aiWarn("[EXPERT-RUSH-GATE] cancel plan=" + attack.name + " strategy=" + doctrine.id +
+					" reason=" + reason + " army=" + attackers + " defenders=" + defenders +
+					" static=" + staticDefenses + " needed=" + needed + " upgrade=" + (upgradeReady ? "ready" : "missing") +
+					" deadline=" + Math.round(deadline));
+			}
+			return { launch: false, cancel: true, reason, attackers, defenders, staticDefenses, needed, upgradeReady };
+		}
+		if (shouldLog)
+		{
+			this.expertLastP1RushGateLog = now;
+			aiWarn("[EXPERT-RUSH-GATE] hold plan=" + attack.name + " strategy=" + doctrine.id +
+				" reason=" + reason + " army=" + attackers + " defenders=" + defenders +
+				" static=" + staticDefenses + " needed=" + needed + " upgrade=" + (upgradeReady ? "ready" : "missing") +
+				" deadline=" + Math.round(deadline));
+		}
+		return { launch: false, reason, attackers, defenders, staticDefenses, needed, upgradeReady };
+	}
+	if (shouldLog)
+	{
+		this.expertLastP1RushGateLog = now;
+		aiWarn("[EXPERT-RUSH-GATE] launch plan=" + attack.name + " strategy=" + doctrine.id +
+			" army=" + attackers + " defenders=" + defenders + " static=" + staticDefenses +
+			" needed=" + needed + " upgrade=" + (upgradeReady ? "ready" : "n/a"));
+	}
+	return { launch: true, reason: "advantage", attackers, defenders, staticDefenses, needed, upgradeReady };
 };
 
 AttackManager.prototype.expertRushLocalBalance = function(gameState, attack)
@@ -1700,8 +1851,9 @@ AttackManager.prototype.update = function(gameState, queues, events)
 
 	this.consolidateExpertSecondaryOffensives(gameState);
 	this.updateExpertFinishingProgress(gameState, expertFinishing);
-	// Siege trained for a healthy P3 push joins the field army before the opponent is
-	// formally broken.  Finishing reinforcement can then top up the same plan.
+	// IT14.65: premium infantry trained behind the army joins it immediately instead of
+	// accumulating as an idle home reserve. Siege keeps its existing attachment lane.
+	this.attachExpertPremiumUnitsToActiveAttack(gameState);
 	this.attachExpertSiegeToActiveAttack(gameState);
 	if (expertFinishing)
 		this.reinforceExpertFinishingAttack(gameState, expertFinishing);
@@ -2236,6 +2388,7 @@ AttackManager.prototype.Serialize = function()
 		"expertLastRushLaunchEnemyPopulation": this.expertLastRushLaunchEnemyPopulation,
 		"expertLastRushLaunchTime": this.expertLastRushLaunchTime,
 		"expertLastAthensP1MeleeHoldLog": this.expertLastAthensP1MeleeHoldLog,
+		"expertLastP1RushGateLog": this.expertLastP1RushGateLog,
 		"expertLateP1UnupgradedCancelled": this.expertLateP1UnupgradedCancelled
 	};
 

@@ -233,6 +233,7 @@ export class ExpertDecisionController
 		this.lastHuntingCavalryDiag = -99999;
 		// IT14.62 optional frontier expansion diagnostic and temporary siege-pop reserve.
 		this.lastCleruchyDiag = -99999;
+		this.lastScarcityExpansionAttempt = -99999;
 		this.expertStrategicPopulationReserve = 0;
 		// Once a covered secondary natural-food branch is exhausted, guarantee that the
 		// economy begins field #1 instead of sending those food-owned civilians back to
@@ -3532,14 +3533,16 @@ export class ExpertDecisionController
 		if (!gameState || gameState.getPlayerCiv() !== "athen" || !gameState.currentPhase || gameState.currentPhase() !== 1)
 			return frame;
 		const doctrine = this.ensureStrategicDoctrine(gameState);
-		if (!doctrine || (doctrine.id !== "late_p1_rush" && doctrine.id !== "p2_tech_push"))
+		if (!doctrine || (doctrine.id !== "early_p1_rush" && doctrine.id !== "late_p1_rush" && doctrine.id !== "p2_tech_push"))
 			return frame;
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
-		const start = doctrine.id === "late_p1_rush" ? policy.athensP1ForgeLateRushStartTime : policy.athensP1ForgeTechPushStartTime;
+		const rushDoctrine = doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush";
+		const start = doctrine.id === "early_p1_rush" ? policy.athensP1ForgeEarlyRushStartTime :
+			doctrine.id === "late_p1_rush" ? policy.athensP1ForgeLateRushStartTime : policy.athensP1ForgeTechPushStartTime;
 		if (now < start || gameState.getPopulation() < policy.athensP1ForgeMinimumPopulation || this.builtByClass(gameState, "Barracks").length < 2)
 			return frame;
-		if (doctrine.id === "late_p1_rush")
+		if (rushDoctrine)
 		{
 			const launched = !!(this.HQ.attackManager && this.HQ.attackManager.expertRushHasLaunched);
 			if (launched || now > policy.athensP1MeleeLateRushLatestHold)
@@ -3585,7 +3588,7 @@ export class ExpertDecisionController
 		// from consuming the food/wood window and then making the army wait for a tech
 		// that cannot possibly queue.
 		let meleeCost = { food: 0, wood: 0, stone: 0, metal: 0 };
-		if (doctrine.id === "late_p1_rush")
+		if (rushDoctrine)
 		{
 			try
 			{
@@ -3599,8 +3602,8 @@ export class ExpertDecisionController
 		for (const resource of ["food", "wood", "stone", "metal"])
 		{
 			const forgeSpend = Number(cost && cost[resource]) || 0;
-			const techSpend = doctrine.id === "late_p1_rush" ? Number(meleeCost[resource]) || 0 : 0;
-			const packageReserve = doctrine.id === "late_p1_rush" ?
+			const techSpend = rushDoctrine ? Number(meleeCost[resource]) || 0 : 0;
+			const packageReserve = rushDoctrine ?
 				Math.max(Number(reserve[resource]) || 0,
 					resource === "food" ? Number(policy.athensP1MeleeFoodReserve) || 0 :
 					resource === "wood" ? Number(policy.athensP1MeleeWoodReserve) || 0 :
@@ -3614,10 +3617,10 @@ export class ExpertDecisionController
 			actions = actions.filter(action => !(action && action.kind === "temple" &&
 				(action.type === "BUILD" || action.type === "RESERVE")));
 		actions.push({
-			type: "BUILD", kind: "forge", role: "athens_p1_forge", priority: doctrine.id === "late_p1_rush" ? 101 : 99,
+			type: "BUILD", kind: "forge", role: "athens_p1_forge", priority: rushDoctrine ? 101 : 99,
 			builderCount: 3,
 			builderPool: ["citizenSoldierWood", "wood", "food_overflow_wood", "stone", "metal"],
-			reason: doctrine.id === "late_p1_rush" ? "Athens P1 Forge for unique melee timing upgrade" : "Athens Village Forge for P2 tech-push head start"
+			reason: rushDoctrine ? "Athens P1 Forge for required melee timing upgrade" : "Athens Village Forge for P2 tech-push head start"
 		});
 		if (now - this.lastAthenianP1ForgeDiag >= 15)
 		{
@@ -3634,7 +3637,7 @@ export class ExpertDecisionController
 		    !gameState.ai || !gameState.ai.queueManager)
 			return false;
 		const doctrine = this.ensureStrategicDoctrine(gameState);
-		if (!doctrine || (doctrine.id !== "late_p1_rush" && doctrine.id !== "p2_tech_push"))
+		if (!doctrine || (doctrine.id !== "early_p1_rush" && doctrine.id !== "late_p1_rush" && doctrine.id !== "p2_tech_push"))
 			return false;
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
@@ -5481,13 +5484,38 @@ export class ExpertDecisionController
 		return out;
 	}
 
-	cleruchyFrontierCandidate(gameState, cc, accessIndex)
+	scarcityExpansionContext(gameState, frame, woodsite)
+	{
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const localWood = Math.max(0, Number(woodsite && woodsite.localWoodAmount) || 0);
+		const natural = frame && frame.state && frame.state.food ?
+			Math.max(0, Number(frame.state.food.totalNaturalRemaining) || 0) : 0;
+		const status = frame && frame.economy && frame.economy.derived ? String(frame.economy.derived.woodsiteStatus || "") : "";
+		const storehouseFailureKeys = ["storehouse:primary", "storehouse:expansion", "storehouse:resource_service"];
+		const failureCount = Math.max(0, ...storehouseFailureKeys.map(key => Number(this.placementFailureCounts[key] || 0)));
+		const failureAt = Math.max(-99999, ...storehouseFailureKeys.map(key => Number(this.placementFailureAt[key] || -99999)));
+		const recentFailure = failureCount >= (Number(policy.athensCleruchyScarcityPlacementFailures) || 2) &&
+			now - failureAt <= (Number(policy.athensCleruchyScarcityFailureWindowSeconds) || 120);
+		const criticalWood = localWood <= (Number(policy.athensCleruchyScarcityCriticalWoodThreshold) || 450);
+		const lowWood = localWood <= (Number(policy.athensCleruchyScarcityWoodThreshold) || 900);
+		const expansionStatus = status === "workforce_expand" || status === "prebuild_next_worksite" || status === "depleting_expand";
+		const lowNatural = natural <= (Number(policy.athensCleruchyScarcityNaturalFoodThreshold) || 250);
+		const active = criticalWood || (lowWood && (lowNatural || recentFailure || expansionStatus));
+		return { active, localWood, natural, status, recentFailure, failureCount, primaryResource: lowWood ? "wood" : lowNatural ? "food" : "wood" };
+	}
+
+	cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity = false)
 	{
 		if (!cc || !entityPosition(cc) || !gameState.getResourceSupplies)
 			return undefined;
 		const policy = mergePolicy();
 		const ccPos = cc.position();
 		const radius2 = Math.pow(Number(policy.athensCleruchyResourceRadius) || 55, 2);
+		const weights = { food: Number(policy.athensCleruchyFoodValueWeight) || 1, wood: Number(policy.athensCleruchyWoodValueWeight) || 1.5,
+			stone: Number(policy.athensCleruchyStoneValueWeight) || 1.2, metal: Number(policy.athensCleruchyMetalValueWeight) || 1.2 };
+		const minimumValue = scarcity ? Math.max(1, Number(policy.athensCleruchyScarcityMinimumResourceValue) || 1400) :
+			Math.max(1, Number(policy.athensCleruchyMinimumResourceValue) || 1800);
 		let best;
 		for (const anchor of this.frontierResourceAnchors(gameState, ccPos, accessIndex))
 		{
@@ -5496,6 +5524,7 @@ export class ExpertDecisionController
 				continue;
 			let value = 0;
 			const types = new Set();
+			const resources = { food: 0, wood: 0, stone: 0, metal: 0 };
 			for (const generic of ["food", "wood", "stone", "metal"])
 				for (const supply of gameState.getResourceSupplies(generic).values())
 				{
@@ -5509,38 +5538,41 @@ export class ExpertDecisionController
 					const amount = Math.max(0, Number(supply.resourceSupplyAmount()) || 0);
 					if (!amount) continue;
 					types.add(generic);
-					value += amount * (generic === "metal" || generic === "stone" ? 1.25 : 1.0);
+					resources[generic] += amount;
+					value += amount * weights[generic];
 				}
-			if (types.size < policy.athensCleruchyMinimumResourceTypes || value < policy.athensCleruchyMinimumResourceValue)
+			if (types.size < policy.athensCleruchyMinimumResourceTypes || value < minimumValue)
 				continue;
 			const score = value - 3 * distance;
 			if (!best || score > best.score)
-				best = { position: [...anchor.position], distance, value, resourceTypes: types.size, score };
+				best = { position: [...anchor.position], distance, value, resourceTypes: types.size, resources, score };
 		}
 		return best;
 	}
 
-	applyAthenianFrontierCleruchy(gameState, frame, cc, accessIndex)
+	applyAthenianFrontierCleruchy(gameState, frame, cc, accessIndex, woodsite)
 	{
 		if (gameState.getPlayerCiv() !== "athen" || !gameState.currentPhase || gameState.currentPhase() < 2 || !cc)
 			return frame;
 		const policy = mergePolicy();
 		const now = Number(gameState.ai.elapsedTime) || 0;
-		if (now < policy.athensCleruchyMinimumTime || gameState.getPopulation() < policy.athensCleruchyMinimumPopulation)
+		const scarcity = this.scarcityExpansionContext(gameState, frame, woodsite);
+		const minTime = scarcity.active ? policy.athensCleruchyScarcityMinimumTime : policy.athensCleruchyMinimumTime;
+		const minPop = scarcity.active ? policy.athensCleruchyScarcityMinimumPopulation : policy.athensCleruchyMinimumPopulation;
+		if (now < minTime || gameState.getPopulation() < minPop)
 			return frame;
 		const finishing = this.finishingState(gameState);
 		if (finishing.active)
 			return frame;
-		// IT14.63: expansion and the main timing attack are mutually exclusive strategic
-		// commitments.  If the all-in is nearly ready or already on the field, resolve it
-		// first; the frontier resources will still be there after the fight.
-		if (this.expertMajorAttackNearLaunch(gameState))
+		// IT14.65: the old all-in sequencing remains on healthy maps, but a genuinely
+		// resource-starved base may claim a rich frontier while the field army fights.
+		if (!scarcity.active && this.expertMajorAttackNearLaunch(gameState))
 			return frame;
 		const type = gameState.applyCiv(BUILDING_SPECS.cleruchy.template);
 		if (!gameState.getTemplate(type) || !this.HQ.canBuild || !this.HQ.canBuild(gameState, type) ||
 		    this.specialStructurePipeline(gameState, "cleruchy") >= policy.athensCleruchyMaximumCount)
 			return frame;
-		const candidate = this.cleruchyFrontierCandidate(gameState, cc, accessIndex);
+		const candidate = this.cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity.active);
 		if (!candidate)
 			return frame;
 		if (!this.specialBuildingAffordable(gameState, type, {
@@ -5551,17 +5583,43 @@ export class ExpertDecisionController
 		const actions = [...(frame.actions || [])];
 		if (actions.some(action => action && action.kind === "cleruchy"))
 			return frame;
-		actions.push({ type: "BUILD", kind: "cleruchy", role: "frontier_expansion", priority: 93,
-			builderCount: 6, builderPool: ["citizenSoldierWood", "wood", "stone", "metal"],
+		const priority = scarcity.active ? Math.max(93, Number(policy.athensCleruchyScarcityPriority) || 108) : 93;
+		const builders = scarcity.active ? Math.max(6, Number(policy.athensCleruchyScarcityBuilderCount) || 8) : 6;
+		actions.push({ type: "BUILD", kind: "cleruchy", role: "frontier_expansion", priority,
+			builderCount: builders, builderPool: ["citizenSoldierWood", "wood", "stone", "metal"],
 			resourceAnchor: candidate.position,
-			reason: "rich neutral frontier expansion value=" + Math.round(candidate.value) + " types=" + candidate.resourceTypes });
+			reason: (scarcity.active ? "scarcity resource-control expansion " : "rich neutral frontier expansion ") +
+				"value=" + Math.round(candidate.value) + " types=" + candidate.resourceTypes });
 		if (!Number.isFinite(this.lastCleruchyDiag) || now - this.lastCleruchyDiag >= 20)
 		{
 			this.lastCleruchyDiag = now;
-			aiWarn("[EXPERT-EXPAND] build=cleruchy distance=" + candidate.distance.toFixed(1) +
-				" value=" + Math.round(candidate.value) + " types=" + candidate.resourceTypes);
+			aiWarn("[EXPERT-EXPAND] build=cleruchy mode=" + (scarcity.active ? "scarcity" : "frontier") +
+				" distance=" + candidate.distance.toFixed(1) + " value=" + Math.round(candidate.value) +
+				" types=" + candidate.resourceTypes + " wood=" + Math.round(candidate.resources.wood || 0) +
+				" localWood=" + Math.round(scarcity.localWood) + " natural=" + Math.round(scarcity.natural));
 		}
 		return { ...frame, actions };
+	}
+
+	applyScarcityBaseExpansion(gameState, queues, frame, cc, accessIndex, woodsite)
+	{
+		if (!gameState.currentPhase || gameState.currentPhase() < 2 || gameState.getPlayerCiv() === "athen" || !this.HQ || !this.HQ.buildNewBase ||
+		    this.HQ.canExpand === false || !queues || !queues.civilCentre)
+			return false;
+		const scarcity = this.scarcityExpansionContext(gameState, frame, woodsite);
+		if (!scarcity.active || gameState.getPopulation() < 75 || this.finishingState(gameState).active)
+			return false;
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const cooldown = Math.max(30, Number(mergePolicy().expertScarcityBaseExpansionCooldownSeconds) || 75);
+		if (Number.isFinite(this.lastScarcityExpansionAttempt) && now - this.lastScarcityExpansionAttempt < cooldown)
+			return false;
+		this.lastScarcityExpansionAttempt = now;
+		const queued = this.HQ.buildNewBase(gameState, queues, scarcity.primaryResource);
+		if (queued)
+			aiWarn("[EXPERT-EXPAND] build=base mode=scarcity resource=" + scarcity.primaryResource +
+				" localWood=" + Math.round(scarcity.localWood) + " natural=" + Math.round(scarcity.natural) +
+				" status=" + scarcity.status);
+		return !!queued;
 	}
 
 	neutralFoodAnnexCandidate(gameState, ccPos, accessIndex)
@@ -6208,6 +6266,10 @@ export class ExpertDecisionController
 			}
 		}
 
+		// IT14.65: do not spend the cleanup phase manufacturing premium specialists.
+		if (Number.isFinite(enemyPop) && enemyPop <= (Number(policy.athensGymnasiumStopEnemyPopulation) || 28))
+			return;
+
 		// Gymnasium champions are a supplement, not the new army backbone. Dynamically
 		// inspect the current CWA trainer roster: if an Epilektoi/champion spearman is
 		// exposed here, prefer enough melee champions to reinforce the screen; otherwise
@@ -6234,12 +6296,17 @@ export class ExpertDecisionController
 			let existing = 0, melee = 0, javelineers = 0, crossbows = 0;
 			for (const ent of gameState.getOwnUnits().values())
 			{
-				if (!ent || !ent.templateName || !types.has(ent.templateName()))
+				if (!ent || !ent.templateName)
+					continue;
+				const name = String(ent.templateName()).toLowerCase();
+				const matchingSpecial = types.has(ent.templateName()) || (hasClass(ent, "Champion") && hasClass(ent, "Infantry") &&
+					(hasClass(ent, "Crossbowman") || name.includes("crossbow") || hasClass(ent, "Javelineer") || name.includes("javelineer") || hasClass(ent, "Melee")));
+				if (!matchingSpecial)
 					continue;
 				++existing;
 				if (hasClass(ent, "Melee")) ++melee;
-				if (hasClass(ent, "Javelineer") || String(ent.templateName()).toLowerCase().includes("javelineer")) ++javelineers;
-				if (hasClass(ent, "Crossbowman") || String(ent.templateName()).toLowerCase().includes("crossbow")) ++crossbows;
+				if (hasClass(ent, "Javelineer") || name.includes("javelineer")) ++javelineers;
+				if (hasClass(ent, "Crossbowman") || name.includes("crossbow")) ++crossbows;
 			}
 			for (const plan of queues.citizenSoldier.plans || [])
 				if (plan && types.has(plan.type))
@@ -10040,9 +10107,11 @@ export class ExpertDecisionController
 		// IT14.63: map-aware hunt investment never buys a Stable by itself. After the
 		// protected opening, rich hunt may add pursuit cavalry one at a time from the CC.
 		frame = this.applyHuntingCavalryInfrastructure(gameState, frame, cc);
-		// IT14.62: a rich neutral frontier may justify one Cleruchy before another chain
-		// of tiny dropsites. It remains optional and finishing mode suppresses it.
-		frame = this.applyAthenianFrontierCleruchy(gameState, frame, cc, accessIndex);
+		// IT14.65: resource scarcity is now a strategic reason to take map control. Athens
+		// uses the exact-placement Cleruchy; other civs may invoke Petra's existing new-base
+		// planner only for this explicit P2+ scarcity response.
+		frame = this.applyAthenianFrontierCleruchy(gameState, frame, cc, accessIndex, woodsite);
+		this.applyScarcityBaseExpansion(gameState, queues, frame, cc, accessIndex, woodsite);
 		// IT14.53: Athens may add one Gymnasium in Town and one Prytaneion in City,
 		// but only from genuine surplus after the core timing infrastructure exists.
 		frame = this.applyAthenianSpecialInfrastructure(gameState, frame);
@@ -10058,12 +10127,13 @@ export class ExpertDecisionController
 		// Market and frontier Cleruchy. Once the opponent is actually broken, suppress
 		// all optional expansion/special construction until the kill is secured.
 		const majorAttackNow = this.expertMajorAttackNearLaunch(gameState);
+		const scarcityNow = this.scarcityExpansionContext(gameState, frame, woodsite).active;
 		if ((majorAttackNow && gameState.currentPhase && gameState.currentPhase() === 2) || finishing.active)
 		{
 			const actions = (frame.actions || []).filter(action =>
 			{
 				if (!action) return false;
-				if (action.kind === "cleruchy" || action.role === "frontier_expansion")
+				if ((action.kind === "cleruchy" || action.role === "frontier_expansion") && (finishing.active || !scarcityNow))
 					return false;
 				if (action.kind === "market" && (finishing.active || action.role === "phase3_town_support"))
 					return false;
@@ -10196,7 +10266,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.64] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.65] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -10258,7 +10328,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.64] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.65] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -10321,6 +10391,7 @@ export class ExpertDecisionController
 			"postWickerBranchFarmsteadStartedAt": this.postWickerBranchFarmsteadStartedAt,
 			"lastHuntingCavalryDiag": this.lastHuntingCavalryDiag,
 			"lastCleruchyDiag": this.lastCleruchyDiag,
+			"lastScarcityExpansionAttempt": this.lastScarcityExpansionAttempt,
 			"secondaryNaturalDepletionFieldPending": this.secondaryNaturalDepletionFieldPending,
 			"naturalFoodDiscoveredAmounts": { ...this.naturalFoodDiscoveredAmounts },
 			"lastTerritoryNaturalFoodRatio": this.lastTerritoryNaturalFoodRatio,
@@ -10408,6 +10479,7 @@ export class ExpertDecisionController
 		this.postWickerBranchFarmsteadStartedAt = Number.isFinite(data.postWickerBranchFarmsteadStartedAt) ? data.postWickerBranchFarmsteadStartedAt : -99999;
 		this.lastHuntingCavalryDiag = Number.isFinite(data.lastHuntingCavalryDiag) ? data.lastHuntingCavalryDiag : -99999;
 		this.lastCleruchyDiag = Number.isFinite(data.lastCleruchyDiag) ? data.lastCleruchyDiag : -99999;
+		this.lastScarcityExpansionAttempt = Number.isFinite(data.lastScarcityExpansionAttempt) ? data.lastScarcityExpansionAttempt : -99999;
 		this.expertStrategicPopulationReserve = 0;
 		this.secondaryNaturalDepletionFieldPending = !!data.secondaryNaturalDepletionFieldPending;
 		this.naturalFoodDiscoveredAmounts = { ...(data.naturalFoodDiscoveredAmounts || {}) };
