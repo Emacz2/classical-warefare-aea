@@ -294,6 +294,10 @@ IT14.63 three-replay review
 - Replay #3: CLEAN WIN, supported conquest window 21:19-21:35 (metadata remained open until 22:23.2). By roughly 14:40 Expert was already 173/180 with a 78-unit army and soon drove the opponent to ~28 population. Melee-I timing, House progression, two-real-ram finishing and conquest-target cleanup all worked. Gymnasium placement repeatedly failed and produced no champions.
 - These three runs do not satisfy a sub-20 consistency threshold. IT14.64 therefore remains +35% / 1.35 and starts a fresh three-consecutive-sub-20 validation target.
 
+IT14.64 packaging hotfix
+- The first IT14.64 package was invalid and is NON-BENCHMARK: `expertDecisionController.js` failed to compile at line 5992 because the second line of a Gymnasium explanatory comment was missing its `//` prefix. The later StatisticsTracker errors were cascade errors after the AI module failed to link.
+- The hotfix restores the missing comment marker only; no AI policy, balance, gather bonus, or IT14.64 behavior was changed. Restart the three-replay IT14.64 validation set from zero using the hotfixed package.
+
 IT14.64 target / implemented emphasis
 - Smarter attack commitment without rewriting Petra movement: once an unupgraded Athens Late-P1 timing is deliberately cancelled, replacement P1 Rush creation is locked. A newly launched Rush/Default/Huge army also refuses an obviously losing head-on local engagement (large numeric disadvantage, stricter around defenses) before waiting for a casualty disaster.
 - Housing resilience: an unfounded House receives a 10-second watchdog, orphan-foundation adoption and wider P2 retry rings. Repeated House failures near the population cap may trigger the live Town `pop_house_01` (+20% House population) technology instead of remaining permanently blocked.

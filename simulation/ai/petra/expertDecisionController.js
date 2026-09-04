@@ -5989,7 +5989,7 @@ export class ExpertDecisionController
 		    this.HQ.canBuild && this.HQ.canBuild(gameState, gymType) &&
 		    this.specialBuildingAffordable(gameState, gymType, {
 			    // Keep enough bank to actually train the first preferred champion after
-			    paying for the Gymnasium; otherwise the building would be decorative.
+			    // paying for the Gymnasium; otherwise the building would be decorative.
 			    food: policy.athensGymnasiumFoodReserve + (Number(gymProduction.cost.food) || 0),
 			    wood: policy.athensGymnasiumWoodReserve + (Number(gymProduction.cost.wood) || 0),
 			    stone: Number(gymProduction.cost.stone) || 0,
