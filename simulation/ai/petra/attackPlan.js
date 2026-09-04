@@ -1559,7 +1559,8 @@ AttackPlan.prototype.rushTargetFinder = function(gameState, playerEnemy)
 			{
 				if (!defense || !defense.position() || !defense.hasDefensiveFire())
 					continue;
-				if (SquareVectorDistance(worker.position(), defense.position()) < 4900) // 70m
+				const safeRadius = Math.max(80, Number(mergePolicy().expertRushDefensiveThreatRadius) || 90);
+				if (SquareVectorDistance(worker.position(), defense.position()) < safeRadius * safeRadius)
 				{
 					defended = true;
 					break;
@@ -1598,7 +1599,8 @@ AttackPlan.prototype.rushTargetFinder = function(gameState, playerEnemy)
 			if (!defense.hasDefensiveFire())
 				continue;
 			const dist = SquareVectorDistance(pos, defense.position());
-			if (dist < 6400)   // TODO check on defense range rather than this fixed 80*80
+			const safeRadius = Math.max(90, Number(mergePolicy().expertRushDefensiveThreatRadius) || 90);
+			if (dist < safeRadius * safeRadius)
 			{
 				defended = true;
 				break;

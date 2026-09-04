@@ -166,16 +166,16 @@ const DEFAULT_POLICY = Object.freeze({
   requiredLowWoodObservations: 2,
   woodWorksiteRadius: 30,
   cavalryHuntSearchRadius: 220,
-  // IT14.61 map-aware hunting cavalry.  The CC remains civilian-only; Expert may
-  // add a Stable and 1-2 extra cavalry from that Stable only when nearby own/neutral
-  // hunt is rich enough to repay the infrastructure without starving the core build.
+  // IT14.63: hunt cavalry comes from the Civic Centre, not a dedicated Stable.
+  // The starting horse remains first; rich safe hunt may justify up to two additional
+  // cheap pursuit cavalry after the opening civilian-only window.  A Stable is now a
+  // combat-cavalry investment only and must have an actual production purpose.
   huntingCavalryPopulation: 30,
   huntingCavalryMinimumHuntForTwo: 450,
   huntingCavalryMinimumHuntForThree: 800,
   huntingCavalryEarlyRushMinimumHuntForTwo: 900,
   huntingCavalryEarlyRushMinimumHuntForThree: 1400,
-  huntingCavalryStableWoodReserve: 250,
-  huntingCavalryStableStoneReserve: 50,
+  huntingCavalryCCMinimumTime: 180,
   huntingCavalryFoodReserve: 250,
   huntingCavalryTrainingPriority: 965,
   firstBarracksPopulation: 30,
@@ -277,6 +277,8 @@ const DEFAULT_POLICY = Object.freeze({
   phase2SecondMarketSpacing: 70,
   phase2SecondMarketPreferredDistance: 120,
   phase2SecondMarketMaximumCCDistance: 210,
+  phase2FirstMarketPreferredCCDistance: 78,
+  phase2FirstMarketMaximumCCDistance: 180,
   // IT14.35: the worker-efficiency temple is a Village-phase economic structure.
   // Normally establish it after barracks #2, once a small permanent-food base exists.
   // IT14.52: the worker-aura Temple is core economic infrastructure, not a late
@@ -307,24 +309,23 @@ const DEFAULT_POLICY = Object.freeze({
   hopliteTraditionMetalReserve: 0,
   // Surplus wood should become useful infrastructure instead of a 5k bank.
   // One forge may appear late P1 only under an extreme surplus. Forge #1 is part
-  // of the P2 transition, forge #2 follows as soon as Town is reached, and forge
-  // #3 remains a City-phase expansion.
+  // of the P2 transition and forge #2 is the parallel military-research lane.
+  // IT14.63 hard-caps Expert at two Forges; a third Forge after the tech tree is
+  // mostly exhausted has no useful payback.
   lateP1ForgeTime: 330,
   lateP1ForgePopulation: 70,
   lateP1ForgeWoodBank: 1500,
   lateP1ForgeWoodFoodRatio: 3.0,
   phase2Forge1Population: 90,
-  phase2Forge2Population: 90,
-  phase2Forge3Population: 135,
-  // IT14.34 preserves IT14.33: forge #1 is Town-transition infrastructure, forge #2 is immediate
-  // Town infrastructure, and only forge #3 waits for City phase.
+  phase2Forge2Population: 80,
+  // IT14.63: forge #2 is deliberately early Town infrastructure so Melee/Ranged
+  // attack upgrades can run in parallel while the P2 army is assembling.
   phase2ForgeTransitionTime: 420,
   phase2ForgeTransitionMinimumFields: 6,
-  phase2ForgeSecondMinimumFields: 6,
-  phase2ForgeSecondFoodBank: 250,
+  phase2ForgeSecondMinimumFields: 4,
+  phase2ForgeSecondFoodBank: 200,
   phase2Forge1WoodBank: 200,
   phase2Forge2WoodBank: 200,
-  phase2Forge3WoodBank: 2400,
   forgeWoodReserve: 100,
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
@@ -491,8 +492,13 @@ const DEFAULT_POLICY = Object.freeze({
   athensGymnasiumMetalReserve: 100,
   athensGymnasiumP2ChampionTarget: 6,
   athensGymnasiumP3ChampionTarget: 8,
-  athensGymnasiumRangedCapWithoutMelee: 4,
+  // IT14.63 champion composition: Hoplites form the backbone, champion javelineers
+  // are the second layer, and Gastraphetes remain a small specialist detachment.
+  athensGymnasiumRangedCapWithoutMelee: 3,
   athensGymnasiumCrossbowTarget: 2,
+  athensGymnasiumCrossbowMaximum: 2,
+  athensGymnasiumMeleeTargetShare: 0.60,
+  athensGymnasiumJavelineerTargetShare: 0.25,
   athensHippocratesMinimumTime: 600,
   athensPrytaneionWoodReserve: 250,
   athensPrytaneionFoodReserve: 250,
@@ -501,7 +507,7 @@ const DEFAULT_POLICY = Object.freeze({
   // anchors. A legal safe site in the developed home district is good enough.
   athensSpecialMinimumCCDistance: 20,
   athensSpecialPreferredCCDistance: 42,
-  athensSpecialFallbackMaximumCCDistance: 190,
+  athensSpecialFallbackMaximumCCDistance: 230,
   // IT14.62: Athens may replace endless frontier dropsites with one real neutral-territory
   // expansion when the visible resource district is rich enough to repay the colony.
   athensCleruchyMinimumPopulation: 105,
@@ -516,6 +522,9 @@ const DEFAULT_POLICY = Object.freeze({
   athensCleruchyWoodReserve: 350,
   athensCleruchyStoneReserve: 250,
   athensCleruchyMetalReserve: 150,
+  // Do not spend on a frontier colony while the main timing army is about to leave
+  // or is already fighting.  Resolve the all-in first, then expand.
+  athensCleruchyAttackDeferArmy: 44,
   p1EcoSweepStartTime: 330,
   p1EcoSweepMaxQueued: 1,
   houseMinimumCCDistance: 50,
@@ -631,8 +640,8 @@ const DEFAULT_POLICY = Object.freeze({
   expertFinishingMinimumArmy: 36,
   expertFinishingMaximumArmy: 50,
   expertFinishingArmyPerEnemy: 3,
-  expertFinishingStallSeconds: 45,
-  expertFinishingRetargetCooldownSeconds: 30,
+  expertFinishingStallSeconds: 24,
+  expertFinishingRetargetCooldownSeconds: 12,
   expertFinishingSiegeTarget: 2,
   // Keep enough population headroom for one real ram/catapult once the finishing
   // pipeline is active. Rams are 2 pop in the current CWA templates; four gives room
@@ -649,11 +658,11 @@ const DEFAULT_POLICY = Object.freeze({
   // the same bad fight indefinitely. Attrition is compared with the opponent's
   // population damage, then local force/static-defense pressure can force a retreat.
   expertRushAbortLossFraction: 0.35,
-  expertRushAbortPressureLossFraction: 0.25,
+  expertRushAbortPressureLossFraction: 0.20,
   expertRushAbortEnemyDamageCredit: 0.75,
-  expertRushAbortMinimumOwnLosses: 5,
+  expertRushAbortMinimumOwnLosses: 4,
   expertRushAbortMinimumFightSeconds: 10,
-  expertRushAbortLocalOutnumberRatio: 1.25,
+  expertRushAbortLocalOutnumberRatio: 1.15,
   expertRushLocalBalanceRadius: 80,
   expertRushDefensiveThreatRadius: 90,
   expertRushRetreatCooldownSeconds: 105,
@@ -678,6 +687,11 @@ const DEFAULT_POLICY = Object.freeze({
   expertCombatBadExchangeMinimumFightSeconds: 28,
   expertCombatBadExchangeReboomSeconds: 55,
   expertCombatBadExchangeCooldownSeconds: 35,
+  // IT14.63: a strategic retreat carries an explicit relaunch obligation.  Once the
+  // short reboom window ends and enough healthy reserve soldiers exist, create the
+  // follow-up plan directly instead of waiting for generic Petra plan creation.
+  expertReboomRelaunchMinimumReserve: 40,
+  expertReboomRelaunchMinimumPopulation: 125,
   expertRecentGarrisonThreatSeconds: 25,
   // Keep ranged infantry behind the melee centroid instead of letting pathing put
   // javeliners/archers on the front edge of a mixed infantry army.
@@ -731,7 +745,15 @@ const DEFAULT_POLICY = Object.freeze({
   // the winning army is still on the field instead of waiting until enemy pop is ~9.
   expertBrokenEnemySiegePopulation: 28,
   expertBrokenEnemySiegeArmy: 40,
-  expertFinishingTownSiegeTarget: 1,
+  // IT14.63: a broken Town-phase opponent gets two legal Town rams.  Do not use this
+  // shortcut into a still-large army; visible enemy combat must be modest relative to
+  // the escort.  If the fight is still dangerous, keep fighting/teching instead.
+  expertFinishingTownSiegeTarget: 2,
+  expertBrokenTownSiegeMaxVisibleEnemyCombat: 18,
+  expertBrokenTownSiegeMinimumEscortRatio: 2.0,
+  expertFinishingArsenalPriority: 118,
+  expertArsenalFallbackPreferredCCDistance: 70,
+  expertArsenalFallbackMaximumCCDistance: 230,
   // Below this population, finishing retargets use strategic objectives rather than
   // ordinary nearest-target cleanup: CC -> ConquestCritical -> military production.
   expertBrokenEnemyObjectivePopulation: 20,

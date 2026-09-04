@@ -74,6 +74,11 @@ export function AttackManager(config)
 	// IT14.44: after a depleted push retreats, give the economy/production a short
 	// reboom window before Petra immediately assembles another understrength wave.
 	this.expertReboomUntil = -99999;
+	// IT14.63: a strategic retreat creates a concrete follow-up obligation. Generic
+	// Petra plan creation proved capable of leaving 80+ reserve soldiers idle forever.
+	this.expertReboomNeedsRelaunch = false;
+	this.expertReboomTargetPlayer = undefined;
+	this.expertLastReboomRelaunchLog = -99999;
 	// IT14.47: concise doctrine telemetry so a replay immediately shows whether a
 	// selected P1 rush is merely arming, has launched, or has rolled into its P2 follow-up.
 	this.expertLastStrategyStatusLog = -99999;
@@ -356,7 +361,7 @@ AttackManager.prototype.getExpertFinishingTarget = function(gameState)
 	const maxEnemy = Math.max(1, Number(policy.expertFinishingEnemyPopulation) || 28);
 	const minOwn = Math.max(1, Number(policy.expertFinishingMinimumOwnPopulation) || 80);
 	const minLead = Math.max(0, Number(policy.expertFinishingMinimumPopulationLead) || 30);
-	if (!Number.isFinite(enemyPopulation) || enemyPopulation <= 0 || enemyPopulation > maxEnemy ||
+	if (!Number.isFinite(enemyPopulation) || enemyPopulation < 0 || enemyPopulation > maxEnemy ||
 	    ownPopulation < minOwn || ownPopulation - enemyPopulation < minLead)
 		return undefined;
 	return { targetPlayer, enemyPopulation, ownPopulation };
@@ -1037,11 +1042,15 @@ AttackManager.prototype.consolidateExpertSecondaryOffensives = function(gameStat
 AttackManager.prototype.markExpertCombatRetreat = function(gameState, attack, reason)
 {
 	const now = Number(gameState.ai.elapsedTime) || 0;
+	// IT14.63: the old fixed 180-second exclusion outlived the actual 45-60 second
+	// reboom window and could leave the rebuilt army ineligible for the follow-up.
+	// Tie the retreat metadata to the strategic cooldown instead.
+	const until = Math.max(now + 20, Number(this.expertReboomUntil) || now + 60);
 	for (const ent of attack.unitCollection.values())
 	{
 		if (!ent || !ent.getMetadata)
 			continue;
-		ent.setMetadata(PlayerID, "expertCombatRetreatUntil", now + 180);
+		ent.setMetadata(PlayerID, "expertCombatRetreatUntil", until);
 		ent.setMetadata(PlayerID, "expertCombatRetreatReason", reason || "failed_push");
 	}
 };
@@ -1200,6 +1209,63 @@ AttackManager.prototype.manageExpertRamGarrisons = function(gameState, finishing
 	}
 };
 
+// IT14.63: count healthy reserve combatants that can seed a post-retreat follow-up.
+AttackManager.prototype.expertReserveCombatCount = function(gameState)
+{
+	let count = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position || !ent.position() || ent.hasClass("Support") ||
+		    !(ent.hasClass("Soldier") || ent.hasClass("Champion")))
+			continue;
+		if (ent.getMetadata)
+		{
+			const plan = ent.getMetadata(PlayerID, "plan");
+			if (ent.getMetadata(PlayerID, "PartOfArmy") !== undefined ||
+			    ent.getMetadata(PlayerID, "expertDefenseMobilized") !== undefined ||
+			    plan !== undefined && plan !== -1)
+				continue;
+		}
+		if (ent.healthLevel && ent.healthLevel() < 0.45)
+			continue;
+		++count;
+	}
+	return count;
+};
+
+AttackManager.prototype.forceExpertReboomRelaunch = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !this.expertReboomNeedsRelaunch ||
+	    (Number(gameState.ai.elapsedTime) || 0) < (Number(this.expertReboomUntil) || -99999) ||
+	    !gameState.currentPhase || gameState.currentPhase() < 2)
+		return false;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK])
+		if ((this.startedAttacks[type] && this.startedAttacks[type].length) ||
+		    (this.upcomingAttacks[type] && this.upcomingAttacks[type].length))
+			return false;
+
+	const policy = mergePolicy();
+	const reserve = this.expertReserveCombatCount(gameState);
+	if (reserve < (Number(policy.expertReboomRelaunchMinimumReserve) || 40) ||
+	    gameState.getPopulation() < (Number(policy.expertReboomRelaunchMinimumPopulation) || 125))
+		return false;
+
+	const attackPlan = new AttackPlan(gameState, this.Config, this.totalNumber, AttackPlan.TYPE_DEFAULT);
+	if (attackPlan.failed)
+		return false;
+	++this.totalNumber;
+	attackPlan.init(gameState);
+	if (this.expertReboomTargetPlayer !== undefined && gameState.isPlayerEnemy(this.expertReboomTargetPlayer))
+		attackPlan.targetPlayer = this.expertReboomTargetPlayer;
+	this.upcomingAttacks[AttackPlan.TYPE_DEFAULT].push(attackPlan);
+	this.expertReboomNeedsRelaunch = false;
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	this.expertLastReboomRelaunchLog = now;
+	aiWarn("[EXPERT-REBOOM] relaunch plan=" + attackPlan.name + " reserve=" + reserve +
+		" targetPlayer=" + attackPlan.targetPlayer + " pop=" + gameState.getPopulation());
+	return true;
+};
+
 AttackManager.prototype.update = function(gameState, queues, events)
 {
 	if (this.Config.debug > 2 && gameState.ai.elapsedTime > this.debugTime + 60)
@@ -1306,6 +1372,10 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				// affordable package; here we wait only for a real research pipeline, plus a
 				// brief grace period after Forge completion so the next controller tick can queue it.
 				const forgeBuilt = gameState.getOwnEntitiesByClass("Forge", true).filter(filters.isBuilt()).hasEntities();
+				const enemyData = gameState.sharedScript && gameState.sharedScript.playersData &&
+					gameState.sharedScript.playersData[attack.targetPlayer];
+				const enemyPop = enemyData ? Math.max(0, Number(enemyData.popCount) || 0) : 999;
+				const weakOpportunity = enemyPop <= Math.max(36, Math.ceil(attack.unitCollection.length * 1.35));
 				if (!researched && gameState.ai.elapsedTime >= start && gameState.ai.elapsedTime < absolute)
 				{
 					if (researching || queued)
@@ -1330,19 +1400,42 @@ AttackManager.prototype.update = function(gameState, queues, events)
 							continue;
 						}
 					}
+					if (!weakOpportunity)
+					{
+						if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
+						{
+							this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
+							aiWarn("[EXPERT-ATHENS-P1] hold-for-melee-or-p2 plan=" + attack.name +
+								" army=" + attack.unitCollection.length + " enemyPop=" + enemyPop +
+								" forge=" + (forgeBuilt ? "built" : "missing"));
+						}
+						++unexecutedAttacks[attackType];
+						continue;
+					}
 					if (gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 12)
 					{
 						this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
-						aiWarn("[EXPERT-ATHENS-P1] timing-window launch: melee not queued plan=" + attack.name +
-							" army=" + attack.unitCollection.length + " forge=" + (forgeBuilt ? "built" : "missing"));
+						aiWarn("[EXPERT-ATHENS-P1] weak-target launch without melee plan=" + attack.name +
+							" army=" + attack.unitCollection.length + " enemyPop=" + enemyPop);
 					}
 				}
 
-				if (!researched && gameState.ai.elapsedTime >= absolute && gameState.ai.elapsedTime < absolute + 2 &&
+				if (!researched && gameState.ai.elapsedTime >= absolute && !weakOpportunity)
+				{
+					aiWarn("[EXPERT-ATHENS-P1] cancel-unupgraded-late-rush plan=" + attack.name +
+						" army=" + attack.unitCollection.length + " enemyPop=" + enemyPop +
+						" action=transition-p2");
+					attack.Abort(gameState);
+					this.upcomingAttacks[attackType].splice(i--, 1);
+					continue;
+				}
+				if (!researched && gameState.ai.elapsedTime >= absolute && weakOpportunity &&
+				    gameState.ai.elapsedTime < absolute + 2 &&
 				    gameState.ai.elapsedTime >= this.expertLastAthensP1MeleeHoldLog + 1)
 				{
 					this.expertLastAthensP1MeleeHoldLog = gameState.ai.elapsedTime;
-					aiWarn("[EXPERT-ATHENS-P1] launch-without-melee hard-deadline plan=" + attack.name + " army=" + attack.unitCollection.length);
+					aiWarn("[EXPERT-ATHENS-P1] weak-target hard-deadline launch plan=" + attack.name +
+						" army=" + attack.unitCollection.length + " enemyPop=" + enemyPop);
 				}
 			}
 
@@ -1448,6 +1541,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				const policy = mergePolicy();
 				this.expertReboomUntil = Math.max(this.expertReboomUntil || -99999,
 					now + (Number(policy.expertCombatBadExchangeReboomSeconds) || 55));
+				this.expertReboomNeedsRelaunch = true;
+				this.expertReboomTargetPlayer = attack.targetPlayer;
 				this.markExpertCombatRetreat(gameState, attack, "bad_exchange");
 				const cancelled = this.cancelExpertFollowupPreparations(gameState);
 				const b = badExchange.balance || {};
@@ -1466,6 +1561,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				const now = Number(gameState.ai.elapsedTime) || 0;
 				this.expertReboomUntil = Math.max(this.expertReboomUntil || -99999,
 					now + (Number(policy.expertCombatScreenReboomSeconds) || 45));
+				this.expertReboomNeedsRelaunch = true;
+				this.expertReboomTargetPlayer = attack.targetPlayer;
 				this.markExpertCombatRetreat(gameState, attack, "melee_screen_under_pressure");
 				const cancelled = this.cancelExpertFollowupPreparations(gameState);
 				const b = brokenScreenRetreat.balance || {};
@@ -1490,6 +1587,9 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				const policy = mergePolicy();
 				this.expertReboomUntil = Math.max(this.expertReboomUntil || -99999,
 					(Number(gameState.ai.elapsedTime) || 0) + policy.expertDepletedAttackReboomSeconds);
+				this.expertReboomNeedsRelaunch = true;
+				this.expertReboomTargetPlayer = attack.targetPlayer;
+				this.markExpertCombatRetreat(gameState, attack, "depleted_push");
 				aiWarn("[EXPERT-REBOOM] retreat plan=" + attack.name + " army=" + attack.unitCollection.length +
 					" targetPlayer=" + attack.targetPlayer + " until=" + Math.round(this.expertReboomUntil));
 				attack.Abort(gameState);
@@ -1539,6 +1639,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	this.manageExpertRamGarrisons(gameState, expertFinishing);
 
 	// creating plans after updating because an aborted plan might be reused in that case.
+	const expertForcedRelaunch = this.forceExpertReboomRelaunch(gameState);
 
 	const expertPrimaryStarted = this.startedAttacks[AttackPlan.TYPE_DEFAULT].length +
 		this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length;
@@ -1603,7 +1704,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			this.rushNumber++;
 		}
 	}
-	else if (!((Number(gameState.ai.elapsedTime) || 0) < (this.expertReboomUntil || -99999)) &&
+	else if (!expertForcedRelaunch &&
+		!((Number(gameState.ai.elapsedTime) || 0) < (this.expertReboomUntil || -99999)) &&
 		!(this.Config.difficulty >= difficulty.EXPERT && doctrine && Number(doctrine.rushes) > 0 &&
 		  this.startedAttacks[AttackPlan.TYPE_RUSH].length > 0) &&
 		unexecutedAttacks[AttackPlan.TYPE_DEFAULT] == 0 &&
@@ -2036,6 +2138,9 @@ AttackManager.prototype.Serialize = function()
 		"expertLastTechGateLog": this.expertLastTechGateLog,
 		"expertFinishingProgress": this.expertFinishingProgress,
 		"expertReboomUntil": this.expertReboomUntil,
+		"expertReboomNeedsRelaunch": this.expertReboomNeedsRelaunch,
+		"expertReboomTargetPlayer": this.expertReboomTargetPlayer,
+		"expertLastReboomRelaunchLog": this.expertLastReboomRelaunchLog,
 		"expertLastStrategyStatusLog": this.expertLastStrategyStatusLog,
 		"expertRushRecoveryMode": this.expertRushRecoveryMode,
 		"expertRushRecoveryUntil": this.expertRushRecoveryUntil,

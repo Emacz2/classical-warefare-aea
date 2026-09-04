@@ -21,6 +21,21 @@ ResearchManager.prototype.checkPhase = function(gameState, queues)
 		return;
 
 	const currentPhaseIndex = gameState.currentPhase();
+	// IT14.63: if a Town-phase Expert has already broken the opponent, do not spend
+	// the kill window on City Phase.  The dedicated Town-siege path can finish with
+	// legal P2 rams; City remains available if the opponent recovers above finishing range.
+	if (currentPhaseIndex === 2 && gameState.ai.HQ.expertDecisionController &&
+	    gameState.ai.HQ.expertDecisionController.isActive(gameState))
+	{
+		const controller = gameState.ai.HQ.expertDecisionController;
+		const finishing = controller.finishingState(gameState);
+		const townSiege = finishing && finishing.active ? controller.p3SiegeContext(gameState, finishing) : undefined;
+		// Only suppress City when the Town finisher is actually safe/usable. If the
+		// remaining enemy army is too large for fragile Town rams, keep the normal P3
+		// option alive rather than trapping Expert in Town.
+		if (townSiege && townSiege.active && !townSiege.blockedTownSiege)
+			return;
+	}
 	const nextPhaseName = gameState.getPhaseName(currentPhaseIndex+1);
 	if (!nextPhaseName)
 		return;

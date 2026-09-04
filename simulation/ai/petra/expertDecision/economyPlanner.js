@@ -850,19 +850,9 @@ function planEconomy(rawState, overrides = {}) {
   if (severeFoodCapacityDeadlock)
     actions.push({ type: "PAUSE_POPULATION_TRAINING", priority: 111, reason: `food capacity deadlock: open=0 missing=${farm.missingFields} overflow=${state.workers.overflowWood} idle=${state.workers.idle}` });
 
-  // 8. Forge #3 remains an optional City-phase surplus sink. Forge #1 is the
-  // transition forge and forge #2 is the Town-phase parallel-tech forge above.
-  if (state.phase >= 3 && forgePipeline === 2 && forgePending === 0 &&
-      state.population.used >= policy.phase2Forge3Population &&
-      state.resources.wood >= policy.phase2Forge3WoodBank) {
-    const cost = costOf(state, policy, "forge");
-    const reserveEnough = state.resources.wood >= (cost.wood || 0) + policy.forgeWoodReserve;
-    if (reserveEnough && resourceEnough(state.resources, cost, reservations)) {
-      actions.push({ type: "BUILD", kind: "forge", role: "forge_3", priority: 90,
-        builderPool: strategicBuilderPool, reason: "City-phase surplus forge 3/3" });
-      addReservation(reservations, cost);
-    }
-  }
+  // IT14.63: Expert deliberately stops at two Forges. Their purpose is parallel
+  // military research; a third Forge after the useful tech lanes are mostly exhausted
+  // only consumes resources/builders without improving the timing.
 
 
   for (let i = 0; i < actions.length; ++i)

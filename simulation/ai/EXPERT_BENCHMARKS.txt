@@ -10,15 +10,15 @@ Definitions
 
 Last 3 clean completed benchmark victories
 Patch / run          Gather Bonus   Victory     Confirmation status
-IT14.58 Temperate    +35%           17:46.6     Baseline dominant sub-18 win
-IT14.60 Savanna      +35%           16:42.4     Post-14.58 dominant confirmation #1
-IT14.61 Arctic       +35%           23:58.4     Clean win, but too slow to count as dominant confirmation #2
+IT14.61 Arctic       +35%           23:58.4     Clean win, not dominant confirmation #2
+IT14.62 Savanna      +35%           25:34.6     Clean win; slow finishing/cleanup
+IT14.62 Temperate    +35%           24:34.0     Clean Town-phase win; Arsenal placement delayed finish
 
 Rolling clean-win context
-- Recent clean victories are 17:46.6, 16:42.4, and 23:58.4; median = 17:46.6.
+- Recent clean victories are 23:58.4, 25:34.6, and 24:34.0; median = 24:34.0.
 - Clean sub-18 victories currently credited: IT14.58 and IT14.60.
 - Post-IT14.58 *similarly dominant* confirmations: 1 of 2 (IT14.60).
-- IT14.61 Arctic remains a real benchmark win, but its 23:58.4 finish does not satisfy the requested dominant-confirmation standard.
+- The two completed IT14.62 wins are strategically clean but too slow to satisfy dominant confirmation #2.
 
 Current tuning rule
 - Keep +35% / 1.35 until one more similarly clean, dominant post-IT14.58 validation win is recorded.
@@ -263,3 +263,23 @@ IT14.62 target
 - All built `DropsiteWood` structures, including Markets/CC/expansion centres, count as lumber-service coverage. Refuse another tiny late Storehouse district once many literal Storehouses already exist; the Steppe Storehouse #18 / 43-wood case must not recur.
 - Athens may conditionally build at most one Town-phase Cleruchy when a safe neutral frontier contains a genuinely rich multi-resource district. The Cleruchy is an expansion/dropsite/pop/military anchor, not a scheduled mandatory structure, and finishing mode suppresses it. A frontier Cleruchy may provide a useful distant anchor for a later Market #2 trade endpoint.
 - Preserve IT14.61 opening Storehouse/Wicker robustness, IT14.60 four-farmer diminishing-return food math, 6/8/10 field floors, P1<=2 / P2<=3 Barracks constraints, mining-tech debt recovery, and the +35% / 1.35 benchmark multiplier.
+
+IT14.62 three-test post-hotfix review
+- Test #1 was stopped early while Expert was clearly ahead. The depleted P2 army correctly withdrew, but the reboom cooldown expired without creating a follow-up attack despite a very large reserve army. A hunting-only Stable was also an unnecessary investment, Gymnasium production drifted heavily toward Gastraphetes, Forge #3 still appeared, and Prytaneion placement remained unreliable.
+- Test #2 (Savanna) completed in 25:34.6. The P2 military-tech gate and ~78-unit timing army worked, real rams were produced, and the opponent was strategically broken well before victory. Cleanup still took too long; Cleruchy construction overlapped the all-in, Forge #3 was still wasteful, and remaining defended/conquest-critical targets were not cleared aggressively enough.
+- Test #3 (Temperate) completed in 24:34.0 while Expert remained in Town Phase. The opponent was already down to roughly 28 population around 10:55, but finishing siege could not begin because Arsenal placement repeatedly returned no legal position. The Arsenal finally received a foundation around 18:39, completed around 19:43, and then a real ram was queued and used. This run demonstrates that a broken Town-phase opponent can be finished with Town rams without paying for City Phase first.
+- The Test #3 hunting Stable completed but trained no cavalry. Hunting alone therefore never justifies Stable construction; additional hunters should be pursuit cavalry from the Civic Centre after the protected opening window.
+- IT14.62 produced two additional clean wins but neither met the requested similarly-dominant standard. Expert gather/trade remains +35% / 1.35 and post-IT14.58 dominant validation remains 1 of 2.
+
+IT14.63 target
+- Hunting cavalry comes from the Civic Centre as pursuit cavalry after the protected opening window; a Stable is never constructed solely for hunt. A future combat-cavalry Stable must justify itself by actually producing a useful combat force.
+- A broken Town-phase opponent may trigger two real Town rams when the visible surviving enemy army is small enough and the assault has a sufficient escort advantage. While that finishing condition holds, City Phase is deferred rather than purchased automatically.
+- Finishing Arsenal placement uses an immediate dense owned-territory fallback instead of spending minutes retrying an attractive but impossible location. Finishing pressure remains active even when the enemy reaches zero population but still owns conquest-critical structures.
+- Reboom has an explicit relaunch path: after the retreat window, a rebuilt reserve army creates a new normal attack rather than waiting indefinitely for generic Petra attack creation.
+- P1 Athens pressure may attack without Melee-I only against a clearly weak target. If the target is not weak and Melee-I never enters the pipeline, the timing is abandoned into the P2 plan rather than making a poor unupgraded attack.
+- Athens Gymnasium composition is explicitly Hoplite/champion melee first, champion javelineer second, Gastraphetes specialist last, with no more than two concurrent Gastraphetes from this doctrine.
+- Forge count is hard-capped at two. Forge #2 exists only to provide a useful parallel military-research lane and may come earlier when the P2 economy can actually support it.
+- Cleruchy expansion and a major all-in are sequenced rather than launched together: if the attack is nearly ready or active, expansion waits; otherwise the expansion may complete first and the all-in follows.
+- Endgame cleanup retargets more quickly and ordinary infantry production stops filling the cap once a finishing army plus home reserve is already sufficient.
+- Preserve the IT14.62 true-siege classification, food/farm/Storehouse robustness, P1/P2 Barracks ceilings, mining-tech debt recovery, and +35% / 1.35 benchmark multiplier.
+

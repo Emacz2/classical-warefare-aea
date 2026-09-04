@@ -7,6 +7,7 @@ import { ExpertFixedConstructionPlan } from "simulation/ai/petra/expertFixedCons
 import { TrainingPlan } from "simulation/ai/petra/queueplanTraining.js";
 import { ResearchPlan } from "simulation/ai/petra/queueplanResearch.js";
 import { Worker } from "simulation/ai/petra/worker.js";
+import { AttackPlan } from "simulation/ai/petra/attackPlan.js";
 
 import { createMemory, stepDecision } from "simulation/ai/petra/expertDecision/decisionEngine.js";
 import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
@@ -2278,6 +2279,40 @@ export class ExpertDecisionController
 					if (plan && plan.unitCollection && plan.unitCollection.length >= 20)
 						return true;
 		return false;
+	}
+
+	expertMajorAttackNearLaunch(gameState)
+	{
+		const manager = this.HQ && this.HQ.attackManager;
+		if (!manager)
+			return false;
+		const policy = mergePolicy();
+		for (const type of [AttackPlan.TYPE_RUSH, AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK])
+			for (const plan of manager.startedAttacks && manager.startedAttacks[type] || [])
+				if (plan && plan.unitCollection && plan.unitCollection.hasEntities && plan.unitCollection.hasEntities())
+					return true;
+		const threshold = Math.max(24, Number(policy.athensCleruchyAttackDeferArmy) || 44);
+		for (const type of [AttackPlan.TYPE_RUSH, AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK])
+			for (const plan of manager.upcomingAttacks && manager.upcomingAttacks[type] || [])
+				if (plan && plan.unitCollection && plan.unitCollection.length >= threshold)
+					return true;
+		return false;
+	}
+
+	visibleEnemyCombatCount(gameState, player)
+	{
+		if (player === undefined || !gameState.getEnemyUnits)
+			return 0;
+		let count = 0;
+		for (const ent of gameState.getEnemyUnits(player).values())
+		{
+			if (!ent || !entityPosition(ent) || hasClass(ent, "Support") && !hasClass(ent, "Soldier"))
+				continue;
+			if (hasClass(ent, "Soldier") || hasClass(ent, "Champion") || hasClass(ent, "Cavalry") ||
+			    hasClass(ent, "Infantry") && ent.attackTypes && ent.attackTypes())
+				++count;
+		}
+		return count;
 	}
 
 	researchExpertP2MilitaryTech(gameState, queues)
@@ -5259,7 +5294,7 @@ export class ExpertDecisionController
 			}
 		}
 		const ownPopulation = Math.max(0, Number(gameState.getPopulation()) || 0);
-		const active = Number.isFinite(enemyPopulation) && enemyPopulation > 0 &&
+		const active = Number.isFinite(enemyPopulation) && enemyPopulation >= 0 &&
 			enemyPopulation <= policy.expertFinishingEnemyPopulation &&
 			ownPopulation >= policy.expertFinishingMinimumOwnPopulation &&
 			ownPopulation - enemyPopulation >= policy.expertFinishingMinimumPopulationLead;
@@ -5276,13 +5311,40 @@ export class ExpertDecisionController
 			return { active: false };
 		const policy = mergePolicy();
 		const phase = gameState.currentPhase();
-		// IT14.57: finishing is a strategic state, not a City-phase privilege. If the
-		// opponent is already <=28 with a decisive population lead, start the legal siege
-		// pipeline in Town instead of waiting until the enemy has only a handful left.
-		if (finishing && finishing.active)
-			return { ...finishing, active: true, finishing: true,
-				desiredSiege: phase >= 3 ? policy.expertFinishingSiegeTarget : policy.expertFinishingTownSiegeTarget };
 		const manager = this.HQ && this.HQ.attackManager;
+
+		const safetyForTownSiege = (targetPlayer, escortArmy = 0) =>
+		{
+			const enemyCombat = this.visibleEnemyCombatCount(gameState, targetPlayer);
+			const maxVisible = Math.max(0, Number(policy.expertBrokenTownSiegeMaxVisibleEnemyCombat) || 18);
+			const ratio = Math.max(1, Number(policy.expertBrokenTownSiegeMinimumEscortRatio) || 2.0);
+			const safe = enemyCombat <= maxVisible && (enemyCombat === 0 || escortArmy >= Math.ceil(enemyCombat * ratio));
+			return { safe, enemyCombat };
+		};
+
+		// IT14.63: finishing is not a City-phase privilege.  If the opponent is already
+		// strategically broken in Town, prepare two legal Town rams immediately, provided
+		// the visible surviving army is modest relative to the escort.  A still-large army
+		// keeps the normal infantry/tech fight and does not receive fragile P2 rams.
+		if (finishing && finishing.active)
+		{
+			let escortArmy = 0;
+			if (manager)
+				for (const type of Object.keys(manager.startedAttacks || {}))
+					for (const plan of manager.startedAttacks[type] || [])
+						if (plan && plan.targetPlayer === finishing.targetPlayer && plan.unitCollection)
+							escortArmy = Math.max(escortArmy, plan.unitCollection.length);
+			if (!escortArmy)
+				escortArmy = [...gameState.getOwnUnits().values()].filter(ent => ent &&
+					(hasClass(ent, "Soldier") || hasClass(ent, "Champion")) &&
+					(!ent.getMetadata || !ent.getMetadata(PlayerID, "expertCombatRetreatUntil"))).length;
+			const safety = phase === 2 ? safetyForTownSiege(finishing.targetPlayer, escortArmy) : { safe: true, enemyCombat: 0 };
+			if (phase === 2 && !safety.safe)
+				return { ...finishing, active: false, blockedTownSiege: true, enemyCombat: safety.enemyCombat, escortArmy };
+			return { ...finishing, active: true, finishing: true, enemyCombat: safety.enemyCombat, escortArmy,
+				desiredSiege: phase >= 3 ? policy.expertFinishingSiegeTarget : policy.expertFinishingTownSiegeTarget };
+		}
+
 		if (!manager)
 			return { active: false };
 		let best;
@@ -5303,11 +5365,16 @@ export class ExpertDecisionController
 			if (best.unitCollection.length < policy.expertBrokenEnemySiegeArmy ||
 			    enemyPopulation > policy.expertBrokenEnemySiegePopulation)
 				return { active: false };
+			const safety = safetyForTownSiege(best.targetPlayer, best.unitCollection.length);
+			if (!safety.safe)
+				return { active: false, blockedTownSiege: true, targetPlayer: best.targetPlayer,
+					enemyPopulation, enemyCombat: safety.enemyCombat, escortArmy: best.unitCollection.length };
 			return { active: true, finishing: false, brokenTown: true, targetPlayer: best.targetPlayer, enemyPopulation,
-				ownPopulation: gameState.getPopulation(), desiredSiege: 1 };
+				enemyCombat: safety.enemyCombat, escortArmy: best.unitCollection.length,
+				ownPopulation: gameState.getPopulation(), desiredSiege: policy.expertFinishingTownSiegeTarget };
 		}
 		return { active: true, finishing: false, targetPlayer: best.targetPlayer, enemyPopulation,
-			ownPopulation: gameState.getPopulation(), desiredSiege: mergePolicy().expertP3SiegePrepTarget };
+			ownPopulation: gameState.getPopulation(), desiredSiege: policy.expertP3SiegePrepTarget };
 	}
 
 	frontierResourceAnchors(gameState, ccPos, accessIndex)
@@ -5400,6 +5467,11 @@ export class ExpertDecisionController
 			return frame;
 		const finishing = this.finishingState(gameState);
 		if (finishing.active)
+			return frame;
+		// IT14.63: expansion and the main timing attack are mutually exclusive strategic
+		// commitments.  If the all-in is nearly ready or already on the field, resolve it
+		// first; the frontier resources will still be there after the fight.
+		if (this.expertMajorAttackNearLaunch(gameState))
 			return frame;
 		const type = gameState.applyCiv(BUILDING_SPECS.cleruchy.template);
 		if (!gameState.getTemplate(type) || !this.HQ.canBuild || !this.HQ.canBuild(gameState, type) ||
@@ -5524,50 +5596,10 @@ export class ExpertDecisionController
 
 	applyHuntingCavalryInfrastructure(gameState, frame, cc)
 	{
-		if (!cc || typeof gameState.currentPhase !== "function" || gameState.currentPhase() < 1)
-			return frame;
-		const hunt = this.huntingCavalryTarget(gameState, cc);
-		let cavalry = 0;
-		for (const ent of gameState.getOwnUnits().values())
-			if (ent && hasClass(ent, "Cavalry"))
-				++cavalry;
-		if (cavalry + this.queuedHuntingCavalry(gameState) >= hunt.target || hunt.target <= 1)
-			return frame;
-		if (this.specialStructurePipeline(gameState, "stable") > 0)
-			return frame;
-
-		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
-		const now = Number(gameState.ai.elapsedTime) || 0;
-		const builtFields = this.builtByClass(gameState, "Field").length;
-		const foodDeficit = this.foodInfrastructureDeficitSince > -90000 ? now - this.foodInfrastructureDeficitSince : 0;
-		const forcedFood = (frame.actions || []).some(action => action &&
-			(action.kind === "farmstead" && action.role === "farm_hub_deadlock" || action.kind === "field" && Number(action.priority) >= 98));
-		if (forcedFood || foodDeficit >= policy.foodInfrastructureEmergencySustainSeconds ||
-		    Number(this.lastDesiredFields || 0) > builtFields + 2)
-			return frame;
-
-		const barracksPipeline = this.builtByClass(gameState, "Barracks").length +
-			this.foundationsByClass(gameState, "Barracks").length + (this.activeTaskByKind.barracks ? 1 : 0);
-		if (barracksPipeline < 1)
-			return frame;
-		const stableType = gameState.applyCiv(BUILDING_SPECS.stable.template);
-		if (!gameState.getTemplate(stableType) || !this.HQ.canBuild || !this.HQ.canBuild(gameState, stableType))
-			return frame;
-		if (!this.specialBuildingAffordable(gameState, stableType, {
-			wood: policy.huntingCavalryStableWoodReserve, stone: policy.huntingCavalryStableStoneReserve
-		}))
-			return frame;
-		const actions = [...(frame.actions || [])];
-		actions.push({ "type": "BUILD", "kind": "stable", "role": "hunt_stable", "priority": 89,
-			"builderPool": ["wood", "citizenSoldierWood"], "builderCount": 3,
-			"reason": "safe nearby hunt can support " + hunt.target + " hunting cavalry" });
-		if (now - this.lastHuntingCavalryDiag >= 15)
-		{
-			this.lastHuntingCavalryDiag = now;
-			aiWarn("[EXPERT-CAV] build hunting stable pop=" + gameState.getPopulation() +
-				" hunt=" + Math.round(hunt.amount) + " target=" + hunt.target + " cavalry=" + cavalry);
-		}
-		return { ...frame, actions };
+		// IT14.63: never buy a Stable just to hunt.  Extra hunters are cheap Pursuit
+		// cavalry trained from the Civic Centre; Stable construction is reserved for a
+		// future/explicit combat-cavalry doctrine that will actually use the building.
+		return frame;
 	}
 
 	selectHuntingCavalry(gameState, trainer)
@@ -5578,18 +5610,25 @@ export class ExpertDecisionController
 		if (!candidates.length)
 			return undefined;
 		for (const c of candidates)
+		{
+			c.pursuit = c.template.hasClasses(["Pursuit"]) || String(c.type).toLowerCase().includes("pursuit");
 			c.score = c.cost.food + c.cost.wood + 4 * c.cost.stone + 4 * c.cost.metal;
-		candidates.sort((a, b) => a.score - b.score || a.type.localeCompare(b.type));
+		}
+		candidates.sort((a, b) => Number(b.pursuit) - Number(a.pursuit) ||
+			a.score - b.score || a.type.localeCompare(b.type));
 		return candidates[0];
 	}
 
 	trainExpertHuntingCavalry(gameState, cc)
 	{
-		if (!cc || gameState.getPopulation() < mergePolicy().huntingCavalryPopulation)
+		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
+		if (!cc || gameState.getPopulation() < policy.huntingCavalryPopulation ||
+		    (Number(gameState.ai.elapsedTime) || 0) < (Number(policy.huntingCavalryCCMinimumTime) || 180))
 			return false;
 		const hunt = this.huntingCavalryTarget(gameState, cc);
 		if (hunt.target <= 1)
 			return false;
+
 		let existing = 0;
 		for (const ent of gameState.getOwnUnits().values())
 			if (ent && hasClass(ent, "Cavalry"))
@@ -5598,46 +5637,53 @@ export class ExpertDecisionController
 		let need = Math.max(0, hunt.target - existing - queued);
 		if (!need)
 			return false;
-		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
+
+		// Do not steal the CC from a phase reservation or stack a cavalry order behind a
+		// long live queue. One hunter at a time keeps the civilian contract dominant.
+		if (gameState.ai.queues && gameState.ai.queues.majorTech && gameState.ai.queues.majorTech.hasQueuedUnits())
+			return false;
+		const liveQueue = cc.trainingQueue ? cc.trainingQueue() || [] : [];
+		if (liveQueue.length > 1)
+			return false;
+
 		const foodDeficit = this.foodInfrastructureDeficitSince > -90000 ?
 			(Number(gameState.ai.elapsedTime) || 0) - this.foodInfrastructureDeficitSince : 0;
 		if (foodDeficit >= policy.foodInfrastructureEmergencySustainSeconds)
 			return false;
 
-		for (const stable of this.builtByClass(gameState, "Stable").sort((a, b) => a.id() - b.id()))
-		{
-			if (!need) break;
-			const selected = this.selectHuntingCavalry(gameState, stable);
-			if (!selected) continue;
-			const bank = gameState.getResources();
-			const affordableFood = Math.max(0, Math.floor(((Number(bank.food) || 0) - policy.huntingCavalryFoodReserve) / Math.max(1, selected.cost.food)));
-			const affordableWood = selected.cost.wood > 0 ? Math.max(0, Math.floor((Number(bank.wood) || 0) / selected.cost.wood)) : need;
-			const affordableStone = selected.cost.stone > 0 ? Math.max(0, Math.floor((Number(bank.stone) || 0) / selected.cost.stone)) : need;
-			const affordableMetal = selected.cost.metal > 0 ? Math.max(0, Math.floor((Number(bank.metal) || 0) / selected.cost.metal)) : need;
-			let batch = Math.min(need, 2, affordableFood, affordableWood, affordableStone, affordableMetal);
-			const popCost = Math.max(1, this.unitPopulationCost(gameState, selected.type));
-			batch = Math.min(batch, Math.floor(this.operatingPopulationHeadroom(gameState) / popCost));
-			if (batch <= 0) continue;
-			const queueName = "expertHuntCavalry";
-			gameState.ai.queueManager.addQueue(queueName, policy.huntingCavalryTrainingPriority);
-			const queue = gameState.ai.queues[queueName];
-			if (!queue || queue.hasQueuedUnits())
-				return false;
-			const target = hunt.supplies.length ? hunt.supplies[0] : undefined;
-			const plan = new TrainingPlan(gameState, selected.type, {
-				"role": Worker.ROLE_WORKER, "base": 0, "plan": -1, "trainer": stable.id(),
-				"expertDecisionLayer": true, "expertDecisionTraining": "hunt_cavalry",
-				"expertRallyCommand": "gather", "expertRallyJob": "hunt",
-				"expertRallyTarget": target && target.id()
-			}, batch, batch);
-			if (!plan) continue;
-			queue.addPlan(plan);
-			gameState.ai.queueManager.changePriority(queueName, policy.huntingCavalryTrainingPriority);
-			aiWarn("[EXPERT-CAV] queued hunters=" + batch + " type=" + selected.type + " trainer=" + stable.id() +
-				" hunt=" + Math.round(hunt.amount) + " target=" + hunt.target + " existing=" + existing);
-			return true;
-		}
-		return false;
+		const selected = this.selectHuntingCavalry(gameState, cc);
+		if (!selected || !selected.pursuit)
+			return false;
+		const bank = gameState.getResources();
+		const affordableFood = Math.max(0, Math.floor(((Number(bank.food) || 0) - policy.huntingCavalryFoodReserve) / Math.max(1, selected.cost.food)));
+		const affordableWood = selected.cost.wood > 0 ? Math.max(0, Math.floor((Number(bank.wood) || 0) / selected.cost.wood)) : need;
+		const affordableStone = selected.cost.stone > 0 ? Math.max(0, Math.floor((Number(bank.stone) || 0) / selected.cost.stone)) : need;
+		const affordableMetal = selected.cost.metal > 0 ? Math.max(0, Math.floor((Number(bank.metal) || 0) / selected.cost.metal)) : need;
+		let batch = Math.min(1, need, affordableFood, affordableWood, affordableStone, affordableMetal);
+		const popCost = Math.max(1, this.unitPopulationCost(gameState, selected.type));
+		batch = Math.min(batch, Math.floor(this.operatingPopulationHeadroom(gameState) / popCost));
+		if (batch <= 0)
+			return false;
+
+		const queueName = "expertHuntCavalry";
+		gameState.ai.queueManager.addQueue(queueName, policy.huntingCavalryTrainingPriority);
+		const queue = gameState.ai.queues[queueName];
+		if (!queue || queue.hasQueuedUnits())
+			return false;
+		const target = hunt.supplies.length ? hunt.supplies[0] : undefined;
+		const plan = new TrainingPlan(gameState, selected.type, {
+			"role": Worker.ROLE_WORKER, "base": 0, "plan": -1, "trainer": cc.id(),
+			"expertDecisionLayer": true, "expertDecisionTraining": "hunt_cavalry",
+			"expertRallyCommand": "gather", "expertRallyJob": "hunt",
+			"expertRallyTarget": target && target.id()
+		}, batch, batch);
+		if (!plan)
+			return false;
+		queue.addPlan(plan);
+		gameState.ai.queueManager.changePriority(queueName, policy.huntingCavalryTrainingPriority);
+		aiWarn("[EXPERT-CAV] queued cc-pursuit-hunter=" + selected.type + " trainer=" + cc.id() +
+			" hunt=" + Math.round(hunt.amount) + " target=" + hunt.target + " existing=" + existing);
+		return true;
 	}
 
 	selectSiegeFinisher(gameState, trainer)
@@ -6037,14 +6083,14 @@ export class ExpertDecisionController
 				c.javelineer = c.template.hasClasses(["Javelineer"]) || String(c.type).toLowerCase().includes("javelineer");
 			}
 			const types = new Set(candidates.map(c => c.type));
-			let existing = 0, melee = 0, ranged = 0, crossbows = 0;
+			let existing = 0, melee = 0, javelineers = 0, crossbows = 0;
 			for (const ent of gameState.getOwnUnits().values())
 			{
 				if (!ent || !ent.templateName || !types.has(ent.templateName()))
 					continue;
 				++existing;
 				if (hasClass(ent, "Melee")) ++melee;
-				if (hasClass(ent, "Ranged")) ++ranged;
+				if (hasClass(ent, "Javelineer") || String(ent.templateName()).toLowerCase().includes("javelineer")) ++javelineers;
 				if (hasClass(ent, "Crossbowman") || String(ent.templateName()).toLowerCase().includes("crossbow")) ++crossbows;
 			}
 			for (const plan of queues.citizenSoldier.plans || [])
@@ -6053,10 +6099,12 @@ export class ExpertDecisionController
 					++existing;
 					const c = candidates.find(item => item.type === plan.type);
 					if (c && c.melee) ++melee;
-					if (c && c.ranged) ++ranged;
+					if (c && c.javelineer) ++javelineers;
 					if (c && c.crossbow) ++crossbows;
 				}
 			const meleeCandidates = candidates.filter(c => c.melee);
+			const javCandidates = candidates.filter(c => c.javelineer);
+			const crossbowCandidates = candidates.filter(c => c.crossbow);
 			let target = phase >= 3 ? policy.athensGymnasiumP3ChampionTarget : policy.athensGymnasiumP2ChampionTarget;
 			if (!meleeCandidates.length)
 				target = Math.min(target, policy.athensGymnasiumRangedCapWithoutMelee);
@@ -6064,17 +6112,27 @@ export class ExpertDecisionController
 				break;
 
 			const oneCost = c => c.cost.food + c.cost.wood + 2*c.cost.stone + 2*c.cost.metal;
+			const desiredMelee = meleeCandidates.length ? Math.max(1, Math.ceil(target * (Number(policy.athensGymnasiumMeleeTargetShare) || 0.60))) : 0;
+			const desiredJav = javCandidates.length ? Math.max(1, Math.ceil(target * (Number(policy.athensGymnasiumJavelineerTargetShare) || 0.25))) : 0;
+			const crossbowMax = Math.max(0, Number(policy.athensGymnasiumCrossbowMaximum) || 2);
 			let preferred = [];
-			const currentMeleeShare = existing > 0 ? melee / existing : 0;
-			if (meleeCandidates.length && currentMeleeShare < policy.athensMeleeShare)
+			// IT14.63: explicit composition hierarchy. Champion Hoplites/spears are the
+			// screen, champion javelineers are the second layer, and Gastraphetes never fill
+			// a generic ranged quota after their specialist cap is satisfied.
+			if (meleeCandidates.length && melee < desiredMelee)
 				preferred = meleeCandidates.filter(c => c.spear).length ?
 					meleeCandidates.filter(c => c.spear) : meleeCandidates;
-			else if (crossbows < policy.athensGymnasiumCrossbowTarget && candidates.some(c => c.crossbow))
-				preferred = candidates.filter(c => c.crossbow);
-			else if (candidates.some(c => c.ranged))
-				preferred = candidates.filter(c => c.ranged);
+			else if (javCandidates.length && javelineers < desiredJav)
+				preferred = javCandidates;
+			else if (crossbowCandidates.length && crossbows < Math.min(crossbowMax, policy.athensGymnasiumCrossbowTarget))
+				preferred = crossbowCandidates;
+			else if (meleeCandidates.length)
+				preferred = meleeCandidates.filter(c => c.spear).length ?
+					meleeCandidates.filter(c => c.spear) : meleeCandidates;
+			else if (javCandidates.length)
+				preferred = javCandidates;
 			else
-				preferred = candidates;
+				break;
 			preferred.sort((a, b) => oneCost(a) - oneCost(b) || a.type.localeCompare(b.type));
 			const selected = preferred[0];
 			if (this.queueAthenianSpecialUnit(gameState, queues, gym, selected, "gymnasium-champion",
@@ -6322,6 +6380,18 @@ export class ExpertDecisionController
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		if (gameState.ai.elapsedTime < policy.soldierTrainingStartTime || !queues || !queues.citizenSoldier)
 			return;
+		const finishing = this.finishingState(gameState);
+		if (finishing.active)
+		{
+			let military = 0;
+			for (const ent of gameState.getOwnUnits().values())
+				if (ent && (hasClass(ent, "Soldier") || hasClass(ent, "Champion")) && !hasClass(ent, "Support"))
+					++military;
+			const useful = Math.max(1, Number(policy.expertFinishingMaximumArmy) || 50) +
+				Math.max(0, Number(policy.expertFinishingHomeCitizenSoldierReserve) || 12);
+			if (military >= useful)
+				return;
+		}
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		const atCivilianCap = workers.civilians >= policy.civilianCap;
 
@@ -6666,7 +6736,10 @@ export class ExpertDecisionController
 		const kind = action.kind;
 		const placementFailureKey = kind + ":" + (action.role || "primary");
 		const placementFailures = Number(this.placementFailureCounts[placementFailureKey] || 0);
-		const strategicFallback = placementFailures >= mergePolicy().strategicPlacementFallbackAfterFailures &&
+		const urgentFinishingPlacement = kind === "arsenal" &&
+			(action.role === "finishing_siege" || action.role === "broken_p2_siege");
+		const strategicFallback = (urgentFinishingPlacement ||
+			placementFailures >= mergePolicy().strategicPlacementFallbackAfterFailures) &&
 			(kind === "barracks" || kind === "forge" || kind === "market" || kind === "temple" || kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion" || kind === "cleruchy");
 		const taskId = kind === "field" ? this.newTaskId(kind) : (this.activeTaskByKind[kind] || this.newTaskId(kind));
 		let request;
@@ -7477,6 +7550,63 @@ export class ExpertDecisionController
 						}
 					grid.sort((a, b) => a.score - b.score);
 					emergency.push(...grid.slice(0, 512).map(item => item.pos));
+				}
+			}
+
+			// IT14.63: Market #1 is still a dropsite/barter hub, but a difficult base
+			// must not retry ten thousand decorative candidates forever.  After one failed
+			// search, sample legal own territory around a useful mid-base radius.
+			if (kind === "market" && action.role !== "phase3_town_support")
+			{
+				const territory = this.HQ.territoryMap;
+				const preferred = Number(mergePolicy().phase2FirstMarketPreferredCCDistance) || 78;
+				const maximum = Number(mergePolicy().phase2FirstMarketMaximumCCDistance) || 180;
+				const grid = [];
+				if (territory && Number.isFinite(territory.width) && Number.isFinite(territory.cellSize) && territory.getOwnerIndex)
+				{
+					for (let z = 0; z < territory.width; z += 2)
+						for (let x = 0; x < territory.width; x += 2)
+						{
+							const j = x + z * territory.width;
+							if (territory.getOwnerIndex(j) !== PlayerID)
+								continue;
+							const point = [(x + 0.5) * territory.cellSize, (z + 0.5) * territory.cellSize];
+							const d = Math.sqrt(SquareVectorDistance(point, ccPos));
+							if (d < mergePolicy().independentBuildingMinimumCCDistance || d > maximum)
+								continue;
+							grid.push({ pos: point, score: Math.abs(d - preferred) });
+						}
+					grid.sort((a,b) => a.score - b.score);
+					emergency.push(...grid.slice(0, 512).map(item => item.pos));
+				}
+			}
+
+			// IT14.63: a finishing Arsenal is a utility building, not city decoration.
+			// Once the opponent is broken, any safe legal own-territory site is acceptable.
+			// Sample the territory map on the FIRST finishing attempt so terrain cannot add
+			// eight minutes of repeated "no-legal-position" failures.
+			if (kind === "arsenal")
+			{
+				const territory = this.HQ.territoryMap;
+				const preferred = Number(mergePolicy().expertArsenalFallbackPreferredCCDistance) || 70;
+				const maximum = Number(mergePolicy().expertArsenalFallbackMaximumCCDistance) || 230;
+				const grid = [];
+				if (territory && Number.isFinite(territory.width) && Number.isFinite(territory.cellSize) && territory.getOwnerIndex)
+				{
+					for (let z = 0; z < territory.width; ++z)
+						for (let x = 0; x < territory.width; ++x)
+						{
+							const j = x + z * territory.width;
+							if (territory.getOwnerIndex(j) !== PlayerID)
+								continue;
+							const point = [(x + 0.5) * territory.cellSize, (z + 0.5) * territory.cellSize];
+							const d = Math.sqrt(SquareVectorDistance(point, ccPos));
+							if (d < mergePolicy().independentBuildingMinimumCCDistance || d > maximum)
+								continue;
+							grid.push({ pos: point, score: Math.abs(d - preferred) });
+						}
+					grid.sort((a,b) => a.score - b.score);
+					emergency.push(...grid.slice(0, 1024).map(item => item.pos));
 				}
 			}
 
@@ -9749,12 +9879,39 @@ export class ExpertDecisionController
 			frame = { ...frame, "actions": [...frame.actions, { "type": "BUILD", "kind": "tower", "role": "emergency_defense",
 				"builderPool": ["wood", "citizenSoldierWood"] }] };
 		const finishing = this.finishingState(gameState);
+		// IT14.63: resolve the main timing attack before opening a second strategic
+		// commitment. While a P2 all-in is nearly ready/on-field, defer the P3-support
+		// Market and frontier Cleruchy. Once the opponent is actually broken, suppress
+		// all optional expansion/special construction until the kill is secured.
+		const majorAttackNow = this.expertMajorAttackNearLaunch(gameState);
+		if ((majorAttackNow && gameState.currentPhase && gameState.currentPhase() === 2) || finishing.active)
+		{
+			const actions = (frame.actions || []).filter(action =>
+			{
+				if (!action) return false;
+				if (action.kind === "cleruchy" || action.role === "frontier_expansion")
+					return false;
+				if (action.kind === "market" && (finishing.active || action.role === "phase3_town_support"))
+					return false;
+				if (finishing.active && (action.kind === "gymnasium" || action.kind === "prytaneion"))
+					return false;
+				return true;
+			});
+			frame = { ...frame, actions };
+		}
 		const siegeContext = this.p3SiegeContext(gameState, finishing);
 		const siegeStatus = this.expertBuildingSiegeStatus(gameState);
 		const desiredSiegeForReserve = siegeContext && siegeContext.active ?
 			Math.max(1, Number(siegeContext.desiredSiege) || Number(mergePolicy().expertFinishingSiegeTarget) || 2) : 0;
 		this.expertStrategicPopulationReserve = desiredSiegeForReserve > siegeStatus.total ?
 			Math.max(0, Number(mergePolicy().expertSiegePopulationReserve) || 4) : 0;
+		if (siegeContext.blockedTownSiege && gameState.ai.elapsedTime - this.lastFinishingDiag >= 15)
+		{
+			this.lastFinishingDiag = gameState.ai.elapsedTime;
+			aiWarn("[EXPERT-SIEGE] town-rams-held enemy=" + siegeContext.targetPlayer +
+				" enemyPop=" + siegeContext.enemyPopulation + " enemyCombat=" + siegeContext.enemyCombat +
+				" escort=" + siegeContext.escortArmy + " reason=surviving-army-too-strong");
+		}
 		if (siegeContext.active && gameState.currentPhase && gameState.currentPhase() >= 2)
 		{
 			const arsenalType = gameState.applyCiv("structures/{civ}/arsenal");
@@ -9762,7 +9919,9 @@ export class ExpertDecisionController
 			const arsenalPipeline = this.builtByClass(gameState, "Arsenal").length + this.foundationsByClass(gameState, "Arsenal").length + (this.activeTaskByKind.arsenal ? 1 : 0);
 			if (arsenalBuildable && !arsenalPipeline)
 				frame = { ...frame, "actions": [...frame.actions, { "type": "BUILD", "kind": "arsenal", "role": siegeContext.finishing ? "finishing_siege" : siegeContext.brokenTown ? "broken_p2_siege" : "p3_attack_siege",
-					"priority": siegeContext.finishing ? 99 : 96, "builderPool": ["wood", "citizenSoldierWood", "food", "farm", "stone", "metal"] }] };
+					"priority": siegeContext.finishing || siegeContext.brokenTown ? (Number(mergePolicy().expertFinishingArsenalPriority) || 118) : 96,
+					"builderCount": siegeContext.finishing || siegeContext.brokenTown ? 6 : 4,
+					"builderPool": ["wood", "citizenSoldierWood", "food", "farm", "stone", "metal"] }] };
 			if (gameState.ai.elapsedTime - this.lastFinishingDiag >= 15)
 			{
 				this.lastFinishingDiag = gameState.ai.elapsedTime;
@@ -9863,7 +10022,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.62] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.63] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -9925,7 +10084,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.62] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.63] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
