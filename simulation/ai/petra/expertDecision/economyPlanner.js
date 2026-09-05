@@ -525,15 +525,47 @@ function planEconomy(rawState, overrides = {}) {
   // huge wood bank. At the hard deadline, two fields in the pipeline are enough; the
   // building should exist so production can scale as food recovers.
   const secondHardReady = secondHardWindow && fieldPipeline >= policy.secondBarracksHardFieldPipeline;
-  const secondCapacityReady = farm.secondBarracksFoodReady || secondEarlyReady || secondHardReady;
+  const requiredSecondSupportedFields = Math.max(1, Number(policy.secondBarracksRequiredSupportedFields) || 6);
+  const supportedSecondFields = state.food.fieldCapacityKnown ?
+    Math.max(fieldPipeline, Number(state.food.supportedFieldSlots) || 0) :
+    Math.max(fieldPipeline, Math.max(1, state.structures.farmstead + state.foundations.farmstead + state.queued.farmstead) * policy.fieldsPerFarmstead);
+  const secondLayoutReady = supportedSecondFields >= requiredSecondSupportedFields;
+  const secondCapacityReady = (farm.secondBarracksFoodReady || secondEarlyReady || secondHardReady) && secondLayoutReady;
+
+  // IT14.69: do not discover the six-field requirement after Barracks #2 is already
+  // occupying the base. If the current food network cannot physically host six
+  // touching fields, establish the next permanent farm block first. The farmstead
+  // itself then reserves its four canonical field faces from later housing/military
+  // placement before the second Barracks is allowed to exist.
+  const secondFoodBlockPending = state.foundations.farmstead + state.queued.farmstead > 0 ||
+    actions.some(action => action && action.kind === "farmstead" && (action.type === "BUILD" || action.type === "RESERVE"));
+  if (state.phase === 1 && completedBarracks === 1 && pendingBarracks === 0 && hasHouse &&
+      secondReserveWindow && !secondLayoutReady && !secondFoodBlockPending) {
+    const cost = costOf(state, policy, "farmstead");
+    const additionalFieldSlotsNeeded = Math.max(1, requiredSecondSupportedFields - supportedSecondFields);
+    const reason = `reserve six-field food block before barracks #2 (supported ${supportedSecondFields}/${requiredSecondSupportedFields}, need +${additionalFieldSlotsNeeded})`;
+    if (resourceEnough(state.resources, cost, reservations)) {
+      actions.push({ type: "BUILD", kind: "farmstead", role: "second_barracks_food_block",
+        priority: Number(policy.secondBarracksFoodBlockPriority) || 105, builderCount: 4,
+        minimumFieldSlotsNeeded: additionalFieldSlotsNeeded,
+        builderPool: ["food", "food_owned", "farm", "wood"], reason });
+      addReservation(reservations, cost);
+    } else {
+      actions.push({ type: "RESERVE", kind: "farmstead", role: "second_barracks_food_block",
+        priority: Number(policy.secondBarracksFoodBlockPriority) || 105, cost,
+        minimumFieldSlotsNeeded: additionalFieldSlotsNeeded, reason });
+      addReservation(reservations, cost);
+    }
+  }
+
   if (completedBarracks === 1 && pendingBarracks === 0 && hasHouse && secondReserveWindow && secondCapacityReady) {
     const cost = costOf(state, policy, "barracks");
     const canBuild = (secondBuildWindow || secondHardWindow) && resourceEnough(state.resources, cost, reservations);
     addReservation(reservations, cost);
     if (canBuild)
-      actions.push({ type: "BUILD", kind: "barracks", role: "second", priority: 97, builderPool: ["wood", "citizenSoldierWood"], reason: `second barracks capacity-ready (fields ${state.structures.field}/${fieldPipeline} built/pipeline, natural ${Math.round(naturalFoodRemaining)}, naturalRunway ${Math.round(Number(state.food.naturalRunwaySeconds) || 0)}s, bridge ${Math.round(farm.secondBarracksBridgeSeconds)}s)` });
+      actions.push({ type: "BUILD", kind: "barracks", role: "second", priority: 97, builderPool: ["wood", "citizenSoldierWood"], reason: `second barracks capacity-ready (fields ${state.structures.field}/${fieldPipeline} built/pipeline, supported ${supportedSecondFields}/${requiredSecondSupportedFields}, natural ${Math.round(naturalFoodRemaining)}, naturalRunway ${Math.round(Number(state.food.naturalRunwaySeconds) || 0)}s, bridge ${Math.round(farm.secondBarracksBridgeSeconds)}s)` });
     else
-      actions.push({ type: "RESERVE", kind: "barracks", role: "second", priority: 97, cost, reason: "reserve wood for pre-5:00 second barracks" });
+      actions.push({ type: "RESERVE", kind: "barracks", role: "second", priority: 97, cost, reason: "reserve wood for second barracks after six-field layout is secured" });
   }
 
   const strategicBuilderPool = ["wood", "citizenSoldierWood", "food", "food_owned", "food_overflow_wood", "farm", "stone", "metal"];

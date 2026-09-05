@@ -343,3 +343,27 @@ IT14.68 target
 - P2 Tech Push may take a favorable zero-tech opportunity at 60+ troops; the normal 45+ override still prefers at least one active core military upgrade. Both remain live-strength gated.
 - A decisive Town attack can activate a P2 kill switch around enemy population <=70 or a >=35 own-population lead when the visible enemy army is safely screened. City Phase is suppressed/cancelled, Town-legal siege is prioritized, and the finish targets two rams by default or three against multiple hard targets.
 - Permanent fields remain within an approximately 0.8m border gap of their Farmstead. No widening to 1.3/2/4/10/18m is permitted; if the touching ring is blocked, another Farmstead is the solution.
+
+IT14.69 target
+- IT14.69 is built from the revised IT14.68 package after a 2-win / 1-loss three-game set. Expert gather/trade remains +35% / 1.35; do not begin the 1.30 tuning experiment until behavior is stable enough to earn another clean streak.
+- Fix the cause of the five-field loss before relaxing the outcome: Barracks #2 is a layout-capacity commitment. Before it is committed, the live permanent-food network must physically support at least six hard-touch fields. If not, a dedicated permanent Farmstead block is established first. Barracks #2 may search farther after placement failure but may never consume reserved future field footprints.
+- Six fields remain the normal two-Barracks Town floor. The new five-field lane is only an anti-permanent-P1 failsafe: exact 5/6 pipeline, zero legal touching slots, exhausted natural food, repeated failed emergency Farmstead placement, sustained for roughly 30 seconds and not before about 8:00. It should be rare enough that seeing it is itself a layout-quality signal.
+- Extend the IT14.68 wood watchdog into action. A sustained hard-zero lumber line (~12s) forcibly reassigns idle/uncommitted economic bodies toward wood, preferring excess stone/metal labor and preserving active construction/army/defense/field commitments where possible.
+- A favorable started primary attack may absorb a large unused reserve more aggressively. Normal target remains ~58; substantial/flood reserves raise the coherent-army target to ~68/~78 while preserving a modest home reserve and respecting the bad-exchange abort.
+- Village P2-Tech-Push reserve attacks receive P1 soft-target behavior: without siege, use the advantage to remove exposed Barracks/Stable/Market/Farmstead/Storehouse infrastructure instead of wasting pressure on hard strongpoints.
+- Trainer continuity is hardened again: the first Barracks military order may exist as a standby reservation, closing the >100-second first-trainer hole from the failed replay without outranking phase-critical fields/research or siege.
+- City-State housing discipline: Home Garden is strongly considered at 12 completed houses and becomes the mandatory housing path at 13 when available/researchable. Expert-owned house construction is suppressed at 13 and Home Garden becomes the mandatory housing reservation; generic Petra HQ remains untouched on the known-good 14.68 path, acknowledging CC phase capacity and future fort population contribution.
+- Keep all working IT14.68 contracts: natural-food-first expansion, <=0.8m hard-touch fields, six-field normal P2, P1 strength gates, production standby, P2 mass-no-tech opportunity, P2 kill/siege conversion, Champion caps/premium attachment and emergency barter/bank corrections.
+
+IT14.69 load hotfix: restored headquarters.js exactly to revised IT14.68 after a28 rejected the first 14.69 HQ hook with a parse error.
+
+
+IT14.70 — CONSISTENCY PASS AFTER IT14.69 THREE-REPLAY SET
+--------------------------------------------------------
+Observed set: 2 P1-lock failures / 1 excellent ~16:28 win. The win proved attack
+reinforcement, P2 kill, siege conversion, and 13-house population handling can be
+excellent once the AI reaches Town. Both failures were dominated by the same food-
+layout lock: a special Farmstead demanded a perfect four-slot block even when the
+network only needed fewer slots, then retried indefinitely while wood/pop accumulated.
+IT14.70 makes that hub deficit-based and progressively adaptive, and adds a rare
+1-Barracks + 4-field Town escape for proven layout deadlocks.

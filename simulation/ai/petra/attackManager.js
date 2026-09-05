@@ -717,10 +717,9 @@ AttackManager.prototype.reinforceExpertPrimaryAttackWave = function(gameState, a
 	const now = Number(gameState.ai.elapsedTime) || 0;
 	if (this.expertBadExchangeDecision(gameState, attack).abort)
 		return 0;
-	const targetArmy = Math.max(20, Number(policy.expertPrimaryOffensiveTargetArmy) || 50);
-	const deficit = targetArmy - attack.unitCollection.length;
+	const baseTargetArmy = Math.max(20, Number(policy.expertPrimaryOffensiveTargetArmy) || 50);
 	const waveMin = Math.max(1, Number(policy.expertPrimaryReinforcementWaveMinimum) || 6);
-	if (deficit < waveMin || now < (Number(attack.expertLastPrimaryReinforcementWave) || -99999) +
+	if (now < (Number(attack.expertLastPrimaryReinforcementWave) || -99999) +
 	    (Number(policy.expertPrimaryReinforcementWaveCooldownSeconds) || 16))
 		return 0;
 	const reserve = Math.max(0, Number(policy.expertWoundedReplacementHomeReserve) || 12);
@@ -740,6 +739,17 @@ AttackManager.prototype.reinforceExpertPrimaryAttackWave = function(gameState, a
 	}
 	const available = Math.max(0, candidates.length - reserve);
 	if (available < waveMin)
+		return 0;
+	// IT14.69: 40-60 healthy unassigned citizen-soldiers at home are not a reserve,
+	// they are an unused second army. Keep one coherent attack, but raise its target
+	// while the live exchange remains favorable.
+	let targetArmy = baseTargetArmy;
+	if (available >= (Number(policy.expertPrimaryOffensiveFloodReserveThreshold) || 30))
+		targetArmy = Math.max(targetArmy, Number(policy.expertPrimaryOffensiveFloodTargetArmy) || 78);
+	else if (available >= (Number(policy.expertPrimaryOffensiveSurplusReserveThreshold) || 18))
+		targetArmy = Math.max(targetArmy, Number(policy.expertPrimaryOffensiveSurplusTargetArmy) || 68);
+	const deficit = targetArmy - attack.unitCollection.length;
+	if (deficit < waveMin)
 		return 0;
 	const home = this.expertWoundedHomePosition(gameState, attack.position || attack.targetPos);
 	if (home)

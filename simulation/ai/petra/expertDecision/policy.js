@@ -79,6 +79,13 @@ const DEFAULT_POLICY = Object.freeze({
   expertProductionSoldierPriority: 950,
   expertP1ReserveAttackMinimumArmy: 45,
   expertP1ReserveAttackMinimumTime: 360,
+  // IT14.69: once a primary attack is already favorable, a huge home reserve is
+  // wasted combat power. Reinforce the same coherent army more aggressively while
+  // retaining a modest defensive reserve.
+  expertPrimaryOffensiveSurplusReserveThreshold: 18,
+  expertPrimaryOffensiveSurplusTargetArmy: 68,
+  expertPrimaryOffensiveFloodReserveThreshold: 30,
+  expertPrimaryOffensiveFloodTargetArmy: 78,
   soldierFoodReserve: 100,
   // The CC stays on civilians until the 70-civilian cap; barracks carry military production.
   ccOpeningSoldierStartTime: 99999,
@@ -197,6 +204,24 @@ const DEFAULT_POLICY = Object.freeze({
   secondBarracksTargetTime: 230,
   secondBarracksHardDeadline: 250,
   secondBarracksEarlyFieldPipeline: 3,
+  // IT14.69 base-layout contract: Barracks #2 may not be committed until the
+  // existing permanent-food network can physically support six touching fields.
+  // If it cannot, establish the next dedicated farm block first.
+  secondBarracksRequiredSupportedFields: 6,
+  secondBarracksFoodBlockPriority: 105,
+  secondBarracksFarmHubPreferredSpacing: 36,
+  // IT14.70: the dedicated pre-Barracks food block asks only for the missing
+  // capacity. If terrain still defeats the search, relax one slot every three
+  // real failures and broaden the search rather than retrying one impossible shape.
+  secondBarracksFoodBlockFallbackEveryFailures: 3,
+  // A true alternate build, not a relaxation of the 2-Barracks rule: if a one-
+  // Barracks economy has four real fields, no open touching slots, exhausted
+  // natural food, and repeated food-block failures, take P2 rather than die in P1.
+  phase2OneBarracksLayoutEscapeTime: 480,
+  phase2OneBarracksLayoutEscapeMinimumFields: 4,
+  phase2OneBarracksLayoutEscapeMinimumPopulation: 90,
+  phase2OneBarracksLayoutEscapeMinimumFailures: 6,
+  phase2OneBarracksLayoutEscapeCostCoverage: 0.65,
   secondBarracksHardFieldPipeline: 2,
   secondBarracksEarlyNaturalFood: 1200,
   // If natural food alone can safely bridge two production buildings, do not require
@@ -262,6 +287,12 @@ const DEFAULT_POLICY = Object.freeze({
   phase2SafetyHubPriority: 126,
   phase2DeadlockEscapeTime: 540,
   phase2DeadlockEscapeMinimumFields: 2,
+  // IT14.69 last-resort self-layout escape. Six remains the normal hard floor, but
+  // if Expert itself boxed the network at exactly five fields and repeated emergency
+  // farm-hub placement cannot recover it, do not remain Village forever.
+  phase2FiveFieldLayoutEscapeTime: 480,
+  phase2FiveFieldLayoutEscapeSeconds: 30,
+  phase2FiveFieldLayoutEscapeMinimumFailures: 3,
   phase2DeadlockEscapeNaturalFood: 100,
   phase2DeadlockEscapeFoodDeficitSeconds: 180,
   phase2PreferredFields: 8,
@@ -622,6 +653,14 @@ const DEFAULT_POLICY = Object.freeze({
   houseEmergencyTechFreePopulation: 6,
   houseEmergencyTechMinimumHouses: 6,
   houseEmergencyTechPlacementFailures: 2,
+  // IT14.69 City-State housing discipline. Home Garden is efficient before the old
+  // crowded-base fallback: strongly consider it at house #12 and make it the housing
+  // path at house #13 instead of laying house #14+.
+  houseCapacityTechStrongHouseCount: 12,
+  houseCapacityTechMandatoryHouseCount: 13,
+  houseCapacityTechStrongFreePopulation: 18,
+  houseCapacityTechStrongPriority: 1040,
+  houseCapacityTechMandatoryPriority: 1125,
   wickerFarmsteadAwaitingFoundationRetrySeconds: 10,
   economicAwaitingFoundationRetrySeconds: 18,
   wickerFarmsteadPlacementFailureLimit: 4,
@@ -986,6 +1025,12 @@ const DEFAULT_POLICY = Object.freeze({
   woodDeepenExtraWorkersPerStorehouse: 8,
   woodDeepenMinimumRemaining: 1200,
   woodDeepenExtraRemainingPerStorehouse: 300,
+  // IT14.69 second-stage lumber emergency. The eight-second watchdog remains the
+  // detector; after a sustained hard-zero line, forcibly convert idle/uncommitted
+  // economic bodies into long-haul lumberjacks instead of merely recording demand.
+  woodEmergencyLevel2Seconds: 12,
+  woodEmergencyLevel2TargetWorkers: 20,
+  woodEmergencyLevel2ReassignBatch: 12,
   woodDeepenMinimumDistanceImprovement: 3.5,
   woodStorehouseMinimumSpacing: 20,
   // IT14.54: these are SOFT caps on LIVE WOOD-SERVICE DISTRICTS, not global

@@ -1,0 +1,46 @@
+EXPERT AI PETRA — IT14.70 TEST REPORT
+=====================================
+
+Purpose
+-------
+IT14.70 targets consistency after the corrected IT14.69 three-game set produced
+1 excellent win and 2 Village-Phase lock failures. The gather multiplier remains
+1.35; this revision changes decision/placement logic, not raw economic advantage.
+
+Primary changes
+---------------
+1. Adaptive six-field food block before Barracks #2
+   - Existing supported field capacity is counted first.
+   - The next dedicated Farmstead only has to provide the MISSING slots to reach 6.
+   - Every 3 genuine placement failures relaxes the requested hub by 1 slot, down to 1.
+   - Search radius/angle density broadens after repeated failures.
+   - If one smaller hub is insufficient, another hub is planned; 2 Barracks still
+     does NOT become the normal answer to an undersized food economy.
+
+2. Coherent alternate build for proven terrain/layout deadlock
+   - After 8:00, exactly 1 Barracks + at least 4 fields may take P2 only when:
+       * no open touching field slots remain,
+       * natural food is exhausted/near exhausted,
+       * farmstead placement has repeatedly failed,
+       * population >= 90,
+       * P2 cost coverage >= 65%.
+   - Lane: one-barracks-four-field-layout-failsafe.
+   - This implements the intended "4 fields + 1 Barracks fast-P2" escape without
+     weakening the standard "6 fields for 2 Barracks" doctrine.
+
+3. Preserved IT14.69 strengths
+   - 1.35 Expert gather multiplier unchanged.
+   - Hard-touch fields <= 0.8m from Farmstead.
+   - Large-reserve reinforcement / raised attack target.
+   - P2 kill switch and 2-ram finish logic.
+   - Production continuity.
+   - Wood-collapse recovery.
+   - Home Garden 12-house strong / 13-house mandatory path.
+
+Replay targets
+--------------
+A healthy standard game should show Barracks #2 only after supported field capacity
+reaches 6. A constrained game should either create smaller adaptive hubs until the
+network reaches 6, or (rarely) phase via the one-Barracks/four-field lane. No game
+should remain at 100+ population in Village Phase merely because one perfect hub
+position cannot be found.

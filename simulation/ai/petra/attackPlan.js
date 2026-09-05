@@ -1722,8 +1722,14 @@ AttackPlan.prototype.rushTargetFinder = function(gameState, playerEnemy)
 		if (defended)
 			continue;
 		let dist = SquareVectorDistance(pos, this.position);
-		if (this.Config.difficulty >= difficulty.EXPERT && expertDoctrine && Number(expertDoctrine.rushes) > 0)
+		const expertP1SoftTargetMode = this.Config.difficulty >= difficulty.EXPERT &&
+			((expertDoctrine && Number(expertDoctrine.rushes) > 0) ||
+			 (gameState.currentPhase && gameState.currentPhase() === 1));
+		if (expertP1SoftTargetMode)
 		{
+			// IT14.69: this applies to the P2-Tech-Push P1 reserve failsafe too. Without
+			// siege, a superior infantry army should erase exposed production/dropsites
+			// rather than wasting its winning window on a Civic Centre strongpoint.
 			// Prefer production and economic infrastructure to arbitrary housing.
 			if (building.hasClass("Barracks") || building.hasClass("Stable") || building.hasClass("Market") ||
 			    building.hasClass("Farmstead") || building.hasClass("Storehouse"))

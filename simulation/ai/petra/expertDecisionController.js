@@ -211,11 +211,14 @@ export class ExpertDecisionController
 		this.woodIncomeStalled = false;
 		// IT14.68: tiny delayed deliveries must not hide a completely dead lumber line.
 		this.woodZeroActiveSince = -99999;
+		this.woodZeroActiveSeconds = 0;
+		this.lastWoodEmergencyLevel2At = -99999;
 		this.phaseWoodCrisis = false;
 		this.phase2QueuedAt = -99999;
 		this.phase2Shortfall = { food: 0, wood: 0, stone: 0, metal: 0 };
 		this.lastPhaseStallDiag = -99999;
 		this.lastPhaseSafetyDiag = -99999;
+		this.phase2FiveFieldDeadlockSince = -99999;
 		this.lastWoodStallDiag = -99999;
 		this.lastResourceRebalanceTime = -99999;
 		this.lastFoodPressureRebalanceTime = -99999;
@@ -267,6 +270,7 @@ export class ExpertDecisionController
 		this.lastAthenianSpecialBuildDiag = -99999;
 		this.lastAthenianSpecialTrainingDiag = -99999;
 		this.lastAthenianSlingerDiag = -99999;
+		this.lastHousingSuppressDiag = -99999;
 		this.lastAthenianP1ForgeDiag = -99999;
 		this.lastAthenianP1MeleeDiag = -99999;
 		// IT14.56: primary food/wood eco technologies are bought one at a time.
@@ -3195,9 +3199,22 @@ export class ExpertDecisionController
 			this.foundationsByClass(gameState, "Field").length +
 			(gameState.ai.queues.field ? gameState.ai.queues.field.countQueuedUnits() : 0);
 		if (pipeline >= target)
+		{
+			this.phase2FiveFieldDeadlockSince = -99999;
 			return frame;
+		}
 		const actions = [...(frame.actions || [])];
 		const open = farmCapacity && farmCapacity.known ? Math.max(0, Number(farmCapacity.openFieldSlots) || 0) : 0;
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		// IT14.69: remember only the pathological "exactly one field short and no legal
+		// touching slot" state. Normal six-field builds never enter this timer.
+		if (pipeline === target - 1 && open <= 0)
+		{
+			if (!Number.isFinite(Number(this.phase2FiveFieldDeadlockSince)) || this.phase2FiveFieldDeadlockSince < -90000)
+				this.phase2FiveFieldDeadlockSince = now;
+		}
+		else
+			this.phase2FiveFieldDeadlockSince = -99999;
 		if (open <= 0)
 		{
 			const existing = actions.find(action => action && action.kind === "farmstead");
@@ -3219,9 +3236,9 @@ export class ExpertDecisionController
 					"builderCount": Number(policy.phase2SafetyFieldBuilders) || 2,
 					"builderPool": ["food", "food_owned", "farm", "wood"] });
 		}
-		if ((Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastPhaseSafetyDiag) || -99999) >= 8)
+		if (now - (Number(this.lastPhaseSafetyDiag) || -99999) >= 8)
 		{
-			this.lastPhaseSafetyDiag = Number(gameState.ai.elapsedTime) || 0;
+			this.lastPhaseSafetyDiag = now;
 			aiWarn("[EXPERT-PHASE-SAFETY] pipeline=" + pipeline + "/" + target + " open=" + open +
 				" action=" + (open > 0 ? "field" : "new-farmstead"));
 		}
@@ -3257,10 +3274,29 @@ export class ExpertDecisionController
 		const deadlockFoodFloor = fieldPipeline >= (Number(policy.phase2DeadlockEscapeMinimumFields) || 2) &&
 			openFieldSlots <= 0 && naturalRemaining <= (Number(policy.phase2DeadlockEscapeNaturalFood) || 100) &&
 			foodDeficitSeconds >= (Number(policy.phase2DeadlockEscapeFoodDeficitSeconds) || 180);
+		const fiveFieldDeadlockAge = this.phase2FiveFieldDeadlockSince > -90000 ?
+			Math.max(0, now - Number(this.phase2FiveFieldDeadlockSince)) : 0;
+		const fiveFieldLayoutEscape = fieldPipeline === Math.max(1, (Number(policy.phase2AbsoluteMinimumFields) || 6) - 1) &&
+			openFieldSlots <= 0 && naturalRemaining <= (Number(policy.phase2DeadlockEscapeNaturalFood) || 100) &&
+			now >= (Number(policy.phase2FiveFieldLayoutEscapeTime) || 480) &&
+			fiveFieldDeadlockAge >= (Number(policy.phase2FiveFieldLayoutEscapeSeconds) || 30) &&
+			(Number(this.farmsteadPlacementFailures) || 0) >= (Number(policy.phase2FiveFieldLayoutEscapeMinimumFailures) || 3);
 		const productionReady = barracks >= 2;
+		// IT14.70 alternate build: preserve the normal 2-Barracks => 6-field rule.
+		// If terrain repeatedly defeats the dedicated six-field food-block search,
+		// a ONE-Barracks economy with four actual fields may take a controlled fast P2
+		// rather than remain in Village forever. This is intentionally a different build.
+		const oneBarracksFourFieldEscape = barracks === 1 &&
+			fieldPipeline >= (Number(policy.phase2OneBarracksLayoutEscapeMinimumFields) || 4) &&
+			openFieldSlots <= 0 &&
+			naturalRemaining <= (Number(policy.phase2DeadlockEscapeNaturalFood) || 100) &&
+			now >= (Number(policy.phase2OneBarracksLayoutEscapeTime) || 480) &&
+			pop >= (Number(policy.phase2OneBarracksLayoutEscapeMinimumPopulation) || 90) &&
+			coverage >= (Number(policy.phase2OneBarracksLayoutEscapeCostCoverage) || 0.65) &&
+			(Number(this.farmsteadPlacementFailures) || 0) >= (Number(policy.phase2OneBarracksLayoutEscapeMinimumFailures) || 6);
 		// IT14.68 revised: standard two-Barracks P2 lanes require the six-field
 		// permanent-food insurance floor even while healthy natural food remains.
-		// Only the explicit sustained deadlock escape may bypass this floor.
+		// Only explicit sustained deadlock/alternate-build lanes may bypass this floor.
 		const twoBarracksFieldFloor = fieldPipeline >= (Number(policy.phase2AbsoluteMinimumFields) || 6);
 
 		let ready = false;
@@ -3277,6 +3313,10 @@ export class ExpertDecisionController
 		else if (productionReady && twoBarracksFieldFloor && absoluteFoodFloor &&
 		         now >= policy.phase2AbsoluteTime && pop >= policy.phase2AbsolutePopulation)
 			ready = true, lane = "absolute-7m";
+		else if (productionReady && fiveFieldLayoutEscape && pop >= policy.phase2AbsolutePopulation)
+			ready = true, lane = "five-field-layout-failsafe";
+		else if (oneBarracksFourFieldEscape)
+			ready = true, lane = "one-barracks-four-field-layout-failsafe";
 		else if (productionReady && deadlockFoodFloor &&
 		         now >= (Number(policy.phase2DeadlockEscapeTime) || 540) && pop >= policy.phase2AbsolutePopulation)
 			ready = true, lane = "food-deadlock-escape";
@@ -3386,6 +3426,7 @@ export class ExpertDecisionController
 		else
 			this.woodZeroActiveSince = -99999;
 		const hardZeroSeconds = zeroActiveWood && this.woodZeroActiveSince > -90000 ? now - this.woodZeroActiveSince : 0;
+		this.woodZeroActiveSeconds = hardZeroSeconds;
 		const hardZeroStall = hardZeroSeconds >= 8;
 		const lowOrNoActiveWood = zeroActiveWood ||
 			(Number(woodsite && woodsite.localWoodAmount) || 0) <= (Number(policy.woodExpansionAmount) || 1200);
@@ -3400,6 +3441,65 @@ export class ExpertDecisionController
 				" lastDelivery=" + Math.round(sinceDelivery) + "s zeroActive=" + Math.round(hardZeroSeconds) + "s");
 		}
 		return { delivered, actual };
+	}
+
+	applyWoodEmergencyLevel2(gameState, accessIndex, workers, actual)
+	{
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		if (!this.woodIncomeStalled || this.woodZeroActiveSeconds < (Number(policy.woodEmergencyLevel2Seconds) || 12) ||
+		    now - (Number(this.lastWoodEmergencyLevel2At) || -99999) < 4)
+			return 0;
+		const current = Math.max(0, Number(actual && actual.wood) || 0);
+		const desired = Math.max(0, Number(workers && workers.wood) || 0);
+		const target = Math.max(1, Math.min(Number(policy.woodEmergencyLevel2TargetWorkers) || 20, Math.max(desired, 8)));
+		let needed = Math.max(0, target - current);
+		if (!needed)
+			return 0;
+
+		const foodBank = Number(gameState.getResources().food) || 0;
+		const candidates = [];
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !entityPosition(ent) || !this.isExpertEconomyEntity(ent) || hasClass(ent, "Cavalry") ||
+			    ent.getMetadata(PlayerID, TASK_KEY) !== undefined || ent.getMetadata(PlayerID, PENDING_JOB_METADATA) ||
+			    ent.getMetadata(PlayerID, "transport") !== undefined || ent.getMetadata(PlayerID, "PartOfArmy") ||
+			    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined ||
+			    ent.getMetadata(PlayerID, NATURAL_FOOD_LOCK))
+				continue;
+			const state = ent.unitAIState ? String(ent.unitAIState() || "") : "";
+			if (state.includes(".COMBAT."))
+				continue;
+			const job = ent.getMetadata(PlayerID, JOB_METADATA);
+			if (job === "wood" || job === "citizenSoldierWood" || job === "food_overflow_wood" || job === "chicken")
+				continue;
+			const lockedField = Number(ent.getMetadata(PlayerID, FARM_LOCK));
+			if (Number.isFinite(lockedField) && foodBank < 1800)
+				continue;
+			const idle = ent.isIdle && ent.isIdle() ? 0 : 1;
+			const jobRank = job === "stone" || job === "metal" ? 0 :
+				job === undefined || job === null ? 1 : job === "food_owned" ? 2 : job === "farm" ? 4 : 3;
+			candidates.push({ ent, idle, jobRank });
+		}
+		candidates.sort((a, b) => a.idle - b.idle || a.jobRank - b.jobRank || a.ent.id() - b.ent.id());
+		const limit = Math.min(needed, Math.max(1, Number(policy.woodEmergencyLevel2ReassignBatch) || 12), candidates.length);
+		let moved = 0;
+		for (const item of candidates.slice(0, limit))
+		{
+			const ent = item.ent;
+			const job = hasClass(ent, "CitizenSoldier") ? "citizenSoldierWood" : "wood";
+			if (!this.setDesiredJob(gameState, ent, job))
+				continue;
+			if (this.assignEmergencyWood(gameState, ent, accessIndex))
+				++moved;
+		}
+		if (moved)
+		{
+			this.lastWoodEmergencyLevel2At = now;
+			aiWarn("[EXPERT-WOOD-L2] forced=" + moved + " target=" + target + " actual=" + current +
+				" zeroActive=" + Math.round(this.woodZeroActiveSeconds) + "s foodBank=" + Math.round(foodBank));
+		}
+		return moved;
 	}
 
 	resetPhaseWoodRecoveryPriority(gameState, queues)
@@ -6249,41 +6349,107 @@ export class ExpertDecisionController
 		    !gameState.ai || !gameState.ai.queueManager)
 			return false;
 		const policy = mergePolicy();
-		const free = Math.max(0, (Number(gameState.getPopulationLimit()) || 0) - (Number(gameState.getPopulation()) || 0));
+		const techName = "pop_house_01";
+		if (gameState.isResearched && gameState.isResearched(techName))
+			return true;
+		if (gameState.isResearching && gameState.isResearching(techName))
+			return true;
+
 		const houses = this.builtByClass(gameState, "House").length;
+		const free = Math.max(0, (Number(gameState.getPopulationLimit()) || 0) - (Number(gameState.getPopulation()) || 0));
 		const failures = Math.max(Number(this.placementFailureCounts["house:primary"] || 0),
 			...Object.entries(this.placementFailureCounts || {}).filter(([key]) => key.startsWith("house:")).map(([, value]) => Number(value) || 0), 0);
-		if (free > (Number(policy.houseEmergencyTechFreePopulation) || 6) ||
-		    houses < (Number(policy.houseEmergencyTechMinimumHouses) || 6) ||
-		    failures < (Number(policy.houseEmergencyTechPlacementFailures) || 2))
+		const strongAt = Math.max(1, Number(policy.houseCapacityTechStrongHouseCount) || 12);
+		const mandatoryAt = Math.max(strongAt, Number(policy.houseCapacityTechMandatoryHouseCount) || 13);
+		const crowdedFallback = free <= (Number(policy.houseEmergencyTechFreePopulation) || 6) &&
+			houses >= (Number(policy.houseEmergencyTechMinimumHouses) || 6) &&
+			failures >= (Number(policy.houseEmergencyTechPlacementFailures) || 2);
+		if (houses < strongAt && !crowdedFallback)
+			return false;
+
+		const available = new Map(gameState.findAvailableTech() || []);
+		if (!available.has(techName) || !(gameState.hasResearchers && gameState.hasResearchers(techName, true)))
+			return false;
+		const plan = new ResearchPlan(gameState, techName, false);
+		if (!plan)
+			return false;
+		const cost = plan.getCost();
+		const res = gameState.getResources();
+		const affordable = ["food", "wood", "stone", "metal"].every(r =>
+			(Number(res[r]) || 0) >= (Number(cost[r]) || 0));
+		const mandatory = houses >= mandatoryAt;
+		const strong = houses >= strongAt && (affordable || free <= (Number(policy.houseCapacityTechStrongFreePopulation) || 18));
+		if (!mandatory && !strong && !crowdedFallback)
+			return false;
+
+		const queueName = "expertHousingTech";
+		const priority = mandatory ? (Number(policy.houseCapacityTechMandatoryPriority) || 1125) :
+			strong ? (Number(policy.houseCapacityTechStrongPriority) || 1040) : 1030;
+		gameState.ai.queueManager.addQueue(queueName, priority);
+		const queue = gameState.ai.queues[queueName];
+		if (!queue)
+			return false;
+		if (queue.hasQueuedUnits())
+		{
+			gameState.ai.queueManager.changePriority(queueName, priority);
+			return true;
+		}
+
+		// At house #13 this is a real housing commitment, not an affordability hint.
+		// QueueManager will reserve the 300W/100S tech ahead of house #14 rather than
+		// allowing ordinary construction to consume the same resources.
+		plan.metadata = { "expertDecisionLayer": true, "expertHousingCapacity": true,
+			"expertHousingMandatory": mandatory, "houseCount": houses };
+		queue.addPlan(plan);
+		gameState.ai.queueManager.changePriority(queueName, priority);
+		aiWarn("[EXPERT-HOUSING] queued=" + techName + " mode=" + (mandatory ? "mandatory-13" : strong ? "strong-12" : "crowded-fallback") +
+			" free=" + free + " houses=" + houses + " cost=" + Math.round(cost.food || 0) + "/" +
+			Math.round(cost.wood || 0) + "/" + Math.round(cost.stone || 0) + "/" + Math.round(cost.metal || 0));
+		return true;
+	}
+
+	shouldSuppressNormalHouseConstruction(gameState)
+	{
+		if (!gameState || !gameState.currentPhase || gameState.currentPhase() < 2)
+			return false;
+		const policy = mergePolicy();
+		const houses = this.builtByClass(gameState, "House").length;
+		if (houses < (Number(policy.houseCapacityTechMandatoryHouseCount) || 13))
 			return false;
 		const techName = "pop_house_01";
 		if ((gameState.isResearched && gameState.isResearched(techName)) ||
 		    (gameState.isResearching && gameState.isResearching(techName)))
 			return true;
 		const available = new Map(gameState.findAvailableTech() || []);
-		if (!available.has(techName) || !(gameState.hasResearchers && gameState.hasResearchers(techName, true)))
+		return available.has(techName) && !!(gameState.hasResearchers && gameState.hasResearchers(techName, true));
+	}
+
+	applyHousingCapacityHouseRule(gameState, frame)
+	{
+		if (!this.shouldSuppressNormalHouseConstruction(gameState))
+			return frame;
+		const houses = this.builtByClass(gameState, "House").length;
+		let removed = 0;
+		const actions = (frame.actions || []).filter(action =>
+		{
+			if (!action || action.kind !== "house" || (action.type !== "BUILD" && action.type !== "RESERVE"))
+				return true;
+			++removed;
 			return false;
-		const queueName = "expertHousingTech";
-		gameState.ai.queueManager.addQueue(queueName, 1030);
-		const queue = gameState.ai.queues[queueName];
-		if (!queue || queue.hasQueuedUnits())
-			return !!(queue && queue.hasQueuedUnits());
-		const plan = new ResearchPlan(gameState, techName, false);
-		if (!plan)
-			return false;
-		const cost = plan.getCost();
-		const res = gameState.getResources();
-		for (const r of ["food", "wood", "stone", "metal"])
-			if ((Number(res[r]) || 0) < (Number(cost[r]) || 0))
-				return false;
-		plan.metadata = { "expertDecisionLayer": true, "expertHousingEmergency": true };
-		queue.addPlan(plan);
-		gameState.ai.queueManager.changePriority(queueName, 1030);
-		aiWarn("[EXPERT-HOUSING] queued=" + techName + " free=" + free + " houses=" + houses +
-			" placementFailures=" + failures + " cost=" + Math.round(cost.food || 0) + "/" +
-			Math.round(cost.wood || 0) + "/" + Math.round(cost.stone || 0) + "/" + Math.round(cost.metal || 0));
-		return true;
+		});
+		const queue = gameState.ai && gameState.ai.queues && gameState.ai.queues.house;
+		if (queue && Array.isArray(queue.plans))
+		{
+			const before = queue.plans.length;
+			queue.plans = queue.plans.filter(plan => !(plan && plan.metadata && plan.metadata.expertDecisionLayer));
+			removed += before - queue.plans.length;
+		}
+		if (removed && gameState.ai.elapsedTime - (Number(this.lastHousingSuppressDiag) || -99999) >= 10)
+		{
+			this.lastHousingSuppressDiag = gameState.ai.elapsedTime;
+			aiWarn("[EXPERT-HOUSING] suppress-normal-house houses=" + houses + " removed=" + removed + " tech=pop_house_01");
+		}
+		return removed ? { ...frame, actions } : frame;
 	}
 
 	athenianGymnasiumProductionPlan(gameState, gymTemplate)
@@ -7038,7 +7204,10 @@ export class ExpertDecisionController
 			const source = this.firstBarracksSoldierBatchQueued ? "barracks-auto" : "barracks-opening";
 			const requested = this.firstBarracksSoldierBatchQueued ? 1 : militaryBatch;
 			const depth = this.firstBarracksSoldierBatchQueued ? Math.max(1, Number(policy.expertProductionQueueDepth) || 2) : 1;
-			if (this.queueExpertSoldierBatch(gameState, queues, barracks, source, requested, depth, this.firstBarracksSoldierBatchQueued))
+			// IT14.69: even the first Barracks batch may sit as an unfunded standby order.
+			// This makes an empty completed trainer an explicit queue reservation rather than
+			// a 30-100 second silent gap while resources fluctuate.
+			if (this.queueExpertSoldierBatch(gameState, queues, barracks, source, requested, depth, true))
 			{
 				const since = Number(this.trainerIdleSince[barracks.id()]);
 				const gap = Number.isFinite(since) ? now - since : 0;
@@ -7551,9 +7720,19 @@ export class ExpertDecisionController
 				// several real placement failures, accept a still-useful three-field hub.
 				const constrainedOpeningHub = action.role === "farm_hub_constrained";
 				const forcedDeadlockHub = action.role === "farm_hub_deadlock";
+				const secondBarracksFoodBlock = action.role === "second_barracks_food_block";
 				const deadlockEmergency = forcedDeadlockHub && failures >= policy.farmHubDeadlockEmergencyFallbackAfterFailures;
 				const fallbackHub = constrainedOpeningHub || forcedDeadlockHub || failures >= policy.farmHubFallbackAfterFailures;
-				const minimumFieldSlots = deadlockEmergency ?
+				const requestedSecondSlots = Math.max(1, Number(action.minimumFieldSlotsNeeded) || 1);
+				const secondFallbackEvery = Math.max(1, Number(policy.secondBarracksFoodBlockFallbackEveryFailures) || 3);
+				const secondFallbackSteps = Math.floor(Math.max(0, failures) / secondFallbackEvery);
+				// IT14.70: a food block only has to provide the slots MISSING from the
+				// existing network. Requiring four from every new hub caused the two P1
+				// lock losses in the 14.69 three-game set. Repeated failures relax one
+				// slot at a time; another hub can supply any remaining deficit.
+				const secondSlotsAfterFallback = Math.max(1, requestedSecondSlots - secondFallbackSteps);
+				const minimumFieldSlots = secondBarracksFoodBlock ?
+					secondSlotsAfterFallback : deadlockEmergency ?
 					Math.max(2, Number(policy.minimumFarmHubFieldSlotsEmergency) || 2) : fallbackHub ?
 					policy.minimumFarmHubFieldSlotsFallback : policy.minimumFarmHubFieldSlots;
 				request = {
@@ -7564,15 +7743,24 @@ export class ExpertDecisionController
 					// IT14.5 proved that a compact-ring-only search can deadlock permanent food.
 					// Expand progressively into owned territory rather than rejecting candidates
 					// forever while civilians idle. The 30m hub-spacing contract remains intact.
-					"distances": (forcedDeadlockHub && failures >= 1) || failures >= 4 ?
+					"distances": secondBarracksFoodBlock ?
+						(failures >= 6 ?
+							[20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 104, 112, 120, 128, 136, 144, 152, 160] :
+						 failures >= 3 ?
+							[24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 104, 112, 120, 128, 136, 144] :
+							[28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 104, 112, 120]) :
+						(forcedDeadlockHub && failures >= 1) || failures >= 4 ?
 						[24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 104, 112, 120, 128, 136, 144, 152] :
 						[28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96],
-					"angleCount": (forcedDeadlockHub && failures >= 1) || failures >= 4 ? 48 : 32,
+					"angleCount": secondBarracksFoodBlock ? (failures >= 3 ? 64 : 48) :
+						((forcedDeadlockHub && failures >= 1) || failures >= 4 ? 48 : 32),
 					"templateRadius": geometry.radius,
 					"minimumCCDistance": policy.farmHubMinimumCCDistance,
 					"pathSources": [],
 					"minimumFieldSlots": minimumFieldSlots,
-					"preferredFieldSlots": Math.max(4, minimumFieldSlots),
+					"preferredFieldSlots": secondBarracksFoodBlock ? requestedSecondSlots : Math.max(4, minimumFieldSlots),
+					"preferredFarmsteadSpacing": secondBarracksFoodBlock ?
+						(Number(policy.secondBarracksFarmHubPreferredSpacing) || 42) : 0,
 					"compactFallback": fallbackHub
 				};
 			}
@@ -8247,7 +8435,10 @@ export class ExpertDecisionController
 		const matureFarmDistrict = this.builtByClass(gameState, "Field").length >= mergePolicy().matureFarmDistrictRelaxFieldCount;
 		if (!strategicFallback && (kind === "house" || kind === "stable" || kind === "forge" || kind === "arsenal" || kind === "gymnasium" || kind === "prytaneion"))
 			request.preserveFarmDistrict = true;
-		else if (!strategicFallback && kind === "barracks")
+		else if (kind === "barracks" && (action.role === "second" || !strategicFallback))
+			// IT14.69: Barracks #2 may broaden its search after placement failure, but it
+			// never receives permission to consume a field slot that the six-field food
+			// block explicitly reserved. Search farther out instead.
 			request.preserveFarmDistrict = action.role !== "third_p2" && action.role !== "fourth_p3" && action.role !== "fifth_p3";
 		else if (kind === "market" || kind === "temple")
 			request.preserveFarmDistrict = false;
@@ -8594,6 +8785,16 @@ export class ExpertDecisionController
 				// Live field capacity is the strongest score for permanent farm hubs.
 				// This prevents IT7's "three farmsteads, three fields" starvation pattern.
 				const capacity = farmCapacityAt ? farmCapacityAt(position) : 0;
+				const preferredSpacing = Math.max(0, Number(request && request.preferredFarmsteadSpacing) || 0);
+				if (preferredSpacing > 0)
+					for (const existing of [...this.builtByClass(gameState, "Farmstead"), ...this.foundationsByClass(gameState, "Farmstead")])
+					{
+						if (!existing || !entityPosition(existing))
+							continue;
+						const distance = Math.sqrt(SquareVectorDistance(position, existing.position()));
+						if (distance < preferredSpacing)
+							score += 6000 * (preferredSpacing - distance);
+					}
 				const preferredCapacity = Number(request && request.preferredFieldSlots) || 0;
 				if (preferredCapacity > 0 && capacity < preferredCapacity)
 					score += (request && request.openingNaturalFood ? 40 : 300) * (preferredCapacity - capacity);
@@ -8662,18 +8863,22 @@ export class ExpertDecisionController
 					const rejected = prepared.diagnostics && prepared.diagnostics[buildKey(action)] || [];
 					if (action.kind === "field" && Number.isFinite(Number(request.farmsteadId)))
 						this.fieldPlacementFailures[request.farmsteadId] = Number(this.fieldPlacementFailures[request.farmsteadId] || 0) + 1;
-					if (action.kind === "farmstead" && ["farm_hub", "farm_hub_constrained", "farm_hub_deadlock"].includes(action.role || ""))
+					if (action.kind === "farmstead" && ["farm_hub", "farm_hub_constrained", "farm_hub_deadlock", "second_barracks_food_block"].includes(action.role || ""))
 						++this.farmsteadPlacementFailures;
 					const placementKey = action.kind + ":" + (action.role || "primary");
 					this.placementFailureCounts[placementKey] = Number(this.placementFailureCounts[placementKey] || 0) + 1;
 					this.placementFailureAt[placementKey] = Number(gameState.ai.elapsedTime) || 0;
+					const foodBlockDiag = action.kind === "farmstead" && action.role === "second_barracks_food_block" ?
+						" need=" + Math.max(1, Number(action.minimumFieldSlotsNeeded) || 1) +
+						" minNow=" + Math.max(1, Number(request.minimumFieldSlots) || 1) +
+						" failures=" + Number(this.farmsteadPlacementFailures || 0) : "";
 					aiWarn("[EXPERT-PLACE] blocked kind=" + action.kind + " role=" + (action.role || "primary") +
-						" reason=" + (blocked && blocked.reason || "unknown") + " rejected=" + rejected.length);
+						" reason=" + (blocked && blocked.reason || "unknown") + " rejected=" + rejected.length + foodBlockDiag);
 					delete this.pendingWoodSelectionByTask[request.taskId];
 					delete this.pendingFoodSelectionByTask[request.taskId];
 					continue;
 				}
-				if (action.kind === "farmstead" && ["farm_hub", "farm_hub_constrained", "farm_hub_deadlock"].includes(action.role || ""))
+				if (action.kind === "farmstead" && ["farm_hub", "farm_hub_constrained", "farm_hub_deadlock", "second_barracks_food_block"].includes(action.role || ""))
 					this.farmsteadPlacementFailures = 0;
 				if (action.kind === "tower")
 				{
@@ -10323,8 +10528,10 @@ export class ExpertDecisionController
 				" ownNatural=" + Math.round(foodNetwork.totalRemaining) + " plan=wicker+influence");
 		}
 		const woodsite = this.collectWoodsite(gameState, cc, accessIndex);
+		const preWoodWorkers = this.economyWorkerMetrics(gameState);
+		const woodContinuity = this.updateWoodContinuityWatchdog(gameState, preWoodWorkers, woodsite);
+		this.applyWoodEmergencyLevel2(gameState, accessIndex, preWoodWorkers, woodContinuity.actual);
 		const workers = this.economyWorkerMetrics(gameState);
-		const woodContinuity = this.updateWoodContinuityWatchdog(gameState, workers, woodsite);
 		this.resetPhaseWoodRecoveryPriority(gameState, queues);
 		const woodServiceStorehouses = this.woodServiceStorehouseCount(gameState, accessIndex);
 		const farmCapacity = this.farmCapacitySnapshot(gameState, accessIndex);
@@ -10489,9 +10696,10 @@ export class ExpertDecisionController
 		// IT14.53: Athens may add one Gymnasium in Town and one Prytaneion in City,
 		// but only from genuine surplus after the core timing infrastructure exists.
 		frame = this.applyAthenianSpecialInfrastructure(gameState, frame);
-		// IT14.64 crowded-base escape hatch. Normal House construction stays preferred;
-		// only repeated placement/foundation failures near the cap unlock the +20% House tech.
+		// IT14.69 City-State housing discipline: strongly consider Home Garden at house #12,
+		// make it mandatory at #13, and stop ordinary house construction there.
 		this.researchExpertHousingCapacityTech(gameState);
+		frame = this.applyHousingCapacityHouseRule(gameState, frame);
 		if (defenseState && defenseState.shouldBuildTower)
 			frame = { ...frame, "actions": [...frame.actions, { "type": "BUILD", "kind": "tower", "role": "emergency_defense",
 				"builderPool": ["wood", "citizenSoldierWood"] }] };
@@ -10646,7 +10854,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.68] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.70] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -10708,7 +10916,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.68] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.70] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -10752,9 +10960,13 @@ export class ExpertDecisionController
 			"woodIncomeMeasured": this.woodIncomeMeasured,
 			"woodLastDeliveryAt": this.woodLastDeliveryAt,
 			"woodIncomeStalled": this.woodIncomeStalled,
+			"woodZeroActiveSince": this.woodZeroActiveSince,
+			"woodZeroActiveSeconds": this.woodZeroActiveSeconds,
+			"lastWoodEmergencyLevel2At": this.lastWoodEmergencyLevel2At,
 			"phaseWoodCrisis": this.phaseWoodCrisis,
 			"phase2QueuedAt": this.phase2QueuedAt,
 			"phase2Shortfall": { ...this.phase2Shortfall },
+			"phase2FiveFieldDeadlockSince": this.phase2FiveFieldDeadlockSince,
 			"lastResourceRebalanceTime": this.lastResourceRebalanceTime,
 			"lastFoodPressureRebalanceTime": this.lastFoodPressureRebalanceTime,
 			"lastFoodWoodFeedback": this.lastFoodWoodFeedback,
@@ -10838,9 +11050,13 @@ export class ExpertDecisionController
 		this.woodIncomeMeasured = !!data.woodIncomeMeasured;
 		this.woodLastDeliveryAt = Number.isFinite(data.woodLastDeliveryAt) ? data.woodLastDeliveryAt : -99999;
 		this.woodIncomeStalled = !!data.woodIncomeStalled;
+		this.woodZeroActiveSince = Number.isFinite(data.woodZeroActiveSince) ? data.woodZeroActiveSince : -99999;
+		this.woodZeroActiveSeconds = Number(data.woodZeroActiveSeconds) || 0;
+		this.lastWoodEmergencyLevel2At = Number.isFinite(data.lastWoodEmergencyLevel2At) ? data.lastWoodEmergencyLevel2At : -99999;
 		this.phaseWoodCrisis = !!data.phaseWoodCrisis;
 		this.phase2QueuedAt = Number.isFinite(data.phase2QueuedAt) ? data.phase2QueuedAt : -99999;
 		this.phase2Shortfall = { food: 0, wood: 0, stone: 0, metal: 0, ...(data.phase2Shortfall || {}) };
+		this.phase2FiveFieldDeadlockSince = Number.isFinite(data.phase2FiveFieldDeadlockSince) ? data.phase2FiveFieldDeadlockSince : -99999;
 		this.lastPhaseStallDiag = -99999;
 		this.lastWoodStallDiag = -99999;
 		this.lastResourceRebalanceTime = Number.isFinite(data.lastResourceRebalanceTime) ? data.lastResourceRebalanceTime : -99999;

@@ -432,3 +432,25 @@ Replay regressions locked by IT14:
 - IT14.68 diagnostics include `[EXPERT-PRODUCTION] cc-continuity`, `[EXPERT-TRAIN] auto-queue`, `[EXPERT-PHASE-SAFETY]`, `[EXPERT-ATTACK] P1 reserve release`, `mode=mass-no-tech`, `[EXPERT-P2-KILL]`, and `[EXPERT-SIEGE] ... mode=p2-kill`.
 
 - IT14.68 revised two-Barracks P2 floor: with two completed Barracks, every standard Town-Phase readiness lane requires a >=6-field pipeline even when natural food is still healthy. The 5:30 safety watchdog drives the permanent-food pipeline to six. The existing ~9:00 sustained food-geometry deadlock escape remains the only bypass. A one-Barracks fast-P2 build, if introduced later, should use a separate four-field contract rather than weakening this two-Barracks floor.
+
+## IT14.69 base-layout / recovery / housing-efficiency contract
+
+- Expert gather/trade multiplier remains 1.35. IT14.68's natural-food behavior, hard-touch field geometry, standard six-field two-Barracks P2 floor, P1 strength gates, production standby, P2 opportunity/kill logic, siege conversion and Champion constraints remain in force unless explicitly superseded below.
+- Barracks #2 is a physical-layout commitment, not only an income test. Before Expert commits the second Barracks, the live permanent-food network must be capable of supporting at least six hard-touch fields. If it is not, Expert establishes another dedicated permanent Farmstead block first. Barracks #2 placement/retry logic may broaden its search but may not consume field footprints reserved by that food district.
+- Six fields remain the standard two-Barracks P2 floor. A five-field bypass is legal only as a pathological self-layout escape: exact 5/6 pipeline, zero legal touching slots, exhausted/near-exhausted natural food, repeated failed emergency Farmstead placement, sustained deadlock and the configured late-enough time. This lane is a last-resort anti-permanent-P1 watchdog and must not become normal phase logic.
+- The hard-zero wood watchdog must cause action as well as diagnosis. After a sustained Level-2 zero-active-lumber condition, idle/uncommitted Expert economic bodies are forcibly redirected toward emergency wood, preferring excess mineral labor and protecting builders, active army/defense, transports, evacuation and natural-food locks. Permanent farmers are a later fallback rather than the first source of wood labor.
+- A favorable started primary attack may consume surplus home military beyond the ordinary ~58 target. Large reserves raise the coherent primary-army target while retaining a modest home-defense reserve; the existing bad-exchange abort remains authoritative.
+- P1 reserve attacks created by non-rush doctrines use the same exposed soft-structure preference as intentional P1 timings when siege is unavailable. Economic/production infrastructure is preferred over hard defensive structures and low-value field/house targets.
+- Completed Barracks production continuity includes the first post-opening military order: temporary lack of resources may leave a standby reservation, but it may not produce another silent 100+ second empty-trainer gap. Phase-critical food/research and siege still outrank ordinary standby production.
+- For City States in P2+, Home Garden becomes a strong housing choice at twelve completed houses and the mandatory housing path at thirteen when available/researchable. Expert-owned house planning suppresses normal house construction at thirteen and Home Garden receives the mandatory housing reservation/priority; generic Petra HQ remains on the known-good 14.68 code path to avoid a28 parser regressions. Civic Centre phase capacity and later population structures contribute to the operational cap.
+- IT14.69 diagnostics include `[EXPERT-IT14.69]`, `[EXPERT-WOOD-L2]`, `[EXPERT-HOUSING]`, raised-target `[EXPERT-WAVE]` logs, and the rare `five-field-layout-failsafe` phase lane.
+
+
+## IT14.70 CONSISTENT P2 / ADAPTIVE FOOD-BLOCK CONTRACT
+
+- Standard doctrine remains: two completed Barracks require a live six-field-supported permanent-food network before normal P2.
+- `second_barracks_food_block` requests only the field slots missing from the current network. It must never require a fresh four-slot hub when only one, two, or three additional slots are needed.
+- After every three real placement failures, the special food-block request may relax by one slot (never below one) and broaden its owned-territory search; if still below six afterward, another hub is planned.
+- The alternative deadlock build is exactly one Barracks + at least four actual/pipeline fields, zero open touching slots, exhausted natural food, repeated farmstead failures, mature population/time, and adequate P2 cost coverage. This lane may phase to Town without constructing Barracks #2.
+- The one-Barracks lane is an escape from a proven layout deadlock, not a normal fast-P2 opener. After Town, Barracks #2 remains gated by six supported fields.
+- Runtime telemetry marker is `[EXPERT-IT14.70]`; the alternate phase lane is `one-barracks-four-field-layout-failsafe`.
