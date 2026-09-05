@@ -445,12 +445,24 @@ Replay regressions locked by IT14:
 - For City States in P2+, Home Garden becomes a strong housing choice at twelve completed houses and the mandatory housing path at thirteen when available/researchable. Expert-owned house planning suppresses normal house construction at thirteen and Home Garden receives the mandatory housing reservation/priority; generic Petra HQ remains on the known-good 14.68 code path to avoid a28 parser regressions. Civic Centre phase capacity and later population structures contribute to the operational cap.
 - IT14.69 diagnostics include `[EXPERT-IT14.69]`, `[EXPERT-WOOD-L2]`, `[EXPERT-HOUSING]`, raised-target `[EXPERT-WAVE]` logs, and the rare `five-field-layout-failsafe` phase lane.
 
-
 ## IT14.70 CONSISTENT P2 / ADAPTIVE FOOD-BLOCK CONTRACT
 
 - Standard doctrine remains: two completed Barracks require a live six-field-supported permanent-food network before normal P2.
-- `second_barracks_food_block` requests only the field slots missing from the current network. It must never require a fresh four-slot hub when only one, two, or three additional slots are needed.
-- After every three real placement failures, the special food-block request may relax by one slot (never below one) and broaden its owned-territory search; if still below six afterward, another hub is planned.
+- `second_barracks_food_block` is deficit-aware and broadens its owned-territory search after repeated failures.
 - The alternative deadlock build is exactly one Barracks + at least four actual/pipeline fields, zero open touching slots, exhausted natural food, repeated farmstead failures, mature population/time, and adequate P2 cost coverage. This lane may phase to Town without constructing Barracks #2.
 - The one-Barracks lane is an escape from a proven layout deadlock, not a normal fast-P2 opener. After Town, Barracks #2 remains gated by six supported fields.
 - Runtime telemetry marker is `[EXPERT-IT14.70]`; the alternate phase lane is `one-barracks-four-field-layout-failsafe`.
+- Permanent fields remain within an approximately 0.8m border gap of their Farmstead.
+
+## IT14.71 EXECUTION-DISCIPLINE CONTRACT
+
+- Expert gather/trade remains 1.35. Preserve IT14.70's successful attack gate, P2 opportunity, kill switch, reinforcement, production continuity and two-ram finish behavior.
+- A standard Field wants four builders. While a Field foundation exists, Expert tops that exact task up to four eligible food civilians. Those workers keep their food resource ownership while building.
+- On Field completion, up to four builders are immediately and permanently locked to that Field and receive the gather order in the same lifecycle handoff. They do not finish the Field and wander to another resource.
+- Civilian resource ownership is persistent. Once a civilian owns food, wood, stone or metal, normal bank balancing may not move that civilian across resource types. Construction is a temporary interruption only. Cross-resource civilian reassignment is limited to genuine food/wood emergency-bank states; citizen-soldiers remain the flexible correction pool.
+- Preferred first-through-fourth farmers do not leave Fields for ordinary wood balancing. Only the existing extreme wood-starvation valve may release established farmers.
+- Early surplus bias favors food: generic mining waits for at least six completed Fields, roughly 45 civilians and a healthier food bank; non-food balancing cannot outrank food while the food bank is below the raised priority floor.
+- Dedicated permanent Farmsteads must justify themselves with at least three legal hard-touch field slots. Natural-food dropsites remain the exception because their primary job is servicing berries/fruit. The one-Barracks/four-field phase escape prevents this stricter farm-hub quality rule from causing another permanent P1 lock.
+- Home Garden commitment suppresses ordinary House plans as early as house 12 once the tech is queued/researching, and all normal House queue entries are purged while suppression is active so generic Petra cannot sneak house 14 behind Expert.
+- Runtime telemetry marker is `[EXPERT-IT14.71]`.
+

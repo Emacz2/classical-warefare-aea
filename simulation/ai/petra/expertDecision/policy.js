@@ -149,11 +149,12 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.29: keep four-slot farm hubs as the normal standard, but after repeated
   // real-map placement failures accept a compact three-field hub rather than deadlock.
   minimumFarmHubFieldSlotsFallback: 3,
-  minimumFarmHubFieldSlotsEmergency: 1,
+  minimumFarmHubFieldSlotsEmergency: 3,
   farmHubFallbackAfterFailures: 6,
-  // IT14.66: when the economy has already proved a zero-slot permanent-food
-  // deadlock, accept even a one-field emergency hub after only a few failures instead
-  // of repeating the normal 4->3 search while P2 remains blocked.
+  // IT14.71: permanent farm hubs never degrade below three supported fields.
+  // Natural-food dropsites may be less efficient, but a dedicated farm hub must justify
+  // its footprint. The separate one-Barracks/four-field P2 recovery path prevents
+  // this geometry rule from becoming another infinite Village-Phase deadlock.
   farmHubDeadlockEmergencyFallbackAfterFailures: 3,
   // IT14.21 user contract: a NEW permanent farmstead is not allowed merely because
   // field demand is high. The current compact block must have at least three completed
@@ -210,9 +211,10 @@ const DEFAULT_POLICY = Object.freeze({
   secondBarracksRequiredSupportedFields: 6,
   secondBarracksFoodBlockPriority: 105,
   secondBarracksFarmHubPreferredSpacing: 36,
-  // IT14.70: the dedicated pre-Barracks food block asks only for the missing
-  // capacity. If terrain still defeats the search, relax one slot every three
-  // real failures and broaden the search rather than retrying one impossible shape.
+  // IT14.71: the dedicated pre-Barracks food block remains deficit-aware, but a
+  // permanent Farmstead never degrades below three supported touching fields. After
+  // repeated failures broaden the search; the 1-Barracks/4-field P2 lane is the
+  // anti-deadlock escape instead of buying a one-field permanent hub.
   secondBarracksFoodBlockFallbackEveryFailures: 3,
   // A true alternate build, not a relaxation of the 2-Barracks rule: if a one-
   // Barracks economy has four real fields, no open touching slots, exhausted
@@ -243,7 +245,7 @@ const DEFAULT_POLICY = Object.freeze({
   resourceBalanceRatioFloor: 250,
   resourceBalanceNewWorkerRatio: 1.5,
   resourceBalanceStrongRatio: 2.5,
-  resourceBalanceFoodPriorityBank: 700,
+  resourceBalanceFoodPriorityBank: 1000,
   resourceBalanceReassignBatch: 2,
   resourceBalanceReassignCooldownSeconds: 15,
   resourceBalanceExtremeRatio: 3.5,
@@ -490,10 +492,12 @@ const DEFAULT_POLICY = Object.freeze({
   foodSurplusRedirectThreshold: 900,
   foodSurplusPauseFarmExpansion: 1000,
   // IT14.43: once the required food workforce is already covered, a large food
-  // bank should make NEW civilians behave like a human surplus-management choice:
-  // reinforce wood instead of creating yet more permanent food ownership. Existing
+  // bank should make NEW civilians behave like a human surplus-management choice.
+  // IT14.71 deliberately raises this threshold: an early food surplus is productive
+  // because it keeps civilian production continuous and lets those new civilians
+  // solve later wood/stone/metal needs. Existing
   // preferred farmers stay on their fields (or may briefly build a nearby house).
-  foodSurplusNewCivilianWoodBank: 1200,
+  foodSurplusNewCivilianWoodBank: 1800,
   foodSurplusNewCivilianWoodRatio: 1.75,
   // Permanent-food floors: natural food and a temporary food bank may delay expansion,
   // but they may not collapse the long-term farm economy below these population-scaled floors.
@@ -507,10 +511,11 @@ const DEFAULT_POLICY = Object.freeze({
   // that letting current food ownership recursively inflate desiredFields created a
   // 17-18 field target and a runaway food bank.
   maximumPermanentFields: 12,
-  // Do not open generic mines until the permanent food economy has at least six completed fields.
-  miningMinimumCompletedFields: 4,
-  miningStartCivilians: 35,
-  miningFoodFloor: 750,
+  // IT14.71: do not open generic mines until the permanent food economy has at least
+  // six completed fields and a healthier food bank. Food is the preferred early surplus.
+  miningMinimumCompletedFields: 6,
+  miningStartCivilians: 45,
+  miningFoodFloor: 900,
   miningWoodFloor: 300,
   miningTargetStoneWorkers: 3,
   miningTargetMetalWorkers: 6,

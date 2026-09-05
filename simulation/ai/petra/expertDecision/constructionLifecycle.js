@@ -21,9 +21,10 @@ function desiredBuilders(kind, context = {}) {
       if (context.emergency) return 4;
       return 3;
     case "field":
-      // Human openings usually use one worker per field. Sticky field builders already
-      // finish what they start, so extra builders mostly steal gathering time.
-      return 1;
+      // IT14.71: a planned field is a four-worker food task. The same four civilians
+      // build the foundation together, then the controller permanently locks them to
+      // that completed field. This avoids the one-builder delay and build->wander churn.
+      return 4;
     case "farmstead":
       if (context.opening) return 4;
       return 2;

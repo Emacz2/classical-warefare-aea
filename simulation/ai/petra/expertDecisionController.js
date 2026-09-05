@@ -3282,7 +3282,7 @@ export class ExpertDecisionController
 			fiveFieldDeadlockAge >= (Number(policy.phase2FiveFieldLayoutEscapeSeconds) || 30) &&
 			(Number(this.farmsteadPlacementFailures) || 0) >= (Number(policy.phase2FiveFieldLayoutEscapeMinimumFailures) || 3);
 		const productionReady = barracks >= 2;
-		// IT14.70 alternate build: preserve the normal 2-Barracks => 6-field rule.
+		// IT14.71 alternate build: preserve the normal 2-Barracks => 6-field rule.
 		// If terrain repeatedly defeats the dedicated six-field food-block search,
 		// a ONE-Barracks economy with four actual fields may take a controlled fast P2
 		// rather than remain in Village forever. This is intentionally a different build.
@@ -4450,6 +4450,11 @@ export class ExpertDecisionController
 			fields.length >= policy.extremeFoodWoodReleaseMinimumFields &&
 			feedback.food >= policy.extremeFoodWoodReleaseFoodBank &&
 			feedback.wood <= policy.extremeFoodWoodReleaseWoodBankCeiling;
+		// IT14.71: the preferred four farmers are permanent. A merely healthy food
+		// surplus is not permission to break farm ownership; only the existing extreme
+		// wood-starvation escape hatch may release established farmers.
+		if (!extremeWoodStarvation)
+			return;
 		const fieldIds = new Set(fields.map(field => field.id()));
 		const loads = new Map(fields.map(field => [field.id(), 0]));
 		// Count EVERY permanent lock first, including the protected opening civilians.
@@ -4834,9 +4839,11 @@ export class ExpertDecisionController
 		const target = jobResourceType(desired);
 		const bank = gameState.getResources();
 		if (target === "food")
-			return (this.lastFoodWoodFeedback && this.lastFoodWoodFeedback.mode === "food_recovery" &&
-				this.lastFoodWoodFeedback.strongRecovery === true) ||
-				(Number(bank.food) || 0) <= policy.resourceJobEmergencyFoodBank;
+			// IT14.71: ordinary food-pressure feedback no longer uproots established
+			// civilian lumberjacks. New civilians and temporary citizen-soldiers solve
+			// normal food pressure; a permanent civilian crosses resources only in a
+			// genuine emergency bank state.
+			return (Number(bank.food) || 0) <= policy.resourceJobEmergencyFoodBank;
 		if (target === "wood")
 			return this.phaseWoodCrisis || this.woodIncomeStalled ||
 				(Number(bank.wood) || 0) <= policy.resourceJobEmergencyWoodBank;
@@ -4854,6 +4861,12 @@ export class ExpertDecisionController
 		const cross = isCrossResourceJobChange(current, desired);
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const urgent = cross && this.resourceJobChangeUrgent(gameState, current, desired);
+		const permanentCivilian = hasClass(ent, "Civilian") && !hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry");
+		// IT14.71 user contract: once a civilian owns a resource, that resource is
+		// effectively permanent. Construction may interrupt work without changing the
+		// job. Cross-resource reassignment is reserved for a true food/wood emergency.
+		if (cross && permanentCivilian && current && !urgent)
+			return false;
 		if (cross && !urgent)
 		{
 			const leaseUntil = Number(ent.getMetadata(PlayerID, EXPERT_JOB_LEASE_UNTIL));
@@ -5090,10 +5103,14 @@ export class ExpertDecisionController
 			ent.setMetadata(PlayerID, SUPPLY_ID, field.id());
 			ent.setMetadata(PlayerID, "gather-type", "food");
 			ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
+			if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
+				this.HQ.basesManager.AddTCGatherer(field.id());
+			const gather = ensureGatherOrder(ent, field);
+			this.diagnoseWorkerOrder(ent, "field-handoff", field.id(), gather.status);
 			++locked;
 		}
 		if (locked)
-			aiWarn("[EXPERT-FARM] field=" + field.id() + " permanently locked builders=" + locked);
+			aiWarn("[EXPERT-FARM] field=" + field.id() + " builders->farmers=" + locked + "/" + limit);
 	}
 
 	cancelQueuedConstructionTask(gameState, taskId)
@@ -5230,6 +5247,56 @@ export class ExpertDecisionController
 		return true;
 	}
 
+	maintainFieldConstructionCrew(gameState, taskId, observed)
+	{
+		if (!taskId || !observed || observed.state !== "foundation" || !Number.isFinite(Number(observed.foundationId)))
+			return;
+		const foundation = gameState.getEntityById(Number(observed.foundationId));
+		if (!foundation || !entityPosition(foundation))
+			return;
+		const desired = Math.max(1, Number(desiredBuilders("field")) || 4);
+		const existing = this.constructionWorkers(gameState, taskId);
+		const action = {
+			"type": "MAINTAIN_CONSTRUCTION",
+			"kind": "field",
+			"builderPool": ["farm", "food_owned", "food"],
+			"builderCount": desired,
+			// Keep existing farmers closest to their own food district whenever possible.
+			"builderJobPriority": { "farm": 5, "food_owned": 4, "food": 3 }
+		};
+		let team = [];
+		try
+		{
+			team = selectMaintenanceTeam(gameState, "field", foundation.position(), desired, action, {
+				"playerId": PlayerID,
+				"taskId": taskId,
+				"existingBuilderIds": existing.map(ent => ent.id())
+			});
+		}
+		catch (e) { return; }
+		if (!team.length)
+			return;
+		commitBuilders(team, taskId, PlayerID);
+		for (const ent of team)
+		{
+			if (!ent || !ent.getMetadata || !ent.setMetadata)
+				continue;
+			const carrying = ent.resourceCarrying ? (ent.resourceCarrying() || []) : [];
+			if (carrying.some(item => item && Number(item.amount) > 0))
+			{
+				const queued = returnResources(gameState, ent);
+				this.diagnoseWorkerOrder(ent, "field-crew", foundation.id(), queued ? "RETURNING_RESOURCES" : "NO_DROPSITE");
+				continue;
+			}
+			ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_BUILDER);
+			const order = ensureRepairOrder(ent, foundation, false);
+			this.diagnoseWorkerOrder(ent, "field-crew", foundation.id(), order.status);
+		}
+		if (team.length > existing.length)
+			aiWarn("[EXPERT-FARM] field-build-crew task=" + taskId + " foundation=" + foundation.id() +
+				" builders=" + team.length + "/" + desired);
+	}
+
 	cleanupStaleConstructionAssignments(gameState)
 	{
 		const active = new Set([
@@ -5281,6 +5348,12 @@ export class ExpertDecisionController
 					aiWarn("[EXPERT-WOOD] second storehouse foundation active for new workers task=" + taskId + " foundation=" + foundation.id());
 				}
 			}
+
+			// IT14.71 field crew contract: every live field foundation is topped up to
+			// four food civilians immediately. Those exact workers remain task-owned until
+			// completion, when lockCompletedFieldBuilders binds them to the new field.
+			if (isField && observed.state === "foundation")
+				this.maintainFieldConstructionCrew(gameState, taskId, observed);
 
 			if (observed.state === "completed" || observed.state === "missing-after-foundation")
 			{
@@ -6414,12 +6487,22 @@ export class ExpertDecisionController
 			return false;
 		const policy = mergePolicy();
 		const houses = this.builtByClass(gameState, "House").length;
-		if (houses < (Number(policy.houseCapacityTechMandatoryHouseCount) || 13))
+		const strongAt = Math.max(1, Number(policy.houseCapacityTechStrongHouseCount) || 12);
+		const mandatoryAt = Math.max(strongAt, Number(policy.houseCapacityTechMandatoryHouseCount) || 13);
+		if (houses < strongAt)
 			return false;
 		const techName = "pop_house_01";
-		if ((gameState.isResearched && gameState.isResearched(techName)) ||
-		    (gameState.isResearching && gameState.isResearching(techName)))
+		const researched = gameState.isResearched && gameState.isResearched(techName);
+		const researching = gameState.isResearching && gameState.isResearching(techName);
+		const techQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHousingTech;
+		const queued = !!(techQueue && techQueue.hasQueuedUnits && techQueue.hasQueuedUnits());
+		// IT14.71: once Home Garden is actually committed at house #12, stop queuing
+		// another house behind it. At house #13 suppression is unconditional whenever
+		// the tech remains available/researchable.
+		if (houses >= strongAt && (researched || researching || queued))
 			return true;
+		if (houses < mandatoryAt)
+			return false;
 		const available = new Map(gameState.findAvailableTech() || []);
 		return available.has(techName) && !!(gameState.hasResearchers && gameState.hasResearchers(techName, true));
 	}
@@ -6441,8 +6524,11 @@ export class ExpertDecisionController
 		if (queue && Array.isArray(queue.plans))
 		{
 			const before = queue.plans.length;
-			queue.plans = queue.plans.filter(plan => !(plan && plan.metadata && plan.metadata.expertDecisionLayer));
-			removed += before - queue.plans.length;
+			// The house queue contains house construction only. Expert owns the economy in
+			// this mode, so remove Petra-origin plans too; otherwise a generic house #14 can
+			// survive behind the Home Garden commitment.
+			queue.plans = [];
+			removed += before;
 		}
 		if (removed && gameState.ai.elapsedTime - (Number(this.lastHousingSuppressDiag) || -99999) >= 10)
 		{
@@ -7726,15 +7812,16 @@ export class ExpertDecisionController
 				const requestedSecondSlots = Math.max(1, Number(action.minimumFieldSlotsNeeded) || 1);
 				const secondFallbackEvery = Math.max(1, Number(policy.secondBarracksFoodBlockFallbackEveryFailures) || 3);
 				const secondFallbackSteps = Math.floor(Math.max(0, failures) / secondFallbackEvery);
-				// IT14.70: a food block only has to provide the slots MISSING from the
-				// existing network. Requiring four from every new hub caused the two P1
-				// lock losses in the 14.69 three-game set. Repeated failures relax one
-				// slot at a time; another hub can supply any remaining deficit.
-				const secondSlotsAfterFallback = Math.max(1, requestedSecondSlots - secondFallbackSteps);
+				// IT14.71: a DEDICATED permanent farm hub must support at least three
+				// touching fields. The 14.70 "missing slots only" fallback sometimes bought
+				// one-field farmsteads, wasting wood and making later field geometry worse.
+				// The one-Barracks/four-field P2 recovery lane is the anti-deadlock escape;
+				// permanent farm infrastructure itself stays compact and worthwhile.
+				const secondSlotsAfterFallback = Math.max(3, requestedSecondSlots - secondFallbackSteps);
 				const minimumFieldSlots = secondBarracksFoodBlock ?
 					secondSlotsAfterFallback : deadlockEmergency ?
-					Math.max(2, Number(policy.minimumFarmHubFieldSlotsEmergency) || 2) : fallbackHub ?
-					policy.minimumFarmHubFieldSlotsFallback : policy.minimumFarmHubFieldSlots;
+					Math.max(3, Number(policy.minimumFarmHubFieldSlotsEmergency) || 3) : fallbackHub ?
+					Math.max(3, Number(policy.minimumFarmHubFieldSlotsFallback) || 3) : Math.max(3, Number(policy.minimumFarmHubFieldSlots) || 4);
 				request = {
 					kind,
 					"role": action.role || "farm_hub",
@@ -7758,7 +7845,7 @@ export class ExpertDecisionController
 					"minimumCCDistance": policy.farmHubMinimumCCDistance,
 					"pathSources": [],
 					"minimumFieldSlots": minimumFieldSlots,
-					"preferredFieldSlots": secondBarracksFoodBlock ? requestedSecondSlots : Math.max(4, minimumFieldSlots),
+					"preferredFieldSlots": secondBarracksFoodBlock ? Math.max(3, requestedSecondSlots) : Math.max(4, minimumFieldSlots),
 					"preferredFarmsteadSpacing": secondBarracksFoodBlock ?
 						(Number(policy.secondBarracksFarmHubPreferredSpacing) || 42) : 0,
 					"compactFallback": fallbackHub
@@ -10854,7 +10941,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.70] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.71] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -10916,7 +11003,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.70] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.71] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

@@ -117,7 +117,10 @@ function decidePostOpeningCivilianJob(input = {}) {
   const surplusWoodFoodBank = Math.max(0, Number(input.foodSurplusNewCivilianWoodBank) || 1200);
   const surplusWoodFoodRatio = Math.max(1, Number(input.foodSurplusNewCivilianWoodRatio) || 1.75);
 
-  const foodFloor = Math.max(0, Number(input.postOpeningFoodFloor) || 300);
+  // IT14.71: mining is a later luxury than merely being post-opening-safe. Preserve
+  // a real food bank before diverting NEW civilians to stone/metal; food is the only
+  // resource that can immediately create another civilian to solve the next shortage.
+  const miningFoodFloor = Math.max(0, Number(input.miningFoodFloor) || Number(input.postOpeningFoodFloor) || 300);
   const miningStart = Math.max(0, finiteNonNegativeInteger(input.miningStartCivilians, 45));
   const miningMinimumFields = Math.max(0, finiteNonNegativeInteger(input.miningMinimumCompletedFields, 6));
   const miningWoodFloor = Math.max(0, Number(input.miningWoodFloor) || 300);
@@ -145,19 +148,22 @@ function decidePostOpeningCivilianJob(input = {}) {
   if (food >= surplusWoodFoodBank && food >= Math.max(1, wood) * surplusWoodFoodRatio)
     return { job: "wood", reason: `food bank ${Math.round(food)} is grossly ahead of wood ${Math.round(wood)}; new civilian reinforces wood` };
 
-  // Generic mining still opens only after six completed fields. Once that durable
-  // food base exists, NEW civilians may establish metal first and then a small stone
-  // reserve. Wood remains the citizen-soldier responsibility rather than exceeding
-  // the 20 permanent civilian woodcutters.
-  if (fields >= miningMinimumFields && civilians >= miningStart && wood >= miningWoodFloor && food >= foodFloor) {
+  // IT14.71 food-first contract: if we paid for a Field, fill its preferred four
+  // farmer slots before sending NEW civilians into secondary-resource mining. Empty
+  // farm capacity is already-paid-for food income and should not sit unused.
+  if (farmWorkers < farmCapacity)
+    return { job: "farm", reason: "post-20 civilian fills completed permanent-food capacity before mining" };
+
+  // Generic mining opens only after six completed, fully staffed Fields and a real
+  // food bank. Once that durable food base exists, NEW civilians may establish metal
+  // first and then a small stone reserve. Wood remains the citizen-soldier responsibility
+  // rather than exceeding the 20 permanent civilian woodcutters.
+  if (fields >= miningMinimumFields && civilians >= miningStart && wood >= miningWoodFloor && food >= miningFoodFloor) {
     if (metalWorkers < metalTarget)
-      return { job: "metal", reason: `six-field food base is online; establish metal reserve (${metalWorkers}/${metalTarget})` };
+      return { job: "metal", reason: `six-field staffed food base is online; establish metal reserve (${metalWorkers}/${metalTarget})` };
     if (stoneWorkers < stoneTarget)
       return { job: "stone", reason: `metal reserve established; begin limited stone reserve (${stoneWorkers}/${stoneTarget})` };
   }
-
-  if (farmWorkers < farmCapacity)
-    return { job: "farm", reason: "post-20 civilian takes completed permanent-food capacity" };
   return {
     job: "food_owned",
     reason: naturalFoodAvailable ?

@@ -357,13 +357,19 @@ IT14.69 target
 
 IT14.69 load hotfix: restored headquarters.js exactly to revised IT14.68 after a28 rejected the first 14.69 HQ hook with a parse error.
 
-
 IT14.70 — CONSISTENCY PASS AFTER IT14.69 THREE-REPLAY SET
 --------------------------------------------------------
-Observed set: 2 P1-lock failures / 1 excellent ~16:28 win. The win proved attack
-reinforcement, P2 kill, siege conversion, and 13-house population handling can be
-excellent once the AI reaches Town. Both failures were dominated by the same food-
-layout lock: a special Farmstead demanded a perfect four-slot block even when the
-network only needed fewer slots, then retried indefinitely while wood/pop accumulated.
-IT14.70 makes that hub deficit-based and progressively adaptive, and adds a rare
-1-Barracks + 4-field Town escape for proven layout deadlocks.
+Observed set: 2 P1-lock failures / 1 excellent ~16:28 win. IT14.70 made the food-block
+search deficit-aware and added a rare 1-Barracks + 4-field Town escape.
+
+IT14.71 — EXECUTION EFFICIENCY TARGET
+-------------------------------------
+Use the IT14.70 multi-replay set plus the partial Steven human benchmark as the baseline.
+Do not raise the 1.35 gather multiplier. Preserve the strong sub-20-minute wins, but
+reduce the amount of advantage lost to worker churn, one-worker Field construction,
+weak permanent Farmstead geometry, early non-food diversion, stockpiled resources and
+house overbuild. Four intended farmers should build each Field and immediately farm it.
+Established civilians should almost never change resource type; new civilians absorb
+normal economic rebalancing. Food is the preferred early surplus because it sustains
+continuous civilian production and creates the workers that can later solve other needs.
+

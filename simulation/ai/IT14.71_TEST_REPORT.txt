@@ -1,0 +1,69 @@
+EXPERT AI PETRA — IT14.71 TEST REPORT
+=====================================
+
+Purpose
+-------
+IT14.71 is an execution-efficiency pass built directly from the tested IT14.70 package.
+The gather/trade multiplier remains 1.35. The strong IT14.70 attack/P2/siege behavior is
+left alone; this revision targets recurring small mechanical inefficiencies seen across
+the AI replays and the partial Steven human benchmark.
+
+Primary changes
+---------------
+1. Four-worker Field construction -> immediate farming
+   - Standard Field desired builders: 4 (was 1).
+   - Every live Field foundation is topped up toward four food civilians.
+   - Their resource ownership is unchanged while building.
+   - On completion, those same builders are permanently locked to the Field and receive
+     the gather order immediately.
+
+2. Civilian resource permanence
+   - Established civilians no longer cross food/wood/stone/metal because of normal bank
+     balancing or a 30-second lease expiring.
+   - Construction is a temporary pause, not a job change.
+   - Cross-resource civilian moves are reserved for genuine food/wood emergency banks.
+   - Citizen-soldiers remain the flexible balancing pool.
+
+3. Food-first early surplus
+   - Food priority bank raised from 700 to 1000.
+   - New-civilian wood-surplus redirect delayed from 1200 food to 1800 food.
+   - Generic mining waits for 6 completed Fields (was 4), those completed Field slots
+     are filled first, ~45 civilians (was 35), and a real 900-food bank (was 750).
+   - Fixed an older wiring bug where miningFoodFloor was passed into the civilian
+     policy but never actually used by it.
+   - Normal farmer->wood release is disabled; only the extreme wood-starvation escape
+     may break a preferred Field crew.
+
+4. Better permanent Farmstead quality
+   - Dedicated permanent farm hubs may not degrade below 3 legal hard-touch field slots.
+   - Natural-food Farmsteads remain the exception because their primary purpose is
+     servicing berries/fruit.
+   - The existing one-Barracks/four-field P2 escape remains the anti-deadlock mechanism.
+
+5. Housing cleanup
+   - Once Home Garden is committed at house 12, ordinary House planning is suppressed.
+   - At/after the mandatory threshold, all normal House queue entries are removed, not
+     only Expert-tagged ones, preventing generic Petra from sneaking house 14 behind the
+     Expert housing-tech plan.
+
+Preserved contracts
+-------------------
+- 1.35 Expert gather/trade multiplier.
+- Hard-touch Field geometry <=0.8m from Farmstead.
+- Normal six-field/two-Barracks P2 doctrine and one-Barracks/four-field deadlock escape.
+- Unified timing-strength attack gate.
+- P2 mass opportunity, kill switch, coherent reinforcement, production continuity.
+- Wood Level-2 recovery.
+- Two-ram normal finishing package.
+- Champion limits and other IT14.70 combat rules.
+
+Validation targets
+------------------
+- A new Field should rapidly show ~4 committed builders, then the same crew should become
+  its first permanent farmers immediately after completion.
+- Established civilian resource jobs should remain stable through ordinary bank changes.
+- Early food should generally lead secondary resources rather than repeatedly collapsing
+  below wood/stone/metal.
+- Dedicated Farmsteads should normally support 3-4 Fields; a 0-2 Field Farmstead should
+  be explainable as a natural-food dropsite, not a permanent farm hub.
+- No ordinary house 14 after Home Garden is committed.
