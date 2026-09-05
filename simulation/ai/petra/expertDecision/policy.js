@@ -70,6 +70,15 @@ const DEFAULT_POLICY = Object.freeze({
   // Germans 3:40, Seleucids 3:54. Expert begins military at 3:00.
   soldierTrainingStartTime: 150,
   soldierTrainingBatch: 2,
+  // IT14.68 production-floor contract. After the protected opening, every CC/Barracks
+  // keeps current+next work. At a hard population cap keep one replacement order waiting.
+  expertProductionQueueDepth: 2,
+  expertProductionBlockedQueueDepth: 1,
+  expertCivilianQueueDepthStartPopulation: 24,
+  expertProductionVillagerPriority: 1000,
+  expertProductionSoldierPriority: 950,
+  expertP1ReserveAttackMinimumArmy: 45,
+  expertP1ReserveAttackMinimumTime: 360,
   soldierFoodReserve: 100,
   // The CC stays on civilians until the 70-civilian cap; barracks carry military production.
   ccOpeningSoldierStartTime: 99999,
@@ -237,13 +246,20 @@ const DEFAULT_POLICY = Object.freeze({
   // reserve resources instead of allowing Village-phase spending forever.
   phase2AbsoluteTime: 420,
   phase2AbsolutePopulation: 80,
-  phase2AbsoluteMinimumFields: 4,
+  phase2AbsoluteMinimumFields: 6,
   // IT14.66 Sahara escape: if the opening food district physically cannot fit four
   // compact fields, widen the existing farmstead search before spending another hub.
   // If even that fails, a sustained zero-slot food deadlock may reserve Town from two
   // fields so P1 military spending cannot keep the AI trapped forever.
+  // IT14.68 revised: by 5:30 a two-Barracks timing build must own a six-field
+  // insurance pipeline even if natural food is still being harvested. Two active
+  // Barracks plus the CC need the permanent-food floor to sustain uninterrupted
+  // production. A future one-Barracks fast-P2 doctrine may use a separate four-field floor.
   phase2EmergencyFieldExpansionTime: 330,
-  phase2EmergencyFieldMaxBorderGap: 18,
+  phase2EmergencyFieldMaxBorderGap: 0.8,
+  phase2SafetyFieldPriority: 125,
+  phase2SafetyFieldBuilders: 2,
+  phase2SafetyHubPriority: 126,
   phase2DeadlockEscapeTime: 540,
   phase2DeadlockEscapeMinimumFields: 2,
   phase2DeadlockEscapeNaturalFood: 100,
@@ -630,11 +646,10 @@ const DEFAULT_POLICY = Object.freeze({
   // Reuse natural-food farmsteads as permanent farm districts before buying another
   // farm hub. Dedicated hubs still prefer near-touching fields; exhausted natural
   // dropsites may use a modestly wider ring if that is what the terrain allows.
-  existingFarmsteadReuseMaxBorderGap: 4.0,
-  // IT14.30: before buying another farm hub, make one last local packing pass.
-  // This is deliberately wider than the normal 4m reuse ring, but still local enough
-  // that the field uses the existing dropsite rather than behaving like a remote farm.
-  existingFarmsteadFillInMaxBorderGap: 10.0,
+  // IT14.68 hard visual/economic invariant: every permanent field must touch its
+  // Farmstead. Terrain pressure is solved by another Farmstead, never by remote fields.
+  existingFarmsteadReuseMaxBorderGap: 0.8,
+  existingFarmsteadFillInMaxBorderGap: 0.8,
   farmWorkerHomeRadius: 55,
   storehouseMinimumCCDistance: 18,
   // IT14.52 generic resource-district service.  Wood already had sophisticated
@@ -749,6 +764,9 @@ const DEFAULT_POLICY = Object.freeze({
   expertP1TimingTargetDefenderRadius: 95,
   expertP1TimingStaticDefenseEquivalent: 3,
   expertP1TimingLogSeconds: 10,
+  // IT14.68: a clearly superior 60+ Town army does not wait for the first upgrade
+  // merely to satisfy a doctrine label. The same battlefield-strength gate still applies.
+  expertP2OpportunityNoTechArmy: 60,
   expertEarlyP1RushOpportunityDeadline: 450,
   expertLateP1RushOpportunityDeadline: 480,
   expertP1RushGateLogSeconds: 12,
@@ -849,6 +867,15 @@ const DEFAULT_POLICY = Object.freeze({
   expertFinishingTownSiegeTarget: 2,
   expertBrokenTownSiegeMaxVisibleEnemyCombat: 18,
   expertBrokenTownSiegeMinimumEscortRatio: 2.0,
+  // IT14.68 P2 kill switch: when Town already has a decisive field lead, stop saving
+  // the game for City. Build the legal Siege Workshop/Arsenal and end it with 2-3 rams.
+  expertP2KillEnemyPopulation: 70,
+  expertP2KillMinimumArmy: 45,
+  expertP2KillMinimumPopulationLead: 35,
+  expertP2KillMaxVisibleEnemyCombat: 32,
+  expertP2KillMinimumEscortRatio: 1.40,
+  expertP2KillSiegeTarget: 2,
+  expertP2KillFortifiedSiegeTarget: 3,
   expertFinishingArsenalPriority: 118,
   expertArsenalFallbackPreferredCCDistance: 70,
   expertArsenalFallbackMaximumCCDistance: 230,

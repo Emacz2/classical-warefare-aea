@@ -2022,6 +2022,11 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	const expertPrimaryStarted = this.startedAttacks[AttackPlan.TYPE_DEFAULT].length +
 		this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length;
 	const barracksNb = gameState.getOwnEntitiesByClass("Barracks", true).filter(filters.isBuilt()).length;
+	const p1ReserveCount = this.Config.difficulty >= difficulty.EXPERT ? this.expertReserveCombatCount(gameState) : 0;
+	const expertP1ReserveWindow = this.Config.difficulty >= difficulty.EXPERT && gameState.currentPhase &&
+		gameState.currentPhase() === 1 && (Number(gameState.ai.elapsedTime) || 0) >=
+		(Number(mergePolicy().expertP1ReserveAttackMinimumTime) || 360) && p1ReserveCount >=
+		(Number(mergePolicy().expertP1ReserveAttackMinimumArmy) || 45);
 	if (this.rushNumber < this.maxRushes && barracksNb >= 1)
 	{
 		if (unexecutedAttacks[AttackPlan.TYPE_RUSH] === 0)
@@ -2112,7 +2117,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			this.startedAttacks[AttackPlan.TYPE_HUGE_ATTACK].length == 0 ||
 		gameState.getPopulationMax() - gameState.getPopulation() > 12))
 	{
-		if (barracksNb >= 1 && (gameState.currentPhase() > 1 || gameState.isResearching(gameState.getPhaseName(2))) ||
+		if (barracksNb >= 1 && (gameState.currentPhase() > 1 || gameState.isResearching(gameState.getPhaseName(2)) || expertP1ReserveWindow) ||
 			!gameState.ai.HQ.hasPotentialBase())	// if we have no base ... nothing else to do than attack
 		{
 			const type = expertFinishing ? AttackPlan.TYPE_DEFAULT :
@@ -2130,6 +2135,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				}
 				this.totalNumber++;
 				attackPlan.init(gameState);
+				if (expertP1ReserveWindow)
+					aiWarn("[EXPERT-ATTACK] create P1 reserve plan=" + attackPlan.name + " reserve=" + p1ReserveCount);
 				if (expertFinishing)
 					attackPlan.targetPlayer = expertFinishing.targetPlayer;
 				this.upcomingAttacks[type].push(attackPlan);

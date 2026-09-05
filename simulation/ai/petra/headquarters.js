@@ -11,6 +11,7 @@ import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { DiplomacyManager } from "simulation/ai/petra/diplomacyManager.js";
 import { EmergencyManager } from "simulation/ai/petra/emergencyManager.js";
 import { ExpertDecisionController } from "simulation/ai/petra/expertDecisionController.js";
+import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
 import { allowCapture, getAttackBonus, getLandAccess, getMaxStrength, isLineInsideEnemyTerritory,
 	setSeaAccess } from "simulation/ai/petra/entityExtend.js";
 import { GarrisonManager } from "simulation/ai/petra/garrisonManager.js";
@@ -2378,11 +2379,9 @@ Headquarters.prototype.update = function(gameState, queues, events)
 			// IT14.51: emergency war-economy wood rescue runs first. If it trades this
 			// turn, let market prices update before generic queue-need barter considers
 			// another transaction.
-			const foodCorrection = this.tradeManager.performExpertEmergencyFoodBarter &&
-				this.tradeManager.performExpertEmergencyFoodBarter(gameState);
-			const emergencyTrade = !foodCorrection && this.tradeManager.performExpertEmergencyWoodBarter &&
+			const emergencyTrade = this.tradeManager.performExpertEmergencyWoodBarter &&
 				this.tradeManager.performExpertEmergencyWoodBarter(gameState);
-			if (!foodCorrection && !emergencyTrade && this.tradeManager.performBarter)
+			if (!emergencyTrade && this.tradeManager.performBarter)
 				this.tradeManager.performBarter(gameState);
 		}
 		// IT14.47: allow only route maintenance + a tiny zero-pop trader contingent.
@@ -2404,7 +2403,15 @@ Headquarters.prototype.update = function(gameState, queues, events)
 		const expertP1RushWindow = gameState.currentPhase() === 1 && expertDoctrine &&
 			Number(expertDoctrine.rushes) > 0 &&
 			gameState.ai.elapsedTime >= Math.max(0, Number(expertDoctrine.soldierTrainingStartTime) || 0);
-		if ((gameState.currentPhase() > 1 || expertP1RushWindow) && this.Config.difficulty > difficulty.SANDBOX &&
+		// IT14.68: do not let a blocked Town transition disable the only system capable
+		// of using a 45-70 man reserve. Once that reserve exists, AttackManager may create
+		// a strength-gated P1 fallback plan even for the P2-Tech doctrine.
+		const p = mergePolicy();
+		const expertP1ReserveWindow = gameState.currentPhase() === 1 &&
+			gameState.ai.elapsedTime >= (Number(p.expertP1ReserveAttackMinimumTime) || 360) &&
+			this.attackManager && this.attackManager.expertReserveCombatCount &&
+			this.attackManager.expertReserveCombatCount(gameState) >= (Number(p.expertP1ReserveAttackMinimumArmy) || 45);
+		if ((gameState.currentPhase() > 1 || expertP1RushWindow || expertP1ReserveWindow) && this.Config.difficulty > difficulty.SANDBOX &&
 		    (this.hasActiveBase() || !this.canBuildUnits))
 			this.attackManager.update(gameState, queues, events);
 

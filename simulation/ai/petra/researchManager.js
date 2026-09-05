@@ -28,6 +28,11 @@ ResearchManager.prototype.checkPhase = function(gameState, queues)
 	    gameState.ai.HQ.expertDecisionController.isActive(gameState))
 	{
 		const controller = gameState.ai.HQ.expertDecisionController;
+		// IT14.68: a decisive Town lead is itself a phase-suppression condition. Do not
+		// spend the kill window on City while 2-3 legal Town rams can end the match.
+		const kill = controller.townKillSwitchContext ? controller.townKillSwitchContext(gameState) : undefined;
+		if (kill && kill.active)
+			return;
 		const finishing = controller.finishingState(gameState);
 		const townSiege = finishing && finishing.active ? controller.p3SiegeContext(gameState, finishing) : undefined;
 		// Only suppress City when the Town finisher is actually safe/usable. If the

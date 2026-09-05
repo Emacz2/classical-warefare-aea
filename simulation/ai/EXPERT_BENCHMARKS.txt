@@ -327,3 +327,19 @@ IT14.66 three-test interpretation / target
 - Current quality benchmark: sub-20-minute clean victory = success; 20-25 minutes = acceptable but not confirmation; 25+ minutes = improvement target even if Expert eventually wins.
 
 IT14.67 current test report: see IT14.67_TEST_REPORT.txt
+
+IT14.67 three-replay review / IT14.68 target
+- Replay #1: BARE PASS, 24:41.2. The main P2 army eventually won but waited too long, the Civic Centre showed production gaps, permanent-field geometry occasionally widened beyond the Farmstead edge, and siege conversion began only after the opponent was already badly broken while Expert drifted toward City/Prytaneion spending.
+- Replay #2: FAIL / stopped at 12:51.8. The opening was promising: Expert exploited several natural-food districts and appropriately delayed farms. The handoff then deadlocked at three fields despite live touching capacity for a fourth. Active wood gathering fell to zero while `woodCrisis=no` persisted, military production kept consuming the trickle, and a defensive mobilization later released roughly 70 military units into reserve with no Village offensive path; telemetry reached 62 idle units.
+- Replay #3: WIN, 19:40.4. Early-P1 timing converted successfully, but production execution was still not pro-level. The current session logged Barracks trainer gaps of 49.6s, 91.2s, 217.6s, 233.6s and 235.2s, and the Civic Centre could stop at the doctrine civilian soft cap instead of immediately switching to military work.
+- IT14.68 is therefore a stability/execution release rather than a strategy rewrite. Strategy diversity remains, but production continuity, six-field two-Barracks P2 insurance, P1 reserve utilization, hard-touch Farmstead geometry and winning-P2 siege conversion become common mechanical floors.
+- Expert gather/trade remains +35% / 1.35.
+
+IT14.68 target
+- CC and every completed Barracks maintain current + next production work. Below the current doctrine civilian cap the CC buffers civilians; at that cap it becomes a military trainer. At max population, standby casualty replacements remain queued. Phase-critical fields/research and siege outrank standby units, and siege may prune ordinary queued replacements to reserve ram population.
+- From roughly 5:30 with two Barracks, Village P2 transition receives a hard six-field insurance action. Existing field/Farmstead actions are promoted to phase-critical priority, and the phase-safety count cannot double-count one field as both active task and foundation. Natural food remains preferred; the safety fields are insurance, not a command to abandon berries/hunt. Standard two-Barracks P2 readiness also requires this six-field pipeline; only the explicit late food-geometry deadlock escape may bypass it.
+- A true zero-active-wood state is detected within roughly eight seconds when the desired wood workforce is substantial, preventing a stale delivery sample from hiding the collapse.
+- A 45+ Village reserve after roughly 6:00 can create/use a strength-gated Default/Huge fallback plan even under P2 Tech Push. Defense release may therefore flow directly into offense instead of producing another 60+ idle stack.
+- P2 Tech Push may take a favorable zero-tech opportunity at 60+ troops; the normal 45+ override still prefers at least one active core military upgrade. Both remain live-strength gated.
+- A decisive Town attack can activate a P2 kill switch around enemy population <=70 or a >=35 own-population lead when the visible enemy army is safely screened. City Phase is suppressed/cancelled, Town-legal siege is prioritized, and the finish targets two rams by default or three against multiple hard targets.
+- Permanent fields remain within an approximately 0.8m border gap of their Farmstead. No widening to 1.3/2/4/10/18m is permitted; if the touching ring is blocked, another Farmstead is the solution.

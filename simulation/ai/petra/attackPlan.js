@@ -528,7 +528,8 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 	    (this.type === AttackPlan.TYPE_DEFAULT || this.type === AttackPlan.TYPE_HUGE_ATTACK) &&
 	    gameState.currentPhase && gameState.currentPhase() === 2 &&
 	    this.unitCollection.length >= (Number(mergePolicy().expertP2OpportunityMinimumArmy) || 45) &&
-	    (Number(expertP2TechGate.active) || 0) >= (Number(mergePolicy().expertP2OpportunityMinimumActiveTechs) || 1))
+	    ((Number(expertP2TechGate.active) || 0) >= (Number(mergePolicy().expertP2OpportunityMinimumActiveTechs) || 1) ||
+	     this.unitCollection.length >= (Number(mergePolicy().expertP2OpportunityNoTechArmy) || 60)))
 	{
 		const opportunity = gameState.ai.HQ.attackManager.expertP1TimingWindowDecision ?
 			gameState.ai.HQ.attackManager.expertP1TimingWindowDecision(gameState, this) : { launch: false };
@@ -537,7 +538,9 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 			expertP2TechBlocked = false;
 			aiWarn("[EXPERT-ATTACK] P2 opportunity override plan=" + this.name +
 				" army=" + this.unitCollection.length + " activeTechs=" + (expertP2TechGate.active || 0) +
-				" completed=" + expertP2TechGate.completed + " reason=" + opportunity.reason);
+				" completed=" + expertP2TechGate.completed + " reason=" + opportunity.reason +
+				(this.unitCollection.length >= (Number(mergePolicy().expertP2OpportunityNoTechArmy) || 60) &&
+				 (Number(expertP2TechGate.active) || 0) === 0 ? " mode=mass-no-tech" : ""));
 			this.forceStart();
 		}
 	}
@@ -556,6 +559,25 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 		if (timing.launch)
 		{
 			aiWarn("[EXPERT-ATTACK] taking P1 timing window plan=" + this.name + " army=" + this.unitCollection.length +
+				" reason=" + timing.reason);
+			this.forceStart();
+		}
+	}
+
+	// IT14.68: if Town is mechanically delayed but a huge healthy P1 reserve already
+	// exists, the strategy may not park it indefinitely. Evaluate the same strength gate
+	// and use the army when favorable even before the Town research order exists.
+	if (this.Config.difficulty >= difficulty.EXPERT && !this.forced &&
+	    (this.type === AttackPlan.TYPE_DEFAULT || this.type === AttackPlan.TYPE_HUGE_ATTACK) &&
+	    gameState.currentPhase && gameState.currentPhase() === 1 &&
+	    (Number(gameState.ai.elapsedTime) || 0) >= (Number(mergePolicy().expertP1ReserveAttackMinimumTime) || 360) &&
+	    this.unitCollection.length >= (Number(mergePolicy().expertP1ReserveAttackMinimumArmy) || 45))
+	{
+		const timing = gameState.ai.HQ.attackManager.expertP1TimingWindowDecision ?
+			gameState.ai.HQ.attackManager.expertP1TimingWindowDecision(gameState, this) : { launch: false };
+		if (timing.launch)
+		{
+			aiWarn("[EXPERT-ATTACK] P1 reserve release plan=" + this.name + " army=" + this.unitCollection.length +
 				" reason=" + timing.reason);
 			this.forceStart();
 		}

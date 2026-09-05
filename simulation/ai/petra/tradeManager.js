@@ -304,6 +304,11 @@ TradeManager.prototype.performExpertEmergencyFoodBarter = function(gameState)
 
 TradeManager.prototype.performExpertEmergencyWoodBarter = function(gameState)
 {
+	// IT14.67 CLEAN: keep headquarters.js byte-for-byte on the proven IT14.66 path.
+	// The existing emergency-barter hook now dispatches the new food correction first,
+	// so the Expert update loop still executes at most one emergency market trade per turn.
+	if (this.performExpertEmergencyFoodBarter && this.performExpertEmergencyFoodBarter(gameState))
+		return true;
 	if (this.Config.difficulty < difficulty.EXPERT || !gameState || !gameState.ai)
 		return false;
 	const policy = mergePolicy();
