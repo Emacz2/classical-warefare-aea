@@ -1,0 +1,28 @@
+IT14.87 CHANGE REPORT
+
+Surgical repair from IT14.86. The IT14.86 opening Farmstead improvement is frozen unchanged.
+Only three Petra JavaScript files change: attackManager.js, expertDecisionController.js and expertDecision/policy.js.
+
+1. WOOD ACCESS / EXPANSION — CONTINUITY IS A PREFERENCE, NOT A VETO
+- Keeps the IT14.86 idea of working an existing serviced wood district efficiently, but removes the hard "connected forest >= 450" veto that could strand workers.
+- A practical wood district now includes one nearby fringe hop beyond strict graph-connected trees. Small clumps separated by a narrow gap can be treated as the same economic district.
+- If no useful same-district Storehouse pad exists, Expert is allowed to search the next in-territory forest immediately instead of returning no placement.
+- A fast crisis override now fires when wood bank is <=250 and active woodcutters are <=2; the existing measured-delivery/zero-active watchdog and phase-wood crisis also remain authoritative.
+- Crisis search radius is widened for a real forest, while tiny new districts are rejected (normal minimum ~600 wood; emergency minimum ~350) rather than spending a Storehouse on 100-200 wood fragments.
+- Athens scarcity expansion now treats a funded wood crisis as a Cleruchy signal. A rich wood-only neutral frontier can qualify during scarcity, so a large forest does not need a second resource type beside it to be considered.
+
+2. P3 MAX-TECH ALL-IN — NET ENEMY POPULATION NO LONGER CAUSES FALSE RETREAT
+- Ordinary Rush/P2/P3 bad-exchange protection remains unchanged outside the P3 Boom Max-Tech All-In doctrine.
+- During P3 Max-Tech All-In, enemy population delta is still observed for diagnostics but cannot abort a favorable local battle by itself.
+- The replay cases 88v70 with 12 losses / enemyDamage=2 and 82v58 with 12 losses / enemyDamage=1 now remain committed.
+- A bad-exchange abort during this doctrine requires both substantial own losses (>=30% of launch size) AND an actual collapse: local enemy superiority or the field army falling to roughly <=45% of launch size.
+- Existing depleted-army, broken-screen, catastrophic-outnumber, siege, capture and FINISH systems are otherwise left intact.
+
+3. FROZEN / NON-REGRESSION
+- IT14.86 opening Farmstead multi-bush scoring unchanged.
+- Field packing/materialization/watchdog unchanged.
+- Farmstead #2/#3 geometry/capacity/deadlock rules unchanged.
+- House snapping and eco-protection unchanged.
+- CC civilian rules unchanged.
+- Opening Storehouse selection unchanged apart from the later wood-district rollover logic above.
+- Doctrine weights, research sequencing and general siege production unchanged.

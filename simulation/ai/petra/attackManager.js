@@ -895,6 +895,74 @@ AttackManager.prototype.attachExpertSiegeToActiveAttack = function(gameState)
 	return added;
 };
 
+// IT14.88: healer support is deliberately OUTSIDE AttackPlan.unitCollection.  That
+// means two/three healers do not satisfy launch-size or local-combat thresholds and
+// AttackPlan never tries to issue attack orders to a support unit.  They simply trail
+// the largest live Expert offensive and auto-heal from a defensive stance.
+AttackManager.prototype.coordinateExpertHealerEscort = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT)
+		return 0;
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	const interval = Math.max(1, Number(policy.expertHealerEscortUpdateSeconds) || 3);
+	if (now < (Number(this.expertLastHealerEscortUpdate) || -99999) + interval)
+		return 0;
+	this.expertLastHealerEscortUpdate = now;
+	let attack;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH])
+		for (const plan of this.startedAttacks[type] || [])
+			if (plan && plan.targetPlayer !== undefined && plan.unitCollection && plan.unitCollection.hasEntities &&
+			    plan.unitCollection.hasEntities() && (!attack || plan.unitCollection.length > attack.unitCollection.length))
+				attack = plan;
+	if (!attack)
+		return 0;
+	const centre = attack.unitCollection.getCentrePosition && attack.unitCollection.getCentrePosition() || attack.position || attack.rallyPoint;
+	if (!centre)
+		return 0;
+	const behind = Math.max(6, Number(policy.expertHealerEscortBehindDistance) || 14);
+	const leash = Math.max(20, Number(policy.expertHealerEscortLeashDistance) || 42);
+	const target = attack.targetPos || centre;
+	let dx = centre[0] - target[0], dz = centre[1] - target[1];
+	let len = Math.hypot(dx, dz);
+	if (!len) { dx = 1; dz = 0; len = 1; }
+	const escort = [centre[0] + dx / len * behind, centre[1] + dz / len * behind];
+	let moved = 0;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position || !ent.position() || !ent.hasClass || !ent.hasClass("Healer"))
+			continue;
+		if (ent.getMetadata && ent.getMetadata(PlayerID, "garrisonHolder") !== undefined)
+			continue;
+		const plan = ent.getMetadata ? ent.getMetadata(PlayerID, "plan") : undefined;
+		if (plan !== undefined && plan !== -1)
+			continue;
+		if (ent.setMetadata)
+			ent.setMetadata(PlayerID, "expertHealerEscortPlan", attack.name);
+		if (ent.getStance && ent.setStance && ent.getStance() !== "defensive")
+			ent.setStance("defensive");
+		const armyDistance = Math.sqrt(SquareVectorDistance(ent.position(), centre));
+		const state = ent.unitAIState ? String(ent.unitAIState() || "") : "";
+		// Do not interrupt an in-range heal just to make the support line cosmetically exact.
+		if (armyDistance <= leash && state.includes("HEAL"))
+			continue;
+		if (SquareVectorDistance(ent.position(), escort) <= 10 * 10)
+			continue;
+		if (ent.moveToRange)
+		{
+			ent.moveToRange(escort[0], escort[1], 0, 8);
+			++moved;
+		}
+	}
+	if (moved && (Number(gameState.ai.elapsedTime) || 0) >= (Number(this.expertLastHealerEscortLog) || -99999) + 15)
+	{
+		this.expertLastHealerEscortLog = Number(gameState.ai.elapsedTime) || 0;
+		aiWarn("[EXPERT-HEAL] escort plan=" + attack.name + " moved=" + moved +
+			" army=" + attack.unitCollection.length + " behind=" + Math.round(behind));
+	}
+	return moved;
+};
+
 // GarrisonManager temporarily replaces attack-plan metadata while a passenger is in a
 // holder.  Restore active-army passengers to their original attack after they unload.
 AttackManager.prototype.recoverExpertRamPassengers = function(gameState)
@@ -1317,6 +1385,33 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 	const bad = enemyDamage < losses * (Number(policy.expertCombatBadExchangeEnemyDamageCredit) || 0.70);
 	const pressured = balance.defenses > 0 || balance.enemyCombat >= 4 ||
 		balance.enemyCombat >= Math.max(4, Math.ceil(Math.max(1, balance.ownCombat) * 0.8));
+
+	// IT14.87: P3 Max-Tech All-In is already the terminal commitment. Enemy population
+	// decline is not a casualty counter because the opponent can replace units during the
+	// fight. A favorable local battle (e.g. 88v70) therefore cannot be aborted merely
+	// because net enemy population moved by only 1-2. Retreat remains legal only after
+	// a substantial own loss AND an actual local/army collapse; the separate depleted,
+	// screen and catastrophic-outnumber rules remain untouched.
+	const doctrine = gameState.ai.HQ && gameState.ai.HQ.expertDoctrine;
+	const p3AllIn = doctrine && doctrine.id === "p3_boom_all_in" && gameState.currentPhase && gameState.currentPhase() >= 3;
+	if (p3AllIn)
+	{
+		const launch = Math.max(1, Number(attack.expertLaunchSize) || attack.unitCollection.length + losses);
+		const lossFraction = losses / launch;
+		const own = Math.max(0, Number(balance.ownCombat) || 0);
+		const enemy = Math.max(0, Number(balance.enemyCombat) || 0);
+		const locallyCollapsed = enemy >= Math.max(6, Math.ceil(Math.max(1, own) * 1.15)) && enemy >= own + 6;
+		const armyCollapsed = attack.unitCollection.length <= Math.max(18, Math.floor(launch * 0.45));
+		out.losses = losses;
+		out.enemyDamage = enemyDamage;
+		out.balance = balance;
+		out.abort = bad && lossFraction >= 0.30 && (locallyCollapsed || armyCollapsed);
+		if (bad && !out.abort)
+			aiWarn("[EXPERT-P3-FINISH] ignore-pop-delta plan=" + attack.name + " army=" + attack.unitCollection.length +
+				" losses=" + losses + " enemyDamage=" + enemyDamage + " local=" + own + "v" + enemy +
+				" lossFraction=" + lossFraction.toFixed(2));
+		return out;
+	}
 
 	// IT14.75: active Civic Centre capture progress is strategic damage. Do not abandon
 	// the CC solely for a poor casualty exchange while we have meaningful capture share,
@@ -2111,6 +2206,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	// accumulating as an idle home reserve. Siege keeps its existing attachment lane.
 	this.attachExpertPremiumUnitsToActiveAttack(gameState);
 	this.attachExpertSiegeToActiveAttack(gameState);
+	this.coordinateExpertHealerEscort(gameState);
 	if (expertFinishing)
 		this.reinforceExpertFinishingAttack(gameState, expertFinishing);
 	this.recoverExpertRamPassengers(gameState);

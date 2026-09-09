@@ -1,0 +1,46 @@
+IT14.88 CHANGE REPORT
+
+Surgical combat/logistics follow-up from IT14.87. The successful IT14.86 Farmstead scoring and IT14.87 wood-crisis/P3-FINISH repairs remain intact.
+Only three Petra JavaScript files change: attackManager.js, expertDecisionController.js and expertDecision/policy.js.
+
+1. EXPERT SIEGE — NO AUTOMATIC BOLT SHOOTERS
+- Expert automatic finishing/P3 siege selection now rejects Oxybeles/bolt-shooter/ballista templates.
+- Rams remain the first-choice building breaker. If a civ has a suitable non-ram mechanical building siege unit, the second P3 engine can be that catapult; otherwise another ram is valid.
+- Unit templates and human-player availability are unchanged.
+- General attack target selection, movement, retreat and FINISH logic are NOT rewritten in this version.
+
+2. SMALL HEALER ESCORT
+- Expert can maintain a small support detachment once its military is large enough: target 2 healers in Town, 3 in City.
+- Healers use a dedicated high-priority support queue with healthy resource reserves; they do not replace the required combat army.
+- Healers deliberately remain outside AttackPlan.unitCollection so they cannot satisfy launch-size/local-balance checks and are not given attack orders.
+- The AttackManager places them on a defensive trailing line behind the largest live offensive, preserves active healing inside the leash, and periodically re-escorts stragglers.
+- Existing Athens Hippocrates behavior remains valid and a healer hero counts toward the small support total.
+
+3. ATHENS — IPHICRATEAN REFORMS IS OPTIONAL, NOT A MAX-TECH GATE
+- Iphicratean Reforms is explicitly excluded from the generic military-tech lanes and the P3 max-tech completion gate.
+- A separate Athens-only City rule may research it when mandatory military tech is complete, the army is meaningfully melee-heavy (>=20 melee infantry and >=45% melee share), the opponent is not already in cleanup range, wood is stable, and the live bank can pay the tech while retaining large operating reserves.
+- The dedicated optional queue can research during/around the final package but never delays the P3 all-in.
+- The rule reads the live technology cost rather than hard-coding it.
+
+4. WOOD STOREHOUSE — ACTUAL LUMBERJACK DISTRICT SAFETY NET
+- The generic resource-service audit now includes wood, independent of primaryWoodWorksite.
+- If >=3 actual lumberjacks are working an owned local district with >=450 nearby wood and their dropsite is >12m away or measured round trip exceeds ~4s, Expert can request a Storehouse centered on those workers' actual tree targets.
+- Nearby local trees are summed around the worker district before judging payback, so a rich forest is not mistaken for a tiny fragment merely because current workers target only a few individual trees.
+- This directly addresses the observed case where workers left a serviced green wood area for an unserved red woodline while the old primary-worksite state lagged behind.
+
+5. FARMSTEAD / STOREHOUSE COEXISTENCE
+- The opening Storehouse remains fully protected by the existing opening geometry.
+- Later wood/service Storehouses may use the EDGE of a farm district instead of being rejected solely by the old blanket 28m Farmstead radius.
+- Before the normal 10-field economy is complete, every proven/potential Field footprint is still reserved: a Storehouse may not consume a farm slot or overlap the Farmstead.
+- After 10 real Fields exist, later Storehouses stop reserving hypothetical future Field slots; real Fields/Farmsteads remain protected by the engine obstruction map.
+- Farmstead placement, field packing, field materialization and food-capacity logic themselves are unchanged.
+
+6. FROZEN / NON-REGRESSION
+- IT14.86 opening Farmstead multi-bush scoring unchanged.
+- IT14.87 practical wood-district continuity, fragment rejection, wood-crisis expansion and Athens Cleruchy scarcity logic unchanged.
+- IT14.87 P3 FINISH/pop-delta persistence unchanged.
+- Field packing/materialization/watchdog unchanged.
+- Farmstead #2/#3 capacity/deadlock logic unchanged.
+- House snapping/eco protection and CC civilian rules unchanged.
+- Opening Storehouse selection unchanged.
+- General attack movement/target-selection logic unchanged.

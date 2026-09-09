@@ -1,14 +1,30 @@
-EXPERT BENCHMARKS — IT14.86
+EXPERT BENCHMARKS — IT14.88
 
-RECENT 3
-1) IT14.85 Athens Expert vs Han Very Hard — WIN ~23:10. Athens finished Town Phase at 176 pop; Han was defeated in Town.
-2) IT14.85 Athens Expert vs Macedon Very Hard — WIN ~23:02. Athens finished City Phase at 176 pop; Macedon was defeated in City.
-3) IT14.85 Athens Expert vs Germans Very Hard — WIN ~26:16. Athens finished City Phase at 180 pop; Germans were defeated in City.
+IT14.87 VALIDATED / KEEP FROZEN
+- Opening Farmstead multi-bush scoring remains healthy.
+- Wood-crisis recovery/territorial expansion is working across Athens and non-Athens tests.
+- Athens scarcity Cleruchy can move toward a rich wood frontier.
+- P3 Max-Tech All-In now persists through favorable local fighting instead of retreating solely from weak enemy-population delta.
 
-MAJOR TRENDS
-- Preserve the current farm/field materialization, compact-field geometry, housing, research, siege and attack behavior; the latest run set is winning consistently.
-- Opening Farmstead scoring can still hug one berry bush even when a small slide would service two or three bushes at nearly zero walk.
-- Wood rollover can open a fresh forest district too early. A serviced woodline should be worked down and, when useful, receive one additional same-patch Storehouse before Expert pays for a new remote woodline.
+IT14.88 TARGETS
+1) SIEGE SIMPLICITY
+- Expert automatic siege must not queue Oxybeles/bolt shooters/ballistas.
+- First building breaker should be a ram; second P3 engine may be a usable catapult or another ram.
 
-IT14.86 TARGET
-Improve only opening Farmstead berry-cluster efficiency and Storehouse rollover discipline. No Field-packing, phase, military, housing, tech, worker-recovery or strategy changes.
+2) HEALER ESCORT
+- Once the Town/City military is large, maintain about 2/3 healers without counting them toward launch army size.
+- Healers should trail the live attack and recover chip damage rather than wander as home support.
+
+3) IPHICRATEAN REFORMS
+- Never block P3 launch.
+- Research only as an optional City surplus tradeoff for a large melee-heavy Athens army.
+
+4) WOOD LOGISTICS
+- If >=3 actual lumberjacks migrate to an owned rich wood district with >12m carry or >~4s measured round trip, request a local Storehouse even if primaryWoodWorksite still points at the old forest.
+- Do not buy a Storehouse for a tiny fragment (<~450 local wood).
+- Later Storehouses may use the edge of the farm district but must not consume real/reserved Field footprints before the normal 10-field economy is complete.
+
+RECOMMENDED TEST MIX
+- Athens Expert vs Athens Very Hard: verify simpler ram/catapult siege, healer escort and optional Iphicratean behavior.
+- Several random-civ Expert vs Very Hard games: verify wood-service Storehouses on worker migration without Storehouse spam.
+- Human vs one/two Experts: judge practical pressure and whether healer support reduces pointless movement attrition.

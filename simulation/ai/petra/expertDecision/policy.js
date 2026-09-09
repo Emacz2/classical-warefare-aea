@@ -630,6 +630,27 @@ const DEFAULT_POLICY = Object.freeze({
   athensGymnasiumMeleeTargetShare: 0.60,
   athensGymnasiumJavelineerTargetShare: 0.25,
   athensHippocratesMinimumTime: 600,
+  // IT14.88: ordinary healers are a small escort, not combat-count filler. Two in
+  // Town and three in City are enough to recover chip damage between repeated moves.
+  expertHealerP2Target: 2,
+  expertHealerP3Target: 3,
+  expertHealerMinimumPopulation: 75,
+  expertHealerMinimumCombatReserve: 28,
+  expertHealerFoodReserve: 300,
+  expertHealerWoodReserve: 200,
+  expertHealerMetalReserve: 100,
+  expertHealerEscortBehindDistance: 14,
+  expertHealerEscortUpdateSeconds: 3,
+  expertHealerEscortLeashDistance: 42,
+  // Iphicratean Reforms is deliberately OPTIONAL. It is attractive to a large
+  // melee-heavy City army with a real surplus, but never delays the P3 all-in.
+  athensIphicrateanMinimumMeleeInfantry: 20,
+  athensIphicrateanMinimumMeleeShare: 0.45,
+  athensIphicrateanFoodReserve: 900,
+  athensIphicrateanWoodReserve: 700,
+  athensIphicrateanStoneReserve: 0,
+  athensIphicrateanMetalReserve: 350,
+  athensIphicrateanStopEnemyPopulation: 40,
   athensPrytaneionWoodReserve: 250,
   athensPrytaneionFoodReserve: 250,
   athensPrytaneionMetalReserve: 125,
@@ -687,6 +708,10 @@ const DEFAULT_POLICY = Object.freeze({
   // Scarcity is allowed to override the old "attack first, expand later" sequencing.
   athensCleruchyScarcityBuilderCount: 8,
   athensCleruchyScarcityPriority: 108,
+  // IT14.87: when lumber delivery collapses, a rich wood-only frontier is a valid
+  // scarcity target even if it does not also contain a second resource type.
+  athensCleruchyWoodCrisisSurplusBank: 2500,
+  athensCleruchyWoodOnlyMinimumAmount: 1600,
   expertScarcityBaseExpansionCooldownSeconds: 75,
   p1EcoSweepStartTime: 330,
   p1EcoSweepMaxQueued: 1,
@@ -752,9 +777,9 @@ const DEFAULT_POLICY = Object.freeze({
   existingFarmsteadFillInMaxBorderGap: 2.0,
   farmWorkerHomeRadius: 55,
   storehouseMinimumCCDistance: 18,
-  // IT14.52 generic resource-district service.  Wood already had sophisticated
-  // dropsite logic; stone, metal and natural food now get the same human-like
-  // expectation that workers should not carry resources across the settlement.
+  // IT14.52 generic resource-district service began with stone, metal and natural
+  // food. IT14.88 also lets ACTUAL lumberjack districts use this independent safety
+  // net when the dedicated wood-worksite state lags behind worker migration.
   resourceServiceStartTime: 120,
   resourceServiceIdealDropDistance: 8,
   resourceServiceHardDropDistance: 11,
@@ -769,6 +794,14 @@ const DEFAULT_POLICY = Object.freeze({
   resourceServiceMinimumWorkers: 3,
   resourceServiceMinimumMineralRemaining: 250,
   resourceServiceMinimumNaturalFoodRemaining: 300,
+  // IT14.88: wood now has a SECOND logistics safety net based on the lumberjacks'
+  // actual target district. This catches workers who have migrated beyond the old
+  // primary Storehouse even when the primary-worksite state has not rolled over yet.
+  woodServiceMinimumWorkers: 3,
+  woodServiceMinimumRemaining: 450,
+  woodServiceLocalAmountRadius: 30,
+  woodServiceHardDropDistance: 12,
+  woodServiceObservedRoundTripSeconds: 4.0,
   resourceServiceStorehouseMinimumSpacing: 10,
   resourceServiceWoodReserve: 100,
   resourceServiceRetryCooldownSeconds: 16,
@@ -1170,6 +1203,14 @@ const DEFAULT_POLICY = Object.freeze({
   woodSamePatchReuseMinimumWorkers: 8,
   woodSamePatchReuseMinimumRemaining: 450,
   woodNewDistrictReleaseRemaining: 450,
+  // IT14.87: a human wood district is slightly broader than graph-connected trees.
+  // Admit one nearby fringe hop so a small clump separated by a narrow gap is not
+  // mistaken for a wholly different forest. Continuity remains a preference, never a veto.
+  woodPracticalDistrictFringeDistance: 34,
+  woodCrisisImmediateBank: 250,
+  woodCrisisImmediateActiveWorkers: 2,
+  woodNewDistrictMinimumAmount: 600,
+  woodEmergencyNewDistrictMinimumAmount: 350,
   // IT14.54: these are SOFT caps on LIVE WOOD-SERVICE DISTRICTS, not global
   // Storehouse counts. Mineral-service Storehouses and exhausted old wood dropsites do
   // not consume the wood cap. A phase/wood-income continuity emergency may bypass it.
