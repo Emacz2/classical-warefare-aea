@@ -145,6 +145,14 @@ const DEFAULT_POLICY = Object.freeze({
   // Runtime code clamps this preferred crew to the field template's real MaxGatherers.
   farmersPerField: 4,
   fieldDiminishingReturns: 0.90,
+  // IT14.90: after the scripted ~20-civilian wood tranche, newly trained civilians
+  // become the permanent farm-expansion pipeline. Three/four of those future farmers
+  // build each new Field, then those exact workers stay on it.
+  futureFarmTargetFields: 10,
+  futureFarmFieldBuilderTarget: 4,
+  futureFarmFieldBuilderMinimum: 3,
+  futureFarmFieldBuilderEmergencyMinimum: 2,
+  futureFarmFieldEmergencyFoodBank: 120,
   // IT14.80: compact human-like farm blocks use four footprint-derived pinwheel
   // positions around the Farmstead. Simple N/E/S/W side-centres overlap when Fields
   // are larger than the Farmstead, so the four-slot contract uses exact rectangle math.
@@ -659,10 +667,30 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.89: post-AttackPlan combat sweep. AttackManager periodically issues the
   // engine's attack-move command to human combat units when enemy units are ahead
   // of the formation, so soldiers clear troops before resuming building objectives.
+  // IT14.90: the sweep is now a FRONT-CONTACT tool, not a whole-army order churn.
+  // A tiny 1-2 unit screen cannot redirect a 100-man army; only soldiers close to
+  // the contact are swept, with a capped share of the full attack.
   expertAttackMoveSweepRadius: 58,
-  expertAttackMoveSweepIntervalSeconds: 1.5,
+  expertAttackMoveSweepIntervalSeconds: 1.75,
   expertAttackMoveSweepForwardDotMinimum: -0.05,
-  expertAttackMoveSweepMinimumEnemyUnits: 1,
+  expertAttackMoveSweepMinimumEnemyUnits: 3,
+  expertAttackMoveSweepEngagementRadius: 42,
+  expertAttackMoveSweepUnitsPerEnemy: 3,
+  expertAttackMoveSweepMaximumArmyFraction: 0.55,
+  // Once FINISH has overwhelming local control around an enemy CC, a manager-level
+  // lock makes the surviving capture-capable army act as one group. A tiny defender
+  // screen gets a small kill squad; everybody else captures the same CC.
+  expertCCCaptureFinishMinimumArmy: 70,
+  expertCCCaptureFinishMinimumCapturers: 24,
+  expertCCCaptureFinishApproachRadius: 92,
+  expertCCCaptureFinishScreenRadius: 68,
+  expertCCCaptureFinishMaximumScreenUnits: 6,
+  expertCCCaptureFinishMaximumScreenFraction: 0.15,
+  expertCCCaptureFinishScreenersPerEnemy: 3,
+  expertCCCaptureFinishOrderIntervalSeconds: 1.75,
+  expertCCCaptureFinishStallSeconds: 18,
+  expertCCCaptureFinishRetryDelaySeconds: 24,
+  expertCCCaptureFinishProgressPoints: 2,
   // Athens' zero-pop Scythian civic police are overflow manpower, not core army.
   athensPoliceActivationPopulationHeadroom: 0,
   // Iphicratean Reforms is deliberately OPTIONAL. It is attractive to a large

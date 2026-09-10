@@ -1,0 +1,41 @@
+IT14.90 CHANGE REPORT
+
+Targeted follow-up to the Athens-vs-Athens IT14.89 replay. Only three Petra JavaScript files change from IT14.89: attackManager.js, expertDecisionController.js, and expertDecision/policy.js. attackPlan.js remains byte-for-byte unchanged.
+
+1. FIELD CONSTRUCTION — NEW CIVILIANS BECOME THE FARM PIPELINE
+- The scripted opening still sends civilians through the existing food/wood sequence and keeps the ~20-civilian wood tranche unchanged.
+- After that tranche, newly trained civilians are marked as future permanent farmers until the mature farm workforce is covered.
+- Those civilians may remain productive on natural food or temporary fallback resources while waiting for a legal Field, but they are the exclusive normal builder pool for new Fields.
+- Normal Field construction uses 3-4 future farmers. In an actual zero-natural-food / <=120-food emergency, 2 is the minimum escape rather than pulling a large established work crew.
+- The selected Field crew is persisted in activeTaskBuildIntent through foundation construction; maintenance cannot add unrelated lumberjacks/miners.
+- Future-farmer IDs are reserved to that specific Field task as soon as the build plan is created, preventing the same new civilian from being claimed by two pending Fields before either foundation appears. Reservations are released on retry/failure and consumed on completion.
+- On Field completion, those exact builders are locked to that Field as permanent farmers.
+- Civilians not marked as future farmers no longer opportunistically pile onto Field foundations through assignFoodInfrastructureWorker(). Farmstead assistance remains separate.
+- New diagnostics: [EXPERT-FARM-CREW] new civilian=..., field ... futureBuilders=..., wait ...
+
+2. ATTACK-MOVE — FRONT-CONTACT ONLY
+- Keeps the IT14.89 idea of using the engine attack-move command without changing attackPlan.js, but narrows its scope substantially.
+- A 1-2 unit nuisance screen can no longer redirect most of a 90-100 man army.
+- The sweep now requires at least 3 enemy combat units ahead.
+- Only friendly combat units within roughly 42m of those contact units are eligible to receive the attack-move correction.
+- Redirected units are capped by both enemy count (~3 friendly units per enemy) and ~55% of the full attack army.
+- Units already fighting a hostile unit, siege, support/healers, ships, garrisoned passengers, wounded returns, retreating units, and paused/regrouping plans remain untouched.
+- New diagnostic wording: [EXPERT-ATTACK-MOVE] contact ...
+
+3. DECISIVE CC CAPTURE FINISH LOCK
+- Adds an Expert-only post-plan finishing controller in attackManager.js; attackPlan.js remains unchanged.
+- It activates only after the normal FINISH condition already says the opponent is strategically broken, the main army remains large (default >=70), the army is physically at a surviving enemy Civic Centre, and at least ~24 capture-capable soldiers are present.
+- If a tiny defender screen remains (default <=6 units and <=15% of available capturers), only a small screen squad (~3 friendly fighters per defender) is assigned to clear those units.
+- All remaining capture-capable soldiers in the area receive the SAME explicit capture order on the enemy CC. This prevents the observed split where some soldiers attacked the CC, some captured it, some chased side buildings, and others walked around.
+- While the capture lock is active, the generic attack-move sweep is disabled for that plan so the two correction systems cannot fight each other.
+- Rams assigned to that same finishing attack stop recruiting passengers; any small CitizenSoldier ram crew is unloaded so those soldiers can rejoin the decisive capture instead of sitting inside the ram.
+- Capture progress is monitored. If capture points fail to make meaningful progress for ~18s, the lock releases for ~24s so normal ram/destruction logic can take over instead of deadlocking on an uncapturable/garrisoned CC.
+- New diagnostics: [EXPERT-CAPTURE-FINISH] LOCK / order / STALLED.
+
+4. FROZEN / NON-REGRESSION
+- IT14.86 opening Farmstead multi-bush scoring unchanged.
+- IT14.87 wood-crisis escape, practical district logic, fragment rejection, scarcity expansion/Cleruchy, and P3 FINISH persistence unchanged.
+- IT14.88 no automatic Oxybeles, small healer escort, and optional Iphicratean Reforms unchanged.
+- IT14.89 Storehouse economic scoring, healthy-current-woodline preference, Farmstead #3 rescan, Scythian Police cap gating, House gap cleanup, and Field-progress watchdog remain intact.
+- Opening Storehouse rules remain unchanged.
+- attackPlan.js is byte-for-byte identical to IT14.89.

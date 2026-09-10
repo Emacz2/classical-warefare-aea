@@ -104,6 +104,12 @@ export function AttackManager(config)
 	// intentionally untouched; this is an Expert-only final order correction.
 	this.expertLastAttackMoveSweepAt = {};
 	this.expertLastAttackMoveSweepLog = -99999;
+	// IT14.90: manager-level CC finish lock. This deliberately lives outside
+	// attackPlan.js so the normal strategic plan remains untouched.
+	this.expertCCCaptureLock = undefined;
+	this.expertCCCaptureSuppressedUntil = {};
+	this.expertLastCCCaptureOrderAt = -99999;
+	this.expertLastCCCaptureLog = -99999;
 	// IT14.52: the economy uses this one-way signal to unlock the worker-aura
 	// Temple immediately after a committed P1 rush leaves home.
 	this.expertRushHasLaunched = false;
@@ -967,28 +973,208 @@ AttackManager.prototype.coordinateExpertHealerEscort = function(gameState)
 	return moved;
 };
 
-// IT14.89: use the engine's attack-move behavior as a narrow post-AttackPlan
-// correction. When real enemy combat units are immediately ahead of an Expert army,
-// human combat troops sweep through those units before resuming structure objectives.
-// attackPlan.js remains unchanged; rams/support are never touched here.
+// IT14.90: decisive CC capture lock plus narrower front-contact attack-move correction.
+// attackPlan.js remains unchanged; these are Expert-only post-plan order corrections.
+AttackManager.prototype.coordinateExpertCCCaptureFinish = function(gameState, finishing)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || !finishing)
+	{
+		this.expertCCCaptureLock = undefined;
+		return 0;
+	}
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	let attack;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH, AttackPlan.TYPE_RAID])
+		for (const plan of this.startedAttacks[type] || [])
+			if (plan && plan.isStarted && plan.isStarted() && !plan.isPaused() &&
+			    plan.targetPlayer === finishing.targetPlayer &&
+			    (!attack || plan.unitCollection.length > attack.unitCollection.length))
+				attack = plan;
+	if (!attack || !attack.unitCollection || attack.unitCollection.length <
+	    Math.max(1, Number(policy.expertCCCaptureFinishMinimumArmy) || 70))
+	{
+		this.expertCCCaptureLock = undefined;
+		return 0;
+	}
+
+	const centre = attack.unitCollection.getCentrePosition && attack.unitCollection.getCentrePosition() || attack.position || attack.targetPos;
+	if (!centre)
+		return 0;
+	let cc;
+	let ccDist = Infinity;
+	for (const struct of gameState.getEnemyStructures(finishing.targetPlayer).values())
+	{
+		if (!struct || !struct.position || !struct.position() || !struct.hasClass || !struct.hasClass("CivCentre") ||
+		    !struct.capturePoints || !struct.capturePoints())
+			continue;
+		const dist = SquareVectorDistance(centre, struct.position());
+		if (dist < ccDist)
+		{
+			ccDist = dist;
+			cc = struct;
+		}
+	}
+	const approach = Math.max(40, Number(policy.expertCCCaptureFinishApproachRadius) || 92);
+	if (!cc || ccDist > approach * approach)
+	{
+		this.expertCCCaptureLock = undefined;
+		return 0;
+	}
+	const suppressed = Number(this.expertCCCaptureSuppressedUntil && this.expertCCCaptureSuppressedUntil[cc.id()]) || -99999;
+	if (now < suppressed)
+	{
+		this.expertCCCaptureLock = undefined;
+		return 0;
+	}
+
+	const screenRadius = Math.max(25, Number(policy.expertCCCaptureFinishScreenRadius) || 68);
+	const screenRadius2 = screenRadius * screenRadius;
+	const enemyScreen = [];
+	for (const enemy of gameState.getEnemyUnits(finishing.targetPlayer).values())
+	{
+		if (!enemy || !enemy.position || !enemy.position() || enemy.hasClass && enemy.hasClass("Animal"))
+			continue;
+		const attacks = enemy.attackTypes && enemy.attackTypes();
+		if (!attacks || SquareVectorDistance(enemy.position(), cc.position()) > screenRadius2)
+			continue;
+		enemyScreen.push(enemy);
+	}
+
+	const capturers = [];
+	const fighters = [];
+	const approach2 = approach * approach;
+	for (const ent of attack.unitCollection.values())
+	{
+		if (!ent || !ent.position || !ent.position() || isExpertBuildingSiegeEntity(ent) ||
+		    ent.hasClass && (ent.hasClass("Support") || ent.hasClass("Ship")) ||
+		    ent.getMetadata && (ent.getMetadata(PlayerID, "garrisonHolder") !== undefined ||
+		    ent.getMetadata(PlayerID, "expertWoundedReturnUntil") !== undefined ||
+		    ent.getMetadata(PlayerID, "expertCombatRetreatUntil") !== undefined) ||
+		    SquareVectorDistance(ent.position(), cc.position()) > approach2)
+			continue;
+		if (ent.attackTypes && ent.attackTypes())
+			fighters.push(ent);
+		if (ent.canCapture && ent.canCapture(cc) && ent.canAttackTarget && ent.canAttackTarget(cc, true))
+			capturers.push(ent);
+	}
+	const minCapturers = Math.max(1, Number(policy.expertCCCaptureFinishMinimumCapturers) || 24);
+	if (capturers.length < minCapturers)
+	{
+		this.expertCCCaptureLock = undefined;
+		return 0;
+	}
+	const maxScreen = Math.max(0, Number(policy.expertCCCaptureFinishMaximumScreenUnits) || 6);
+	const maxScreenFraction = Math.max(0.02, Math.min(0.5, Number(policy.expertCCCaptureFinishMaximumScreenFraction) || 0.15));
+	if (enemyScreen.length > maxScreen || enemyScreen.length > Math.ceil(capturers.length * maxScreenFraction))
+	{
+		this.expertCCCaptureLock = undefined;
+		return 0;
+	}
+
+	let lock = this.expertCCCaptureLock;
+	const points = cc.capturePoints ? cc.capturePoints() : undefined;
+	const ours = Array.isArray(points) ? Math.max(0, Number(points[PlayerID]) || 0) : 0;
+	if (!lock || Number(lock.plan) !== Number(attack.name) || Number(lock.targetId) !== Number(cc.id()))
+	{
+		lock = { plan: attack.name, targetId: cc.id(), targetPlayer: finishing.targetPlayer,
+			startedAt: now, lastCapture: ours, progressCapture: ours, lastProgressAt: now };
+		this.expertCCCaptureLock = lock;
+		aiWarn("[EXPERT-CAPTURE-FINISH] LOCK plan=" + attack.name + " cc=" + cc.id() +
+			" army=" + attack.unitCollection.length + " capturers=" + capturers.length + " screen=" + enemyScreen.length);
+	}
+	else
+	{
+		const progressPoints = Math.max(0.5, Number(policy.expertCCCaptureFinishProgressPoints) || 2);
+		if (ours >= (Number(lock.progressCapture) || 0) + progressPoints)
+		{
+			lock.lastProgressAt = now;
+			lock.progressCapture = ours;
+		}
+		lock.lastCapture = ours;
+	}
+	const stall = Math.max(6, Number(policy.expertCCCaptureFinishStallSeconds) || 18);
+	if (now - (Number(lock.lastProgressAt) || now) >= stall)
+	{
+		const retry = Math.max(8, Number(policy.expertCCCaptureFinishRetryDelaySeconds) || 24);
+		this.expertCCCaptureSuppressedUntil[cc.id()] = now + retry;
+		this.expertCCCaptureLock = undefined;
+		aiWarn("[EXPERT-CAPTURE-FINISH] STALLED cc=" + cc.id() + " capture=" + Math.round(ours) +
+			" release=destroy retry=" + Math.round(retry));
+		return 0;
+	}
+
+	attack.target = cc;
+	attack.targetPlayer = cc.owner();
+	attack.targetPos = cc.position();
+	const interval = Math.max(0.75, Number(policy.expertCCCaptureFinishOrderIntervalSeconds) || 1.75);
+	if (now < (Number(this.expertLastCCCaptureOrderAt) || -99999) + interval)
+		return capturers.length;
+	this.expertLastCCCaptureOrderAt = now;
+
+	// A handful of surviving defenders get a handful of killers. Do NOT send the
+	// whole army after one unit; everybody else stays on the decisive capture.
+	const screenersPerEnemy = Math.max(1, Number(policy.expertCCCaptureFinishScreenersPerEnemy) || 3);
+	const assignedScreeners = new Set();
+	for (const enemy of enemyScreen)
+	{
+		const candidates = fighters.filter(ent => !assignedScreeners.has(ent.id()) && ent.canAttackTarget && ent.canAttackTarget(enemy, false));
+		candidates.sort((a, b) => SquareVectorDistance(a.position(), enemy.position()) - SquareVectorDistance(b.position(), enemy.position()) || a.id() - b.id());
+		for (const ent of candidates.slice(0, screenersPerEnemy))
+		{
+			ent.attack(enemy.id(), false);
+			assignedScreeners.add(ent.id());
+		}
+	}
+	let orderedCapture = 0;
+	for (const ent of capturers)
+	{
+		if (assignedScreeners.has(ent.id()))
+			continue;
+		const orders = ent.unitAIOrderData ? ent.unitAIOrderData() || [] : [];
+		const currentTarget = orders.length && orders[0].target;
+		if (Number(currentTarget) === Number(cc.id()) && String(ent.unitAIState && ent.unitAIState() || "").includes("COMBAT"))
+			continue;
+		ent.attack(cc.id(), true);
+		++orderedCapture;
+	}
+	if (now - (Number(this.expertLastCCCaptureLog) || -99999) >= 5)
+	{
+		this.expertLastCCCaptureLog = now;
+		aiWarn("[EXPERT-CAPTURE-FINISH] order plan=" + attack.name + " cc=" + cc.id() +
+			" capture=" + orderedCapture + " screeners=" + assignedScreeners.size +
+			" enemyScreen=" + enemyScreen.length + " points=" + Math.round(ours));
+	}
+	return orderedCapture;
+};
+
+// IT14.90: attack-move remains useful while travelling into a real defending screen,
+// but only the front-contact portion of the army is redirected. A 1-2 unit nuisance
+// screen is ignored here, and a live CC capture lock always wins.
 AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 {
 	if (this.Config.difficulty < difficulty.EXPERT)
 		return 0;
 	const policy = mergePolicy();
 	const now = Number(gameState.ai.elapsedTime) || 0;
-	const interval = Math.max(0.5, Number(policy.expertAttackMoveSweepIntervalSeconds) || 1.5);
+	const interval = Math.max(0.75, Number(policy.expertAttackMoveSweepIntervalSeconds) || 1.75);
 	const radius = Math.max(20, Number(policy.expertAttackMoveSweepRadius) || 58);
 	const radius2 = radius * radius;
+	const engagement = Math.max(12, Number(policy.expertAttackMoveSweepEngagementRadius) || 42);
+	const engagement2 = engagement * engagement;
 	const dotMinimum = Number.isFinite(Number(policy.expertAttackMoveSweepForwardDotMinimum)) ?
 		Number(policy.expertAttackMoveSweepForwardDotMinimum) : -0.05;
-	const minimumEnemies = Math.max(1, Number(policy.expertAttackMoveSweepMinimumEnemyUnits) || 1);
+	const minimumEnemies = Math.max(1, Number(policy.expertAttackMoveSweepMinimumEnemyUnits) || 3);
+	const unitsPerEnemy = Math.max(1, Number(policy.expertAttackMoveSweepUnitsPerEnemy) || 3);
+	const maxFraction = Math.max(0.1, Math.min(1, Number(policy.expertAttackMoveSweepMaximumArmyFraction) || 0.55));
 	let redirectedTotal = 0;
 	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH])
 		for (const attack of this.startedAttacks[type] || [])
 		{
 			if (!attack || !attack.isStarted || !attack.isStarted() || attack.isPaused && attack.isPaused() ||
 			    attack.targetPlayer === undefined || !attack.unitCollection || !attack.unitCollection.hasEntities || !attack.unitCollection.hasEntities())
+				continue;
+			if (this.expertCCCaptureLock && Number(this.expertCCCaptureLock.plan) === Number(attack.name))
 				continue;
 			const key = String(attack.name);
 			if (now < (Number(this.expertLastAttackMoveSweepAt[key]) || -99999) + interval)
@@ -1003,7 +1189,7 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 				continue;
 			dx /= forwardLength; dz /= forwardLength;
 
-			let enemiesAhead = 0;
+			const enemiesAhead = [];
 			for (const enemy of gameState.getEnemyUnits(attack.targetPlayer).values())
 			{
 				if (!enemy || !enemy.position || !enemy.position() || enemy.hasClass && enemy.hasClass("Animal"))
@@ -1018,16 +1204,13 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 					continue;
 				const dot = (ex * dx + ez * dz) / Math.sqrt(d2);
 				if (dot >= dotMinimum)
-					++enemiesAhead;
+					enemiesAhead.push(enemy);
 			}
-			if (enemiesAhead < minimumEnemies)
+			if (enemiesAhead.length < minimumEnemies)
 				continue;
-			// Rate-limit the plan once a sweep opportunity is observed, even when every
-			// soldier is already correctly fighting a unit. This keeps the correction
-			// lightweight instead of rescanning the same local battle every AI turn.
 			this.expertLastAttackMoveSweepAt[key] = now;
 
-			let redirected = 0;
+			const candidates = [];
 			for (const ent of attack.unitCollection.values())
 			{
 				if (!ent || !ent.position || !ent.position() || !ent.attackMove || isExpertBuildingSiegeEntity(ent) ||
@@ -1037,27 +1220,34 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 				    ent.getMetadata(PlayerID, "expertWoundedReturnUntil") !== undefined ||
 				    ent.getMetadata(PlayerID, "expertCombatRetreatUntil") !== undefined))
 					continue;
-				const attacks = ent.attackTypes && ent.attackTypes();
-				if (!attacks)
+				if (!(ent.attackTypes && ent.attackTypes()))
 					continue;
-				// Do not churn a soldier already fighting a unit. The correction is aimed at
-				// troops walking past defenders or tunneling on a building.
 				const orders = ent.unitAIOrderData ? ent.unitAIOrderData() || [] : [];
 				const currentTarget = orders.length && orders[0].target ? gameState.getEntityById(orders[0].target) : undefined;
 				if (currentTarget && currentTarget.hasClass && currentTarget.hasClass("Unit") &&
 				    currentTarget.owner && gameState.isPlayerEnemy(currentTarget.owner()))
 					continue;
-				ent.attackMove(destination[0], destination[1], { "attack": ["Unit"], "avoid": ["Support", "Domestic", "Ship"] });
-				++redirected;
+				let nearest = Infinity;
+				for (const enemy of enemiesAhead)
+					nearest = Math.min(nearest, SquareVectorDistance(ent.position(), enemy.position()));
+				if (nearest > engagement2)
+					continue;
+				candidates.push({ ent, nearest });
 			}
-			if (!redirected)
+			if (!candidates.length)
 				continue;
-			redirectedTotal += redirected;
-			if (now - (Number(this.expertLastAttackMoveSweepLog) || -99999) >= 6)
+			candidates.sort((a, b) => a.nearest - b.nearest || a.ent.id() - b.ent.id());
+			const capByEnemies = Math.max(minimumEnemies, enemiesAhead.length * unitsPerEnemy);
+			const capByArmy = Math.max(1, Math.ceil(attack.unitCollection.length * maxFraction));
+			const redirectCount = Math.min(candidates.length, capByEnemies, capByArmy);
+			for (const item of candidates.slice(0, redirectCount))
+				item.ent.attackMove(destination[0], destination[1], { "attack": ["Unit"], "avoid": ["Support", "Domestic", "Ship"] });
+			redirectedTotal += redirectCount;
+			if (redirectCount && now - (Number(this.expertLastAttackMoveSweepLog) || -99999) >= 6)
 			{
 				this.expertLastAttackMoveSweepLog = now;
-				aiWarn("[EXPERT-ATTACK-MOVE] sweep plan=" + attack.name + " enemiesAhead=" + enemiesAhead +
-					" redirected=" + redirected + " army=" + attack.unitCollection.length);
+				aiWarn("[EXPERT-ATTACK-MOVE] contact plan=" + attack.name + " enemiesAhead=" + enemiesAhead.length +
+					" redirected=" + redirectCount + " eligible=" + candidates.length + " army=" + attack.unitCollection.length);
 			}
 		}
 	return redirectedTotal;
@@ -1761,6 +1951,28 @@ AttackManager.prototype.manageExpertRamGarrisons = function(gameState, finishing
 			continue;
 		}
 
+		// IT14.90: once the decisive CC capture lock owns this attack, do not hide
+		// capture-capable soldiers inside the ram. Release the small ram crew so the
+		// normal passenger-recovery lane can rejoin them to the capture on the next tick,
+		// and never refill this ram until the lock ends.
+		if (this.expertCCCaptureLock && ramAttack &&
+		    Number(this.expertCCCaptureLock.plan) === Number(ramAttack.name))
+		{
+			let released = 0;
+			for (const id of [...ram.garrisoned()])
+			{
+				const ent = gameState.getEntityById(id);
+				if (!ent || !ent.hasClass || !ent.hasClass("CitizenSoldier"))
+					continue;
+				ent.setMetadata(PlayerID, "garrisonType", undefined);
+				ram.unload(id);
+				++released;
+			}
+			if (released)
+				aiWarn("[EXPERT-CAPTURE-FINISH] ram=" + ram.id() + " released-capturers=" + released);
+			continue;
+		}
+
 		const occupied = gameState.ai.HQ.garrisonManager.numberOfGarrisonedSlots(ram);
 		const wanted = Math.min(policy.expertRamGarrisonTarget, Math.max(0, ram.garrisonMax ? ram.garrisonMax() : 0));
 		let room = wanted - occupied;
@@ -2306,6 +2518,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	// accumulating as an idle home reserve. Siege keeps its existing attachment lane.
 	this.attachExpertPremiumUnitsToActiveAttack(gameState);
 	this.attachExpertSiegeToActiveAttack(gameState);
+	this.coordinateExpertCCCaptureFinish(gameState, expertFinishing);
 	this.coordinateExpertAttackMoveSweep(gameState);
 	this.coordinateExpertHealerEscort(gameState);
 	if (expertFinishing)
@@ -2868,7 +3081,11 @@ AttackManager.prototype.Serialize = function()
 		"expertLastP1RushGateLog": this.expertLastP1RushGateLog,
 		"expertLateP1UnupgradedCancelled": this.expertLateP1UnupgradedCancelled,
 		"expertLastAttackMoveSweepAt": { ...(this.expertLastAttackMoveSweepAt || {}) },
-		"expertLastAttackMoveSweepLog": this.expertLastAttackMoveSweepLog
+		"expertLastAttackMoveSweepLog": this.expertLastAttackMoveSweepLog,
+		"expertCCCaptureLock": this.expertCCCaptureLock ? { ...this.expertCCCaptureLock } : undefined,
+		"expertCCCaptureSuppressedUntil": { ...(this.expertCCCaptureSuppressedUntil || {}) },
+		"expertLastCCCaptureOrderAt": this.expertLastCCCaptureOrderAt,
+		"expertLastCCCaptureLog": this.expertLastCCCaptureLog
 	};
 
 	const upcomingAttacks = {};
@@ -2896,6 +3113,10 @@ AttackManager.prototype.Deserialize = function(gameState, data)
 		this[key] = data.properties[key];
 	this.expertLastAttackMoveSweepAt = { ...(this.expertLastAttackMoveSweepAt || {}) };
 	this.expertLastAttackMoveSweepLog = Number.isFinite(Number(this.expertLastAttackMoveSweepLog)) ? Number(this.expertLastAttackMoveSweepLog) : -99999;
+	this.expertCCCaptureLock = this.expertCCCaptureLock ? { ...this.expertCCCaptureLock } : undefined;
+	this.expertCCCaptureSuppressedUntil = { ...(this.expertCCCaptureSuppressedUntil || {}) };
+	this.expertLastCCCaptureOrderAt = Number.isFinite(Number(this.expertLastCCCaptureOrderAt)) ? Number(this.expertLastCCCaptureOrderAt) : -99999;
+	this.expertLastCCCaptureLog = Number.isFinite(Number(this.expertLastCCCaptureLog)) ? Number(this.expertLastCCCaptureLog) : -99999;
 
 	this.upcomingAttacks = {};
 	for (const key in data.upcomingAttacks)

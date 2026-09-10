@@ -1,48 +1,37 @@
-EXPERT BENCHMARKS — IT14.89
+EXPERT BENCHMARKS — IT14.90
 
-IT14.88 VALIDATED / KEEP FROZEN
-- Expert automatic siege should use rams / suitable catapult-style building siege, not Oxybeles/bolt shooters.
-- Small healer escorts (about 2 Town / 3 City) should trail live attacks without counting toward launch army size.
-- Iphicratean Reforms remains an optional Athens surplus tradeoff and may never delay the P3 all-in.
-- IT14.87 P3 FINISH persistence and wood-crisis escape remain authoritative.
-
-IT14.89 TARGETS
-1) CONTACT FIGHTING / ATTACK-MOVE
-- When an attacking army encounters enemy combat units on the route, infantry should engage/sweep those units before tunneling on nearby buildings.
-- Watch for [EXPERT-ATTACK-MOVE] sweep diagnostics during real contact.
-- Rams, healers/support, wounded peel units and tactical regroup must not be hijacked by this correction.
+FROZEN / KEEP
+- Preserve the IT14.86 opening Farmstead behavior.
+- Preserve IT14.87 wood crisis recovery and P3 FINISH persistence.
+- Preserve IT14.88 ram/catapult preference, healer escort, and optional Iphicratean Reforms.
+- Preserve IT14.89 Storehouse scoring/wood-district discipline, Farmstead #3 rescan, Scythian Police gating, house-gap cleanup, and permanent-field progress watchdog.
 - attackPlan.js must remain unchanged.
 
-2) WOOD DISTRICT DISCIPLINE
-- If the current serviced forest still has >=~900 practical wood, >=4 real active cutters and healthy delivery, a few drifted workers must NOT open a second forest merely because their haul is long.
-- If active cutters collapse, delivery stalls, or the fast <=250 wood / <=2-active crisis fires, release continuity immediately and recover/expand as IT14.87 did.
-- A large single forest may still receive a second Storehouse when the cutting face has moved far enough for strong measured payback.
+IT14.90 TARGETS
+1) FARM CREW OWNERSHIP
+- After the scripted ~20 civilian wood tranche, newly trained civilians should become the source of permanent Field crews.
+- A new Field should normally show 3-4 builders, never a 15-20 worker swarm.
+- The Field builders should become the permanent farmers on completion rather than returning to wood/stone/metal.
+- Watch [EXPERT-FARM-CREW] and [EXPERT-FARM] builders->farmers diagnostics.
 
-3) STOREHOUSE ECONOMIC PLACEMENT
-- New wood Storehouses should sit on the working edge / weighted mass of the real forest, not beside one isolated fringe tree.
-- Stone and metal Storehouses should be close to the mine mass they service.
-- Normal non-opening Storehouses should improve weighted average haul by about >=5m for wood or >=4m for minerals; wood crisis may accept about >=2m.
-- Reject zero-payback new-patch Storehouses. Farms/Farmsteads must never positively pull a Storehouse location toward them.
+2) ATTACK-MOVE DISCIPLINE
+- Real enemy formations on the route should still be engaged before nearby buildings.
+- One or two stray defenders must NOT redirect almost the entire army.
+- [EXPERT-ATTACK-MOVE] contact should show a bounded redirected count associated with the actual contact size.
 
-4) PERMANENT FOOD PROGRESS
-- With natural food exhausted/near exhausted and desired Fields above the field pipeline, the AI must not sit at five Fields for minutes.
-- If legal capacity exists and no Field pipeline progress occurs for ~24s, [EXPERT-FIELD-WATCH] should force one next Field.
-- Natural-rich openings should still delay unnecessary permanent Fields normally.
+3) DECISIVE CC FINISH
+- When FINISH has a 70+ army physically at an enemy CC and the local defender screen is tiny, [EXPERT-CAPTURE-FINISH] should lock the objective.
+- Only a small squad should clear the last defenders; the remaining capture-capable soldiers should all capture the same CC.
+- Generic attack-move must stop overriding that plan while the lock is active.
+- If capture does not progress for ~18s, expect STALLED and a temporary release to normal destruction/ram logic.
+- Replay target from IT14.89: a position around 180 vs ~69 population with a huge positive kill exchange should close in roughly the next 3-4 minutes, not wander for another 5+ minutes.
 
-5) FARMSTEAD #3
-- Before a third farm_hub_deadlock Farmstead, look for [EXPERT-FARM-REPACK].
-- If an old failed-slot mark was the only blocker and an existing hub has a legal slot, build that Field instead.
-- If two hubs are truly boxed/full, Farmstead #3 must still be allowed; do not recreate a food-capacity deadlock.
+4) STOREHOUSE / FARMSTEAD VISUAL CHECK
+- Continue checking every non-opening Storehouse visually: it should service the real wood/stone/metal mass and should not open a weak second wood district while the current one remains healthy.
+- Continue checking Farmstead #3 only after the existing hubs truly lack legal compact Field capacity.
 
-6) ATHENS SCYTHIAN POLICE
-- units/athen/city_police must not be trained as normal army replacement below the effective operating population cap.
-- At the actual cap, zero-pop police may be added as overflow manpower.
-
-7) HOUSE PACKING
-- Prefer filling a legal one-house hole in an existing row/block before spreading, but never at the expense of Farm/Storehouse/resource reservations.
-
-RECOMMENDED TEST MIX
-- Athens Expert vs Athens Very Hard: watch contact fighting, police gating, healer/rams, and whether the army still walks past defenders to buildings.
-- Random-civ Expert vs Very Hard on forest-heavy and sparse maps: inspect every non-opening Storehouse visually and correlate with wood-health/payback diagnostics.
-- At least one food-poor replay: verify the five-Field plateau cannot persist while legal slots exist.
-- Human vs Expert: judge whether attack-move pressure feels more coherent without creating suicidal chases or breaking tactical regroup.
+RECOMMENDED TEST
+- Athens Expert vs Athens Very Hard: strongest test for attack-move + CC capture finish.
+- One food-poor map: verify 3-4 future-farmer builders and no mass construction swarm.
+- One forest-heavy map: verify IT14.89 Storehouse improvements were not regressed.
+- Human vs Expert: visually inspect whether final CC capture now looks like one coherent order instead of mixed attack/capture/walk behavior.
