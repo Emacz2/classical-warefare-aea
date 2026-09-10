@@ -1,37 +1,60 @@
-EXPERT BENCHMARKS — IT14.90
+EXPERT BENCHMARKS — IT14.91
 
 FROZEN / KEEP
-- Preserve the IT14.86 opening Farmstead behavior.
-- Preserve IT14.87 wood crisis recovery and P3 FINISH persistence.
-- Preserve IT14.88 ram/catapult preference, healer escort, and optional Iphicratean Reforms.
-- Preserve IT14.89 Storehouse scoring/wood-district discipline, Farmstead #3 rescan, Scythian Police gating, house-gap cleanup, and permanent-field progress watchdog.
-- attackPlan.js must remain unchanged.
+- Preserve IT14.90 permanent future-farmer crews.
+- Preserve IT14.90 bounded attack-move and CC capture finish; attackManager.js and attackPlan.js are unchanged.
+- Preserve IT14.88 healer/siege/Iphicratean behavior and IT14.89 Scythian Police max-pop gate.
 
-IT14.90 TARGETS
-1) FARM CREW OWNERSHIP
-- After the scripted ~20 civilian wood tranche, newly trained civilians should become the source of permanent Field crews.
-- A new Field should normally show 3-4 builders, never a 15-20 worker swarm.
-- The Field builders should become the permanent farmers on completion rather than returning to wood/stone/metal.
-- Watch [EXPERT-FARM-CREW] and [EXPERT-FARM] builders->farmers diagnostics.
+IT14.91 PRIMARY TARGET: MANAGE THE ECONOMY AS A FUTURE BUDGET
+For food, wood, stone and metal evaluate:
+  bank + measured income + immediately accessible supply
+against
+  queued/projected spending + reserve.
+Watch [EXPERT-FORECAST]. A high bank with adequate future coverage is surplus even if
+that resource's current gather rate briefly falls to zero. A small bank is not healthy
+if accessible stock and income cannot fund the next 60-150 seconds.
 
-2) ATTACK-MOVE DISCIPLINE
-- Real enemy formations on the route should still be engaged before nearby buildings.
-- One or two stray defenders must NOT redirect almost the entire army.
-- [EXPERT-ATTACK-MOVE] contact should show a bounded redirected count associated with the actual contact size.
+1) SAHARA / RESOURCE-POOR START
+Reference failure from IT14.90:
+- ~3:59: ~35 wood, desired 25 wood workers, only 2 actual woodcutters while 7 stone / 5 metal.
+- ~4:31: ~55 wood, desired 29, zero actual woodcutters while 14 stone / 8 metal.
+- first worthwhile ~2548-wood new patch not committed until ~5:35.
+Targets:
+- Forecast should classify wood critical materially earlier and peel workers from mineral surplus.
+- If no proper forest is immediately accessible, ~120-200 wood palm fragments may act as bridge wood.
+- Start acquiring the next sustainable wood district before the opening district is exhausted.
+- Athens may use forecast-critical Cleruchy earlier if a rich frontier is the actual solution.
+- Do not end with giant food/stone/metal banks and no wood economy.
 
-3) DECISIVE CC FINISH
-- When FINISH has a 70+ army physically at an enemy CC and the local defender screen is tiny, [EXPERT-CAPTURE-FINISH] should lock the objective.
-- Only a small squad should clear the last defenders; the remaining capture-capable soldiers should all capture the same CC.
-- Generic attack-move must stop overriding that plan while the lock is active.
-- If capture does not progress for ~18s, expect STALLED and a temporary release to normal destruction/ram logic.
-- Replay target from IT14.89: a position around 180 vs ~69 population with a huge positive kill exchange should close in roughly the next 3-4 minutes, not wander for another 5+ minutes.
+2) ARCTIC / RESOURCE-FLOAT START
+Reference failure from IT14.90:
+- ~10:39: ~609F / 2275W / 1797S / 384M with 30 on stone.
+- ~15:59: ~2086F / 7459W / 8159S / 3112M.
+- ~17:19: ~1958F / 6821W / 9366S / 3999M at max population.
+Targets:
+- 7k wood must NOT become a strategic wood crisis merely because current wood delivery stalls.
+- Thousands of unused stone should cause stone workers to peel toward under-covered demand.
+- Resource banks should converge toward useful working reserves/projected purchases rather than all four floating into the thousands.
+- If one resource is genuinely short and another has >~900 forecast float, expect forecast-aware barter in P2+ when a Market exists.
 
-4) STOREHOUSE / FARMSTEAD VISUAL CHECK
-- Continue checking every non-opening Storehouse visually: it should service the real wood/stone/metal mass and should not open a weak second wood district while the current one remains healthy.
-- Continue checking Farmstead #3 only after the existing hubs truly lack legal compact Field capacity.
+3) NATURAL FOOD > FARMING
+- A safe same-land neutral berry/fruit cluster (roughly >=350 remaining) just outside the border should be considered before the next Field.
+- Expect [EXPERT-FORECAST] natural-food PREEMPT when a Field would otherwise be built.
+- Farmstead must still place legally on owned territory and near enough to service the food.
+- Permanent farm hubs remain capped separately from natural-food dropsites.
 
-RECOMMENDED TEST
-- Athens Expert vs Athens Very Hard: strongest test for attack-move + CC capture finish.
-- One food-poor map: verify 3-4 future-farmer builders and no mass construction swarm.
-- One forest-heavy map: verify IT14.89 Storehouse improvements were not regressed.
-- Human vs Expert: visually inspect whether final CC capture now looks like one coherent order instead of mixed attack/capture/walk behavior.
+4) STOREHOUSE QUALITY
+- A second Storehouse may be proactively built for a useful mixed wood/stone/metal corridor, including a currently worked mineral deposit.
+- Expect [EXPERT-SERVICE] resource=mixed with real resource value/worker/gain data.
+- Do NOT interpret that Storehouse as permission to abandon a healthy current forest.
+- Multiple Storehouses on one large woodline remain valid only when haul improvement is real.
+
+5) FARM CREW NON-REGRESSION
+- After the opening ~20-civilian wood tranche, new Fields should normally use 3-4 newly trained future farmers.
+- Those exact builders stay as farmers after completion.
+- Existing wood/mineral civilians should not swarm a Field and then return across the map.
+
+6) COMBAT NON-REGRESSION
+- [EXPERT-ATTACK-MOVE] should remain bounded to actual contact units.
+- [EXPERT-CAPTURE-FINISH] should still mass capturers on a beaten enemy CC.
+- No attack-system changes were made in IT14.91; economy effects should be judged before another combat rewrite.

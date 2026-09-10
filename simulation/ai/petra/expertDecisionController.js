@@ -11,6 +11,7 @@ import { AttackPlan } from "simulation/ai/petra/attackPlan.js";
 
 import { createMemory, stepDecision } from "simulation/ai/petra/expertDecision/decisionEngine.js";
 import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
+import { buildResourceForecast, forecastBalanceDirective } from "simulation/ai/petra/expertDecision/resourceForecast.js";
 import { chooseDoctrine, doctrineById, policyOverridesForDoctrine } from "simulation/ai/petra/expertDecision/strategyPolicy.js";
 import { predictiveHouseTrigger, effectiveFieldWorkerUnits } from "simulation/ai/petra/expertDecision/economyPlanner.js";
 import {
@@ -264,6 +265,18 @@ export class ExpertDecisionController
 		this.lastFoodWoodFeedback = { "mode": "opening" };
 		this.lastImmediateFoodSlots = 0;
 		this.lastResourceBalance = undefined;
+		// IT14.91: four-resource forecast state.  Income/spend EMAs are intentionally
+		// independent of the older food/wood continuity measurements so forecast
+		// decisions can compare food, wood, stone and metal on the same footing.
+		this.resourceFlowSample = undefined;
+		this.resourceFlowIncomeEMA = { food: 0, wood: 0, stone: 0, metal: 0 };
+		this.resourceFlowSpendEMA = { food: 0, wood: 0, stone: 0, metal: 0 };
+		this.resourceFlowMeasured = false;
+		this.resourceForecast = undefined;
+		this.lastResourceForecastDiag = -99999;
+		this.lastForecastBarterAt = -99999;
+		this.lastForecastStorehouseAt = -99999;
+		this.lastForecastNaturalFoodAt = -99999;
 		this.lastPhase2Decision = { "state": "waiting", "reason": "opening" };
 		this.woodMigrationWindowStart = -99999;
 		this.woodMigrationsThisWindow = 0;
@@ -971,6 +984,221 @@ export class ExpertDecisionController
 			this.woodIncomeSample = { time: now, total };
 		}
 		return { measured: this.woodIncomeMeasured, rate: Math.max(0, this.woodIncomeEMA), total, deliveredNow };
+	}
+
+
+	// IT14.91: measure all four resource flows from player statistics and bank deltas.
+	// spend = previous bank + newly gathered - current bank.  Barter/tribute noise is
+	// intentionally smoothed by the EMA; the forecast never treats one tick as doctrine.
+	measureResourceFlows(gameState)
+	{
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const bank = gameState.getResources();
+		const gathered = {};
+		for (const type of ["food", "wood", "stone", "metal"])
+			gathered[type] = this.playerGatheredResource(gameState, type);
+		if (!this.resourceFlowSample)
+		{
+			this.resourceFlowSample = { time: now, bank: { food: Number(bank.food) || 0, wood: Number(bank.wood) || 0,
+				stone: Number(bank.stone) || 0, metal: Number(bank.metal) || 0 }, gathered };
+			return;
+		}
+		const dt = now - Number(this.resourceFlowSample.time || 0);
+		if (dt < 4)
+			return;
+		let valid = false;
+		for (const type of ["food", "wood", "stone", "metal"])
+		{
+			const currentGathered = Number(gathered[type]);
+			const previousGathered = Number(this.resourceFlowSample.gathered && this.resourceFlowSample.gathered[type]);
+			if (!Number.isFinite(currentGathered) || !Number.isFinite(previousGathered) || currentGathered < previousGathered)
+				continue;
+			valid = true;
+			const gatherDelta = currentGathered - previousGathered;
+			const income = Math.max(0, gatherDelta / dt);
+			const previousBank = Math.max(0, Number(this.resourceFlowSample.bank && this.resourceFlowSample.bank[type]) || 0);
+			const currentBank = Math.max(0, Number(bank[type]) || 0);
+			const spend = Math.max(0, (previousBank + gatherDelta - currentBank) / dt);
+			if (this.resourceFlowMeasured)
+			{
+				this.resourceFlowIncomeEMA[type] = 0.68 * (Number(this.resourceFlowIncomeEMA[type]) || 0) + 0.32 * income;
+				this.resourceFlowSpendEMA[type] = 0.72 * (Number(this.resourceFlowSpendEMA[type]) || 0) + 0.28 * spend;
+			}
+			else
+			{
+				this.resourceFlowIncomeEMA[type] = income;
+				this.resourceFlowSpendEMA[type] = spend;
+			}
+		}
+		if (valid)
+			this.resourceFlowMeasured = true;
+		this.resourceFlowSample = { time: now, bank: { food: Number(bank.food) || 0, wood: Number(bank.wood) || 0,
+			stone: Number(bank.stone) || 0, metal: Number(bank.metal) || 0 }, gathered };
+	}
+
+	queuedResourceCosts(gameState)
+	{
+		const total = { food: 0, wood: 0, stone: 0, metal: 0 };
+		const queues = gameState && gameState.ai && gameState.ai.queues || {};
+		for (const queue of Object.values(queues))
+		{
+			if (!queue || !Array.isArray(queue.plans))
+				continue;
+			// Deep production queues are intent, not an immediate bill. Count the first two
+			// plans per queue so recurring production affects the forecast without exploding it.
+			for (const plan of queue.plans.slice(0, 2))
+			{
+				if (!plan || !plan.getCost)
+					continue;
+				let cost;
+				try { cost = plan.getCost(); } catch (e) { continue; }
+				for (const type of ["food", "wood", "stone", "metal"])
+					total[type] += Math.max(0, Number(cost && cost[type]) || 0);
+			}
+		}
+		return total;
+	}
+
+	resourceForecastBaseline(gameState, foodThroughput)
+	{
+		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
+		const phase = gameState.currentPhase ? Math.max(1, Number(gameState.currentPhase()) || 1) : 1;
+		const prefix = phase >= 3 ? "P3" : phase >= 2 ? "P2" : "P1";
+		const baseline = {
+			food: Number(policy["resourceForecast" + prefix + "FoodSpendPerSecond"]) || 0,
+			wood: Number(policy["resourceForecast" + prefix + "WoodSpendPerSecond"]) || 0,
+			stone: Number(policy["resourceForecast" + prefix + "StoneSpendPerSecond"]) || 0,
+			metal: Number(policy["resourceForecast" + prefix + "MetalSpendPerSecond"]) || 0
+		};
+		const barracks = this.builtByClass(gameState, "Barracks").length;
+		const burn = barracks >= 2 ? Number(foodThroughput && foodThroughput.twoBarracksFoodBurnRate) || 0 :
+			barracks === 1 ? Number(foodThroughput && foodThroughput.oneBarracksFoodBurnRate) || 0 :
+			Number(foodThroughput && foodThroughput.ccFoodBurnRate) || 0;
+		baseline.food = Math.max(baseline.food, burn);
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		if (doctrine && doctrine.id === "p2_tech_push")
+		{
+			baseline.wood *= 1.08;
+			baseline.metal *= 1.18;
+		}
+		else if (doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"))
+		{
+			baseline.food *= 1.08;
+			baseline.wood *= 1.05;
+		}
+		return baseline;
+	}
+
+	resourceForecastReserves(gameState)
+	{
+		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
+		const phase = gameState.currentPhase ? Math.max(1, Number(gameState.currentPhase()) || 1) : 1;
+		const prefix = phase >= 3 ? "P3" : phase >= 2 ? "P2" : "P1";
+		return {
+			food: Number(policy["resourceForecastReserve" + prefix + "Food"]) || 0,
+			wood: Number(policy["resourceForecastReserve" + prefix + "Wood"]) || 0,
+			stone: Number(policy["resourceForecastReserve" + prefix + "Stone"]) || 0,
+			metal: Number(policy["resourceForecastReserve" + prefix + "Metal"]) || 0
+		};
+	}
+
+	immediatelyAccessibleResources(gameState, cc, accessIndex)
+	{
+		const policy = mergePolicy();
+		const own = { food: 0, wood: 0, stone: 0, metal: 0 };
+		const neutral = { food: 0, wood: 0, stone: 0, metal: 0 };
+		const ownRadius = Math.max(20, Number(policy.resourceForecastOwnAccessibleRadius) || 55);
+		const ownRadius2 = ownRadius * ownRadius;
+		const neutralRadius = Math.max(20, Number(policy.resourceForecastNeutralRadius) || 72);
+		const neutralRadius2 = neutralRadius * neutralRadius;
+		const neutralWeight = Math.max(0, Math.min(1, Number(policy.resourceForecastNeutralSupplyWeight) || 0.8));
+		const cap = Math.max(100, Number(policy.resourceForecastSupplyCapPerEntity) || 5000);
+		const anchorsByType = {};
+		for (const type of ["food", "wood", "stone", "metal"])
+		{
+			anchorsByType[type] = [];
+			if (cc && entityPosition(cc)) anchorsByType[type].push(cc.position());
+			for (const drop of this.resourceDropsites(gameState, type))
+				if (entityPosition(drop)) anchorsByType[type].push(drop.position());
+		}
+		for (const type of ["food", "wood", "stone", "metal"])
+		{
+			if (!gameState.getResourceSupplies)
+				continue;
+			for (const supply of gameState.getResourceSupplies(type).values())
+			{
+				const pos = entityPosition(supply);
+				if (!pos || !supply.resourceSupplyAmount || getLandAccess(gameState, supply) !== accessIndex)
+					continue;
+				if (type === "food" && hasClass(supply, "Field"))
+					continue;
+				const raw = Number(supply.resourceSupplyAmount());
+				if (!Number.isFinite(raw) || raw <= 0)
+					continue;
+				const amount = Math.min(raw, cap);
+				const owner = this.HQ.territoryMap.getOwner(pos);
+				if (owner === PlayerID && anchorsByType[type].some(anchor => SquareVectorDistance(anchor, pos) <= ownRadius2))
+					own[type] += amount;
+				else if (owner === 0 && anchorsByType[type].some(anchor => SquareVectorDistance(anchor, pos) <= neutralRadius2))
+					neutral[type] += amount * neutralWeight;
+			}
+		}
+		return { own, neutral };
+	}
+
+	updateResourceForecast(gameState, cc, accessIndex, foodThroughput)
+	{
+		this.measureResourceFlows(gameState);
+		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
+		const bank = gameState.getResources();
+		const accessible = this.immediatelyAccessibleResources(gameState, cc, accessIndex);
+		const forecast = buildResourceForecast({
+			banks: { food: bank.food, wood: bank.wood, stone: bank.stone, metal: bank.metal },
+			incomeRates: this.resourceFlowIncomeEMA,
+			spendRates: this.resourceFlowSpendEMA,
+			baselineSpend: this.resourceForecastBaseline(gameState, foodThroughput),
+			queuedCosts: this.queuedResourceCosts(gameState),
+			accessibleOwn: accessible.own,
+			accessibleNeutral: accessible.neutral,
+			reserves: this.resourceForecastReserves(gameState),
+			minimumFloat: {
+				food: policy.resourceForecastMinimumFloatFood, wood: policy.resourceForecastMinimumFloatWood,
+				stone: policy.resourceForecastMinimumFloatStone, metal: policy.resourceForecastMinimumFloatMetal
+			},
+			shortHorizon: policy.resourceForecastShortHorizonSeconds,
+			mediumHorizon: policy.resourceForecastMediumHorizonSeconds,
+			floatHorizon: policy.resourceForecastFloatHorizonSeconds,
+			shortAccessWeight: policy.resourceForecastShortAccessibleWeight,
+			mediumAccessWeight: policy.resourceForecastMediumAccessibleWeight
+		});
+		this.resourceForecast = forecast;
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		if (now - this.lastResourceForecastDiag >= (Number(policy.resourceForecastDiagnosticSeconds) || 16))
+		{
+			this.lastResourceForecastDiag = now;
+			const target = forecast.rankedNeeds && forecast.rankedNeeds[0];
+			const donor = forecast.rankedSurplus && forecast.rankedSurplus[0];
+			const compact = type => {
+				const r = forecast.resources[type];
+				return type[0].toUpperCase() + "=" + Math.round(r.bank) + "/" + r.income.toFixed(1) + "/" +
+					Math.round(r.accessible) + "/" + Math.round(r.mediumDemand) + "/" + Math.round(r.mediumMargin) + ":" + r.status;
+			};
+			aiWarn("[EXPERT-FORECAST] target=" + (target ? target.type + ":" + target.status : "none") +
+				" donor=" + (donor ? donor.type + ":" + donor.status : "none") + " " +
+				["food", "wood", "stone", "metal"].map(compact).join(" "));
+		}
+		return forecast;
+	}
+
+	forecastDirective(allowedTargets)
+	{
+		return forecastBalanceDirective(this.resourceForecast, allowedTargets);
+	}
+
+	forecastResourceCritical(type)
+	{
+		const resource = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources[type];
+		return !!(resource && resource.status === "critical");
 	}
 
 	foodClusterCovered(gameState, cluster)
@@ -4396,7 +4624,13 @@ export class ExpertDecisionController
 		const lowOrNoActiveWood = zeroActiveWood ||
 			(Number(woodsite && woodsite.localWoodAmount) || 0) <= (Number(policy.woodExpansionAmount) || 1200);
 		const sinceDelivery = Number.isFinite(Number(this.woodLastDeliveryAt)) ? now - Number(this.woodLastDeliveryAt) : 0;
-		this.woodIncomeStalled = !!(hardZeroStall || (delivered.measured && enoughWorkers && lowOrNoActiveWood &&
+		const forecastWood = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
+		const forecastComfortable = !!(forecastWood && (forecastWood.status === "surplus" || forecastWood.status === "balanced") &&
+			forecastWood.bank >= Math.max(Number(forecastWood.dynamicCeiling) || 0, Number(policy.resourceJobEmergencyWoodBank) || 250));
+		// IT14.91: zero current lumber deliveries are not a crisis while the bank plus
+		// accessible stock already covers projected spending. This removes the Arctic
+		// "7k wood but WOOD STALLED" false alarm without weakening true low-runway cases.
+		this.woodIncomeStalled = !forecastComfortable && !!(hardZeroStall || (delivered.measured && enoughWorkers && lowOrNoActiveWood &&
 			sinceDelivery >= (Number(policy.woodIncomeStallSeconds) || 12)));
 		if (this.woodIncomeStalled && now - this.lastWoodStallDiag >= 10)
 		{
@@ -5022,8 +5256,10 @@ export class ExpertDecisionController
 		const genericTargets = miningUnlocked ? (foodAllowed ? ["food", "wood", "metal", "stone"] : ["wood", "metal", "stone"]) :
 			(foodAllowed ? ["food", "wood"] : ["wood"]);
 		const soldierTargets = miningUnlocked ? ["wood", "metal", "stone"] : ["wood"];
-		const genericBalance = balancingActive ? resourceBalanceDirective({ ...balanceInput, "allowedTargets": genericTargets }) : { "active": false };
-		const soldierBalance = balancingActive ? resourceBalanceDirective({ ...balanceInput, "allowedTargets": soldierTargets }) : { "active": false };
+		const genericBalance = balancingActive && this.resourceForecast ? this.forecastDirective(genericTargets) :
+			balancingActive ? resourceBalanceDirective({ ...balanceInput, "allowedTargets": genericTargets }) : { "active": false };
+		const soldierBalance = balancingActive && this.resourceForecast ? this.forecastDirective(soldierTargets) :
+			balancingActive ? resourceBalanceDirective({ ...balanceInput, "allowedTargets": soldierTargets }) : { "active": false };
 		// IT14.24: 20 civilians is the opening target, not a permanent ceiling/floor.
 		// A live feedback signal decides whether NEW civilians may reinforce wood.
 		// Existing farmers are still never stripped off food merely to chase wood.
@@ -5032,8 +5268,8 @@ export class ExpertDecisionController
 			(foodAllowed ? (matureFoodWoodRelease ? ["food", "wood", "metal", "stone"] : ["food", "metal", "stone"]) :
 				(matureFoodWoodRelease ? ["wood", "metal", "stone"] : ["metal", "stone"])) :
 			(matureFoodWoodRelease ? ["food", "wood"] : ["food"]);
-		const civilianBalance = balancingActive ?
-			resourceBalanceDirective({ ...balanceInput, "allowedTargets": civilianTargets }) : { "active": false };
+		const civilianBalance = balancingActive && this.resourceForecast ? this.forecastDirective(civilianTargets) :
+			balancingActive ? resourceBalanceDirective({ ...balanceInput, "allowedTargets": civilianTargets }) : { "active": false };
 		this.lastImmediateFoodSlots = foodSlots;
 		this.lastResourceBalance = genericBalance;
 
@@ -5200,7 +5436,7 @@ export class ExpertDecisionController
 				else if (!desired && civilianBalance.active)
 				{
 					desired = this.resourceJobForEntity(ent, civilianBalance.target);
-					aiWarn("[EXPERT-BALANCE] new civilian=" + ent.id() + " -> " + civilianBalance.target + " ratio=" + civilianBalance.ratio.toFixed(2));
+					aiWarn("[EXPERT-BALANCE] new civilian=" + ent.id() + " -> " + civilianBalance.target + " ratio=" + Number(civilianBalance.ratio || 1).toFixed(2));
 				}
 				else if (!desired)
 				{
@@ -5262,14 +5498,19 @@ export class ExpertDecisionController
 
 		this.applyFoodRecoveryRebalance(gameState, foodWoodFeedback);
 		this.applyProFoodBankRebalance(gameState, foodWoodFeedback);
-		this.applyFoodSurplusWoodRebalance(gameState, foodWoodFeedback, openingEnd);
-		// The dedicated feedback path deliberately limits food recovery to a small,
-		// cooldown-controlled batch. Do not let the older generic bank balancer stack
-		// another civilian peel on the same tick.
+		// IT14.91: once the four-resource forecast is live, do not stack the old
+		// food-vs-wood and fixed-metal peelers on top of it. They were a major source
+		// of "move to stone/metal because a rule says so" while another resource was
+		// forecast-critical. Food emergency recovery remains as a hard safety net.
+		if (!this.resourceForecast)
+			this.applyFoodSurplusWoodRebalance(gameState, foodWoodFeedback, openingEnd);
 		if (foodWoodFeedback.mode !== "food_recovery")
 			this.rebalanceExistingWorkers(gameState, openingEnd, genericBalance);
-		this.applyMiningTechBootstrap(gameState);
-		this.applyStrategicMetalRebalance(gameState, openingEnd);
+		if (!this.resourceForecast)
+		{
+			this.applyMiningTechBootstrap(gameState);
+			this.applyStrategicMetalRebalance(gameState, openingEnd);
+		}
 	}
 
 	// IT14.67 Pro Economy: the normal doctrine keeps citizen-soldiers off food, but an
@@ -5745,8 +5986,11 @@ export class ExpertDecisionController
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		if (!balance || !balance.active || !balance.strong || now < policy.resourceBalanceStartTime)
 			return;
-		const extreme = balance.ratio >= policy.resourceBalanceExtremeRatio;
-		const cooldown = extreme ? policy.resourceBalanceExtremeCooldownSeconds : policy.resourceBalanceReassignCooldownSeconds;
+		const critical = !!balance.forecastCritical;
+		const extreme = !!balance.extreme || Number(balance.ratio || 1) >= policy.resourceBalanceExtremeRatio;
+		const cooldown = critical ? (Number(policy.resourceForecastCriticalReassignCooldownSeconds) || 3) :
+			balance.forecast ? (Number(policy.resourceForecastReassignCooldownSeconds) || 6) :
+			extreme ? policy.resourceBalanceExtremeCooldownSeconds : policy.resourceBalanceReassignCooldownSeconds;
 		if (now - this.lastResourceRebalanceTime < cooldown)
 			return;
 
@@ -5771,7 +6015,7 @@ export class ExpertDecisionController
 			// tranche. IT14.51 exception: under an EXTREME live bank mismatch, post-opening
 			// civilian miners may leave the surplus finite resource for wood. This is the
 			// 4k-stone/50-wood escape hatch; ordinary balance still uses soldiers first.
-			if (civilian && balance.target === "wood" && !extreme)
+			if (civilian && balance.target === "wood" && !extreme && !critical)
 				continue;
 			const lockedFieldId = Number(ent.getMetadata(PlayerID, FARM_LOCK));
 			// Permanent civilian farmers remain sacred. A citizen-soldier may have used a
@@ -5794,7 +6038,9 @@ export class ExpertDecisionController
 		// opening wood crew and uses the military workers that caused most of the late
 		// wood inflation. Post-opening civilians are the secondary source.
 		candidates.sort((a, b) => Number(b.soldier) - Number(a.soldier) || b.ent.id() - a.ent.id() || b.ordinal - a.ordinal);
-		const targetCount = Math.min(extreme ? policy.resourceBalanceExtremeBatch : policy.resourceBalanceReassignBatch, candidates.length);
+		const targetCount = Math.min(critical ? (Number(policy.resourceForecastCriticalReassignBatch) || 10) :
+			balance.forecast ? (Number(policy.resourceForecastReassignBatch) || 4) :
+			extreme ? policy.resourceBalanceExtremeBatch : policy.resourceBalanceReassignBatch, candidates.length);
 		if (!targetCount)
 			return;
 		let moved = 0;
@@ -5808,8 +6054,9 @@ export class ExpertDecisionController
 			if (!this.setDesiredJob(gameState, ent, nextJob))
 				continue;
 			++moved;
-			aiWarn("[EXPERT-BALANCE] peel worker=" + ent.id() + " " + balance.surplus + "->" + balance.target +
-				" ratio=" + balance.ratio.toFixed(2) + (carried > 0 ? " deposit-first=" + Math.round(carried) : ""));
+			aiWarn((balance.forecast ? "[EXPERT-FORECAST]" : "[EXPERT-BALANCE]") + " peel worker=" + ent.id() + " " + balance.surplus + "->" + balance.target +
+				" ratio=" + Number(balance.ratio || 1).toFixed(2) + (critical ? " critical=1" : "") +
+				(carried > 0 ? " deposit-first=" + Math.round(carried) : ""));
 		}
 		if (moved)
 			this.lastResourceRebalanceTime = now;
@@ -5820,6 +6067,15 @@ export class ExpertDecisionController
 		const policy = mergePolicy();
 		const target = jobResourceType(desired);
 		const bank = gameState.getResources();
+		// IT14.91: forecast-critical means the next planned purchases cannot be funded
+		// by bank + accessible stock + income. That is a genuine cross-resource emergency
+		// for any resource, not only the old food/wood special cases.
+		if (target && this.forecastResourceCritical(target))
+			return true;
+		const forecastMove = this.resourceForecast ? this.forecastDirective(["food", "wood", "stone", "metal"]) : undefined;
+		if (target && forecastMove && forecastMove.active && forecastMove.strong && forecastMove.target === target &&
+		    jobResourceType(current) === forecastMove.surplus)
+			return true;
 		if (target === "food")
 			// IT14.71: ordinary food-pressure feedback no longer uproots established
 			// civilian lumberjacks. New civilians and temporary citizen-soldiers solve
@@ -6694,7 +6950,7 @@ export class ExpertDecisionController
 			if (!ent || !entityPosition(ent))
 				continue;
 			let weight = ent.resourceSupplyAmount ? Math.max(1, Number(ent.resourceSupplyAmount()) || 0) : 1;
-			points.push({ "position": [...ent.position()], weight });
+			points.push({ "position": [...ent.position()], weight, "generic": this.resourceGenericForSupply(ent) });
 		}
 		return points.sort((a, b) => b.weight - a.weight).slice(0, 48);
 	}
@@ -6718,13 +6974,14 @@ export class ExpertDecisionController
 	{
 		if (!Array.isArray(candidate) || !(points && points.length))
 			return 0;
-		const dropsites = this.resourceDropsites(gameState, generic).filter(ent => ent && entityPosition(ent));
-		if (!dropsites.length)
-			return Infinity;
 		let totalWeight = 0, oldDistance = 0, newDistance = 0;
 		for (const point of points)
 		{
 			if (!point || !Array.isArray(point.position))
+				continue;
+			const pointGeneric = point.generic || generic;
+			const dropsites = this.resourceDropsites(gameState, pointGeneric).filter(ent => ent && entityPosition(ent));
+			if (!dropsites.length)
 				continue;
 			const weight = Math.max(0.001, Number(point.weight) || 1);
 			let old = Infinity;
@@ -6735,7 +6992,7 @@ export class ExpertDecisionController
 			oldDistance += old * weight;
 			newDistance += Math.min(old, proposed) * weight;
 		}
-		return totalWeight > 0 ? oldDistance / totalWeight - newDistance / totalWeight : 0;
+		return totalWeight > 0 ? oldDistance / totalWeight - newDistance / totalWeight : Infinity;
 	}
 
 	primaryWoodDistrictHealth(gameState, accessIndex)
@@ -7128,12 +7385,23 @@ export class ExpertDecisionController
 		const expansionStatus = status === "workforce_expand" || status === "prebuild_next_worksite" || status === "depleting_expand";
 		const lowNatural = natural <= (Number(policy.athensCleruchyScarcityNaturalFoodThreshold) || 250);
 		const woodCrisis = this.woodIncomeStalled || this.phaseWoodCrisis || fastWoodCrisis;
-		const active = fundedWoodExpansion || criticalWood || (lowWood && (lowNatural || recentFailure || expansionStatus || woodCrisis));
-		return { active, localWood, natural, status, recentFailure, failureCount, woodCrisis, fundedWoodExpansion,
-			primaryResource: lowWood || woodCrisis ? "wood" : lowNatural ? "food" : "wood" };
+		const forecastNeed = this.resourceForecast && this.resourceForecast.rankedNeeds ?
+			this.resourceForecast.rankedNeeds.find(item => item && item.status === "critical" &&
+				item.ownAccessible + item.neutralAccessible < item.mediumDemand) : undefined;
+		const forecastCritical = !!forecastNeed;
+		const forecastWood = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
+		const forecastWoodComfortable = !!(forecastWood && (forecastWood.status === "balanced" || forecastWood.status === "surplus"));
+		// Local forest exhaustion is not strategic scarcity if 7k wood already covers the
+		// projected economy. Conversely, a forecast-critical resource may trigger expansion
+		// even before its current local bank reaches an old absolute threshold.
+		const legacyWoodScarcity = !forecastWoodComfortable && (fundedWoodExpansion || criticalWood ||
+			(lowWood && (lowNatural || recentFailure || expansionStatus || woodCrisis)));
+		const active = forecastCritical || legacyWoodScarcity;
+		return { active, localWood, natural, status, recentFailure, failureCount, woodCrisis, fundedWoodExpansion, forecastCritical,
+			primaryResource: forecastNeed ? forecastNeed.type : lowWood || woodCrisis ? "wood" : lowNatural ? "food" : "wood" };
 	}
 
-	cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity = false)
+	cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity = false, primaryResource = undefined)
 	{
 		if (!cc || !entityPosition(cc) || !gameState.getResourceSupplies)
 			return undefined;
@@ -7142,6 +7410,8 @@ export class ExpertDecisionController
 		const radius2 = Math.pow(Number(policy.athensCleruchyResourceRadius) || 55, 2);
 		const weights = { food: Number(policy.athensCleruchyFoodValueWeight) || 1, wood: Number(policy.athensCleruchyWoodValueWeight) || 1.5,
 			stone: Number(policy.athensCleruchyStoneValueWeight) || 1.2, metal: Number(policy.athensCleruchyMetalValueWeight) || 1.2 };
+		if (primaryResource && weights[primaryResource])
+			weights[primaryResource] *= Math.max(1, Number(policy.athensCleruchyForecastPrimaryResourceBonus) || 1.8);
 		const minimumValue = scarcity ? Math.max(1, Number(policy.athensCleruchyScarcityMinimumResourceValue) || 1400) :
 			Math.max(1, Number(policy.athensCleruchyMinimumResourceValue) || 1800);
 		let best;
@@ -7203,18 +7473,55 @@ export class ExpertDecisionController
 		const bank = gameState.getResources();
 		const foodLow = Number(bank.food) < (Number(policy.expertRecoveryMarketFoodTrigger) || 1000);
 		const surplus = Math.max(Number(bank.wood) || 0, Number(bank.stone) || 0, Number(bank.metal) || 0);
-		if (!foodLow || surplus < (Number(policy.expertRecoveryMarketSurplusTrigger) || 2200))
+		const forecastNeed = this.resourceForecast && this.resourceForecast.rankedNeeds && this.resourceForecast.rankedNeeds[0];
+		const forecastDonor = this.resourceForecast && this.resourceForecast.rankedSurplus && this.resourceForecast.rankedSurplus[0];
+		const forecastBarterNeed = !!(forecastNeed && forecastDonor && forecastNeed.type !== forecastDonor.type &&
+			(forecastNeed.status === "critical" || forecastNeed.status === "short") &&
+			forecastDonor.floatAmount >= (Number(policy.resourceForecastBarterMinimumDonorFloat) || 900));
+		if ((!foodLow || surplus < (Number(policy.expertRecoveryMarketSurplusTrigger) || 2200)) && !forecastBarterNeed)
 			return frame;
 		const actions = [...(frame.actions || [])];
 		if (!actions.some(action => action && action.kind === "market"))
 		{
 			actions.push({ type: "BUILD", kind: "market", role: "recovery_barter", priority: Number(policy.expertRecoveryMarketPriority) || 112,
 				builderCount: 4, builderPool: ["wood", "citizenSoldierWood", "stone", "metal", "food", "farm"],
-				reason: "resource-imbalance recovery barter" });
-			aiWarn("[EXPERT-RECOVERY] build=market reason=resource-imbalance bank=" +
+				reason: forecastBarterNeed ? "forecast surplus-to-shortfall barter" : "resource-imbalance recovery barter" });
+			aiWarn("[EXPERT-RECOVERY] build=market reason=" + (forecastBarterNeed ? "forecast" : "resource-imbalance") + " bank=" +
 				Math.round(bank.food) + "/" + Math.round(bank.wood) + "/" + Math.round(bank.stone) + "/" + Math.round(bank.metal));
 		}
 		return { ...frame, actions };
+	}
+
+
+	applyForecastBarter(gameState)
+	{
+		if (!gameState.currentPhase || gameState.currentPhase() < 2 || !this.resourceForecast)
+			return false;
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		if (now - this.lastForecastBarterAt < (Number(policy.resourceForecastBarterCooldownSeconds) || 10))
+			return false;
+		const target = (this.resourceForecast.rankedNeeds || []).find(item => item &&
+			(item.status === "critical" || item.status === "short" || item.coverageRatio < (Number(policy.resourceForecastBarterTargetCoverage) || 1.10)));
+		const donor = (this.resourceForecast.rankedSurplus || []).find(item => item && target && item.type !== target.type &&
+			item.floatAmount >= (Number(policy.resourceForecastBarterMinimumDonorFloat) || 900));
+		if (!target || !donor)
+			return false;
+		const barterers = this.builtByClass(gameState, "Barter").length ? this.builtByClass(gameState, "Barter") : this.builtByClass(gameState, "Market");
+		const barterer = barterers.find(ent => ent && ent.barter);
+		if (!barterer)
+			return false;
+		const bank = gameState.getResources();
+		const amount = Math.min(Number(policy.resourceForecastBarterAmount) || 500,
+			Math.max(0, Math.floor((Number(bank[donor.type]) || 0) - donor.dynamicCeiling)));
+		if (amount < 100)
+			return false;
+		try { barterer.barter(target.type, donor.type, amount); }
+		catch (e) { return false; }
+		this.lastForecastBarterAt = now;
+		aiWarn("[EXPERT-FORECAST] barter sell=" + donor.type + " buy=" + target.type + " amount=" + Math.round(amount) +
+			" donorFloat=" + Math.round(donor.floatAmount) + " target=" + target.status + ":" + target.coverageRatio.toFixed(2));
+		return true;
 	}
 
 	applyAthenianFrontierCleruchy(gameState, frame, cc, accessIndex, woodsite)
@@ -7227,14 +7534,18 @@ export class ExpertDecisionController
 		const policy = mergePolicy();
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const scarcity = this.scarcityExpansionContext(gameState, frame, woodsite);
+		if (scarcity.primaryResource === "food" && (frame.actions || []).some(action => action && action.kind === "farmstead" &&
+		    (action.role === "natural_frontier" || action.role === "natural_expansion")))
+			return frame;
 		// Healthy frontier expansion remains Town-only.  A true P1 scarcity emergency may
 		// use the Cleruchy earlier if the actual template/HQ says it is buildable.
 		if (phase < 2 && !scarcity.active)
 			return frame;
 		const p1Scarcity = phase === 1 && scarcity.active;
-		const minTime = p1Scarcity ? policy.athensCleruchyScarcityP1MinimumTime :
+		const forecastP1 = p1Scarcity && scarcity.forecastCritical;
+		const minTime = forecastP1 ? (Number(policy.athensCleruchyForecastCriticalP1MinimumTime) || 210) : p1Scarcity ? policy.athensCleruchyScarcityP1MinimumTime :
 			scarcity.active ? policy.athensCleruchyScarcityMinimumTime : policy.athensCleruchyMinimumTime;
-		const minPop = p1Scarcity ? policy.athensCleruchyScarcityP1MinimumPopulation :
+		const minPop = forecastP1 ? (Number(policy.athensCleruchyForecastCriticalP1MinimumPopulation) || 40) : p1Scarcity ? policy.athensCleruchyScarcityP1MinimumPopulation :
 			scarcity.active ? policy.athensCleruchyScarcityMinimumPopulation : policy.athensCleruchyMinimumPopulation;
 		if (now < minTime || gameState.getPopulation() < minPop)
 			return frame;
@@ -7249,7 +7560,7 @@ export class ExpertDecisionController
 		if (!gameState.getTemplate(type) || !this.HQ.canBuild || !this.HQ.canBuild(gameState, type) ||
 		    this.specialStructurePipeline(gameState, "cleruchy") >= policy.athensCleruchyMaximumCount)
 			return frame;
-		const candidate = this.cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity.active);
+		const candidate = this.cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity.active, scarcity.primaryResource);
 		if (!candidate)
 			return frame;
 		const cleruchyReserve = p1Scarcity ? {
@@ -7277,6 +7588,7 @@ export class ExpertDecisionController
 			aiWarn("[EXPERT-EXPAND] build=cleruchy mode=" + (p1Scarcity ? "scarcity-p1" : scarcity.active ? "scarcity" : "frontier") +
 				" distance=" + candidate.distance.toFixed(1) + " value=" + Math.round(candidate.value) +
 				" types=" + candidate.resourceTypes + " wood=" + Math.round(candidate.resources.wood || 0) +
+				" primary=" + scarcity.primaryResource + " forecast=" + scarcity.forecastCritical +
 				" localWood=" + Math.round(scarcity.localWood) + " natural=" + Math.round(scarcity.natural));
 		}
 		return { ...frame, actions };
@@ -7332,6 +7644,195 @@ export class ExpertDecisionController
 			if (!best || score > best.score) best = { position, remaining, ids, distance, score };
 		}
 		return best;
+	}
+
+
+	// IT14.91: a safe, worthwhile neutral berry/fruit district just outside the border
+	// outranks another Field. The Farmstead itself must still resolve to our territory.
+	applyForecastNaturalFoodExpansion(gameState, frame, cc, accessIndex, foodNetwork)
+	{
+		if (!cc || !entityPosition(cc))
+			return frame;
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		if (now - this.lastForecastNaturalFoodAt < (Number(policy.resourceForecastNaturalFoodCooldownSeconds) || 24))
+			return frame;
+		if (this.foundationsByClass(gameState, "Farmstead").length || this.activeTaskByKind.farmstead)
+			return frame;
+		const currentFarmsteads = this.builtByClass(gameState, "Farmstead").length;
+		if (currentFarmsteads < 1 || currentFarmsteads >= (Number(policy.maximumNaturalFoodFarmsteads) || 5))
+			return frame;
+		const candidate = this.neutralFoodAnnexCandidate(gameState, cc.position(), accessIndex);
+		if (!candidate || candidate.remaining < (Number(policy.resourceForecastNaturalFoodMinimumRemaining) || 350))
+			return frame;
+		const cluster = { center: candidate.position, ids: candidate.ids, remaining: candidate.remaining };
+		if (this.foodClusterCovered(gameState, cluster) ||
+		    this.activeNaturalExpansionCluster && this.clustersOverlap(cluster, this.activeNaturalExpansionCluster))
+			return frame;
+		const actions = [...(frame.actions || [])];
+		if (actions.some(action => action && action.kind === "farmstead" && (action.type === "BUILD" || action.type === "RESERVE")))
+			return frame;
+		const fieldIndex = actions.findIndex(action => action && action.kind === "field" && (action.type === "BUILD" || action.type === "RESERVE"));
+		const foodForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
+		const ownNatural = Math.max(0, Number(foodNetwork && foodNetwork.totalRemaining) || 0);
+		const usefulNow = fieldIndex >= 0 || ownNatural <= (Number(policy.neutralFoodAnnexOwnFoodThreshold) || 1000) ||
+			foodForecast && (foodForecast.status === "critical" || foodForecast.status === "short");
+		if (!usefulNow)
+			return frame;
+		// Natural food preempts all ordinary Field plans this frame. Emergency field
+		// construction remains possible on a later frame if the Farmstead cannot place.
+		const kept = actions.filter(action => !(action && action.kind === "field" &&
+			(action.type === "BUILD" || action.type === "RESERVE")));
+		kept.push({ type: "BUILD", kind: "farmstead", role: "natural_frontier",
+			priority: Number(policy.resourceForecastNaturalFoodPriority) || 126,
+			builderCount: 4, builderPool: ["food", "food_owned", "farm"],
+			resourceAnchor: [...candidate.position], resourceSourceIds: [...candidate.ids],
+			reason: "safe neutral natural food outranks permanent Field remaining=" + Math.round(candidate.remaining) });
+		this.lastForecastNaturalFoodAt = now;
+		aiWarn("[EXPERT-FORECAST] natural-food PREEMPT field=" + (fieldIndex >= 0 ? 1 : 0) +
+			" remaining=" + Math.round(candidate.remaining) + " distance=" + candidate.distance.toFixed(1) +
+			" ownNatural=" + Math.round(ownNatural));
+		return { ...frame, actions: kept };
+	}
+
+	resourceWorkersBySupply(gameState)
+	{
+		const counts = new Map();
+		for (const worker of gameState.getOwnUnits().values())
+		{
+			if (!worker || !worker.getMetadata || !this.isExpertEconomyEntity(worker) || worker.getMetadata(PlayerID, "PartOfArmy"))
+				continue;
+			const id = Number(worker.getMetadata(PlayerID, SUPPLY_ID));
+			if (Number.isFinite(id))
+				counts.set(id, (counts.get(id) || 0) + 1);
+		}
+		return counts;
+	}
+
+	forecastStorehouseCandidate(gameState, cc, accessIndex)
+	{
+		if (!cc || !entityPosition(cc) || !gameState.getResourceSupplies)
+			return undefined;
+		const policy = mergePolicy();
+		const ccPos = cc.position();
+		const maxRadius = Math.max(50, Number(policy.resourceForecastStorehouseSearchRadius) || 115);
+		const maxRadius2 = maxRadius * maxRadius;
+		const clusterRadius = Math.max(20, Number(policy.resourceForecastStorehouseRadius) || 42);
+		const clusterRadius2 = clusterRadius * clusterRadius;
+		const workers = this.resourceWorkersBySupply(gameState);
+		const weights = { wood: Number(policy.resourceForecastStorehouseWoodWeight) || 1,
+			stone: Number(policy.resourceForecastStorehouseStoneWeight) || 0.75,
+			metal: Number(policy.resourceForecastStorehouseMetalWeight) || 0.85 };
+		const workerBonus = Math.max(0, Number(policy.resourceForecastStorehouseWorkerBonus) || 120);
+		const records = [];
+		const existingStores = this.builtByClass(gameState, "Storehouse").filter(ent => entityPosition(ent));
+		for (const generic of ["wood", "stone", "metal"])
+			for (const supply of gameState.getResourceSupplies(generic).values())
+			{
+				const pos = entityPosition(supply);
+				if (!pos || !supply.resourceSupplyAmount || getLandAccess(gameState, supply) !== accessIndex)
+					continue;
+				const owner = this.HQ.territoryMap.getOwner(pos);
+				if (owner !== PlayerID && owner !== 0)
+					continue;
+				// Neutral supplies are only proactive candidates if they are close to our current
+				// economic footprint; farther resources belong to territorial expansion.
+				let footprintDistance = SquareVectorDistance(pos, ccPos);
+				for (const store of existingStores)
+					footprintDistance = Math.min(footprintDistance, SquareVectorDistance(pos, store.position()));
+				if (footprintDistance > maxRadius2)
+					continue;
+				const amount = Math.min(Number(supply.resourceSupplyAmount()) || 0,
+					Math.max(100, Number(policy.resourceForecastSupplyCapPerEntity) || 5000));
+				if (amount <= 0)
+					continue;
+				records.push({ id: supply.id(), generic, position: [...pos], amount,
+					workers: workers.get(supply.id()) || 0, owner });
+			}
+		if (!records.length)
+			return undefined;
+		// Minerals are high-value seeds; for forests sample the richest/most-worked trees.
+		const seeds = records.slice().sort((a, b) =>
+			Number(b.generic !== "wood") - Number(a.generic !== "wood") || b.workers - a.workers || b.amount - a.amount).slice(0, 96);
+		let best;
+		for (const seed of seeds)
+		{
+			const cluster = records.filter(record => SquareVectorDistance(seed.position, record.position) <= clusterRadius2);
+			if (!cluster.length)
+				continue;
+			let value = 0, workerCount = 0;
+			const types = new Set();
+			for (const record of cluster)
+			{
+				value += record.amount * weights[record.generic] + record.workers * workerBonus;
+				workerCount += record.workers;
+				types.add(record.generic);
+			}
+			const points = cluster.map(record => ({ position: record.position,
+				weight: Math.max(1, record.amount * weights[record.generic] + record.workers * workerBonus), generic: record.generic }));
+			const center = this.weightedResourceCenter(points);
+			if (!center)
+				continue;
+			const critical = cluster.some(record => this.forecastResourceCritical(record.generic));
+			// Wood-only proactive camps are left to the dedicated wood-district rollover;
+			// otherwise a healthy first forest could get an unnecessary second Storehouse.
+			// A single worked mineral deposit may still justify proactive service.
+			if (types.size === 1 && cluster[0].generic === "wood" && !critical)
+				continue;
+			if (types.size === 1 && cluster[0].generic !== "wood" && workerCount < 1 && !critical)
+				continue;
+			const minValue = critical ? Number(policy.resourceForecastStorehouseCriticalMinimumValue) || 350 :
+				Number(policy.resourceForecastStorehouseMinimumValue) || 700;
+			if (value < minValue)
+				continue;
+			const gain = this.storehouseAverageDistanceGain(gameState, "mixed", points, center);
+			const minGain = critical ? Number(policy.resourceForecastStorehouseCriticalMinimumGain) || 2 :
+				Number(policy.resourceForecastStorehouseMinimumGain) || 4;
+			if (Number.isFinite(gain) && gain < minGain)
+				continue;
+			const score = value + workerCount * workerBonus + (Number.isFinite(gain) ? gain * 150 : 3000) + types.size * 180;
+			if (!best || score > best.score)
+				best = { center, records: cluster, value, workerCount, resourceTypes: types.size, gain, critical, score };
+		}
+		return best;
+	}
+
+	applyForecastStorehouseInfrastructure(gameState, frame, cc, accessIndex)
+	{
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		if (now < (Number(policy.resourceForecastStorehouseStartTime) || 105) ||
+		    now - this.lastForecastStorehouseAt < (Number(policy.resourceForecastStorehouseCooldownSeconds) || 24) ||
+		    this.builtByClass(gameState, "Storehouse").length < 1 || this.foundationsByClass(gameState, "Storehouse").length ||
+		    this.activeTaskByKind.storehouse)
+			return frame;
+		if ((frame.actions || []).some(action => action && action.kind === "storehouse" && (action.type === "BUILD" || action.type === "RESERVE")))
+			return frame;
+		// Scanning tree clusters is intentionally periodic even when no candidate wins.
+		this.lastForecastStorehouseAt = now;
+		const candidate = this.forecastStorehouseCandidate(gameState, cc, accessIndex);
+		if (!candidate)
+			return frame;
+		const cost = Number(policy.costs && policy.costs.storehouse && policy.costs.storehouse.wood) || 100;
+		if ((Number(gameState.getResources().wood) || 0) < cost && !candidate.critical)
+			return frame;
+		const ids = candidate.records.map(record => record.id);
+		const actions = [...(frame.actions || []), {
+			type: "BUILD", kind: "storehouse", role: "resource_service", priority: candidate.critical ? 124 : 103,
+			builderCount: candidate.workerCount >= 4 ? 4 : 3,
+			builderPool: ["wood", "citizenSoldierWood", "stone", "metal"],
+			resourceGeneric: "mixed", resourceAnchor: [...candidate.center], resourceSourceIds: ids,
+			resourcePlacementSourceIds: ids,
+			minimumAverageDistanceGain: candidate.critical ? Number(policy.resourceForecastStorehouseCriticalMinimumGain) || 2 :
+				Number(policy.resourceForecastStorehouseMinimumGain) || 4,
+			reason: "forecast mixed-resource service value=" + Math.round(candidate.value) + " gain=" +
+				(Number.isFinite(candidate.gain) ? candidate.gain.toFixed(1) : "inf")
+		}];
+		this.lastForecastStorehouseAt = now;
+		aiWarn("[EXPERT-SERVICE] build=storehouse resource=mixed value=" + Math.round(candidate.value) +
+			" workers=" + candidate.workerCount + " types=" + candidate.resourceTypes + " gain=" +
+			(Number.isFinite(candidate.gain) ? candidate.gain.toFixed(1) : "inf") + " critical=" + candidate.critical);
+		return { ...frame, actions };
 	}
 
 	nearbySafeHuntInfo(gameState, anchor)
@@ -9214,7 +9715,7 @@ export class ExpertDecisionController
 			for (const source of sources.slice(0, 6))
 				if (source && entityPosition(source) && !candidateAnchors.some(pos => SquareVectorDistance(pos, source.position()) < 2*2))
 					candidateAnchors.push(source.position());
-			const woodService = action.resourceGeneric === "wood";
+			const woodService = action.resourceGeneric === "wood" || action.resourceGeneric === "mixed";
 			const distances = woodService ?
 				[Math.max(3, geometry.radius + 0.5), geometry.radius + 2.5, geometry.radius + 5.5, geometry.radius + 9.5, geometry.radius + 14.5, geometry.radius + 20.5, geometry.radius + 26.5, geometry.radius + 32.5] :
 				[Math.max(3, geometry.radius + 0.5), geometry.radius + 1.5, geometry.radius + 2.5, geometry.radius + 4.0, geometry.radius + 6.0, geometry.radius + 8.0];
@@ -9232,12 +9733,12 @@ export class ExpertDecisionController
 				"resourceService": true, "resourceGeneric": action.resourceGeneric,
 				"pathSources": sources.map(source => source.position()),
 				"resourcePoints": resourcePoints,
-				"minimumAverageDistanceGain": woodService ?
+				"minimumAverageDistanceGain": Number.isFinite(Number(action.minimumAverageDistanceGain)) ? Number(action.minimumAverageDistanceGain) : woodService ?
 					(emergency ? Number(policy.storehouseEmergencyMinimumAverageDistanceGain) || 2 : Number(policy.storehouseMinimumAverageDistanceGain) || 5) :
 					Number(policy.storehouseMineralMinimumAverageDistanceGain) || 4,
 				"worksiteAnchor": anchor, "minimumCCDistance": 0,
 				"resourceSourceIds": sourceIds,
-				"storehouseFarmEdgeRelax": woodService
+				"storehouseFarmEdgeRelax": true
 			};
 		}
 		else if (kind === "storehouse")
@@ -9337,7 +9838,11 @@ export class ExpertDecisionController
 				const selection = selectInitialWoodWorksite(all, workerAnchor);
 				if (!selection || !selection.position)
 					return undefined;
-				const minimumDistrictWood = continuityEmergency ?
+				const forecastWood = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
+				const bridgeWood = !!(forecastWood && forecastWood.status === "critical" &&
+					forecastWood.ownAccessible <= (Number(policy.resourceForecastBridgeWoodAccessibleCeiling) || 650));
+				const minimumDistrictWood = bridgeWood ?
+					Math.max(1, Number(policy.resourceForecastBridgeWoodMinimumAmount) || 120) : continuityEmergency ?
 					Math.max(1, Number(policy.woodEmergencyNewDistrictMinimumAmount) || 350) :
 					Math.max(1, Number(policy.woodNewDistrictMinimumAmount) || 600);
 				ranked = (selection.ranked && selection.ranked.length ? selection.ranked : [selection])
@@ -9347,7 +9852,7 @@ export class ExpertDecisionController
 				if (!ranked.length)
 				{
 					aiWarn("[EXPERT-WOOD] reject fragment district bestWood=" + Math.round(Number(selection.localWoodAmount) || 0) +
-						" minimum=" + Math.round(minimumDistrictWood) + " emergency=" + continuityEmergency);
+						" minimum=" + Math.round(minimumDistrictWood) + " emergency=" + continuityEmergency + " forecastBridge=" + bridgeWood);
 					return undefined;
 				}
 			}
@@ -9405,11 +9910,15 @@ export class ExpertDecisionController
 		{
 			let anchor = foodObservation.center || cc.position();
 			let sourceIds = foodObservation.ids || [];
-			if (action.role === "natural_expansion" || action.role === "wicker_branch" || action.role === "resource_service_food")
+			if (action.role === "natural_expansion" || action.role === "natural_frontier" || action.role === "wicker_branch" || action.role === "resource_service_food")
 			{
 				const foodContext = this.foodCaptureContext(gameState, cc, accessIndex);
-				const alternative = action.role === "resource_service_food" && Array.isArray(action.resourceAnchor) ?
-					{ "center": action.resourceAnchor, "ids": Array.isArray(action.resourceSourceIds) ? action.resourceSourceIds : [] } :
+				const alternative = (action.role === "resource_service_food" || action.role === "natural_frontier") && Array.isArray(action.resourceAnchor) ?
+					{ "center": action.resourceAnchor, "ids": Array.isArray(action.resourceSourceIds) ? action.resourceSourceIds : [],
+						"remaining": Array.isArray(action.resourceSourceIds) ? action.resourceSourceIds.reduce((sum, id) => {
+							const ent = gameState.getEntityById(Number(id));
+							return sum + Math.max(0, Number(ent && ent.resourceSupplyAmount && ent.resourceSupplyAmount()) || 0);
+						}, 0) : 0 } :
 					action.role === "wicker_branch" ? this.postWickerBranchCluster :
 					this.alternativeFoodInfo(gameState, foodContext, foodObservation).next;
 				if (!alternative || !alternative.center)
@@ -10687,7 +11196,8 @@ export class ExpertDecisionController
 			}
 			if (kind === "storehouse" && this.builtByClass(gameState, "Storehouse").length)
 			{
-				const spacing = request && request.resourceService ?
+				const spacing = request && request.resourceGeneric === "mixed" ?
+					(Number(mergePolicy().resourceForecastStorehouseMinimumSpacing) || 12) : request && request.resourceService ?
 					(Number(mergePolicy().resourceServiceStorehouseMinimumSpacing) || 10) : mergePolicy().woodStorehouseMinimumSpacing;
 				for (const ent of this.builtByClass(gameState, "Storehouse"))
 					if (SquareVectorDistance(position, ent.position()) < spacing * spacing)
@@ -12893,6 +13403,9 @@ export class ExpertDecisionController
 		// New permanent jobs are based on how many food workers the active CC/barracks
 		// actually need, not on "CC is still below 70, so make another farmer".
 		const preAssignmentFoodThroughput = this.foodThroughputMetrics(gameState, cc, foodNetwork);
+		// IT14.91: forecast BEFORE assigning newly trained workers.  New workers react to
+		// the map/economy that exists now rather than yesterday's fixed doctrine ratios.
+		this.updateResourceForecast(gameState, cc, accessIndex, preAssignmentFoodThroughput);
 		this.syncJobs(gameState, foodNetwork, preAssignmentFoodThroughput);
 		const foodAlternative = this.alternativeFoodInfo(gameState, foodContext, foodObservation);
 		this.applyPostWickerBerryPeel(gameState, foodObservation, foodAlternative);
@@ -13121,9 +13634,17 @@ export class ExpertDecisionController
 		frame = this.applySecondaryDepletionFieldTrigger(gameState, frame);
 		frame = this.applyPreThirdFarmsteadCapacityRescan(gameState, frame, accessIndex);
 		frame = this.applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex);
+		// IT14.91: natural food gets FINAL refusal on this frame's Field spending. Running
+		// after all Field watchdog/rescan paths guarantees that a safe neutral food district
+		// really does preempt the Field, but before farm crews are committed to that Field.
+		frame = this.applyForecastNaturalFoodExpansion(gameState, frame, cc, accessIndex, foodNetwork);
 		frame = this.applyFutureFarmerFieldCrews(gameState, frame);
 		frame = this.applyFarmHubRetryCooldown(gameState, frame);
-		// IT14.52: resource-service construction is a hard logistics correction.
+		// IT14.91: proactively service a useful mixed wood/stone/metal corridor before
+		// workers have already suffered several minutes of long haul. This is separate
+		// from wood-district migration and never switches the primary forest by itself.
+		frame = this.applyForecastStorehouseInfrastructure(gameState, frame, cc, accessIndex);
+		// IT14.52: worker-observed service remains the reactive safety net.
 		frame = this.applyResourceServiceConstruction(gameState, frame, accessIndex);
 		const forcedFoodHub = (frame.actions || []).find(action => action && action.kind === "farmstead" && action.role === "farm_hub_deadlock");
 		if (forcedFoodHub && gameState.ai.elapsedTime - this.lastFoodCapacityDeadlockDiag >= 8)
@@ -13141,6 +13662,7 @@ export class ExpertDecisionController
 		frame = this.applyAthenianFrontierCleruchy(gameState, frame, cc, accessIndex, woodsite);
 		this.applyScarcityBaseExpansion(gameState, queues, frame, cc, accessIndex, woodsite);
 		frame = this.applyRecoveryMarketInfrastructure(gameState, frame);
+		this.applyForecastBarter(gameState);
 		// IT14.53: Athens may add one Gymnasium in Town and one Prytaneion in City,
 		// but only from genuine surplus after the core timing infrastructure exists.
 		frame = this.applyAthenianSpecialInfrastructure(gameState, frame);
@@ -13328,7 +13850,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.90] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.91] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -13350,7 +13872,9 @@ export class ExpertDecisionController
 			" houseTrig=" + frame.economy.derived.houseTriggerFreePopulation + " farmPrebuild=" + frame.economy.derived.farmPrebuild +
 			" wantFld=" + frame.economy.derived.desiredFields +
 			" need2B=" + frame.economy.derived.requiredSecondFields + " bridge2B=" + Math.round(frame.economy.derived.secondBarracksBridgeSeconds || 0) + "s ready2B=" + frame.economy.derived.secondBarracksFoodReady +
-			" foodSlots=" + Math.round(this.lastImmediateFoodSlots || 0) + " bal=" + (this.lastResourceBalance && this.lastResourceBalance.active ? this.lastResourceBalance.surplus + ">" + this.lastResourceBalance.target + "@" + this.lastResourceBalance.ratio.toFixed(1) : "off") +
+			" foodSlots=" + Math.round(this.lastImmediateFoodSlots || 0) + " bal=" + (this.lastResourceBalance && this.lastResourceBalance.active ? this.lastResourceBalance.surplus + ">" + this.lastResourceBalance.target + "@" + Number(this.lastResourceBalance.ratio || 1).toFixed(1) : "off") +
+			" fc=" + (this.resourceForecast && this.resourceForecast.rankedNeeds && this.resourceForecast.rankedNeeds[0] ?
+				this.resourceForecast.rankedNeeds[0].type + ":" + this.resourceForecast.rankedNeeds[0].status : "-") +
 			" fw=" + (this.lastFoodWoodFeedback && this.lastFoodWoodFeedback.mode || "opening") +
 			(this.lastFoodWoodFeedback && Number.isFinite(this.lastFoodWoodFeedback.rateRatio) ? "@" + Math.min(99, this.lastFoodWoodFeedback.rateRatio).toFixed(2) : "") +
 			" p2=" + (this.lastPhase2Decision && this.lastPhase2Decision.state || "waiting") +
@@ -13392,7 +13916,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.90] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.91] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -13448,6 +13972,14 @@ export class ExpertDecisionController
 			"lastResourceRebalanceTime": this.lastResourceRebalanceTime,
 			"lastFoodPressureRebalanceTime": this.lastFoodPressureRebalanceTime,
 			"lastFoodWoodFeedback": this.lastFoodWoodFeedback,
+			"resourceFlowSample": this.resourceFlowSample,
+			"resourceFlowIncomeEMA": { ...this.resourceFlowIncomeEMA },
+			"resourceFlowSpendEMA": { ...this.resourceFlowSpendEMA },
+			"resourceFlowMeasured": this.resourceFlowMeasured,
+			"lastResourceForecastDiag": this.lastResourceForecastDiag,
+			"lastForecastBarterAt": this.lastForecastBarterAt,
+			"lastForecastStorehouseAt": this.lastForecastStorehouseAt,
+			"lastForecastNaturalFoodAt": this.lastForecastNaturalFoodAt,
 			"lastPhase2Decision": this.lastPhase2Decision,
 			"woodMigrationWindowStart": this.woodMigrationWindowStart,
 			"woodMigrationsThisWindow": this.woodMigrationsThisWindow,
@@ -13548,6 +14080,15 @@ export class ExpertDecisionController
 		this.lastResourceRebalanceTime = Number.isFinite(data.lastResourceRebalanceTime) ? data.lastResourceRebalanceTime : -99999;
 		this.lastFoodPressureRebalanceTime = Number.isFinite(data.lastFoodPressureRebalanceTime) ? data.lastFoodPressureRebalanceTime : -99999;
 		this.lastFoodWoodFeedback = data.lastFoodWoodFeedback || { "mode": "load" };
+		this.resourceFlowSample = data.resourceFlowSample;
+		this.resourceFlowIncomeEMA = { food: 0, wood: 0, stone: 0, metal: 0, ...(data.resourceFlowIncomeEMA || {}) };
+		this.resourceFlowSpendEMA = { food: 0, wood: 0, stone: 0, metal: 0, ...(data.resourceFlowSpendEMA || {}) };
+		this.resourceFlowMeasured = !!data.resourceFlowMeasured;
+		this.resourceForecast = undefined;
+		this.lastResourceForecastDiag = Number.isFinite(data.lastResourceForecastDiag) ? data.lastResourceForecastDiag : -99999;
+		this.lastForecastBarterAt = Number.isFinite(data.lastForecastBarterAt) ? data.lastForecastBarterAt : -99999;
+		this.lastForecastStorehouseAt = Number.isFinite(data.lastForecastStorehouseAt) ? data.lastForecastStorehouseAt : -99999;
+		this.lastForecastNaturalFoodAt = Number.isFinite(data.lastForecastNaturalFoodAt) ? data.lastForecastNaturalFoodAt : -99999;
 		this.lastPhase2Decision = data.lastPhase2Decision || { "state": "waiting", "reason": "load" };
 		this.woodMigrationWindowStart = Number.isFinite(data.woodMigrationWindowStart) ? data.woodMigrationWindowStart : -99999;
 		this.woodMigrationsThisWindow = Number(data.woodMigrationsThisWindow) || 0;

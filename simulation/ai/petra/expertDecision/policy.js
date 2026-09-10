@@ -157,9 +157,11 @@ const DEFAULT_POLICY = Object.freeze({
   // positions around the Farmstead. Simple N/E/S/W side-centres overlap when Fields
   // are larger than the Farmstead, so the four-slot contract uses exact rectangle math.
   fieldsPerFarmstead: 4,
-  // IT14.74: normal mature food layout is two/three compact farmsteads supporting
-  // roughly 8-12 fields. Natural-food dropsites and permanent hubs share this cap.
+  // IT14.74/14.91: permanent farm hubs remain compact and capped. Natural-food
+  // dropsites are a separate economic use: if a distinct safe natural-food district
+  // repays the building, it may exceed the permanent-farm-hub cap.
   maximumFarmsteads: 3,
+  maximumNaturalFoodFarmsteads: 5,
   minimumFarmHubFieldSlots: 4,
   // IT14.29: keep four-slot farm hubs as the normal standard, but after repeated
   // real-map placement failures accept a compact three-field hub rather than deadlock.
@@ -295,6 +297,76 @@ const DEFAULT_POLICY = Object.freeze({
   // dead stock while a live war economy is starved for wood.
   resourceBalanceExtremeBatch: 8,
   resourceBalanceExtremeCooldownSeconds: 5,
+  // IT14.91 forecast governor. All four resources use bank + measured income +
+  // immediately accessible supply against queued/strategic projected spending.
+  resourceForecastShortHorizonSeconds: 60,
+  resourceForecastMediumHorizonSeconds: 150,
+  resourceForecastFloatHorizonSeconds: 55,
+  resourceForecastShortAccessibleWeight: 0.35,
+  resourceForecastMediumAccessibleWeight: 0.75,
+  resourceForecastOwnAccessibleRadius: 55,
+  resourceForecastNeutralRadius: 72,
+  resourceForecastNeutralSupplyWeight: 0.80,
+  resourceForecastSupplyCapPerEntity: 5000,
+  resourceForecastMinimumFloatFood: 300,
+  resourceForecastMinimumFloatWood: 250,
+  resourceForecastMinimumFloatStone: 120,
+  resourceForecastMinimumFloatMetal: 150,
+  resourceForecastP1FoodSpendPerSecond: 7.0,
+  resourceForecastP1WoodSpendPerSecond: 7.0,
+  resourceForecastP1StoneSpendPerSecond: 0.5,
+  resourceForecastP1MetalSpendPerSecond: 0.75,
+  resourceForecastP2FoodSpendPerSecond: 11.0,
+  resourceForecastP2WoodSpendPerSecond: 8.0,
+  resourceForecastP2StoneSpendPerSecond: 1.5,
+  resourceForecastP2MetalSpendPerSecond: 2.5,
+  resourceForecastP3FoodSpendPerSecond: 14.0,
+  resourceForecastP3WoodSpendPerSecond: 9.0,
+  resourceForecastP3StoneSpendPerSecond: 2.0,
+  resourceForecastP3MetalSpendPerSecond: 4.0,
+  resourceForecastReserveP1Food: 180,
+  resourceForecastReserveP1Wood: 180,
+  resourceForecastReserveP1Stone: 60,
+  resourceForecastReserveP1Metal: 75,
+  resourceForecastReserveP2Food: 300,
+  resourceForecastReserveP2Wood: 250,
+  resourceForecastReserveP2Stone: 100,
+  resourceForecastReserveP2Metal: 150,
+  resourceForecastReserveP3Food: 450,
+  resourceForecastReserveP3Wood: 350,
+  resourceForecastReserveP3Stone: 150,
+  resourceForecastReserveP3Metal: 225,
+  resourceForecastReassignBatch: 4,
+  resourceForecastCriticalReassignBatch: 10,
+  resourceForecastReassignCooldownSeconds: 6,
+  resourceForecastCriticalReassignCooldownSeconds: 3,
+  resourceForecastDiagnosticSeconds: 16,
+  resourceForecastBarterCooldownSeconds: 10,
+  resourceForecastBarterAmount: 500,
+  resourceForecastBarterMinimumDonorFloat: 900,
+  resourceForecastBarterTargetCoverage: 1.10,
+  // Proactive Storehouse planning: one building may service a mixed wood/stone/metal
+  // corridor. This does not imply that lumberjacks must abandon a healthy woodline.
+  resourceForecastStorehouseStartTime: 105,
+  resourceForecastStorehouseCooldownSeconds: 24,
+  resourceForecastStorehouseRadius: 42,
+  resourceForecastStorehouseSearchRadius: 115,
+  resourceForecastStorehouseMinimumValue: 700,
+  resourceForecastStorehouseCriticalMinimumValue: 350,
+  resourceForecastStorehouseWoodWeight: 1.0,
+  resourceForecastStorehouseStoneWeight: 0.75,
+  resourceForecastStorehouseMetalWeight: 0.85,
+  resourceForecastStorehouseWorkerBonus: 120,
+  resourceForecastStorehouseMinimumGain: 4.0,
+  resourceForecastStorehouseCriticalMinimumGain: 2.0,
+  resourceForecastStorehouseMinimumSpacing: 12,
+  resourceForecastBridgeWoodMinimumAmount: 120,
+  resourceForecastBridgeWoodAccessibleCeiling: 650,
+  // Safe neutral fruit/berries just outside the border outrank the next Field.
+  resourceForecastNaturalFoodMinimumRemaining: 350,
+  resourceForecastNaturalFoodPreemptFieldRemaining: 300,
+  resourceForecastNaturalFoodCooldownSeconds: 24,
+  resourceForecastNaturalFoodPriority: 126,
   // P2 is readiness-driven, not a hard clock. 90-120 population and 7-11 minutes is
   // the normal corridor; exceptional economies may begin slightly earlier and an
   // overdue economy reserves the phase rather than remaining in Village forever.
@@ -727,6 +799,11 @@ const DEFAULT_POLICY = Object.freeze({
   // emergency, allow HQ.canBuild() to decide legality instead of hard-coding P2.
   athensCleruchyScarcityP1MinimumTime: 390,
   athensCleruchyScarcityP1MinimumPopulation: 70,
+  // IT14.91 a forecast-proven supply crisis may acquire territory before the old
+  // 6:30 scarcity clock. This remains conditional on a rich useful frontier.
+  athensCleruchyForecastCriticalP1MinimumTime: 210,
+  athensCleruchyForecastCriticalP1MinimumPopulation: 40,
+  athensCleruchyForecastPrimaryResourceBonus: 1.80,
   athensCleruchyScarcityWoodThreshold: 900,
   athensCleruchyScarcityCriticalWoodThreshold: 450,
   athensCleruchyScarcityNaturalFoodThreshold: 250,

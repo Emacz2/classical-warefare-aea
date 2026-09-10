@@ -1,0 +1,104 @@
+EXPERT AI PETRA — IT14.91 CHANGE REPORT
+=======================================
+
+PURPOSE
+IT14.91 is the first four-resource forecast/replan pass. The selected Expert doctrine
+still defines what the AI wants to buy, but food/wood/stone/metal allocation now reacts
+to the map and to projected spending instead of relying mainly on isolated bank thresholds.
+
+FILES CHANGED FROM IT14.90
+- petra/expertDecisionController.js
+- petra/expertDecision/policy.js
+- petra/expertDecision/economyPlanner.js
+- petra/expertDecision/resourceForecast.js   [NEW]
+- EXPERT_BENCHMARKS.txt
+- IT14.91_CHANGE_REPORT.txt                  [NEW]
+
+attackManager.js and attackPlan.js are unchanged from IT14.90.
+
+1) FOUR-RESOURCE FORECAST GOVERNOR
+- New pure resourceForecast.js evaluates food, wood, stone and metal on the same basis:
+    current bank
+  + measured delivered income
+  + immediately accessible own/near-neutral supply
+  versus
+    queued costs
+  + phase/doctrine projected spending
+  + a modest working reserve.
+- Uses short (~60s) and medium (~150s) horizons plus dynamic float ceilings.
+- Own "immediately accessible" supply is limited to the current dropsite/CC economic
+  footprint; remote owned resources no longer make the forecast falsely comfortable.
+- Bursty phase/tech purchases are smoothed/clamped so one purchase does not look like
+  a permanent enormous burn rate.
+- New diagnostic:
+  [EXPERT-FORECAST] target=... donor=... F=bank/income/access/demand/margin:status ...
+
+2) WORKER REPLANNING / FLOAT CONTROL
+- Existing worker rebalancing now consumes the forecast directive when available.
+- Critical shortages may move up to 10 workers on a short cooldown; normal corrections
+  are smaller/slower.
+- Large stone/metal/wood/food floats become donor resources. Workers can be peeled from
+  a resource whose future coverage is excessive toward the least-covered future demand.
+- Several older fixed resource rebalance passes are suppressed while the forecast is
+  active so competing rules do not immediately undo the new allocation.
+- Permanent Field-locked civilians remain protected.
+- IT14.90 future-farmer ownership remains unchanged.
+
+3) MAP ADAPTATION / BRIDGE WOOD / EXPANSION
+- A forecast-critical wood shortage may use small ~120+ wood palm/tree fragments as
+  temporary bridge wood when immediately accessible wood is <= ~650.
+- The normal 600-wood fragment rejection remains on healthy maps.
+- Scarcity expansion can now be triggered by a forecast-proven shortage of ANY resource,
+  not only legacy wood thresholds.
+- A large bank can suppress a false "wood income stalled" crisis when projected wood
+  demand is already safely covered.
+- Athens may consider a rich Cleruchy frontier from ~3:30 / 40 pop during a genuine
+  forecast-critical P1 supply crisis; the missing resource gets extra frontier weight.
+  Normal Cleruchy timing remains unchanged on healthy maps.
+
+4) NATURAL FOOD OUTRANKS A NEW FIELD
+- Safe same-land neutral fruit/berry clusters near the border are visible to the forecast.
+- A worthwhile neutral natural-food cluster can PREEMPT a Field build this frame.
+- The Farmstead is still required to resolve to a legal owned-territory position.
+- Natural-food Farmsteads now have a separate cap (5) from the permanent farm-hub cap (3),
+  so a third permanent farm hub cannot make later valuable natural food invisible.
+- New diagnostic:
+  [EXPERT-FORECAST] natural-food PREEMPT ...
+
+5) PROACTIVE MIXED STOREHOUSE SERVICE
+- Storehouse planning may now score wood + stone + metal together around the actual
+  economic footprint instead of waiting for several workers to suffer a long haul first.
+- A worked metal/stone deposit plus nearby wood can justify one mixed Storehouse.
+- Candidate value includes resource mass, worker count, resource-type coverage and
+  average haul-distance improvement.
+- This path does NOT switch primary wood districts. A healthy woodline remains the
+  current lumber district unless the dedicated wood rollover says otherwise.
+- Pure healthy-wood proactive camps are still left to the wood-district system.
+- New diagnostic:
+  [EXPERT-SERVICE] build=storehouse resource=mixed ...
+
+6) FORECAST-AWARE BARTER
+- In P2+, if a real shortage exists while another resource is far above its dynamic
+  future-use ceiling, an existing Market may sell up to ~500 of the donor resource.
+- A Market can be requested for a severe forecast shortage + giant surplus even when
+  the old food-only recovery test is not active.
+- New diagnostic:
+  [EXPERT-FORECAST] barter sell=... buy=...
+
+FROZEN / NON-REGRESSION
+- IT14.86 opening Farmstead multi-bush behavior.
+- IT14.87 practical wood district + emergency escape and P3 FINISH persistence.
+- IT14.88 no automatic bolt shooters, healer escort, optional Iphicratean Reforms.
+- IT14.89 Storehouse placement scoring, Farmstead #3 rescan, Scythian Police max-pop gate,
+  house-gap cleanup and Field progress watchdog.
+- IT14.90 permanent future-farmer crews: normally 3-4 newly trained civilians build the
+  Field and those same civilians stay farming.
+- IT14.90 bounded manager attack-move and decisive CC capture finish lock.
+- attackManager.js and attackPlan.js unchanged.
+
+OFFLINE VALIDATION
+- Synthetic Sahara-like forecast: wood becomes critical and stone is selected as donor.
+- Synthetic Arctic giant-float forecast: wood/stone are classified surplus rather than
+  treating zero current woodcutters alone as a wood crisis.
+- All Petra JavaScript files must pass ordinary Node syntax and ES-module parse checks
+  before packaging.

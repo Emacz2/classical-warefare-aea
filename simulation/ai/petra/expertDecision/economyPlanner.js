@@ -734,8 +734,8 @@ function planEconomy(rawState, overrides = {}) {
   // extra fields. Barracks reservations above still win, so military timing is protected.
   if (farm.mode === "natural_expand") {
     const currentFarmsteads = state.structures.farmstead + state.foundations.farmstead + state.queued.farmstead;
-    if (currentFarmsteads >= 1 && currentFarmsteads < farm.desiredFarmsteads &&
-        currentFarmsteads < Math.max(1, Number(policy.maximumFarmsteads) || 3) &&
+    if (currentFarmsteads >= 1 &&
+        currentFarmsteads < Math.max(1, Number(policy.maximumNaturalFoodFarmsteads) || 5) &&
         state.foundations.farmstead + state.queued.farmstead === 0) {
       const cost = costOf(state, policy, "farmstead");
       // IT14.78: if we are preparing/operating Barracks while the food bank/runway is
