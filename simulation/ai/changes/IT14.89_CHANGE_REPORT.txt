@@ -1,5 +1,9 @@
 IT14.89 CHANGE REPORT
 
+COMPILE HOTFIX
+- Corrected one invalid nullish-coalescing/logical-expression mix in the permanent Field progress watchdog that prevented 0 A.D. SpiderMonkey from compiling expertDecisionController.js.
+- No gameplay values or decisions changed by this hotfix.
+
 Targeted economy-placement and contact-fighting follow-up from IT14.88.
 Only three Petra JavaScript files change: attackManager.js, expertDecisionController.js and expertDecision/policy.js.
 attackPlan.js is deliberately unchanged.

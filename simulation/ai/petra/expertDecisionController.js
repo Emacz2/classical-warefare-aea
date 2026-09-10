@@ -3971,8 +3971,9 @@ export class ExpertDecisionController
 		if (!frame) return frame;
 		const policy = mergePolicy();
 		const now = Number(gameState.ai.elapsedTime) || 0;
-		const desired = Math.max(0, Number(frame.economy && frame.economy.derived && frame.economy.derived.desiredFields ??
-			frame.derived && frame.derived.desiredFields) || 0);
+		const economyDesired = frame.economy && frame.economy.derived ? frame.economy.derived.desiredFields : undefined;
+		const fallbackDesired = frame.derived ? frame.derived.desiredFields : undefined;
+		const desired = Math.max(0, Number(economyDesired !== undefined && economyDesired !== null ? economyDesired : fallbackDesired) || 0);
 		const built = this.builtByClass(gameState, "Field").length;
 		const foundations = this.foundationsByClass(gameState, "Field").length;
 		const queued = gameState.ai.queues.field ? gameState.ai.queues.field.countQueuedUnits() : 0;
