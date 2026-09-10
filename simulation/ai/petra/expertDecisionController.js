@@ -300,6 +300,12 @@ export class ExpertDecisionController
 		this.lastResourceServiceBuildTime = -99999;
 		this.lastResourceServiceDiag = -99999;
 		this.lastFoodCapacityDeadlockDiag = -99999;
+		// IT14.89 field/farm-capacity progress guards.
+		this.lastFieldPipeline = 0;
+		this.lastFieldPipelineProgressAt = -99999;
+		this.lastFieldWatchdogDiag = -99999;
+		this.lastFarmThirdHubRepackAt = -99999;
+		this.lastWoodDriftHoldDiag = -99999;
 		// IT14.53: Athens special production is deliberately small and opportunistic.
 		// These diagnostics/cooldowns keep it from spamming champion/hero queue attempts.
 		this.lastAthenianSpecialBuildDiag = -99999;
@@ -3911,7 +3917,104 @@ export class ExpertDecisionController
 		return ratios.length ? ratios.reduce((sum, value) => sum + value, 0) / ratios.length : 1;
 	}
 
-	applyPhase2SafetyField(gameState, frame, farmCapacity)
+	rescanExistingFarmCapacityBeforeThirdHub(gameState, accessIndex, farmCapacity)
+	{
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const farms = this.builtByClass(gameState, "Farmstead");
+		if (farms.length < 2 || (farmCapacity && Number(farmCapacity.openFieldSlots) > 0) ||
+		    now - (Number(this.lastFarmThirdHubRepackAt) || -99999) < (Number(policy.farmThirdHubRepackCooldownSeconds) || 30))
+			return farmCapacity;
+		this.lastFarmThirdHubRepackAt = now;
+		const farmIds = new Set(farms.map(farm => farm.id()));
+		const age = Math.max(0, Number(policy.farmThirdHubFailedSlotForgetAgeSeconds) || 12);
+		const before = (this.failedFieldPositions || []).length;
+		this.failedFieldPositions = (this.failedFieldPositions || []).filter(item =>
+		{
+			if (!item || !Number.isFinite(Number(item.farmsteadId)) || !farmIds.has(Number(item.farmsteadId)))
+				return true;
+			// retry only an OLD transient miss; recent failures remain authoritative.
+			const failedAt = Number(item.until) - 45;
+			return !Number.isFinite(failedAt) || now - failedAt < age;
+		});
+		const cleared = before - this.failedFieldPositions.length;
+		const rescanned = this.farmCapacitySnapshot(gameState, accessIndex);
+		aiWarn("[EXPERT-FARM-REPACK] before-third-hub farms=" + farms.length + " clearedOldFailures=" + cleared +
+			" open=" + Number(rescanned.openFieldSlots || 0) + " supported=" + Number(rescanned.supportedFieldSlots || 0));
+		return rescanned;
+	}
+
+	applyPreThirdFarmsteadCapacityRescan(gameState, frame, accessIndex)
+	{
+		if (!frame || !(frame.actions || []).some(action => action && action.kind === "farmstead" && action.role === "farm_hub_deadlock"))
+			return frame;
+		// The economy planner can request the same emergency hub outside the narrow P1
+		// phase-safety helper. Intercept Farmstead #3 here as well so every deadlock path
+		// gives the two existing hubs one final compact-slot rescan before spending 100 wood.
+		if (this.builtByClass(gameState, "Farmstead").length < 2)
+			return frame;
+		const rescanned = this.rescanExistingFarmCapacityBeforeThirdHub(gameState, accessIndex,
+			this.farmCapacitySnapshot(gameState, accessIndex));
+		if (!rescanned || !rescanned.known || Number(rescanned.openFieldSlots) <= 0)
+			return frame;
+		const actions = (frame.actions || []).filter(action => !(action && action.kind === "farmstead" && action.role === "farm_hub_deadlock"));
+		if (!actions.some(action => action && action.kind === "field" && (action.type === "BUILD" || action.type === "RESERVE")))
+			actions.unshift({ "type": "BUILD", "kind": "field", "role": "pre_third_hub_repack",
+				"priority": Number(mergePolicy().phase2SafetyFieldPriority) || 125, "builderCount": 3,
+				"builderPool": ["food", "food_owned", "farm", "wood"] });
+		aiWarn("[EXPERT-FARM-REPACK] replace-third-hub-with-field open=" + Number(rescanned.openFieldSlots || 0));
+		return { ...frame, actions };
+	}
+
+	applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex)
+	{
+		if (!frame) return frame;
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const desired = Math.max(0, Number(frame.economy && frame.economy.derived && frame.economy.derived.desiredFields ??
+			frame.derived && frame.derived.desiredFields) || 0);
+		const built = this.builtByClass(gameState, "Field").length;
+		const foundations = this.foundationsByClass(gameState, "Field").length;
+		const queued = gameState.ai.queues.field ? gameState.ai.queues.field.countQueuedUnits() : 0;
+		const pipeline = built + foundations + queued;
+		if (pipeline > Number(this.lastFieldPipeline || 0) || this.lastFieldPipelineProgressAt < -90000)
+			this.lastFieldPipelineProgressAt = now;
+		this.lastFieldPipeline = pipeline;
+		if (desired <= pipeline)
+		{
+			this.lastFieldPipelineProgressAt = now;
+			return frame;
+		}
+		const natural = frame.state && frame.state.food || {};
+		const naturalRemaining = Math.max(0, Number(natural.totalNaturalRemaining) || 0);
+		const deficitSeconds = Math.max(0, Number(natural.foodInfrastructureDeficitSeconds) || 0);
+		const foodBank = Math.max(0, Number(gameState.getResources().food) || 0);
+		const pressure = naturalRemaining <= (Number(policy.fieldProgressWatchdogNaturalRemaining) || 120) ||
+			deficitSeconds >= (Number(policy.fieldProgressWatchdogFoodDeficitSeconds) || 12) || foodBank <= 300;
+		if (!pressure || now - this.lastFieldPipelineProgressAt < (Number(policy.fieldProgressWatchdogSeconds) || 24))
+			return frame;
+		if ((frame.actions || []).some(action => action && action.kind === "field" && (action.type === "BUILD" || action.type === "RESERVE")))
+			return frame;
+		const capacity = this.farmCapacitySnapshot(gameState, accessIndex);
+		if (!capacity.known || Number(capacity.openFieldSlots) <= 0)
+			return frame;
+		const action = { "type": "BUILD", "kind": "field", "role": "field_progress_watchdog",
+			"priority": Number(policy.fieldProgressWatchdogPriority) || 127, "builderCount": 3,
+			"builderPool": ["food", "food_owned", "farm", "wood"] };
+		if (now - (Number(this.lastFieldWatchdogDiag) || -99999) >= 8)
+		{
+			this.lastFieldWatchdogDiag = now;
+			aiWarn("[EXPERT-FIELD-WATCH] force next field pipeline=" + pipeline + "/" + desired +
+				" open=" + Number(capacity.openFieldSlots || 0) + " food=" + Math.round(foodBank) +
+				" natural=" + Math.round(naturalRemaining) + " stalled=" + Math.round(now - this.lastFieldPipelineProgressAt) + "s");
+		}
+		// Restart the timer after issuing a rescue request; if it never materializes, the
+		// ordinary field lifecycle retries it and this watchdog can fire again later.
+		this.lastFieldPipelineProgressAt = now;
+		return { ...frame, "actions": [action, ...(frame.actions || [])] };
+	}
+
+	applyPhase2SafetyField(gameState, frame, farmCapacity, accessIndex)
 	{
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		if (!gameState.currentPhase || gameState.currentPhase() !== 1 ||
@@ -3937,7 +4040,7 @@ export class ExpertDecisionController
 			return frame;
 		}
 		const actions = [...(frame.actions || [])];
-		const open = farmCapacity && farmCapacity.known ? Math.max(0, Number(farmCapacity.openFieldSlots) || 0) : 0;
+		let open = farmCapacity && farmCapacity.known ? Math.max(0, Number(farmCapacity.openFieldSlots) || 0) : 0;
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		// IT14.69: remember only the pathological "exactly one field short and no legal
 		// touching slot" state. Normal six-field builds never enter this timer.
@@ -3951,6 +4054,23 @@ export class ExpertDecisionController
 		if (open <= 0)
 		{
 			const farmsteadPipeline = this.builtByClass(gameState, "Farmstead").length + this.foundationsByClass(gameState, "Farmstead").length;
+			// IT14.89: before Farmstead #3, run one last existing-hub rescan after
+			// expiring old transient field failures. If a legal compact slot reappears,
+			// fill it instead of buying a new food hub.
+			if (farmsteadPipeline >= 2 && farmsteadPipeline < Math.max(1, Number(policy.maximumFarmsteads) || 3))
+			{
+				const rescanned = this.rescanExistingFarmCapacityBeforeThirdHub(gameState, accessIndex, farmCapacity);
+				open = rescanned && rescanned.known ? Math.max(0, Number(rescanned.openFieldSlots) || 0) : 0;
+				if (open > 0)
+				{
+					const existingField = actions.find(action => action && action.kind === "field");
+					if (existingField) existingField.priority = Math.max(Number(existingField.priority) || 0, Number(policy.phase2SafetyFieldPriority) || 125);
+					else actions.push({ "type": "BUILD", "kind": "field", "role": "pre_third_hub_repack",
+						"priority": Number(policy.phase2SafetyFieldPriority) || 125, "builderCount": Number(policy.phase2SafetyFieldBuilders) || 2,
+						"builderPool": ["food", "food_owned", "farm", "wood"] });
+					return { ...frame, actions };
+				}
+			}
 			if (farmsteadPipeline >= Math.max(1, Number(policy.maximumFarmsteads) || 3))
 				return frame;
 			const existing = actions.find(action => action && action.kind === "farmstead");
@@ -6440,6 +6560,102 @@ export class ExpertDecisionController
 		return trees.reduce((sum, tree) => sum + Math.sqrt(SquareVectorDistance(tree.position, position)) * Math.max(0, Number(tree.remaining) || 0), 0) / amount;
 	}
 
+	// IT14.89: non-opening Storehouses are evaluated against the resource mass they
+	// actually service, not just the one tree/mine that happened to be a worker target.
+	resourcePlacementPoints(gameState, ids)
+	{
+		const points = [];
+		for (const id of ids || [])
+		{
+			const ent = gameState.getEntityById(Number(id));
+			if (!ent || !entityPosition(ent))
+				continue;
+			let weight = ent.resourceSupplyAmount ? Math.max(1, Number(ent.resourceSupplyAmount()) || 0) : 1;
+			points.push({ "position": [...ent.position()], weight });
+		}
+		return points.sort((a, b) => b.weight - a.weight).slice(0, 48);
+	}
+
+	weightedResourceCenter(points)
+	{
+		let total = 0, x = 0, z = 0;
+		for (const point of points || [])
+		{
+			if (!point || !Array.isArray(point.position))
+				continue;
+			const weight = Math.max(0.001, Number(point.weight) || 1);
+			total += weight;
+			x += point.position[0] * weight;
+			z += point.position[1] * weight;
+		}
+		return total > 0 ? [x / total, z / total] : undefined;
+	}
+
+	storehouseAverageDistanceGain(gameState, generic, points, candidate)
+	{
+		if (!Array.isArray(candidate) || !(points && points.length))
+			return 0;
+		const dropsites = this.resourceDropsites(gameState, generic).filter(ent => ent && entityPosition(ent));
+		if (!dropsites.length)
+			return Infinity;
+		let totalWeight = 0, oldDistance = 0, newDistance = 0;
+		for (const point of points)
+		{
+			if (!point || !Array.isArray(point.position))
+				continue;
+			const weight = Math.max(0.001, Number(point.weight) || 1);
+			let old = Infinity;
+			for (const dropsite of dropsites)
+				old = Math.min(old, Math.sqrt(SquareVectorDistance(point.position, dropsite.position())));
+			const proposed = Math.sqrt(SquareVectorDistance(point.position, candidate));
+			totalWeight += weight;
+			oldDistance += old * weight;
+			newDistance += Math.min(old, proposed) * weight;
+		}
+		return totalWeight > 0 ? oldDistance / totalWeight - newDistance / totalWeight : 0;
+	}
+
+	primaryWoodDistrictHealth(gameState, accessIndex)
+	{
+		const policy = mergePolicy();
+		const current = this.getPrimaryWoodPosition(gameState);
+		if (!current)
+			return { healthy: false, remaining: 0, activeWorkers: 0, stores: 0, treeIds: [], center: undefined };
+		const nearby = collectInitialWoodCandidates(gameState, {
+			"getLandAccess": getLandAccess, "isSupplyFull": isSupplyFull,
+			"territoryMap": this.HQ.territoryMap, "anchorPosition": current,
+			"accessIndex": accessIndex, "playerId": PlayerID, "searchRadius": policy.woodClusterSearchRadius
+		});
+		const connected = this.connectedWoodCluster(nearby, current, Number(policy.woodClusterLinkDistance) || 22);
+		const fringe2 = Math.pow(Math.max(Number(policy.woodPracticalDistrictFringeDistance) || 34,
+			Number(policy.woodClusterLinkDistance) || 22), 2);
+		const connectedIds = new Set(connected.map(tree => tree.id));
+		const practical = connected.length ? nearby.filter(tree => connectedIds.has(tree.id) ||
+			connected.some(base => SquareVectorDistance(tree.position, base.position) <= fringe2)) : connected;
+		const ids = new Set(practical.map(tree => Number(tree.id)));
+		let activeWorkers = 0;
+		for (const worker of gameState.getOwnUnits().values())
+		{
+			if (!worker || !worker.getMetadata || !this.isExpertEconomyEntity(worker) || worker.getMetadata(PlayerID, "PartOfArmy"))
+				continue;
+			const supplyId = Number(worker.getMetadata(PlayerID, SUPPLY_ID));
+			if (!ids.has(supplyId))
+				continue;
+			const state = worker.unitAIState ? String(worker.unitAIState() || "") : "";
+			if (!worker.isIdle || !worker.isIdle() || state.includes("GATHER"))
+				++activeWorkers;
+		}
+		const remaining = this.woodAmount(practical);
+		const stores = this.storehousesServingWoodCluster(gameState, practical);
+		const bank = Math.max(0, Number(gameState.getResources().wood) || 0);
+		const immediateCrisis = bank <= (Number(policy.woodCrisisImmediateBank) || 250) &&
+			activeWorkers <= (Number(policy.woodCrisisImmediateActiveWorkers) || 2);
+		const healthy = remaining >= (Number(policy.woodHealthyDistrictMinimumRemaining) || 900) &&
+			activeWorkers >= (Number(policy.woodHealthyDistrictMinimumActiveWorkers) || 4) && stores >= 1 &&
+			!this.woodIncomeStalled && !this.phaseWoodCrisis && !immediateCrisis;
+		return { healthy, remaining, activeWorkers, stores, treeIds: [...ids], center: this.weightedResourceCenter(practical.map(tree => ({ position: tree.position, weight: tree.remaining }))) };
+	}
+
 	storehousesServingWoodCluster(gameState, trees, radius = 30)
 	{
 		if (!trees || !trees.length)
@@ -7996,9 +8212,22 @@ export class ExpertDecisionController
 	{
 		if (!trainer || !trainer.trainableEntities)
 			return undefined;
+		const policy = mergePolicy();
+		const civ = gameState.getPlayerCiv();
+		const operatingCap = this.effectiveOperatingPopulationCap(gameState);
+		const configuredPoliceHeadroom = Number(policy.athensPoliceActivationPopulationHeadroom);
+		const policeHeadroom = Math.max(0, Number.isFinite(configuredPoliceHeadroom) ? configuredPoliceHeadroom : 0);
+		const policeAllowed = civ === "athen" && gameState.getPopulation() >= operatingCap - policeHeadroom;
 		const candidates = [];
-		for (const type of trainer.trainableEntities(gameState.getPlayerCiv()) || [])
+		for (const type of trainer.trainableEntities(civ) || [])
 		{
+			const typeName = String(type).toLowerCase();
+			const cityPolice = civ === "athen" && typeName.includes("city_police");
+			// IT14.89: Scythian civic police cost zero population, but are deliberately
+			// weak support troops. Keep them out of normal composition until Athens is
+			// genuinely at its operating population ceiling; then they become bonus bodies.
+			if (cityPolice && !policeAllowed)
+				continue;
 			if (gameState.isTemplateDisabled(type))
 				continue;
 			const template = gameState.getTemplate(type);
@@ -8017,7 +8246,7 @@ export class ExpertDecisionController
 			const swordsman = !!template.hasClasses(["Swordsman"]) || String(type).includes("/infantry_swordsman_");
 			const speed = typeof template.walkSpeed === "function" ? Number(template.walkSpeed()) || 0 : 0;
 			const costScore = (stone + metal) * 20 + food + wood;
-			candidates.push({ type, template, cost: { food, wood, stone, metal }, melee, ranged, hoplite, javelineer, slinger, swordsman, speed, costScore });
+			candidates.push({ type, template, cost: { food, wood, stone, metal }, melee, ranged, hoplite, javelineer, slinger, swordsman, cityPolice, speed, costScore });
 		}
 		if (!candidates.length)
 			return undefined;
@@ -8039,6 +8268,12 @@ export class ExpertDecisionController
 				return cheapest(fallbackAffordable);
 			return preferred.length ? cheapest(preferred) : cheapest(fallback);
 		};
+		if (policeAllowed && source === "cc-cap")
+		{
+			const police = candidates.filter(candidate => candidate.cityPolice);
+			if (police.length)
+				return chooseAffordable(police, candidates);
+		}
 		const ranged = candidates.filter(c => c.ranged);
 		const melee = candidates.filter(c => c.melee);
 		const bankWood = Number(gameState.getResources().wood) || 0;
@@ -8069,7 +8304,6 @@ export class ExpertDecisionController
 			if (hasClass(ent, "Ranged"))
 				++rangedCount;
 		}
-		const policy = mergePolicy();
 		const targetMeleeShare = gameState.getPlayerCiv() === "athen" ?
 			(Number(policy.athensMeleeShare) || 0.58) :
 			(this.isCityStateCiv(gameState) ? policy.cityStateMeleeShare : policy.genericMeleeShare);
@@ -8845,23 +9079,42 @@ export class ExpertDecisionController
 		}
 		else if (kind === "storehouse" && action.role === "resource_service")
 		{
-			const anchor = Array.isArray(action.resourceAnchor) ? action.resourceAnchor : cc.position();
+			const policy = mergePolicy();
 			const sourceIds = Array.isArray(action.resourceSourceIds) ? action.resourceSourceIds : [];
+			const placementIds = Array.isArray(action.resourcePlacementSourceIds) && action.resourcePlacementSourceIds.length ?
+				action.resourcePlacementSourceIds : sourceIds;
 			const sources = sourceIds.map(id => gameState.getEntityById(Number(id))).filter(ent => ent && entityPosition(ent));
+			let resourcePoints = this.resourcePlacementPoints(gameState, placementIds);
+			const massCenter = this.weightedResourceCenter(resourcePoints);
+			const anchor = massCenter || (Array.isArray(action.resourceAnchor) ? action.resourceAnchor : cc.position());
+			const candidateAnchors = [anchor];
+			for (const source of sources.slice(0, 6))
+				if (source && entityPosition(source) && !candidateAnchors.some(pos => SquareVectorDistance(pos, source.position()) < 2*2))
+					candidateAnchors.push(source.position());
+			const woodService = action.resourceGeneric === "wood";
+			const distances = woodService ?
+				[Math.max(3, geometry.radius + 0.5), geometry.radius + 2.5, geometry.radius + 5.5, geometry.radius + 9.5, geometry.radius + 14.5, geometry.radius + 20.5, geometry.radius + 26.5, geometry.radius + 32.5] :
+				[Math.max(3, geometry.radius + 0.5), geometry.radius + 1.5, geometry.radius + 2.5, geometry.radius + 4.0, geometry.radius + 6.0, geometry.radius + 8.0];
 			const candidates = [];
-			for (const source of sources.length ? sources : [{ position: () => anchor }])
+			for (const candidateAnchor of candidateAnchors)
 				candidates.push(...generatePlacementCandidates({
-					"kind": "storehouse", "anchor": source.position(), "toward": cc.position(),
-					"distances": [Math.max(3, geometry.radius + 0.5), geometry.radius + 1.5, geometry.radius + 2.5, geometry.radius + 4.0, geometry.radius + 6.0],
-					"angleCount": 32, "templateRadius": geometry.radius
+					"kind": "storehouse", "anchor": candidateAnchor, "toward": cc.position(),
+					distances, "angleCount": woodService ? 48 : 32, "templateRadius": geometry.radius
 				}));
+			const emergency = woodService && (this.woodIncomeStalled || this.phaseWoodCrisis ||
+				((Number(gameState.getResources().wood) || 0) <= (Number(policy.woodCrisisImmediateBank) || 250) &&
+				 this.actualWorkerOrders(gameState).wood <= (Number(policy.woodCrisisImmediateActiveWorkers) || 2)));
 			request = {
 				kind, "role": "resource_service", "templateRadius": geometry.radius, candidates,
 				"resourceService": true, "resourceGeneric": action.resourceGeneric,
 				"pathSources": sources.map(source => source.position()),
+				"resourcePoints": resourcePoints,
+				"minimumAverageDistanceGain": woodService ?
+					(emergency ? Number(policy.storehouseEmergencyMinimumAverageDistanceGain) || 2 : Number(policy.storehouseMinimumAverageDistanceGain) || 5) :
+					Number(policy.storehouseMineralMinimumAverageDistanceGain) || 4,
 				"worksiteAnchor": anchor, "minimumCCDistance": 0,
 				"resourceSourceIds": sourceIds,
-				"storehouseFarmEdgeRelax": action.resourceGeneric === "wood"
+				"storehouseFarmEdgeRelax": woodService
 			};
 		}
 		else if (kind === "storehouse")
@@ -8931,19 +9184,28 @@ export class ExpertDecisionController
 
 			if (!ranked.length)
 			{
-				// IT14.86: do not buy a new remote wood district merely because the current
-				// patch has fallen below the old deepen threshold. Keep working the serviced
-				// forest until it is genuinely low; if geometry offers a worthwhile second
-				// pad, the block above uses it. Only a real wood-continuity emergency bypasses
-				// this hold. This prevents Storehouse #3 from appearing on a fresh forest while
-				// Storehouses #1/#2 still have a useful line in front of them.
-				const releaseRemaining = Math.max(1, Number(policy.woodNewDistrictReleaseRemaining) || 450);
-				if (!continuityEmergency && practicalCluster.length && samePatchAmount >= releaseRemaining)
-					aiWarn("[EXPERT-WOOD] prefer serviced district but no useful deepen pad; allow next district practicalWood=" +
-						Math.round(samePatchAmount) + " workers=" + localWorkers.length + " stores=" + servingStores);
+				// IT14.89: "finish this district" becomes a real hold only when LIVE evidence
+				// says the current district is healthy: plenty of wood, a serving dropsite,
+				// multiple active cutters, and no measured stall/crisis. This is intentionally
+				// different from IT14.86's graph-connectivity veto; the moment delivery/active
+				// cutters collapse, continuityEmergency/primary health releases the next forest.
+				const districtHealth = this.primaryWoodDistrictHealth(gameState, accessIndex);
+				if (!continuityEmergency && districtHealth.healthy)
+				{
+					if ((Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastWoodDriftHoldDiag) || -99999) >= 8)
+					{
+						this.lastWoodDriftHoldDiag = Number(gameState.ai.elapsedTime) || 0;
+						aiWarn("[EXPERT-WOOD] HOLD healthy serviced district wood=" + Math.round(districtHealth.remaining) +
+							" active=" + districtHealth.activeWorkers + " stores=" + districtHealth.stores + " action=no-new-forest");
+					}
+					return undefined;
+				}
+				if (practicalCluster.length)
+					aiWarn("[EXPERT-WOOD] release serviced district practicalWood=" + Math.round(samePatchAmount) +
+						" active=" + districtHealth.activeWorkers + " emergency=" + continuityEmergency);
 
-				// Preference, not veto: if the practical district cannot be improved, search a
-				// real in-territory forest immediately. During a wood crisis widen the search.
+				// If the practical district cannot be improved AND is no longer economically
+				// healthy, search a real in-territory forest. Crisis still widens the search.
 				const all = collectInitialWoodCandidates(gameState, {
 					"getLandAccess": getLandAccess, "isSupplyFull": isSupplyFull,
 					"territoryMap": this.HQ.territoryMap, "anchorPosition": workerAnchor,
@@ -8997,17 +9259,23 @@ export class ExpertDecisionController
 			}
 			if (!candidates.length)
 				return undefined;
+			const resourcePoints = this.resourcePlacementPoints(gameState, ranked[0].treeIds || []);
 			request = {
 				kind, "templateRadius": geometry.radius, candidates,
 				"worksiteAnchor": ranked[0].position, "selectedTreeIds": [...(ranked[0].treeIds || [])],
+				"resourceGeneric": "wood", "resourcePoints": resourcePoints,
+				"minimumAverageDistanceGain": continuityEmergency ?
+					(Number(policy.storehouseEmergencyMinimumAverageDistanceGain) || 2) :
+					(Number(policy.storehouseMinimumAverageDistanceGain) || 5),
 				"minimumCCDistance": policy.storehouseMinimumCCDistance, "woodExpansionMode": mode,
 				// Expansion Storehouses may sit on the edge of a farm district provided they
 				// do not consume an actual reserved Field footprint.
 				"storehouseFarmEdgeRelax": true
 			};
 			this.pendingWoodSelectionByTask[taskId] = { ...ranked[0], woodExpansionMode: mode };
-			aiWarn("[EXPERT-WOOD] storehouse plan=" + mode + " connectedWood=" + Math.round(samePatchAmount) +
-				" workers=" + localWorkers.length + " stores=" + servingStores + " improve=" + improvement.toFixed(1));
+			aiWarn("[EXPERT-WOOD] storehouse plan=" + mode + " currentWood=" + Math.round(samePatchAmount) +
+				" candidateWood=" + Math.round(Number(ranked[0].localWoodAmount) || 0) +
+				" workers=" + localWorkers.length + " stores=" + servingStores + " anchorImprove=" + improvement.toFixed(1));
 		}
 
 		else if (kind === "farmstead")
@@ -9211,6 +9479,32 @@ export class ExpertDecisionController
 							}
 					components.push(component);
 				}
+				// IT14.89: first try to fill a literal one-house hole between existing blocks.
+				// We derive these from the same snap geometry, so this does not invent a new
+				// city layout; it simply uses the missing shared-adjacent slot before spreading.
+				const gapFillHouseCandidates = [];
+				const adjacentProbe = [];
+				for (const anchorHouse of houses)
+				{
+					const pos = anchorHouse.position();
+					const angle = anchorHouse.angle && Number.isFinite(Number(anchorHouse.angle())) ? Number(anchorHouse.angle()) : 0;
+					adjacentProbe.push(expertLocalToWorld(pos, +snapU, 0, angle));
+					adjacentProbe.push(expertLocalToWorld(pos, -snapU, 0, angle));
+					adjacentProbe.push(expertLocalToWorld(pos, 0, +snapV, angle));
+					adjacentProbe.push(expertLocalToWorld(pos, 0, -snapV, angle));
+				}
+				const gapTolerance = Math.max(0.5, Number(policy.houseGapFillSnapTolerance) || 2.5);
+				for (const candidate of adjacentProbe)
+				{
+					let adjacent = 0;
+					for (const house of houses)
+					{
+						const d = Math.sqrt(SquareVectorDistance(candidate, house.position()));
+						if (Math.abs(d - snapU) <= gapTolerance || Math.abs(d - snapV) <= gapTolerance)
+							++adjacent;
+					}
+					if (adjacent >= 2) gapFillHouseCandidates.push(candidate);
+				}
 				const compactHouseCandidates = [];
 				for (const component of components.filter(group => group.length < Math.max(2, Number(policy.houseClusterMaximumMembers) || 3))
 					.sort((a, b) => b.length - a.length || b[b.length - 1].id() - a[a.length - 1].id()))
@@ -9253,7 +9547,7 @@ export class ExpertDecisionController
 						...this.builtByClass(gameState, "Storehouse")
 					].filter(ent => ent && entityPosition(ent));
 					developed.sort((a, b) => SquareVectorDistance(b.position(), ccPos) - SquareVectorDistance(a.position(), ccPos) || a.id() - b.id());
-					const candidates = [...compactHouseCandidates, ...farmHouseCandidates];
+					const candidates = [...gapFillHouseCandidates, ...compactHouseCandidates, ...farmHouseCandidates];
 					for (const anchorEnt of developed.slice(0, 8))
 					{
 						const pos = anchorEnt.position();
@@ -9299,7 +9593,7 @@ export class ExpertDecisionController
 					dx /= len; dz /= len;
 					const tangent = [-dz, dx];
 					const spacing = Math.max(10, 2 * Number(geometry.radius || 4) + 2);
-					const lineCandidates = [...compactHouseCandidates, ...farmHouseCandidates];
+					const lineCandidates = [...gapFillHouseCandidates, ...compactHouseCandidates, ...farmHouseCandidates];
 					const annex = this.neutralFoodAnnexCandidate(gameState, cc.position(), accessIndex);
 					if (annex)
 						lineCandidates.unshift(...generatePlacementCandidates({ "kind": "barracks", "anchor": annex.position, "toward": cc.position(),
@@ -10275,6 +10569,16 @@ export class ExpertDecisionController
 				for (const ent of this.builtByClass(gameState, "Storehouse"))
 					if (SquareVectorDistance(position, ent.position()) < spacing * spacing)
 						return false;
+				// IT14.89 unified payback gate. Every non-opening Storehouse request that
+				// knows its resource mass must shorten the weighted average haul by a real
+				// amount. This applies equally to wood, stone and metal request paths.
+				const minimumGain = Math.max(0, Number(request && request.minimumAverageDistanceGain) || 0);
+				if (minimumGain > 0 && request && Array.isArray(request.resourcePoints) && request.resourcePoints.length)
+				{
+					const gain = this.storehouseAverageDistanceGain(gameState, request.resourceGeneric || "wood", request.resourcePoints, position);
+					if (Number.isFinite(gain) && gain < minimumGain)
+						return false;
+				}
 			}
 			if (kind === "market" && Number(request && request.minimumMarketSpacing) > 0)
 			{
@@ -10332,8 +10636,38 @@ export class ExpertDecisionController
 				}
 				if (!request)
 					return score;
-				// IT14.75: expansion Storehouses are scored by the actual selected worksite
-				// path, not candidate order alone.
+				// IT14.89: put the Storehouse beside the RESOURCE MASS, not beside the first
+				// target in a worker list. This fixes fringe-tree lumber camps and naturally
+				// centers mineral Storehouses on the mine(s) they are meant to service.
+				const points = Array.isArray(request.resourcePoints) ? request.resourcePoints : [];
+				if (points.length)
+				{
+					let totalWeight = 0, distanceScore = 0, obstructionScore = 0;
+					const obstructionSample = points.slice(0, 12);
+					for (const point of points)
+					{
+						if (!point || !Array.isArray(point.position)) continue;
+						const weight = Math.max(0.001, Number(point.weight) || 1);
+						totalWeight += weight;
+						distanceScore += Math.sqrt(SquareVectorDistance(point.position, position)) * weight;
+					}
+					let obstructionWeight = 0;
+					for (const point of obstructionSample)
+					{
+						const weight = Math.max(0.001, Number(point.weight) || 1);
+						obstructionWeight += weight;
+						obstructionScore += this.lineObstructionPenalty(ports.obstructionMap, point.position, position) * weight;
+					}
+					const policy = mergePolicy();
+					if (totalWeight > 0)
+						score += (Number(policy.storehouseResourceDistanceScoreWeight) || 140) * distanceScore / totalWeight;
+					if (obstructionWeight > 0)
+						score += (Number(policy.storehouseResourceObstructionScoreWeight) || 30) * obstructionScore / obstructionWeight;
+					if (Array.isArray(request.worksiteAnchor))
+						score += 8 * Math.sqrt(SquareVectorDistance(request.worksiteAnchor, position));
+					return score;
+				}
+				// Legacy fallback for unusual requests that do not provide resource points.
 				if (!request.resourceService && Array.isArray(request.worksiteAnchor))
 				{
 					const distance = Math.sqrt(SquareVectorDistance(request.worksiteAnchor, position));
@@ -11430,19 +11764,32 @@ export class ExpertDecisionController
 			district.center = centerOf(district.sources);
 			district.remaining = district.sources.reduce((sum, source) => sum + Math.max(0, Number(source.resourceSupplyAmount()) || 0), 0);
 			district.sourceIds = district.sources.map(source => source.id());
-			// IT14.88: workers usually target only a handful of trees at once. For wood,
-			// measure the whole local cutting district before deciding whether a new
-			// Storehouse repays itself; otherwise a rich forest can look like a 200-wood
-			// fragment merely because only two current tree targets are represented.
+			district.placementSourceIds = [...district.sourceIds];
+			// IT14.89: workers usually target only a handful of trees at once. Expand the
+			// ACTUAL worker district into the connected/practical forest and use that wood
+			// mass for placement too. This prevents a Storehouse from anchoring on one fringe
+			// tree while the real forest is several metres farther away.
 			if (district.generic === "wood" && district.center)
 			{
-				const radius = Math.max(18, Number(policy.woodServiceLocalAmountRadius) || 30);
-				const localTrees = collectInitialWoodCandidates(gameState, {
+				const radius = Math.max(30, Number(policy.woodServicePlacementSearchRadius) || 48);
+				const nearbyTrees = collectInitialWoodCandidates(gameState, {
 					"getLandAccess": getLandAccess, "isSupplyFull": isSupplyFull,
 					"territoryMap": this.HQ.territoryMap, "anchorPosition": district.center,
 					"accessIndex": accessIndex, "playerId": PlayerID, "searchRadius": radius
-				}).filter(tree => SquareVectorDistance(tree.position, district.center) <= radius * radius);
-				district.remaining = Math.max(district.remaining, this.woodAmount(localTrees));
+				});
+				const connected = this.connectedWoodCluster(nearbyTrees, district.center, Number(policy.woodClusterLinkDistance) || 22);
+				const fringe2 = Math.pow(Math.max(Number(policy.woodPracticalDistrictFringeDistance) || 34,
+					Number(policy.woodClusterLinkDistance) || 22), 2);
+				const connectedIds = new Set(connected.map(tree => tree.id));
+				const localTrees = connected.length ? nearbyTrees.filter(tree => connectedIds.has(tree.id) ||
+					connected.some(base => SquareVectorDistance(tree.position, base.position) <= fringe2)) : connected;
+				if (localTrees.length)
+				{
+					district.remaining = Math.max(district.remaining, this.woodAmount(localTrees));
+					district.placementSourceIds = localTrees.map(tree => tree.id);
+					const massCenter = this.weightedResourceCenter(localTrees.map(tree => ({ position: tree.position, weight: tree.remaining })));
+					if (massCenter) district.center = massCenter;
+				}
 			}
 			district.dropDistance = 0;
 			district.roundTripSeconds = 0;
@@ -11486,6 +11833,8 @@ export class ExpertDecisionController
 		const foodSpacing = Math.max(18, Number(policy.resourceServiceFoodFarmsteadSpacing) || 30);
 		const farmsteads = this.builtByClass(gameState, "Farmstead");
 		const maximumFarmsteads = Math.max(1, Number(policy.maximumFarmsteads) || 3);
+		const primaryWood = this.primaryWoodDistrictHealth(gameState, accessIndex);
+		const primaryWoodIds = new Set(primaryWood.treeIds || []);
 		const candidates = this.activeResourceDistricts(gameState, accessIndex).filter(district =>
 		{
 			const requiredWorkers = district.generic === "wood" ?
@@ -11497,7 +11846,31 @@ export class ExpertDecisionController
 			if (district.workers.length < requiredWorkers || district.remaining < requiredRemaining)
 				return false;
 			if (district.generic === "wood")
+			{
+				// IT14.89: do not let three wandering lumberjacks "vote" for a new forest
+				// while the established district is still serviced, productive and rich.
+				// This is deliberately NOT the old IT14.86 hard veto: measured stall/low
+				// activity makes primaryWood.healthy false and releases the alternate immediately.
+				if (primaryWood.healthy)
+				{
+					const placementIds = district.placementSourceIds || district.sourceIds || [];
+					const sameDistrict = placementIds.some(id => primaryWoodIds.has(Number(id))) ||
+						(primaryWood.center && district.center && SquareVectorDistance(primaryWood.center, district.center) <=
+							Math.pow(Number(policy.woodHealthyDistrictAlternateHoldDistance) || 42, 2));
+					if (!sameDistrict)
+					{
+						if (now - (Number(this.lastWoodDriftHoldDiag) || -99999) >= 8)
+						{
+							this.lastWoodDriftHoldDiag = now;
+							aiWarn("[EXPERT-WOOD] hold drift district workers=" + district.workers.length +
+								" alternateWood=" + Math.round(district.remaining) + " primaryWood=" + Math.round(primaryWood.remaining) +
+								" primaryActive=" + primaryWood.activeWorkers);
+						}
+						return false;
+					}
+				}
 				return district.dropDistance > woodHardDistance || district.roundTripSeconds > woodSlowRoundTrip;
+			}
 			if (district.generic !== "food")
 				return district.dropDistance > hardDistance || district.roundTripSeconds > slowRoundTrip;
 			if (farmsteads.length >= maximumFarmsteads)
@@ -11552,6 +11925,7 @@ export class ExpertDecisionController
 			"resourceGeneric": need.generic,
 			"resourceAnchor": [...need.center],
 			"resourceSourceIds": [...need.sourceIds],
+			"resourcePlacementSourceIds": [...(need.placementSourceIds || need.sourceIds)],
 			"reason": "shorten " + need.generic + " dropsite travel"
 		};
 		let filtered = frame.actions || [];
@@ -12494,7 +12868,7 @@ export class ExpertDecisionController
 		this.lastDesiredFields = Number(frame && frame.derived && frame.derived.desiredFields) || 0;
 		// IT14.74: the Town safety helper may add Fields only after combined usable natural
 		// food reaches the <=40% transition. It cannot bypass the hard natural-food hold.
-		frame = this.applyPhase2SafetyField(gameState, frame, farmCapacity);
+		frame = this.applyPhase2SafetyField(gameState, frame, farmCapacity, accessIndex);
 		// IT14.77: restore the opening eco-tech contract before any optional Village
 		// military/phase sweep. The Wicker -> Iron Axe routine existed, but the main
 		// update path stopped CALLING it in P1; that is how Athens reached 13+ minutes
@@ -12589,6 +12963,8 @@ export class ExpertDecisionController
 		frame = this.filterFrameForOpeningTech(gameState, queues, allFoodClusters, frame);
 		frame = this.applyPostWickerBranchConstruction(gameState, frame);
 		frame = this.applySecondaryDepletionFieldTrigger(gameState, frame);
+		frame = this.applyPreThirdFarmsteadCapacityRescan(gameState, frame, accessIndex);
+		frame = this.applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex);
 		frame = this.applyFarmHubRetryCooldown(gameState, frame);
 		// IT14.52: resource-service construction is a hard logistics correction.
 		frame = this.applyResourceServiceConstruction(gameState, frame, accessIndex);
@@ -12795,7 +13171,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.88] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.89] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -12859,7 +13235,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.88] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.89] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -12939,6 +13315,11 @@ export class ExpertDecisionController
 			"resourceRoundTripBySupply": { ...this.resourceRoundTripBySupply },
 			"lastResourceServiceBuildTime": this.lastResourceServiceBuildTime,
 			"lastFoodCapacityDeadlockDiag": this.lastFoodCapacityDeadlockDiag,
+			"lastFieldPipeline": this.lastFieldPipeline,
+			"lastFieldPipelineProgressAt": this.lastFieldPipelineProgressAt,
+			"lastFieldWatchdogDiag": this.lastFieldWatchdogDiag,
+			"lastFarmThirdHubRepackAt": this.lastFarmThirdHubRepackAt,
+			"lastWoodDriftHoldDiag": this.lastWoodDriftHoldDiag,
 			"lastAthenianSlingerDiag": this.lastAthenianSlingerDiag,
 			"lastAthenianP1ForgeDiag": this.lastAthenianP1ForgeDiag,
 			"lastAthenianP1MeleeDiag": this.lastAthenianP1MeleeDiag,
@@ -13035,6 +13416,11 @@ export class ExpertDecisionController
 		this.resourceRoundTripBySupply = { ...(data.resourceRoundTripBySupply || {}) };
 		this.lastResourceServiceBuildTime = Number.isFinite(data.lastResourceServiceBuildTime) ? data.lastResourceServiceBuildTime : -99999;
 		this.lastFoodCapacityDeadlockDiag = Number.isFinite(data.lastFoodCapacityDeadlockDiag) ? data.lastFoodCapacityDeadlockDiag : -99999;
+		this.lastFieldPipeline = Math.max(0, Number(data.lastFieldPipeline) || 0);
+		this.lastFieldPipelineProgressAt = Number.isFinite(data.lastFieldPipelineProgressAt) ? data.lastFieldPipelineProgressAt : -99999;
+		this.lastFieldWatchdogDiag = Number.isFinite(data.lastFieldWatchdogDiag) ? data.lastFieldWatchdogDiag : -99999;
+		this.lastFarmThirdHubRepackAt = Number.isFinite(data.lastFarmThirdHubRepackAt) ? data.lastFarmThirdHubRepackAt : -99999;
+		this.lastWoodDriftHoldDiag = Number.isFinite(data.lastWoodDriftHoldDiag) ? data.lastWoodDriftHoldDiag : -99999;
 		this.lastAthenianSlingerDiag = Number.isFinite(data.lastAthenianSlingerDiag) ? data.lastAthenianSlingerDiag : -99999;
 		this.lastAthenianP1ForgeDiag = Number.isFinite(data.lastAthenianP1ForgeDiag) ? data.lastAthenianP1ForgeDiag : -99999;
 		this.lastAthenianP1MeleeDiag = Number.isFinite(data.lastAthenianP1MeleeDiag) ? data.lastAthenianP1MeleeDiag : -99999;

@@ -1,30 +1,48 @@
-EXPERT BENCHMARKS — IT14.88
+EXPERT BENCHMARKS — IT14.89
 
-IT14.87 VALIDATED / KEEP FROZEN
-- Opening Farmstead multi-bush scoring remains healthy.
-- Wood-crisis recovery/territorial expansion is working across Athens and non-Athens tests.
-- Athens scarcity Cleruchy can move toward a rich wood frontier.
-- P3 Max-Tech All-In now persists through favorable local fighting instead of retreating solely from weak enemy-population delta.
+IT14.88 VALIDATED / KEEP FROZEN
+- Expert automatic siege should use rams / suitable catapult-style building siege, not Oxybeles/bolt shooters.
+- Small healer escorts (about 2 Town / 3 City) should trail live attacks without counting toward launch army size.
+- Iphicratean Reforms remains an optional Athens surplus tradeoff and may never delay the P3 all-in.
+- IT14.87 P3 FINISH persistence and wood-crisis escape remain authoritative.
 
-IT14.88 TARGETS
-1) SIEGE SIMPLICITY
-- Expert automatic siege must not queue Oxybeles/bolt shooters/ballistas.
-- First building breaker should be a ram; second P3 engine may be a usable catapult or another ram.
+IT14.89 TARGETS
+1) CONTACT FIGHTING / ATTACK-MOVE
+- When an attacking army encounters enemy combat units on the route, infantry should engage/sweep those units before tunneling on nearby buildings.
+- Watch for [EXPERT-ATTACK-MOVE] sweep diagnostics during real contact.
+- Rams, healers/support, wounded peel units and tactical regroup must not be hijacked by this correction.
+- attackPlan.js must remain unchanged.
 
-2) HEALER ESCORT
-- Once the Town/City military is large, maintain about 2/3 healers without counting them toward launch army size.
-- Healers should trail the live attack and recover chip damage rather than wander as home support.
+2) WOOD DISTRICT DISCIPLINE
+- If the current serviced forest still has >=~900 practical wood, >=4 real active cutters and healthy delivery, a few drifted workers must NOT open a second forest merely because their haul is long.
+- If active cutters collapse, delivery stalls, or the fast <=250 wood / <=2-active crisis fires, release continuity immediately and recover/expand as IT14.87 did.
+- A large single forest may still receive a second Storehouse when the cutting face has moved far enough for strong measured payback.
 
-3) IPHICRATEAN REFORMS
-- Never block P3 launch.
-- Research only as an optional City surplus tradeoff for a large melee-heavy Athens army.
+3) STOREHOUSE ECONOMIC PLACEMENT
+- New wood Storehouses should sit on the working edge / weighted mass of the real forest, not beside one isolated fringe tree.
+- Stone and metal Storehouses should be close to the mine mass they service.
+- Normal non-opening Storehouses should improve weighted average haul by about >=5m for wood or >=4m for minerals; wood crisis may accept about >=2m.
+- Reject zero-payback new-patch Storehouses. Farms/Farmsteads must never positively pull a Storehouse location toward them.
 
-4) WOOD LOGISTICS
-- If >=3 actual lumberjacks migrate to an owned rich wood district with >12m carry or >~4s measured round trip, request a local Storehouse even if primaryWoodWorksite still points at the old forest.
-- Do not buy a Storehouse for a tiny fragment (<~450 local wood).
-- Later Storehouses may use the edge of the farm district but must not consume real/reserved Field footprints before the normal 10-field economy is complete.
+4) PERMANENT FOOD PROGRESS
+- With natural food exhausted/near exhausted and desired Fields above the field pipeline, the AI must not sit at five Fields for minutes.
+- If legal capacity exists and no Field pipeline progress occurs for ~24s, [EXPERT-FIELD-WATCH] should force one next Field.
+- Natural-rich openings should still delay unnecessary permanent Fields normally.
+
+5) FARMSTEAD #3
+- Before a third farm_hub_deadlock Farmstead, look for [EXPERT-FARM-REPACK].
+- If an old failed-slot mark was the only blocker and an existing hub has a legal slot, build that Field instead.
+- If two hubs are truly boxed/full, Farmstead #3 must still be allowed; do not recreate a food-capacity deadlock.
+
+6) ATHENS SCYTHIAN POLICE
+- units/athen/city_police must not be trained as normal army replacement below the effective operating population cap.
+- At the actual cap, zero-pop police may be added as overflow manpower.
+
+7) HOUSE PACKING
+- Prefer filling a legal one-house hole in an existing row/block before spreading, but never at the expense of Farm/Storehouse/resource reservations.
 
 RECOMMENDED TEST MIX
-- Athens Expert vs Athens Very Hard: verify simpler ram/catapult siege, healer escort and optional Iphicratean behavior.
-- Several random-civ Expert vs Very Hard games: verify wood-service Storehouses on worker migration without Storehouse spam.
-- Human vs one/two Experts: judge practical pressure and whether healer support reduces pointless movement attrition.
+- Athens Expert vs Athens Very Hard: watch contact fighting, police gating, healer/rams, and whether the army still walks past defenders to buildings.
+- Random-civ Expert vs Very Hard on forest-heavy and sparse maps: inspect every non-opening Storehouse visually and correlate with wood-health/payback diagnostics.
+- At least one food-poor replay: verify the five-Field plateau cannot persist while legal slots exist.
+- Human vs Expert: judge whether attack-move pressure feels more coherent without creating suicidal chases or breaking tactical regroup.

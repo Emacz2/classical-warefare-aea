@@ -163,6 +163,17 @@ const DEFAULT_POLICY = Object.freeze({
   // its footprint. The separate one-Barracks/four-field P2 recovery path prevents
   // this geometry rule from becoming another infinite Village-Phase deadlock.
   farmHubDeadlockEmergencyFallbackAfterFailures: 3,
+  // IT14.89: before buying Farmstead #3, forget only OLD transient failed-field
+  // probes and rescan the two existing hubs. This prevents a short-lived blacklist
+  // from looking like permanent farm-capacity exhaustion.
+  farmThirdHubRepackCooldownSeconds: 18,
+  farmThirdHubFailedSlotForgetAgeSeconds: 12,
+  // If permanent-field demand is known but the field pipeline makes no progress,
+  // force the next legal Field instead of sitting at five while food is collapsing.
+  fieldProgressWatchdogSeconds: 24,
+  fieldProgressWatchdogFoodDeficitSeconds: 12,
+  fieldProgressWatchdogNaturalRemaining: 120,
+  fieldProgressWatchdogPriority: 127,
   // IT14.21 user contract: a NEW permanent farmstead is not allowed merely because
   // field demand is high. The current compact block must have at least three completed
   // fields and no remaining touching slot. Natural-food dropsites are the only exception.
@@ -571,6 +582,9 @@ const DEFAULT_POLICY = Object.freeze({
   // Storehouse pad in a healthy forest district.
   houseSnapGap: 0.75,
   houseClusterMaximumMembers: 3,
+  // IT14.89: a one-house hole between compact blocks is preferred before starting
+  // another block. Economy/resource reservations still veto the candidate.
+  houseGapFillSnapTolerance: 2.5,
   houseProspectiveWoodSiteExclusionRadius: 20,
   houseProspectiveWoodSiteMinimumAmount: 600,
   houseProspectiveWoodSiteCount: 4,
@@ -642,6 +656,15 @@ const DEFAULT_POLICY = Object.freeze({
   expertHealerEscortBehindDistance: 14,
   expertHealerEscortUpdateSeconds: 3,
   expertHealerEscortLeashDistance: 42,
+  // IT14.89: post-AttackPlan combat sweep. AttackManager periodically issues the
+  // engine's attack-move command to human combat units when enemy units are ahead
+  // of the formation, so soldiers clear troops before resuming building objectives.
+  expertAttackMoveSweepRadius: 58,
+  expertAttackMoveSweepIntervalSeconds: 1.5,
+  expertAttackMoveSweepForwardDotMinimum: -0.05,
+  expertAttackMoveSweepMinimumEnemyUnits: 1,
+  // Athens' zero-pop Scythian civic police are overflow manpower, not core army.
+  athensPoliceActivationPopulationHeadroom: 0,
   // Iphicratean Reforms is deliberately OPTIONAL. It is attractive to a large
   // melee-heavy City army with a real surplus, but never delays the P3 all-in.
   athensIphicrateanMinimumMeleeInfantry: 20,
@@ -802,6 +825,20 @@ const DEFAULT_POLICY = Object.freeze({
   woodServiceLocalAmountRadius: 30,
   woodServiceHardDropDistance: 12,
   woodServiceObservedRoundTripSeconds: 4.0,
+  // IT14.89: worker drift alone must not legitimize a second forest while the
+  // currently serviced district is still genuinely productive. Unlike IT14.86's
+  // hard graph veto, this lock releases immediately on measured wood trouble.
+  woodHealthyDistrictMinimumRemaining: 900,
+  woodHealthyDistrictMinimumActiveWorkers: 4,
+  woodHealthyDistrictAlternateHoldDistance: 42,
+  // Every non-opening Storehouse must create a real average haul improvement.
+  // Crisis mode may accept a smaller gain so the 14.87 wood escape remains intact.
+  storehouseMinimumAverageDistanceGain: 5.0,
+  storehouseEmergencyMinimumAverageDistanceGain: 2.0,
+  storehouseMineralMinimumAverageDistanceGain: 4.0,
+  storehouseResourceDistanceScoreWeight: 140,
+  storehouseResourceObstructionScoreWeight: 30,
+  woodServicePlacementSearchRadius: 48,
   resourceServiceStorehouseMinimumSpacing: 10,
   resourceServiceWoodReserve: 100,
   resourceServiceRetryCooldownSeconds: 16,

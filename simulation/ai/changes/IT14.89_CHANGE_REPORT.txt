@@ -1,0 +1,58 @@
+IT14.89 CHANGE REPORT
+
+Targeted economy-placement and contact-fighting follow-up from IT14.88.
+Only three Petra JavaScript files change: attackManager.js, expertDecisionController.js and expertDecision/policy.js.
+attackPlan.js is deliberately unchanged.
+
+1. CONTACT FIGHTING — EXPERT ATTACK-MOVE SWEEP WITHOUT TOUCHING ATTACKPLAN.JS
+- Adds a lightweight Expert-only post-plan correction in attackManager.js using the engine attackMove command.
+- If real enemy combat units are within roughly 58m in front of/alongside a moving attack, human combat troops are ordered to attack-move through those units before resuming the plan destination.
+- A soldier already fighting an enemy unit is left alone. Building siege, support/healers, ships, garrisoned passengers, wounded-return units and retreating units are not redirected.
+- Tactical-regroup pauses remain authoritative because paused AttackPlans are skipped.
+- This specifically addresses armies walking past defenders to hit a building. It does NOT rewrite AttackPlan target selection, retreat logic, FINISH logic, ram doctrine, or attackPlan.js itself.
+- New diagnostic: [EXPERT-ATTACK-MOVE] sweep ...
+
+2. WOOD DISTRICT CONTINUITY — HEALTHY MEANS LIVE/PRODUCTIVE
+- The existing serviced wood district is now held only when live evidence says it is actually healthy: substantial practical wood remains, a Storehouse services it, at least several cutters are truly active there, and measured wood delivery is not stalled/in crisis.
+- While that live-health test passes, a few workers drifting to another forest cannot cause a new Storehouse there. This prevents worker drift from accidentally legitimizing a premature new lumber district.
+- This is NOT the IT14.86 hard connected-forest veto. Low active cutters, a measured stall, phase wood crisis, or the <=250-bank / <=2-active emergency releases the hold immediately and preserves the IT14.87 crisis escape.
+- New diagnostics distinguish HOLD healthy serviced district, release serviced district, and hold drift district.
+
+3. STOREHOUSE PLACEMENT — SCORE THE RESOURCE MASS, NOT A FRINGE TREE
+- Non-opening Storehouse requests now carry the actual wood/stone/metal resource points they intend to service.
+- For wood, current worker targets are expanded into the connected/practical forest and placement is centered/scored against that larger remaining wood mass. A single fringe tree can no longer dominate the candidate location when the real forest lies behind it.
+- Stone/metal Storehouses are likewise scored against the mine(s) being worked rather than toward farms or arbitrary developed-space anchors.
+- Every resource-aware non-opening Storehouse candidate must produce a real weighted average haul-distance improvement versus existing compatible dropsites (normal wood ~5m average gain, emergency wood ~2m, minerals ~4m).
+- Large forests can still justify multiple Storehouses as the cutting face recedes. A zero-payback/near-zero-payback Storehouse on a fresh fragment should now be rejected.
+- Farmstead/Field geometry remains an obstruction/clearance constraint only; it adds no positive Storehouse placement value.
+- Opening Storehouse selection/scoring remains frozen unchanged.
+
+4. PERMANENT FOOD — FIELD PROGRESS WATCHDOG
+- Adds a narrow progress watchdog for the replay case where the planner knew it wanted about ten Fields but remained stuck at five completed Fields for several minutes.
+- When desired Fields exceed built+foundation+queued pipeline, food pressure is real, a legal field slot exists, and the field pipeline has made no progress for ~24s, Expert forces one high-priority next Field.
+- The watchdog does not blindly rush ten Fields while natural food is healthy; it is a stalled permanent-food rescue lane.
+- New diagnostic: [EXPERT-FIELD-WATCH] force next field ...
+
+5. FARMSTEAD #3 — RECHECK EXISTING HUB CAPACITY FIRST
+- Before a farm_hub_deadlock request becomes a third Farmstead, Expert expires only old transient failed-slot marks for the two existing built Farmsteads and rescans compact Field capacity.
+- This interception applies both to the Phase-safety helper and to farm_hub_deadlock actions produced by the main economy planner.
+- If a legal existing-hub slot reappears, Expert builds the Field and cancels that third-hub request for the frame.
+- If the two hubs genuinely have no legal slots, Farmstead #3 remains allowed; the deadlock escape is not removed.
+- New diagnostic: [EXPERT-FARM-REPACK] ...
+
+6. ATHENS SCYTHIAN POLICE — ZERO-POP OVERFLOW ONLY
+- units/athen/city_police is excluded from normal Expert infantry selection while Athens is below its effective operating population cap.
+- At the actual operating cap it becomes eligible/preferred for the CC-cap lane as bonus zero-pop manpower.
+- Seleucid mercenary archers and all other real military units are unchanged.
+
+7. HOUSE GAP FILL
+- House snapping now tries literal shared-adjacent gap positions between existing Houses before spreading to looser fallback positions.
+- Resource/farm reservations and all existing legality checks still outrank neat packing; this is only a second-choice placement cleanup.
+
+8. FROZEN / NON-REGRESSION
+- IT14.86 opening Farmstead multi-bush scoring unchanged.
+- IT14.87 practical wood crisis escape, fragment rejection, scarcity expansion/Cleruchy, and P3 FINISH persistence remain intact.
+- IT14.88 no-bolt-shooter automatic siege, healer escort, and optional Iphicratean Reforms remain intact.
+- Opening Storehouse selection/scoring is unchanged.
+- Field footprint geometry/materialization lifecycle is unchanged; IT14.89 adds only a progress rescue and pre-third-hub rescan.
+- General attack creation/strategic target selection is unchanged. attackPlan.js is byte-for-byte unchanged from IT14.88.

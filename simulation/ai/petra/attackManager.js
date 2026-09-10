@@ -100,6 +100,10 @@ export function AttackManager(config)
 	// IT14.64: once Athens deliberately abandons an unupgraded Late-P1 timing, do not
 	// let generic Rush creation immediately recreate the same bad plan.
 	this.expertLateP1UnupgradedCancelled = false;
+	// IT14.89: lightweight post-plan attack-move sweep state. AttackPlan itself is
+	// intentionally untouched; this is an Expert-only final order correction.
+	this.expertLastAttackMoveSweepAt = {};
+	this.expertLastAttackMoveSweepLog = -99999;
 	// IT14.52: the economy uses this one-way signal to unlock the worker-aura
 	// Temple immediately after a committed P1 rush leaves home.
 	this.expertRushHasLaunched = false;
@@ -961,6 +965,102 @@ AttackManager.prototype.coordinateExpertHealerEscort = function(gameState)
 			" army=" + attack.unitCollection.length + " behind=" + Math.round(behind));
 	}
 	return moved;
+};
+
+// IT14.89: use the engine's attack-move behavior as a narrow post-AttackPlan
+// correction. When real enemy combat units are immediately ahead of an Expert army,
+// human combat troops sweep through those units before resuming structure objectives.
+// attackPlan.js remains unchanged; rams/support are never touched here.
+AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT)
+		return 0;
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	const interval = Math.max(0.5, Number(policy.expertAttackMoveSweepIntervalSeconds) || 1.5);
+	const radius = Math.max(20, Number(policy.expertAttackMoveSweepRadius) || 58);
+	const radius2 = radius * radius;
+	const dotMinimum = Number.isFinite(Number(policy.expertAttackMoveSweepForwardDotMinimum)) ?
+		Number(policy.expertAttackMoveSweepForwardDotMinimum) : -0.05;
+	const minimumEnemies = Math.max(1, Number(policy.expertAttackMoveSweepMinimumEnemyUnits) || 1);
+	let redirectedTotal = 0;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH])
+		for (const attack of this.startedAttacks[type] || [])
+		{
+			if (!attack || !attack.isStarted || !attack.isStarted() || attack.isPaused && attack.isPaused() ||
+			    attack.targetPlayer === undefined || !attack.unitCollection || !attack.unitCollection.hasEntities || !attack.unitCollection.hasEntities())
+				continue;
+			const key = String(attack.name);
+			if (now < (Number(this.expertLastAttackMoveSweepAt[key]) || -99999) + interval)
+				continue;
+			const centre = attack.unitCollection.getCentrePosition && attack.unitCollection.getCentrePosition() || attack.position || attack.targetPos;
+			const destination = attack.targetPos || attack.target && attack.target.position && attack.target.position();
+			if (!centre || !destination)
+				continue;
+			let dx = destination[0] - centre[0], dz = destination[1] - centre[1];
+			const forwardLength = Math.hypot(dx, dz);
+			if (forwardLength < 1)
+				continue;
+			dx /= forwardLength; dz /= forwardLength;
+
+			let enemiesAhead = 0;
+			for (const enemy of gameState.getEnemyUnits(attack.targetPlayer).values())
+			{
+				if (!enemy || !enemy.position || !enemy.position() || enemy.hasClass && enemy.hasClass("Animal"))
+					continue;
+				const attacks = enemy.attackTypes && enemy.attackTypes();
+				if (!attacks)
+					continue;
+				const ep = enemy.position();
+				const ex = ep[0] - centre[0], ez = ep[1] - centre[1];
+				const d2 = ex*ex + ez*ez;
+				if (d2 > radius2 || d2 < 1)
+					continue;
+				const dot = (ex * dx + ez * dz) / Math.sqrt(d2);
+				if (dot >= dotMinimum)
+					++enemiesAhead;
+			}
+			if (enemiesAhead < minimumEnemies)
+				continue;
+			// Rate-limit the plan once a sweep opportunity is observed, even when every
+			// soldier is already correctly fighting a unit. This keeps the correction
+			// lightweight instead of rescanning the same local battle every AI turn.
+			this.expertLastAttackMoveSweepAt[key] = now;
+
+			let redirected = 0;
+			for (const ent of attack.unitCollection.values())
+			{
+				if (!ent || !ent.position || !ent.position() || !ent.attackMove || isExpertBuildingSiegeEntity(ent) ||
+				    ent.hasClass && (ent.hasClass("Support") || ent.hasClass("Ship")))
+					continue;
+				if (ent.getMetadata && (ent.getMetadata(PlayerID, "garrisonHolder") !== undefined ||
+				    ent.getMetadata(PlayerID, "expertWoundedReturnUntil") !== undefined ||
+				    ent.getMetadata(PlayerID, "expertCombatRetreatUntil") !== undefined))
+					continue;
+				const attacks = ent.attackTypes && ent.attackTypes();
+				if (!attacks)
+					continue;
+				// Do not churn a soldier already fighting a unit. The correction is aimed at
+				// troops walking past defenders or tunneling on a building.
+				const orders = ent.unitAIOrderData ? ent.unitAIOrderData() || [] : [];
+				const currentTarget = orders.length && orders[0].target ? gameState.getEntityById(orders[0].target) : undefined;
+				if (currentTarget && currentTarget.hasClass && currentTarget.hasClass("Unit") &&
+				    currentTarget.owner && gameState.isPlayerEnemy(currentTarget.owner()))
+					continue;
+				ent.attackMove(destination[0], destination[1], { "attack": ["Unit"], "avoid": ["Support", "Domestic", "Ship"] });
+				++redirected;
+			}
+			if (!redirected)
+				continue;
+			redirectedTotal += redirected;
+			if (now - (Number(this.expertLastAttackMoveSweepLog) || -99999) >= 6)
+			{
+				this.expertLastAttackMoveSweepLog = now;
+				aiWarn("[EXPERT-ATTACK-MOVE] sweep plan=" + attack.name + " enemiesAhead=" + enemiesAhead +
+					" redirected=" + redirected + " army=" + attack.unitCollection.length);
+			}
+		}
+	return redirectedTotal;
 };
 
 // GarrisonManager temporarily replaces attack-plan metadata while a passenger is in a
@@ -2206,6 +2306,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	// accumulating as an idle home reserve. Siege keeps its existing attachment lane.
 	this.attachExpertPremiumUnitsToActiveAttack(gameState);
 	this.attachExpertSiegeToActiveAttack(gameState);
+	this.coordinateExpertAttackMoveSweep(gameState);
 	this.coordinateExpertHealerEscort(gameState);
 	if (expertFinishing)
 		this.reinforceExpertFinishingAttack(gameState, expertFinishing);
@@ -2765,7 +2866,9 @@ AttackManager.prototype.Serialize = function()
 		"expertLastRushLaunchTime": this.expertLastRushLaunchTime,
 		"expertLastAthensP1MeleeHoldLog": this.expertLastAthensP1MeleeHoldLog,
 		"expertLastP1RushGateLog": this.expertLastP1RushGateLog,
-		"expertLateP1UnupgradedCancelled": this.expertLateP1UnupgradedCancelled
+		"expertLateP1UnupgradedCancelled": this.expertLateP1UnupgradedCancelled,
+		"expertLastAttackMoveSweepAt": { ...(this.expertLastAttackMoveSweepAt || {}) },
+		"expertLastAttackMoveSweepLog": this.expertLastAttackMoveSweepLog
 	};
 
 	const upcomingAttacks = {};
@@ -2791,6 +2894,8 @@ AttackManager.prototype.Deserialize = function(gameState, data)
 {
 	for (const key in data.properties)
 		this[key] = data.properties[key];
+	this.expertLastAttackMoveSweepAt = { ...(this.expertLastAttackMoveSweepAt || {}) };
+	this.expertLastAttackMoveSweepLog = Number.isFinite(Number(this.expertLastAttackMoveSweepLog)) ? Number(this.expertLastAttackMoveSweepLog) : -99999;
 
 	this.upcomingAttacks = {};
 	for (const key in data.upcomingAttacks)
