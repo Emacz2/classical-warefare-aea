@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<object
-	name="closeButton"
-	type="button"
-	style="StoneButton"
-	size="100%-216 100%-56 100%-24 100%-24"
-	hotkey="cancel"
-/>

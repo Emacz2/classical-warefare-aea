@@ -200,9 +200,6 @@ export class ExpertDecisionController
 		// each retry widens the woodsite search rather than blindly repeating the same
 		// perfect-but-unusable placement forever.
 		this.openingStorehouseRecoveryCount = 0;
-		// IT14.93: after the opening lumber camp completes, allow its builders/workers
-		// to settle before any second Storehouse can be justified.
-		this.lastStorehouseCompletedAt = -99999;
 		this.activeTaskByKind = {};
 		// IT14.43: keep the planner's crew/pool preference for the life of the foundation.
 		this.activeTaskBuildIntent = {};
@@ -4926,11 +4923,6 @@ export class ExpertDecisionController
 	{
 		if (this.initialWoodSelection && this.initialWoodSelection.position)
 			return;
-		const policy = mergePolicy();
-		// IT14.93: the opening Storehouse serves hundreds of future drop-offs, while
-		// the walk from the CC happens once. Search the whole practical opening
-		// territory and choose the best sustainable forest instead of the nearest
-		// merely-acceptable clump.
 		const trees = collectInitialWoodCandidates(gameState, {
 			"getLandAccess": getLandAccess,
 			"isSupplyFull": isSupplyFull,
@@ -4938,19 +4930,9 @@ export class ExpertDecisionController
 			"anchorPosition": cc.position(),
 			"accessIndex": accessIndex,
 			"playerId": PlayerID,
-			"searchRadius": Number(policy.openingWoodSearchRadius) || 180
+			"searchRadius": 90
 		});
-		this.initialWoodSelection = selectInitialWoodWorksite(trees, cc.position(), {
-			"radius": Number(policy.openingWoodClusterRadius) || 40,
-			"approachWeight": Number(policy.openingWoodApproachWeight) || 0.35,
-			"dropWeight": Number(policy.openingWoodDropWeight) || 6,
-			"treeCountWeight": Number(policy.openingWoodTreeCountWeight) || 16
-		});
-		if (this.initialWoodSelection && this.initialWoodSelection.position)
-			aiWarn("[EXPERT-WOOD-OPEN] selected wood=" + Math.round(Number(this.initialWoodSelection.localWoodAmount) || 0) +
-				" approach=" + (Number(this.initialWoodSelection.approachDistance) || 0).toFixed(1) +
-				" avgDrop=" + (Number(this.initialWoodSelection.averageDropDistance) || 0).toFixed(1) +
-				" candidates=" + ((this.initialWoodSelection.ranked && this.initialWoodSelection.ranked.length) || 1));
+		this.initialWoodSelection = selectInitialWoodWorksite(trees, cc.position());
 	}
 
 	builtByClass(gameState, className)
@@ -6914,7 +6896,6 @@ export class ExpertDecisionController
 					}
 					if (observed.state === "completed" && kind === "storehouse")
 					{
-						this.lastStorehouseCompletedAt = Number(gameState.ai.elapsedTime) || 0;
 						if (this.builtByClass(gameState, "Storehouse").length <= 1)
 							this.openingStorehouseRecoveryCount = 0;
 						const ent = gameState.getEntityById(observed.completedEntityId);
@@ -7246,30 +7227,22 @@ export class ExpertDecisionController
 		for (const target of targetRecords)
 			if (!practical.some(tree => Number(tree.id) === Number(target.id)))
 				practical.push(target);
-		// IT14.93: collectInitialWoodCandidates records do not carry dropDistance.
-		// IT14.92 passed those records into summarizeWoodTrees(), producing NaN and
-		// aborting the Expert update. Normalize every live-front tree to a finite
-		// dropsite distance here; the current worksite position is a safe fallback.
-		const normalized = practical.map(tree => {
-			let dropDistance;
-			const supply = gameState.getEntityById(Number(tree.id));
+		let dropSum = 0, dropCount = 0;
+		for (const target of targetRecords)
+		{
+			const supply = gameState.getEntityById(Number(target.id));
 			const service = supply ? this.resourceDropsiteForSupply(gameState, supply, "wood") : undefined;
 			if (service && Number.isFinite(Number(service.distance)))
-				dropDistance = Math.sqrt(Math.max(0, Number(service.distance)));
-			if (!Number.isFinite(dropDistance))
-				dropDistance = Array.isArray(primaryPosition) ? Math.sqrt(Math.max(0, SquareVectorDistance(primaryPosition, tree.position))) : 0;
-			if (!Number.isFinite(dropDistance))
-				dropDistance = 0;
-			return { ...tree, dropDistance };
-		});
-		const weightedWood = normalized.reduce((sum, tree) => sum + Math.max(0, Number(tree.remaining) || 0), 0);
-		const averageDropDistance = weightedWood > 0 ? normalized.reduce((sum, tree) =>
-			sum + Math.max(0, Number(tree.remaining) || 0) * Math.max(0, Number(tree.dropDistance) || 0), 0) / weightedWood : 0;
+			{
+				dropSum += Math.sqrt(Number(service.distance));
+				++dropCount;
+			}
+		}
 		return {
-			workers: workerCount, trees: normalized, targetIds: [...targetIds],
-			remaining: this.woodAmount(normalized),
-			center: this.weightedResourceCenter(normalized.map(tree => ({ position: tree.position, weight: Math.max(1, Number(tree.remaining) || 0) }))) || targetCenter,
-			averageDropDistance: Number.isFinite(averageDropDistance) ? averageDropDistance : 0
+			workers: workerCount, trees: practical, targetIds: [...targetIds],
+			remaining: this.woodAmount(practical),
+			center: this.weightedResourceCenter(practical.map(tree => ({ position: tree.position, weight: Math.max(1, Number(tree.remaining) || 0) }))) || targetCenter,
+			averageDropDistance: dropCount ? dropSum / dropCount : Infinity
 		};
 	}
 
@@ -10006,15 +9979,6 @@ export class ExpertDecisionController
 			if (recovery > 0)
 				aiWarn("[EXPERT-WOOD] opening storehouse recovery=" + recovery + " sites=" + ranked.length +
 					" candidates=" + candidates.length);
-		}
-		else if (kind === "storehouse" && this.builtByClass(gameState, "Storehouse").length === 1 &&
-		    (Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastStorehouseCompletedAt) || -99999) <
-		    (Number(mergePolicy().openingStorehouseSecondStorehouseGraceSeconds) || 45))
-		{
-			// IT14.93: do not finish Storehouse #1 and immediately decide the transient
-			// zero-cutter handoff means the district failed. Give the selected opening
-			// forest time to establish before paying for another dropsite.
-			return undefined;
 		}
 		else if (kind === "storehouse" && action.role === "resource_service")
 		{
@@ -14201,7 +14165,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.93] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.92] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -14267,7 +14231,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.93] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.92] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -14283,7 +14247,6 @@ export class ExpertDecisionController
 			"initialWoodSelection": this.initialWoodSelection,
 			"primaryWoodWorksite": this.primaryWoodWorksite,
 			"openingStorehouseRecoveryCount": this.openingStorehouseRecoveryCount,
-			"lastStorehouseCompletedAt": this.lastStorehouseCompletedAt,
 			"activeTaskByKind": { ...this.activeTaskByKind },
 			"activeTaskBuildIntent": { ...this.activeTaskBuildIntent },
 			"placementFailureCounts": { ...this.placementFailureCounts },
@@ -14390,7 +14353,6 @@ export class ExpertDecisionController
 		this.initialWoodSelection = data.initialWoodSelection;
 		this.primaryWoodWorksite = data.primaryWoodWorksite;
 		this.openingStorehouseRecoveryCount = Math.max(0, Number(data.openingStorehouseRecoveryCount) || 0);
-		this.lastStorehouseCompletedAt = Number.isFinite(Number(data.lastStorehouseCompletedAt)) ? Number(data.lastStorehouseCompletedAt) : -99999;
 		this.activeTaskByKind = { ...(data.activeTaskByKind || {}) };
 		this.activeTaskBuildIntent = { ...(data.activeTaskBuildIntent || {}) };
 		this.placementFailureCounts = { ...(data.placementFailureCounts || {}) };

@@ -1,3 +1,0 @@
-EXTEND TERRITORY
-Build at the edge of your territory to reach resources slightly out of range.
-Be careful though, since structures further from your Civic Center are more difficult to defend.

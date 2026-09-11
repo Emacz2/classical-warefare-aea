@@ -1,3 +1,0 @@
-SHRINES
-Capturable map objects. Cannot be built or destroyed.
-Train Elite Healers and heal garrisoned units.

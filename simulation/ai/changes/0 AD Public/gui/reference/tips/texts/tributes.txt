@@ -1,3 +1,0 @@
-TRIBUTES
-In multiplayer games use the diplomacy panel (Ctrl-H) to tribute resources to allies.
-By default, multiples of 100 units are sent. Holding Shift increases this to multiples of 500 units.

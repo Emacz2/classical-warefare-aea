@@ -1,4 +1,0 @@
-DEFENSE TOWER
-Defend a vulnerable position by building these strong watchtowers.
-Has a large vision range and shoots arrows at any enemy in sight.
-Garrison Infantry inside to increase its firepower.

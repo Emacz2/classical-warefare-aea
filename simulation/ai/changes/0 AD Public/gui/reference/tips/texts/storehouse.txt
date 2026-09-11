@@ -1,3 +1,0 @@
-STOREHOUSE
-A cheap dropsite for non-food resources (wood, stone, and metal).
-Research technologies to improve the gathering rates of your Workers.

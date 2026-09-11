@@ -1,4 +1,0 @@
-ACHAEMENID ARCHITECTURE
-Special technology exclusive to the Persians.
-Structures gain +25% health, but their build time lengthened by +20% as a consequence.
-Persians also have access to a great number of other structural and defensive technologies.
