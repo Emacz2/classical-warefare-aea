@@ -297,8 +297,9 @@ const DEFAULT_POLICY = Object.freeze({
   // dead stock while a live war economy is starved for wood.
   resourceBalanceExtremeBatch: 8,
   resourceBalanceExtremeCooldownSeconds: 5,
-  // IT14.91 forecast governor. All four resources use bank + measured income +
-  // immediately accessible supply against queued/strategic projected spending.
+  // IT14.92 forecast governor. All four resources separate spendable liquidity
+  // (bank + current income) from nearby strategic supply that still needs workers.
+  // This prevents rich local stock from hiding a zero-income problem.
   resourceForecastShortHorizonSeconds: 60,
   resourceForecastMediumHorizonSeconds: 150,
   resourceForecastFloatHorizonSeconds: 55,
@@ -337,9 +338,16 @@ const DEFAULT_POLICY = Object.freeze({
   resourceForecastReserveP3Stone: 150,
   resourceForecastReserveP3Metal: 225,
   resourceForecastReassignBatch: 4,
-  resourceForecastCriticalReassignBatch: 10,
+  resourceForecastCriticalReassignBatch: 12,
   resourceForecastReassignCooldownSeconds: 6,
   resourceForecastCriticalReassignCooldownSeconds: 3,
+  // IT14.92: the forecast is authoritative over temporary fallback work. A worker
+  // physically mining a surplus counts as a donor even when its permanent metadata
+  // still says food_owned/future-farmer. Surplus fallback is refused when useful work exists.
+  resourceForecastFallbackMaximumCoverage: 1.60,
+  resourceForecastUsefulWaitDiagnosticSeconds: 8,
+  resourceForecastTemporaryWorkerPreferenceBonus: 3,
+  resourceForecastFieldCrewRecoveryMaximumPerField: 4,
   resourceForecastDiagnosticSeconds: 16,
   resourceForecastBarterCooldownSeconds: 10,
   resourceForecastBarterAmount: 500,
@@ -936,6 +944,15 @@ const DEFAULT_POLICY = Object.freeze({
   woodHealthyDistrictMinimumRemaining: 900,
   woodHealthyDistrictMinimumActiveWorkers: 4,
   woodHealthyDistrictAlternateHoldDistance: 42,
+  // IT14.92: a forest district follows the live cutting face, not the original
+  // Storehouse point. Advance the dropsite before marching an established crew away.
+  woodCuttingFrontSearchRadius: 82,
+  woodCuttingFrontAssociationDistance: 62,
+  woodCuttingFrontFringeDistance: 38,
+  woodCuttingFrontMinimumWorkers: 3,
+  woodCuttingFrontAdvanceMinimumWorkers: 8,
+  woodCuttingFrontAdvanceMinimumRemaining: 450,
+  woodCuttingFrontAdvanceMinimumDropDistance: 14,
   // Every non-opening Storehouse must create a real average haul improvement.
   // Crisis mode may accept a smaller gain so the 14.87 wood escape remains intact.
   storehouseMinimumAverageDistanceGain: 5.0,

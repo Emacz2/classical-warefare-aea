@@ -1,0 +1,123 @@
+EXPERT AI PETRA — IT14.92 CHANGE REPORT
+=======================================
+
+PURPOSE
+IT14.92 is a non-regression economy-control pass built from the two IT14.91 replay
+failures on 2026-09-10. The central bug was architectural: the forecast correctly
+reported wood critical while stone/metal were surplus, but many civilians physically
+mining those surpluses still carried food_owned/future-farmer metadata. The rebalance
+layer therefore failed to see them as donor workers.
+
+FILES CHANGED FROM IT14.91
+- petra/expertDecisionController.js
+- petra/expertDecision/policy.js
+- petra/expertDecision/resourceForecast.js
+- EXPERT_BENCHMARKS.txt
+- IT14.92_CHANGE_REPORT.txt                  [NEW]
+
+COMBAT FREEZE
+- petra/attackManager.js is byte-for-byte unchanged from IT14.91.
+- petra/attackPlan.js is byte-for-byte unchanged from IT14.91.
+- IT14.90 bounded attack-move and CC capture finish therefore remain untouched.
+
+1) ONE ECONOMIC AUTHORITY AFTER THE PROTECTED OPENING
+- After the normal opening/adaptive handoff, the four-resource forecast is the sole
+  cross-resource rebalance authority.
+- The old food-vs-wood, mining-bootstrap and fixed strategic-metal peelers no longer
+  compete with forecast moves after that handoff.
+- The proven opening safety nets remain available before the forecast control window.
+- A forecast wood shortage can make wood eligible for post-opening flexible civilians
+  even when the older food/wood feedback signal has not yet entered wood_release.
+
+2) ACTUAL WORK IS TRUTH
+- Added live physical resource detection from the worker's real supply/order/carry state.
+- Rebalancing chooses donor workers by what they are actually gathering first, permanent
+  metadata second.
+- A food_owned/future-farmer civilian physically mining 3k-surplus stone now counts as a
+  stone worker and is immediately eligible to leave it for a critical resource.
+- Temporary fallback workers are preferred before uprooting genuine specialists.
+- If the top surplus has no movable workers, the controller can use the next real
+  forecast surplus instead of stalling on an impossible donor.
+- Temporary future farmers keep their long-term food/future-farmer ownership when moved
+  to an emergency resource; they can still be reclaimed by the next Field crew.
+
+3) FORECAST: LIQUIDITY VS STRATEGIC SUPPLY
+- IT14.91 allowed nearby resource stock to make a resource look healthy even when current
+  income was nearly zero. IT14.92 separates:
+    LIQUIDITY = bank + measured current income
+    STRATEGIC SUPPLY = nearby own/neutral stock that still needs workers to gather.
+- Worker allocation is driven primarily by liquidity coverage.
+- Strategic supply answers whether the shortage can be solved locally or requires a
+  dropsite/territorial expansion; it does not erase a zero-income cash-flow problem.
+- A large bank still prevents a false crisis from a temporary zero gather rate.
+- Forecast diagnostic now reports both liquid and strategic margins:
+    [EXPERT-FORECAST] ... W=bank/income/access/demand/L.../S...:status
+
+4) NO-IDLE FALLBACK MAY NOT CREATE USELESS SURPLUS
+- Before the adaptive economy starts, opening food/wood workers no longer fail a gather
+  order and immediately spill into stone/metal.
+- After the handoff, fallback choices are filtered through the forecast.
+- Critical/short resources rank first; forecast-surplus resources are rejected as
+  fallback work when useful alternatives exist.
+- If every fallback resource is already over-covered, brief useful waiting is permitted
+  instead of mining another several thousand surplus resources.
+- Diagnostic:
+    [EXPERT-FORECAST] useful-wait ... reason=no-nonsurplus-fallback
+
+5) FUTURE-FARMER PIPELINE RECOVERY
+- IT14.90's core contract remains: post-opening new civilians are reserved for permanent
+  farm expansion; normally 3-4 build a Field and those same workers stay farming.
+- Farm-labor accounting now counts actual permanent farmers plus uncommitted future
+  farmers, not every food_owned civilian who may actually be mining elsewhere.
+- If a Field is ready but the explicit future-farmer pool was lost behind older metadata,
+  IT14.92 can recover eligible POST-OPENING civilians from temporary/surplus work.
+- It never recovers a worker from a resource currently forecast critical/short.
+- Under real food pressure, the existing Field-progress watchdog may act after ~6s once
+  enough future farmers are ready instead of waiting the full ordinary watchdog delay.
+- Diagnostics:
+    [EXPERT-FARM-CREW] recover future-farmer=...
+    [EXPERT-FARM-CREW] field ... stay=farmer
+
+6) WOOD DISTRICT FOLLOWS THE LIVE CUTTING FRONT
+- The current forest is no longer defined only by fixed 30m/52m rings around the old
+  Storehouse.
+- Expert identifies the trees its committed lumberjacks are actually cutting, expands
+  those targets into the nearby practical forest, and carries that live cutting face
+  forward as part of the same economic district.
+- A worker keeps its existing woodsite assignment while that live cutting front remains
+  usable instead of clearing the assignment and marching to a distant forest.
+- Before switching an established crew, Storehouse placement can advance along that same
+  cutting front when >=8 workers still have >=450 wood and average haul is >=14m.
+- The IT14.87 emergency escape remains: a truly dead/stalled forest can still be abandoned.
+
+7) STOREHOUSE BUILDING MUST MATCH LABOR INTENT
+- A proactive mixed wood/stone/metal Storehouse with zero current workers is rejected
+  unless it is a deliberate forecast-critical prebuild.
+- Mixed/mineral Storehouse completion no longer turns its builders into lumberjacks.
+  Only a genuine wood Storehouse commits its builders to the woodsite.
+- This separates "build a useful dropsite" from "switch the whole lumber economy".
+- Opening Storehouse builder commitment remains preserved.
+
+FROZEN / NON-REGRESSION
+- IT14.86 opening Farmstead multi-bush scoring.
+- IT14.87 wood emergency escape and P3 FINISH persistence.
+- IT14.88 no automatic bolt shooters, healer escort, optional Iphicratean Reforms.
+- IT14.89 Scythian Police max-pop gate, house gap behavior, Storehouse value checks.
+- IT14.90 3-4 future-farmer Field crews, bounded attack-move, CC capture finish.
+- IT14.91 natural-food > Field preemption, near-border natural food, forecast barter.
+- No general attack changes in IT14.92.
+
+OFFLINE VALIDATION BEFORE PACKAGING
+- All 58 Petra JavaScript files: ordinary Node syntax check PASS.
+- All 58 Petra JavaScript files: ES-module parse check PASS.
+- Synthetic screenshot case (~190F/45W/3727S/3325M): wood CRITICAL, stone/metal SURPLUS,
+  directive = stone -> wood.
+- Synthetic rich-bank case (~7000 wood, zero current wood income): wood is SURPLUS, not
+  falsely critical.
+- Synthetic Sahara case (55 wood, weak income, ~200 accessible wood): wood CRITICAL and
+  mineral surplus becomes donor.
+- attackManager.js and attackPlan.js hashes verified identical to IT14.91.
+
+NOTE
+These are offline/static validations. Gameplay behavior still requires replay testing in
+0 A.D.; no claim is made that IT14.92 was engine-run before delivery.

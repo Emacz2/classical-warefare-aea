@@ -1,6 +1,8 @@
-// Expert IT14.91 resource forecast.
-// The strategy tells us what we intend to buy; this module asks whether the map and
-// current economy can actually fund it.  All values are resource units / seconds.
+// Expert IT14.92 resource forecast.
+// The strategy tells us what we intend to buy; this module separates LIQUIDITY
+// (bank + current income) from STRATEGIC SUPPLY (nearby stock that still requires
+// workers to gather).  A rich forest no longer makes zero wood income look healthy,
+// while a large bank still correctly suppresses false shortage alarms.
 
 const RESOURCE_TYPES = ["food", "wood", "stone", "metal"];
 
@@ -45,35 +47,61 @@ function buildResourceForecast(input = {})
 
 		const shortDemand = Math.max(queued, spendRate * shortHorizon) + reserve;
 		const mediumDemand = Math.max(queued, spendRate * mediumHorizon) + reserve;
-		const shortAvailable = bank + income * shortHorizon + accessible * shortAccessWeight;
-		const mediumAvailable = bank + income * mediumHorizon + accessible * mediumAccessWeight;
+
+		// LIQUIDITY: what the economy can actually spend without first assigning more
+		// workers.  This is the quantity that drives worker reallocations.
+		const liquidShortAvailable = bank + income * shortHorizon;
+		const liquidMediumAvailable = bank + income * mediumHorizon;
+		const liquidShortMargin = liquidShortAvailable - shortDemand;
+		const liquidMediumMargin = liquidMediumAvailable - mediumDemand;
+		const liquidCoverageRatio = mediumDemand > 0 ? liquidMediumAvailable / mediumDemand : 9;
+
+		// STRATEGIC SUPPLY: nearby stock tells us whether the shortage can be solved locally
+		// or requires a new dropsite / territory expansion.  It deliberately does NOT erase
+		// a cash-flow shortage by itself.
+		const shortAvailable = liquidShortAvailable + accessible * shortAccessWeight;
+		const mediumAvailable = liquidMediumAvailable + accessible * mediumAccessWeight;
 		const shortMargin = shortAvailable - shortDemand;
 		const mediumMargin = mediumAvailable - mediumDemand;
+		const supplyCoverageRatio = mediumDemand > 0 ? mediumAvailable / mediumDemand : 9;
 		const stockRunway = spendRate > 0.05 ? (bank + accessible * mediumAccessWeight) / spendRate : 99999;
+		const bankRunway = spendRate > 0.05 ? bank / spendRate : 99999;
 		const incomeCoverage = spendRate > 0.05 ? income / spendRate : 9;
 		const dynamicCeiling = Math.max(minimumFloat, reserve + queued + spendRate * floatHorizon);
 		const floatAmount = Math.max(0, bank - dynamicCeiling);
 
 		let status = "balanced";
-		if (shortMargin < 0 || stockRunway < shortHorizon * 0.70)
+		const strategicCritical = shortMargin < 0 || stockRunway < shortHorizon * 0.70;
+		const liquidCritical = liquidShortMargin < 0 && incomeCoverage < 0.90 && bank < shortDemand;
+		const liquidShort = liquidMediumMargin < 0 && incomeCoverage < 0.95 && bank < mediumDemand;
+		if (strategicCritical || liquidCritical)
 			status = "critical";
-		else if (mediumMargin < 0 || stockRunway < mediumHorizon * 0.80)
+		else if (mediumMargin < 0 || liquidShort || stockRunway < mediumHorizon * 0.80)
 			status = "short";
-		else if (floatAmount > Math.max(250, dynamicCeiling * 0.35) && incomeCoverage >= 0.65)
+		else if (floatAmount > Math.max(250, dynamicCeiling * 0.35) &&
+			(liquidCoverageRatio >= 1.15 || incomeCoverage >= 0.65))
 			status = "surplus";
 
-		const needBase = Math.max(0, -shortMargin) * 2 + Math.max(0, -mediumMargin);
-		const runwayPenalty = Math.max(0, mediumHorizon - Math.min(mediumHorizon, stockRunway)) * Math.max(1, spendRate);
-		const needScore = needBase + runwayPenalty + (status === "critical" ? 1500 : status === "short" ? 500 : 0);
-		const surplusScore = floatAmount + Math.max(0, mediumMargin) * 0.15;
-		const coverageRatio = mediumDemand > 0 ? mediumAvailable / mediumDemand : 9;
+		// Worker urgency is dominated by liquidity. Strategic supply is used only as a
+		// smaller penalty so a resource with no nearby stock ranks above one that can be
+		// solved by assigning workers to a rich local patch.
+		const liquidNeedBase = Math.max(0, -liquidShortMargin) * 2 + Math.max(0, -liquidMediumMargin);
+		const strategicNeedBase = Math.max(0, -shortMargin) + Math.max(0, -mediumMargin) * 0.5;
+		const runwayPenalty = Math.max(0, mediumHorizon - Math.min(mediumHorizon, bankRunway)) * Math.max(1, spendRate);
+		const needScore = liquidNeedBase + strategicNeedBase + runwayPenalty +
+			(status === "critical" ? 1500 : status === "short" ? 500 : 0);
+		const surplusScore = floatAmount + Math.max(0, liquidMediumMargin) * 0.20;
+		const coverageRatio = liquidCoverageRatio;
 
 		result.resources[type] = {
 			type, bank, income, measuredSpend, baselineSpend, spendRate, queued, reserve,
 			ownAccessible, neutralAccessible, accessible,
-			shortDemand, mediumDemand, shortAvailable, mediumAvailable,
-			shortMargin, mediumMargin, stockRunway, incomeCoverage,
-			dynamicCeiling, floatAmount, status, needScore, surplusScore, coverageRatio
+			shortDemand, mediumDemand,
+			liquidShortAvailable, liquidMediumAvailable, liquidShortMargin, liquidMediumMargin,
+			shortAvailable, mediumAvailable, shortMargin, mediumMargin,
+			stockRunway, bankRunway, incomeCoverage,
+			dynamicCeiling, floatAmount, status, needScore, surplusScore,
+			coverageRatio, liquidCoverageRatio, supplyCoverageRatio
 		};
 	}
 
@@ -96,15 +124,16 @@ function forecastBalanceDirective(forecast, allowedTargets = RESOURCE_TYPES)
 	const donors = RESOURCE_TYPES.map(type => forecast.resources[type]).filter(item => item && item.type !== target.type)
 		.sort((a, b) => b.surplusScore - a.surplusScore || b.coverageRatio - a.coverageRatio);
 	const surplus = donors[0];
-	const shortage = target.status === "critical" || target.status === "short";
+	const shortage = target.status === "critical" || target.status === "short" || target.coverageRatio < 0.95;
 	const realSurplus = !!(surplus && (surplus.status === "surplus" || surplus.floatAmount >= 300 || surplus.coverageRatio >= 1.5));
-	const floatCorrection = !!(surplus && surplus.floatAmount >= 600 && target.coverageRatio + 0.25 < surplus.coverageRatio);
+	const floatCorrection = !!(surplus && target.status !== "surplus" && surplus.floatAmount >= 600 &&
+		target.coverageRatio + 0.25 < surplus.coverageRatio);
 	const active = (shortage && !!surplus) || floatCorrection;
 	const ratio = surplus ? surplus.coverageRatio / Math.max(0.20, target.coverageRatio) : 1;
 	return {
 		active,
-		strong: active && (target.status === "critical" || (realSurplus && ratio >= 1.8)),
-		extreme: active && (target.status === "critical" && realSurplus || ratio >= 3),
+		strong: active && (target.status === "critical" || target.coverageRatio < 0.75 || (realSurplus && ratio >= 1.8)),
+		extreme: active && ((target.status === "critical" && realSurplus) || ratio >= 3),
 		forecast: true,
 		forecastCritical: target.status === "critical",
 		target: target.type,
@@ -112,6 +141,7 @@ function forecastBalanceDirective(forecast, allowedTargets = RESOURCE_TYPES)
 		ratio,
 		targetStatus: target.status,
 		targetCoverage: target.coverageRatio,
+		targetSupplyCoverage: target.supplyCoverageRatio,
 		surplusCoverage: surplus ? surplus.coverageRatio : 0
 	};
 }
