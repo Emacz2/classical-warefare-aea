@@ -1,59 +1,66 @@
-EXPERT BENCHMARKS — IT14.93
+EXPERT BENCHMARKS — IT14.94
 
 PRIMARY GOAL
-Repair the IT14.92 opening Storehouse / live-cutting-front regression without changing
-systems that were not implicated by the replay.
+Make Expert harder in the areas the 2026-09-11 human-vs-Expert replay exposed—battlefield
+judgment, proportional defense, repeated resource expansion and premium-infrastructure
+placement—without regressing the IT14.93 opening/resource fixes.
 
-FROZEN / KEEP
-- Preserve IT14.92 forecast authority and actual-work resource balancing.
-- Preserve IT14.90 3-4 future-farmer Field crews.
-- Preserve IT14.91 natural-food > Field behavior.
-- Preserve IT14.90 bounded attack-move and CC capture finish.
-- Preserve healer/no-bolt/Iphicratean/Scythian Police behavior.
-- attackManager.js and attackPlan.js remain unchanged.
+FROZEN / HARD NON-REGRESSION
+- Opening Storehouse must still choose the best sustainable forest, not a tiny near-CC clump.
+- No immediate Storehouse #2 during the 45-second establishment grace.
+- ZERO woodsite.averageDropDistance finite-number error spam.
+- Keep IT14.92 forecast/actual-work economy authority.
+- Keep future-farmer Field crews, natural-food priority, healer escort, no-bolt rule,
+  Iphicratean optionality, house/farm geometry, CC civilian continuity and siege behavior.
 
-1) OPENING STOREHOUSE REFERENCE TEST
-Reference: 2026-09-11 Eurasian Steppe screenshot/replay.
-IT14.92 built a small near-CC Storehouse, then almost immediately built a better second
-Storehouse while workers were already spreading across unrelated trees.
+1) P2 PRESSURE-HOLD TEST
+When a normal P2/P3-nonterminal attack has a poor historical casualty exchange but still
+owns the local battlefield:
+- expect [EXPERT-PRESSURE] hold ...
+- DO NOT expect [EXPERT-REBOOM] bad-exchange solely at readings resembling
+  56v0 / 50v1 / 74v0 / 64v0 / 84v0 with a 40+ army;
+- if static defenses are present, a short REGROUP is acceptable, but the same attack plan
+  should survive and resume;
+- if the army genuinely collapses/outnumbers locally, ordinary reboom MUST still happen.
 
-IT14.93 targets:
-- Expect one early line:
-    [EXPERT-WOOD-OPEN] selected wood=... approach=... avgDrop=... candidates=...
-- The first Storehouse should normally serve the largest sustainable legal opening forest,
-  even when it requires a noticeably longer one-time builder walk from the CC.
-- A 300-500 wood clump should not beat a 1500+ wood forest merely because it is closer.
-- Do not queue Storehouse #2 immediately after #1 completes.
-- Storehouse #2 is blocked for the 45-second establishment grace period, then ordinary
-  economic-value rules resume.
+2) DEFENSE TEST
+For a raid of roughly 8-12 units while Expert has a large 70-100-man military:
+- [EXPERT-DEF] mobilize should show a bounded response, not the entire army;
+- home/reserve soldiers should answer before pulling the active offensive army;
+- main attack pressure should continue where practical;
+- a large/outmatching enemy attack may still mobilize everything;
+- normal engage should not fire with 22 assembled against 36 unless the enemy is already
+  inside the immediate-engage radius.
 
-2) ERROR-SPAM HARD PASS/FAIL
-- ZERO occurrences of:
-    woodsite.averageDropDistance must be a finite number
-- ZERO repeated exceptions from petraApiAdapter finite() caused by woodsite metrics.
-- [EXPERT-IT14.93] diagnostics should continue throughout the replay, proving the Expert
-  controller is not aborting each update.
+3) REPEAT EXPANSION TEST
+Athens:
+- first Cleruchy behavior remains valid;
+- if later resource scarcity returns, a second and eventually third Cleruchy are legal;
+- repeat expansion must be >=72m from an existing Cleruchy and respect the 90s completion
+  cooldown;
+- later frontier search may extend outward from a completed Cleruchy rather than staying
+  trapped in the original CC ring;
+- no more than one live Cleruchy build task/foundation at a time.
 
-3) OPENING WOOD COHERENCE
-- Opening citizen soldiers build the selected Storehouse and chop the forest it services.
-- Newly assigned wood workers should prefer that established district/cutting front.
-- Do not scatter workers across global trees while a healthy serviced opening forest exists.
-- The 14.92 live cutting-front logic remains available later as the forest recedes.
+4) CLERUCHY PLACEMENT FALLBACK TEST
+If a chosen frontier district cannot legally place:
+- expect [EXPERT-EXPAND] blacklist cleruchy-anchor ...
+- the next attempt should choose a distinct candidate, not repeat the same x/z forever;
+- no repeated 6056-rejection loop against the same resource anchor;
+- Cleruchy fallback must remain near useful frontier resources, not become a random
+  home-base building.
 
-4) ECONOMY NON-REGRESSION
-- Forecast remains the cross-resource authority after the protected opening.
-- Surplus stone/metal workers can still peel toward actual shortages.
-- Future farmers remain reclaimable for new Fields and stay on those Fields after building.
-- Natural food still preempts Fields when economically accessible.
+5) ATHENS PREMIUM TRANSITION TEST
+On a mature Town/City Athens economy with enough bank:
+- if [EXPERT-ATHENS] build=gymnasium appears and the first search fails, the widened owned-
+  territory grid should have a materially better chance to place it;
+- once built, the pre-existing champion training doctrine should be free to operate;
+- this patch does NOT require a new cavalry doctrine or force champions when unaffordable.
 
-5) STOREHOUSE LATER-GAME NON-REGRESSION
-- The 45-second grace applies only after the first Storehouse completes.
-- Later second/third Storehouses are still allowed where measured haul improvement and
-  remaining resource mass justify them.
-- Advancing a Storehouse along a live cutting front remains legal after the grace period.
-- IT14.87 emergency release remains available for a genuinely dead/stalled wood district.
-
-6) COMBAT OBSERVE ONLY
-- No combat code changed in IT14.93.
-- Do not attribute attack timing/movement differences to this patch unless they are an
-  indirect consequence of a healthier economy.
+6) OPENING/ECONOMY SANITY CHECK
+In the first 5-8 minutes compare against IT14.93:
+- Storehouse #1 location and opening workers should look the same or better, not different
+  because of 14.94;
+- no new idle-opening regression;
+- no new Farmstead/Field/house placement regression;
+- [EXPERT-IT14.94] diagnostics must continue throughout the replay.

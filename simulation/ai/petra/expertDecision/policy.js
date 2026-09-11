@@ -537,6 +537,14 @@ const DEFAULT_POLICY = Object.freeze({
   defenseAssemblyFraction: 0.55,
   defenseAssemblyMaxWaitSeconds: 18,
   defenseImmediateEngageRadius: 55,
+  // IT14.94: match the response to the raid instead of pulling every soldier home.
+  // Existing attack-plan troops are borrowed only when nearby reserves are insufficient.
+  defenseResponseMinimumUnits: 8,
+  defenseResponseMinimumCountRatio: 1.25,
+  defenseResponseMaximumCountRatio: 1.75,
+  defenseResponseStrengthRatio: 1.35,
+  defenseResponseEngageThreatRatio: 1.05,
+  defenseResponseWaitThreatRatio: 0.85,
   defenseOrderRefreshSeconds: 3,
   defenseThreatReleaseSeconds: 12,
   defenseTowerOutmatchedRatio: 1.12,
@@ -817,7 +825,13 @@ const DEFAULT_POLICY = Object.freeze({
   athensCleruchyScarcityNaturalFoodThreshold: 250,
   athensCleruchyScarcityPlacementFailures: 2,
   athensCleruchyScarcityFailureWindowSeconds: 120,
-  athensCleruchyMaximumCount: 1,
+  // IT14.94: one expansion is not a lifetime cap. The first healthy expansion remains
+  // optional; additional Cleruchies require renewed scarcity and are spaced/cooldown-bound.
+  athensCleruchyMaximumCount: 3,
+  athensCleruchyRepeatCooldownSeconds: 90,
+  athensCleruchyMinimumRepeatSpacing: 72,
+  athensCleruchyFailedAnchorCooldownSeconds: 90,
+  athensCleruchyFailedAnchorRadius: 36,
   athensCleruchyMinimumResourceValue: 1800,
   athensCleruchyScarcityMinimumResourceValue: 1400,
   athensCleruchyWoodValueWeight: 1.50,
@@ -1111,6 +1125,15 @@ const DEFAULT_POLICY = Object.freeze({
   expertCombatBadExchangeMinimumFightSeconds: 28,
   expertCombatBadExchangeReboomSeconds: 55,
   expertCombatBadExchangeCooldownSeconds: 35,
+  // IT14.94: casualty history is not permission to abandon a battlefield we currently own.
+  // A large local force with a decisive numerical edge holds pressure; if static defenses
+  // are present it may use the existing short tactical regroup instead of full reboom.
+  expertCombatPressureHoldMinimumArmy: 40,
+  expertCombatPressureHoldMinimumLocalOwn: 24,
+  expertCombatPressureHoldMinimumLead: 12,
+  expertCombatPressureHoldMaximumEnemyRatio: 0.55,
+  expertCombatPressureHoldMaximumDefenses: 3,
+  expertCombatPressureHoldLogSeconds: 12,
   // Keep enough population headroom to replace a ram/catapult that dies during an
   // active siege push. Without this, ordinary infantry instantly refilled 180/180
   // and the Arsenal could no longer replace the lost engine.

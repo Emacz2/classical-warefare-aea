@@ -294,6 +294,8 @@ export class ExpertDecisionController
 		this.lastHuntingCavalryDiag = -99999;
 		// IT14.62 optional frontier expansion diagnostic and temporary siege-pop reserve.
 		this.lastCleruchyDiag = -99999;
+		this.lastCleruchyCompletedAt = -99999;
+		this.failedCleruchyAnchors = [];
 		this.lastScarcityExpansionAttempt = -99999;
 		this.expertStrategicPopulationReserve = 0;
 		// Once a covered secondary natural-food branch is exhausted, guarantee that the
@@ -3882,6 +3884,73 @@ export class ExpertDecisionController
 		return defenders;
 	}
 
+	selectExpertDefenseResponse(gameState, defenders, threat, state, outmatched)
+	{
+		if (!Array.isArray(defenders) || !defenders.length)
+			return [];
+		if (outmatched)
+			return defenders.slice();
+
+		const policy = mergePolicy();
+		const minimum = Math.min(defenders.length, Math.max(
+			Number(policy.defenseResponseMinimumUnits) || 8,
+			Math.ceil(threat.count * (Number(policy.defenseResponseMinimumCountRatio) || 1.25))));
+		const maximum = Math.min(defenders.length, Math.max(minimum,
+			Math.ceil(threat.count * (Number(policy.defenseResponseMaximumCountRatio) || 1.75))));
+		const targetStrength = Math.max(1, Number(threat.strength) || threat.count) *
+			(Number(policy.defenseResponseStrengthRatio) || 1.35);
+		const byId = new Map(defenders.map(ent => [ent.id(), ent]));
+		const selected = [];
+		const selectedIds = new Set();
+		for (const id of state && Array.isArray(state.responseIds) ? state.responseIds : [])
+		{
+			const ent = byId.get(Number(id));
+			if (!ent)
+				continue;
+			selected.push(ent);
+			selectedIds.add(ent.id());
+		}
+		let strength = selected.reduce((sum, ent) => sum + this.combatStrength(ent), 0);
+		if (selected.length < minimum || strength < targetStrength)
+		{
+			const candidates = defenders.filter(ent => !selectedIds.has(ent.id()));
+			candidates.sort((a, b) =>
+			{
+				const committed = ent => {
+					if (!ent || !ent.getMetadata)
+						return 0;
+					const plan = ent.getMetadata(PlayerID, "plan");
+					return ent.getMetadata(PlayerID, "PartOfArmy") !== undefined ||
+						plan !== undefined && plan !== -1 ? 1 : 0;
+				};
+				const ca = committed(a), cb = committed(b);
+				if (ca !== cb)
+					return ca - cb;
+				const ap = entityPosition(a), bp = entityPosition(b);
+				const ad = ap ? SquareVectorDistance(ap, threat.position) : Infinity;
+				const bd = bp ? SquareVectorDistance(bp, threat.position) : Infinity;
+				return ad - bd || a.id() - b.id();
+			});
+			for (const ent of candidates)
+			{
+				if (selected.length >= maximum)
+					break;
+				selected.push(ent);
+				selectedIds.add(ent.id());
+				strength += this.combatStrength(ent);
+				if (selected.length >= minimum && strength >= targetStrength)
+					break;
+			}
+		}
+		if (state)
+		{
+			state.responseTargetMinimum = minimum;
+			state.responseTargetMaximum = maximum;
+			state.responseTargetStrength = targetStrength;
+		}
+		return selected;
+	}
+
 	defenseTowerNearBase(gameState, cc)
 	{
 		const ccPos = cc && entityPosition(cc);
@@ -4037,30 +4106,35 @@ export class ExpertDecisionController
 			return this.expertDefenseState;
 		}
 
-		const defenders = this.expertDefenders(gameState);
-		const defenderStrength = defenders.reduce((sum, ent) => sum + this.combatStrength(ent), 0);
-		const outmatched = threat.strength > Math.max(1, defenderStrength) * policy.defenseTowerOutmatchedRatio ||
-			threat.count > Math.max(1, defenders.length) * policy.defenseTowerOutnumberedRatio;
+		const availableDefenders = this.expertDefenders(gameState);
+		const availableDefenderStrength = availableDefenders.reduce((sum, ent) => sum + this.combatStrength(ent), 0);
+		const outmatched = threat.strength > Math.max(1, availableDefenderStrength) * policy.defenseTowerOutmatchedRatio ||
+			threat.count > Math.max(1, availableDefenders.length) * policy.defenseTowerOutnumberedRatio;
 		const ccPos = cc.position();
 		const tower = this.defenseTowerNearBase(gameState, cc);
 		const towerPending = !!this.activeTaskByKind.tower || this.foundationsByClass(gameState, "Tower").length > 0;
 
 		let state = this.expertDefenseState;
-		if (!state.active)
-		{
+		const newlyMobilized = !state.active;
+		if (newlyMobilized)
 			state = {
 				"active": true, "stage": "assemble", "startedAt": now, "lastSeen": now,
-				"rallyPoint": [ccPos[0], ccPos[1]]
+				"rallyPoint": [ccPos[0], ccPos[1]], "responseIds": []
 			};
-			aiWarn("[EXPERT-DEF] mobilize incoming=" + threat.count + " defenders=" + defenders.length +
-				" nearest=" + Math.round(threat.nearest) + " outmatched=" + outmatched);
-		}
+		const defenders = this.selectExpertDefenseResponse(gameState, availableDefenders, threat, state, outmatched);
+		const defenderStrength = defenders.reduce((sum, ent) => sum + this.combatStrength(ent), 0);
+		state.responseIds = defenders.map(ent => ent.id());
+		if (newlyMobilized)
+			aiWarn("[EXPERT-DEF] mobilize incoming=" + threat.count + " response=" + defenders.length +
+				"/" + availableDefenders.length + " nearest=" + Math.round(threat.nearest) + " outmatched=" + outmatched);
 		state.lastSeen = now;
 		state.threatPosition = [threat.position[0], threat.position[1]];
 		state.foeCount = threat.count;
 		state.foeStrength = threat.strength;
 		state.defenderCount = defenders.length;
 		state.defenderStrength = defenderStrength;
+		state.availableDefenderCount = availableDefenders.length;
+		state.availableDefenderStrength = availableDefenderStrength;
 		state.outmatched = outmatched;
 		state.nearest = threat.nearest;
 		state.rallyPoint = [ccPos[0], ccPos[1]];
@@ -4104,13 +4178,18 @@ export class ExpertDecisionController
 			const waited = now - state.startedAt;
 			const towerReadyEnough = !outmatched || !state.towerExpected ||
 				!!(tower && this.defenseGarrisonCount(gameState, tower) >= Math.min(3, policy.defenseTowerGarrisonSlots));
-			if ((state.assemblyFraction >= policy.defenseAssemblyFraction && towerReadyEnough) ||
-			    threat.nearest <= policy.defenseImmediateEngageRadius || waited >= policy.defenseAssemblyMaxWaitSeconds)
+			const threatReady = assembled >= Math.min(defenders.length,
+				Math.ceil(threat.count * (Number(policy.defenseResponseEngageThreatRatio) || 1.05)));
+			const waitedReady = waited >= policy.defenseAssemblyMaxWaitSeconds && assembled >= Math.min(defenders.length,
+				Math.ceil(threat.count * (Number(policy.defenseResponseWaitThreatRatio) || 0.85)));
+			if ((state.assemblyFraction >= policy.defenseAssemblyFraction && threatReady && towerReadyEnough) ||
+			    threat.nearest <= policy.defenseImmediateEngageRadius || waitedReady && towerReadyEnough)
 			{
 				state.stage = "engage";
 				state.engagedAt = now;
 				aiWarn("[EXPERT-DEF] engage assembled=" + assembled + "/" + defenders.length +
-					" fraction=" + state.assemblyFraction.toFixed(2) + " foe=" + threat.count + " outmatched=" + outmatched);
+					" fraction=" + state.assemblyFraction.toFixed(2) + " foe=" + threat.count +
+					" response=" + defenders.length + "/" + availableDefenders.length + " outmatched=" + outmatched);
 			}
 		}
 
@@ -4137,7 +4216,17 @@ export class ExpertDecisionController
 	{
 		if (!this.hasActiveExpertDefense() || !ent)
 			return false;
-		return this.issueExpertDefenseOrder(gameState, ent, this.expertDefenseState, true);
+		const state = this.expertDefenseState;
+		state.responseIds = Array.isArray(state.responseIds) ? state.responseIds : [];
+		if (!state.responseIds.includes(ent.id()))
+		{
+			const maximum = Math.max(1, Number(state.responseTargetMaximum) || state.defenderCount || 0);
+			if (!state.outmatched && state.responseIds.length >= maximum)
+				return false;
+			state.responseIds.push(ent.id());
+			state.defenderCount = Math.max(Number(state.defenderCount) || 0, state.responseIds.length);
+		}
+		return this.issueExpertDefenseOrder(gameState, ent, state, true);
 	}
 
 	phaseCostCoverage(resources, cost)
@@ -6921,6 +7010,12 @@ export class ExpertDecisionController
 						if (ent && entityPosition(ent) && (!this.primaryWoodWorksite || this.pendingWoodSelectionByTask[taskId]))
 							this.primaryWoodWorksite = { "entityId": ent.id(), "position": ent.position(), "taskId": taskId };
 					}
+					if (observed.state === "completed" && kind === "cleruchy")
+					{
+						this.lastCleruchyCompletedAt = Number(gameState.ai.elapsedTime) || 0;
+						aiWarn("[EXPERT-EXPAND] cleruchy-complete count=" +
+							this.structuresByTemplate(gameState, gameState.applyCiv(BUILDING_SPECS.cleruchy.template)).length);
+					}
 					if (observed.state === "completed" && kind === "farmstead" && this.pendingFoodSelectionByTask[taskId])
 					{
 						this.readyNextFoodCluster = this.pendingFoodSelectionByTask[taskId];
@@ -7710,6 +7805,7 @@ export class ExpertDecisionController
 			return undefined;
 		const policy = mergePolicy();
 		const ccPos = cc.position();
+		const now = Number(gameState.ai.elapsedTime) || 0;
 		const radius2 = Math.pow(Number(policy.athensCleruchyResourceRadius) || 55, 2);
 		const weights = { food: Number(policy.athensCleruchyFoodValueWeight) || 1, wood: Number(policy.athensCleruchyWoodValueWeight) || 1.5,
 			stone: Number(policy.athensCleruchyStoneValueWeight) || 1.2, metal: Number(policy.athensCleruchyMetalValueWeight) || 1.2 };
@@ -7717,11 +7813,39 @@ export class ExpertDecisionController
 			weights[primaryResource] *= Math.max(1, Number(policy.athensCleruchyForecastPrimaryResourceBonus) || 1.8);
 		const minimumValue = scarcity ? Math.max(1, Number(policy.athensCleruchyScarcityMinimumResourceValue) || 1400) :
 			Math.max(1, Number(policy.athensCleruchyMinimumResourceValue) || 1800);
+
+		// IT14.94: later expansions may step outward from an already-completed Cleruchy
+		// instead of being forever constrained to the original CC's 165m ring.
+		const type = gameState.applyCiv(BUILDING_SPECS.cleruchy.template);
+		const existingCleruchies = this.structuresByTemplate(gameState, type).filter(ent => ent && entityPosition(ent));
+		const origins = [ccPos, ...existingCleruchies.map(ent => ent.position())];
+		const anchorMap = new Map();
+		for (const origin of origins)
+			for (const anchor of this.frontierResourceAnchors(gameState, origin, accessIndex))
+			{
+				const key = Math.round(anchor.position[0]) + ":" + Math.round(anchor.position[1]);
+				if (!anchorMap.has(key) || anchor.score > anchorMap.get(key).score)
+					anchorMap.set(key, anchor);
+			}
+
+		// A no-legal-position result blacklists only that resource district for a short
+		// time. The next update evaluates candidate #2/#3 instead of hammering the same
+		// impossible 145m anchor every frame.
+		const failedCooldown = Math.max(20, Number(policy.athensCleruchyFailedAnchorCooldownSeconds) || 90);
+		const failedRadius2 = Math.pow(Math.max(12, Number(policy.athensCleruchyFailedAnchorRadius) || 36), 2);
+		this.failedCleruchyAnchors = (this.failedCleruchyAnchors || []).filter(item =>
+			item && Array.isArray(item.position) && now - (Number(item.at) || 0) <= failedCooldown);
+		const repeatSpacing2 = Math.pow(Math.max(40, Number(policy.athensCleruchyMinimumRepeatSpacing) || 72), 2);
+
 		let best;
-		for (const anchor of this.frontierResourceAnchors(gameState, ccPos, accessIndex))
+		for (const anchor of anchorMap.values())
 		{
-			const distance = Math.sqrt(SquareVectorDistance(anchor.position, ccPos));
-			if (distance < policy.athensCleruchyMinimumCCDistance || distance > policy.athensCleruchyMaximumCCDistance)
+			if ((this.failedCleruchyAnchors || []).some(item => SquareVectorDistance(anchor.position, item.position) <= failedRadius2))
+				continue;
+			if (existingCleruchies.some(ent => SquareVectorDistance(anchor.position, ent.position()) < repeatSpacing2))
+				continue;
+			const hubDistance = Math.min(...origins.map(origin => Math.sqrt(SquareVectorDistance(anchor.position, origin))));
+			if (hubDistance < policy.athensCleruchyMinimumCCDistance || hubDistance > policy.athensCleruchyMaximumCCDistance)
 				continue;
 			let value = 0;
 			const types = new Set();
@@ -7747,9 +7871,12 @@ export class ExpertDecisionController
 			const woodOnlyCrisis = scarcity && resources.wood >= (Number(policy.athensCleruchyWoodOnlyMinimumAmount) || 1600);
 			if ((!woodOnlyCrisis && types.size < policy.athensCleruchyMinimumResourceTypes) || value < minimumValue)
 				continue;
-			const score = value - 3 * distance;
+			const ccDistance = Math.sqrt(SquareVectorDistance(anchor.position, ccPos));
+			// Preserve IT14.93's exact first-expansion scoring. Only later outward hops
+			// receive the small original-CC distance penalty.
+			const score = value - 3 * hubDistance - (existingCleruchies.length ? 0.35 * ccDistance : 0);
 			if (!best || score > best.score)
-				best = { position: [...anchor.position], distance, value, resourceTypes: types.size, resources, score };
+				best = { position: [...anchor.position], distance: hubDistance, ccDistance, value, resourceTypes: types.size, resources, score };
 		}
 		return best;
 	}
@@ -7860,8 +7987,18 @@ export class ExpertDecisionController
 		if (!scarcity.active && this.expertMajorAttackNearLaunch(gameState))
 			return frame;
 		const type = gameState.applyCiv(BUILDING_SPECS.cleruchy.template);
+		const cleruchyPipeline = this.specialStructurePipeline(gameState, "cleruchy");
 		if (!gameState.getTemplate(type) || !this.HQ.canBuild || !this.HQ.canBuild(gameState, type) ||
-		    this.specialStructurePipeline(gameState, "cleruchy") >= policy.athensCleruchyMaximumCount)
+		    cleruchyPipeline >= policy.athensCleruchyMaximumCount ||
+		    this.activeTaskByKind.cleruchy || this.structuresByTemplate(gameState, type, true).length)
+			return frame;
+		// IT14.94: healthy-map expansion #1 keeps the old behavior. Expansion #2/#3 are
+		// resource responses, not decorative sprawl, and wait briefly after the previous
+		// completed colony before committing another builder team.
+		if (cleruchyPipeline >= 1 && !scarcity.active)
+			return frame;
+		if (cleruchyPipeline >= 1 && now - (Number(this.lastCleruchyCompletedAt) || -99999) <
+		    (Number(policy.athensCleruchyRepeatCooldownSeconds) || 90))
 			return frame;
 		const candidate = this.cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity.active, scarcity.primaryResource);
 		if (!candidate)
@@ -7889,7 +8026,9 @@ export class ExpertDecisionController
 		{
 			this.lastCleruchyDiag = now;
 			aiWarn("[EXPERT-EXPAND] build=cleruchy mode=" + (p1Scarcity ? "scarcity-p1" : scarcity.active ? "scarcity" : "frontier") +
-				" distance=" + candidate.distance.toFixed(1) + " value=" + Math.round(candidate.value) +
+				" count=" + cleruchyPipeline + "/" + policy.athensCleruchyMaximumCount +
+				" distance=" + candidate.distance.toFixed(1) + " ccDistance=" + (Number(candidate.ccDistance) || candidate.distance).toFixed(1) +
+				" value=" + Math.round(candidate.value) +
 				" types=" + candidate.resourceTypes + " wood=" + Math.round(candidate.resources.wood || 0) +
 				" primary=" + scarcity.primaryResource + " forecast=" + scarcity.forecastCritical +
 				" localWood=" + Math.round(scarcity.localWood) + " natural=" + Math.round(scarcity.natural));
@@ -10974,12 +11113,16 @@ export class ExpertDecisionController
 			const policy = mergePolicy();
 			const anchor = Array.isArray(action.resourceAnchor) ? action.resourceAnchor : cc.position();
 			const toward = cc.position();
+			const broad = placementFailures > 0;
 			const candidates = generatePlacementCandidates({
 				"kind": "cleruchy", "anchor": anchor, "toward": toward,
-				"distances": [0, 4, 8, 12, 16, 20, 26, 32], "angleCount": 64, "templateRadius": geometry.radius
+				"distances": broad ? [0, 4, 8, 12, 16, 20, 26, 32, 38, 44, 50] : [0, 4, 8, 12, 16, 20, 26, 32],
+				"angleCount": broad ? 96 : 64, "templateRadius": geometry.radius
 			});
 			request = { kind, candidates, "templateRadius": geometry.radius, "allowNeutralTerritory": true,
-				"minimumCCDistance": policy.athensCleruchyMinimumCCDistance, "resourceAnchor": anchor };
+				"minimumCCDistance": policy.athensCleruchyMinimumCCDistance,
+				"minimumCleruchySpacing": Number(policy.athensCleruchyMinimumRepeatSpacing) || 72,
+				"resourceAnchor": anchor };
 		}
 
 		else if (kind === "tower")
@@ -10999,7 +11142,7 @@ export class ExpertDecisionController
 		// IT14.43 emergency placement: after one failed strategic search, stop demanding a
 		// beautiful city.  Add dense legal rings around every developed own structure;
 		// engine obstruction/territory checks still decide legality.
-		if (request && strategicFallback && kind !== "field" && kind !== "farmstead" && kind !== "storehouse" && kind !== "house")
+		if (request && strategicFallback && kind !== "field" && kind !== "farmstead" && kind !== "storehouse" && kind !== "house" && kind !== "cleruchy")
 		{
 			const emergency = [];
 			const ccPos = cc.position();
@@ -11142,7 +11285,7 @@ export class ExpertDecisionController
 				const grid = [];
 				if (territory && Number.isFinite(territory.width) && Number.isFinite(territory.cellSize) && territory.getOwnerIndex)
 				{
-					const step = requiredP3Prytaneion ? 1 : 2;
+					const step = 1;
 					for (let z = 0; z < territory.width; z += step)
 						for (let x = 0; x < territory.width; x += step)
 						{
@@ -11156,7 +11299,7 @@ export class ExpertDecisionController
 							grid.push({ pos: point, score: Math.abs(d - preferred) });
 						}
 					grid.sort((a,b) => a.score - b.score);
-					emergency.push(...grid.slice(0, requiredP3Prytaneion ? 3072 : 768).map(item => item.pos));
+					emergency.push(...grid.slice(0, 3072).map(item => item.pos));
 				}
 			}
 
@@ -11386,6 +11529,14 @@ export class ExpertDecisionController
 				const clearance = (Number(mergePolicy().resourceCorridorClearance) || 3.5) + Math.max(1, Number(geometry.radius) || 1);
 				for (const corridor of resourceCorridors)
 					if (pointSegmentDistanceSquared(position, corridor.from, corridor.to) < clearance * clearance)
+						return false;
+			}
+			if (kind === "cleruchy" && Number(request && request.minimumCleruchySpacing) > 0)
+			{
+				const spacing = Number(request.minimumCleruchySpacing);
+				const type = gameState.applyCiv(BUILDING_SPECS.cleruchy.template);
+				for (const ent of this.structuresByTemplate(gameState, type))
+					if (entityPosition(ent) && SquareVectorDistance(position, ent.position()) < spacing * spacing)
 						return false;
 			}
 			if (!strategicFallback && kind !== "storehouse" && kind !== "farmstead" && kind !== "field")
@@ -11841,6 +11992,17 @@ export class ExpertDecisionController
 					const placementKey = action.kind + ":" + (action.role || "primary");
 					this.placementFailureCounts[placementKey] = Number(this.placementFailureCounts[placementKey] || 0) + 1;
 					this.placementFailureAt[placementKey] = Number(gameState.ai.elapsedTime) || 0;
+					if (action.kind === "cleruchy" && Array.isArray(action.resourceAnchor))
+					{
+						const at = Number(gameState.ai.elapsedTime) || 0;
+						const radius2 = Math.pow(Math.max(12, Number(mergePolicy().athensCleruchyFailedAnchorRadius) || 36), 2);
+						this.failedCleruchyAnchors = (this.failedCleruchyAnchors || []).filter(item =>
+							item && Array.isArray(item.position) && SquareVectorDistance(item.position, action.resourceAnchor) > radius2);
+						this.failedCleruchyAnchors.push({ position: [...action.resourceAnchor], at });
+						this.failedCleruchyAnchors = this.failedCleruchyAnchors.slice(-12);
+						aiWarn("[EXPERT-EXPAND] blacklist cleruchy-anchor x=" + action.resourceAnchor[0].toFixed(1) +
+							" z=" + action.resourceAnchor[1].toFixed(1) + " failures=" + this.placementFailureCounts[placementKey]);
+					}
 					const foodBlockDiag = action.kind === "farmstead" && action.role === "second_barracks_food_block" ?
 						" need=" + Math.max(1, Number(action.minimumFieldSlotsNeeded) || 1) +
 						" minNow=" + Math.max(1, Number(request.minimumFieldSlots) || 1) +
@@ -14201,7 +14363,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.93] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.94] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -14267,7 +14429,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.93] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.94] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -14346,6 +14508,8 @@ export class ExpertDecisionController
 			"lastHuntingCavalryDiag": this.lastHuntingCavalryDiag,
 			"lastP1CCSoldierQueueAt": this.lastP1CCSoldierQueueAt,
 			"lastCleruchyDiag": this.lastCleruchyDiag,
+			"lastCleruchyCompletedAt": this.lastCleruchyCompletedAt,
+			"failedCleruchyAnchors": (this.failedCleruchyAnchors || []).map(item => ({ ...item, position: Array.isArray(item.position) ? [...item.position] : item.position })),
 			"lastScarcityExpansionAttempt": this.lastScarcityExpansionAttempt,
 			"secondaryNaturalDepletionFieldPending": this.secondaryNaturalDepletionFieldPending,
 			"naturalFoodDiscoveredAmounts": { ...this.naturalFoodDiscoveredAmounts },
@@ -14456,6 +14620,9 @@ export class ExpertDecisionController
 		this.lastHuntingCavalryDiag = Number.isFinite(data.lastHuntingCavalryDiag) ? data.lastHuntingCavalryDiag : -99999;
 		this.lastP1CCSoldierQueueAt = Number.isFinite(data.lastP1CCSoldierQueueAt) ? data.lastP1CCSoldierQueueAt : -99999;
 		this.lastCleruchyDiag = Number.isFinite(data.lastCleruchyDiag) ? data.lastCleruchyDiag : -99999;
+		this.lastCleruchyCompletedAt = Number.isFinite(data.lastCleruchyCompletedAt) ? data.lastCleruchyCompletedAt : -99999;
+		this.failedCleruchyAnchors = Array.isArray(data.failedCleruchyAnchors) ?
+			data.failedCleruchyAnchors.map(item => ({ ...item, position: Array.isArray(item.position) ? [...item.position] : item.position })) : [];
 		this.lastScarcityExpansionAttempt = Number.isFinite(data.lastScarcityExpansionAttempt) ? data.lastScarcityExpansionAttempt : -99999;
 		this.expertStrategicPopulationReserve = 0;
 		this.secondaryNaturalDepletionFieldPending = !!data.secondaryNaturalDepletionFieldPending;

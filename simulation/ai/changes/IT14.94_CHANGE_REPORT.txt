@@ -1,0 +1,124 @@
+EXPERT AI PETRA — IT14.94 CHANGE REPORT
+=======================================
+
+PURPOSE
+IT14.94 is a narrow strategic-control pass based on the 2026-09-11 Seleucid-player vs
+Athens-Expert replay. IT14.93's opening Storehouse and live-resource fixes are preserved.
+The replay showed four higher-level differences between the human and Expert:
+1) Expert abandoned locally won battlefields because historical casualty totals triggered
+   P2 bad-exchange reboom even at 56v0 / 50v1 / 74v0 / 64v0 / 84v0;
+2) Athens repeatedly selected the same rich Cleruchy frontier after no-legal-position and
+   treated one successful expansion as a lifetime cap;
+3) base defense pulled essentially the entire military response even for small raids and
+   could then engage before enough of the response had actually assembled;
+4) Athens repeatedly failed Gymnasium/Prytaneion placement, blocking its premium-unit
+   transition despite a mature economy.
+
+FILES CHANGED FROM IT14.93
+- petra/attackManager.js
+- petra/expertDecisionController.js
+- petra/expertDecision/policy.js
+- EXPERT_BENCHMARKS.txt
+- IT14.94_CHANGE_REPORT.txt                  [NEW]
+
+FROZEN / NON-REGRESSION
+- IT14.93 opening Storehouse selection and 45-second Storehouse #2 grace are unchanged.
+- IT14.93 finite live cutting-front normalization is unchanged.
+- IT14.92 forecast/actual-work resource authority is unchanged.
+- IT14.90 future-farmer Field crews and bounded attack-move/CC capture finish are unchanged.
+- IT14.88 healer escort, no automatic bolt shooters and optional Iphicratean Reforms are unchanged.
+- No opening worker assignment, berry/Farmstead geometry, house placement, field packing,
+  CC civilian production, siege selection, or general AttackPlan movement/targeting rewrite.
+
+1) P2 BATTLEFIELD CONTROL: HOLD PRESSURE INSTEAD OF SURRENDERING A WON FIELD
+Previous behavior:
+- bad_exchange compared accumulated own losses with net enemy population decline;
+- the opponent could replace units, making enemyDamage look small;
+- an otherwise healthy P2 army could full-retreat even while the live local reading was
+  overwhelmingly favorable.
+
+IT14.94:
+- normal bad-exchange retreat remains intact for a real local/army collapse;
+- if the field army is still >=40, local combat >=24, own local lead >=12, the enemy is
+  <=55% of local own combat, and static defenses are <=3, the attack plan stays alive;
+- with static defenses present, Expert may use the EXISTING 7-second tactical regroup
+  (short homeward reform) rather than deleting the attack and starting a 55s reboom;
+- wounded peeling/replacement and normal reinforcement logic remain available;
+- diagnostic:
+    [EXPERT-PRESSURE] hold plan=... army=... losses=... enemyDamage=... local=... defenses=...
+
+This deliberately does NOT disable retreat. An actually collapsed army still rebooms.
+
+2) REPEATABLE ATHENS RESOURCE EXPANSION
+Previous behavior:
+- athensCleruchyMaximumCount=1;
+- after one Cleruchy, Athens could never make another territorial resource expansion;
+- frontier search was permanently centered on the original CC.
+
+IT14.94:
+- maximum Cleruchies = 3;
+- expansion #1 keeps the existing healthy-frontier behavior;
+- expansion #2/#3 require renewed scarcity/forecast need, so this is not decorative sprawl;
+- completed Cleruchies become additional frontier origins, allowing expansion to step
+  outward toward the next rich neutral resource district;
+- repeat expansions require >=72m spacing and a 90s post-completion cooldown;
+- only one Cleruchy construction task/foundation may exist at a time.
+
+3) FAILED CLERUCHY LOCATION BLACKLIST / NEXT-CANDIDATE FALLBACK
+Previous behavior:
+- a rich ~145m district could be selected over and over even after thousands of placement
+  candidates had already proved it could not accept the building.
+
+IT14.94:
+- a no-legal-position Cleruchy result blacklists that resource anchor for 90s within 36m;
+- the next update evaluates the next distinct frontier resource cluster;
+- the failed anchor list is bounded (12) and serialized for save-game consistency;
+- after a prior placement failure the local ring around a new anchor broadens to 50m / 96 angles;
+- generic strategic fallback no longer drags a Cleruchy back into random home-base rings;
+  a Cleruchy remains a resource-control building;
+- diagnostics:
+    [EXPERT-EXPAND] blacklist cleruchy-anchor ...
+    [EXPERT-EXPAND] build=cleruchy ... count=X/3 distance=... ccDistance=...
+    [EXPERT-EXPAND] cleruchy-complete count=...
+
+4) DEFENSE RESPONSE SIZING
+Previous behavior:
+- every combat unit was treated as a defender once a threat triggered;
+- e.g. a 9-unit raid could mobilize 83 defenders, needlessly cancelling pressure elsewhere;
+- a large defense could also engage after the old timeout with too few bodies assembled.
+
+IT14.94:
+- non-outmatched raids receive a response sized to the threat:
+    minimum ~1.25x enemy count (floor 8), maximum ~1.75x;
+    target combat strength ~1.35x threat strength;
+- idle/home/reserve combat units are selected before units already committed to an attack;
+- the selected response is sticky during that threat and grows if the threat grows;
+- an outmatched base still mobilizes everything;
+- assembly now also requires roughly enemy-count parity before normal engagement;
+- timeout can engage at ~85% of enemy count rather than blindly charging with the first
+  fraction that arrived; immediate close-range danger still overrides the wait;
+- diagnostics now show response/available counts:
+    [EXPERT-DEF] mobilize incoming=... response=.../... 
+    [EXPERT-DEF] engage assembled=... response=.../... foe=...
+
+5) ATHENS PREMIUM-INFRASTRUCTURE PLACEMENT RECOVERY
+The replay ended with Athens repeatedly requesting a Gymnasium but receiving
+no-legal-position. That prevented the already-existing champion production doctrine from
+being used.
+
+IT14.94 does NOT invent a new champion/cavalry composition. It only strengthens the
+existing strategic fallback search for Gymnasium/Prytaneion:
+- sample every owned territory cell (not every second cell);
+- test up to 3072 ranked fallback cells instead of only 768 for a normal Gymnasium;
+- ordinary obstruction, territory and template legality still have final say.
+
+VALIDATION BEFORE PACKAGING
+- Every Petra JavaScript file is checked with node --check.
+- A second parser/load pass is performed on every modified JavaScript file.
+- ZIP integrity is tested with unzip -t.
+- Changed-file audit is performed against IT14.93; only the three Petra JS files listed
+  above plus benchmark/report text are allowed to differ.
+- IT14.93 opening Storehouse code is hash/diff-reviewed to verify no opening policy change.
+
+NOTE
+These are offline/static validations. 0 A.D. engine replay testing is still required.

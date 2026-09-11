@@ -1654,7 +1654,7 @@ AttackManager.prototype.expertFailedRushDecision = function(gameState, attack)
 // must not disguise a 5:1 casualty trade by continuously refilling one doomed plan.
 AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 {
-	const out = { abort: false, losses: 0, enemyDamage: 0, balance: undefined };
+	const out = { abort: false, pressureHold: false, losses: 0, enemyDamage: 0, balance: undefined };
 	if (this.Config.difficulty < difficulty.EXPERT || !attack || !attack.isStarted() ||
 	    (attack.type !== AttackPlan.TYPE_DEFAULT && attack.type !== AttackPlan.TYPE_HUGE_ATTACK) ||
 	    !(Number(attack.expertLaunchTime) >= 0))
@@ -1723,7 +1723,25 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 	out.losses = losses;
 	out.enemyDamage = enemyDamage;
 	out.balance = balance;
-	out.abort = bad && pressured && !captureCommitment;
+
+	// IT14.94: do not confuse historical casualties with current battlefield control.
+	// The 14.93 Seleucid replay repeatedly forced a full reboom at 56v0, 50v1, 74v0,
+	// 64v0 and 84v0. A human holds the ground, rotates wounded units and reinforces.
+	// Preserve strategic retreat for a real collapse, but keep the plan alive while the
+	// local force is still decisively superior. Static defenses can trigger the existing
+	// short tactical regroup without surrendering the entire offensive.
+	const launch = Math.max(1, Number(attack.expertLaunchSize) || attack.unitCollection.length + losses);
+	const army = attack.unitCollection ? attack.unitCollection.length : 0;
+	const own = Math.max(0, Number(balance.ownCombat) || 0);
+	const enemy = Math.max(0, Number(balance.enemyCombat) || 0);
+	const localDominance = army >= (Number(policy.expertCombatPressureHoldMinimumArmy) || 40) &&
+		own >= (Number(policy.expertCombatPressureHoldMinimumLocalOwn) || 24) &&
+		own >= enemy + (Number(policy.expertCombatPressureHoldMinimumLead) || 12) &&
+		enemy <= own * (Number(policy.expertCombatPressureHoldMaximumEnemyRatio) || 0.55) &&
+		balance.defenses <= (Number(policy.expertCombatPressureHoldMaximumDefenses) || 3) &&
+		army > Math.max(18, Math.floor(launch * 0.45));
+	out.pressureHold = bad && pressured && !captureCommitment && localDominance;
+	out.abort = bad && pressured && !captureCommitment && !localDominance;
 	if (bad && pressured && captureCommitment)
 		aiWarn("[EXPERT-CAPTURE] hold-cc plan=" + attack.name + " capture=" + Math.round(captureShare * 100) +
 			"% local=" + balance.ownCombat + "v" + balance.enemyCombat + " losses=" + losses +
@@ -2417,6 +2435,23 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				continue;
 			}
 			const badExchange = this.expertBadExchangeDecision(gameState, attack);
+			if (!finishPersistence.persist && badExchange.pressureHold)
+			{
+				const b = badExchange.balance || {};
+				const policy = mergePolicy();
+				const logEvery = Number(policy.expertCombatPressureHoldLogSeconds) || 12;
+				if (now - (Number(attack.expertLastPressureHoldLog) || -99999) >= logEvery)
+				{
+					attack.expertLastPressureHoldLog = now;
+					aiWarn("[EXPERT-PRESSURE] hold plan=" + attack.name + " army=" + attack.unitCollection.length +
+						" losses=" + badExchange.losses + " enemyDamage=" + badExchange.enemyDamage +
+						" local=" + (b.ownCombat || 0) + "v" + (b.enemyCombat || 0) +
+						" defenses=" + (b.defenses || 0));
+				}
+				if ((b.defenses || 0) > 0 && this.startExpertTacticalRegroup(gameState, attack,
+					{ reason: "pressure_hold", balance: b }))
+					continue;
+			}
 			if (!finishPersistence.persist && badExchange.abort)
 			{
 				const policy = mergePolicy();
