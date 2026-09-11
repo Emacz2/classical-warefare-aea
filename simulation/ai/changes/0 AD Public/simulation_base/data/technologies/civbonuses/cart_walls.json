@@ -1,0 +1,14 @@
+{
+	"genericName": "Triple Walls",
+	"autoResearch": true,
+	"description": "Carthaginians built their city walls in three concentric circuits. These walls were never breached. Even when the city was taken by the Romans, it was via the city's harbor, not by storming its walls.",
+	"icon": "wall.png",
+	"tooltip": "City Walls +200% health, but +100% build time and stone cost.",
+	"requirements": { "civ": "cart" },
+	"modifications": [
+		{ "value": "Cost/BuildTime", "multiply": 2 },
+		{ "value": "Cost/Resources/stone", "multiply": 2 },
+		{ "value": "Health/Max", "multiply": 3 }
+	],
+	"affects": ["Wall"]
+}

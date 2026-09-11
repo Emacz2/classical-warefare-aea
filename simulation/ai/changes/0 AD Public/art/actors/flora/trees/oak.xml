@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="tree_1">
+      <mesh>gaia/oak_tree_a.dae</mesh>
+      <textures>
+        <texture file="gaia/oak_tree_a.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="tree_2">
+      <mesh>gaia/oak_tree_b.dae</mesh>
+      <textures>
+        <texture file="gaia/oak_tree_a.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="tree_1_small">
+      <mesh>gaia/oak_tree_a_small.dae</mesh>
+      <textures>
+        <texture file="gaia/oak_tree_a.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="tree_3">
+      <mesh>gaia/oak_tree_a.dae</mesh>
+      <textures>
+        <texture file="gaia/oak_tree_b.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="tree_4">
+      <mesh>gaia/oak_tree_b.dae</mesh>
+      <textures>
+        <texture file="gaia/oak_tree_b.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="tree_3_small">
+      <mesh>gaia/oak_tree_a_small.dae</mesh>
+      <textures>
+        <texture file="gaia/oak_tree_b.png" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>basic_trans_wind_norm_spec.xml</material>
+</actor>

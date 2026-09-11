@@ -861,6 +861,15 @@ const DEFAULT_POLICY = Object.freeze({
   // A fixed construction plan that never creates a foundation is cancelled and
   // replanned quickly so one queue/builder/pathing stall cannot destroy the build.
   openingStorehouseAwaitingFoundationRetrySeconds: 10,
+  // IT14.93: opening lumber economics. Prefer the best sustainable owned forest
+  // over a small clump merely because it is closer to the CC. The CC approach walk
+  // happens once; worker-to-dropsite walking repeats for the life of the forest.
+  openingWoodSearchRadius: 180,
+  openingWoodClusterRadius: 40,
+  openingWoodApproachWeight: 0.35,
+  openingWoodDropWeight: 6,
+  openingWoodTreeCountWeight: 16,
+  openingStorehouseSecondStorehouseGraceSeconds: 45,
   // IT14.64 housing is production-critical: an unfounded House cannot monopolize the
   // one-house task slot indefinitely.
   houseAwaitingFoundationRetrySeconds: 10,

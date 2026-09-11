@@ -1,0 +1,787 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Wuzzy, 2015-2018
+# d00eb365ebaf2be82942fe248b3f88f3, 2015
+# Daniel Roschka, 2024-2025
+# d00eb365ebaf2be82942fe248b3f88f3, 2015
+# xtother90, 2018-2022
+# Maximilian Wagenbach, 2016
+# Heraklit of Ephesos, 2021
+# Jakob Raidt, 2019
+# ... ..., 2017
+# Latein Lebt, 2020-2021,2023
+# leper, 2014-2016
+# Luksoft, 2017
+# nautilusx, 2016
+# Martin H, 2020
+# Martin Schilliger, 2016
+# M C, 2019
+# nautilusx, 2016
+# Pascal Lee, 2020
+# Raymond Vetter, 2014-2019
+# RedNicStone, 2021
+# Stanislas Dolcini, 2021
+# TheTrueBrot, 2019
+# xtother90, 2015-2017
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-06-16 00:22+0000\n"
+"PO-Revision-Date: 2014-06-19 17:51+0000\n"
+"Last-Translator: Daniel Roschka, 2024-2025\n"
+"Language-Team: German (http://app.transifex.com/wildfire-games/0ad/language/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gui/manual/intro.txt:1
+msgid "[font=\"sans-bold-18\"]0 A.D. in-game manual[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-18\"]0 A.D. Spielhandbuch[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:2
+msgid ""
+"Thank you for installing 0 A.D.! This page will give a brief overview of the"
+" features available in this incomplete, under-development, alpha version of "
+"the game."
+msgstr "Vielen Dank für die Installation von 0 A.D.! Diese Seite gibt dir einen kurzen Überblick der Funktionen, die in dieser unvollständigen, sich in der Entwicklung befindlichen Alphaversion des Spiels verfügbar sind."
+
+#: gui/manual/intro.txt:4
+msgid "[font=\"sans-bold-16\"]Graphics settings[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Grafikeinstellungen[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:5
+msgid ""
+"You can switch between fullscreen and windowed mode by pressing Alt + Enter."
+" In windowed mode, you can resize the window. If the game runs too slowly, "
+"you can change some settings in the options window: try disabling the “High-"
+"quality water effects” and “Shadows” options."
+msgstr "Mit Alt + Eingabe kannst du zwischen Vollbild- und Fenstermodus wechseln. Im Fenstermodus kannst du die Größe des Fensters ändern. Wenn das Spiel zu langsam läuft, kannst du ein paar Einstellungen im Konfigurationsmenü ändern: Versuche zuerst, die Optionen „Hochwertige Wassereffekte“ und „Schatten“ zu deaktivieren."
+
+#: gui/manual/intro.txt:7
+msgid "[font=\"sans-bold-16\"]Playing the game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Das Spiel spielen[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:8
+msgid ""
+"The controls and gameplay should be familiar to players of traditional real-"
+"time strategy (RTS) games. There are currently a lot of missing features and"
+" poorly-balanced stats – you will probably have to wait until a beta release"
+" for it to work well."
+msgstr "Die Steuerung und der Spielablauf sollten Spielern von traditionellen Echtzeitstrategiespielen vertraut sein. Es fehlen aktuell noch viele Funktionen und manche Werte sind schlecht ausbalanciert – bis es gut läuft, musst du wahrscheinlich auf eine Beta-Version warten."
+
+#: gui/manual/intro.txt:10
+msgid "Basic controls (by default):"
+msgstr "Grundlegende Steuerung (Standard):"
+
+#: gui/manual/intro.txt:11
+msgid "• Left-click to select units"
+msgstr "• Klicke mit links, um Einheiten auszuwählen"
+
+#: gui/manual/intro.txt:12
+msgid "• Left-click-and-drag to select groups of units"
+msgstr "• Klicke mit links und ziehe die Maus, um Gruppen von Einheiten auszuwählen"
+
+#: gui/manual/intro.txt:13
+msgid "• Right-click to order units to the target"
+msgstr "• Klicke mit rechts, um die Einheiten zum Ziel zu bewegen"
+
+#: gui/manual/intro.txt:14
+msgid "• Arrow keys or WASD keys to move the camera"
+msgstr "• Pfeil- oder WASD-Tasten, um die Kamera zu bewegen"
+
+#: gui/manual/intro.txt:15
+msgid "• Ctrl + arrow keys, or shift + mouse wheel, to rotate the camera"
+msgstr "• Strg + Pfeiltasten oder Umschalt + Mausrad, um die Kamera zu drehen"
+
+#: gui/manual/intro.txt:16
+msgid ""
+"• Mouse wheel, or “hotkey.camera.zoom.in” and “hotkey.camera.zoom.out” keys,"
+" to zoom"
+msgstr "• Mausrad oder „hotkey.camera.zoom.in“ und „hotkey.camera.zoom.out“ Tasten, um zu zoomen"
+
+#: gui/manual/intro.txt:18
+msgid "[font=\"sans-bold-16\"]Modes[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Modi[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:19
+msgid "The main menu gives access to two game modes:"
+msgstr "Das Hauptmenü bietet Zugriff auf zwei Spielmodi:"
+
+#: gui/manual/intro.txt:20
+msgid ""
+"• [font=\"sans-bold-14\"]Single-player[font=\"sans-14\"] – Play a sandbox "
+"game or against one or more computer players (AI). The default AI (Petra) is"
+" under development and may not always be up to date on the new features, but"
+" you can play the game with or against it nonetheless."
+msgstr "• [font=\"sans-bold-14\"]Einzelspieler[font=\"sans-14\"] – Spiele im Sandkastenmodus gegen einen oder mehrere Computerspieler (KI). Die Standard-KI (Petra) ist in Entwicklung und möglicherweise nicht immer auf dem aktuellen Stand, aber man kann trotzdem mit ihr oder ohne sie das Spiel spielen."
+
+#: gui/manual/intro.txt:21
+msgid ""
+"• [font=\"sans-bold-14\"]Multiplayer[font=\"sans-14\"] – Play against human "
+"opponents over the internet."
+msgstr "• [font=\"sans-bold-14\"]Mehrspieler[font=\"sans-14\"] – Spiele gegen andere Spieler über das Internet."
+
+#: gui/manual/intro.txt:23
+msgid ""
+"To set up a multiplayer game, one player must select the “Host game” option."
+" The game uses UDP port 20595, so the host must configure their "
+"NAT/firewall/etc. to allow this. Other players can then select “Join game” "
+"and enter the host's IP address."
+msgstr "Um eine Mehrspielerpartie zu erstellen, muss ein Spieler die „Spiel erstellen“-Option auswählen. Es wird der UDP-Port 20595 verwendet, das heißt die Firewall/NAT/etc. muss so konfiguriert werden, dass dieser für die Mitspieler erreichbar ist. Andere Spieler können dann „Spiel beitreten“ auswählen und die IP-Adresse des Hosts eingeben."
+
+#: gui/manual/intro.txt:25
+msgid "[font=\"sans-bold-16\"]Game setup[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Spieleinrichtung[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:26
+msgid "In a multiplayer game, only the host can alter the game setup options."
+msgstr "In einer Mehrspielerpartie kann nur der Host die Spieleinstellungen ändern."
+
+#: gui/manual/intro.txt:28
+msgid "First, select what type of map you want to play:"
+msgstr "Wähle zunächst, welchen Kartentyp du spielen möchtest:"
+
+#: gui/manual/intro.txt:29
+msgid ""
+"• [font=\"sans-bold-14\"]Random map[font=\"sans-14\"] – A map created "
+"automatically from a script"
+msgstr "• [font=\"sans-bold-14\"]Zufallskarte[font=\"sans-14\"] – eine Karte, die automatisch durch ein Skript erstellt wurde"
+
+#: gui/manual/intro.txt:30
+msgid ""
+"• [font=\"sans-bold-14\"]Scenario map[font=\"sans-14\"] – A map created by "
+"map designers and with fixed civilizations"
+msgstr "• [font=\"sans-bold-14\"]Szenarienkarte[font=\"sans-14\"] – Eine von Kartendesignern erstellte Karte mit vorgegebenen Zivilisationen"
+
+#: gui/manual/intro.txt:31
+msgid ""
+"• [font=\"sans-bold-14\"]Skirmish map[font=\"sans-14\"] – A map created by "
+"map designers but where the civilizations can be chosen"
+msgstr "• [font=\"sans-bold-14\"]Scharmützel[font=\"sans-14\"] – Eine von Kartendesignern erstellte Karte mit wählbaren Zivilisationen"
+
+#: gui/manual/intro.txt:33
+msgid ""
+"Then the maps can be further filtered. The default maps are generally "
+"playable maps. Naval maps are maps where not all opponents can be reached "
+"over land and demo maps are maps used for testing purposes (generally not "
+"useful to play on). The “All Maps” filter shows all maps together in one "
+"list."
+msgstr "Ferner können die Karten weiter gefiltert werden. Die Standardkarten sind grundsätzlich spielbare Karten. Seekarten sind Karten, bei denen nicht alle Gegner über Landwege erreicht werden können und Demokarten sind Karten, die für Testzwecke benutzt werden (meist zum Spielen ungeeignet). Der Filter „Alle Karten“ zeigt alle Karten auf einmal in einer Liste an."
+
+#: gui/manual/intro.txt:35
+msgid ""
+"Finally change the settings. For random maps this includes the number of "
+"players, the size of a map, etc. For scenarios you can only select who "
+"controls which player (decides where you start on the map etc.). The options"
+" are either a human player, an AI or no player at all (the opponent will "
+"just be idle)."
+msgstr "Ändere zum Schluss die Einstellungen. Für Zufallskarten beinhaltet das die Spieler Anzahl, die Kartengröße etc.. Für Szenarios kannst du lediglich auswählen, wer welchen Spieler kontrolliert (das entscheidet wo man auf der Karte beginnt etc.). Optionen sind entweder ein menschlicher Spieler, eine KI oder überhaupt kein Spieler (der Gegner ist einfach inaktiv)."
+
+#: gui/manual/intro.txt:37
+msgid "When you are ready to start, click the “Start game” button."
+msgstr "Wenn du bereit bist, klicke auf „Spiel starten“."
+
+#: gui/manual/intro.txt:39
+msgid "[font=\"sans-bold-16\"]Hotkeys[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Tastaturbelegung[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:40
+msgid ""
+"You may change hotkeys in [font=\"sans-bold-14\"]Options > "
+"Hotkeys[font=\"sans-14\"] to suit your liking."
+msgstr "Du kannst die Tastaturbelegung unter [font=\"sans-bold-14\"]Einstellungen > Tastaturkürzel[font=\"sans-14\"] nach deinen Wünschen ändern."
+
+#: gui/manual/intro.txt:42
+msgid "[font=\"sans-bold-14\"]Program-wide[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Programmweit[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:43
+msgid ""
+"  hotkey.exit – Immediately close the game, without asking for confirmation"
+msgstr "  hotkey.exit – Das Spiel unverzüglich beenden, ohne nach einer Bestätigung zu fragen"
+
+#: gui/manual/intro.txt:44
+msgid "  hotkey.togglefullscreen – Toggle between fullscreen and windowed"
+msgstr "  hotkey.togglefullscreen – Umschalten zwischen Vollbild und Fenstermodus"
+
+#: gui/manual/intro.txt:45
+msgid "  hotkey.console.toggle – Toggle console"
+msgstr "  hotkey.console.toggle – Konsole umschalten"
+
+#: gui/manual/intro.txt:46
+msgid "  hotkey.fps.toggle – Toggle frame counter (FPS)"
+msgstr "  hotkey.fps.toggle – Bildratenanzeige (FPS) umschalten"
+
+#: gui/manual/intro.txt:47
+msgid ""
+"  hotkey.profile.toggle – Toggle real-time profiler (cycles through the "
+"displays of information)"
+msgstr "  hotkey.profile.toggle – Echtzeit-Profiler umschalten (wechselt durch die Informationsanzeigen)"
+
+#: gui/manual/intro.txt:48
+msgid ""
+"  hotkey.profile.save – Save current profiler data to “logs/profile.txt”"
+msgstr "  hotkey.profile.save – Aktuelle Profiler-Daten unter „logs/profile.txt“ abspeichern"
+
+#: gui/manual/intro.txt:49
+msgid ""
+"  hotkey.screenshot – Take screenshot (in .png format, location is displayed"
+" in the top left of the GUI after the file has been saved, and can also be "
+"seen in the console/logs if you miss it there)"
+msgstr "  hotkey.screenshot – Screenshot machen (im .png-Format, der Speicherort wird oben links angezeigt, nachdem die Datei gespeichert wurde, und kann auch unter console/logs nachgeschaut werden, wenn du es verpasst)"
+
+#: gui/manual/intro.txt:50
+msgid ""
+"  hotkey.bigscreenshot – Take huge screenshot (6400×4800 pixels, in .bmp "
+"format, location is displayed in the top left of the GUI after the file has "
+"been saved, and can also be seen in the console/logs if you miss it there)"
+msgstr "  hotkey.bigscreenshot – Großen Screenshot machen (6400 × 4800 Pixel im .bmp-Format, der Speicherort wird oben links angezeigt, nachdem die Datei gespeichert wurde, und kann auch unter console/logs nachgeschaut werden, wenn du es verpasst)"
+
+#: gui/manual/intro.txt:51
+msgid "  hotkey.tab.next – Switch to the next tab"
+msgstr "  hotkey.tab.next – Zum nächsten Tab wechseln"
+
+#: gui/manual/intro.txt:52
+msgid "  hotkey.tab.prev – Switch to the previous tab"
+msgstr "  hotkey.tab.prev – Zum vorherigen Tab wechseln"
+
+#: gui/manual/intro.txt:53
+msgid "  hotkey.item.next – Switch to the next item of a list"
+msgstr "  hotkey.item.next – Zum nächsten Eintrag einer Liste wechseln"
+
+#: gui/manual/intro.txt:54
+msgid "  hotkey.item.prev – Switch to the previous item of a list"
+msgstr " hotkey.item.prev – Zum vorherigen Eintrag einer Liste wechseln"
+
+#: gui/manual/intro.txt:56
+msgid "[font=\"sans-bold-14\"]In Game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Im Spiel[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:57
+msgid ""
+"  Double Left Click \\[on unit] – Select all of your units of the same kind "
+"on the screen (even if they're different ranks)"
+msgstr "  Doppelter Linksklick \\[auf eine Einheit] – Alle deine Einheiten dieses Typs auf dem Bildschirm auswählen (selbst wenn sie unterschiedliche Ränge haben)"
+
+#: gui/manual/intro.txt:58
+msgid ""
+"  Triple Left Click \\[on unit] – Select all of your units of the same kind "
+"and the same rank on the screen"
+msgstr "  Dreifacher Linksklick \\[auf eine Einheit] – Alle deine Einheiten mit dem gleichen Typ und Rang auf dem Bildschirm auswählen"
+
+#: gui/manual/intro.txt:59
+msgid ""
+"  Alt + Double Left Click \\[on unit] – Select all your units of the same "
+"kind on the entire map (even if they have different ranks)"
+msgstr "  Alt + Doppelklick \\[auf eine Einheit] – Alle deine Einheiten desselben Typs auf der gesamten Karte auswählen (auch mit unterschiedlichen Rängen)"
+
+#: gui/manual/intro.txt:60
+msgid ""
+"  Alt + Triple Left Click \\[on unit] – Select all your units of the same "
+"kind and rank on the entire map"
+msgstr "  Alt + Dreifacher Linksklick \\[auf eine Einheit] – Alle deine Einheiten mit dem gleichen Typ und Rang auf der gesamten Karte auswählen"
+
+#: gui/manual/intro.txt:61
+msgid "  hotkey.quicksave – Quicksave"
+msgstr "  hotkey.quicksave – Schnellspeichern"
+
+#: gui/manual/intro.txt:62
+msgid "  hotkey.quickload – Quickload"
+msgstr "  hotkey.quickload – Schnelladen"
+
+#: gui/manual/intro.txt:63
+msgid "  hotkey.session.gui.menu.toggle – Toggle menu"
+msgstr "  hotkey.session.gui.menu.toggle – Spielmenü umschalten"
+
+#: gui/manual/intro.txt:64
+msgid "  hotkey.timeelapsedcounter.toggle – Toggle time elapsed counter"
+msgstr "hotkey.timeelapsedcounter.toggle – Vergangene Spielzeit umschalten"
+
+#: gui/manual/intro.txt:65
+msgid "  hotkey.cancel – Close all dialogs (chat, menu)"
+msgstr "  hotkey.cancel – Alle Dialoge (Chat, Menü) schließen"
+
+#: gui/manual/intro.txt:66
+msgid "  hotkey.confirm – Open chat or send message"
+msgstr "  hotkey.confirm – Chat öffnen oder Nachricht senden"
+
+#: gui/manual/intro.txt:67
+msgid "  hotkey.teamchat – Send team chat"
+msgstr "  hotkey.teamchat – Team-Chat senden"
+
+#: gui/manual/intro.txt:68
+msgid ""
+"  hotkey.privatechat – Chat with the previously selected private chat "
+"partner"
+msgstr "  hotkey.privatechat – Mit dem zuvor gewählten privaten Chatpartner chatten"
+
+#: gui/manual/intro.txt:69
+msgid "  hotkey.pause – Pause or resume the game"
+msgstr "  hotkey.pause – Pausieren oder Spiel fortsetzen"
+
+#: gui/manual/intro.txt:70
+msgid ""
+"  hotkey.session.kill – Delete currently selected unit(s)/structure(s), ask "
+"for confirmation"
+msgstr "  hotkey.session.kill – Ausgewählte Einheit(en)/Gebäude löschen, um Bestätigung fragen"
+
+#: gui/manual/intro.txt:71
+msgid ""
+"    • With hotkey.session.noconfirmation – Immediately delete currently "
+"selected unit(s)/structure(s), without asking for confirmation"
+msgstr "    • With hotkey.session.noconfirmation – Ausgewählte Einheit(en)/Gebäude sofort und ohne weitere Bestätigung löschen"
+
+#: gui/manual/intro.txt:72
+msgid ""
+"  hotkey.selection.add – Modifier – add to selection (works with clicking "
+"and hotkeys, e.g. the idle hotkeys)"
+msgstr "  hotkey.selection.add – Modifikator – zur Auswahl hinzufügen (funktioniert mit Klicks und Hotkeys, z.B. den Tasten für untätige Einheiten)"
+
+#: gui/manual/intro.txt:73
+msgid ""
+"  hotkey.selection.remove – Modifier – remove from selection (works with "
+"clicking and hotkeys, e.g. the idle hotkeys)"
+msgstr "  hotkey.selection.remove – hotkey.selection.add – Modifikator – von der Auswahl entfernen (funktioniert mit Klicks und Hotkeys, z.B. den Tasten für untätige Einheiten)"
+
+#: gui/manual/intro.txt:74
+msgid ""
+"  hotkey.selection.offscreen – Modifier – add all units, including offscreen"
+" units, to selection"
+msgstr "  hotkey.selection.offscreen – Modifikator – alle Einheiten der Auswahl hinzufügen, auch die, die gerade nicht im Bild sind."
+
+#: gui/manual/intro.txt:75
+msgid ""
+"  hotkey.selection.cancel – Unselect all units, cancel building placement"
+msgstr "  hotkey.selection.cancel – Alle Einheiten abwählen, Gebäudeplatzierung abbrechen."
+
+#: gui/manual/intro.txt:76
+msgid "  hotkey.selection.idlebuilder – Select idle builder"
+msgstr "  hotkey.selection.idlebuilder – Untätigen Bauarbeiter auswählen"
+
+#: gui/manual/intro.txt:77
+msgid "  hotkey.selection.idlewarrior – Select idle fighter"
+msgstr "  hotkey.selection.idlewarrior – Untätigen Kämpfer auswählen"
+
+#: gui/manual/intro.txt:78
+msgid ""
+"  hotkey.selection.idleworker – Select idle worker (including citizen-"
+"soldiers)"
+msgstr "  hotkey.selection.idleworker – Untätigen Arbeiter (einschließlich Bürgersoldaten) auswählen"
+
+#: gui/manual/intro.txt:79
+msgid "  hotkey.selection.idleunit – Select idle unit"
+msgstr "  hotkey.selection.idleunit – Untätige Einheit auswählen"
+
+#: gui/manual/intro.txt:80
+msgid "  hotkey.session.stop – Stop (halt) the currently selected units"
+msgstr "  hotkey.session.stop – Die derzeit ausgewählten Einheiten anhalten"
+
+#: gui/manual/intro.txt:81
+msgid "  hotkey.session.backtowork – The unit will go back to work"
+msgstr "  hotkey.session.backtowork – Diese Einheit wird die Arbeit wieder aufnehmen"
+
+#: gui/manual/intro.txt:82
+msgid ""
+"  hotkey.session.unload – Unload the garrisoned units of the selected "
+"structure(s)"
+msgstr "  hotkey.session.unload – Alle Einheiten aus dem gewählten Gebäude ausquartieren"
+
+#: gui/manual/intro.txt:83
+msgid ""
+"  hotkey.selection.group.save.1 – Create control group 1 (by default, "
+"respectively 2,3, ...) from the selected unit(s)/structure(s)"
+msgstr "  hotkey.selection.group.save.1 – Erstelle Kontrollgruppe 1 (standardmäßig, bzw. 2, 3...) aus den ausgewählten Einheit(en)/Gebäud(en)"
+
+#: gui/manual/intro.txt:84
+msgid ""
+"  hotkey.selection.group.select.1 – Select the unit(s)/structure(s) in "
+"control group 1"
+msgstr "  hotkey.selection.group.select.1 – Die Einheiten/Gebäude aus Kontrollgruppe 1 auswählen"
+
+#: gui/manual/intro.txt:85
+msgid ""
+"  hotkey.selection.group.add.1 – Add control group 1 (to 0) to the selected "
+"unit(s)/structure(s)"
+msgstr "  hotkey.selection.group.add.1 – Kontrollgruppe 1 (bis 0) zu den ansgewählten Einheiten/Gebäude hinzufügen"
+
+#: gui/manual/intro.txt:86
+msgid ""
+"  hotkey.camera.jump.set.1 – Mark the current camera position, for jumping "
+"back to later (by default, there are 4 possible positions)"
+msgstr "  hotkey.camera.jump.set.1 – Speichere die aktuelle Kameraposition, um später wieder hinzuspringen (es gibt standardmäßig 4 mögliche Positionen)"
+
+#: gui/manual/intro.txt:87
+msgid ""
+"  hotkey.camera.jump.1 – Move the camera to a marked position. Jump back to "
+"the last location if the camera is already over the marked position"
+msgstr "  hotkey.camera.jump.1 – Die Kamera zu einer gespeicherten Position bewegen. Zurückspringen, falls die Kamera bereits auf dieser Position ist"
+
+#: gui/manual/intro.txt:88
+msgid ""
+"  hotkey.session.queueunit.1, hotkey.session.queueunit.2, "
+"hotkey.session.queueunit.3, hotkey.session.queueunit.4, "
+"hotkey.session.queueunit.5, hotkey.session.queueunit.6, "
+"hotkey.session.queueunit.7 – With training structure selected. Add the 1st, "
+"2nd, … unit shown to the training queue for all the selected structures"
+msgstr "  hotkey.session.queueunit.1, hotkey.session.queueunit.2, hotkey.session.queueunit.3, hotkey.session.queueunit.4, hotkey.session.queueunit.5, hotkey.session.queueunit.6, hotkey.session.queueunit.7 – Wenn ein Ausbildungsgebäude ausgewählt ist. Füge die erste, zweite … angezeigte Einheit für alle ausgewählten Gebäude der Warteschlange hinzu"
+
+#: gui/manual/intro.txt:89
+msgid ""
+"  hotkey.session.highlightguarded with unit(s) selected – Highlight the "
+"unit(s)/structure(s) guarded by the selection"
+msgstr "  hotkey.session.highlightguarded mit ausgewählten Einheiten – Einheit(en)/Gebäude hervorheben, die von der Auswahl bewacht werden"
+
+#: gui/manual/intro.txt:90
+msgid ""
+"  hotkey.session.highlightguarding with unit(s)/structure(s) selected – "
+"Highlight the unit(s) guarding the selection"
+msgstr "  hotkey.session.highlightguarding mit ausgewählten Einheit(en)/Gebäud(en) – Einheit(en) hervorheben, die die Auswahl bewachen"
+
+#: gui/manual/intro.txt:91
+msgid ""
+"  highlightguarding.showstatusbars – See all status bars (which would also "
+"show the building progress)"
+msgstr "  highlightguarding.showstatusbars – Alle Statusleisten anzeigen (inklusive Baufortschritt)"
+
+#: gui/manual/intro.txt:92
+msgid "  hotkey.summary – Toggle summary window"
+msgstr "  hotkey.summary – Übersichtsfenster umschalten"
+
+#: gui/manual/intro.txt:93
+msgid "  hotkey.lobby – Show the multiplayer lobby in a dialog window"
+msgstr "  hotkey.lobby – Mehrspieler-Lobby in einem Dialogfenster zeigen"
+
+#: gui/manual/intro.txt:94
+msgid "  hotkey.session.gui.diplomacy.toggle – Toggle in-game diplomacy panel"
+msgstr "  hotkey.session.gui.diplomacy.toggle – Diplomatiefenster im Spiel umschalten"
+
+#: gui/manual/intro.txt:95
+msgid ""
+"  hotkey.session.gui.barter.toggle – Toggle in-game barter and trade panel"
+msgstr "  hotkey.session.gui.barter.toggle – Tausch- und Handelsfenster im Spiel umschalten"
+
+#: gui/manual/intro.txt:96
+msgid ""
+"  hotkey.session.gui.matchsettings.toggle – Toggle in-game match settings "
+"panel"
+msgstr "  hotkey.session.gui.matchsettings.toggle – Partieeinstellungen im Spiel umschalten"
+
+#: gui/manual/intro.txt:97
+msgid "  hotkey.session.gui.tutorial.toggle – Toggle in-game tutorial panel"
+msgstr "  hotkey.session.gui.tutorial.toggle – Anleitungsfenster im Spiel umschalten"
+
+#: gui/manual/intro.txt:98
+msgid "  hotkey.structree – Toggle structure tree panel"
+msgstr "  hotkey.structree – Gebäudebaum-Bildschirm umschalten"
+
+#: gui/manual/intro.txt:99
+msgid "  hotkey.civinfo – Toggle civilization info panel"
+msgstr "  hotkey.civinfo – Zivilisations-Infopanel umschalten"
+
+#: gui/manual/intro.txt:101
+msgid "[font=\"sans-bold-14\"]Modify mouse action[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Mausaktionen modifizieren[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:102
+msgid "  hotkey.session.garrison + Right Click on structure – Garrison"
+msgstr "  hotkey.session.garrison + Rechtsklick auf Gebäude – Einquartieren"
+
+#: gui/manual/intro.txt:103
+msgid "  hotkey.session.repair + Right Click on structure – Repair"
+msgstr "  hotkey.session.repair + Rechtsklick auf Gebäude – Reparieren"
+
+#: gui/manual/intro.txt:104
+msgid "  hotkey.session.patrol + Right Click – Patrol"
+msgstr "  hotkey.session.patrol + Rechtsklick – Patrouillieren"
+
+#: gui/manual/intro.txt:105
+msgid ""
+"  hotkey.session.queue + Right Click – Queue the move/build/gather/etc. "
+"order"
+msgstr "  hotkey.session.queue + Rechtsklick – Den Bewegungs-/Bau-/Sammel-/etc. Befehl in die Warteschlange setzen"
+
+#: gui/manual/intro.txt:106
+msgid ""
+"  hotkey.session.pushorderfront + Right Click – Modifier to push any order "
+"in front of the order queue"
+msgstr "hotkey.session.pushorderfront + Rechts-Klick – Modifikator zum Voranstellen eines jeglichen Auftrags in der Reihe der Aufträge"
+
+#: gui/manual/intro.txt:107
+msgid ""
+"  hotkey.session.orderone + Right Click – Order one unit from the current "
+"selection to move/build/gather/etc. and unselect it. Used to quickly "
+"dispatch units with specific tasks"
+msgstr "  hotkey.session.orderone + Rechtsklick – Einer Einheit aus der momentanen Auswahl einen Befehl (Bewegen/Bauen/Sammeln/etc.) erteilen und sie abwählen. Wird benutzt, um Einheiten schnell spezifische Aufgaben zuzuweisen"
+
+#: gui/manual/intro.txt:108
+msgid ""
+"  hotkey.session.batchtrain + Left Click when training units – Add units in "
+"batches (the batch size is 5 by default and can be changed in the options)"
+msgstr "  hotkey.session.batchtrain + Linksklick bei Ausbildung von Einheiten – Einheiten in Gruppen hinzufügen (die Gruppengröße ist standardmäßig 5 und kann in den Einstellungen geändert werden)"
+
+#: gui/manual/intro.txt:109
+msgid ""
+"  hotkey.selection.add + Left Click or Left Drag over unit on map – Add unit"
+" to selection"
+msgstr "  hotkey.selection.add + Linksklick oder Linksziehen über Einheit auf Karte – Einheiten zur Auswahl hinzufügen"
+
+#: gui/manual/intro.txt:110
+msgid ""
+"  hotkey.selection.remove + Left Click or Left Drag over unit on map – "
+"Remove unit from selection"
+msgstr "  hotkey.selection.remove + Linksklick oder Linksziehen über Einheit auf Karte – Einheit von Auswahl entfernen"
+
+#: gui/manual/intro.txt:111
+msgid ""
+"  hotkey.selection.militaryonly + Left Drag over units on map – Only select "
+"military units"
+msgstr "  hotkey.selection.militaryonly + Linksziehen über Einheiten auf der Karte – Nur militärische Einheiten auswählen"
+
+#: gui/manual/intro.txt:112
+msgid ""
+"  hotkey.selection.nonmilitaryonly + Left Drag over units on map – Only "
+"select non-military units"
+msgstr "  hotkey.selection.nonmilitaryonly + Linksziehen über Einheiten auf der Karte – Nur nichtmilitärische Einheiten auswählen"
+
+#: gui/manual/intro.txt:113
+msgid ""
+"  hotkey.selection.idleonly + Left Drag over units on map – Only select idle"
+" units"
+msgstr "  hotkey.selection.idleonly + Linksziehen über Einheiten auf der Karte – Nur inaktive Einheiten auswählen"
+
+#: gui/manual/intro.txt:114
+msgid ""
+"  hotkey.selection.woundedonly + Left Drag over units on map – Only select "
+"wounded units"
+msgstr "  hotkey.selection.woundedonly + Linksziehen über Einheiten auf der Karte – Nur verwundete Einheiten auswählen"
+
+#: gui/manual/intro.txt:115
+msgid ""
+"  hotkey.selection.singleselection – Modifier to select units individually, "
+"opposed to per formation."
+msgstr "hotkey.selection.singleselection – Modifikator zum individuellen Auswählen von Einheiten, im Gegensatz zur Formation."
+
+#: gui/manual/intro.txt:116
+msgid ""
+"  Right Click with a structure(s) selected – Set a rally point for units "
+"created/ungarrisoned from that structure"
+msgstr "  Rechtsklick mit ausgewählte(n) Gebäude(n) – Einen Sammelpunkt für erstellte/ausquartierte Einheiten aus diesem Gebäude setzen"
+
+#: gui/manual/intro.txt:117
+msgid ""
+"  hotkey.session.garrison + Right Click with unit(s) selected – Garrison (If"
+" the cursor is over an own or allied structure)"
+msgstr "  hotkey.session.garrison + Rechtsklick mit ausgewählten Einheit(en) – Einquartieren (Falls der Mauszeiger über einem eigenen oder verbündeten Gebäude ist)"
+
+#: gui/manual/intro.txt:118
+msgid ""
+"  hotkey.session.attack + Right Click with unit(s) selected – Attack "
+"(instead of another action)"
+msgstr "  hotkey.session.attack + Rechtsklick mit ausgewählten Einheit(en) – Angriffsmanöver (statt anderer Aktion)"
+
+#: gui/manual/intro.txt:119
+msgid ""
+"  hotkey.session.attackmove + Right Click with unit(s) selected – Attack "
+"move (by default all enemy units and structures along the way are targeted)"
+msgstr "  hotkey.session.attackmove + Rechtsklick mit ausgewählten Einheit(en) – Angriffsmanöver (standardmäßig werden alle gegnerischen Einheiten und Gebäude auf dem Weg angegriffen)"
+
+#: gui/manual/intro.txt:120
+msgid ""
+"  hotkey.session.attackmoveUnit + Right Click with unit(s) selected – Attack"
+" move, only units along the way are targeted"
+msgstr "  hotkey.session.attackmoveUnit + Rechtsklick mit ausgewählten Einheit(en) – Angriffsmanöver, nur Einheiten auf dem Weg werden anvisiert"
+
+#: gui/manual/intro.txt:121
+msgid ""
+"  hotkey.session.capture + Right Click with unit(s) selected – Capture "
+"(instead of another action)"
+msgstr "  hotkey.session.capture + Rechtsklick mit ausgewählten Einheit(en) – Erobern (statt anderer Aktion)"
+
+#: gui/manual/intro.txt:122
+msgid ""
+"  hotkey.session.snaptoedges + Mouse Move near structures – Align the new "
+"structure with an existing nearby structure"
+msgstr "  hotkey.session.snaptoedges + Maus nahe an Gebäuden – Neues Gebäude an einem bestehenden nahen Gebäude ausrichten"
+
+#: gui/manual/intro.txt:123
+msgid "  hotkey.session.flare + Right Click – Send a flare to your allies"
+msgstr "  hotkey.session.flare + Rechtsklick – Sende ein Signal an deine Verbündeten"
+
+#: gui/manual/intro.txt:125
+msgid "[font=\"sans-bold-14\"]Overlays[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Overlays[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:126
+msgid "  hotkey.session.gui.toggle – Toggle the GUI"
+msgstr "  hotkey.session.gui.toggle – GUI umschalten"
+
+#: gui/manual/intro.txt:127
+msgid ""
+"  hotkey.session.devcommands.toggle – Toggle developer overlay (with "
+"developer options)"
+msgstr "  hotkey.session.devcommands.toggle – Entwickler-Overlay umschalten (mit Entwickleroptionen)"
+
+#: gui/manual/intro.txt:128
+msgid ""
+"  hotkey.wireframe – Toggle wireframe mode (press once to get wireframes "
+"overlaid over the textured models, twice to get just the wireframes colored "
+"by the textures, thrice to get back to normal textured mode)"
+msgstr "  hotkey.wireframe – Drahtgittermodelle (wireframe) umschalten (einmal drücken, um Drahtgitter über die Texturen zu legen, ein weiteres Mal, um nur mit Texturen eingefärbte Drahtgitter zu bekommen, und ein drittes Mal, um in den normalen texturierten Modus zu wechseln)"
+
+#: gui/manual/intro.txt:129
+msgid ""
+"  hotkey.silhouettes – Toggle unit silhouettes (might give a small "
+"performance boost)"
+msgstr "  hotkey.silhouettes – Umrisse von Einheiten ein-/ausschalten (kann einen leichten Performancegewinn bringen)"
+
+#: gui/manual/intro.txt:130
+msgid "  hotkey.session.diplomacycolors – Toggle diplomacy colors"
+msgstr "  hotkey.session.diplomacycolors – Diplomatiefarben umschalten"
+
+#: gui/manual/intro.txt:131
+msgid ""
+"  hotkey.session.toggleattackrange – Toggle attack range visualizations of "
+"selected units and structures"
+msgstr "  hotkey.session.toggleattackrange – Aurareichweitenvisualisierungen der gewählten Einheiten und Gebäude umschalten"
+
+#: gui/manual/intro.txt:132
+msgid ""
+"  hotkey.session.toggleaurasrange – Toggle aura range visualizations of "
+"selected units and structures"
+msgstr "  hotkey.session.toggleaurasrange – Aurareichweitenvisualisierungen der gewählten Einheiten und Gebäude umschalten"
+
+#: gui/manual/intro.txt:133
+msgid ""
+"  hotkey.session.togglehealrange – Toggle heal range visualizations of "
+"selected units"
+msgstr "  hotkey.session.togglehealrange – Heilungsradiusvisualisierungen der gewählten Einheiten umschalten"
+
+#: gui/manual/intro.txt:135
+msgid "[font=\"sans-bold-14\"]Camera manipulation[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Kameramanipulation[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:136
+msgid "  hotkey.camera.up – Pan screen up"
+msgstr "  hotkey.camera.up – Kamera nach oben bewegen"
+
+#: gui/manual/intro.txt:137
+msgid "  hotkey.camera.down – Pan screen down"
+msgstr "  hotkey.camera.down – Kamera nach unten bewegen"
+
+#: gui/manual/intro.txt:138
+msgid "  hotkey.camera.left – Pan screen left"
+msgstr "  hotkey.camera.left – Kamera nach links bewegen"
+
+#: gui/manual/intro.txt:139
+msgid "  hotkey.camera.right – Pan screen right"
+msgstr "  hotkey.camera.right – Kamera nach rechts bewegen"
+
+#: gui/manual/intro.txt:140
+msgid "  hotkey.camera.rotate.up – Rotate camera to look upward"
+msgstr "  hotkey.camera.rotate.up – Kamera nach oben schwenken"
+
+#: gui/manual/intro.txt:141
+msgid "  hotkey.camera.rotate.down – Rotate camera to look downward"
+msgstr "  hotkey.camera.rotate.down – Kamera nach unten schwenken"
+
+#: gui/manual/intro.txt:142
+msgid "  hotkey.camera.rotate.cw – Rotate camera clockwise around terrain"
+msgstr "  hotkey.camera.rotate.cw – Kamera im Uhrzeigersinn um das Gelände drehen"
+
+#: gui/manual/intro.txt:143
+msgid ""
+"  hotkey.camera.rotate.ccw – Rotate camera counter-clockwise around terrain"
+msgstr "  hotkey.camera.rotate.ccw – Kamera gegen den Uhrzeigersinn um das Gelände drehen"
+
+#: gui/manual/intro.txt:144
+msgid ""
+"  hotkey.camera.rotate.wheel.cw – Rotate camera clockwise around terrain"
+msgstr "  hotkey.camera.rotate.wheel.cw – Kamera im Uhrzeigersinn um das Gelände drehen"
+
+#: gui/manual/intro.txt:145
+msgid ""
+"  hotkey.camera.rotate.wheel.ccw – Rotate camera counter-clockwise around "
+"terrain"
+msgstr "  hotkey.camera.rotate.cw – Kamera gegen den Uhrzeigersinn um das Gelände drehen"
+
+#: gui/manual/intro.txt:146
+msgid ""
+"  hotkey.camera.follow – Follow the selected unit (move the camera to stop "
+"following the unit)"
+msgstr "  hotkey.camera.follow – Gewählter Einheit folgen (Kamera bewegen, um der Einheit nicht mehr zu folgen)"
+
+#: gui/manual/intro.txt:147
+msgid "  hotkey.camera.reset – Reset camera zoom and orientation"
+msgstr "  hotkey.camera.reset – Kamerazoom und -ausrichtung zurücksetzen"
+
+#: gui/manual/intro.txt:148
+msgid ""
+"  hotkey.camera.zoom.in, hotkey.camera.zoom.wheel.in – Zoom in (keep pressed"
+" for continuous zoom)"
+msgstr "  hotkey.camera.zoom.in, hotkey.camera.zoom.wheel.in – Hereinzoomen (gedrückt halten zum durchgängigen Zoomen)"
+
+#: gui/manual/intro.txt:149
+msgid ""
+"  hotkey.camera.zoom.out, hotkey.camera.zoom.wheel.out – Zoom out (keep "
+"pressed for continuous zoom)"
+msgstr "  hotkey.camera.zoom.out, hotkey.camera.zoom.wheel.out – Herauszoomen (gedrückt halten zum Weiterzoomen)"
+
+#: gui/manual/intro.txt:150
+msgid "  hotkey.camera.pan – Keep pressed and move the mouse to pan"
+msgstr "  hotkey.camera.pan – Gedrückt halten und Maus bewegen, um Ansicht zu verschieben"
+
+#: gui/manual/intro.txt:152
+msgid "[font=\"sans-bold-14\"]During Structure Placement[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Während Gebäudeplatzierung[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:153
+msgid ""
+"  hotkey.session.rotate.ccw – Rotate structure 15 degrees counter-clockwise"
+msgstr "  hotkey.session.rotate.ccw – Gebäude um 15° gegen den Uhrzeigersinn drehen"
+
+#: gui/manual/intro.txt:154
+msgid "  hotkey.session.rotate.cw – Rotate structure 15 degrees clockwise"
+msgstr "  hotkey.session.rotate.ccw – Gebäude um 15° im Uhrzeigersinn drehen"
+
+#: gui/manual/intro.txt:155
+msgid ""
+"  Left Drag – Rotate structure using mouse (foundation will be placed on "
+"mouse release)"
+msgstr "  Linksziehen – Gebäude mit Maus drehen (Fundament wird beim Loslassen der Maus platziert)"
+
+#: gui/manual/intro.txt:157
+msgid "[font=\"sans-bold-14\"]When loading a saved game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Beim Laden eines Spielstand[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:158
+msgid "  hotkey.cancel – Cancel"
+msgstr "  hotkey.cancel – Abbrechen"
+
+#: gui/manual/intro.txt:159
+msgid ""
+"  hotkey.session.savedgames.delete – Delete the selected saved game, ask for"
+" confirmation"
+msgstr "  hotkey.session.savedgames.delete – Gewählten Spielstand löschen, nach Bestätigung fragen"
+
+#: gui/manual/intro.txt:160
+msgid ""
+"    • With hotkey.session.savedgames.noconfirmation – Don't ask for "
+"confirmation"
+msgstr "    • With hotkey.session.savedgames.noconfirmation – Ausgewählte Einheit(en)/Gebäude sofort und ohne weitere Bestätigung löschen"
+
+#: gui/manual/manual.xml:13
+msgid "Manual"
+msgstr "Handbuch"
+
+#: gui/manual/manual.xml:21
+msgid "Close"
+msgstr "Schließen"
+
+#: gui/manual/manual.xml:25
+msgid "View Online"
+msgstr "Online ansehen"

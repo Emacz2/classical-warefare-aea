@@ -1,0 +1,32 @@
+{
+  "TranslatedKeys": ["Name", "Description"],
+  "TranslationContext": "player placement",
+  "Data":
+	[
+	  {
+		"Id": "circle",
+		"Name": "Circle",
+		"Description": "Players are placed in a circle spanning the map."
+	  },
+	  {
+		"Id": "river",
+		"Name": "River",
+		"Description": "Allied players are placed on two parallel lines."
+	  },
+	  {
+		"Id": "groupedLines",
+		"Name": "Grouped Lines",
+		"Description": "Allied players are placed along opposing radial lines."
+	  },
+	  {
+		"Id": "randomGroup",
+		"Name": "Random Group",
+		"Description": "Allied players are grouped, but otherwise placed randomly on the map."
+	  },
+	  {
+		"Id": "stronghold",
+		"Name": "Stronghold",
+		"Description": "Allied players are tightly grouped together."
+	  }
+	]
+}

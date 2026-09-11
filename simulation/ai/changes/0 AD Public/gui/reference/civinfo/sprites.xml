@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<sprites>
+
+	<sprite name="bgInfoHeading">
+		<image backcolor="0 0 0 150"
+			size="0 0 100% 100%"
+		/>
+	</sprite>
+
+	<sprite name="bgInfoBox">
+		<image backcolor="50 35 0 100"
+			size="0 0 100% 100%"
+		/>
+	</sprite>
+
+	<sprite name="bgTooltipBox">
+		<image backcolor="0 0 0 200"
+			size="0 0 100% 100%"
+		/>
+		<image backcolor="white" size="0 0 100% 1"/>
+		<image backcolor="white" size="0 100%-1 100% 100%"/>
+		<image backcolor="white" size="0 0 1 100%"/>
+		<image backcolor="white" size="100%-1 0 100% 100%"/>
+	</sprite>
+
+</sprites>

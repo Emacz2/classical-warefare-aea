@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <float/>
+  <group>
+    <variant frequency="1" file="others/ships/kart_quinquereme_oars.xml" name="Carthaginian Quinquereme">
+      <mesh>structural/kart_ship_quinquereme.dae</mesh>
+      <props>
+        <prop actor="props/structures/carthaginians/ship_standard.xml" attachpoint="standard"/>
+        <prop actor="props/structures/carthaginians/quinquereme_main_sail.xml" attachpoint="main_sail"/>
+        <prop actor="props/units/weapons/rock.xml" attachpoint="projectile"/>
+      </props>
+      <textures>
+        <texture file="structural/kart_quinquereme.png" name="baseTex"/>
+        <texture file="structural/kart_quinquereme_spec.png" name="specTex"/>
+        <texture file="structural/kart_quinquereme_norm.png" name="normTex"/>
+        <texture file="structural/ao/kart_quinquereme.png" name="aoTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="100" file="others/ships/kart_quinquereme_shields_01.xml" name="Carthaginian Quinquereme Shields-01"/>
+    <variant frequency="100" file="others/ships/kart_quinquereme_shields_02.xml" name="Carthaginian Quinquereme Shields-02"/>
+    <variant frequency="100" file="others/ships/kart_quinquereme_shields_03.xml" name="Carthaginian Quinquereme Shields-03"/>
+  </group>
+  <material>player_trans_ao_parallax_spec.xml</material>
+</actor>

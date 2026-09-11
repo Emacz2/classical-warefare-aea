@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="Jagged">
+      <mesh>gaia/geo_stonemine_large.dae</mesh>
+      <textures>
+        <texture file="gaia/stone_temperate_01.png" name="baseTex"/>
+        <texture file="gaia/stone_temperate_01_norm.png" name="normTex"/>
+        <texture file="gaia/stone_temperate_01_spec.png" name="specTex"/>
+        <texture file="gaia/ao/geo_stonemine_large_ao.png" name="aoTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>no_trans_ao_parallax_spec.xml</material>
+</actor>

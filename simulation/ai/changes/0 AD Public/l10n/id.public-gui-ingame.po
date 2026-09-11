@@ -1,0 +1,1895 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Adhika Setya Pramudita, 2016
+# Andrii Puzan, 2013
+# Aziz Rahmad, 2014,2021
+# Bohdan Lepky, 2013
+# Cahya Legawa, 2014
+# Dabiq 1441, 2021
+# Dito Kurnia Pratama, 2018
+# donny widi, 2019
+# Muhammad Furqon Abrori, 2016
+# e628d465dac42212314cccfedeb58a39_4bd0330, 2014
+# Gingga Hadiko, 2019
+# IndoGuy, 2013-2014
+# Joshua Randiny, 2015
+# La Ode Muh. Fadlun Akbar, 2014
+# Pandu Wicaksono, 2025
+# Samuel, 2014-2016
+# Ulzeta Ulzeta, 2020
+# Yusufabdiauzan, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-11-03 01:30+0000\n"
+"PO-Revision-Date: 2014-06-19 17:49+0000\n"
+"Last-Translator: Pandu Wicaksono, 2025\n"
+"Language-Team: Indonesian (http://app.transifex.com/wildfire-games/0ad/language/id/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: id\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: gui/session/Cheats.js:78
+msgid "This cheat requires a numeric parameter."
+msgstr "Cheat ini membutuhkan parameter numerik."
+
+#: gui/session/GameSpeedControl.xml:11
+msgid "Choose game speed"
+msgstr "Pilih kecepatan permainan"
+
+#: gui/session/Menu.js:39
+#, javascript-format
+msgid "Press %(hotkey)s to toggle this menu."
+msgstr "Tekan %(hotkey)s untuk setel menu ini."
+
+#: gui/session/MenuButtons.js:33
+msgid "Chat"
+msgstr "Obrolan"
+
+#: gui/session/MenuButtons.js:54
+msgid "Save"
+msgstr "Simpan"
+
+#: gui/session/MenuButtons.js:78
+msgid "Summary"
+msgstr "Ringkasan"
+
+#: gui/session/MenuButtons.js:91
+#, javascript-format
+msgid "Press %(hotkey)s to open the summary screen."
+msgstr "Tekan %(hotkey)s untuk membuka layar ringkasan."
+
+#: gui/session/MenuButtons.js:133
+msgid "Lobby"
+msgstr "Lobi"
+
+#: gui/session/MenuButtons.js:142
+#, javascript-format
+msgid ""
+"Press %(hotkey)s to open the multiplayer lobby page without leaving the "
+"game."
+msgstr "Tekan %(hotkey)s untuk membuka halaman lobi main bersama tanpa meninggalkan permainan."
+
+#: gui/session/MenuButtons.js:161
+msgid "Options"
+msgstr "Pengaturan"
+
+#: gui/session/MenuButtons.js:180
+msgid "Hotkeys"
+msgstr "Pintasan"
+
+#: gui/session/MenuButtons.js:213
+msgid "Resume"
+msgstr "Lanjutkan"
+
+#: gui/session/MenuButtons.js:213
+msgid "Pause"
+msgstr "Jeda"
+
+#: gui/session/MenuButtons.js:214
+#, javascript-format
+msgid "Press %(hotkey)s to pause or resume the game."
+msgstr "Tekan %(hotkey)s untuk menjeda atau melanjutkan permainan."
+
+#: gui/session/MenuButtons.js:230
+msgid "Resign"
+msgstr "Menyerah"
+
+#: gui/session/MenuButtons.js:254 gui/session/NetworkStatusOverlay.xml:9
+msgid "Exit"
+msgstr "Tutup"
+
+#: gui/session/NetworkDelayOverlay.js:62
+#, javascript-format
+msgid "Delay to live stream: %(delay)ss"
+msgstr "Menunda siaran langsung: %(delay)ss"
+
+#: gui/session/NetworkStatusOverlay.js:38
+msgid "Connection to the server has been authenticated."
+msgstr "Sambungan ke server telah diautentikasi"
+
+#: gui/session/NetworkStatusOverlay.js:39
+msgid "Connected to the server."
+msgstr "Tersambung ke server."
+
+#: gui/session/NetworkStatusOverlay.js:40
+msgid "Connection to the server has been lost."
+msgstr "Koneksi ke server telah terputus."
+
+#: gui/session/NetworkStatusOverlay.js:42
+msgid "Waiting for players to connect:"
+msgstr "Menunggu pemain untuk tersambung:"
+
+#: gui/session/NetworkStatusOverlay.js:43
+msgid "Synchronizing gameplay with other players…"
+msgstr "Menyelaraskan permainan dengan pemain lain…"
+
+#: gui/session/NetworkStatusOverlay.js:47
+msgctxt "Separator for a list of client loading messages"
+msgid ", "
+msgstr ","
+
+#. Translation: The "x" means "times", with the mathematical meaning of
+#. multiplication.
+#: gui/session/OverlayCounterElapsedTime.js:33
+#, javascript-format
+msgid "%(time)s (%(speed)sx)"
+msgstr "%(time)s (%(speed)sx)"
+
+#: gui/session/PauseOverlay.js:40
+#: gui/session/message_box/OutOfSyncNetwork.js:20
+msgctxt "Separator for a list of players"
+msgid ", "
+msgstr ", "
+
+#: gui/session/PauseOverlay.js:45
+#, javascript-format
+msgid "Paused by %(players)s"
+msgstr "Dijeda oleh %(players)s"
+
+#: gui/session/PauseOverlay.xml:7
+msgid "Game Paused"
+msgstr "Permainan dijeda"
+
+#: gui/session/PauseOverlay.xml:11
+msgid "Click to Resume Game"
+msgstr "Klik untuk melanjutkan permainan."
+
+#: gui/session/ResearchProgress.js:114 gui/session/selection_details.js:257
+#: gui/session/selection_details.js:275 gui/session/selection_panels.js:604
+msgctxt "countdown format"
+msgid "m:ss"
+msgstr "m:ss"
+
+#. Translation: String displayed when the research is paused. E.g. by being
+#. garrisoned or
+#. when not the first item in the queue.
+#: gui/session/ResearchProgress.js:117 gui/session/selection_panels.js:616
+msgid "This item is paused."
+msgstr "Penelitian ini dijeda."
+
+#: gui/session/chat/ChatAddressees.js:103
+msgctxt "chat addressee"
+msgid "Everyone"
+msgstr "Semuanya"
+
+#: gui/session/chat/ChatAddressees.js:109
+msgctxt "chat addressee"
+msgid "Allies"
+msgstr "Sekutu"
+
+#: gui/session/chat/ChatAddressees.js:110
+msgctxt "chat message context"
+msgid "Ally"
+msgstr "Sekutu"
+
+#: gui/session/chat/ChatAddressees.js:119
+msgctxt "chat addressee"
+msgid "Enemies"
+msgstr "Musuh"
+
+#: gui/session/chat/ChatAddressees.js:120
+msgctxt "chat message context"
+msgid "Enemy"
+msgstr "Musuh"
+
+#: gui/session/chat/ChatAddressees.js:129
+msgctxt "chat addressee"
+msgid "Observers"
+msgstr "Pengamat"
+
+#: gui/session/chat/ChatAddressees.js:130
+msgctxt "chat message context"
+msgid "Observer"
+msgstr "Pengamat"
+
+#: gui/session/chat/ChatAddressees.js:137
+msgctxt "chat message context"
+msgid "Private"
+msgstr "Pribadi"
+
+#: gui/session/chat/ChatHistory.js:54
+#, javascript-format
+msgid "%(time)s %(message)s"
+msgstr "%(time)s %(message)s"
+
+#: gui/session/chat/ChatHistory.js:66
+#, javascript-format
+msgid "\\[%(time)s]"
+msgstr "\\[%(time)s]"
+
+#: gui/session/chat/ChatHistory.js:67
+msgid "HH:mm"
+msgstr "HH:mm"
+
+#: gui/session/chat/ChatHistory.js:87
+msgctxt "chat history filter"
+msgid "Chat and notifications"
+msgstr "Obrolan dan notifikasi"
+
+#: gui/session/chat/ChatHistory.js:92
+msgctxt "chat history filter"
+msgid "Chat messages"
+msgstr "Pesan Obrolan"
+
+#: gui/session/chat/ChatHistory.js:97
+msgctxt "chat history filter"
+msgid "Players chat"
+msgstr "Obrolan pemain"
+
+#: gui/session/chat/ChatHistory.js:104
+msgctxt "chat history filter"
+msgid "Ally chat"
+msgstr "Obrolan sekutu"
+
+#: gui/session/chat/ChatHistory.js:111
+msgctxt "chat history filter"
+msgid "Enemy chat"
+msgstr "Obrolan musuh"
+
+#: gui/session/chat/ChatHistory.js:118
+msgctxt "chat history filter"
+msgid "Observer chat"
+msgstr "Obrolan pengamat"
+
+#: gui/session/chat/ChatHistory.js:125
+msgctxt "chat history filter"
+msgid "Private chat"
+msgstr "Obrolan pribadi"
+
+#: gui/session/chat/ChatHistory.js:130
+msgctxt "chat history filter"
+msgid "Game notifications"
+msgstr "Pemberitahuan permainan"
+
+#: gui/session/chat/ChatHistory.js:135
+msgctxt "chat history filter"
+msgid "Network notifications"
+msgstr "Pemberitahuan jaringan"
+
+#: gui/session/chat/ChatInput.js:36
+msgctxt "chat input"
+msgid "Type the message to send."
+msgstr "Ketik pesan untuk dikirim."
+
+#: gui/session/chat/ChatInput.js:42
+#, javascript-format
+msgid "Press %(hotkey)s to open the public chat."
+msgstr "Tekan %(hotkey)s untuk membuka obrolan umum."
+
+#: gui/session/chat/ChatInput.js:45
+#, javascript-format
+msgid "Press %(hotkey)s to open the observer chat."
+msgstr "Tekan %(hotkey)s untuk membuka obrolan pengamat."
+
+#: gui/session/chat/ChatInput.js:46
+#, javascript-format
+msgid "Press %(hotkey)s to open the ally chat."
+msgstr "Tekan %(hotkey)s untuk membuka obrolan sekutu."
+
+#: gui/session/chat/ChatInput.js:48
+#, javascript-format
+msgid "Press %(hotkey)s to open the previously selected private chat."
+msgstr "Tekan %(hotkey)s untuk membuka obrolan pribadi yang dipilih sebelumnya."
+
+#. Translation: A player that left the game joins again
+#: gui/session/chat/ChatMessageFormatNetwork.js:24
+#, javascript-format
+msgid "%(player)s is starting to rejoin the game."
+msgstr "%(player)s mencoba bergabung kembali ke permainan."
+
+#. Translation: A player joins the game for the first time
+#: gui/session/chat/ChatMessageFormatNetwork.js:26
+#, javascript-format
+msgid "%(player)s is starting to join the game."
+msgstr "%(player)s mulai bergabung ke permainan."
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:37
+#, javascript-format
+msgid "%(player)s has left the game."
+msgstr "%(player)s telah meninggalkan permainan."
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:51
+#, javascript-format
+msgid "%(username)s has been banned"
+msgstr "%(username)s telah dilarang masuk"
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:52
+#, javascript-format
+msgid "%(username)s has been kicked"
+msgstr "%(username)s telah dikeluarkan dari permainan"
+
+#. Translation: A player that left the game joins again
+#: gui/session/chat/ChatMessageFormatNetwork.js:71
+#, javascript-format
+msgid "%(player)s has rejoined the game."
+msgstr "%(player)s bergabung kembali ke permainan."
+
+#. Translation: A player joins the game for the first time
+#: gui/session/chat/ChatMessageFormatNetwork.js:73
+#, javascript-format
+msgid "%(player)s has joined the game."
+msgstr "%(player)s telah bergabung ke permainan."
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:62
+#, javascript-format
+msgid "<%(user)s>"
+msgstr "<%(user)s>"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:174
+#, javascript-format
+msgid "(%(context)s) %(userTag)s %(message)s"
+msgstr "(%(context)s) %(userTag)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:175
+#, javascript-format
+msgid "%(userTag)s %(message)s"
+msgstr "%(userTag)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:178
+#, javascript-format
+msgid "(%(context)s) * %(user)s %(message)s"
+msgstr "(%(context)s) * %(user)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:179
+#, javascript-format
+msgid "* %(user)s %(message)s"
+msgstr "* %(user)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:16
+#, javascript-format
+msgid "%(icon)sYour livestock has been attacked by %(attacker)s!"
+msgstr "%(icon)sTernak anda telah diserang oleh %(attacker)s!"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:17
+#, javascript-format
+msgid "%(icon)sYou have been attacked by %(attacker)s!"
+msgstr "%(icon)sAnda telah diserang oleh %(attacker)s!"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:27
+msgid "Click to focus on the attacked unit."
+msgstr "Klik untuk fokus pada unit yang diserang."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:46
+#, javascript-format
+msgid "%(player)s bartered %(amountGiven)s for %(amountGained)s."
+msgstr "%(player)s dibarter %(amountGiven)s untuk %(amountGained)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:81
+#, javascript-format
+msgid "You are now allied with %(player)s."
+msgstr "Anda sekarang bersekutu dengan %(player)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:82
+#, javascript-format
+msgid "You are now at war with %(player)s."
+msgstr "Anda sekarang berperang dengan %(player)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:83
+#, javascript-format
+msgid "You are now neutral with %(player)s."
+msgstr "Anda sekarang netral dengan %(player)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:86
+#, javascript-format
+msgid "%(player)s is now allied with you."
+msgstr "%(player)s sekarang bersekutu dengan Anda."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:87
+#, javascript-format
+msgid "%(player)s is now at war with you."
+msgstr "%(player)s sekarang sedang berperang dengan Anda."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:88
+#, javascript-format
+msgid "%(player)s is now neutral with you."
+msgstr "%(player)s sekarang netral dengan Anda."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:91
+#, javascript-format
+msgid "%(player)s is now allied with %(player2)s."
+msgstr "%(player)s sekarang bersekutu dengan %(player2)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:92
+#, javascript-format
+msgid "%(player)s is now at war with %(player2)s."
+msgstr "%(player)s sekarang berperang dengan %(player2)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:93
+#, javascript-format
+msgid "%(player)s is now neutral with %(player2)s."
+msgstr "%(player)s sekarang berhubungan netral dengan %(player2)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:109
+#, javascript-format
+msgid "%(player)s is advancing to the %(phaseName)s."
+msgstr "%(player)s sedang meningkatkan diri ke %(phaseName)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:111
+#, javascript-format
+msgid "The %(phaseName)s of %(player)s has been aborted."
+msgstr " %(phaseName)s dari %(player)s telah dibatalkan."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:114
+#, javascript-format
+msgid "%(player)s has reached the %(phaseName)s."
+msgstr "%(player)s telah mencapai %(phaseName)s."
+
+#. Translation: This comma is used for separating first to penultimate
+#. elements in an
+#. enumeration.
+#: gui/session/chat/ChatMessageFormatSimulation.js:142
+msgid ", "
+msgstr ", "
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:159
+#, javascript-format
+msgid "%(player)s has sent you %(amounts)s."
+msgstr "%(player)s telah mengirim Anda %(amounts)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:161
+#, javascript-format
+msgid "You have sent %(player2)s %(amounts)s."
+msgstr "Anda telah mengirim %(player2)s %(amounts)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:166
+#, javascript-format
+msgid "%(player)s has sent %(player2)s %(amounts)s."
+msgstr "%(player)s telah mengirim %(player2)s %(amounts)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:197
+#, javascript-format
+msgid "%(icon)s%(player)s has sent a flare."
+msgstr "%(icon)s%(player)s telah mengirim suar."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:204
+msgid "Click to focus on the flare's location."
+msgstr "Klik untuk fokus pada lokasi suar."
+
+#: gui/session/chat/chat_window.xml:19
+msgctxt "chat input"
+msgid "Filter:"
+msgstr "Saring:"
+
+#: gui/session/chat/chat_window.xml:29
+msgctxt "chat input"
+msgid "Filter the chat history."
+msgstr "Saring riwayat obrolan."
+
+#: gui/session/chat/chat_window.xml:46
+msgctxt "chat input"
+msgid "To:"
+msgstr "Ke:"
+
+#: gui/session/chat/chat_window.xml:55
+msgctxt "chat input"
+msgid "Select chat addressee."
+msgstr "Pilih penerima obrolan."
+
+#: gui/session/chat/chat_window.xml:60
+msgctxt "chat input"
+msgid "Text:"
+msgstr "Teks:"
+
+#: gui/session/chat/chat_window.xml:72
+msgid "Cancel"
+msgstr "Batal"
+
+#: gui/session/chat/chat_window.xml:86
+msgctxt "chat"
+msgid "History"
+msgstr "Sejarah"
+
+#: gui/session/chat/chat_window.xml:91
+msgid "Send"
+msgstr "Kirim"
+
+#: gui/session/developer_overlay/DeveloperOverlay.js:78
+msgid "The Developer Overlay was opened."
+msgstr "Lapisan Pengembang dibuka"
+
+#: gui/session/developer_overlay/DeveloperOverlay.js:79
+msgid "The Developer Overlay was closed."
+msgstr "Lapisan Pengembang ditutup"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:15
+msgid "Control all units"
+msgstr "Kendalikan seluruh unit"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:42
+msgid "Change perspective"
+msgstr "Ubah perspektif"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:60
+msgid "Display selection state"
+msgstr "Tampilkan kondisi seleksi"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:73
+msgid "Pathfinder overlay"
+msgstr "Lapisan pencari jalur"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:86
+msgid "Hierarchical pathfinder overlay"
+msgstr "Lapisan pencari jalur hierarkis"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:99
+msgid "Obstruction overlay"
+msgstr "Lapisan penghalang"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:112
+msgid "Unit motion overlay"
+msgstr "Lapisan gerakan unit"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:125
+msgid "Range overlay"
+msgstr "Lapisan jarak"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:138
+msgid "Bounding box overlay"
+msgstr "Lapisan kotak sentuhan"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:151
+msgid "Restrict camera"
+msgstr "Batasi kamera"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:169
+msgid "Reveal map"
+msgstr "Tampilkan seluruh peta"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:195
+msgid "Enable time warp"
+msgstr "Hidupkan pelengkungan waktu"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:214
+msgid "Activate Rejoin Test"
+msgstr "Aktifkan Uji Gabung Ulang"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:248
+msgid "Promote selected units"
+msgstr "Naikkan pangkat unit yang terpilih"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:269
+msgid "Enable culling"
+msgstr "Hidupkan penyisihan"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:287
+msgid "Lock cull camera"
+msgstr "Kunci kamera penyisihan"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:305
+msgid "Display camera frustum"
+msgstr "Tampilkan frustum kamera"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:323
+msgid "Display shadows frustum"
+msgstr "Tampilkan frustum bayangan "
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:22
+msgid "Render Debug Mode Disabled"
+msgstr "Mode Debug Render Dimatikan"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:23
+msgid "Render Debug Mode AO"
+msgstr "Mode Debug Render AO"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:24
+msgid "Render Debug Mode Alpha"
+msgstr "Mode Debug Render Alpha"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:25
+msgid "Render Debug Mode Custom"
+msgstr "Mode Debug Render Kustom"
+
+#: gui/session/developer_overlay/TimeWarp.js:6
+msgid "Time warp mode"
+msgstr "Mode pelengkungan waktu"
+
+#: gui/session/developer_overlay/TimeWarp.js:7
+msgid ""
+"Note: time warp mode is a developer option, and not intended for use over "
+"long periods of time. Using it incorrectly may cause the game to run out of "
+"memory or crash."
+msgstr "Catatan: Mode pelengkungan waktu adalah opsi pengembang, dan tidak ditujukan untuk penggunaan jangka panjang. Penggunaan yang tidak benar dapat menyebabkan permainan kehabisan memori atau mati."
+
+#: gui/session/dialogs/yes_no.xml:11
+msgid "Question"
+msgstr "Pertanyaan"
+
+#: gui/session/dialogs/yes_no.xml:15
+msgid "Yes or no?"
+msgstr "Ya atau tidak?"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:15
+msgid "Name"
+msgstr "Nama"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:18
+msgid "Civilization"
+msgstr "Kebangsaan"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:21
+msgid "Team"
+msgstr "Regu"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:24
+msgid "Theirs"
+msgstr "Mereka"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:27
+msgid "A"
+msgstr "S"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:31
+msgid "N"
+msgstr "N"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:35
+msgid "E"
+msgstr "M"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:39
+msgid "Tribute"
+msgstr "Upeti"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:90
+#: gui/session/match_settings/MatchSettingsDialog.xml:43
+#: gui/session/trade/TradeDialog.xml:22
+msgid "Close"
+msgstr "Tutup"
+
+#: gui/session/diplomacy/DiplomacyDialogCeasefireCounter.js:27
+#, javascript-format
+msgctxt "ceasefire"
+msgid "Remaining ceasefire time: %(time)s."
+msgstr "Sisa waktu gencatan senjata: %(time)s"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:85
+#: gui/session/diplomacy/DiplomacyDialogColorsButton.js:30
+#: gui/session/minimap/MiniMapDiplomacyColorsButton.js:36
+msgid "Toggle Diplomacy Colors"
+msgstr "Setel Warna Diplomasi"
+
+#: gui/session/diplomacy/playercontrols/AttackRequestButton.js:38
+msgid "Request your allies to attack this enemy"
+msgstr "Meminta sekutu Anda untuk meyerang musuh ini"
+
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:73
+msgctxt "team"
+msgid "None"
+msgstr "Tak ada"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:28
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:76
+msgid "Ally"
+msgstr "Sekutu"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:32
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:79
+msgid "Neutral"
+msgstr "Netral"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:36
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:82
+msgid "Enemy"
+msgstr "Musuh"
+
+#: gui/session/diplomacy/playercontrols/SpyRequestButton.js:138
+msgid ""
+"Bribe a random unit from this player and share its vision during a limited "
+"period."
+msgstr "Sogok sebuah unit acak dari pemain ini untuk melihat apa yang dilihatnya dalam jangka waktu pendek."
+
+#: gui/session/diplomacy/playercontrols/SpyRequestButton.js:141
+msgid "A failed bribe will cost you:"
+msgstr "Sogokan yang gagal akan dikenakan biaya:"
+
+#: gui/session/diplomacy/playercontrols/StanceButton.js:60
+msgctxt "diplomatic stance selection"
+msgid "x"
+msgstr "x"
+
+#: gui/session/diplomacy/playercontrols/TributeButton.js:112
+#, javascript-format
+msgid ""
+"Tribute %(resourceAmount)s %(resourceType)s to %(playerName)s. Shift-click "
+"to tribute %(greaterAmount)s."
+msgstr "Beri upeti %(resourceAmount)s %(resourceType)s kepada %(playerName)s. Shift-klik untuk memberi upeti %(greaterAmount)s."
+
+#: gui/session/input.js:195
+#, javascript-format
+msgid "Basic range: %(range)s meter"
+msgid_plural "Basic range: %(range)s meters"
+msgstr[0] "Jarak dasar: %(range)s meter"
+
+#: gui/session/input.js:196
+#, javascript-format
+msgid "Average bonus range: %(range)s meter"
+msgid_plural "Average bonus range: %(range)s meters"
+msgstr[0] "Rata-rata bonus jarak: %(range)s meter"
+
+#: gui/session/input.js:719
+msgid "Cannot build wall here!"
+msgstr "Tidak bisa membuat tembok di sini!"
+
+#: gui/session/message_box/DeleteSelectionConfirmation.js:10
+msgid "Delete"
+msgstr "Hapus"
+
+#: gui/session/message_box/DeleteSelectionConfirmation.js:11
+msgid "Destroy everything currently selected?"
+msgstr "Hancurkan semua yang dipilih sekarang?"
+
+#: gui/session/dialogs/yes_no.xml:24
+#: gui/session/message_box/DeleteSelectionConfirmation.js:14
+#: gui/session/message_box/QuitConfirmationMenu.js:72
+#: gui/session/message_box/ResignConfirmation.js:9
+msgid "No"
+msgstr "Tidak"
+
+#: gui/session/dialogs/yes_no.xml:19
+#: gui/session/message_box/DeleteSelectionConfirmation.js:17
+#: gui/session/message_box/QuitConfirmationMenu.js:75
+#: gui/session/message_box/ResignConfirmation.js:12
+msgid "Yes"
+msgstr "Ya"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:15
+#: gui/session/message_box/OutOfSyncReplay.js:26
+#, javascript-format
+msgid "Out-Of-Sync error on turn %(turn)s."
+msgstr "Kesalahan sinkronisasi pada giliran ke- %(turn)s."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:19
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Players: %(players)s"
+msgstr "Pemain: %(players)s"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:24
+msgctxt "Out-Of-Sync"
+msgid "Your game state is identical to the hosts game state."
+msgstr "Status permainan Anda sama dengan status pembuat permainan."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:25
+msgctxt "Out-Of-Sync"
+msgid "Your game state differs from the hosts game state."
+msgstr "Status permainan Anda berbeda dengan status pembuat permainan."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:31
+msgctxt "Out-Of-Sync"
+msgid "Rejoining Multiplayer games with AIs is not supported yet!"
+msgstr "Gabung kembali permainan bersama dengan AI belum didukung!"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:34
+msgctxt "Out-Of-Sync"
+msgid "Ensure all players use the same mods."
+msgstr "Memastikan semua pemain menggunakan mod yang sama."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:35
+msgctxt "Out-Of-Sync"
+msgid "Click on \"Report a Bug\" in the main menu to help fix this."
+msgstr "Klik pada \"Laporkan Masalah\" di menu utama untuk membantu memperbaiki ini."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:36
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Replay saved to %(filepath)s"
+msgstr "Tayangan ulang tersimpan ke %(filepath)s"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:39
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Dumping current state to %(filepath)s"
+msgstr "Membuang status saat ini ke %(filepath)s"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:51
+#: gui/session/message_box/OutOfSyncReplay.js:23
+msgid "Out of Sync"
+msgstr "Tidak Sinkron"
+
+#. Translation: This is shown if replay is out of sync
+#: gui/session/message_box/OutOfSyncReplay.js:28
+msgid "Out-Of-Sync"
+msgstr "Tidak-Sinkron"
+
+#: gui/session/message_box/QuitConfirmation.js:6
+#: gui/session/message_box/QuitConfirmationMenu.js:4
+#: gui/session/message_box/ResignConfirmation.js:5
+msgid "Confirmation"
+msgstr "Konfirmasi"
+
+#: gui/session/message_box/QuitConfirmation.js:9
+msgid "The game has finished, what do you want to do?"
+msgstr "Permainan telah selesai, apa yang ingin Anda lakukan?"
+
+#. Translation: Shown in the Dialog that shows up when the game finishes
+#: gui/session/message_box/QuitConfirmation.js:15
+#: gui/session/message_box/QuitConfirmationReplay.js:23
+msgid "Stay"
+msgstr "Tetap di sini"
+
+#. Translation: Shown in the Dialog that shows up when the game finishes
+#: gui/session/message_box/QuitConfirmation.js:20
+#: gui/session/message_box/QuitConfirmationReplay.js:28
+msgid "Quit and View Summary"
+msgstr "Keluar dan Lihat Ringkasan"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:54
+msgid "VICTORIOUS!"
+msgstr "MENANG!"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:55
+msgid "DEFEATED!"
+msgstr "KALAH!"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:57
+msgid "Do you want to quit?"
+msgstr "Apakah anda yakin ingin keluar?"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:5
+msgid "Do you want to resign or will you return soon?"
+msgstr "Apakah Anda ingin menyerah atau akan segera kembali?"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:8
+msgid "I will return"
+msgstr "Saya akan kembali"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:12
+msgid "I resign"
+msgstr "Saya menyerah"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:53
+msgid ""
+"Are you sure you want to quit? Leaving will disconnect all other players."
+msgstr "Anda yakin ingin keluar? Meninggalkan permainan akan memutuskan pemain lain."
+
+#: gui/session/message_box/QuitConfirmationMenu.js:67
+msgid "Are you sure you want to quit?"
+msgstr "Apakah Anda yakin ingin keluar?"
+
+#: gui/session/message_box/QuitConfirmationReplay.js:14
+msgctxt "replayFinished"
+msgid "Confirmation"
+msgstr "Konfirmasi"
+
+#: gui/session/message_box/QuitConfirmationReplay.js:17
+msgctxt "replayFinished"
+msgid "The replay has finished. What do you want to do?"
+msgstr "Tayangan ulang telah selesai, apa yang ingin Anda lakukan?"
+
+#: gui/session/message_box/ResignConfirmation.js:6
+msgid "Are you sure you want to resign?"
+msgstr "Apakah Anda yakin ingin menyerah?"
+
+#: gui/session/messages.js:107
+msgid "You have won!"
+msgstr "Anda telah menang!"
+
+#: gui/session/messages.js:108
+msgid "You have been defeated!"
+msgstr "Anda telah dikalahkan!"
+
+#: gui/session/messages.js:392
+msgid "Click to quit this tutorial."
+msgstr "Klik untuk keluar dari tutorial."
+
+#: gui/session/message_box/QuitConfirmation.js:25
+#: gui/session/message_box/QuitConfirmationReplay.js:33
+#: gui/session/messages.js:393
+msgid "Quit"
+msgstr "Keluar"
+
+#: gui/session/messages.js:397
+msgid "Click when ready."
+msgstr "Klik saat siap."
+
+#: gui/session/messages.js:401
+msgid "Follow the instructions."
+msgstr "Ikuti instruksi."
+
+#: gui/session/messages.js:550
+msgid "Unknown Player"
+msgstr "Pemain Tidak Dikenal"
+
+#: gui/session/minimap/MiniMapFlareButton.js:52
+msgid "Send a flare to your allies."
+msgstr "Kirim suar ke sekutu Anda."
+
+#: gui/session/minimap/MiniMapFlareButton.js:53
+msgid "Send a flare to other observers."
+msgstr "Kirim suar ke pengamat lain."
+
+#: gui/session/minimap/MiniMapIdleWorkerButton.js:43
+msgid ""
+"Find idle worker\n"
+"Number of idle workers."
+msgstr "Temukan pekerja menganggur\nJumlah pekerja menganggur."
+
+#: gui/session/selection_details.js:62
+#, javascript-format
+msgid "%(secondaryName)s — Packed"
+msgstr "%(secondaryName)s — Dikemas"
+
+#: gui/session/selection_details.js:64
+msgid "Packed"
+msgstr "Dikemas"
+
+#: gui/session/chat/ChatAddressees.js:79 gui/session/selection_details.js:75
+#, javascript-format
+msgid "\\[OFFLINE] %(player)s"
+msgstr "\\[OFFLINE] %(player)s"
+
+#: gui/session/selection_details.js:81
+#, javascript-format
+msgid "%(rank)s Rank"
+msgstr "%(rank)s Pangkat"
+
+#: gui/session/selection_details.js:133
+#, javascript-format
+msgid "%(hitpoints)s / %(maxHitpoints)s"
+msgstr "%(hitpoints)s / %(maxHitpoints)s"
+
+#: gui/session/selection_details.js:173
+#, javascript-format
+msgid "%(capturePoints)s / %(maxCapturePoints)s"
+msgstr "%(capturePoints)s / %(maxCapturePoints)s"
+
+#: gui/session/selection_details.js:180
+msgid "Capture Points"
+msgstr "Poin Perebutan"
+
+#: gui/session/selection_details.js:190
+#, javascript-format
+msgid "%(experience)s %(current)s / %(required)s"
+msgstr "%(experience)s %(current)s / %(required)s"
+
+#: gui/session/selection_details.js:191 gui/session/selection_details.js:197
+msgid "Experience:"
+msgstr "Pengalaman:"
+
+#: gui/session/selection_details.js:196
+#, javascript-format
+msgid "%(experience)s %(current)s"
+msgstr "%(experience)s %(current)s"
+
+#: gui/session/selection_details.js:206
+msgid "∞"
+msgstr "∞"
+
+#: gui/session/selection_details.js:207 gui/session/selection_details.js:233
+#: gui/session/selection_details.js:263
+#, javascript-format
+msgid "%(amount)s / %(max)s"
+msgstr "%(amount)s / %(max)s"
+
+#: gui/session/selection_details.js:215
+#, javascript-format
+msgid "%(resource)s:"
+msgstr "%(resource)s:"
+
+#: gui/session/selection_details.js:246 gui/session/unit_actions.js:685
+#: gui/session/unit_actions.js:694 gui/session/unit_actions.js:712
+#: gui/session/unit_actions.js:1266
+#, javascript-format
+msgid "Gain: %(gain)s"
+msgstr "Perolehan: %(gain)s"
+
+#: gui/session/selection_details.js:255 gui/session/selection_details.js:273
+#, javascript-format
+msgid ""
+"(%(number)s)\n"
+"%(time)s"
+msgstr "(%(number)s)\n%(time)s"
+
+#: gui/session/selection_details.js:267
+msgid "Current/max gatherers"
+msgstr "Jumlah pengumpul sekarang/maksimum "
+
+#: gui/session/selection_details.js:297
+#, javascript-format
+msgid "(%(secondaryName)s)"
+msgstr "(%(secondaryName)s)"
+
+#: gui/session/selection_details.js:472
+msgid "Capture Points:"
+msgstr "Poin Perebutan:"
+
+#: gui/session/selection_details.js:480
+#, javascript-format
+msgid "%(label)s: %(details)s\n"
+msgstr "%(label)s: %(details)s\n"
+
+#: gui/session/selection_details.js:481
+msgid "Garrison Size"
+msgstr "Jumlah Penempatan"
+
+#: gui/session/selection_details.js:486
+#, javascript-format
+msgid "%(label)s %(details)s\n"
+msgstr "%(label)s %(details)s\n"
+
+#: gui/session/selection_details.js:487
+msgid "Carrying:"
+msgstr "Membawa:"
+
+#: gui/session/selection_details.js:490 gui/session/selection_details.js:499
+#, javascript-format
+msgid "%(type)s %(amount)s"
+msgstr "%(type)s %(amount)s"
+
+#: gui/session/selection_details.js:495
+#, javascript-format
+msgid "%(label)s %(details)s"
+msgstr "%(label)s %(details)s"
+
+#: gui/session/selection_details.js:496
+msgid "Loot:"
+msgstr "Rampasan:"
+
+#. Translation: Used in the trading gain tooltip
+#: gui/session/selection_details.js:557
+#, javascript-format
+msgid "%(gain)s (%(player)s)"
+msgstr "%(gain)s (%(player)s)"
+
+#. Translation: Used in the trading gain tooltip to concatenate profits of
+#. different players
+#: gui/session/selection_details.js:581
+msgid "+"
+msgstr "+"
+
+#: gui/session/selection_details.js:588
+msgctxt "Separation mark in an enumeration"
+msgid ", "
+msgstr ", "
+
+#: gui/session/selection_panels.js:67
+msgid "Raise an alert!"
+msgstr "Berikan peringatan!"
+
+#: gui/session/selection_panels.js:69
+msgid "Alert nearby Civilians to seek refuge."
+msgstr ""
+
+#: gui/session/selection_panels.js:71
+msgid "Alert nearby Traders to seek refuge."
+msgstr "Peringatkan Pedagang terdekat untuk berlindung."
+
+#: gui/session/selection_panels.js:73
+msgid "Alert nearby vulnerable units to seek refuge."
+msgstr "Peringatkan unit rentan terdekat untuk berlindung."
+
+#: gui/session/selection_panels.js:77
+msgid "End the alert."
+msgstr "Akhir dari peringatan."
+
+#: gui/session/selection_panels.js:79
+msgid "Unload nearby Civilians."
+msgstr ""
+
+#: gui/session/selection_panels.js:81
+msgid "Unload nearby Traders."
+msgstr "Keluarkan Pedagang terdekat."
+
+#: gui/session/selection_panels.js:83
+msgid "Unload nearby vulnerable units."
+msgstr ""
+
+#: gui/session/selection_panels.js:297
+msgid "Default formation is disabled."
+msgstr "Formasi bawaan dimatikan."
+
+#: gui/session/selection_panels.js:298
+msgid "Right-click to disable the default formation feature."
+msgstr "Klik-kanan untuk mematikan fitur formasi bawaan."
+
+#: gui/session/selection_panels.js:301
+msgid "This is the default formation, used for movement orders."
+msgstr "Ini adalah formasi bawaan, digunakan untuk perintah pergerakan."
+
+#: gui/session/selection_panels.js:302
+msgid "Right-click to set this as the default formation."
+msgstr "Klik-kanan untuk menyetel ini sebagai formasi bawaan."
+
+#: gui/session/selection_panels.js:358
+#, javascript-format
+msgid "Unload %(name)s"
+msgstr "Keluarkan %(name)s"
+
+#: gui/session/selection_panels.js:359
+msgid "Single-click to unload 1. Shift-click to unload all of this type."
+msgstr "Klik untuk mengeluarkan 1. Shift-klik untuk mengeluarkan semua pasukan dengan jenis yang sama."
+
+#: gui/session/selection_panels.js:361 gui/session/selection_panels.js:935
+#, javascript-format
+msgid "Player: %(playername)s"
+msgstr "Pemain: %(playername)s"
+
+#: gui/session/selection_panels.js:397
+msgid "Lock Gate"
+msgstr "Kunci Gerbang"
+
+#: gui/session/selection_panels.js:403
+msgid "Unlock Gate"
+msgstr "Buka Kunci Gerbang"
+
+#: gui/session/selection_panels.js:454
+msgid "Pack"
+msgstr "Kemas"
+
+#: gui/session/selection_panels.js:462
+msgid "Unpack"
+msgstr "Bongkar"
+
+#: gui/session/selection_panels.js:470
+msgid "Cancel Packing"
+msgstr "Batalkan Kemas"
+
+#: gui/session/selection_panels.js:478
+msgid "Cancel Unpacking"
+msgstr "Batalkan Bongkar"
+
+#: gui/session/selection_panels.js:576
+msgid "The auto-queue will try to train this item later."
+msgstr "Antre-otomatis akan mencoba melatih unit ini nanti."
+
+#: gui/session/selection_panels.js:579
+msgid "Insufficient population capacity:"
+msgstr "Kapasitas populasi tidak cukup:"
+
+#: gui/session/selection_panels.js:580
+#, javascript-format
+msgid "%(population)s %(neededSlots)s"
+msgstr "%(population)s %(neededSlots)s"
+
+#: gui/session/selection_panels.js:800
+#, javascript-format
+msgid "%(number)s entity of class %(class)s"
+msgid_plural "%(number)s entities of class %(class)s"
+msgstr[0] "%(number)s entitas dari kelas %(class)s"
+
+#: gui/session/selection_panels.js:806
+#, javascript-format
+msgid "Remaining: %(entityCounts)s"
+msgstr "Tersisa: %(entityCounts)s"
+
+#: gui/session/selection_panels.js:807
+msgctxt "Separator for a list of entity counts"
+msgid ", "
+msgstr ","
+
+#: gui/session/selection_panels.js:859
+msgid "Cannot research while upgrading."
+msgstr "Tidak dapat meneliti saat meningkatkan."
+
+#: gui/session/selection_panels.js:1088
+msgid "Cannot train while upgrading."
+msgstr "Tidak dapat melatih saat meningkatkan."
+
+#: gui/session/selection_panels.js:1155
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s (%(secondaryName)s). %(tooltip)s"
+msgstr "Tingkatkan menjadi %(primaryName)s (%(secondaryName)s). %(tooltip)s"
+
+#: gui/session/selection_panels.js:1161
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s (%(secondaryName)s)."
+msgstr "Tingkatkan menjadi %(primaryName)s (%(secondaryName)s)."
+
+#: gui/session/selection_panels.js:1169
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s. %(tooltip)s"
+msgstr "Tingkatkan menjadi %(primaryName)s. %(tooltip)s"
+
+#: gui/session/selection_panels.js:1174
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s."
+msgstr "Tingkatkan menjadi %(primaryName)s."
+
+#: gui/session/selection_panels.js:1212
+msgid "Cancel Upgrading"
+msgstr "Gagalkan Peningkatan"
+
+#: gui/session/selection_panels.js:1226
+msgid ""
+"Cannot upgrade when the entity is training, researching or already "
+"upgrading."
+msgid_plural ""
+"Cannot upgrade when all entities are training, researching or already "
+"upgrading."
+msgstr[0] "Tidak dapat meningkatkan jika semua entitas sedang latihan, meneliti, atau sudah meningkatkan."
+
+#: gui/session/selection_panels_helpers.js:53
+msgctxt "stance"
+msgid "Violent"
+msgstr "Kejam"
+
+#: gui/session/selection_panels_helpers.js:55
+msgctxt "stance"
+msgid "Aggressive"
+msgstr "Agresif"
+
+#: gui/session/selection_panels_helpers.js:57
+msgctxt "stance"
+msgid "Defensive"
+msgstr "Defensif"
+
+#: gui/session/selection_panels_helpers.js:59
+msgctxt "stance"
+msgid "Passive"
+msgstr "Pasif"
+
+#: gui/session/selection_panels_helpers.js:61
+msgctxt "stance"
+msgid "Standground"
+msgstr "Diam"
+
+#: gui/session/selection_panels_helpers.js:73
+msgctxt "stance"
+msgid "Attack nearby opponents, focus on attackers and chase while visible"
+msgstr "Serang musuh di sekitar, fokus ke penyerang dan kejar selama terlihat"
+
+#: gui/session/selection_panels_helpers.js:75
+msgctxt "stance"
+msgid "Attack nearby opponents"
+msgstr "Menyerang musuh di sekitar"
+
+#: gui/session/selection_panels_helpers.js:77
+msgctxt "stance"
+msgid ""
+"Attack nearby opponents, chase a short distance and return to the original "
+"location"
+msgstr "Serang musuh di sekitar, kejar untuk jarak yang pendek dan kembali ke posisi awal"
+
+#: gui/session/selection_panels_helpers.js:79
+msgctxt "stance"
+msgid "Flee if attacked"
+msgstr "Melarikan diri saat diserang"
+
+#: gui/session/selection_panels_helpers.js:81
+msgctxt "stance"
+msgid "Attack opponents in range, but don't move"
+msgstr "Menyerang musuh dari jarak jauh, tetapi tidak berpindah"
+
+#: gui/session/selection_panels_helpers.js:95
+#, javascript-format
+msgid "Current Count: %(count)s, Limit: %(limit)s."
+msgstr "Jumlah saat ini: %(count)s, Batas: %(limit)s."
+
+#: gui/session/selection_panels_helpers.js:109
+#, javascript-format
+msgid "%(changer)s enlarges the limit with %(change)s."
+msgstr "%(changer)s memperbesar batas %(change)s."
+
+#: gui/session/selection_panels_helpers.js:110
+#, javascript-format
+msgid "%(changer)s lessens the limit with %(change)s."
+msgstr "%(changer)s mengurangi batas %(change)s."
+
+#: gui/session/selection_panels_helpers.js:140
+msgid "Can be constructed only once."
+msgstr "Dapat dibangun hanya sekali."
+
+#: gui/session/selection_panels_helpers.js:142
+#, javascript-format
+msgid "Could only be constructed %(limit)s time."
+msgid_plural "Could only be constructed %(limit)s times."
+msgstr[0] "Hanya bisa dibangun %(limit)s kali."
+
+#: gui/session/selection_panels_helpers.js:148
+#, javascript-format
+msgid "Can be constructed %(count)s more time."
+msgid_plural "Can be constructed %(count)s more times."
+msgstr[0] "Bisa dibangun %(count)s kali lagi."
+
+#: gui/session/selection_panels_helpers.js:155
+msgid "Could only be trained once."
+msgid_plural "Could only be trained %(limit)s times."
+msgstr[0] "Hanya bisa dilatih %(limit)s kali."
+
+#: gui/session/selection_panels_helpers.js:159
+msgid "Can be trained only once."
+msgstr "Hanya bisa dilatih sekali."
+
+#: gui/session/selection_panels_helpers.js:161
+#, javascript-format
+msgid "Can be trained %(count)s more time."
+msgid_plural "Can be trained %(count)s more times."
+msgstr[0] "Bisa dilatih %(count)s kali lagi."
+
+#: gui/session/selection_panels_helpers.js:168
+msgid "Could only be created once."
+msgid_plural "Could only be created %(limit)s times."
+msgstr[0] "Hanya bisa dibuat %(limit)s kali."
+
+#: gui/session/selection_panels_helpers.js:172
+msgid "Can be created only once."
+msgstr "Hanya bisa dibuat sekali."
+
+#: gui/session/selection_panels_helpers.js:174
+#, javascript-format
+msgid "Can be created %(count)s more time."
+msgid_plural "Can be created %(count)s more times."
+msgstr[0] "Bisa dibuat %(count)s kali lagi."
+
+#: gui/session/selection_panels_helpers.js:203
+#, javascript-format
+msgid "%(buildings)s*%(batchSize)s"
+msgstr "%(buildings)s*%(batchSize)s"
+
+#: gui/session/selection_panels_helpers.js:217
+#, javascript-format
+msgid "%(action)s to train %(number)s (%(fullBatch)s + %(remainderBatch)s)."
+msgstr "%(action)s untuk melatih %(number)s (%(fullBatch)s + %(remainderBatch)s)."
+
+#: gui/session/selection_panels_helpers.js:219
+#, javascript-format
+msgid "%(action)s to train %(number)s (%(fullBatch)s)."
+msgstr "%(action)s untuk melatih %(number)s (%(fullBatch)s)."
+
+#: gui/session/selection_panels_helpers.js:221
+#, javascript-format
+msgid "%(action)s to train %(number)s."
+msgstr "%(action)s untuk melatih %(number)s."
+
+#: gui/session/selection_panels_helpers.js:226
+msgid "Shift-click"
+msgstr "Shift-klik"
+
+#: gui/session/selection_panels_left/garrison_panel.xml:16
+#: gui/session/selection_panels_middle/single_details_area.xml:66
+msgid "Health"
+msgstr "Nyawa"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:43
+msgid "Capture points"
+msgstr "Poin perebutan:"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:86
+msgid "Attack and Resistance"
+msgstr "Daya Serang dan Tahan"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:101
+msgid "Experience"
+msgstr "Pengalaman"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:109
+msgid "Rank"
+msgstr "Pangkat"
+
+#: gui/session/selection_panels_right/queue_panel.xml:8
+msgid "Production queue"
+msgstr "Antrean produksi"
+
+#: gui/session/session_objects/selection_group_icons.xml:7
+msgid ""
+"Click to select grouped units, double-click to focus the grouped units and "
+"right-click to disband the group."
+msgstr "Klik untuk memilih unit yang dikelompokkan, klik-ganda untuk fokus pada kelompok dan klik-kanan untuk membubarkan kelompok."
+
+#: gui/session/top_panel/BuildLabel.xml:6
+msgid "Release XXVIII: Boiorix"
+msgstr ""
+
+#: gui/session/top_panel/CivIcon.js:68
+#, javascript-format
+msgid ""
+"%(civ)s\n"
+"%(hotkey_civinfo)s: View Civilization Overview\n"
+"%(hotkey_structree)s: View Structure Tree\n"
+"Last opened view will be reopened on click."
+msgstr ""
+
+#: gui/session/top_panel/CounterManager.js:100
+#, javascript-format
+msgid "%(order)s: %(hotkey)s to change order."
+msgstr "%(order)s: %(hotkey)s untuk mengubah urutan."
+
+#: gui/session/top_panel/CounterManager.js:104
+msgid "Unordered"
+msgstr "Tidak urut"
+
+#: gui/session/top_panel/CounterManager.js:106
+msgid "Descending"
+msgstr "Menurun"
+
+#: gui/session/top_panel/CounterManager.js:107
+msgid "Ascending"
+msgstr "Meningkat"
+
+#: gui/session/top_panel/CounterManager.js:135
+#, javascript-format
+msgid "%(playername)s: %(statValue)s"
+msgstr "%(playername)s: %(statValue)s"
+
+#. Translation: Do not insert spaces around the slash symbol for this exact
+#. string. Keep only
+#. one space between popLimit and popMax.
+#: gui/session/top_panel/CounterPopulation.js:61
+#: gui/session/top_panel/CounterPopulation.js:65
+#, javascript-format
+msgid "%(popCount)s/%(popLimit)s (%(popMax)s)"
+msgstr "%(popCount)s/%(popLimit)s (%(popMax)s)"
+
+#: gui/session/top_panel/CounterPopulation.js:63
+msgid "Population: current/limit (max)"
+msgstr "Populasi: sekarang/batas (maks)"
+
+#: gui/session/top_panel/FollowPlayer.xml:11
+#: gui/session/top_panel/FollowPlayer.xml:15
+msgctxt "observer mode"
+msgid "Follow Player"
+msgstr "Ikuti Pemain"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:10
+#: gui/session/top_panel/IconButtons/DiplomacyDialogButton.js:29
+msgid "Diplomacy"
+msgstr "Diplomasi"
+
+#: gui/session/top_panel/IconButtons/GameSpeedButton.xml:9
+msgid "Game Speed"
+msgstr "Kecepatan Permainan"
+
+#: gui/session/match_settings/MatchSettingsDialog.xml:15
+#: gui/session/top_panel/IconButtons/MatchSettingsDialogButton.js:23
+msgid "Match Settings"
+msgstr ""
+
+#: gui/session/top_panel/MenuButton.xml:15
+msgid "Menu"
+msgstr "Menu"
+
+#: gui/session/top_panel/PlayerViewControl.js:123
+msgid "Observer"
+msgstr "Pengamat"
+
+#: gui/session/top_panel/PlayerViewControl.xml:13
+msgid "Choose player to view"
+msgstr "Pilih pemain yang akan dilihat"
+
+#: gui/session/top_panel/PlayerViewControl.xml:17
+msgid "Observer Mode"
+msgstr "Mode Pengamat"
+
+#: gui/session/trade/BarterButton.js:108
+#, javascript-format
+msgid "Buy %(resource)s"
+msgstr "Beli %(resource)s"
+
+#: gui/session/trade/BarterButton.js:109
+#, javascript-format
+msgid "Sell %(resource)s"
+msgstr "Jual %(resource)s"
+
+#: gui/session/trade/BarterButton.js:110
+#, javascript-format
+msgctxt "buy action"
+msgid "+%(amount)s"
+msgstr "+%(amount)s"
+
+#: gui/session/trade/BarterButton.js:111
+#, javascript-format
+msgctxt "sell action"
+msgid "-%(amount)s"
+msgstr "-%(amount)s"
+
+#: gui/session/trade/BarterPanel.xml:5
+msgid "Barter"
+msgstr "Barter"
+
+#: gui/session/trade/BarterPanel.xml:13
+msgid "Sell:"
+msgstr "Menjual:"
+
+#: gui/session/trade/BarterPanel.xml:17
+msgid "Buy:"
+msgstr "Membeli:"
+
+#: gui/session/trade/BarterPanel.xml:21
+msgid "No Markets Available"
+msgstr "Tidak Ada Pasar Tersedia"
+
+#: gui/session/trade/TradeButton.js:56
+#, javascript-format
+msgctxt "trading good ratio"
+msgid "%(amount)s%%"
+msgstr "%(amount)s%%"
+
+#: gui/session/trade/TradeButtonManager.js:80
+#, javascript-format
+msgid ""
+"Select one type of goods you want to modify by clicking on it, and then use "
+"the arrows of the other types to modify their shares. You can also press "
+"%(hotkey)s while selecting one type of goods to bring its share to 100%%."
+msgstr "Pilih satu jenis barang yang ingin diubah dengan mengkliknya, lalu gunakan panah dari jenis yang lain untuk mengubah bagiannya. Anda juga bisa menekan %(hotkey)s ketika memilih satu jenis barang untuk membuat bagiannya menjadi 100 %%."
+
+#: gui/session/trade/TradeDialogBarterPanel.js:45
+#, javascript-format
+msgid ""
+"Start by selecting the resource you wish to sell from the upper row. For "
+"each time the lower buttons are pressed, %(quantity)s of the upper resource "
+"will be sold for the displayed quantity of the lower. Press and hold "
+"%(hotkey)s to temporarily multiply the traded amount by %(multiplier)s."
+msgstr "Mulai dengan memilih sumberdaya yang ingin Anda jual dari baris atas. Setiap kali tombol di bawahnya ditekan, %(quantity)s dari sumberdaya atas akan dijual untuk jumlah yang ditampilkan di bawah. Tekan dan tahan %(hotkey)s untuk sementara mengalikan jumlah yang diperdagangkan dengan %(multiplier)s."
+
+#: gui/session/trade/TradePanel.xml:5
+msgid "Trade"
+msgstr "Dagang"
+
+#: gui/session/trade/TradePanel.xml:14
+msgid "Resources:"
+msgstr "Sumberdaya:"
+
+#: gui/session/trade/TraderStatusTextLand.js:15
+#, javascript-format
+msgid "There is %(numberTrading)s land trader trading"
+msgid_plural "There are %(numberTrading)s land traders trading"
+msgstr[0] "Ada %(numberTrading)s pedagang darat yang berdagang"
+
+#: gui/session/trade/TraderStatusTextLand.js:25
+#, javascript-format
+msgid "%(numberOfLandTraders)s inactive"
+msgid_plural "%(numberOfLandTraders)s inactive"
+msgstr[0] "%(numberOfLandTraders)s tidak aktif"
+
+#: gui/session/trade/TraderStatusTextLand.js:30
+#, javascript-format
+msgid "%(numberOfLandTraders)s land trader inactive"
+msgid_plural "%(numberOfLandTraders)s land traders inactive"
+msgstr[0] "%(numberOfLandTraders)s pedagang darat tidak aktif"
+
+#: gui/session/trade/TraderStatusTextLand.js:40
+#, javascript-format
+msgid "%(numberGarrisoned)s garrisoned on a trading merchant ship"
+msgid_plural "%(numberGarrisoned)s garrisoned on a trading merchant ship"
+msgstr[0] "%(numberGarrisoned)s ditempatkan di dalam sebuah kapal dagang"
+
+#: gui/session/trade/TraderStatusTextLand.js:45
+#, javascript-format
+msgid ""
+"There is %(numberGarrisoned)s land trader garrisoned on a trading merchant "
+"ship"
+msgid_plural ""
+"There are %(numberGarrisoned)s land traders garrisoned on a trading merchant"
+" ship"
+msgstr[0] "Ada %(numberGarrisoned)s pedagang darat di dalam kapal dagang"
+
+#: gui/session/trade/TraderStatusTextLand.js:65
+#, javascript-format
+msgid "%(openingTradingString)s, and %(garrisonedString)s."
+msgstr "%(openingTradingString)s, dan %(garrisonedString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:66
+#, javascript-format
+msgid ""
+"%(openingTradingString)s, %(garrisonedString)s, and %(inactiveString)s."
+msgstr "%(openingTradingString)s, %(garrisonedString)s, dan %(inactiveString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:69
+#: gui/session/trade/TraderStatusTextShip.js:47
+#, javascript-format
+msgid "%(openingTradingString)s."
+msgstr "%(openingTradingString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:70
+#: gui/session/trade/TraderStatusTextShip.js:46
+#, javascript-format
+msgid "%(openingTradingString)s, and %(inactiveString)s."
+msgstr "%(openingTradingString)s, dan %(inactiveString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:75
+#, javascript-format
+msgid "%(openingGarrisonedString)s."
+msgstr "%(openingGarrisonedString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:76
+#, javascript-format
+msgid "%(openingGarrisonedString)s, and %(inactiveString)s."
+msgstr "%(openingGarrisonedString)s, dan %(inactiveString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:79
+#: gui/session/trade/TraderStatusTextShip.js:50
+#, javascript-format
+msgid "There is %(inactiveString)s."
+msgid_plural "There are %(inactiveString)s."
+msgstr[0] "Ada %(inactiveString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:80
+msgid "There are no land traders."
+msgstr "Tidak ada pedagang darat"
+
+#: gui/session/trade/TraderStatusTextShip.js:14
+#, javascript-format
+msgid "There is %(numberTrading)s merchant ship trading"
+msgid_plural "There are %(numberTrading)s merchant ships trading"
+msgstr[0] "Ada %(numberTrading)s kapal dagang yang berdagang"
+
+#: gui/session/trade/TraderStatusTextShip.js:24
+#, javascript-format
+msgid "%(numberOfShipTraders)s inactive"
+msgid_plural "%(numberOfShipTraders)s inactive"
+msgstr[0] "%(numberOfShipTraders)s tidak aktif"
+
+#: gui/session/trade/TraderStatusTextShip.js:29
+#, javascript-format
+msgid "%(numberOfShipTraders)s merchant ship inactive"
+msgid_plural "%(numberOfShipTraders)s merchant ships inactive"
+msgstr[0] "%(numberOfShipTraders)s kapal dagang tidak aktif"
+
+#: gui/session/trade/TraderStatusTextShip.js:51
+msgid "There are no merchant ships."
+msgstr "Tidak ada kapal dagang"
+
+#: gui/session/tutorial_panel.xml:11
+msgid "Ready"
+msgstr "Siap"
+
+#: gui/session/unit_actions.js:624
+msgid ""
+"This is the origin trade market.\n"
+"Right-click to cancel trade route."
+msgstr "Ini adalah pasar asal. \nKlik-kanan untuk membatalkan jalur dagang."
+
+#: gui/session/unit_actions.js:683
+msgid "Origin trade market."
+msgstr "Pasar asal."
+
+#: gui/session/unit_actions.js:693
+msgid "Destination trade market."
+msgstr "Pasar tujuan."
+
+#: gui/session/unit_actions.js:700
+msgid "Right-click to set as origin trade market"
+msgstr "Klik-kanan untuk menetapkan sebagai pasar asal"
+
+#: gui/session/unit_actions.js:707 gui/session/unit_actions.js:1272
+msgid "This market is too close to the origin market."
+msgstr "Pasar ini terlalu dekat dengan pasar asal."
+
+#: gui/session/unit_actions.js:711
+msgid "Right-click to set as destination trade market."
+msgstr "Klik kanan untuk menetapkan sebagai pasar tujuan."
+
+#: gui/session/unit_actions.js:778 gui/session/unit_actions.js:1204
+#, javascript-format
+msgid "Current turrets: %(occupied)s/%(capacity)s"
+msgstr "Penjaga saat ini: %(occupied)s/%(capacity)s"
+
+#: gui/session/unit_actions.js:844 gui/session/unit_actions.js:1187
+#, javascript-format
+msgid "Current garrison: %(garrisoned)s/%(capacity)s"
+msgstr "Diisi: %(garrisoned)s/%(capacity)s"
+
+#: gui/session/unit_actions.js:1263
+msgid "Right-click to establish a default route for new traders."
+msgstr "Klik kanan untuk menetapkan jalur dagang bagi pedagang baru."
+
+#: gui/session/unit_actions.js:1267
+#, javascript-format
+msgid "Expected gain: %(gain)s"
+msgstr "Perolehan diharapkan: %(gain)s"
+
+#: gui/session/unit_actions.js:1401
+msgid "This entity cannot be controlled."
+msgid_plural "These entities cannot be controlled."
+msgstr[0] "Entitas ini tidak dapat dikendalikan."
+
+#: gui/session/unit_actions.js:1447
+msgid "Unload All"
+msgstr "Keluarkan Semua"
+
+#: gui/session/unit_actions.js:1448
+msgid "Order all units to leave the selected entities."
+msgstr ""
+
+#: gui/session/unit_actions.js:1483
+msgid "Unload Turrets"
+msgstr "Keluarkan Penjaga."
+
+#: gui/session/unit_actions.js:1484
+msgid "Order all units to leave the selected turret points."
+msgstr ""
+
+#: gui/session/unit_actions.js:1504
+msgid "Self-Destruct"
+msgstr ""
+
+#: gui/session/unit_actions.js:1505
+msgid "Destroy the selected entities."
+msgstr "Hancurkan entitas yang dipilih."
+
+#: gui/session/unit_actions.js:1507
+#, javascript-format
+msgid "Use %(hotkey)s to avoid the confirmation dialog."
+msgstr "Gunakan %(hotkey)s untuk menghindari dialog konfirmasi."
+
+#: gui/session/unit_actions.js:1559
+msgid "Abort"
+msgstr "Batalkan"
+
+#: gui/session/unit_actions.js:1560
+msgid "Cancel the current orders for the selected units."
+msgstr ""
+
+#: gui/session/unit_actions.js:1581
+msgid "Attack"
+msgstr ""
+
+#: gui/session/unit_actions.js:1582
+msgid ""
+"Send the selected units on attack move to the specified location after "
+"dropping resources."
+msgstr "Kirimkan unit terpilih untuk serang jalan ke lokasi tertentu setelah meninggalkan sumberdaya."
+
+#: gui/session/unit_actions.js:1604
+msgid "Garrison"
+msgstr "Masukkan"
+
+#: gui/session/unit_actions.js:1605
+msgid "Order the selected units to garrison in a structure or another unit."
+msgstr ""
+
+#: gui/session/unit_actions.js:1627
+msgid "Occupy Turret"
+msgstr ""
+
+#: gui/session/unit_actions.js:1628
+msgid "Order the selected units to occupy a turret point."
+msgstr "Perintahkan unit terpilih untuk menempati pos penjaga."
+
+#: gui/session/unit_actions.js:1650
+msgid "Unload"
+msgstr "Keluarkan"
+
+#: gui/session/unit_actions.js:1651
+msgid "Order the selected units to leave their turret points."
+msgstr ""
+
+#: gui/session/unit_actions.js:1671
+msgid "Repair"
+msgstr "Perbaiki"
+
+#: gui/session/unit_actions.js:1672
+msgid "Order the selected units to repair a structure, ship, or siege engine."
+msgstr "Perintahkan unit yang dipilih untuk memperbaiki bangunan, kapal, atau mesin kepung."
+
+#: gui/session/unit_actions.js:1693
+msgid "Focus on Rally Point"
+msgstr "Fokus pada Titik Kumpul"
+
+#: gui/session/unit_actions.js:1694
+msgid "Center the view on the selected rally point."
+msgstr ""
+
+#: gui/session/unit_actions.js:1731
+msgid "Back to Work"
+msgstr "Kembali Bekerja"
+
+#: gui/session/unit_actions.js:1732
+msgid "Order the selected units to resume their work."
+msgstr ""
+
+#: gui/session/unit_actions.js:1753
+msgid "Guard"
+msgstr "Lindungi"
+
+#: gui/session/unit_actions.js:1754
+msgid "Order the selected units to guard a structure or unit."
+msgstr "Perintahkan unit yang dipilih untuk mengawal bangunan atau unit."
+
+#: gui/session/unit_actions.js:1774
+msgid "Abort Guard"
+msgstr ""
+
+#: gui/session/unit_actions.js:1775
+msgid "Order the selected units to stop guarding."
+msgstr ""
+
+#: gui/session/top_panel/IconButtons/TradeDialogButton.js:31
+#: gui/session/trade/TradeDialog.xml:9 gui/session/unit_actions.js:1795
+msgid "Barter & Trade"
+msgstr "Barter & Perdagangan"
+
+#: gui/session/unit_actions.js:1796
+msgid "Open the dialog for managing resource trading and bartering."
+msgstr ""
+
+#: gui/session/unit_actions.js:1816
+msgid "Patrol"
+msgstr "Patroli"
+
+#: gui/session/unit_actions.js:1817
+msgid ""
+"Order to repeatedly go to a point and come back, attacking all enemies along"
+" the way."
+msgstr ""
+
+#: gui/session/unit_actions.js:1845
+msgid "Share Dropsite"
+msgstr ""
+
+#: gui/session/unit_actions.js:1846
+msgid "Allow allies to use this dropsite, now locked."
+msgstr ""
+
+#: gui/session/unit_actions.js:1851
+msgid "Lock Dropsite"
+msgstr ""
+
+#: gui/session/unit_actions.js:1852
+msgid "Prevent allies from using this dropsite, now shared."
+msgstr ""
+
+#: gui/session/unit_actions.js:1887
+msgid "Locked Dropsite"
+msgstr ""
+
+#: gui/session/unit_actions.js:1888
+msgid "The use of this dropsite is prohibited."
+msgstr ""
+
+#: gui/session/unit_actions.js:1894
+msgid "Shared Dropsite"
+msgstr ""
+
+#: gui/session/unit_actions.js:1895
+msgid "Allies are allowed to use this dropsite."
+msgstr "Sekutu diizinkan menggunakan dropsite ini."
+
+#: gui/session/unit_actions.js:1896
+msgid "You are allowed to use this dropsite."
+msgstr ""
+
+#: gui/session/unit_actions.js:1915
+msgid "Activate Auto-Queue"
+msgstr ""
+
+#: gui/session/unit_actions.js:1916
+msgid "Activate the production auto-queue for the selected structures."
+msgstr ""
+
+#: gui/session/unit_actions.js:1936
+msgid "Deactivate Auto-Queue"
+msgstr ""
+
+#: gui/session/unit_actions.js:1937
+msgid "Deactivate the production auto-queue for the selected structures."
+msgstr ""
+
+#: gui/session/unit_actions.js:2002
+msgid "The entity has to be killed before it can be gathered from"
+msgstr "Entitas ini harus dibunuh dahulu sebelum bisa dikumpulkan"
+
+#: gui/session/unit_actions.js:2005
+msgid ""
+"You cannot destroy this entity as you own less than half the capture points"
+msgstr "Anda tidak dapat menghancurkan entitas ini karena Anda hanya memiliki kurang dari setengah poin perebutan."
+
+#: gui/session/unit_actions.js:2008
+msgid "This entity is undeletable"
+msgstr "Entitas ini tidak dapat dihapus"

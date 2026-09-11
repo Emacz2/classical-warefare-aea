@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="elephant-driver-cape">
+      <mesh>props/new/capes/cape_hd_hoplite.dae</mesh>
+      <textures>
+        <texture file="props/cape_hd.dds" name="baseTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/base_elephant_turret_pikeman_relax.xml"/>
+    <variant file="biped/attack_capture.xml"/>
+    <variant file="biped/rider/elephantry/african_turret_death.xml"/>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

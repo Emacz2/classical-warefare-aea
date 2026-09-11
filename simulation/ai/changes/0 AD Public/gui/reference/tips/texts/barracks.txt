@@ -1,0 +1,5 @@
+BARRACKS
+Trains all Citizen Infantry. Some civilizations can unlock the training of Champions in it as well.
+Units gain experience while garrisoned inside.
+Build one early to train Citizen Soldiers while you phase up your settlement.
+Build near the front lines to resupply your assault with fresh troops.

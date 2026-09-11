@@ -1,0 +1,5 @@
+RESOURCE GATHERING
+Use Workers to gather resources.
+Civilians are best at gathering fruit and grain.
+Citizen Infantry excel at gathering wood, stone, and metal.
+Citizen Cavalry can only gather meat, but do so very quickly.

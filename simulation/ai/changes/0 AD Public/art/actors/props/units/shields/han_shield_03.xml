@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="Texture 02">
+      <mesh>props/shield/han_02.dae</mesh>
+      <textures>
+        <texture file="props/shield/han_02.dds" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="Texture 03">
+      <mesh>props/shield/han_02.dae</mesh>
+      <textures>
+        <texture file="props/shield/han_03.dds" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="Texture 04">
+      <mesh>props/shield/han_02.dae</mesh>
+      <textures>
+        <texture file="props/shield/han_04.dds" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

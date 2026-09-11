@@ -1,0 +1,1375 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Alejandro Avellaneda, 2019
+# Alejandro Cosculluela, 2019
+# Ancel0, 2013
+# Antonio J. A, 2021
+# blvebird, 2014
+# Diego Bruschetti, 2014
+# caniroc, 2013
+# Damian Axel Xavier, 2013
+# Daniel Muñoz, 2021
+# The_Gipsy, 2018
+# rafa436, 2014
+# Enrique Keykens, 2013
+# Ermides Gonzalez, 2013
+# espanengo, 2014
+# Esteban A. Mina, 2014
+# Esteban de Jesus Rodriguez Bujaidar, 2013
+# Fahed Stanic' Loayza, 2015
+# fca1970, 2014
+# Fernando Mendez, 2019-2020
+# Francisco, 2014
+# Francisco Serrador, 2023,2025
+# GaboXandre, 2013
+# gonzaleau, 2013
+# Leandro Schenone, 2014
+# Ismael Lires, 2023
+# itmeansnothing, 2014
+# Javier Rojas, 2017
+# Jesús Martínez, 2014
+# jhonny fernando montoya giraldo, 2018
+# 9fb1441aa6a9381136d59534f8fda24d_19d1fd3, 2013
+# José Castro, 2021
+# José Javier Domínguez Reina, 2017
+# Jose Manuel, 2019
+# Juan Campos, 2021
+# Kalrish Bäakjen, 2015
+# Lenny Hans Andreu, 2013
+# Liam Brien, 2017
+# Brookhaven Alt, 2013
+# Marcos Lasalle Vázquez Verdejo, 2020
+# matiasng37, 2013
+# memmaker650, 2014
+# Miguel Angel NV, 2016
+# Mihai Pantazi, 2016-2018
+# Pedro Luis, 2014
+# Pretorg, 2014
+# Rafael Castro, 2013
+# Rafael López Reyes, 2018
+# ec4ed8ad513c79b45aa3a016799aa037_aac9b66, 2015
+# Rodrigo Vegas Sánchez-Ferrero, 2018,2020-2025
+# Roger Vasquez, 2013
+# Sander Deryckere, 2014
+# ab661d6cee6a756af4a49df8163441b7_633a6fb, 2014
+# soloooy0 fg, 2021
+# Spartan2411, 2014
+# Stanislas Dolcini, 2021
+# Swyter, 2013-2018,2020
+# Tobal lópez silla, 2019
+# Tomato, 2014
+# Trombe, 2014
+# vega93, 2013,2015
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-11-12 01:27+0000\n"
+"PO-Revision-Date: 2014-06-19 17:44+0000\n"
+"Last-Translator: Rodrigo Vegas Sánchez-Ferrero, 2018,2020-2025\n"
+"Language-Team: Spanish (http://app.transifex.com/wildfire-games/0ad/language/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#: simulation/data/civs/athen.json
+msgid "Silver Owls"
+msgstr "Búhos de plata"
+
+#: simulation/data/civs/athen.json
+msgid ""
+"The mines at Laureion in Attica provided Athens with a wealth of silver from"
+" which to mint her famous and highly prized coin, The Athenian Owl."
+msgstr "Las minas de Laureion en Ática bendecían a los atenienses con un mar de plata con el que acuñar su apreciada y famosa moneda, el búho ateniense."
+
+#: simulation/data/civs/athen.json
+msgid "Workers +10% metal gather rate per phase advance."
+msgstr "Trabajadores (Velocidad de de extracción de metal: +10% en cada fase)."
+
+#: simulation/data/civs/athen.json
+msgid "Epilektoi Infantry"
+msgstr "Infantería Epilektoi"
+
+#: simulation/data/civs/athen.json
+msgid ""
+"The best of the hoplites were chosen to form a group of elite professional "
+"soldiers."
+msgstr "Cuerpo profesional de soldados de élite elegidos entre los mejores hoplitas."
+
+#: simulation/data/civs/athen.json
+msgid "Elite Hoplites can promote to Champion Spearmen."
+msgstr "Los hoplitas de élite pueden promocionar a lanceros de élite."
+
+#: simulation/data/civs/athen.json
+msgid "Alcibiades"
+msgstr "Alcibíades"
+
+#: simulation/data/civs/athen.json
+msgid "Aristides"
+msgstr "Arístides"
+
+#: simulation/data/civs/athen.json
+msgid "Callias"
+msgstr "Calias"
+
+#: simulation/data/civs/athen.json
+msgid "Chabrias"
+msgstr "Cabrias"
+
+#: simulation/data/civs/athen.json
+msgid "Cimon"
+msgstr "Cimón"
+
+#: simulation/data/civs/athen.json
+msgid "Cleisthenes"
+msgstr "Clístenes"
+
+#: simulation/data/civs/athen.json
+msgid "Cleon"
+msgstr "Cleón"
+
+#: simulation/data/civs/athen.json
+msgid "Cleophon"
+msgstr "Cleofonte"
+
+#: simulation/data/civs/athen.json
+msgid "Conon"
+msgstr "Conón"
+
+#: simulation/data/civs/athen.json
+msgid "Demosthenes"
+msgstr "Demóstenes"
+
+#: simulation/data/civs/athen.json
+msgid "Ephialtes"
+msgstr "Efialtes"
+
+#: simulation/data/civs/athen.json
+msgid "Hippias"
+msgstr "Hipias"
+
+#: simulation/data/civs/athen.json
+msgid "Miltiades"
+msgstr "Milcíades"
+
+#: simulation/data/civs/athen.json
+msgid "Nicias"
+msgstr "Nicias"
+
+#: simulation/data/civs/athen.json
+msgid "Phocion"
+msgstr "Foción"
+
+#: simulation/data/civs/athen.json
+msgid "Pisistratus"
+msgstr "Pisístrato"
+
+#: simulation/data/civs/athen.json
+msgid "Thrasybulus"
+msgstr "Trasíbulo"
+
+#: simulation/data/civs/athen.json
+msgid "Thucydides"
+msgstr "Tucídides"
+
+#: simulation/data/civs/athen.json
+msgid "Xenophon"
+msgstr "Jenofonte "
+
+#: simulation/data/civs/brit.json
+msgid "Adminius"
+msgstr "Adminius"
+
+#: simulation/data/civs/brit.json
+msgid "Cassivellaunus"
+msgstr "Casivelono"
+
+#: simulation/data/civs/brit.json
+msgid "Cogidubnus"
+msgstr "Cogidubnus"
+
+#: simulation/data/civs/brit.json
+msgid "Commius"
+msgstr "Commius"
+
+#: simulation/data/civs/brit.json
+msgid "Comux"
+msgstr "Comux"
+
+#: simulation/data/civs/brit.json
+msgid "Dubnovellaunus"
+msgstr "Dubnovellaunus"
+
+#: simulation/data/civs/brit.json
+msgid "Imanuentius"
+msgstr "Imanuentio"
+
+#: simulation/data/civs/brit.json
+msgid "Mandubracius"
+msgstr "Mandubratio"
+
+#: simulation/data/civs/brit.json
+msgid "Prasutagus"
+msgstr "Prasutagus"
+
+#: simulation/data/civs/brit.json
+msgid "Venutius"
+msgstr "Venutius"
+
+#: simulation/data/civs/brit.json
+msgid "Vosenius"
+msgstr "Vosenius"
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Deas Celtica"
+msgstr "Deas Celtica"
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Celtic religion and druidry inspired their warlike mindset."
+msgstr "Religión celta con druidas que inspiran mentalidad guerrera."
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Druids increase attack rates of soldiers near them by 5%."
+msgstr "Los druidas incrementan la capacidad de ataque de los soldados cercanos a ellos en 5%."
+
+#: simulation/data/civs/cart.json
+msgid "Trademasters"
+msgstr "Maestros del comercio"
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Carthaginians were broadly known for their extensive trade over the "
+"Mediterranean Sea."
+msgstr "Los cartagineses eran ampliamente conocidos por su gran actividad comercial en el mar Mediterráneo."
+
+#: simulation/data/civs/cart.json
+msgid "Trade ships are available in the Village Phase."
+msgstr "Los navíos mercantes están disponibles en la fase inicial."
+
+#: simulation/data/civs/cart.json
+msgid "Mining Economy"
+msgstr "Economía de minas"
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Carthaginian economy was centered around mining, with stone comprising "
+"much of Carthage's structures."
+msgstr "La economía cartaginesa se centraba en la minería, siendo la piedra un elemento fundamental de las estructuras cartaginesas. "
+
+#: simulation/data/civs/cart.json
+msgid "Stone mining technologies are free and instant."
+msgstr "Las tecnologías de extracción de piedra son gratuitas desde el comienzo."
+
+#: simulation/data/civs/cart.json
+msgid "Numidian Cavalry"
+msgstr "Caballería númida"
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Numidian cavalry's horses, ancestors of the Berber horse, were small "
+"compared with other horses of the era, and were well adapted for faster "
+"movement over long distances."
+msgstr "Los caballos de la caballería númida, antepasados del caballo bereber, eran pequeños en comparación con otros caballos de la época y estaban bien adaptados para desplazarse con rapidez en trayectos largos."
+
+#: simulation/data/civs/cart.json
+msgid "Cavalry Javelineers +10% walk speed."
+msgstr "Caballería con jabalina (Velocidad de movimiento: +10%)."
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal Barca"
+msgstr "Asdrúbal Barca"
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal Gisco"
+msgstr "Asdrúbal Gisco"
+
+#: simulation/data/civs/cart.json
+msgid "Hanno the Elder"
+msgstr "Hannón el Viejo"
+
+#: simulation/data/civs/cart.json
+msgid "Mago Barca"
+msgstr "Magón Barca"
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal the Fair"
+msgstr "Asdrúbal el Justo"
+
+#: simulation/data/civs/cart.json
+msgid "Hanno the Great"
+msgstr "Hannón el Grande"
+
+#: simulation/data/civs/cart.json
+msgid "Himilco"
+msgstr "Himilcón"
+
+#: simulation/data/civs/cart.json
+msgid "Hampsicora"
+msgstr "Hampsicora"
+
+#: simulation/data/civs/cart.json
+msgid "Hannibal Gisco"
+msgstr "Aníbal Giscón"
+
+#: simulation/data/civs/cart.json
+msgid "Dido"
+msgstr "Dido"
+
+#: simulation/data/civs/cart.json
+msgid "Xanthippus"
+msgstr "Jantipo"
+
+#: simulation/data/civs/cart.json
+msgid "Himilco Phameas"
+msgstr "Himilcón Fameas"
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal the Boetharch"
+msgstr "Asdrúbal el Beotarca"
+
+#: simulation/data/civs/gaul.json
+msgid "Cativolcus"
+msgstr "Catuvolco"
+
+#: simulation/data/civs/gaul.json
+msgid "Cingetorix"
+msgstr "Cingétorix"
+
+#: simulation/data/civs/gaul.json
+msgid "Ambiorix"
+msgstr "Ambiórix"
+
+#: simulation/data/civs/gaul.json
+msgid "Liscus"
+msgstr "Lisco"
+
+#: simulation/data/civs/gaul.json
+msgid "Orgetorix"
+msgstr "Orgetorix"
+
+#: simulation/data/civs/gaul.json
+msgid "Valetiacus"
+msgstr "Valetiaco"
+
+#: simulation/data/civs/gaul.json
+msgid "Viridovix"
+msgstr "Virídovix"
+
+#: simulation/data/civs/gaul.json simulation/data/civs/germ.json
+msgid "Divico"
+msgstr "Divicón"
+
+#: simulation/data/civs/germ.json
+msgid "Seeresses"
+msgstr "Völvas"
+
+#: simulation/data/civs/germ.json
+msgid ""
+"Seeresses accompanied the Germanic armies and envisioned prophecies of "
+"victory from sacrifices."
+msgstr "Seeresses accompanied the Germanic armies and envisioned prophecies of victory from sacrifices."
+
+#: simulation/data/civs/germ.json
+msgid "A unique Champion Healer unit is available in City Phase."
+msgstr "Un tipo de unidad de sanador de élite está disponible en la fase urbana."
+
+#: simulation/data/civs/germ.json
+msgid "Claodicus"
+msgstr "Claodicus"
+
+#: simulation/data/civs/germ.json
+msgid "Caesorix"
+msgstr "Caesorix"
+
+#: simulation/data/civs/han.json
+msgid "Liu Ying"
+msgstr "Liu Ying"
+
+#: simulation/data/civs/han.json
+msgid "Liu Gong"
+msgstr "Liu Gong"
+
+#: simulation/data/civs/han.json
+msgid "Liu Heng"
+msgstr "Liu Heng"
+
+#: simulation/data/civs/han.json
+msgid "Liu Qi"
+msgstr "Liu Qi"
+
+#: simulation/data/civs/han.json
+msgid "Liu Che"
+msgstr "Liu Che"
+
+#: simulation/data/civs/han.json
+msgid "Liu Fuling"
+msgstr "Liu Fuling"
+
+#: simulation/data/civs/han.json
+msgid "Liu He"
+msgstr "Liu He"
+
+#: simulation/data/civs/han.json
+msgid "Liu Bingyi"
+msgstr "Liu Bingyi"
+
+#: simulation/data/civs/han.json
+msgid "Liu Shi"
+msgstr "Liu Shi"
+
+#: simulation/data/civs/han.json
+msgid "Liu Ao"
+msgstr "Liu Ao"
+
+#: simulation/data/civs/han.json
+msgid "Liu Xin"
+msgstr "Liu Xin"
+
+#: simulation/data/civs/han.json
+msgid "Liu Kan"
+msgstr "Liu Kan"
+
+#: simulation/data/civs/han.json
+msgid "Liu Xuan"
+msgstr "Liu Xuan"
+
+#: simulation/data/civs/han.json
+msgid "Liu Xiu"
+msgstr "Liu Xiu"
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhuang"
+msgstr "Liu Zhuang"
+
+#: simulation/data/civs/han.json
+msgid "Liu Da"
+msgstr "Liu Da"
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhao"
+msgstr "Liu Zhao"
+
+#: simulation/data/civs/han.json
+msgid "Liu Long"
+msgstr "Liu Long"
+
+#: simulation/data/civs/han.json
+msgid "Liu Hu"
+msgstr "Liu Hu"
+
+#: simulation/data/civs/han.json
+msgid "Liu Yi"
+msgstr "Liu Yi"
+
+#: simulation/data/civs/han.json
+msgid "Liu Bao"
+msgstr "Liu Bao"
+
+#: simulation/data/civs/han.json
+msgid "Liu Bing"
+msgstr "Liu Bing"
+
+#: simulation/data/civs/han.json
+msgid "Liu Zuan"
+msgstr "Liu Zuan"
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhi"
+msgstr "Liu Zhi"
+
+#: simulation/data/civs/han.json
+msgid "Liu Bian"
+msgstr "Liu Bian"
+
+#: simulation/data/civs/han.json
+msgid "Liu Xie"
+msgstr "Liu Xie"
+
+#: simulation/data/civs/han.json
+msgid "Liu Hong"
+msgstr "Liu Hong"
+
+#: simulation/data/civs/iber.json
+msgid "Starting Walls"
+msgstr "Muralla inicial"
+
+#: simulation/data/civs/iber.json
+msgid ""
+"With exception to alluvial plains and river valleys, stone is abundant in "
+"the Iberian Peninsula and was greatly used in construction of structures of "
+"all types."
+msgstr "Con excepción a llanuras aluviales y valles fluviales, la piedra es abundante en la Península Ibérica y se utilizó mucho en la construcción de estructuras de todo tipo."
+
+#: simulation/data/civs/iber.json
+msgid "Iberians start with City Walls around their base on most maps."
+msgstr "Los íberos comienzan con murallas alrededor de su base en la mayoría de los mapas."
+
+#: simulation/data/civs/iber.json
+msgid "Massive Towers"
+msgstr "Torres macizas"
+
+#: simulation/data/civs/iber.json
+msgid ""
+"Stone Towers −50% wood cost, +150% stone cost, +33% build time, +60% health,"
+" +3 garrison capacity, and +1 default arrow count."
+msgstr "Torres de Piedra (Madera: −50%;  Piedra: +150%; Tiempo: +33%; Resistencia: +60%; Guarnición: +3; Flechas: +1)."
+
+#: simulation/data/civs/iber.json
+msgid "Audax"
+msgstr "Audax"
+
+#: simulation/data/civs/iber.json
+msgid "Calcus"
+msgstr "Calcus"
+
+#: simulation/data/civs/iber.json
+msgid "Ditalcus"
+msgstr "Ditalco"
+
+#: simulation/data/civs/iber.json
+msgid "Litennon"
+msgstr "Litennón"
+
+#: simulation/data/civs/iber.json
+msgid "Minurus"
+msgstr "Minuro"
+
+#: simulation/data/civs/iber.json
+msgid "Olyndicus"
+msgstr "Olyndicus"
+
+#: simulation/data/civs/iber.json
+msgid "Orison"
+msgstr "Orison"
+
+#: simulation/data/civs/iber.json
+msgid "Tanginus"
+msgstr "Tanginus"
+
+#: simulation/data/civs/iber.json
+msgid "Tautalus"
+msgstr "Tautalus"
+
+#: simulation/data/civs/kush.json
+msgid "Kashta"
+msgstr "Kashta"
+
+#: simulation/data/civs/kush.json
+msgid "Alara"
+msgstr "Alara"
+
+#: simulation/data/civs/kush.json
+msgid "Pebatjma"
+msgstr "Pebatjma"
+
+#: simulation/data/civs/kush.json
+msgid "Shabaka"
+msgstr "Shabaka"
+
+#: simulation/data/civs/kush.json
+msgid "Shebitku"
+msgstr "Shabitku"
+
+#: simulation/data/civs/kush.json
+msgid "Qalhata"
+msgstr "Qalhata"
+
+#: simulation/data/civs/kush.json
+msgid "Takahatenamun"
+msgstr "Takahatenamun"
+
+#: simulation/data/civs/kush.json
+msgid "Tantamani"
+msgstr "Tantamani"
+
+#: simulation/data/civs/kush.json
+msgid "Atlanersa"
+msgstr "Atlanersa"
+
+#: simulation/data/civs/kush.json
+msgid "Nasalsa"
+msgstr "Nasalsa"
+
+#: simulation/data/civs/kush.json
+msgid "Malewiebamani"
+msgstr "Malewiebamani"
+
+#: simulation/data/civs/kush.json
+msgid "Shanakdakhete"
+msgstr "Shanakdakhete"
+
+#: simulation/data/civs/kush.json
+msgid "Amanishakheto"
+msgstr "Amanishakheto"
+
+#: simulation/data/civs/kush.json simulation/data/civs/pers.json
+msgid "Large Rams"
+msgstr "Arietes grandes"
+
+#: simulation/data/civs/kush.json simulation/data/civs/pers.json
+msgid "Battering Rams +20% attack damage and +2 garrison capacity."
+msgstr "Arietes (Daño: +20%; Guarnición: +2)."
+
+#: simulation/data/civs/mace.json
+msgid "Antipater"
+msgstr "Antípatro"
+
+#: simulation/data/civs/mace.json
+msgid "Philip IV"
+msgstr "Filipo IV"
+
+#: simulation/data/civs/mace.json
+msgid "Lysimachus"
+msgstr "Lisímaco"
+
+#: simulation/data/civs/mace.json
+msgid "Pyrrhus of Epirus"
+msgstr "Pirro de Epiro"
+
+#: simulation/data/civs/mace.json
+msgid "Antigonus II Gonatas"
+msgstr "Antígono II Gonatas"
+
+#: simulation/data/civs/mace.json
+msgid "Demetrius II Aetolicus"
+msgstr "Demetrio II Etolia"
+
+#: simulation/data/civs/mace.json
+msgid "Philip V"
+msgstr "Filipo V"
+
+#: simulation/data/civs/mace.json
+msgid "Perseus"
+msgstr "Perseo"
+
+#: simulation/data/civs/mace.json
+msgid "Craterus"
+msgstr "Crátero"
+
+#: simulation/data/civs/mace.json
+msgid "Meleager"
+msgstr "Meleagro"
+
+#: simulation/data/civs/mace.json simulation/data/civs/spart.json
+msgid "Lysander"
+msgstr "Lisandro"
+
+#: simulation/data/civs/maur.json
+msgid "Bindusara Maurya"
+msgstr "Bindusara Maurya"
+
+#: simulation/data/civs/maur.json
+msgid "Brihadratha Maurya"
+msgstr "Brihadratha Maurya"
+
+#: simulation/data/civs/maur.json
+msgid "Dasharatha Maurya"
+msgstr "Dasharatha Maurya"
+
+#: simulation/data/civs/maur.json
+msgid "Devavarman Maurya"
+msgstr "Devavarman Maurya"
+
+#: simulation/data/civs/maur.json
+msgid "Kunala Maurya"
+msgstr "Kunala Maurya"
+
+#: simulation/data/civs/maur.json
+msgid "Samprati Maurya"
+msgstr "Samprati Maurya"
+
+#: simulation/data/civs/maur.json
+msgid "Shalishuka Maurya"
+msgstr "Shalishuka Maurya"
+
+#: simulation/data/civs/maur.json
+msgid "Shatadhanvan Maurya"
+msgstr "Shatadhanvan Maurya"
+
+#: simulation/data/civs/maur.json
+msgid "Tivala Maurya"
+msgstr "Tivala Maurya"
+
+#: simulation/data/civs/pers.json
+msgid "Darics"
+msgstr "Dáricos"
+
+#: simulation/data/civs/pers.json
+msgid "Land Traders +25% trade gain."
+msgstr "Comerciantes terrestres (Ganancias: +25%)."
+
+#: simulation/data/civs/pers.json
+msgid "Times of War"
+msgstr "Tiempos de guerra"
+
+#: simulation/data/civs/pers.json
+msgid "The Persians were known for their large cavalry contingent."
+msgstr "Los persas eran conocidos por su gran contingente de caballería."
+
+#: simulation/data/civs/pers.json
+msgid ""
+"The batch training time of units trained in Stables decreases each phase "
+"advance."
+msgstr "El tiempo de adiestramiento en grupo de las unidades producidas en los establos disminuye en cada avance de fase."
+
+#: simulation/data/civs/pers.json
+msgid "Satrapy Tribute"
+msgstr "Tributo sátrapa"
+
+#: simulation/data/civs/pers.json
+msgid ""
+"The empire was divided into provinces, called “Satrapies,” that sent yearly "
+"tribute to the ruling Persian dynasty in Persepolis as a form of tax."
+msgstr "El imperio se dividió en provincias, denominadas «satrapías». Estas debían pagar tributos anualmente en forma de tasa a la dinastía persa que gobernaba en Persépolis."
+
+#: simulation/data/civs/pers.json
+msgid ""
+"Upgrade the Throne Hall to receive a free trickle of a desired resource."
+msgstr "Mejora el salón del trono para recibir de forma recurrente un determinado recurso. "
+
+#: simulation/data/civs/pers.json
+msgid "Cambyses II"
+msgstr "Cambises II"
+
+#: simulation/data/civs/pers.json
+msgid "Bardiya"
+msgstr "Bardiya"
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha I"
+msgstr "Artaxshacha I"
+
+#: simulation/data/civs/pers.json
+msgid "Darayavahush II"
+msgstr "Darayavahush II"
+
+#: simulation/data/civs/pers.json
+msgid "Darayavahush III"
+msgstr "Darayavahush III"
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha II"
+msgstr "Artaxshacha II"
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha III"
+msgstr "Artaxshacha III"
+
+#: simulation/data/civs/pers.json
+msgid "Haxamanish"
+msgstr "Aquemenes"
+
+#: simulation/data/civs/pers.json
+msgid "Xsayarsa II"
+msgstr "Xsayarsa II"
+
+#: simulation/data/civs/ptol.json
+msgid "Polybolos"
+msgstr "Polybolos"
+
+#: simulation/data/civs/ptol.json
+msgid "Bolt Shooters −45% attack damage and −50% attack time."
+msgstr "Lanzadores de proyectiles (Daño: −45% Tiempo de ataque: −50%)."
+
+#: simulation/data/civs/ptol.json
+msgid "Nile Delta"
+msgstr "Delta del Nilo"
+
+#: simulation/data/civs/ptol.json
+msgid ""
+"The Nile Delta is a region where the Nile River divides into several "
+"branches to flow into the Mediterranean Sea, in northern Egypt."
+msgstr "El Delta del Nilo es una región donde el río Nilo se divide en numerosas ramas que desembocan en el mar Mediterráneo, al norte de Egipto."
+
+#: simulation/data/civs/ptol.json
+msgid "The three farming technologies are available in Village Phase."
+msgstr "Las tres tecnologías de cultivo están disponibles en la fase inicial."
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Philadelphus"
+msgstr "Ptolomeo Filadelfo"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Epigone"
+msgstr "Ptolomeo Epígono"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Eurgetes"
+msgstr "Ptolomeo Eúrgetes"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Epiphanes"
+msgstr "Ptolomeo Epífanes"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Philometor"
+msgstr "Ptolomeo Filométor"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Eupator"
+msgstr "Ptolomeo Eupátor"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Alexander"
+msgstr "Ptolomeo Alejandro"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Neos Dionysos"
+msgstr "Ptolomeo Neos Dioniso"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Neos Philopater"
+msgstr "Ptolomeo Neos Filopáter"
+
+#: simulation/data/civs/ptol.json
+msgid "Berenice Philopater"
+msgstr "Berenice Filópater"
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Tryphaena"
+msgstr "Cleopatra Trifaena"
+
+#: simulation/data/civs/ptol.json
+msgid "Berenice Epiphaneia"
+msgstr "Berenice Epifanía"
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Philopater"
+msgstr "Cleopatra Filopáter"
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Selene"
+msgstr "Cleopatra Selene"
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra II Philometora Soteira"
+msgstr "Cleopatra II Filometora Soteira"
+
+#: simulation/data/civs/ptol.json
+msgid "Arsinoe IV"
+msgstr "Arsinoe IV"
+
+#: simulation/data/civs/ptol.json
+msgid "Arsinoe II"
+msgstr "Arsinoe II"
+
+#: simulation/data/civs/rome.json
+msgid "Fertility"
+msgstr "Fertilidad"
+
+#: simulation/data/civs/rome.json
+msgid "Rome was one of the most populous cities in the ancient world."
+msgstr "Roma fue una de ciudades más pobladas del mundo antiguo."
+
+#: simulation/data/civs/rome.json
+msgid ""
+"Women train from houses without the need to research Fertility Festival."
+msgstr "Se puede reclutar mujeres desde las casas sin la necesidad del festival de fertilidad."
+
+#: simulation/data/civs/rome.json
+msgid "Testudo Formation"
+msgstr "Formación en tortuga"
+
+#: simulation/data/civs/rome.json
+msgid ""
+"The Romans commonly used the Testudo or 'turtle' formation for defense: "
+"Legionaries were formed into hollow squares with twelve men on each side, "
+"standing so close together that their shields overlapped like fish scales."
+msgstr "Los romanos utilizaban de forma recurrente la formación en tortuga para defenderse: Los legionarios se agrupaban rectangularmente con doce hombres a cada lado. Manteniéndose suficientemente cerca como para juntar sus escudos como si de escamas de pescado se tratasen."
+
+#: simulation/data/civs/rome.json
+msgid "Roman Legionaries can form a Testudo."
+msgstr "Los legionarios romanos pueden protegerse con la formación en tortuga."
+
+#: simulation/data/civs/rome.json
+msgid "Centurions"
+msgstr "Centuriones"
+
+#: simulation/data/civs/rome.json
+msgid ""
+"Centurions were the officers responsible for a centuria, a group of 100 "
+"soldiers."
+msgstr "Los centuriones eran los oficiales responsables de una centuria, un grupo de cien soldados."
+
+#: simulation/data/civs/rome.json
+msgid "Promote Elite Rank Spearmen or Swordsmen to Champion Centurions."
+msgstr "Los lanceros y los espadas más veteranos pueden promocionar a centuriones de élite."
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Junius Brutus"
+msgstr "Lucio Junio Bruto"
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Tarquinius Collatinus"
+msgstr "Lucio Tarquinio Colatino"
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Julius Caesar Octavianus"
+msgstr "Cayo Julio César Octavio"
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Vipsanius Agrippa"
+msgstr "Marco Vipsanio Agripa"
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Iulius Iullus"
+msgstr "Cayo Julio Julo"
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Servilius Structus Ahala"
+msgstr "Cayo Servilio Estructo Ahala"
+
+#: simulation/data/civs/rome.json
+msgid "Publius Cornelius Rufinus"
+msgstr "Publio Cornelio Rufino"
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Papirius Cursor"
+msgstr "Lucio Papirio Cursor"
+
+#: simulation/data/civs/rome.json
+msgid "Aulus Manlius Capitolinus"
+msgstr "Aulo Manlio Capitolino"
+
+#: simulation/data/civs/rome.json
+msgid "Publius Sempronius Tuditanus"
+msgstr "Publio Sempronio Tuditano"
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Cornelius Cethegus"
+msgstr "Marco Cornelio Cetego"
+
+#: simulation/data/civs/rome.json
+msgid "Quintus Caecilius Metellus Pius"
+msgstr "Quinto Cecilio Metelo Pío"
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Licinius Crassus"
+msgstr "Marco Licinio Craso"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus I Soter"
+msgstr "Antíoco I Sóter"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus II Theos"
+msgstr "Antíoco II Theos"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus II Callinicus"
+msgstr "Seleuco II Calinico"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus III Ceraunus"
+msgstr "Seleuco III Cerauno"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus IV Philopator"
+msgstr "Seleuco IV Filopátor"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus V Eupator"
+msgstr "Antíoco V Eupator"
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius I Soter"
+msgstr "Demetrio I Sóter"
+
+#: simulation/data/civs/sele.json
+msgid "Alexander I Balas"
+msgstr "Alejandro I Balas"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VI Dionysus"
+msgstr "Antíoco VI Dioniso"
+
+#: simulation/data/civs/sele.json
+msgid "Diodotus Tryphon"
+msgstr "Diodoto Trifón"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VII Sidetes"
+msgstr "Antíoco VII Sidetes"
+
+#: simulation/data/civs/sele.json
+msgid "Alexander II Zabinas"
+msgstr "Alejandro II Zabinas"
+
+#: simulation/data/civs/sele.json
+msgid "Cleopatra Thea"
+msgstr "Cleopatra Thea"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus V Philometor"
+msgstr "Seleuco V Filométor"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VIII Grypus"
+msgstr "Antíoco VIII Grypus"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus IX Cyzicenus"
+msgstr "Antíoco IX Cyzicus"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus VI Epiphanes"
+msgstr "Seleuco VI Epífanes"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus X Eusebes"
+msgstr "Antíoco X Eusebio"
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius III Eucaerus"
+msgstr "Demetrio III Eucarios"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XI Epiphanes"
+msgstr "Antíoco XI Epífanes"
+
+#: simulation/data/civs/sele.json
+msgid "Philip I Philadelphus"
+msgstr "Filipo I Filadelfo"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XII Dionysus"
+msgstr "Antíoco XIII Dioniso"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus VII Kybiosaktes"
+msgstr "Seleuco VII Cibiosactes"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XIII Asiaticus"
+msgstr "Antíoco XIII Asiático"
+
+#: simulation/data/civs/sele.json
+msgid "Philip II Philoromaeus"
+msgstr "Filipo II Filorromano"
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius II Nicator"
+msgstr "Demetrio II Nicátor"
+
+#: simulation/data/civs/spart.json
+msgid "Ritualistic Exercise"
+msgstr "Ejercicio ritual"
+
+#: simulation/data/civs/spart.json
+msgid "Citizen-Soldiers +40% health and +50% melee attack hack damage."
+msgstr "Ciudadanos-soldados (Salud: +40%; Daño por corte en ataques cuerpo a cuerpo: +50%)."
+
+#: simulation/data/civs/spart.json
+msgid "Laws of Lycurgus"
+msgstr "Leyes de Licurgo"
+
+#: simulation/data/civs/spart.json
+msgid ""
+"Under the constitution written by the mythical lawgiver Lycurgus, society "
+"was shaped around the training and development of superior warriors in "
+"defense of the Spartan state."
+msgstr "La constitución redactada por el legendario legislador Licurgo establecía una sociedad fundamentada en el adiestramiento y desarrollo de grandes guerreros para la defensa del estado espartano."
+
+#: simulation/data/civs/spart.json
+msgid ""
+"Champion Hoplites are available in village phase, and can promote to highly "
+"experienced Olympic Champions."
+msgstr "Los hoplitas de élite están disponibles en la fase inicial y pueden promocionar a guerreros olímpicos altamente experimentados."
+
+#: simulation/data/civs/spart.json
+msgid "Agoge"
+msgstr "Agogé"
+
+#: simulation/data/civs/spart.json
+msgid ""
+"The institution of the Agoge was established to rigorously train Spartan "
+"boys from the age of 6 to be fearsome warriors."
+msgstr "La Agogé, o educación espartana, se estableció para adiestrar con rigor a los niños espartanos desde los seis años y convertirlos en temibles guerreros."
+
+#: simulation/data/civs/spart.json
+msgid "Champion Hoplites -10% attack time."
+msgstr "Hoplitas de élite (Tiempo de ataque: −10%)."
+
+#: simulation/data/civs/spart.json
+msgid "Agesilaus"
+msgstr "Agesilao"
+
+#: simulation/data/civs/spart.json
+msgid "Agesipolis"
+msgstr "Agesípolis"
+
+#: simulation/data/civs/spart.json
+msgid "Agis II"
+msgstr "Agis II"
+
+#: simulation/data/civs/spart.json
+msgid "Anaxandridas"
+msgstr "Anaxándridas"
+
+#: simulation/data/civs/spart.json
+msgid "Archidamus"
+msgstr "Arquídamo"
+
+#: simulation/data/civs/spart.json
+msgid "Cleomenes"
+msgstr "Cleómenes"
+
+#: simulation/data/civs/spart.json
+msgid "Dienekes"
+msgstr "Dienekes"
+
+#: simulation/data/civs/spart.json
+msgid "Echestratus"
+msgstr "Equéstrato"
+
+#: simulation/data/civs/spart.json
+msgid "Eucleidas"
+msgstr "Euclidas"
+
+#: simulation/data/civs/spart.json
+msgid "Eurybiades"
+msgstr "Euribíades"
+
+#: simulation/data/civs/spart.json
+msgid "Eurycrates"
+msgstr "Eurícrates"
+
+#: simulation/data/civs/spart.json
+msgid "Gylippus"
+msgstr "Gilipo"
+
+#: simulation/data/civs/spart.json
+msgid "Leotychidas"
+msgstr "Leotíquidas"
+
+#: simulation/data/civs/spart.json
+msgid "Pausanias"
+msgstr "Pausanias"
+
+#: simulation/templates/special/players/athen.xml:8
+msgid "Athenians"
+msgstr "Atenienses"
+
+#: simulation/templates/special/players/athen.xml:9
+msgid ""
+"The Greek city-state of Athens is remembered as a famed center for the arts,"
+" learning, and philosophy, as well as one of the earliest forms of "
+"democracy. That wasn't to say that they weren't warriors. Athens at its "
+"height had one of the most powerful navies in the ancient world and through "
+"conquering and colonizing built a vast empire.\\nAncient Athens rose to an "
+"imperial power after defeating the invading Persians twice in the early "
+"fifth century BC and fell in 330 BC, when they lost the Battle of Chaeronea "
+"to King Phillip II of Macedonia. While after that it never rose again to "
+"power, Athens still was renowned for its learning and its scholars were well"
+" sought out as teachers."
+msgstr "La ciudad-estado griega de Atenas es recordada por ser cuna de las artes, el aprendizaje y la filosofía, así como por desarrollar una de las primeras formas de democracia. Esto no quiere decir que no fueran guerreros. En su apogeo, Atenas tenía una de las armadas más poderosas del mundo antiguo y, mediante la conquista y la colonización, construyó un vasto imperio.\\nLa antigua Atenas se convirtió en una potencia imperial tras derrotar a los invasores persas en dos ocasiones a principios del siglo V a. C. y cayó derrotada en el 330 a. C. en la batalla de Queronea contra el rey Filipo II de Macedonia. Aunque nunca volvió recuperar el poder, Atenas siguió siendo famosa por su cultura y sus eruditos eran muy solicitados como maestros."
+
+#: simulation/templates/special/players/brit.xml:8
+msgid "Britons"
+msgstr "Britanos"
+
+#: simulation/templates/special/players/brit.xml:9
+msgid ""
+"The Britons were the Celtic tribes of the British Isles. Using chariots, "
+"longswordsmen and powerful melee soldiers, they staged fearsome revolts "
+"against Rome to protect their customs and interests. Also, they built "
+"thousands of unique structures such as hill forts, crannogs and brochs."
+msgstr "Los britanos eran las tribus celtas de las islas británicas. Protagonizaron violentas revueltas contra Roma para proteger sus costumbres e intereses mediante el uso de carros de combate, espadas largas y fuertes guerreros cuerpo a cuerpo. Son los constructores de miles de estructuras únicas como castros, crannogs y brochs."
+
+#: simulation/templates/special/players/cart.xml:8
+msgid "Carthaginians"
+msgstr "Cartagineses"
+
+#: simulation/templates/special/players/cart.xml:9
+msgid ""
+"Carthage, a city-state in modern-day Tunisia, was a formidable force in the "
+"western Mediterranean, eventually taking over much of North Africa and "
+"modern-day Spain in the third century BC. The sailors of Carthage were among"
+" the fiercest contenders on the high seas, and masters of naval trade. They "
+"deployed towered War Elephants on the battlefield to fearsome effect, and "
+"had defensive walls so strong, they were never breached."
+msgstr "Cartago, la ciudad-estado ubicada en la actual Túnez, fue una imponente fuerza del Mediterráneo occidental, llegando a extenderse por gran parte del norte de África y la actual España durante el tercer siglo a. C. Los marineros cartagineses estaban entre los más fieros contendientes de los mares, y fueron maestros del comercio naval. Desplegaban elefantes de combate en el campo de batalla para infundir miedo en el enemigo y tenían murallas defensivas tan robustas que no podían ser traspasadas."
+
+#: simulation/templates/special/players/gaia.xml:9
+msgid "Gaia"
+msgstr "Gaia"
+
+#: simulation/templates/special/players/gaul.xml:8
+msgid "Gauls"
+msgstr "Galos"
+
+#: simulation/templates/special/players/gaul.xml:9
+msgid ""
+"The Gauls were the Celtic tribes of continental Europe. Dominated by a "
+"priestly class of Druids, they featured a sophisticated culture of advanced "
+"metalworking, agriculture, trade and even road engineering. With heavy "
+"infantry and cavalry, Gallic warriors valiantly resisted Caesar's campaign "
+"of conquest and Rome's authoritarian rule."
+msgstr "Los galos eran tribus celtas de la Europa continental. Estaban dominados por una clase religiosa: los druidas. Tenían una sofisticada cultura de metalurgia avanzada, agricultura, comercio e incluso ingeniería de caminos. Con la ayuda de infantería pesada y caballería, los guerreros galos resistieron valientemente la campaña de conquista de César y el gobierno autoritario de Roma. "
+
+#. Translation: This string does NOT refer to modern-day Germans, but rather
+#. to the ancient
+#. Germanic tribes such as the Cimbri.
+#: simulation/templates/special/players/germ.xml:8
+msgid "Germans"
+msgstr "Germanos"
+
+#: simulation/templates/special/players/germ.xml:9
+msgid ""
+"The largest migration in Europe of this period was that of the Cimbri "
+"people. The Cimbri were a large group of Germanic peoples originally from "
+"the Jutland region, in the north of modern-day Denmark. In the late 2nd "
+"century BC, their migration south into Italy and France would spark the "
+"decade-long Cimbrian War against the Roman Republic, bringing \"Terror "
+"Germanicus\" to the hearts of the Roman people."
+msgstr "La mayor migración en Europa de este periodo fue la del pueblo cimbrio. Los cimbrios eran un gran grupo de pueblos germánicos originarios de la región de Jutlandia, al norte de la actual Dinamarca. A finales del siglo II a. C., su migración hacia el sur, a Italia y Francia, desencadenaría la Guerra Cimbria contra la República Romana, que duró una década y sembró el «Terror Germanicus» en los corazones del pueblo romano."
+
+#: simulation/templates/special/players/han.xml:16
+msgid "Han"
+msgstr "Han"
+
+#: simulation/templates/special/players/han.xml:17
+msgid ""
+"The Han dynasty was the second imperial dynasty of China. Founded by the "
+"commoner Liu Bang, the empire lasted from 202 BC to AD 220 with a short "
+"break from AD 9 to AD 23 when Wang Mang took the throne, making it the "
+"longest imperial dynasty in Chinese history. The Han dynasty was a period of"
+" relative peace, as well as cultural and technological growth, and for that "
+"reason is considered the first \"Golden Age of China\". The name of today's "
+"largest ethnic group in the world, the Han Chinese, derives from this very "
+"period."
+msgstr "La dinastía Han fue la segunda dinastía imperial de China. El imperio fundado por el líder campesino Liu Bang duró del 202 a. C. al 220 d. C., con una breve pausa del 9 al 23 d. C., cuando Wang Mang ocupó el trono, convirtiéndose, por tanto, en la dinastía imperial más larga de la historia de China. La dinastía Han mantuvo un periodo de relativa paz, acompañada de crecimiento cultural y tecnológico y por ello se considera la primera «Edad de Oro China». El nombre del mayor grupo étnico del mundo en la actualidad, los chinos Han, provienen precisamente de este periodo."
+
+#: simulation/templates/special/players/iber.xml:8
+msgid "Iberians"
+msgstr "Íberos"
+
+#: simulation/templates/special/players/iber.xml:9
+msgid ""
+"The Iberians were a people of mysterious origins and language, with a strong"
+" tradition of horsemanship and metalworking. A relatively peaceful culture, "
+"they usually fought in other's battles only as mercenaries. However, they "
+"proved tenacious when Rome sought to take their land and freedom from them, "
+"and employed pioneering guerrilla tactics and flaming javelins as they "
+"fought back."
+msgstr "Los íberos fueron un pueblo cuya lengua y orígenes son todavía un misterio. Tenían una larga tradición en la monta de caballos y la metalurgia. Considerados como una cultura relativamente pacífica, solían luchar como mercenarios en contiendas ajenas. No obstante, demostraron tenacidad cuando Roma quiso someterlos, siendo pioneros en el uso de tácticas de guerrilla y jabalinas incendiarias en sus confrontaciones con ellos."
+
+#: simulation/templates/special/players/kush.xml:8
+msgid "Kushites"
+msgstr "Cusitas"
+
+#: simulation/templates/special/players/kush.xml:9
+msgid ""
+"The Kingdom of Kush was an African kingdom located at the confluences of the"
+" Blue Nile, White Nile, and River Atbara, in present-day Sudan. It rose "
+"following the collapse of Egypt's New Kingdom, with its early capital at "
+"Napata. In the 8th century BC, the Kushites invaded Egypt and established "
+"the Twenty-fifth dynasty, ruling as Pharaohs until expelled by the "
+"Assyrians. The capital moved to Meroe, the center of the Meroitic kingdom "
+"known as Aethiopia in Greek geography. Weakened due to internal rebellion, "
+"The kingdom lasted until the 4th century AD and was overtaken by the Kingdom"
+" of Axum. Influenced by Egyptian culture, the Kushites built throughout "
+"their reign pyramids and temples and worshipped gods like Amun."
+msgstr "El Reino de Kush fue un reino africano localizado en la confluencia del Nilo Azúl, Nilo Blanco y Río Atbara, en lo que hoy es Sudán. Surgió tras el colapso del Imperio Nuevo de Egipto, con su capital inicial en Napata. En el siglo VIII a. C., los cusitas invadieron Egipto y establecieron la vigesimoquinta dinastía, gobernando como faraones hasta que fueron expulsados ​​por los asirios. La capital se trasladó a Meroe, el centro del reino meroítico conocido como Etiopía en la geografía griega. Debilitado por una rebelión interna, el reino perduró hasta el siglo IV d. C. y fue conquistado por el Reino de Axum. Influenciados por la cultura egipcia, los cusitas construyeron pirámides y templos a lo largo de su reinado y adoraron a dioses como Amón."
+
+#: simulation/templates/special/players/mace.xml:8
+msgid "Macedonians"
+msgstr "Macedonios"
+
+#: simulation/templates/special/players/mace.xml:9
+msgid ""
+"Macedonia was an ancient Greek kingdom, centered in the northeastern part of"
+" the Greek peninsula. Under the leadership of Alexander the Great, "
+"Macedonian forces and allies took over most of the world they knew, "
+"including Egypt, Persia and parts of the Indian subcontinent, allowing a "
+"diffusion of Hellenic and eastern cultures for years to come."
+msgstr "Macedonia fue un antiguo reino griego ubicado al noreste de la península griega. Bajo el liderazgo de Alejandro Magno, las fuerzas macedonias y sus aliados conquistaron la mayor parte del mundo conocido, incluyendo Egipto, Persia y partes del subcontinente indio, permitiendo la difusión de la cultura helenística y oriental durante años."
+
+#: simulation/templates/special/players/maur.xml:8
+msgid "Mauryas"
+msgstr "Mauryas"
+
+#: simulation/templates/special/players/maur.xml:9
+msgid ""
+"Founded in 322 BC by Chandragupta Maurya, the Mauryan Empire was the first "
+"to rule most of the Indian subcontinent, and was one of the largest and most"
+" populous empires of antiquity. Its military featured bowmen who used the "
+"long-range bamboo longbow, fierce female warriors, chariots, and thousands "
+"of armored war elephants. Its philosophers, especially the famous Acharya "
+"Chanakya, contributed to such varied fields such as economics, religion, "
+"diplomacy, warfare, and good governance. Under the rule of Ashoka the Great,"
+" the empire saw 40 years of peace, harmony, and prosperity."
+msgstr "Fundada en el año 322 a. C. por Chandragupta Maurya, el Imperio Maurya fue el primero en dominar la mayor parte del subcontinente indio y fue uno de los imperios más grandes y poblados de la antigüedad. Su ejército contó con arqueros con arco de bambú de largo alcance, feroces mujeres guerreras, carros y miles de elefantes de guerra con armadura. Sus filósofos, en especial el famoso Acharya Chanakya, contribuyeron en campos tan diversos como la economía, la religión, la diplomacia, la guerra y la buena gobernanza. Bajo el reinado de Ashoka el Grande el imperio tuvo 40 años de paz, armonía y prosperidad."
+
+#: simulation/templates/special/players/pers.xml:8
+msgid "Persians"
+msgstr "Persas"
+
+#: simulation/templates/special/players/pers.xml:9
+msgid ""
+"The Persian Empire, when ruled by the Achaemenid dynasty, was one of the "
+"greatest empires of antiquity, stretching at its zenith from the Indus "
+"Valley in the east to Greece in the west. The Persians were the pioneers of "
+"empire-building of the ancient world, successfully imposing a centralized "
+"rule over various peoples with different customs, laws, religions and "
+"languages, and building a cosmopolitan army made up of contingents from each"
+" of these nations."
+msgstr "El imperio persa, durante el gobierno de la dinastía aqueménida, era uno de los más grandes imperios de la antigüedad, extendiéndose en su cenit desde el Valle del Indo en el este, hasta Grecia en el oeste. Los persas fueron pioneros en la construcción de imperios en el mundo antiguo, logrando imponer con éxito una ley centralizada sobre variados pueblos con diferentes costumbres, leyes, religiones e idiomas, y conformando un ejército cosmopolita hecho de contingentes de cada una de esas naciones."
+
+#: simulation/templates/special/players/ptol.xml:16
+msgid "Ptolemies"
+msgstr "Ptolemaicos"
+
+#: simulation/templates/special/players/ptol.xml:17
+msgid ""
+"The Ptolemaic dynasty was a Macedonian Greek royal family which ruled the "
+"Ptolemaic Empire in Egypt during the Hellenistic period. Their rule lasted "
+"for 275 years, from 305 BC to 30 BC. They were the last dynasty of ancient "
+"Egypt."
+msgstr "La dinastía ptolemaica fue una familia real de la macedonia griega que gobernó el Imperio Ptolemaico de Egipto durante el periodo heleno. Su gobierno duró 275 años, desde el 305 a. C. al 30 a. C. Terminaron siendo la última dinastía del antiguo Egipto."
+
+#: simulation/templates/special/players/rome.xml:8
+msgid "Romans"
+msgstr "Romanos"
+
+#: simulation/templates/special/players/rome.xml:9
+msgid ""
+"The Romans controlled one of the largest empires of the ancient world, "
+"stretching at its peak from southern Scotland to the Sahara Desert, and "
+"containing between 60 million and 80 million inhabitants, one quarter of the"
+" Earth's population at that time. Rome also remained one of the strongest "
+"nations on earth for almost 800 years. The Romans were the supreme builders "
+"of the ancient world, excelled at siege warfare and had an exquisite "
+"infantry and navy."
+msgstr "Los romanos controlaron uno de los imperios más grandes del mundo antiguo. Abarcaba desde el sur de Escocia hasta el desierto del Sahara y contaba con una población entre 60 y 80 millones de habitantes; un cuarto de la población mundial en aquella época. Roma continuó siendo una de las naciones más poderosas del mundo durante 800 años. Los romanos fueron los constructores supremos del mundo antiguo, destacando en técnicas de asedio y contaban con una formidable infantería y marina."
+
+#: simulation/templates/special/players/sele.xml:16
+msgid "Seleucids"
+msgstr "Seléucidas"
+
+#: simulation/templates/special/players/sele.xml:17
+msgid ""
+"The Macedonian-Greek dynasty that ruled most of Alexander's former empire."
+msgstr "La dinastía grecomacedonica que gobernó gran parte del antiguo imperio de Alejandro Magno."
+
+#: simulation/templates/special/players/spart.xml:6
+msgid "Spartans"
+msgstr "Espartanos"
+
+#: simulation/templates/special/players/spart.xml:7
+msgid ""
+"Sparta was a prominent city-state in Ancient Greece, and its dominant "
+"military power started in the 7th century BC. It peaked after the "
+"Peloponnesian Wars in the late fifth century BC but declined soon after, "
+"ending when they lost to Thebes in the battle of Leuctra in 371 "
+"BC.\\nSpartan culture was obsessed with military training; all Spartan boys "
+"were drafted into strict training at age seven, and their military service "
+"lasted until they were sixty. All trades were done by their serfs, the "
+"Helots. Spartans lived a strict and minimalistic lifestyle, separate from "
+"many of the other civilizations, due to reforms such as iron money, which "
+"were given by Lycurgus, the legendary lawgiver."
+msgstr "Esparta fue una destacada ciudad-estado de la antigua Grecia. Su destacado poder militar comenzó en el siglo VII a. C. Alcanzó su punto álgido tras las guerras del Peloponeso, a finales del siglo V a. C., pero decayó poco después, tras la derrota contra Tebas en la batalla de Leuctra en el 371 a. C.\\nLa cultura espartana giraba en torno al entrenamiento militar; todos los niños espartanos eran reclutados a los siete años para recibir una estricta formación y su servicio militar duraba hasta los sesenta años. Todos los oficios eran realizados por sus siervos, los Ilotas. Los espartanos llevaban un estilo de vida estricto y minimalista, distinto al de muchas otras civilizaciones, con reformas como la introducción de la moneda de hierro, establecida por Licurgo, el legendario legislador."

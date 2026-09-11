@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <float/>
+  <group>
+    <variant frequency="100" name="Germanic fishing boat">
+      <mesh>structural/germans/fishing_boat.dae</mesh>
+      <props>
+        <prop actor="units/germans/fisherman.xml" attachpoint="fisherman"/>
+        <prop actor="" attachpoint="basket"/>
+        <prop actor="props/structures/germans/ship_oar_right.xml" attachpoint="oar_1"/>
+        <prop actor="props/structures/germans/ship_oar_left.xml" attachpoint="oar_2"/>
+      </props>
+      <textures>
+        <texture file="structural/germ_fishing_boat.png" name="baseTex"/>
+        <texture file="structural/germ_fishing_boat_norm.png" name="normTex"/>
+        <texture file="structural/germ_fishing_boat_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="idle"/>
+    <variant frequency="1" name="move">
+        <props>
+        <prop actor="units/germans/fisherman.xml" attachpoint="fisherman"/>
+        <prop actor="" attachpoint="basket"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="carry_food">
+      <props>
+        <prop actor="units/germans/fisherman.xml" attachpoint="fisherman"/>
+        <prop actor="props/structures/ptolemies/fishing_boat_basket.xml" attachpoint="basket"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="gather_fish">
+      <props>
+        <prop actor="units/germans/fisherman.xml" attachpoint="fisherman"/>
+        <prop actor="props/structures/ptolemies/fishing_boat_basket.xml" attachpoint="basket"/>
+      </props>
+    </variant>
+  </group>
+  <material>player_trans_parallax_spec.xml</material>
+</actor>

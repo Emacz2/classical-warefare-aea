@@ -1,0 +1,774 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Adrià Palouzié, 2018,2021
+# Albert F., 2018-2019,2021
+# Catalanoic, 2016-2017
+# Francesc d'Assís Requesens i Roca, 2025
+# Francesc d'Assís Requesens i Roca, 2025
+# I M, 2016
+# José Verdú Díaz, 2016
+# Klan Ruiz Martin, 2017
+# Haommin, 2014-2016,2020-2021
+# TS HAN, 2024
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-06-16 00:22+0000\n"
+"PO-Revision-Date: 2014-06-19 17:51+0000\n"
+"Last-Translator: Francesc d'Assís Requesens i Roca, 2025\n"
+"Language-Team: Catalan (http://app.transifex.com/wildfire-games/0ad/language/ca/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gui/manual/intro.txt:1
+msgid "[font=\"sans-bold-18\"]0 A.D. in-game manual[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-18\"]Manual del 0 A.D.[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:2
+msgid ""
+"Thank you for installing 0 A.D.! This page will give a brief overview of the"
+" features available in this incomplete, under-development, alpha version of "
+"the game."
+msgstr "Moltes gràcies per instal·lar el 0 A.D.! Aquesta pàgina us mostrarà una breu descripció de les característiques disponibles en aquesta versió alfa, incompleta i en desenvolupament del joc."
+
+#: gui/manual/intro.txt:4
+msgid "[font=\"sans-bold-16\"]Graphics settings[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Opcions gràfiques[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:5
+msgid ""
+"You can switch between fullscreen and windowed mode by pressing Alt + Enter."
+" In windowed mode, you can resize the window. If the game runs too slowly, "
+"you can change some settings in the options window: try disabling the “High-"
+"quality water effects” and “Shadows” options."
+msgstr "Podeu canviar entre el mode de pantalla completa i el mode de finestra prement Alt + Retorn. En mode de finestra es pot canviar la mida de la finestra. Si el joc va massa lent, podeu canviar les opcions al menú d'opcions: proveu de deshabilitar les opcions “Efectes d'aigua d'alta qualitat” i “Ombres”."
+
+#: gui/manual/intro.txt:7
+msgid "[font=\"sans-bold-16\"]Playing the game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Jugar[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:8
+msgid ""
+"The controls and gameplay should be familiar to players of traditional real-"
+"time strategy (RTS) games. There are currently a lot of missing features and"
+" poorly-balanced stats – you will probably have to wait until a beta release"
+" for it to work well."
+msgstr "Els controls i la manera de jugar seran familiars per als jugadors de jocs tradicionals d'estratègia en temps real. Encara falten moltes característiques i hi ha estadístiques mal equilibrades – haureu d'esperar al llançament d'una versió beta perquè funcioni bé del tot."
+
+#: gui/manual/intro.txt:10
+msgid "Basic controls (by default):"
+msgstr "Controls bàsics (per defecte):"
+
+#: gui/manual/intro.txt:11
+msgid "• Left-click to select units"
+msgstr "• Feu clic esquerre per seleccionar unitats"
+
+#: gui/manual/intro.txt:12
+msgid "• Left-click-and-drag to select groups of units"
+msgstr "• Feu clic esquerre i arrossegueu per seleccionar grups d'unitats"
+
+#: gui/manual/intro.txt:13
+msgid "• Right-click to order units to the target"
+msgstr "• Feu clic dret per enviar unitats a un objectiu"
+
+#: gui/manual/intro.txt:14
+msgid "• Arrow keys or WASD keys to move the camera"
+msgstr "• Utilitzeu les tecles de fletxa o WASD per moure la càmera"
+
+#: gui/manual/intro.txt:15
+msgid "• Ctrl + arrow keys, or shift + mouse wheel, to rotate the camera"
+msgstr "• Utilitzeu Ctrl + tecles de fletxa, o Maj + roda del ratolí, per girar la càmera"
+
+#: gui/manual/intro.txt:16
+msgid ""
+"• Mouse wheel, or “hotkey.camera.zoom.in” and “hotkey.camera.zoom.out” keys,"
+" to zoom"
+msgstr "• Feu ús de la roda del ratolí, o “hotkey.camera.zoom.in” i “hotkey.camera.zoom.out” per apropar o allunyar la vista."
+
+#: gui/manual/intro.txt:18
+msgid "[font=\"sans-bold-16\"]Modes[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Modes[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:19
+msgid "The main menu gives access to two game modes:"
+msgstr "El menú principal permet l'accés a dos modes de joc:"
+
+#: gui/manual/intro.txt:20
+msgid ""
+"• [font=\"sans-bold-14\"]Single-player[font=\"sans-14\"] – Play a sandbox "
+"game or against one or more computer players (AI). The default AI (Petra) is"
+" under development and may not always be up to date on the new features, but"
+" you can play the game with or against it nonetheless."
+msgstr "• [font=\"sans-bold-14\"]Un sol jugador[font=\"sans-14\"] – Jugueu en una partida de prova contra un o més adversaris de la IA. La IA per defecte (Petra) encara està en desenvolupament i és possible que no sempre estigui actualitzada amb les noves característiques, però s'hi pot jugar."
+
+#: gui/manual/intro.txt:21
+msgid ""
+"• [font=\"sans-bold-14\"]Multiplayer[font=\"sans-14\"] – Play against human "
+"opponents over the internet."
+msgstr "• [font=\"sans-bold-14\"]Multijugador[font=\"sans-14\"] – Jugueu contra adversaris humans a través d'internet."
+
+#: gui/manual/intro.txt:23
+msgid ""
+"To set up a multiplayer game, one player must select the “Host game” option."
+" The game uses UDP port 20595, so the host must configure their "
+"NAT/firewall/etc. to allow this. Other players can then select “Join game” "
+"and enter the host's IP address."
+msgstr "Per preparar una partida multijugador, un jugador ha de seleccionar l'opció \"Crea una partida\". El joc utilitza el port UDP 20595, per tant l'amfitrió ha de configurar el seu NAT/tallafocs/etc. per permetre-ho. Llavors els altres jugadors podran seleccionar \"Uneix-te a una partida\" i introduir l'adreça IP de l'amfitrió."
+
+#: gui/manual/intro.txt:25
+msgid "[font=\"sans-bold-16\"]Game setup[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Configuració de la partida[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:26
+msgid "In a multiplayer game, only the host can alter the game setup options."
+msgstr "En una partida multijugador, només l'amfitrió pot modificar les opcions de la partida."
+
+#: gui/manual/intro.txt:28
+msgid "First, select what type of map you want to play:"
+msgstr "Primer de tot, seleccioneu el tipus de mapa on voleu jugar:"
+
+#: gui/manual/intro.txt:29
+msgid ""
+"• [font=\"sans-bold-14\"]Random map[font=\"sans-14\"] – A map created "
+"automatically from a script"
+msgstr "• [font=\"sans-bold-14\"]Mapa aleatori[font=\"sans-14\"] – Un mapa creat automàticament amb un script"
+
+#: gui/manual/intro.txt:30
+msgid ""
+"• [font=\"sans-bold-14\"]Scenario map[font=\"sans-14\"] – A map created by "
+"map designers and with fixed civilizations"
+msgstr "• [font=\"sans-bold-14\"]Mapa d'escenari[font=\"sans-14\"] – Un mapa amb civilitzacions fixes creat per dissenyadors"
+
+#: gui/manual/intro.txt:31
+msgid ""
+"• [font=\"sans-bold-14\"]Skirmish map[font=\"sans-14\"] – A map created by "
+"map designers but where the civilizations can be chosen"
+msgstr "• [font=\"sans-bold-14\"]Mapa d'escaramussa[font=\"sans-14\"] – Un mapa creat per dissenyadors, on es poden triar les civilitzacions"
+
+#: gui/manual/intro.txt:33
+msgid ""
+"Then the maps can be further filtered. The default maps are generally "
+"playable maps. Naval maps are maps where not all opponents can be reached "
+"over land and demo maps are maps used for testing purposes (generally not "
+"useful to play on). The “All Maps” filter shows all maps together in one "
+"list."
+msgstr "Després es poden aplicar més filtres. En general es pot jugar amb els mapes per defecte. Els mapes navals són mapes on no es pot arribar a tots els enemics per terra i els mapes de demostració es fan servir per fer proves (normalment no són adequats per jugar). El filtre \"Tots els mapes\" mostra tots els mapes en una sola llista."
+
+#: gui/manual/intro.txt:35
+msgid ""
+"Finally change the settings. For random maps this includes the number of "
+"players, the size of a map, etc. For scenarios you can only select who "
+"controls which player (decides where you start on the map etc.). The options"
+" are either a human player, an AI or no player at all (the opponent will "
+"just be idle)."
+msgstr "Finalment, canvieu les opcions. Per als mapes aleatoris, això inclou el nombre de jugadors, la mida del mapa, etc. Per als escenaris només es pot seleccionar qui controla cada jugador (això decideix on comença cada un al mapa, etc.) Les opcions són un jugador humà, una IA o cap jugador (l'adversari estarà inactiu)."
+
+#: gui/manual/intro.txt:37
+msgid "When you are ready to start, click the “Start game” button."
+msgstr "Quan estigueu a punt per començar, feu clic al botó \"Comença la partida\"."
+
+#: gui/manual/intro.txt:39
+msgid "[font=\"sans-bold-16\"]Hotkeys[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Tecles de drecera[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:40
+msgid ""
+"You may change hotkeys in [font=\"sans-bold-14\"]Options > "
+"Hotkeys[font=\"sans-14\"] to suit your liking."
+msgstr "Les tecles drecera es poden canviar a [font=\"sans-bold-14\"]Opcions > Tecles drecera[font=\"sans-14\"]."
+
+#: gui/manual/intro.txt:42
+msgid "[font=\"sans-bold-14\"]Program-wide[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]En el programa[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:43
+msgid ""
+"  hotkey.exit – Immediately close the game, without asking for confirmation"
+msgstr "  hotkey.exit – Tanca el joc immediatament sense demanar confirmació"
+
+#: gui/manual/intro.txt:44
+msgid "  hotkey.togglefullscreen – Toggle between fullscreen and windowed"
+msgstr "  hotkey.togglefullscreen – Canvia entre pantalla completa i finestra"
+
+#: gui/manual/intro.txt:45
+msgid "  hotkey.console.toggle – Toggle console"
+msgstr "  hotkey.console.toggle – Mostra/Amaga la consola"
+
+#: gui/manual/intro.txt:46
+msgid "  hotkey.fps.toggle – Toggle frame counter (FPS)"
+msgstr "  hotkey.fps.toggle – Mostra/Amaga la freqüència de generació de fotogrames (FPS)"
+
+#: gui/manual/intro.txt:47
+msgid ""
+"  hotkey.profile.toggle – Toggle real-time profiler (cycles through the "
+"displays of information)"
+msgstr "  hotkey.profile.toggle – Activa/desactiva l'anàlisi de rendiment en temps real (alterna entre les visualitzacions d'informació)"
+
+#: gui/manual/intro.txt:48
+msgid ""
+"  hotkey.profile.save – Save current profiler data to “logs/profile.txt”"
+msgstr "  hotkey.profile.save – Desa les dades del perfil actual a \"logs/profile.txt\""
+
+#: gui/manual/intro.txt:49
+msgid ""
+"  hotkey.screenshot – Take screenshot (in .png format, location is displayed"
+" in the top left of the GUI after the file has been saved, and can also be "
+"seen in the console/logs if you miss it there)"
+msgstr "  hotkey.screenshot – Captura de pantalla (en format .png, la ubicació del fitxer es mostra a la part superior esquerra quan es desa, i també a l'historial de la consola)"
+
+#: gui/manual/intro.txt:50
+msgid ""
+"  hotkey.bigscreenshot – Take huge screenshot (6400×4800 pixels, in .bmp "
+"format, location is displayed in the top left of the GUI after the file has "
+"been saved, and can also be seen in the console/logs if you miss it there)"
+msgstr "  hotkey.bigscreenshot – Captura de pantalla en alta qualitat (6400×4800 píxels, en format .bmp, la ubicació del fitxer es mostra a la part superior esquerra quan es desa, i també a l'historial de la consola)"
+
+#: gui/manual/intro.txt:51
+msgid "  hotkey.tab.next – Switch to the next tab"
+msgstr "  hotkey.tab.next – Canvia a la pestanya següent"
+
+#: gui/manual/intro.txt:52
+msgid "  hotkey.tab.prev – Switch to the previous tab"
+msgstr "  hotkey.tab.prev – Canvia a la pestanya anterior"
+
+#: gui/manual/intro.txt:53
+msgid "  hotkey.item.next – Switch to the next item of a list"
+msgstr "  hotkey.item.next – Canvia al següent element de la llista"
+
+#: gui/manual/intro.txt:54
+msgid "  hotkey.item.prev – Switch to the previous item of a list"
+msgstr "  hotkey.item.prev – Canvia a l'element anterior de la llista"
+
+#: gui/manual/intro.txt:56
+msgid "[font=\"sans-bold-14\"]In Game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Dins del joc[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:57
+msgid ""
+"  Double Left Click \\[on unit] – Select all of your units of the same kind "
+"on the screen (even if they're different ranks)"
+msgstr "  Doble clic esquerre \\[sobre una unitat] – Selecciona totes les unitats pròpies del mateix tipus que hi ha a la pantalla (encara que tinguin diferent rang)"
+
+#: gui/manual/intro.txt:58
+msgid ""
+"  Triple Left Click \\[on unit] – Select all of your units of the same kind "
+"and the same rank on the screen"
+msgstr "  Triple clic esquerre \\[sobre una unitat] – Selecciona totes les unitats pròpies del mateix tipus i del mateix rang que hi ha a la pantalla"
+
+#: gui/manual/intro.txt:59
+msgid ""
+"  Alt + Double Left Click \\[on unit] – Select all your units of the same "
+"kind on the entire map (even if they have different ranks)"
+msgstr "  Alt + Doble clic esquerre \\[sobre una unitat] – Selecciona totes les unitats pròpies del mateix tipus que hi ha a tot el mapa (encara que tinguin diferent rang)"
+
+#: gui/manual/intro.txt:60
+msgid ""
+"  Alt + Triple Left Click \\[on unit] – Select all your units of the same "
+"kind and rank on the entire map"
+msgstr "  Alt + Triple clic esquerre \\[sobre una unitat] – Selecciona totes les unitats pròpies del mateix tipus i del mateix rang que hi ha a tot el mapa"
+
+#: gui/manual/intro.txt:61
+msgid "  hotkey.quicksave – Quicksave"
+msgstr "  hotkey.quicksave – Desat ràpid"
+
+#: gui/manual/intro.txt:62
+msgid "  hotkey.quickload – Quickload"
+msgstr "  hotkey.quickload – Carrega ràpidament"
+
+#: gui/manual/intro.txt:63
+msgid "  hotkey.session.gui.menu.toggle – Toggle menu"
+msgstr "  hotkey.session.gui.menu.toggle – Mostra/Amaga el menú"
+
+#: gui/manual/intro.txt:64
+msgid "  hotkey.timeelapsedcounter.toggle – Toggle time elapsed counter"
+msgstr "  hotkey.timeelapsedcounter.toggle – Mostra/Amaga el comptador de temps transcorregut"
+
+#: gui/manual/intro.txt:65
+msgid "  hotkey.cancel – Close all dialogs (chat, menu)"
+msgstr "  hotkey.cancel – Tanca tots els diàlegs (xat, menú)"
+
+#: gui/manual/intro.txt:66
+msgid "  hotkey.confirm – Open chat or send message"
+msgstr "hotkey.confirm – Obre el xat o envia un missatge"
+
+#: gui/manual/intro.txt:67
+msgid "  hotkey.teamchat – Send team chat"
+msgstr "  hotkey.teamchat – Envia un xat a l'equip"
+
+#: gui/manual/intro.txt:68
+msgid ""
+"  hotkey.privatechat – Chat with the previously selected private chat "
+"partner"
+msgstr "  hotkey.privatechat – Envia un xat a l'últim contacte privat seleccionat"
+
+#: gui/manual/intro.txt:69
+msgid "  hotkey.pause – Pause or resume the game"
+msgstr "  hotkey.pause – Pausa o continua la partida"
+
+#: gui/manual/intro.txt:70
+msgid ""
+"  hotkey.session.kill – Delete currently selected unit(s)/structure(s), ask "
+"for confirmation"
+msgstr "  hotkey.session.kill – Suprimeix les unitats o estructures seleccionades, prèvia confirmació"
+
+#: gui/manual/intro.txt:71
+msgid ""
+"    • With hotkey.session.noconfirmation – Immediately delete currently "
+"selected unit(s)/structure(s), without asking for confirmation"
+msgstr "    • Amb hotkey.session.noconfirmation – Suprimeix immediatament les unitats o estructures seleccionades sense confirmació"
+
+#: gui/manual/intro.txt:72
+msgid ""
+"  hotkey.selection.add – Modifier – add to selection (works with clicking "
+"and hotkeys, e.g. the idle hotkeys)"
+msgstr "hotkey.selection.add – Modificador – Afegeix a la selecció (funciona clicant i amb tecles d'accés ràpid, com ara la tecla de treballador inactiu)"
+
+#: gui/manual/intro.txt:73
+msgid ""
+"  hotkey.selection.remove – Modifier – remove from selection (works with "
+"clicking and hotkeys, e.g. the idle hotkeys)"
+msgstr "hotkey.selection.remove – Modificador – Elimina de la selecció (funciona clicant i amb tecles d'accés ràpid, com ara la tecla de treballador inactiu)"
+
+#: gui/manual/intro.txt:74
+msgid ""
+"  hotkey.selection.offscreen – Modifier – add all units, including offscreen"
+" units, to selection"
+msgstr "  hotkey.selection.offscreen – Modificador – afegeix totes les unitats a la selecció, incloent-hi les que no estan a la pantalla."
+
+#: gui/manual/intro.txt:75
+msgid ""
+"  hotkey.selection.cancel – Unselect all units, cancel building placement"
+msgstr "  hotkey.selection.cancel – Desselecciona totes les unitats, cancel·la la col·locació d'edificis."
+
+#: gui/manual/intro.txt:76
+msgid "  hotkey.selection.idlebuilder – Select idle builder"
+msgstr "  hotkey.selection.idlebuilder – Selecciona un constructor inactiu"
+
+#: gui/manual/intro.txt:77
+msgid "  hotkey.selection.idlewarrior – Select idle fighter"
+msgstr "  hotkey.selection.idlewarrior – Selecciona un lluitador inactiu"
+
+#: gui/manual/intro.txt:78
+msgid ""
+"  hotkey.selection.idleworker – Select idle worker (including citizen-"
+"soldiers)"
+msgstr "  hotkey.selection.idleworker – Selecciona un treballador inactiu (inclosos els soldats ciutadans)"
+
+#: gui/manual/intro.txt:79
+msgid "  hotkey.selection.idleunit – Select idle unit"
+msgstr "  hotkey.selection.idleunit – Selecciona una unitat inactiva"
+
+#: gui/manual/intro.txt:80
+msgid "  hotkey.session.stop – Stop (halt) the currently selected units"
+msgstr "  hotkey.session.stop – Atura les unitats seleccionades"
+
+#: gui/manual/intro.txt:81
+msgid "  hotkey.session.backtowork – The unit will go back to work"
+msgstr "  hotkey.session.backtowork – La unitat tornarà a la feina"
+
+#: gui/manual/intro.txt:82
+msgid ""
+"  hotkey.session.unload – Unload the garrisoned units of the selected "
+"structure(s)"
+msgstr "  hotkey.session.unload – Expulsa les unitats refugiades de les estructures seleccionades"
+
+#: gui/manual/intro.txt:83
+msgid ""
+"  hotkey.selection.group.save.1 – Create control group 1 (by default, "
+"respectively 2,3, ...) from the selected unit(s)/structure(s)"
+msgstr "  hotkey.selection.group.save.1 – Crea el grup control 1 (per defecte, respectivament 2, 3, ...) amb les unitats/estructures seleccionades"
+
+#: gui/manual/intro.txt:84
+msgid ""
+"  hotkey.selection.group.select.1 – Select the unit(s)/structure(s) in "
+"control group 1"
+msgstr "  hotkey.selection.group.select.1 – Selecciona les unitats/estructures al grup control 1"
+
+#: gui/manual/intro.txt:85
+msgid ""
+"  hotkey.selection.group.add.1 – Add control group 1 (to 0) to the selected "
+"unit(s)/structure(s)"
+msgstr "  hotkey.selection.group.add.1 – Afegeix el grup control 1 (fins a 0) a les unitats/estructures seleccionades"
+
+#: gui/manual/intro.txt:86
+msgid ""
+"  hotkey.camera.jump.set.1 – Mark the current camera position, for jumping "
+"back to later (by default, there are 4 possible positions)"
+msgstr "  hotkey.camera.jump.set.1 – Marca la posició actual de la càmera per tornar-hi més tard (per defecte, hi ha 4 posicions possibles)"
+
+#: gui/manual/intro.txt:87
+msgid ""
+"  hotkey.camera.jump.1 – Move the camera to a marked position. Jump back to "
+"the last location if the camera is already over the marked position"
+msgstr "hotkey.camera.jump.1 – Mou la càmera a una posició marcada. Torna a la posició anterior si la càmera ja és a la posició marcada."
+
+#: gui/manual/intro.txt:88
+msgid ""
+"  hotkey.session.queueunit.1, hotkey.session.queueunit.2, "
+"hotkey.session.queueunit.3, hotkey.session.queueunit.4, "
+"hotkey.session.queueunit.5, hotkey.session.queueunit.6, "
+"hotkey.session.queueunit.7 – With training structure selected. Add the 1st, "
+"2nd, … unit shown to the training queue for all the selected structures"
+msgstr "  hotkey.session.queueunit.1, hotkey.session.queueunit.2, hotkey.session.queueunit.3, hotkey.session.queueunit.4, hotkey.session.queueunit.5, hotkey.session.queueunit.6, hotkey.session.queueunit.7 – Amb estructures seleccionades. Afegeix a la cua de reclutament la primera, segona, etc. unitat per a totes les estructures seleccionades."
+
+#: gui/manual/intro.txt:89
+msgid ""
+"  hotkey.session.highlightguarded with unit(s) selected – Highlight the "
+"unit(s)/structure(s) guarded by the selection"
+msgstr "  hotkey.session.highlightguarded amb unitats seleccionades – Marca les unitats/estructures que la selecció està defensant"
+
+#: gui/manual/intro.txt:90
+msgid ""
+"  hotkey.session.highlightguarding with unit(s)/structure(s) selected – "
+"Highlight the unit(s) guarding the selection"
+msgstr "  hotkey.session.highlightguarding amb unitats/estructures seleccionades – Marca les unitats que defensen la selecció"
+
+#: gui/manual/intro.txt:91
+msgid ""
+"  highlightguarding.showstatusbars – See all status bars (which would also "
+"show the building progress)"
+msgstr "  highlightguarding.showstatusbars – Mostra totes les barres d'estat (incloent les construccions en progrés)"
+
+#: gui/manual/intro.txt:92
+msgid "  hotkey.summary – Toggle summary window"
+msgstr "  hotkey.summary – Mostra/Amaga la finestra de resum"
+
+#: gui/manual/intro.txt:93
+msgid "  hotkey.lobby – Show the multiplayer lobby in a dialog window"
+msgstr "  hotkey.lobby – Mostra la sala multijugador en una finestra de diàleg"
+
+#: gui/manual/intro.txt:94
+msgid "  hotkey.session.gui.diplomacy.toggle – Toggle in-game diplomacy panel"
+msgstr "  hotkey.session.gui.diplomacy.toggle – Mostra/Amaga el panell de diplomàcia"
+
+#: gui/manual/intro.txt:95
+msgid ""
+"  hotkey.session.gui.barter.toggle – Toggle in-game barter and trade panel"
+msgstr "  hotkey.session.gui.barter.toggle – Mostra/Amaga el panell d'intercanvi i comerç"
+
+#: gui/manual/intro.txt:96
+msgid ""
+"  hotkey.session.gui.matchsettings.toggle – Toggle in-game match settings "
+"panel"
+msgstr "  hotkey.session.gui.matchsettings.toggle – Mostra o amaga el panell de configuració de la partida."
+
+#: gui/manual/intro.txt:97
+msgid "  hotkey.session.gui.tutorial.toggle – Toggle in-game tutorial panel"
+msgstr "  hotkey.session.gui.tutorial.toggle – Mostra/Amaga el tutorial"
+
+#: gui/manual/intro.txt:98
+msgid "  hotkey.structree – Toggle structure tree panel"
+msgstr "  hotkey.structree – Mostra/Amaga l'arbre d'estructures"
+
+#: gui/manual/intro.txt:99
+msgid "  hotkey.civinfo – Toggle civilization info panel"
+msgstr "  hotkey.civinfo – Mostra/Amaga la informació de les civilitzacions"
+
+#: gui/manual/intro.txt:101
+msgid "[font=\"sans-bold-14\"]Modify mouse action[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Modifica l'acció del ratolí[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:102
+msgid "  hotkey.session.garrison + Right Click on structure – Garrison"
+msgstr "  hotkey.session.garrison + Clic dret sobre una estructura – Refugia"
+
+#: gui/manual/intro.txt:103
+msgid "  hotkey.session.repair + Right Click on structure – Repair"
+msgstr "  hotkey.session.repair + Clic dret sobre una estructura – Repara"
+
+#: gui/manual/intro.txt:104
+msgid "  hotkey.session.patrol + Right Click – Patrol"
+msgstr "  hotkey.session.patrol + Clic dret – Patrulla"
+
+#: gui/manual/intro.txt:105
+msgid ""
+"  hotkey.session.queue + Right Click – Queue the move/build/gather/etc. "
+"order"
+msgstr "  hotkey.session.queue + Clic dret – Posa a la cua l'ordre de moure's/construir/recollir/etc."
+
+#: gui/manual/intro.txt:106
+msgid ""
+"  hotkey.session.pushorderfront + Right Click – Modifier to push any order "
+"in front of the order queue"
+msgstr "  hotkey.session.pushorderfront + Clic dret – Modificador per situar qualsevol ordre al davant de la cua d’ordres."
+
+#: gui/manual/intro.txt:107
+msgid ""
+"  hotkey.session.orderone + Right Click – Order one unit from the current "
+"selection to move/build/gather/etc. and unselect it. Used to quickly "
+"dispatch units with specific tasks"
+msgstr "  hotkey.session.orderone + Clic dret – Dóna una ordre a una unitat de la selecció actual (com ara moure's, construir, recollir, etc.) i desselecciona-la. S'utilitza per assignar tasques ràpidament a diverses unitats"
+
+#: gui/manual/intro.txt:108
+msgid ""
+"  hotkey.session.batchtrain + Left Click when training units – Add units in "
+"batches (the batch size is 5 by default and can be changed in the options)"
+msgstr "  hotkey.session.batchtrain + Clic esquerre per reclutar unitats – Recluta unitats en tandes (per defecte tandes de 5, però es pot canviar a les opcions)"
+
+#: gui/manual/intro.txt:109
+msgid ""
+"  hotkey.selection.add + Left Click or Left Drag over unit on map – Add unit"
+" to selection"
+msgstr "  hotkey.selection.add + Clic esquerre o arrossegar amb el botó esquerre sobre una unitat – Afegeix la unitat a la selecció"
+
+#: gui/manual/intro.txt:110
+msgid ""
+"  hotkey.selection.remove + Left Click or Left Drag over unit on map – "
+"Remove unit from selection"
+msgstr "  hotkey.selection.remove + Clic esquerre o arrossegar amb el botó esquerre sobre una unitat – Elimina la unitat de la selecció"
+
+#: gui/manual/intro.txt:111
+msgid ""
+"  hotkey.selection.militaryonly + Left Drag over units on map – Only select "
+"military units"
+msgstr "  hotkey.selection.militaryonly + Arrossegar amb el botó esquerre sobre unitats – Selecciona només les unitats militars"
+
+#: gui/manual/intro.txt:112
+msgid ""
+"  hotkey.selection.nonmilitaryonly + Left Drag over units on map – Only "
+"select non-military units"
+msgstr "  hotkey.selection.nonmilitaryonly + Arrossegar amb el botó esquerre sobre unitats – Selecciona només les unitats no militars"
+
+#: gui/manual/intro.txt:113
+msgid ""
+"  hotkey.selection.idleonly + Left Drag over units on map – Only select idle"
+" units"
+msgstr "  hotkey.selection.idleonly + Arrossegar amb el botó esquerre sobre unitats – Selecciona només les unitats inactives"
+
+#: gui/manual/intro.txt:114
+msgid ""
+"  hotkey.selection.woundedonly + Left Drag over units on map – Only select "
+"wounded units"
+msgstr "  hotkey.selection.woundedonly + Arrossegar amb el botó esquerre sobre unitats – Selecciona només les unitats ferides"
+
+#: gui/manual/intro.txt:115
+msgid ""
+"  hotkey.selection.singleselection – Modifier to select units individually, "
+"opposed to per formation."
+msgstr "  hotkey.selection.singleselection – Modificador per seleccionar les unitats de manera individual, en lloc de per formació."
+
+#: gui/manual/intro.txt:116
+msgid ""
+"  Right Click with a structure(s) selected – Set a rally point for units "
+"created/ungarrisoned from that structure"
+msgstr "  Clic dret amb estructures seleccionades – Situa un punt de reunió per a les unitats reclutades o refugiades a l'estructura"
+
+#: gui/manual/intro.txt:117
+msgid ""
+"  hotkey.session.garrison + Right Click with unit(s) selected – Garrison (If"
+" the cursor is over an own or allied structure)"
+msgstr "  hotkey.session.garrison + Clic dret amb unitats seleccionades – Refugia (Si el cursor està sobre una estructura pròpia o aliada"
+
+#: gui/manual/intro.txt:118
+msgid ""
+"  hotkey.session.attack + Right Click with unit(s) selected – Attack "
+"(instead of another action)"
+msgstr "  hotkey.session.attack + Clic dret amb unitats seleccionades: atacar (en lloc de fer una altra acció)."
+
+#: gui/manual/intro.txt:119
+msgid ""
+"  hotkey.session.attackmove + Right Click with unit(s) selected – Attack "
+"move (by default all enemy units and structures along the way are targeted)"
+msgstr "  hotkey.session.attackmove + Clic dret amb unitats seleccionades – Vés i ataca (per defecte totes les unitats i estructures que hi hagi pel camí seran atacades)"
+
+#: gui/manual/intro.txt:120
+msgid ""
+"  hotkey.session.attackmoveUnit + Right Click with unit(s) selected – Attack"
+" move, only units along the way are targeted"
+msgstr "  hotkey.session.attackmoveUnit + Clic dret amb unitats seleccionades – Vés i ataca, només ataca les unitats pel camí"
+
+#: gui/manual/intro.txt:121
+msgid ""
+"  hotkey.session.capture + Right Click with unit(s) selected – Capture "
+"(instead of another action)"
+msgstr "  hotkey.session.capture + Clic dret amb unitats seleccionades: capturar (en lloc de fer una altra acció)."
+
+#: gui/manual/intro.txt:122
+msgid ""
+"  hotkey.session.snaptoedges + Mouse Move near structures – Align the new "
+"structure with an existing nearby structure"
+msgstr "  hotkey.session.snaptoedges + Passar el ratolí prop d'estructures – Alinea la nova estructura amb estructures properes ja existents"
+
+#: gui/manual/intro.txt:123
+msgid "  hotkey.session.flare + Right Click – Send a flare to your allies"
+msgstr "hotkey.session.flare + Clic botó dret – Envieu una bengala als vostres aliats"
+
+#: gui/manual/intro.txt:125
+msgid "[font=\"sans-bold-14\"]Overlays[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Capes[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:126
+msgid "  hotkey.session.gui.toggle – Toggle the GUI"
+msgstr "  hotkey.session.gui.toggle – Mostra/Amaga la GUI"
+
+#: gui/manual/intro.txt:127
+msgid ""
+"  hotkey.session.devcommands.toggle – Toggle developer overlay (with "
+"developer options)"
+msgstr "  hotkey.session.devcommands.toggle – Mostra/Amaga les eines de desenvolupador (amb opcions tècniques)"
+
+#: gui/manual/intro.txt:128
+msgid ""
+"  hotkey.wireframe – Toggle wireframe mode (press once to get wireframes "
+"overlaid over the textured models, twice to get just the wireframes colored "
+"by the textures, thrice to get back to normal textured mode)"
+msgstr "  hotkey.wireframe – Alterna entre els modes de wireframe (premeu un cop per sobreposar els wireframes sobre els models amb textura, dos cops per acolorir els wireframes amb les textures, tres cops per tornar al mode normal de textura)"
+
+#: gui/manual/intro.txt:129
+msgid ""
+"  hotkey.silhouettes – Toggle unit silhouettes (might give a small "
+"performance boost)"
+msgstr "hotkey.silhouettes – Mostra/amaga les siluetes de les unitats (pot augmentar lleugerament el rendiment)"
+
+#: gui/manual/intro.txt:130
+msgid "  hotkey.session.diplomacycolors – Toggle diplomacy colors"
+msgstr "  hotkey.session.diplomacycolors – Alterna els colors de la diplomàcia"
+
+#: gui/manual/intro.txt:131
+msgid ""
+"  hotkey.session.toggleattackrange – Toggle attack range visualizations of "
+"selected units and structures"
+msgstr "  hotkey.session.toggleattackrange – Mostra/Amaga l'abast d'atac de les estructures i unitats seleccionades"
+
+#: gui/manual/intro.txt:132
+msgid ""
+"  hotkey.session.toggleaurasrange – Toggle aura range visualizations of "
+"selected units and structures"
+msgstr "  hotkey.session.toggleaurasrange – Mostra/Amaga l'abast de l'aura de les estructures i unitats seleccionades"
+
+#: gui/manual/intro.txt:133
+msgid ""
+"  hotkey.session.togglehealrange – Toggle heal range visualizations of "
+"selected units"
+msgstr "  hotkey.session.togglehealrange – Mostra/Amaga l'abast de curació de les estructures i unitats seleccionades"
+
+#: gui/manual/intro.txt:135
+msgid "[font=\"sans-bold-14\"]Camera manipulation[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Manipulació de la càmera[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:136
+msgid "  hotkey.camera.up – Pan screen up"
+msgstr "  hotkey.camera.up – Mou la càmera cap amunt"
+
+#: gui/manual/intro.txt:137
+msgid "  hotkey.camera.down – Pan screen down"
+msgstr "  hotkey.camera.down – Mou la càmera cap avall"
+
+#: gui/manual/intro.txt:138
+msgid "  hotkey.camera.left – Pan screen left"
+msgstr "  hotkey.camera.left – Mou la càmera cap a l'esquerra"
+
+#: gui/manual/intro.txt:139
+msgid "  hotkey.camera.right – Pan screen right"
+msgstr "  hotkey.camera.right – Mou la càmera cap a la dreta"
+
+#: gui/manual/intro.txt:140
+msgid "  hotkey.camera.rotate.up – Rotate camera to look upward"
+msgstr "hotkey.camera.rotate.up– Gira la càmera cap amunt"
+
+#: gui/manual/intro.txt:141
+msgid "  hotkey.camera.rotate.down – Rotate camera to look downward"
+msgstr "hotkey.camera.rotate.down – Gira la càmera cap avall"
+
+#: gui/manual/intro.txt:142
+msgid "  hotkey.camera.rotate.cw – Rotate camera clockwise around terrain"
+msgstr "  hotkey.camera.rotate.cw – Gira la càmera en sentit horari"
+
+#: gui/manual/intro.txt:143
+msgid ""
+"  hotkey.camera.rotate.ccw – Rotate camera counter-clockwise around terrain"
+msgstr "  hotkey.camera.rotate.ccw – Gira la càmera en sentit antihorari"
+
+#: gui/manual/intro.txt:144
+msgid ""
+"  hotkey.camera.rotate.wheel.cw – Rotate camera clockwise around terrain"
+msgstr "  hotkey.camera.rotate.wheel.cw – Gira la càmera en sentit horari"
+
+#: gui/manual/intro.txt:145
+msgid ""
+"  hotkey.camera.rotate.wheel.ccw – Rotate camera counter-clockwise around "
+"terrain"
+msgstr "  hotkey.camera.rotate.wheel.ccw – Gira la càmera en sentit antihorari"
+
+#: gui/manual/intro.txt:146
+msgid ""
+"  hotkey.camera.follow – Follow the selected unit (move the camera to stop "
+"following the unit)"
+msgstr "  hotkey.camera.follow – Segueix la unitat seleccionada (moveu la càmera per deixar de seguir la unitat)"
+
+#: gui/manual/intro.txt:147
+msgid "  hotkey.camera.reset – Reset camera zoom and orientation"
+msgstr "  hotkey.camera.reset – Restableix el zoom i l'orientació de la càmera"
+
+#: gui/manual/intro.txt:148
+msgid ""
+"  hotkey.camera.zoom.in, hotkey.camera.zoom.wheel.in – Zoom in (keep pressed"
+" for continuous zoom)"
+msgstr "  hotkey.camera.zoom.in, hotkey.camera.zoom.wheel.in – Acosta el zoom (manteniu premut per fer un zoom continu)"
+
+#: gui/manual/intro.txt:149
+msgid ""
+"  hotkey.camera.zoom.out, hotkey.camera.zoom.wheel.out – Zoom out (keep "
+"pressed for continuous zoom)"
+msgstr "  hotkey.camera.zoom.out, hotkey.camera.zoom.wheel.out – Allunya el zoom (manteniu premut per fer un zoom continu)"
+
+#: gui/manual/intro.txt:150
+msgid "  hotkey.camera.pan – Keep pressed and move the mouse to pan"
+msgstr "  hotkey.camera.pan – Mantingueu-la premuda i moveu el ratolí per moure la càmera"
+
+#: gui/manual/intro.txt:152
+msgid "[font=\"sans-bold-14\"]During Structure Placement[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Durant la col·locació d'estructures[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:153
+msgid ""
+"  hotkey.session.rotate.ccw – Rotate structure 15 degrees counter-clockwise"
+msgstr "  hotkey.session.rotate.ccw – Gira l'estructura 15 graus en sentit antihorari"
+
+#: gui/manual/intro.txt:154
+msgid "  hotkey.session.rotate.cw – Rotate structure 15 degrees clockwise"
+msgstr "  hotkey.session.rotate.cw – Gira l'estructura 15 graus en sentit horari"
+
+#: gui/manual/intro.txt:155
+msgid ""
+"  Left Drag – Rotate structure using mouse (foundation will be placed on "
+"mouse release)"
+msgstr "  Arrossegar amb el botó esquerre – Gira l'estructura amb el ratolí (es col·locaran els fonaments en deixar anar el ratolí)"
+
+#: gui/manual/intro.txt:157
+msgid "[font=\"sans-bold-14\"]When loading a saved game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]En carregar una partida desada[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:158
+msgid "  hotkey.cancel – Cancel"
+msgstr "  hotkey.cancel – Cancel·la"
+
+#: gui/manual/intro.txt:159
+msgid ""
+"  hotkey.session.savedgames.delete – Delete the selected saved game, ask for"
+" confirmation"
+msgstr "  hotkey.session.savedgames.delete – Suprimeix la partida seleccionada, prèvia confirmació"
+
+#: gui/manual/intro.txt:160
+msgid ""
+"    • With hotkey.session.savedgames.noconfirmation – Don't ask for "
+"confirmation"
+msgstr "    • Amb hotkey.session.savedgames.noconfirmation – No demanis confirmació"
+
+#: gui/manual/manual.xml:13
+msgid "Manual"
+msgstr "Manual"
+
+#: gui/manual/manual.xml:21
+msgid "Close"
+msgstr "Tanca"
+
+#: gui/manual/manual.xml:25
+msgid "View Online"
+msgstr "Visualitza en línia"

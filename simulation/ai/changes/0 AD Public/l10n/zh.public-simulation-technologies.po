@@ -1,0 +1,2585 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Charles Yang, 2018
+# CHEN XINUO, 2024
+# Christian Xia, 2016
+# helinb, 2015
+# Julian, 2019
+# Kelvin Cooper, 2016
+# liu lizhi, 2018
+# ma xiaoming, 2021
+# Mjuteks, 2025
+# Mysterelee, 2014
+# Siwei Chen, 2016
+# Wolfson Liu, 2022
+# yhcvb, 2014
+# Yogoth Shyae, 2021
+# Ziming Li, 2025
+# 周雪琪, 2025
+# 周雪琪, 2025
+# 武军 李, 2016
+# 越 杨, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-11-12 01:27+0000\n"
+"PO-Revision-Date: 2014-06-19 17:53+0000\n"
+"Last-Translator: Ziming Li, 2025\n"
+"Language-Team: Chinese (http://app.transifex.com/wildfire-games/0ad/language/zh/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: simulation/data/technologies/agoge.json
+msgid "The Agoge"
+msgstr "阿戈革教育"
+
+#: simulation/data/technologies/agoge.json
+msgid "Agōga"
+msgstr "阿戈革教育"
+
+#: simulation/data/technologies/agoge.json
+msgid ""
+"Spartans were housed and trained from a young age to be superlative warriors"
+" and to endure any hardship a military life can give them."
+msgstr "斯巴达人幼年起便被集中训练，以合格士兵为目标，让其能够承受军事生涯中的艰辛和坎坷。"
+
+#: simulation/data/technologies/agoge.json
+msgid "Champion Hoplites +25% health, but +5% training time."
+msgstr "冠勇步兵单位生命值 +25%，但训练时间 +5%‌‌"
+
+#: simulation/data/technologies/agoge.json
+#: simulation/data/technologies/art_of_war.json
+#: simulation/data/technologies/attack_soldiers_will.json
+#: simulation/data/technologies/barracks_batch_training.json
+#: simulation/data/technologies/celtic_auxiliaries.json
+#: simulation/data/technologies/civil_engineering_02.json
+#: simulation/data/technologies/civil_service_02.json
+#: simulation/data/technologies/gather_capacity_carts.json
+#: simulation/data/technologies/gather_farming_chain_pump.json
+#: simulation/data/technologies/gather_farming_fertilizer.json
+#: simulation/data/technologies/gather_lumbering_sharpaxes.json
+#: simulation/data/technologies/gather_mining_silvermining.json
+#: simulation/data/technologies/gather_mining_slaves.json
+#: simulation/data/technologies/grove_of_fetters.json
+#: simulation/data/technologies/heal_range_2.json
+#: simulation/data/technologies/heal_rate_2.json
+#: simulation/data/technologies/health_regen_units.json
+#: simulation/data/technologies/hellenistic_metropolis.json
+#: simulation/data/technologies/immortals.json
+#: simulation/data/technologies/long_walls.json
+#: simulation/data/technologies/nisean_horses.json
+#: simulation/data/technologies/ostracism.json
+#: simulation/data/technologies/parade_of_daphne.json
+#: simulation/data/technologies/pharaonic_cult.json
+#: simulation/data/technologies/poison_arrows.json
+#: simulation/data/technologies/poison_blades.json
+#: simulation/data/technologies/pop_house_02.json
+#: simulation/data/technologies/reformed_army_sele.json
+#: simulation/data/technologies/roman_reforms.json
+#: simulation/data/technologies/ship_capture_resistance.json
+#: simulation/data/technologies/siege_attack.json
+#: simulation/data/technologies/siege_bolt_accuracy.json
+#: simulation/data/technologies/siege_cost_time.json
+#: simulation/data/technologies/siege_health.json
+#: simulation/data/technologies/siege_pack_unpack.json
+#: simulation/data/technologies/silk_road.json
+#: simulation/data/technologies/silvershields.json
+#: simulation/data/technologies/soldier_attack_melee_03.json
+#: simulation/data/technologies/soldier_attack_melee_03_variant.json
+#: simulation/data/technologies/soldier_attack_ranged_03.json
+#: simulation/data/technologies/soldier_resistance_hack_03.json
+#: simulation/data/technologies/soldier_resistance_pierce_03.json
+#: simulation/data/technologies/stable_batch_training.json
+#: simulation/data/technologies/subterranean_aqueducts.json
+#: simulation/data/technologies/tower_health.json
+#: simulation/data/technologies/tower_murderholes.json
+#: simulation/data/technologies/trade_gain_02.json
+#: simulation/data/technologies/traditional_army_sele.json
+#: simulation/data/technologies/unlock_champion_cavalry.json
+#: simulation/data/technologies/unlock_champion_chariots.json
+#: simulation/data/technologies/unlock_champion_infantry.json
+#: simulation/data/technologies/unlock_neodamodes.json
+#: simulation/data/technologies/unlock_spies.json
+#: simulation/data/technologies/warship_arrow_attack.json
+#: simulation/data/technologies/warship_fireship_attack.json
+#: simulation/data/technologies/warship_health.json
+#: simulation/data/technologies/warship_ramming_attack.json
+#: simulation/data/technologies/warship_ranged_attack.json
+#: simulation/data/technologies/warship_siege_attack.json
+#: simulation/data/technologies/wonder_population_cap.json
+msgid "Unlocked in City Phase."
+msgstr "于城市阶段解锁。"
+
+#: simulation/data/technologies/archer_attack_spread.json
+msgid "Archery Training"
+msgstr "射术训练"
+
+#: simulation/data/technologies/archer_attack_spread.json
+msgid "Encouraging soldiers to practice archery improves their accuracy."
+msgstr "鼓励士兵练习射箭，提高射箭精度。"
+
+#: simulation/data/technologies/archer_attack_spread.json
+msgid "Archers −20% ranged attack spread."
+msgstr "弓箭手的远程攻击散布 -20% ."
+
+#: simulation/data/technologies/archer_attack_spread.json
+#: simulation/data/technologies/architecture_kush.json
+#: simulation/data/technologies/cavalry_health.json
+#: simulation/data/technologies/civil_engineering_01.json
+#: simulation/data/technologies/civil_service_01.json
+#: simulation/data/technologies/cost_healer.json
+#: simulation/data/technologies/crossbow_training.json
+#: simulation/data/technologies/dock_efficiency.json
+#: simulation/data/technologies/garrison_heal.json
+#: simulation/data/technologies/gather_capacity_wheelbarrow.json
+#: simulation/data/technologies/gather_farming_harvester.json
+#: simulation/data/technologies/gather_farming_training.json
+#: simulation/data/technologies/gather_farming_water_weeding.json
+#: simulation/data/technologies/gather_lumbering_strongeraxes.json
+#: simulation/data/technologies/gather_mining_serfs.json
+#: simulation/data/technologies/gather_mining_shaftmining.json
+#: simulation/data/technologies/heal_range.json
+#: simulation/data/technologies/heal_rate.json
+#: simulation/data/technologies/hoplite_tradition.json
+#: simulation/data/technologies/iphicratean_reforms.json
+#: simulation/data/technologies/krypteia.json
+#: simulation/data/technologies/pheidian_workshop.json
+#: simulation/data/technologies/pop_house_01.json
+#: simulation/data/technologies/resettlement.json
+#: simulation/data/technologies/roman_roads.json
+#: simulation/data/technologies/serapis_cult.json
+#: simulation/data/technologies/soldier_attack_melee_01.json
+#: simulation/data/technologies/soldier_attack_melee_02.json
+#: simulation/data/technologies/soldier_attack_ranged_01.json
+#: simulation/data/technologies/soldier_attack_ranged_02.json
+#: simulation/data/technologies/soldier_resistance_hack_01.json
+#: simulation/data/technologies/soldier_resistance_hack_02.json
+#: simulation/data/technologies/soldier_resistance_pierce_01.json
+#: simulation/data/technologies/soldier_resistance_pierce_02.json
+#: simulation/data/technologies/tower_crenellations.json
+#: simulation/data/technologies/tower_range.json
+#: simulation/data/technologies/trade_commercial_treaty.json
+#: simulation/data/technologies/trade_gain_01.json
+#: simulation/data/technologies/trader_health.json
+#: simulation/data/technologies/wagon_trains.json
+msgid "Unlocked in Town Phase."
+msgstr "于城镇阶段解锁。"
+
+#: simulation/data/technologies/archery_tradition.json
+msgid "Archery Tradition"
+msgstr "射术传承"
+
+#: simulation/data/technologies/archery_tradition.json
+msgid ""
+"The Indian, Iranian, and Kushite peoples had a tradition of fine archery and"
+" a penchant for using massed archers in battle."
+msgstr "印度、波斯和库施素有射术传承，喜欢在战斗中使用大量弓箭手。"
+
+#: simulation/data/technologies/archery_tradition.json
+msgid "Archers +10 attack range."
+msgstr "弓箭手攻击范围 +10"
+
+#: simulation/data/technologies/archery_tradition.json
+#: simulation/data/technologies/cavalry_movement_speed.json
+#: simulation/data/technologies/fishing_boat_gather_rate.json
+#: simulation/data/technologies/gather_capacity_basket.json
+#: simulation/data/technologies/gather_farming_fertilizer_ptol.json
+#: simulation/data/technologies/gather_farming_plows.json
+#: simulation/data/technologies/gather_farming_seed_drill.json
+#: simulation/data/technologies/gather_farming_training_ptol.json
+#: simulation/data/technologies/gather_lumbering_ironaxes.json
+#: simulation/data/technologies/health_civilians_01.json
+#: simulation/data/technologies/health_females_01.json
+#: simulation/data/technologies/ship_vision.json
+#: simulation/data/technologies/tower_watch.json
+#: simulation/data/technologies/tyrtean_paeans.json
+msgid "Unlocked in Village Phase."
+msgstr "于乡村阶段解锁。"
+
+#: simulation/data/technologies/architecture_kush.json
+msgid "Monumental Architecture"
+msgstr "纪念性建筑"
+
+#: simulation/data/technologies/architecture_kush.json
+msgid ""
+"Civic Structures +20% build time, +20% health, and +20% capture points."
+msgstr "民政类型建筑：建造时间 +20%、生命值 +20%、占领点数 +20% "
+
+#: simulation/data/technologies/architecture_pers.json
+msgid "Achaemenid Architecture"
+msgstr "波斯阿契美尼德建筑"
+
+#: simulation/data/technologies/architecture_pers.json
+msgid ""
+"The Persians built the wonderful 1677 mile-long Royal Highway from Sardis to"
+" Susa; Darius the Great and Xerxes also built the magnificent Persepolis; "
+"Cyrus the Great greatly improved Ecbatana and virtually 'rebuilt' the old "
+"Elamite capital of Susa."
+msgstr "波斯人修建了从撒迪斯到苏萨的壮丽的1677英里长的御道；大流士一世和薛西斯一世也建造了宏伟的波斯波利斯；居鲁士大帝极大地改善了厄克巴坦那，并几乎重建了古老的埃兰都城苏萨。"
+
+#: simulation/data/technologies/architecture_pers.json
+msgid "Structures +25% health and capture points, but also +20% build time."
+msgstr "建筑生命值和占领点数 +25%，建造时间 +20% ."
+
+#: simulation/data/technologies/arsenal_philon.json
+msgid "Arsenal of Philon"
+msgstr "斐洛的攻城军械库"
+
+#: simulation/data/technologies/arsenal_philon.json
+msgid ""
+"The arsenal was mainly used as a warehouse for materials and instruments for"
+" the equipment of warships."
+msgstr "‌攻城军械库主要用于储存造船材料和战船设备。"
+
+#: simulation/data/technologies/arsenal_philon.json
+msgid "Warships +1 health/second self-repair rate."
+msgstr "战船自我修复率，生命值 +1/s"
+
+#: simulation/data/technologies/arsenal_philon.json
+#: simulation/data/technologies/equine_transports.json
+#: simulation/data/technologies/juggernauts.json
+msgid "Unlocked in City Phase. Requires “Shipwrights.”"
+msgstr "城市阶段解锁，需要“船匠”科技。"
+
+#: simulation/data/technologies/art_of_war.json
+msgid "Sun Tzu's \"The Art of War\""
+msgstr "孙子兵法"
+
+#: simulation/data/technologies/art_of_war.json
+msgid "Sūnzǐ Bīngfǎ"
+msgstr "孙子兵法"
+
+#: simulation/data/technologies/art_of_war.json
+msgid ""
+"This famous and most important work of the Seven Military Classics teaches "
+"Han commanders everything about planning battles, maintaining armies, and "
+"defeating one's enemies."
+msgstr "北宋著名书籍《武经七书》；以战略、军政、实战布阵为三大核心，使其能更加有效的击败敌军。"
+
+#: simulation/data/technologies/art_of_war.json
+msgid "All Citizen-Soldiers −20% required promotion experience."
+msgstr "所有居民士兵所需晋升经验 -20%"
+
+#: simulation/data/technologies/attack_soldiers_will.json
+msgid "Will to Fight"
+msgstr "战斗意志"
+
+#: simulation/data/technologies/attack_soldiers_will.json
+msgid ""
+"The will to fight is crucial to victory. Inspire your troops with higher "
+"pay."
+msgstr "士气是胜利的关键，通过提高奖励来鼓舞部队的战斗意志！"
+
+#: simulation/data/technologies/attack_soldiers_will.json
+msgid "Soldiers, Siege Engines, and Ships +25% attack damage."
+msgstr "士兵，攻城机械，舰船 +25%攻击伤害。"
+
+#: simulation/data/technologies/attack_soldiers_will.json
+msgid "Dynamis"
+msgstr "战斗意志"
+
+#: simulation/data/technologies/barracks_batch_training.json
+msgid ""
+"Decreases training time of infantry if they are trained in batches or companies. Large batches will benefit more than small batches.\n"
+"In mathematical terms: The training time of one batch gets divided by `batchSize^0.1`."
+msgstr "步兵若以小批或多批形式训练，可缩短训练时间。大批量训练比小批量训练效果更显著。\n单批次的训练时间除以“批量的0.1次方 ”"
+
+#: simulation/data/technologies/barracks_batch_training.json
+msgid "Decreases batch training time of units trained in Barracks."
+msgstr "减少兵营批量训练单位的训练时间。"
+
+#: simulation/data/technologies/barracks_batch_training.json
+#: simulation/data/technologies/stable_batch_training.json
+msgid "Conscription"
+msgstr "募兵"
+
+#: simulation/data/technologies/cavalry_health.json
+msgid "Horse Breeding"
+msgstr "养马育种"
+
+#: simulation/data/technologies/cavalry_health.json
+msgid "Selectively breed better war horses."
+msgstr "选育良种培养战马"
+
+#: simulation/data/technologies/cavalry_health.json
+msgid "Cavalry +10% health."
+msgstr "骑兵生命值 +10% ."
+
+#: simulation/data/technologies/cavalry_movement_speed.json
+msgid "Horse Racing"
+msgstr "赛马"
+
+#: simulation/data/technologies/cavalry_movement_speed.json
+msgid "Train your horses to move faster."
+msgstr "训练战马奔跑速度。"
+
+#: simulation/data/technologies/cavalry_movement_speed.json
+msgid "Cavalry +10% walk speed."
+msgstr "骑兵移速 +10% "
+
+#: simulation/data/technologies/celtic_auxiliaries.json
+msgid "Celtic Auxiliaries"
+msgstr "凯尔特辅军"
+
+#: simulation/data/technologies/celtic_auxiliaries.json
+msgid "The Second Punic War, Celtic troops were mainly auxiliaries."
+msgstr "第二次布匿战争中，凯尔特军队主要担任辅军。"
+
+#: simulation/data/technologies/celtic_auxiliaries.json
+msgid "Mercenaries −50% metal cost but +50 food cost."
+msgstr "雇佣兵：金属成本 -50%，但食物成本 +50。"
+
+#: simulation/data/technologies/civbonuses/brit_woad_warriors.json
+msgid "Woad Warriors"
+msgstr "靛蓝战士"
+
+#: simulation/data/technologies/civbonuses/brit_woad_warriors.json
+msgid ""
+"Britons paint their bodies with Woad, which produces a blue color and gives "
+"them a fiercesome appearance in battle."
+msgstr "布立吞人用靛蓝涂抹身体，用独特外貌震慑敌人，使他们在战斗中如鱼得水。"
+
+#: simulation/data/technologies/civbonuses/brit_woad_warriors.json
+msgid "All Infantry Units +5% movement speed, and gain +1 loot taking."
+msgstr "所有步兵单位移速 +5%，掠夺战利品 +1 。"
+
+#: simulation/data/technologies/civbonuses/cart_walls.json
+msgid "Triple Walls"
+msgstr "三重城墙"
+
+#: simulation/data/technologies/civbonuses/cart_walls.json
+msgid ""
+"Carthaginians built their city walls in three concentric circuits. These "
+"walls were never breached. Even when the city was taken by the Romans, it "
+"was via the city's harbor, not by storming its walls."
+msgstr "迦太基人修筑了三重嵌套结构的城墙防线，这些城墙从未被攻破。即使罗马人占领该城时，也是通过港口而非城墙发起进攻‌。"
+
+#: simulation/data/technologies/civbonuses/cart_walls.json
+msgid "City Walls +200% health, but +100% build time and stone cost."
+msgstr "城墙：生命值+200%，但建造时间和石材成本+100%。"
+
+#: simulation/data/technologies/civbonuses/celt_structures.json
+msgid "Wooden Construction"
+msgstr "木质建筑‌‌"
+
+#: simulation/data/technologies/civbonuses/celt_structures.json
+msgid "Celtic structures were mostly made of wood with rubble foundations."
+msgstr "凯尔特建筑多以木材为主，以碎石为辅。"
+
+#: simulation/data/technologies/civbonuses/celt_structures.json
+msgid "Structures −20% build time, −20% health, and −20% capture points."
+msgstr "建筑建造时间 -20%，生命值 -20%，占领点数 -20%"
+
+#: simulation/data/technologies/civbonuses/delian_league.json
+msgid "Delian League"
+msgstr "提洛同盟"
+
+#: simulation/data/technologies/civbonuses/delian_league.json
+msgid ""
+"Shortly after the great naval victories at Salamis and Mykale, the Greek "
+"city-states instituted the so-called Delian League in 478 BC, whose purpose "
+"was to push the Persians out of the Aegean region. The allied states "
+"contributed ships and money, while the Athenians offered their entire navy."
+msgstr "在萨拉米斯和米卡列取得辉煌的海战胜利后不久，希腊城邦于公元前478年建立了所谓的“提洛同盟”，其目的是将波斯人驱逐出爱琴海地区。各盟邦贡献船只和资金，而雅典人则提供了其全部海军力量。"
+
+#: simulation/data/technologies/civbonuses/delian_league.json
+msgid "Ships −25% construction time."
+msgstr "船只训练时间 -25%‌"
+
+#: simulation/data/technologies/civbonuses/gaul_cavalry.json
+msgid "Superior Cavalry"
+msgstr "精锐骑兵"
+
+#: simulation/data/technologies/civbonuses/gaul_cavalry.json
+msgid ""
+"The Gauls were well-known for their effective cavalry. Celtic mercenaries "
+"were in demand throughout the Mediterranean."
+msgstr "高卢人以精锐骑兵闻名，而凯尔特雇佣兵在整个地中海地区备受青睐。"
+
+#: simulation/data/technologies/civbonuses/gaul_cavalry.json
+msgid "Cavalry +10% melee attack damage."
+msgstr "骑兵近战攻击伤害 +10% ."
+
+#: simulation/data/technologies/civbonuses/germ_meat.json
+msgid "Bovine Tradition"
+msgstr "献牛传统"
+
+#: simulation/data/technologies/civbonuses/germ_meat.json
+msgid ""
+"Germanic convoys brought livestock, in particular cattle, and placed great "
+"importance on these animals for religious sacrifices."
+msgstr "日耳曼人的车队带来了牲畜，特别是牛，他们非常重视这些动物，并将它们用于宗教祭祀。"
+
+#: simulation/data/technologies/civbonuses/germ_meat.json
+msgid "Civilians +100% meat gather rate."
+msgstr "妇女肉类采集效率 +100%"
+
+#: simulation/data/technologies/civbonuses/germ_women.json
+msgid "Cimbrian Caravans"
+msgstr "辛布里商队"
+
+#: simulation/data/technologies/civbonuses/germ_women.json
+msgid ""
+"Women and children accompanied the Germanic armies on long-range migrations."
+msgstr "妇女和儿童伴随着日耳曼军队进行远距离迁徙。"
+
+#: simulation/data/technologies/civbonuses/germ_women.json
+msgid "Civilians +0.5 movement speed."
+msgstr "妇女移速 +0.5"
+
+#: simulation/data/technologies/civbonuses/greek_structures.json
+msgid "Hellenic Architecture"
+msgstr "希腊式建筑"
+
+#: simulation/data/technologies/civbonuses/greek_structures.json
+msgid "The Greeks used stone construction from early Mycenaean times."
+msgstr "希腊人从迈锡尼时期起便使用石材建造。"
+
+#: simulation/data/technologies/civbonuses/greek_structures.json
+msgid "Structures +10% health and +10% capture points."
+msgstr "建筑生命值 +10%，占领点数获取速度 +10%"
+
+#: simulation/data/technologies/civbonuses/han_population.json
+msgid "Federated States"
+msgstr "中央集权制"
+
+#: simulation/data/technologies/civbonuses/han_population.json
+msgid ""
+"By uniting China under one emperor, the Han Dynasty ruled over 40 million "
+"people, one of the largest empires of antiquity by population."
+msgstr "大汉皇朝是统治超4000万人口的超级帝国，同时期的帝国鲜有能与之抗衡的存在。"
+
+#: simulation/data/technologies/civbonuses/han_population.json
+#: simulation/data/technologies/civbonuses/maur_population.json
+#: simulation/data/technologies/civbonuses/pers_population.json
+msgid "+10% maximum population limit."
+msgstr "人口上限 +10% ."
+
+#: simulation/data/technologies/civbonuses/han_walls.json
+msgid "Great Wall"
+msgstr "万里长城"
+
+#: simulation/data/technologies/civbonuses/han_walls.json
+msgid ""
+"The Han built massive walls made from rammed earth. These were gigantic "
+"fortifications several meters thick and stretching for kilometers."
+msgstr "大汉皇朝继承了大秦的长城，长城主体由夯土建成，是绵延数万里史诗级防御工程。"
+
+#: simulation/data/technologies/civbonuses/han_walls.json
+msgid "City Walls +50% health."
+msgstr "城墙+50%生命值。"
+
+#: simulation/data/technologies/civbonuses/mace_storehouse.json
+msgid "Resource-Rich Economy"
+msgstr "自然资源经济"
+
+#: simulation/data/technologies/civbonuses/mace_storehouse.json
+msgid "The Macedonian economy relied greatly on their vast natural resources."
+msgstr "马其顿经济高度依赖其丰富的自然资源。"
+
+#: simulation/data/technologies/civbonuses/mace_storehouse.json
+msgid "Storehouse technologies −100% research time."
+msgstr "仓库科技研发时间 -100%"
+
+#: simulation/data/technologies/civbonuses/maur_elephants.json
+msgid "Elephant Tradition"
+msgstr "万象之国"
+
+#: simulation/data/technologies/civbonuses/maur_elephants.json
+msgid ""
+"India is the land of the elephants. Elephant warfare originated in India and"
+" continued for millennia. It was also the source of elephants for the "
+"eastern Mediterranean. Indian kings were able to field large numbers of war "
+"elephants."
+msgstr "印度向来有万象之国的称呼。大象战争最早起源于印度，其作战体系传承上千年。印度能够驯养大量战象，这也是地中海进口大象的主要来源地。"
+
+#: simulation/data/technologies/civbonuses/maur_elephants.json
+msgid "Elephants −30% training time."
+msgstr "大象训练时间 -30% ."
+
+#: simulation/data/technologies/civbonuses/maur_population.json
+msgid "Emperor of Emperors"
+msgstr "万王之王"
+
+#: simulation/data/technologies/civbonuses/maur_population.json
+msgid "Chakravarti Samrāt"
+msgstr "万王之王"
+
+#: simulation/data/technologies/civbonuses/maur_population.json
+msgid ""
+"The Mauryan Empire encompassed dozens of formerly independent kingdoms over "
+"an area of 5 million square kilometers, with a population of close to 60 "
+"million people. The Mauryan regents held the title Emperor of Emperors and "
+"commanded a standing army of 600,000 infantry, 9000 elephants, 8000 "
+"chariots, and 30,000 cavalry, making it arguably the largest army of its "
+"time."
+msgstr "孔雀王朝统治着500万平方公里的疆域，涵盖数十个原独立王国，人口近6000万。其摄政者持有“万王之王”头衔，并统率着一支常备军，常备军内有60万步兵，9000头战象，8000辆战车及30000骑兵，堪称当时规模最庞大的军队‌之一"
+
+#: simulation/data/technologies/civbonuses/maur_walls.json
+msgid "Wooden Walls"
+msgstr "木墙"
+
+#: simulation/data/technologies/civbonuses/maur_walls.json
+msgid ""
+"The Mauryas built their city walls out of wood, an abundant natural resource"
+" in India."
+msgstr "孔雀王朝有着丰富的自然资源，其城墙主要由木材建成。"
+
+#: simulation/data/technologies/civbonuses/maur_walls.json
+msgid "City Walls −20% build time and −20% health."
+msgstr "城墙建造时间 -20%，生命值 -20%"
+
+#: simulation/data/technologies/civbonuses/pers_population.json
+msgid "Great King's Levy"
+msgstr "君主征召"
+
+#: simulation/data/technologies/civbonuses/pers_population.json
+msgid ""
+"The Persians could and did levy a large number of infantry during wartime "
+"due to the sheer size of the Achaemenid Empire and the way in which it was "
+"set-up. In general the Persian infantry was well trained and fought with "
+"great tenacity. However while this was true the infantry were poor hand-to-"
+"hand, close combat fighters. Also, with the exception of the elite "
+"regiments, the Persian infantry was not a standing professional force."
+msgstr "阿契美尼德帝国的庞大疆域及其组织方式，使得波斯人能够在战时征召大量步兵。总体而言，波斯步兵训练有素，作战顽强；尽管具备这些优势，但在白刃战中表现仍旧欠佳。除精锐部队外，波斯步兵并非常备职业军队‌。"
+
+#: simulation/data/technologies/civbonuses/ptol_structures.json
+msgid "Sun-dried Mud Bricks"
+msgstr "土砖"
+
+#: simulation/data/technologies/civbonuses/ptol_structures.json
+msgid ""
+"Sun-dried mud bricks were a common building material in hot and dry areas, "
+"especially where wood was scarce. Although not as strong and durable as "
+"fired bricks or natural stone and vulnerable to constant rains and heavy "
+"floods, mud bricks have the advantage they are cheap and easy to produce."
+msgstr "晒干的土砖是炎热干燥地区，尤其是木材稀缺地区所常见的建筑材料，尽管其强度和耐久性不如烧制砖或天然石材，且易受雨天水灾影响，但具有成本低廉、制作简便的优势‌。"
+
+#: simulation/data/technologies/civbonuses/ptol_structures.json
+msgid ""
+"Houses and Economic Structures −40% wood cost, health, and capture points as"
+" well as +50% build time."
+msgstr "房屋与经济建筑：木材成本 -40%，因此生命值和占领点数同样 -40%，建造时间 +50%"
+
+#: simulation/data/technologies/civbonuses/rome_siege.json
+msgid "Legionary Engineers"
+msgstr "军团工兵"
+
+#: simulation/data/technologies/civbonuses/rome_siege.json
+msgid "Soldiers were well Trained to Operate Siege Engines."
+msgstr "士兵能够熟练操作攻城机械。"
+
+#: simulation/data/technologies/civbonuses/rome_siege.json
+msgid ""
+"Siege Catapults and Onagers 10% faster fire rate and +20% movement speed."
+msgstr "抛石机与弩炮车射速 +10%，移速 +20%"
+
+#: simulation/data/technologies/civbonuses/sele_farms.json
+msgid "Fertile Crescent"
+msgstr "新月沃地"
+
+#: simulation/data/technologies/civbonuses/sele_farms.json
+msgid ""
+"The Seleucid empire was located in a highly fertile region with productive "
+"soils. Farms are cheaper and faster to build."
+msgstr "塞琉古帝国位于一片沃土，土壤富饶，粮仓成本低且建造速快。"
+
+#: simulation/data/technologies/civbonuses/sele_farms.json
+msgid "Farms −25% wood cost and −75% build time."
+msgstr "粮仓所需木材成本 -25%，建造时间 -75% 。"
+
+#: simulation/data/technologies/civil_engineering_01.json
+msgid "Improved Construction"
+msgstr "图纸改良"
+
+#: simulation/data/technologies/civil_engineering_01.json
+msgid "All structures −10% build time and −10% cost."
+msgstr "所有建筑的建造时间和建造成本 -10%"
+
+#: simulation/data/technologies/civil_engineering_01.json
+#: simulation/data/technologies/civil_engineering_02.json
+msgid "Gōngchéng"
+msgstr "榫卯结构"
+
+#: simulation/data/technologies/civil_engineering_02.json
+msgid "Robust Architecture"
+msgstr "传统技术"
+
+#: simulation/data/technologies/civil_engineering_02.json
+msgid "All structures +20% health."
+msgstr "所有建筑生命值 +20%"
+
+#: simulation/data/technologies/civil_service_01.json
+msgid "Efficient Bureaucracy"
+msgstr "强化训练"
+
+#: simulation/data/technologies/civil_service_01.json
+msgid "Ministers −50% train time."
+msgstr "大司农训练时间 -50% . "
+
+#: simulation/data/technologies/civil_service_01.json
+#: simulation/data/technologies/civil_service_02.json
+msgid "Guānliáo"
+msgstr "九卿"
+
+#: simulation/data/technologies/civil_service_02.json
+msgid "Intensive Training"
+msgstr "强化训练"
+
+#: simulation/data/technologies/civil_service_02.json
+msgid "Ministers +50% health."
+msgstr "大司农的生命值 +50% ."
+
+#: simulation/data/technologies/colonization.json
+msgid "Colonization"
+msgstr "殖民化"
+
+#: simulation/data/technologies/colonization.json
+msgid ""
+"Carthaginians established many trading centers as colonies and ultimately "
+"held dominion over 300 cities and towns in North Africa alone."
+msgstr "迦太基人建立了许多作为殖民地的贸易中心，并最终统治了仅在北非的300多座城镇。"
+
+#: simulation/data/technologies/colonization.json
+msgid ""
+"Civic Structures (Civic Center, Temples, and Houses) −25% build time and "
+"resource costs."
+msgstr "市政建筑（市政中心、神庙和住宅）建造成本以及建造时间 -25%"
+
+#: simulation/data/technologies/cost_healer.json
+msgid "Sacrificial Ritual"
+msgstr "献祭仪式"
+
+#: simulation/data/technologies/cost_healer.json
+msgid ""
+"Sacrificial rituals were quite common in ancient times, whether to satisfy "
+"the gods, calm natural disasters, or even improve harvests."
+msgstr "献祭仪式在古代十分普遍，无论是为了取悦神灵、平息自然灾害，还是提高收成。"
+
+#: simulation/data/technologies/cost_healer.json
+msgid "Healers –40% training time, and the metal cost is removed."
+msgstr "治疗师训练时间 –40%，无需花费金属。"
+
+#: simulation/data/technologies/crossbow_training.json
+msgid "Crossbow Training"
+msgstr "弩兵训练"
+
+#: simulation/data/technologies/crossbow_training.json
+msgid "The Han had a penchant for using massed crossbowmen in battle."
+msgstr "汉军在战斗中大规模使用军弩。"
+
+#: simulation/data/technologies/crossbow_training.json
+msgid "Crossbow Infantry −20% train time."
+msgstr "步弩训练时间 -20% 。"
+
+#: simulation/data/technologies/dock_efficiency.json
+msgid "Shipwrights"
+msgstr "船匠"
+
+#: simulation/data/technologies/dock_efficiency.json
+msgid "Faber Navalis"
+msgstr "船匠"
+
+#: simulation/data/technologies/dock_efficiency.json
+msgid ""
+"Employ skilled shipwrights with specialized tools to speed up ship "
+"construction."
+msgstr "雇用技艺精湛的工匠，利用专业工具加速船舶建造。"
+
+#: simulation/data/technologies/dock_efficiency.json
+msgid ""
+"Docks work 20% faster (Ships −20% build time; Technologies −20% research "
+"time) and are built 20% faster. Unlocks special naval technologies for some "
+"civilizations."
+msgstr "码头工作效率提升 20% ( 船只训练时间 −20%；技术研发时间 −20% ) ，且码头建造速度加快20%；为部分文明解锁特殊海军科技。"
+
+#: simulation/data/technologies/dock_efficiency.json
+msgid "Naupēgoi"
+msgstr "船匠"
+
+#: simulation/data/technologies/equine_transports.json
+msgid "Equine Transports"
+msgstr "骑兵运载"
+
+#: simulation/data/technologies/equine_transports.json
+msgid ""
+"Early Achaemenid rulers acted towards making Persia the first great Asian "
+"empire to rule the seas. The Great King behaved favourably towards the "
+"various sea peoples in order to secure their services, but also carried out "
+"various marine initiatives. During the reign of Darius the Great, for "
+"example, a canal was built in Egypt and a Persian navy was sent exploring "
+"the Indus river. According to Herodotus, some 300 ships in the Persian navy "
+"were retrofitted to carry horses and their riders."
+msgstr "早期阿契美尼德王朝统治者致力于使波斯成为第一个统治海洋的亚洲帝国。波斯君主优待沿海各族以获取其效忠，同时推行多项海洋计划‌；例如在大流士一世统治时期，命令埃及修建了运河，波斯海军还曾对印度河进行勘探‌；据希罗多德记载，波斯海军中约有300艘舰船经过改装用于运输马匹和骑手。"
+
+#: simulation/data/technologies/equine_transports.json
+msgid "Phoenician Triremes gain the ability to train Cavalry."
+msgstr "波斯海军战船获得训练骑兵的能力。"
+
+#: simulation/data/technologies/exploration.json
+msgid "Exploration"
+msgstr "勘探者"
+
+#: simulation/data/technologies/exploration.json
+msgid ""
+"Nobody knew better than the Carthaginians where in the ancient world they "
+"were going and going to go; their merchant traders had missions to "
+"everywhere. The Chinese were noted explorers, once sending a fleet of ships "
+"into the Indian Ocean to expand their knowledge and open up new trade "
+"routes."
+msgstr "没有人比迦太基人更清楚自己在古代世界的位置以及将去向何方；他们的贸易商人曾远赴各地执行使命。郑和亦是著名的探索家，曾派遣远洋船队驶入印度洋，以拓展认知并开辟新的贸易航线。"
+
+#: simulation/data/technologies/exploration.json
+msgid "Unlocked in Village Phase. Requires “Lookouts.”"
+msgstr "在乡村阶段解锁。需先研究“瞭望台”。"
+
+#: simulation/data/technologies/exploration.json
+msgid "Traders and Ships +20% vision range."
+msgstr "商人和舰船视野范围 +20%"
+
+#: simulation/data/technologies/fishing_boat_gather_capacity.json
+msgid "Salt Curing"
+msgstr "腌制"
+
+#: simulation/data/technologies/fishing_boat_gather_capacity.json
+msgid "Salting allows to preserve fish longer."
+msgstr "腌制可延长鱼肉的保质期。"
+
+#: simulation/data/technologies/fishing_boat_gather_capacity.json
+msgid "Unlocked in Village Phase. Requires “Fishing Nets.”"
+msgstr "乡村阶段解锁，需要“渔网”科技。"
+
+#: simulation/data/technologies/fishing_boat_gather_capacity.json
+msgid "Fishing Boats +20 food capacity."
+msgstr "渔船食物容量 +20."
+
+#: simulation/data/technologies/fishing_boat_gather_rate.json
+msgid "Fishing Nets"
+msgstr "渔网"
+
+#: simulation/data/technologies/fishing_boat_gather_rate.json
+msgid "Use nets to improve the productivity of fishing boats."
+msgstr "使用渔网，提高捕鱼效率。"
+
+#: simulation/data/technologies/fishing_boat_gather_rate.json
+msgid "Fishing Boats +30% fish gather rate. Unlocks “Salt Curing.”"
+msgstr "渔船捕鱼效率 +30%，解锁“腌制”科技。"
+
+#: simulation/data/technologies/garrison_heal.json
+msgid "Living Conditions"
+msgstr "改善居住环境"
+
+#: simulation/data/technologies/garrison_heal.json
+msgid "Units regain health over time while garrisoned."
+msgstr "驻军会随时间不断的恢复生命值。"
+
+#: simulation/data/technologies/garrison_heal.json
+msgid "Structures +1 garrison heal rate."
+msgstr "建筑内的驻军回血效率 +1。"
+
+#: simulation/data/technologies/gather_ahimsa.json
+msgid "Ahimsa"
+msgstr "不害经"
+
+#: simulation/data/technologies/gather_ahimsa.json
+msgid ""
+"Ahimsa is the ancient Indian principle of nonviolence which applies to "
+"actions towards all living beings. It is a key virtue in Indian religions "
+"like Jainism, Buddhism, Hinduism, and Sikhism."
+msgstr "“不害经”是古印度的非暴力原则，适用于对待所有生物的行为。它是耆那教、佛教、印度教和锡克教等印度宗教的核心美德。"
+
+#: simulation/data/technologies/gather_ahimsa.json
+msgid "Units +100% fruit gather rate, but −80% meat and fish gather."
+msgstr "单位采集果实效率 +100%，采集鱼类肉类效率 -80%"
+
+#: simulation/data/technologies/gather_animals_stockbreeding.json
+msgid "Stockbreeding"
+msgstr "畜牧业"
+
+#: simulation/data/technologies/gather_animals_stockbreeding.json
+msgid "Breed livestock to slaughter for meat."
+msgstr "对牲畜采用合理专业饲养。"
+
+#: simulation/data/technologies/gather_animals_stockbreeding.json
+msgid "Domestic Animals −25% breeding time."
+msgstr "家畜饲养期 -25% ."
+
+#: simulation/data/technologies/gather_capacity_basket.json
+msgid "Baskets"
+msgstr "编织篮"
+
+#: simulation/data/technologies/gather_capacity_basket.json
+msgid "Workers use baskets. Increases shuttling capacity for all resources."
+msgstr "居民单位使用编制篮，增加所有采集资源的载运容量。"
+
+#: simulation/data/technologies/gather_capacity_basket.json
+#: simulation/data/technologies/gather_capacity_carts.json
+#: simulation/data/technologies/gather_capacity_wheelbarrow.json
+msgid "Workers +5 resource capacity."
+msgstr "居民单位资源运载容量 +5 。"
+
+#: simulation/data/technologies/gather_capacity_carts.json
+msgid "Horse-drawn Carts"
+msgstr "马车"
+
+#: simulation/data/technologies/gather_capacity_carts.json
+msgid ""
+"Workers use horse-drawn carts. Increases shuttling capacity for all "
+"resources."
+msgstr "居民使用马车，增加所有资源载运容量。"
+
+#: simulation/data/technologies/gather_capacity_wheelbarrow.json
+msgid "Wheelbarrow"
+msgstr "独轮车"
+
+#: simulation/data/technologies/gather_capacity_wheelbarrow.json
+msgid ""
+"Workers use wheelbarrows. Increases shuttling capacity for all resources."
+msgstr "居民使用独轮车，增加所有资源的载运容量。"
+
+#: simulation/data/technologies/gather_farming_chain_pump.json
+msgid "Chain Pump"
+msgstr "链泵"
+
+#: simulation/data/technologies/gather_farming_chain_pump.json
+msgid "Install a chain pump for improved irrigation."
+msgstr "通过‌循环链条‌带动水斗进行灌溉。"
+
+#: simulation/data/technologies/gather_farming_chain_pump.json
+#: simulation/data/technologies/gather_farming_fertilizer.json
+#: simulation/data/technologies/gather_farming_fertilizer_ptol.json
+#: simulation/data/technologies/gather_farming_plows.json
+#: simulation/data/technologies/gather_farming_seed_drill.json
+#: simulation/data/technologies/gather_farming_training.json
+#: simulation/data/technologies/gather_farming_training_ptol.json
+#: simulation/data/technologies/gather_farming_water_weeding.json
+msgid "Workers +20% grain gather rate."
+msgstr "居民单位种田采集 +20% 。"
+
+#: simulation/data/technologies/gather_farming_fertilizer.json
+#: simulation/data/technologies/gather_farming_fertilizer_ptol.json
+msgid "Fertilizer"
+msgstr "肥料"
+
+#: simulation/data/technologies/gather_farming_fertilizer.json
+#: simulation/data/technologies/gather_farming_fertilizer_ptol.json
+msgid "Extra nutrients for farms."
+msgstr "对农田施加额外的营养物质。"
+
+#: simulation/data/technologies/gather_farming_harvester.json
+msgid "Harvesting Machine"
+msgstr "收割机"
+
+#: simulation/data/technologies/gather_farming_harvester.json
+msgid ""
+"The Gauls invented an harvesting machine, making it much easier to harvest "
+"grain."
+msgstr "高卢人发明了一种收割器械，使谷物收割变得轻松许多。"
+
+#: simulation/data/technologies/gather_farming_harvester.json
+msgid "Workers +10% grain gather rate."
+msgstr "居民单位采集效率 +10% "
+
+#: simulation/data/technologies/gather_farming_plows.json
+msgid "Iron Plow"
+msgstr "铁犁"
+
+#: simulation/data/technologies/gather_farming_plows.json
+msgid ""
+"Equip your workers with iron plows, animal-drawn instruments to turn the "
+"sod."
+msgstr "居民给家牛配备了铁犁，对土地进行翻耕。"
+
+#: simulation/data/technologies/gather_farming_seed_drill.json
+msgid "Seed Drill"
+msgstr "耧车"
+
+#: simulation/data/technologies/gather_farming_seed_drill.json
+msgid "Equip your workers with seed drills."
+msgstr "居民使用耧车提高了耕作效率。"
+
+#: simulation/data/technologies/gather_farming_training.json
+#: simulation/data/technologies/gather_farming_training_ptol.json
+msgid "Gather Training"
+msgstr "采集训练"
+
+#: simulation/data/technologies/gather_farming_training.json
+#: simulation/data/technologies/gather_farming_training_ptol.json
+msgid "Training for workers to increase farm gathering speed."
+msgstr "训练居民以提高农田采集速度。"
+
+#: simulation/data/technologies/gather_farming_water_weeding.json
+msgid "Water Weeding"
+msgstr "水耘法"
+
+#: simulation/data/technologies/gather_farming_water_weeding.json
+msgid "Remove water weeds to preserve nutrients for the rice plants."
+msgstr "在稻田中灌入浅水层，利用水流冲击抑制杂草生长‌。"
+
+#: simulation/data/technologies/gather_lumbering_ironaxes.json
+msgid "Iron Axe Heads"
+msgstr "铁斧"
+
+#: simulation/data/technologies/gather_lumbering_ironaxes.json
+#: simulation/data/technologies/gather_lumbering_sharpaxes.json
+#: simulation/data/technologies/gather_lumbering_strongeraxes.json
+msgid "Increases wood gathering rates for trees."
+msgstr "给居民配备新装备，用以提高伐木效率。"
+
+#: simulation/data/technologies/gather_lumbering_ironaxes.json
+#: simulation/data/technologies/gather_lumbering_sharpaxes.json
+#: simulation/data/technologies/gather_lumbering_strongeraxes.json
+msgid "Workers +25% wood gather rate."
+msgstr "提高居民单位伐木速度，木材采集效率 +25%"
+
+#: simulation/data/technologies/gather_lumbering_sharpaxes.json
+msgid "Sharp Axe Heads"
+msgstr "利斧"
+
+#: simulation/data/technologies/gather_lumbering_strongeraxes.json
+msgid "Stronger Axe"
+msgstr "坚斧"
+
+#: simulation/data/technologies/gather_mining_serfs.json
+msgid "Serfs"
+msgstr "农奴"
+
+#: simulation/data/technologies/gather_mining_serfs.json
+msgid "Heilōtes"
+msgstr "农奴"
+
+#: simulation/data/technologies/gather_mining_serfs.json
+msgid ""
+"Compel serfs to help your workers quarry stone. Increases stone gathering "
+"rates."
+msgstr "强迫农奴协助居民单位采石，提高石料采集效率。"
+
+#: simulation/data/technologies/civbonuses/cart_stone_01.json
+#: simulation/data/technologies/civbonuses/cart_stone_02.json
+#: simulation/data/technologies/civbonuses/cart_stone_03.json
+#: simulation/data/technologies/gather_mining_serfs.json
+#: simulation/data/technologies/gather_mining_servants.json
+#: simulation/data/technologies/gather_mining_slaves.json
+msgid "Workers +25% stone gather rate."
+msgstr "居民单位采石效率 +25%"
+
+#: simulation/data/technologies/civbonuses/cart_stone_01.json
+#: simulation/data/technologies/civbonuses/cart_stone_02.json
+#: simulation/data/technologies/civbonuses/cart_stone_03.json
+#: simulation/data/technologies/gather_mining_servants.json
+msgid "Servants"
+msgstr "佣工"
+
+#: simulation/data/technologies/civbonuses/cart_stone_01.json
+#: simulation/data/technologies/civbonuses/cart_stone_02.json
+#: simulation/data/technologies/civbonuses/cart_stone_03.json
+#: simulation/data/technologies/gather_mining_servants.json
+msgid "Hire servants to help quarry stone. Increases stone gathering rates."
+msgstr "让佣工协助采石。提高石料采集效率。"
+
+#: simulation/data/technologies/gather_mining_servants.json
+msgid "Douloi"
+msgstr "佣工"
+
+#: simulation/data/technologies/gather_mining_shaftmining.json
+msgid "Shaft Mining"
+msgstr "竖井挖掘"
+
+#: simulation/data/technologies/gather_mining_shaftmining.json
+msgid "Develop shaft mining. Increases metal gathering rates."
+msgstr "发展竖井采矿科技，提升金属采集效率。"
+
+#: simulation/data/technologies/gather_mining_shaftmining.json
+#: simulation/data/technologies/gather_mining_silvermining.json
+#: simulation/data/technologies/gather_mining_wedgemallet.json
+msgid "Workers +25% metal gather rate."
+msgstr "居民单位采集金属效率 +25%"
+
+#: simulation/data/technologies/gather_mining_silvermining.json
+msgid "Silver Mining"
+msgstr "银矿开采"
+
+#: simulation/data/technologies/gather_mining_silvermining.json
+msgid "Mines of Laureion"
+msgstr "银矿开采"
+
+#: simulation/data/technologies/gather_mining_silvermining.json
+msgid "Mines of Krenides"
+msgstr "银矿开采"
+
+#: simulation/data/technologies/gather_mining_silvermining.json
+msgid "Strike a vein of precious silver. Increases metal gathering rates."
+msgstr "发现容易采集的高纯度银矿，金属采集速率显著提高。"
+
+#: simulation/data/technologies/gather_mining_slaves.json
+msgid "Slaves"
+msgstr "奴隶"
+
+#: simulation/data/technologies/gather_mining_slaves.json
+msgid "Servi"
+msgstr "奴隶"
+
+#: simulation/data/technologies/gather_mining_slaves.json
+msgid ""
+"Buy slaves to help your workers quarry stone. Increases stone gathering "
+"rates."
+msgstr "购买奴隶协助居民单位开采石料，提升石料采集效率。"
+
+#: simulation/data/technologies/gather_mining_slaves.json
+msgid "Andrapoda"
+msgstr "奴隶"
+
+#: simulation/data/technologies/gather_mining_wedgemallet.json
+msgid "Wedge and Mallet"
+msgstr "楔锤"
+
+#: simulation/data/technologies/gather_mining_wedgemallet.json
+msgid ""
+"Equip your workers with helpful tools. Increases metal gathering rates."
+msgstr "给居民单位装配楔锤，提高金属采集效率。"
+
+#: simulation/data/technologies/gather_wicker_baskets.json
+#: simulation/data/technologies/gather_wicker_baskets_maur.json
+msgid "Wicker Baskets"
+msgstr "柳条筐"
+
+#: simulation/data/technologies/gather_wicker_baskets.json
+#: simulation/data/technologies/gather_wicker_baskets_maur.json
+msgid "Equip your foragers with wicker baskets for foraging."
+msgstr "为居民单位配备柳条筐用于采集。"
+
+#: simulation/data/technologies/gather_wicker_baskets.json
+#: simulation/data/technologies/gather_wicker_baskets_maur.json
+msgid "Workers +50% fruit gather rate."
+msgstr "居民单位果实采集效率 +50%"
+
+#: simulation/data/technologies/grove_of_fetters.json
+msgid "Grove of Fetters"
+msgstr "桎梏之林"
+
+#: simulation/data/technologies/grove_of_fetters.json
+msgid ""
+"Congregations held at specially adorned groves performed rites of sacrifice."
+msgstr "在特别装饰的树林中举行的集会，执行了献祭仪式。"
+
+#: simulation/data/technologies/grove_of_fetters.json
+msgid ""
+"Unlock the “Human Sacrifice” aura for the Seeress, doubling aura damage. "
+"Priests and Seeresses +50% Health."
+msgstr "解锁“献祭生灵”光环，使女先知的‌光环伤害翻倍‌。医师和女先知生命值 +50%"
+
+#: simulation/data/technologies/heal_range.json
+msgid "Healing Range"
+msgstr "治疗范围"
+
+#: simulation/data/technologies/heal_range.json
+msgid "Olympic Pantheon"
+msgstr "治疗范围"
+
+#: simulation/data/technologies/heal_range.json
+#: simulation/data/technologies/heal_range_2.json
+msgid "Increases the healing and vision range of all healers."
+msgstr "‌提升所有医师单位的治疗能力与视野范围。"
+
+#: simulation/data/technologies/heal_range.json
+#: simulation/data/technologies/heal_range_2.json
+msgid "Healers +5 healing range."
+msgstr "医师单位治疗范围 +5."
+
+#: simulation/data/technologies/heal_range_2.json
+msgid "Healing Range 2"
+msgstr "治疗范围-2级"
+
+#: simulation/data/technologies/heal_range_2.json
+msgid "Akadēmeia"
+msgstr "治疗范围-2级"
+
+#: simulation/data/technologies/heal_rate.json
+msgid "Healing Rate"
+msgstr "治疗效率"
+
+#: simulation/data/technologies/heal_rate.json
+msgid "Sphagia"
+msgstr "治疗效率"
+
+#: simulation/data/technologies/heal_rate.json
+#: simulation/data/technologies/heal_rate_2.json
+msgid "Increases the healing rate of all healers."
+msgstr "提升所有医师单位的治疗速率。"
+
+#: simulation/data/technologies/heal_rate.json
+#: simulation/data/technologies/heal_rate_2.json
+msgid "Healers −20% healing time."
+msgstr "医师治疗耗时 -20%"
+
+#: simulation/data/technologies/heal_rate_2.json
+msgid "Healing Rate 2"
+msgstr "治疗效率-2级"
+
+#: simulation/data/technologies/heal_rate_2.json
+msgid "Hippocratic Oath"
+msgstr "治疗效率-2级"
+
+#: simulation/data/technologies/health_civilians_01.json
+msgid "Civilians +100% health."
+msgstr "妇女生命值 +100%"
+
+#: simulation/data/technologies/health_civilians_01.json
+#: simulation/data/technologies/health_females_01.json
+msgid "The Loom"
+msgstr "织机"
+
+#: simulation/data/technologies/health_civilians_01.json
+#: simulation/data/technologies/health_females_01.json
+msgid ""
+"The loom allowed the creation of finer clothing for settlers. Women of the "
+"household were taught from a young age how to weave on the loom, and "
+"subsequently spent a large share of their lives working with it."
+msgstr "织机为妇女提供更好的衣服，妇女从小就被教导如何使用织布机，此后织机便成为她们大半生的谋生工具。"
+
+#: simulation/data/technologies/health_females_01.json
+msgid "Female Citizens +100% health."
+msgstr "妇女生命值 +100%"
+
+#: simulation/data/technologies/health_regen_units.json
+msgid "Battlefield Medicine"
+msgstr "战地医疗"
+
+#: simulation/data/technologies/health_regen_units.json
+msgid "Organic units will slowly regenerate health over time when idle."
+msgstr "闲置的所有单位会缓慢的恢复生命值。"
+
+#: simulation/data/technologies/health_regen_units.json
+msgid "Idle Organic units +0.5 health regeneration rate."
+msgstr "闲置单位生命恢复率 +0.5 。"
+
+#: simulation/data/technologies/hellenistic_metropolis.json
+msgid "Hellenistic Metropolis"
+msgstr "希腊化大都市"
+
+#: simulation/data/technologies/hellenistic_metropolis.json
+msgid ""
+"Beginning with Alexander, the Hellenistic monarchs founded many cities "
+"throughout their empires, where Greek culture and art blended with local "
+"customs to create the motley Hellenistic civilization."
+msgstr "自亚历山大三世开始，希腊的文化逐渐变为整个帝国的基础，其中希腊文化及艺术与当地的风俗混合创造了形形色色的希腊化文明。"
+
+#: simulation/data/technologies/hellenistic_metropolis.json
+msgid "Civic Centers +100% health and capture points, double default arrows."
+msgstr "市政中心生命值与占领点数 +100%，默认防御箭矢数量翻倍。"
+
+#: simulation/data/technologies/helot_economy.json
+msgid "Helot Economy"
+msgstr "黑劳士经济"
+
+#: simulation/data/technologies/helot_economy.json
+msgid ""
+"Helots were the servants of Greece. Unlike slaves, helots were owned by the "
+"state, which managed economic production. Helots must give a reasonable "
+"portion of their harvest to support a warrior and his family or widow."
+msgstr "‌希洛人是希腊的仆役；与奴隶不同，黑劳士归国家所有，国家掌控其经济生产；希洛人必须交出合理份额的收成，用以供养一名战士及其家庭或遗孀。"
+
+#: simulation/data/technologies/helot_economy.json
+msgid ""
+"Infantry Javelineers +100% grain gather rate, but −10% ranged attack pierce "
+"damage."
+msgstr "标枪兵粮食采集效率 +100%，但远程攻击穿刺伤害降低10%"
+
+#: simulation/data/technologies/hoplite_tradition.json
+msgid "Hoplite Tradition"
+msgstr "希腊重步兵传统"
+
+#: simulation/data/technologies/hoplite_tradition.json
+msgid "Hoplite soldiers constituted most of the armies of Greece."
+msgstr "希腊军队的主力为重装步兵。"
+
+#: simulation/data/technologies/hoplite_tradition.json
+msgid ""
+"Hoplites −25% training time, −50% promotion experience, and +10% health."
+msgstr "重装步兵训练时间 -25%，所需晋升经验 -50%，生命值 +10%"
+
+#: simulation/data/technologies/immortals.json
+msgid "Immortals"
+msgstr "长生军"
+
+#: simulation/data/technologies/immortals.json
+msgid ""
+"The Achaemenids maintained a 10,000-strong elite corps, referred to as "
+"Athanatoi (“Immortals”) by Greek authors."
+msgstr "波斯阿契美尼德王朝维持着一支由10000精锐组成的部队，被希腊人称为“不死军”（长生军）。"
+
+#: simulation/data/technologies/immortals.json
+msgid "Immortals −50% training time."
+msgstr "长生军训练时间 -50% ."
+
+#: simulation/data/technologies/iphicratean_reforms.json
+msgid "Iphicratean Reforms"
+msgstr "伊菲克拉特式海军改革"
+
+#: simulation/data/technologies/iphicratean_reforms.json
+msgid ""
+"Athenian gymnasium, docks and triremes can train Marines (Epibates "
+"Athenaikos)."
+msgstr "奥林匹克竞技场、码头和雅典海军战船可以训练雅典持剑海军和克里特弓箭手 。"
+
+#: simulation/data/technologies/iphicratean_reforms.json
+msgid ""
+"Athenian Docks and Triremes can train Marines and Cretan Mercenary Archers."
+msgstr "码头、雅典海军战船可以训练雅典持剑海军和克里特弓箭手。"
+
+#: simulation/data/technologies/juggernauts.json
+msgid "Juggernauts"
+msgstr "巨型战船"
+
+#: simulation/data/technologies/juggernauts.json
+msgid "Tessarakonterēs"
+msgstr "托勒密七列桨战船"
+
+#: simulation/data/technologies/juggernauts.json
+msgid "Warships +25% health, but −10% speed."
+msgstr "战船生命值 +25%，但速度 −10%"
+
+#: simulation/data/technologies/krypteia.json
+msgid "Krypteia"
+msgstr "隐匿行动"
+
+#: simulation/data/technologies/krypteia.json
+msgid ""
+"Krypteia was an Agoge rite of passage, during which soldiers learned how to "
+"camouflage themselves and gained combat experience. The Spartans declared "
+"war on the Helots annually, with no problem or guilt in murdering them. "
+"During this initiation, the youths slept during the day and roamed at night,"
+" murdering any Helot they encountered along the way."
+msgstr "隐匿行动是斯巴达教育的成年仪式，士兵们在此学习如何伪装自己并积累战斗经验；斯巴达人每年都会向希洛人宣战，合理合法地杀死他们；在入会仪式上，年轻人白天睡觉，晚上四处游荡，杀死沿途遇到的任何希洛人。"
+
+#: simulation/data/technologies/krypteia.json
+msgid ""
+"Champion Hoplites +10% melee attack damage, but Citizen Infantry Javelineers"
+" +30% training time."
+msgstr "冠勇单位“斯巴达重装卫兵”攻击伤害 +10%，标枪兵单位 +30%训练时间。"
+
+#: simulation/data/technologies/long_walls.json
+msgid "Athenian Long Walls"
+msgstr "雅典长墙"
+
+#: simulation/data/technologies/long_walls.json
+msgid ""
+"The Long Walls of Athens were constructed under the auspices of the wily "
+"Themistocles and extended 6 km from the city to the port of Piraeus. This "
+"secured the city's sea supply routes and prevented an enemy from starving "
+"out the city during a siege."
+msgstr "雅典长墙在狡黠的地米斯托克利主持下修建，从雅典城延伸6公里至比雷埃夫斯港；此举确保了城市的海上补给线，使敌军无法通过围困切断粮而使雅典陷入饥荒。"
+
+#: simulation/data/technologies/long_walls.json
+msgid "Build Walls in own or neutral territory."
+msgstr "允许在中立领土上建筑城墙。"
+
+#: simulation/data/technologies/nisean_horses.json
+msgid "Nisean War Horses"
+msgstr "尼赛安战马"
+
+#: simulation/data/technologies/nisean_horses.json
+msgid "Nisioi"
+msgstr "尼赛安战马"
+
+#: simulation/data/technologies/nisean_horses.json
+msgid ""
+"The now-extinct Nisian breed of horse was one of the largest and robust "
+"horses of ancient times. They were highly sought after by the Seleucids and "
+"Persians as both rider and mount gained heavier armor as time progressed."
+msgstr "尼赛安马‌体型最大、最健壮的马种之一‌；塞琉古和波斯对其极为推崇，随着时间推移逐渐普及，无论是骑手还是马匹都得以配备了更厚重的重装甲。"
+
+#: simulation/data/technologies/nisean_horses.json
+msgid "Champion Cavalry Spearmen +10% health, but +10% training time."
+msgstr "冠勇矛骑兵：生命值+10%，但训练时间+10%。"
+
+#: simulation/data/technologies/ostracism.json
+msgid "Ostracism"
+msgstr "陶片放逐法"
+
+#: simulation/data/technologies/ostracism.json
+msgid ""
+"In ancient Athens, ostracism was the process by which any citizen, including"
+" political leaders, could be expelled from the city-state for 10 years."
+msgstr "在古雅典，陶片放逐法是指将任何居民，包括政治领袖，驱逐出城邦10年的制度。"
+
+#: simulation/data/technologies/ostracism.json
+msgid "Citizen soldiers +5% health, but Heroes −40% health."
+msgstr "居民士兵生命值 +5% ，而英雄的生命值 -40% 。"
+
+#: simulation/data/technologies/outpost_vision.json
+msgid "Carrier Pigeons"
+msgstr "信鸽"
+
+#: simulation/data/technologies/outpost_vision.json
+msgid "Increases outpost vision."
+msgstr "增加前哨瞭望塔的视野。"
+
+#: simulation/data/technologies/outpost_vision.json
+msgid "Outposts +33% vision range."
+msgstr "瞭望塔视野 +33% "
+
+#: simulation/data/technologies/pair_gather_food_maur.json
+msgid "Wicker Basket vs Ahimsa"
+msgstr "易朽容器与精神原则"
+
+#: simulation/data/technologies/pair_unlock_champions_sele.json
+msgid "Traditional Army vs Reform Army"
+msgstr "传统亦或改革"
+
+#: simulation/data/technologies/pair_unlock_civil_engineering_han.json
+msgid "Civil Engineering"
+msgstr "土木工程"
+
+#: simulation/data/technologies/pair_unlock_civil_service_han.json
+msgid "Civil Service"
+msgstr "吏治体系"
+
+#: simulation/data/technologies/pair_unlock_cult_ptol.json
+msgid "Cult"
+msgstr "崇拜"
+
+#: simulation/data/technologies/parade_of_daphne.json
+msgid "Parade of Daphne"
+msgstr "达芙妮的游行"
+
+#: simulation/data/technologies/parade_of_daphne.json
+msgid ""
+"The festival at Daphne was a major event of the Seleucid Empire: tens of "
+"thousands of well-equipped troops participated in the opening procession."
+msgstr "达芙妮节是塞琉古帝国的重要庆典：数万名装备精良的士兵参与了开幕游行。"
+
+#: simulation/data/technologies/parade_of_daphne.json
+msgid "Champions −20% training time."
+msgstr "冠勇单位训练时间 -20% ."
+
+#: simulation/data/technologies/pharaonic_cult.json
+msgid "Pharaonic Cult"
+msgstr "法老神权体系"
+
+#: simulation/data/technologies/pharaonic_cult.json
+msgid ""
+"The Pharaohs were worshipped as living gods. Their word was sacrosanct and "
+"beyond reproach, at least among the common people. The Ptolemaic dynasts "
+"certainly took advantage of this ancient custom to the fullest, to varying "
+"degrees of success."
+msgstr "法老被奉为活神，他们的言语神圣不可侵犯，至少在平民眼中如此；托勒密王朝的统治者们无疑最大限度地利用了这一古老习俗，程度虽各有不同，但成效显著。"
+
+#: simulation/data/technologies/pharaonic_cult.json
+msgid "Heroes +2 health/second self-regen rate."
+msgstr "英雄生命值自愈 +2/s"
+
+#: simulation/data/technologies/phase_city.json
+msgid ""
+"Dummy technology for use in templates requirements, replaced by "
+"phase_city_generic or phase_city_{civ}."
+msgstr "模板要求的虚拟技术，为 phase_city_generic 或 phase_city_{civ} 替代。"
+
+#: simulation/data/technologies/phase_city.json
+#: simulation/data/technologies/phase_city_athen.json
+#: simulation/data/technologies/phase_city_generic.json
+#: simulation/data/technologies/phase_city_pers.json
+msgid "City Phase"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_athen.json
+msgid ""
+"Advances from a bustling town to a veritable metropolis, full of the wonders"
+" of modern technology. This is the Athenian city phase, where metal "
+"gathering rates are boosted because of the 'Silver Owls' bonus."
+msgstr "从城镇进阶到城市，带来了新的科技，这是雅典城市阶段带来的好处，因此金属采集率会因“鸮纹银币”的津贴而提高收成。"
+
+#: simulation/data/technologies/phase_city_athen.json
+msgid ""
+"Advance to City Phase, which unlocks more entities and technologies. Civic "
+"Centers +25% territory influence radius. Structures +20% damage and +1 "
+"capture points regeneration rate for garrisoned units. Workers +10% metal "
+"gather rate."
+msgstr "升级到城市阶段，解锁更多单位与科技。市政中心领土影响半径+25%，建筑+20%伤害，驻守单位的占领值再生速度+1，居民单位采集金属效率+10%"
+
+#: simulation/data/technologies/phase_city_athen.json
+#: simulation/data/technologies/phase_city_generic.json
+msgid "Megalopolis"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_athen.json
+#: simulation/data/technologies/phase_city_generic.json
+#: simulation/data/technologies/phase_city_pers.json
+msgid "Requires three Town Structures."
+msgstr "需要建造三座城市阶级解锁的建筑。"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid "Qart"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid "Jùn"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid "Iltir"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid "Ri"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid "Pura"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid "Urbs"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid ""
+"Advances from a bustling town to a veritable metropolis, full of the wonders"
+" of modern technology."
+msgstr "从繁华的城镇进展为一个名副其实的城市，充满着奇观与现代科技。"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid ""
+"Advance to City Phase, which unlocks more entities and technologies. Civic "
+"Centers +25% territory influence radius. Structures +20% damage and +1 "
+"capture points regeneration rate for garrisoned units."
+msgstr "升级到城市阶段，解锁更多单位及科技。市政中心的领土影响半径 +25% ；有单位驻守的建筑攻击伤害 +20% ，占领值再生速度 +1 。"
+
+#: simulation/data/technologies/phase_city_generic.json
+msgid "Dūnon"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_pers.json
+msgid "Vazaraka Vardana"
+msgstr "城市阶段"
+
+#: simulation/data/technologies/phase_city_pers.json
+msgid ""
+"Advances from a bustling town to a veritable metropolis, full of the wonders of modern technology. This is the Persian city phase.\n"
+"The 'Times of War' bonus decreases the batch training time in Stables. Large batches will benefit more than small batches.\n"
+"In mathematical terms: The training time of one batch gets divided by `batchSize^0.1`."
+msgstr "从熙攘的小镇蜕变为充满高级科技的大城市，这就是波斯文明的城市阶段。\n“战时”津贴会缩短马厩中的批量训练时间，大批量训练比小批量训练收益更大。\n单批训练时间除以“批量的0.1次方”。"
+
+#: simulation/data/technologies/phase_city_pers.json
+msgid ""
+"Advance to City Phase, which unlocks more entities and technologies. Civic "
+"Centers +25% territory influence radius. Structures +20% damage and +1 "
+"capture points regeneration rate for garrisoned units. Decrease batch "
+"training time of units trained in Stables."
+msgstr "升级到城市阶段，解锁更单位体和科技。市政中心领土影响半径+25%建筑+20%伤害，驻守单位的占领值再生速度+1。减少马厩的批量训练时间。"
+
+#: simulation/data/technologies/phase_town.json
+msgid ""
+"Dummy technology for use in templates requirements, replaced by "
+"phase_town_generic or phase_town_{civ}."
+msgstr "用于模板要求的虚拟技术，被 phase_town_generic 或 phase_town_{civ} 替代。"
+
+#: simulation/data/technologies/phase_town.json
+#: simulation/data/technologies/phase_town_athen.json
+#: simulation/data/technologies/phase_town_generic.json
+#: simulation/data/technologies/phase_town_pers.json
+msgid "Town Phase"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_athen.json
+msgid ""
+"Advances from a small village to a bustling town, ready to expand rapidly. "
+"This is the Athenian town phase, where metal gathering rates are boosted "
+"because of the 'Silver Owls' bonus."
+msgstr "从村庄进阶到城镇，这是雅典城镇阶段升级，因此金属采集率会因“鸮纹银币”的津贴而提高收成。"
+
+#: simulation/data/technologies/phase_town_athen.json
+msgid ""
+"Advance to Town Phase, which unlocks more entities and technologies. Civic "
+"Centers +25% territory influence radius. Structures +20% damage and +0.5 "
+"capture points regeneration rate for garrisoned units. Workers +10% metal "
+"gather rate."
+msgstr "升级到城镇阶段，解锁更多单位与科技。市政中心领土影响半径+25%，建筑+20%伤害，驻守单位的占领值再生速度+0.5，居民单位采集金属效率+10%"
+
+#: simulation/data/technologies/phase_town_athen.json
+#: simulation/data/technologies/phase_town_generic.json
+msgid "Kōmopolis"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_athen.json
+#: simulation/data/technologies/phase_town_generic.json
+#: simulation/data/technologies/phase_town_pers.json
+msgid "Requires five Village Structures."
+msgstr "需要建造5座建筑才能解锁阶段。"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid "Ir"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid "Xìan"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid "Contrebia"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid "Dmj"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid "Nayara"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid "Oppidum"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid ""
+"Advances from a small village to a bustling town, ready to expand rapidly."
+msgstr "从小乡村进展到繁华的城镇，准备好迅速扩展。"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid ""
+"Advance to Town Phase, which unlocks more entities and technologies. Civic "
+"Centers +25% territory influence radius. Structures +20% damage and +0.5 "
+"capture points regeneration rate for garrisoned units."
+msgstr "升级到城镇阶段，解锁更多单位与科技。市政中心领土影响半径 +25%；有单位驻守的建筑伤害 +20%，占领值再生速度 +0.5。"
+
+#: simulation/data/technologies/phase_town_generic.json
+msgid "Bona"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_pers.json
+msgid "Vardana"
+msgstr "城镇阶段"
+
+#: simulation/data/technologies/phase_town_pers.json
+msgid ""
+"Advances from a small village to a bustling town, ready to expand rapidly. This is the Persian town phase.\n"
+"The 'Times of War' bonus dercreases the batch training time in Stables. Large batches will benefit more than small batches.\n"
+"In mathematical terms: The training time of one batch gets divided by `batchSize^0.1`."
+msgstr "从宁静的乡村崛起为熙攘的城镇，这便是波斯文明的城镇阶段。\n“战时”津贴会减少马厩中的批量训练时间，大批量训练比小批量训练收益更大。\n单批训练时间除以“批量的0.1次方”。"
+
+#: simulation/data/technologies/phase_town_pers.json
+msgid ""
+"Advance to Town Phase, which unlocks more entities and technologies. Civic "
+"Centers +25% territory influence radius. Structures +20% damage and +0.5 "
+"capture points regeneration rate for garrisoned units. Decrease batch "
+"training time of units trained in Stables."
+msgstr "升级到城镇阶段，解锁更多单位与科技。市政中心领土影响半径 +25%；有单位驻守的建筑伤害 +20%，占领值再生速度 +0.5。马厩批量训练时间减少。"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Village Phase"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Kapr"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Xiāng"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Treba"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Wḥyt"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Gāma"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Āvahana"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Vicus"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Kōmā"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Ialon"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/phase_village.json
+msgid "Kōmē"
+msgstr "乡村阶段"
+
+#: simulation/data/technologies/pheidian_workshop.json
+msgid "Pheidian Workshop"
+msgstr "菲狄亚斯工坊"
+
+#: simulation/data/technologies/pheidian_workshop.json
+msgid ""
+"Pheidias was a Greek sculptor, painter and architect, who lived in the 5th "
+"century BC, and is commonly regarded as one of the greatest of all sculptors"
+" of Classical Greece: Phidias' Statue of Zeus at Olympia was one of the "
+"Seven Wonders of the Ancient World. Phidias designed the statues of the "
+"goddess Athena on the Athenian Acropolis, namely the Athena Parthenos inside"
+" the Parthenon and the Athena Promachos, a colossal bronze statue of Athena "
+"which stood between it and the Propylaea, a monumental gateway that served "
+"as the entrance to the Acropolis in Athens."
+msgstr "菲迪亚斯是古希腊雕塑家、画家和建筑师；活跃于公元前 5 世纪，被西方公认为古典希腊最伟大的雕塑家之一。其所有代表作包括在奥林匹亚的宙斯像，雅典卫城上的雅典娜女神像、帕特农神庙内的雅典娜·帕特农诺斯雕像和雅典娜·普罗马科斯雕像；菲迪亚斯的艺术成就将功能性与视觉美学完美结合，反映了希腊建筑的理性与典雅‌。"
+
+#: simulation/data/technologies/pheidian_workshop.json
+msgid "Temples and Wonder −50% stone cost and build time."
+msgstr "神庙、奇观的建造成本和建造时间 -50% 。"
+
+#: simulation/data/technologies/poison_arrows.json
+msgid "Poison Arrows"
+msgstr "淬毒箭头"
+
+#: simulation/data/technologies/poison_arrows.json
+msgid "Ranged Soldiers +20% attack damage."
+msgstr "士兵远程攻击伤害 +20% "
+
+#: simulation/data/technologies/poison_blades.json
+msgid "Poison Blades"
+msgstr "淬毒兵器"
+
+#: simulation/data/technologies/poison_blades.json
+msgid "Melee Soldiers +20% attack damage."
+msgstr "士兵近战攻击伤害 +20%"
+
+#: simulation/data/technologies/pop_house_01.json
+msgid "Home Garden"
+msgstr "院落"
+
+#: simulation/data/technologies/pop_house_01.json
+msgid "Paradaidām"
+msgstr "院落"
+
+#: simulation/data/technologies/pop_house_01.json
+msgid "Peristylium"
+msgstr "院落"
+
+#: simulation/data/technologies/pop_house_01.json
+msgid ""
+"Home gardens ranged from simple fenced-in areas to large manicured and "
+"colonnaded enclosures."
+msgstr "院落的形态各异，从简单的围栏区域到经过精心修整并带有柱廊的大型庭院。"
+
+#: simulation/data/technologies/pop_house_01.json
+msgid "Peristylon"
+msgstr "院落"
+
+#: simulation/data/technologies/pop_house_01.json
+#: simulation/data/technologies/pop_house_02.json
+msgid "Houses +20% population bonus."
+msgstr "住宅人口容量 +20% ."
+
+#: simulation/data/technologies/pop_house_02.json
+msgid "Manors"
+msgstr "庄园"
+
+#: simulation/data/technologies/pop_house_02.json
+msgid "Insulae"
+msgstr "庄园"
+
+#: simulation/data/technologies/pop_house_02.json
+msgid ""
+"Homes tended to expand as the wealth and population of a settlement grew."
+msgstr "随着财富和人口的增长，房屋也会随着需求而扩大。"
+
+#: simulation/data/technologies/reformed_army_sele.json
+msgid "Reform Army"
+msgstr "革新军队"
+
+#: simulation/data/technologies/reformed_army_sele.json
+msgid "The Roman-style core of the Seleucid army."
+msgstr "罗马风格的塞琉古重装剑士。"
+
+#: simulation/data/technologies/reformed_army_sele.json
+msgid "Unlock the Champion Infantry Swordsman."
+msgstr "解锁冠勇单位“罗马式重装剑士”"
+
+#: simulation/data/technologies/resettlement.json
+msgid "Migratory Resettlement"
+msgstr "迁居安置"
+
+#: simulation/data/technologies/resettlement.json
+msgid ""
+"The migration of the Cimbrian Confederation into Gaul gave rise to "
+"independent communities and settlements."
+msgstr "辛布里联盟向高卢的迁移催生了独立的社区和定居点。"
+
+#: simulation/data/technologies/resettlement.json
+msgid ""
+"All Structures except for walls do not decay to neutral or enemy territory."
+msgstr "除城墙外，所有建筑在敌方或中立领土上不会衰减占领值。"
+
+#: simulation/data/technologies/roman_reforms.json
+msgid "Marian Reforms"
+msgstr "马略军改"
+
+#: simulation/data/technologies/roman_reforms.json
+msgid ""
+"Regularize the army into a professional, organized force. The Marian reforms"
+" were a series of military reforms in the last century BC attributed to "
+"Gaius Marius involving the abolition of citzen cavalry, equipment changes, "
+"and standardization of the heavy infantry unit: the Legionary."
+msgstr "将军队正规化，打造一支专业化、组织化的部队。马略改革是公元前最后一个世纪由盖乌斯·马略发起的一系列军事改革，其内容包括废除居民骑兵、更换装备以及对重型步兵部队——军团的标准化。"
+
+#: simulation/data/technologies/roman_reforms.json
+msgid ""
+"Convert Infantry to Marian Legionaries, and cavalry to Auxiliaries, and "
+"citizen spearmen to conscript infantry. Unlock Onagers and Centurions."
+msgstr "将剑士转为马略精锐剑士、骑兵转为义勇骑兵、长矛兵转为义勇长矛兵；解锁罗马抛石机和百夫长。"
+
+#: simulation/data/technologies/roman_roads.json
+msgid "Roman Roads"
+msgstr "罗马大道"
+
+#: simulation/data/technologies/roman_roads.json
+msgid "Viae Romanum"
+msgstr "罗马大道"
+
+#: simulation/data/technologies/roman_roads.json
+msgid "All roads lead to Rome."
+msgstr "条条大路通罗马。"
+
+#: simulation/data/technologies/roman_roads.json
+msgid "All Land Units +5% movement speed."
+msgstr "所有陆地单位移速 +5%"
+
+#: simulation/data/technologies/serapis_cult.json
+msgid "Serapis Cult"
+msgstr "塞拉比斯崇拜"
+
+#: simulation/data/technologies/serapis_cult.json
+msgid ""
+"The cult of Serapis was introduced during the 3rd century BC on the orders "
+"of Ptolemy I of Egypt as a means to unify the Greeks and Egyptians in his "
+"realm. The god was depicted as Greek in appearance, but with Egyptian "
+"trappings, and combined iconography from a great many cults, signifying both"
+" abundance and resurrection. A serapeion was any temple or religious "
+"precinct devoted to Serapis. The cult of Serapis was spread as a matter of "
+"deliberate policy by the Ptolemaic kings, who also built an immense serapeum"
+" in Alexandria."
+msgstr "塞拉比斯崇拜是在公元前3世纪由埃及的托勒密一世下令引入的，旨在统一他统治下的希腊人和埃及人。这位神祇被描绘成希腊人的外貌，但带有埃及的装饰，结合了许多崇拜的象征意义，既象征丰饶又象征复活。任何供奉塞拉比斯的神殿或宗教圣所都被称为塞拉庇翁。托勒密王朝的国王们有意识地推行塞拉比斯崇拜的政策，并在亚历山大建造了一座巨大的塞拉庇翁‌。"
+
+#: simulation/data/technologies/serapis_cult.json
+msgid "+2.0 metal trickle per second."
+msgstr "持续获得金属资源 +2/s"
+
+#: simulation/data/technologies/ship_capture_resistance.json
+msgid "Marines"
+msgstr "海军士兵"
+
+#: simulation/data/technologies/ship_capture_resistance.json
+msgid "Marines were a vital part of ship defense and offense."
+msgstr "海军士兵是舰船防御和进攻的重要组成部分。"
+
+#: simulation/data/technologies/ship_capture_resistance.json
+msgid "All Warships +40% capture resistance."
+msgstr "所有战船占领抗性 +40%"
+
+#: simulation/data/technologies/ship_capture_resistance.json
+msgid "Epibatai"
+msgstr "海军士兵"
+
+#: simulation/data/technologies/ship_health.json
+msgid "Reinforced Hull"
+msgstr "横梁加固"
+
+#: simulation/data/technologies/ship_health.json
+msgid "Wooden reinforcement beams for ship hulls."
+msgstr "以横梁加固船体。"
+
+#: simulation/data/technologies/ship_health.json
+msgid "Ships +25% health, but −10% speed."
+msgstr "船只生命值 +25%，但速度 -10%"
+
+#: simulation/data/technologies/ship_health.json
+#: simulation/data/technologies/ship_movement_speed.json
+msgid "Unlocked in Town Phase. Requires “Shipwrights.”"
+msgstr "在城镇阶段解锁；需要“船匠”科技。"
+
+#: simulation/data/technologies/ship_movement_speed.json
+msgid "Phoenician Naval Tradition"
+msgstr "腓尼基海军传统"
+
+#: simulation/data/technologies/ship_movement_speed.json
+msgid ""
+"The Phoenician cities had a tradition of seafaring which spanned a thousand "
+"years."
+msgstr "腓尼基城邦拥有延续千年的航海传统。"
+
+#: simulation/data/technologies/ship_movement_speed.json
+msgid "Ships +10% movement speed."
+msgstr "船只移速 +10%"
+
+#: simulation/data/technologies/ship_vision.json
+msgid "Lookouts"
+msgstr "瞭望台"
+
+#: simulation/data/technologies/ship_vision.json
+msgid ""
+"Lookouts aboard ship were important for sighting land, spotting navigational"
+" hazards, and directing fire in battle."
+msgstr "船上建设瞭望台，对瞭望员发现陆地、识别航行障碍以及战斗中指挥火力至关重要。"
+
+#: simulation/data/technologies/ship_vision.json
+msgid ""
+"Ships and Boats +10% vision range; Scout Ships an additional +25% vision "
+"range. Unlocks “Exploration” for the Carthaginians and Han Chinese."
+msgstr "船只的视野 +10%，而侦察船的视野 +25% 。迦太基和大汉皇朝解锁“勘探者”科技。"
+
+#: simulation/data/technologies/ship_vision.json
+msgid "Prōratēs"
+msgstr "瞭望台"
+
+#: simulation/data/technologies/siege_attack.json
+msgid "Advanced Siege"
+msgstr "强化攻城器械"
+
+#: simulation/data/technologies/siege_attack.json
+msgid "Advanced technologies improve siege efficiency."
+msgstr "对攻城器械进行改良，强化其攻击威力。"
+
+#: simulation/data/technologies/siege_attack.json
+msgid "Siege Engines +25% attack crush damage."
+msgstr "攻城机械粉碎攻击伤害 +25% "
+
+#: simulation/data/technologies/siege_bolt_accuracy.json
+msgid "Bolt Accuracy"
+msgstr "射击精度"
+
+#: simulation/data/technologies/siege_bolt_accuracy.json
+msgid "Improvement to projectile accuracy."
+msgstr "弩炮命中精度提升。"
+
+#: simulation/data/technologies/siege_bolt_accuracy.json
+msgid "Bolt Shooters −20% ranged attack spread."
+msgstr "车弩远程攻击散布 -20% "
+
+#: simulation/data/technologies/siege_cost_time.json
+msgid "Siegecraft"
+msgstr "器械结构学"
+
+#: simulation/data/technologies/siege_cost_time.json
+msgid "The science or craft of laying or carrying out sieges."
+msgstr "改良器械图纸，缩短训练攻城器械的时间。"
+
+#: simulation/data/technologies/siege_cost_time.json
+msgid "Siege Engines −20% construction time."
+msgstr "攻城机械建造时间 -20% ."
+
+#: simulation/data/technologies/siege_health.json
+msgid "Armor Plating"
+msgstr "装甲护板"
+
+#: simulation/data/technologies/siege_health.json
+msgid ""
+"Cover the exterior with iron plates to protect against fire and projectiles."
+msgstr "外覆装甲以防投射物袭击。"
+
+#: simulation/data/technologies/siege_health.json
+msgid "Battering Rams and Siege Towers +25% health."
+msgstr "攻城车和攻城塔生命值 +25% "
+
+#: simulation/data/technologies/siege_pack_unpack.json
+msgid "Military Engineers"
+msgstr "攻城器械师"
+
+#: simulation/data/technologies/siege_pack_unpack.json
+msgid "Military engineers are responsible for improvements in siege engines."
+msgstr "攻城机械组装及拆卸速度更快。"
+
+#: simulation/data/technologies/siege_pack_unpack.json
+msgid "Siege Engines –40% pack and unpack time."
+msgstr "攻城机械组装和拆卸耗时 –40%"
+
+#: simulation/data/technologies/silk_road.json
+msgid "Silk Road"
+msgstr "丝绸之路"
+
+#: simulation/data/technologies/silk_road.json
+msgid "Traders +20% international trade bonus."
+msgstr "商人贸易的贸易额 +20%"
+
+#: simulation/data/technologies/silvershields.json
+msgid "Silver Shields Regiment"
+msgstr "银盾长枪卫"
+
+#: simulation/data/technologies/silvershields.json
+msgid ""
+"The Silver Shields, or Argyraspidai, were the elite heavy infantry arm of "
+"the Macedonian army."
+msgstr "银盾长枪卫是马其顿军队中的精锐重步兵部队"
+
+#: simulation/data/technologies/silvershields.json
+msgid ""
+"Upgrade Shield Bearer Champion Infantry to Silver Shields, with more health "
+"and attack damage."
+msgstr "将马其顿持盾卫兵晋级为“银盾长枪卫”，拥有更高的生命值和攻击伤害。"
+
+#: simulation/data/technologies/soldier_attack_melee_01.json
+msgid "Side Arms"
+msgstr "副武器"
+
+#: simulation/data/technologies/soldier_attack_melee_01.json
+msgid "Pugio"
+msgstr "副武器"
+
+#: simulation/data/technologies/soldier_attack_melee_01.json
+msgid ""
+"Often, a soldier would carry a secondary weapon in addition to his primary "
+"weapon of choice, to be drawn when the primary weapon has failed or been "
+"broken."
+msgstr "士兵通常会在主武器之外携带副武器，在主武器失效或损坏时使用。"
+
+#: simulation/data/technologies/soldier_attack_melee_01.json
+msgid "Xiphos"
+msgstr "副武器"
+
+#: simulation/data/technologies/soldier_attack_melee_01.json
+#: simulation/data/technologies/soldier_attack_melee_02.json
+msgid "Soldiers +15% melee attack damage."
+msgstr "士兵近战攻击伤害 +15%"
+
+#: simulation/data/technologies/soldier_attack_melee_02.json
+msgid "Iron Weapons"
+msgstr "铁制武器"
+
+#: simulation/data/technologies/soldier_attack_melee_02.json
+msgid "Using iron instead of bronze gave weapons additional power."
+msgstr "铁制武器比青铜武器更具杀伤力。"
+
+#: simulation/data/technologies/soldier_attack_melee_03.json
+msgid "Carburization"
+msgstr "渗碳处理"
+
+#: simulation/data/technologies/soldier_attack_melee_03.json
+msgid ""
+"By adding a small amount of carbon during the iron smelting process, a "
+"stronger material, steel, can be forged."
+msgstr "炼铁过程中添加少量碳，可以锻造出更坚固的材料“钢”。"
+
+#: simulation/data/technologies/soldier_attack_melee_03.json
+msgid "Soldiers +20% melee attack damage."
+msgstr "士兵近战攻击伤害 +20%"
+
+#: simulation/data/technologies/soldier_attack_melee_03_variant.json
+msgid "Steel Working"
+msgstr "钢制武器"
+
+#: simulation/data/technologies/soldier_attack_melee_03_variant.json
+msgid "Wootz Steel"
+msgstr "钢制武器"
+
+#: simulation/data/technologies/soldier_attack_melee_03_variant.json
+msgid "Toledo Steel"
+msgstr "钢制武器"
+
+#: simulation/data/technologies/soldier_attack_melee_03_variant.json
+msgid ""
+"Secret steel working techniques give sword blades distinctive and beautiful "
+"markings. Not only that, but the steel's hardness is unparalleled."
+msgstr "秘密的锻造科技让剑锋有著独特而美丽的纹路。不仅如此，这种钢铁的强度是无可比拟的。"
+
+#: simulation/data/technologies/soldier_attack_melee_03_variant.json
+msgid ""
+"Soldiers +20% melee attack damage. Swordsmen get an additional +20% bonus."
+msgstr "士兵近战伤害 +20%，剑士额外伤害 +20%"
+
+#: simulation/data/technologies/soldier_attack_ranged_01.json
+msgid "Improved Fletching"
+msgstr "提升箭术"
+
+#: simulation/data/technologies/soldier_attack_ranged_01.json
+msgid ""
+"Improving the fletching of arrows increases their stability and speed, and "
+"thus their penetration."
+msgstr "训练弓箭手的稳定性和速度，从而提升穿透力。"
+
+#: simulation/data/technologies/soldier_attack_ranged_01.json
+#: simulation/data/technologies/soldier_attack_ranged_02.json
+msgid "Soldiers +15% ranged attack damage."
+msgstr "士兵远程攻击伤害 +15% "
+
+#: simulation/data/technologies/soldier_attack_ranged_02.json
+msgid "Iron Arrowheads"
+msgstr "铁制箭镞"
+
+#: simulation/data/technologies/soldier_attack_ranged_02.json
+msgid "Projectile points made of iron enable missiles to penetrate deeper."
+msgstr "铁制箭镞比青铜箭镞更具穿透力。"
+
+#: simulation/data/technologies/soldier_attack_ranged_03.json
+msgid "Trilobate Arrowheads"
+msgstr "三叶箭镞"
+
+#: simulation/data/technologies/soldier_attack_ranged_03.json
+msgid "Arrowheads with three lobes instead of two inflict larger wounds."
+msgstr "三叶箭镞比双刃箭矢更具威力。"
+
+#: simulation/data/technologies/soldier_attack_ranged_03.json
+msgid "Soldiers +20% ranged attack damage."
+msgstr "士兵远程攻击伤害 +20% "
+
+#: simulation/data/technologies/soldier_ranged_experience.json
+msgid "Ranged Soldiers +25% promotion experience."
+msgstr "远程士兵经验 +25% ."
+
+#: simulation/data/technologies/soldier_resistance_hack_01.json
+msgid "Quilted Body Armor"
+msgstr "皮制垫甲"
+
+#: simulation/data/technologies/soldier_resistance_hack_01.json
+msgid "Body armor made from quilted wool, linen, cotton, or leather."
+msgstr "由绗缝羊毛、亚麻的皮革制护具。"
+
+#: simulation/data/technologies/soldier_resistance_hack_01.json
+msgid "Spolas"
+msgstr "皮制垫甲"
+
+#: simulation/data/technologies/soldier_resistance_hack_01.json
+#: simulation/data/technologies/soldier_resistance_hack_02.json
+msgid "Soldiers +1 hack resistance."
+msgstr "士兵劈砍抗性 +1"
+
+#: simulation/data/technologies/soldier_resistance_hack_02.json
+msgid "Laminated Linen Body Armor"
+msgstr "亚麻防具"
+
+#: simulation/data/technologies/soldier_resistance_hack_02.json
+msgid "Body armor made from laminated linen."
+msgstr "由层压亚麻制成的防具。"
+
+#: simulation/data/technologies/soldier_resistance_hack_02.json
+msgid "Linothōrax"
+msgstr "亚麻防具"
+
+#: simulation/data/technologies/soldier_resistance_hack_03.json
+msgid "Mail Body Armor"
+msgstr "锁子甲"
+
+#: simulation/data/technologies/soldier_resistance_hack_03.json
+msgid "Body armor made of small metal rings linked together."
+msgstr "由小金属环交错环扣所制成的软甲。"
+
+#: simulation/data/technologies/soldier_resistance_hack_03.json
+msgid "Soldiers +2 hack resistance."
+msgstr "士兵劈砍抗性 +2"
+
+#: simulation/data/technologies/soldier_resistance_pierce_01.json
+msgid "Wooden Shield"
+msgstr "简易木盾"
+
+#: simulation/data/technologies/soldier_resistance_pierce_01.json
+msgid ""
+"Wooden shields are heavier but much better able to resist projectiles and "
+"blows than wicker-frame shields."
+msgstr "由木板拼接而成的简易木盾。"
+
+#: simulation/data/technologies/soldier_resistance_pierce_01.json
+#: simulation/data/technologies/soldier_resistance_pierce_02.json
+msgid "Soldiers +1 pierce resistance."
+msgstr "士兵穿刺抗性 +1"
+
+#: simulation/data/technologies/soldier_resistance_pierce_02.json
+msgid "Metal Rim"
+msgstr "金属嵌边"
+
+#: simulation/data/technologies/soldier_resistance_pierce_02.json
+msgid "Strengthen shields with a metal rim or spine."
+msgstr "用金属嵌边并加固盾牌脊骨。"
+
+#: simulation/data/technologies/soldier_resistance_pierce_03.json
+msgid "Improved Shield Alloys"
+msgstr "金属盾牌"
+
+#: simulation/data/technologies/soldier_resistance_pierce_03.json
+msgid "Strengthen shields further with stronger metal alloys."
+msgstr "使用全金属包裹进一步强化盾牌。"
+
+#: simulation/data/technologies/soldier_resistance_pierce_03.json
+msgid "Soldiers +2 pierce resistance."
+msgstr "士兵穿刺抗性 +2"
+
+#: simulation/data/technologies/spy_counter.json
+msgid "Counterintelligence"
+msgstr "监察"
+
+#: simulation/data/technologies/spy_counter.json
+msgid "Recruit a network of informants to watch over your people."
+msgstr "建立国内情报网以监视你的人民。"
+
+#: simulation/data/technologies/spy_counter.json
+msgid "Make your units 50% more expensive to bribe."
+msgstr "间谍贿赂你的单位成本提高 +50%"
+
+#: simulation/data/technologies/stable_batch_training.json
+msgid ""
+"Decreases training time of cavalry if they are trained in batches or squadrons. Large batches will benefit more than small batches.\n"
+"In mathematical terms: The training time of one batch gets divided by `batchSize^0.1`."
+msgstr "骑兵若以小批或多批形式训练，可缩短训练时间。大批量训练比小批量训练效果更显著。\n单批次的训练时间除以“批量的0.1次方 ”"
+
+#: simulation/data/technologies/stable_batch_training.json
+msgid "Decrease batch training time of units trained in Stables."
+msgstr "减少马厩批量训练单位的训练时间。"
+
+#: simulation/data/technologies/subterranean_aqueducts.json
+msgid "Subterranean Aqueducts"
+msgstr "坎儿井"
+
+#: simulation/data/technologies/subterranean_aqueducts.json
+msgid "Kārēz"
+msgstr "坎儿井"
+
+#: simulation/data/technologies/subterranean_aqueducts.json
+msgid ""
+"Qanāt or Kārēz, a network of underground aqueducts connected to the yakhchal"
+" ice house."
+msgstr "冰窖利用隧道引导地下水维持窖内低温，有利于保存食物。"
+
+#: simulation/data/technologies/subterranean_aqueducts.json
+msgid "Ice House +1 trickle food rate per second."
+msgstr "冰窖持续获得食物 +1/s‌"
+
+#: simulation/data/technologies/tower_crenellations.json
+msgid "Crenellations"
+msgstr "垛口"
+
+#: simulation/data/technologies/tower_crenellations.json
+msgid ""
+"Crenellations on the battlements allow soldiers wider range of fire in "
+"defending a keep."
+msgstr "垛口让士兵在防御时能有更广的射击范围。"
+
+#: simulation/data/technologies/tower_crenellations.json
+msgid "Sentry and Stone Towers +40% more arrows per garrisoned Soldier."
+msgstr "哨塔与边防箭塔：驻守士兵默认箭矢数量 +40%"
+
+#: simulation/data/technologies/tower_garrison.json
+msgid "Professional Garrisons"
+msgstr "专业驻军"
+
+#: simulation/data/technologies/tower_garrison.json
+msgid "Hire soldiers to hold defenses against enemies."
+msgstr "雇佣士兵来防御敌人。"
+
+#: simulation/data/technologies/tower_garrison.json
+msgid "Fortresses +6 default arrows."
+msgstr "堡垒默认箭矢 +6"
+
+#: simulation/data/technologies/tower_health.json
+msgid "Sturdy Foundations"
+msgstr "强化地基"
+
+#: simulation/data/technologies/tower_health.json
+msgid "Reinforce the foundations in preparation of an attack."
+msgstr "强化建筑，抵御敌人攻击。"
+
+#: simulation/data/technologies/tower_health.json
+msgid "Towers +25% health."
+msgstr "哨塔的生命值 +25%"
+
+#: simulation/data/technologies/tower_murderholes.json
+msgid "Murder Holes"
+msgstr "悬眼"
+
+#: simulation/data/technologies/tower_murderholes.json
+msgid "Murder holes allow hitting enemies at the foot of the tower."
+msgstr "“悬眼”可攻击塔基附近的敌人。"
+
+#: simulation/data/technologies/tower_murderholes.json
+msgid ""
+"Fortresses, Sentry Towers, and Stone Towers have 0 minimum attack range."
+msgstr "大型防御设施、哨塔、边防箭塔的攻击范围设置为0。"
+
+#: simulation/data/technologies/tower_range.json
+msgid "Arrow Shooters"
+msgstr "强弓手"
+
+#: simulation/data/technologies/tower_range.json
+msgid "Arrow shooters increase the maximum range of the fire arrows."
+msgstr "增加弓箭的最大射程。"
+
+#: simulation/data/technologies/tower_range.json
+msgid "Sentry and Stone Towers +8 attack range."
+msgstr "哨塔和边防箭塔攻击范围 +8."
+
+#: simulation/data/technologies/tower_watch.json
+msgid "Sentries"
+msgstr "哨卫"
+
+#: simulation/data/technologies/tower_watch.json
+msgid "Shàobīng"
+msgstr "哨卫"
+
+#: simulation/data/technologies/tower_watch.json
+msgid "Vigiles"
+msgstr "哨卫"
+
+#: simulation/data/technologies/tower_watch.json
+msgid "A night's watch increases vigilance."
+msgstr "哨卫在夜晚始终保持警惕。"
+
+#: simulation/data/technologies/tower_watch.json
+msgid "Sentry and Stone Towers +50% default arrow count."
+msgstr "哨塔与边防箭塔默认箭矢数量+50%"
+
+#: simulation/data/technologies/tower_watch.json
+msgid "Nyktophylakes"
+msgstr "哨卫"
+
+#: simulation/data/technologies/trade_commercial_treaty.json
+msgid "Commercial Treaty"
+msgstr "贸易协定"
+
+#: simulation/data/technologies/trade_commercial_treaty.json
+msgid "Improve the international trading profit."
+msgstr "提高盟友间贸易收益。"
+
+#: simulation/data/technologies/trade_commercial_treaty.json
+msgid "Traders +10% trade profit between allies."
+msgstr "与同盟进行贸易利润 +10% 。"
+
+#: simulation/data/technologies/trade_gain_01.json
+msgid "Handicraft"
+msgstr "手工制品"
+
+#: simulation/data/technologies/trade_gain_01.json
+#: simulation/data/technologies/trade_gain_02.json
+msgid "The progress in handicraft improves the trading profit."
+msgstr "推崇手工制品提高了贸易利润。"
+
+#: simulation/data/technologies/trade_gain_01.json
+#: simulation/data/technologies/trade_gain_02.json
+msgid "Traders +15% trade gain."
+msgstr "贸易商人收益 +15% 。"
+
+#: simulation/data/technologies/trade_gain_02.json
+msgid "Advanced Handicraft"
+msgstr "改进手工制品"
+
+#: simulation/data/technologies/trader_health.json
+msgid "Trade Caravan"
+msgstr "结队而行"
+
+#: simulation/data/technologies/trader_health.json
+msgid "Traders traveling together in caravans are less vulnerable."
+msgstr "贸易商人深知单独贸易的风险，从而与其他商人结队而行。"
+
+#: simulation/data/technologies/trader_health.json
+msgid "Land Traders +50% health."
+msgstr "贸易商人生命值 +50% ."
+
+#: simulation/data/technologies/traditional_army_sele.json
+msgid "Traditional Army"
+msgstr "传统军队"
+
+#: simulation/data/technologies/traditional_army_sele.json
+msgid "The Macedonian-style core of the Seleucid army."
+msgstr "马其顿风格的塞琉古长枪兵。"
+
+#: simulation/data/technologies/traditional_army_sele.json
+msgid "Unlock the Champion Infantry Pikeman."
+msgstr "解锁冠勇单位“银盾长枪兵”。"
+
+#: simulation/data/technologies/tyrtean_paeans.json
+msgid "Tyrtean Paeans"
+msgstr "提尔特俄斯赞歌"
+
+#: simulation/data/technologies/tyrtean_paeans.json
+msgid ""
+"Paeans were battle hymns that were sung by the Hoplites when they charged "
+"the enemy lines. One of the first known Paeans was composed by Tirteus, a "
+"warrior poet of Sparta, during the First Messenian War."
+msgstr "赞歌是重装步兵冲锋时高唱的战歌。已知最早的赞歌之一由斯巴达战士诗人提尔托斯创作，诞生于第一次美塞尼亚战争期间。"
+
+#: simulation/data/technologies/tyrtean_paeans.json
+msgid "Champion Hoplites +10% movement speed."
+msgstr "冠勇单位“斯巴达重装卫兵”移速 +10% "
+
+#: simulation/data/technologies/unit_advanced.json
+msgid ""
+"Advanced and Elite units +20% training time, +25% health, +0.7 capture "
+"attack strength, +20% loot, and −30% gather speed; Healers +5 healing "
+"strength and +3 healing range; Melee units +10% attack damage; Ranged units "
+"−20% spread."
+msgstr "高级与精英单位：训练时间+20%，生命值+25%，占领攻击强度+0.7，战利品获取+20%，采集速度-30%；治疗单位：治疗效率+5，治疗范围+3；近战单位：攻击伤害+10%；远程单位：攻击散射范围-20%"
+
+#: simulation/data/technologies/unit_elite.json
+msgid ""
+"Elite units +20% training time, +25% health, +0.8 capture attack strength, "
+"+20% loot, and −30% gather speed; Healers +5 healing strength and +3 healing"
+" range; Melee units +10% attack damage; Ranged units −20% spread."
+msgstr "精锐单位训练时间+20%、生命值+25%、占领攻击强度+0.8、战利品+20%、采集效率−30%；治疗单位：治疗效率+5、治疗范围+3；近战单位：攻击伤害+10%；远程单位：散射范围−20%"
+
+#: simulation/data/technologies/unlock_champion_cavalry.json
+msgid "Unlock Champion Cavalry"
+msgstr "解锁冠勇骑兵"
+
+#: simulation/data/technologies/unlock_champion_cavalry.json
+msgid "Unlock Champion Cavalry at the Stable."
+msgstr "马厩可训练冠勇骑兵"
+
+#: simulation/data/technologies/unlock_champion_cavalry.json
+#: simulation/data/technologies/unlock_champion_chariots.json
+#: simulation/data/technologies/unlock_champion_infantry.json
+msgid ""
+"Guard units (Champions) are professionals who wield the best weapons and "
+"have the best training."
+msgstr "冠勇单位“战车”是装备精良、训练有素的战斗职业单位。"
+
+#: simulation/data/technologies/unlock_champion_chariots.json
+msgid "Unlock Champion Chariots"
+msgstr "解锁冠勇战车"
+
+#: simulation/data/technologies/unlock_champion_chariots.json
+msgid "Unlock Champion Chariots at the Stable."
+msgstr "马厩可训练冠勇战车"
+
+#: simulation/data/technologies/unlock_champion_infantry.json
+msgid "Unlock Champion Infantry"
+msgstr "解锁冠勇步兵"
+
+#: simulation/data/technologies/unlock_champion_infantry.json
+msgid "Regio Cohors"
+msgstr "解锁冠勇步兵"
+
+#: simulation/data/technologies/unlock_champion_infantry.json
+msgid "Unlock Champions Infantry at the Barracks."
+msgstr "兵营可训练冠勇步兵"
+
+#: simulation/data/technologies/unlock_champion_infantry.json
+msgid "Agēma"
+msgstr "解锁冠勇步兵"
+
+#: simulation/data/technologies/unlock_civilians_house_generic.json
+#: simulation/data/technologies/unlock_females_house.json
+msgid "Thesmophoria"
+msgstr "生育庆典"
+
+#: simulation/data/technologies/unlock_civilians_house_generic.json
+#: simulation/data/technologies/unlock_civilians_house_kush.json
+msgid "A festival to celebrate fertility."
+msgstr "每年妇女们都会参与生育庆典，以祈祷生育。"
+
+#: simulation/data/technologies/unlock_civilians_house_generic.json
+#: simulation/data/technologies/unlock_civilians_house_kush.json
+msgid "Unlock the ability to train Civilians from houses."
+msgstr "解锁住宅训练妇女的能力。"
+
+#: simulation/data/technologies/unlock_civilians_house_generic.json
+#: simulation/data/technologies/unlock_civilians_house_kush.json
+#: simulation/data/technologies/unlock_females_house.json
+msgid "Fertility Festival"
+msgstr "生育庆典"
+
+#: simulation/data/technologies/unlock_civilians_house_generic.json
+#: simulation/data/technologies/unlock_females_house.json
+msgid "Bona Dea"
+msgstr "布娜·迪亚女神"
+
+#: simulation/data/technologies/unlock_females_house.json
+msgid "A festival attended by women-only, to celebrate female fertility."
+msgstr "每年妇女们都会参与生育庆典，以祈祷生育。"
+
+#: simulation/data/technologies/unlock_females_house.json
+msgid "Unlock the ability to train women from houses."
+msgstr "解锁住宅训练妇女的能力。"
+
+#: simulation/data/technologies/unlock_neodamodes.json
+msgid "Unlock Neodamodes"
+msgstr "解锁“新募长矛兵”"
+
+#: simulation/data/technologies/unlock_neodamodes.json
+msgid ""
+"In ancient Sparta, the Helots who were freed by the state in reward for "
+"military service were known as Neodamodes."
+msgstr "在古代斯巴达，因军功被国家解放的希洛人被称为新募战士。"
+
+#: simulation/data/technologies/unlock_neodamodes.json
+msgid "Unlock the ability to train Spearman Neodamodes at the Barracks."
+msgstr "在兵营解锁训练 ‌“新募长矛兵”‌的能力。"
+
+#: simulation/data/technologies/unlock_shared_dropsites.json
+msgid "Diaspora"
+msgstr "贸易扩展"
+
+#: simulation/data/technologies/unlock_shared_dropsites.json
+msgid ""
+"The extension of trade leads to the permanent establishment of storekeepers "
+"and their families in foreign countries, allowing them to exploit the wealth"
+" of these countries."
+msgstr "贸易的扩大促使商人在外国建立商栈和家庭，方便他们利用在这些国家的资源存储建筑。"
+
+#: simulation/data/technologies/unlock_shared_dropsites.json
+msgid "Allows using allied dropsites."
+msgstr "可以使用盟友的资源存储建筑。"
+
+#: simulation/data/technologies/unlock_shared_los.json
+msgid "Cartography"
+msgstr "地图绘制"
+
+#: simulation/data/technologies/unlock_shared_los.json
+msgid ""
+"By means of trading and travelling people explored beyond the boundaries of "
+"their lands and drew maps of it in order to share and memorize their "
+"discoveries."
+msgstr "通过贸易与旅行，人们跨越地域界限探索未知，并通过绘制地图记录和传播发现成果。‌"
+
+#: simulation/data/technologies/unlock_shared_los.json
+msgid ""
+"See what your allies see, browse their summary and check their resources and"
+" population count in the top panel."
+msgstr "地图绘制可以让你查看到同盟视野和同盟的资源数量《鼠标移动资源处查看》"
+
+#: simulation/data/technologies/unlock_spies.json
+msgid "Espionage"
+msgstr "间谍"
+
+#: simulation/data/technologies/unlock_spies.json
+msgid ""
+"Merchants' first goal was trading, but they also gathered information about "
+"the countries they crossed."
+msgstr "贸易商人的首要目标是贸易，但他们同时也搜集了途经各国的情报。"
+
+#: simulation/data/technologies/unlock_spies.json
+msgid ""
+"Allows bribing the units of other players in order to share their vision."
+msgstr "允许使用间谍获取其他玩家的单位的视野 ( 通过“外交”页面操作 ) 。"
+
+#: simulation/data/technologies/upgrade_rank_advanced_mercenary.json
+msgid "Expertise In War"
+msgstr "战争专精"
+
+#: simulation/data/technologies/upgrade_rank_advanced_mercenary.json
+msgid "Hire professional mercenaries to fight in your army."
+msgstr "雇佣专业佣兵为你作战。"
+
+#: simulation/data/technologies/upgrade_rank_advanced_mercenary.json
+msgid "Mercenaries start at Advanced rank."
+msgstr "高级的雇佣兵单位。"
+
+#: simulation/data/technologies/wagon_trains.json
+msgid "Wagon Trains"
+msgstr "篷车队"
+
+#: simulation/data/technologies/wagon_trains.json
+msgid ""
+"Long trains of wagons accompanied the Cimbri and Germanic peoples to provide"
+" shelter and transport goods"
+msgstr "长长的马车队伴随着辛布里人和日耳曼人，为他们提供住所和运输货物。"
+
+#: simulation/data/technologies/wagon_trains.json
+msgid ""
+"Supply Wagons +5 population space and Wagon Encampments +10 population "
+"space. Training Germanic Workers unlocked from the Supply Wagon as well."
+msgstr "补给马车人口容量+5，马车营地人口容量+10。此外，还可以通过补给马车训练日耳曼工人。"
+
+#: simulation/data/technologies/warship_arrow_attack.json
+msgid "Naval Oxybeles"
+msgstr "安置弩炮"
+
+#: simulation/data/technologies/warship_arrow_attack.json
+msgid "Mounting bolt shooters onto ships helped give added firepower."
+msgstr "在船上加装弩炮，增加船只火力。"
+
+#: simulation/data/technologies/warship_arrow_attack.json
+msgid "Arrow Ships +10 crush attack damage and +10% attack range."
+msgstr "箭船粉碎攻击伤害+10，攻击范围+10%"
+
+#: simulation/data/technologies/warship_fireship_attack.json
+msgid "Burning Pitch"
+msgstr "燃烧的沥青"
+
+#: simulation/data/technologies/warship_fireship_attack.json
+msgid ""
+"Pitch can be made from petroleum, coal tar, or pine tar. It can be used to "
+"help seal the hulls of boats as well as assist in igniting enemy ships."
+msgstr "沥青是由石油与煤焦油或松焦油制成，它可用于密封船体，同时也能帮助点燃敌船。"
+
+#: simulation/data/technologies/warship_fireship_attack.json
+msgid "Fire Ships +25% health and +25% attack damage."
+msgstr "火攻船生命值 +25%，攻击伤害 +25%"
+
+#: simulation/data/technologies/warship_health.json
+msgid "Undergirding Cables"
+msgstr "加固船体"
+
+#: simulation/data/technologies/warship_health.json
+msgid "The hypozomata brace the structure of a ship."
+msgstr "下桁加固了船体的结构。"
+
+#: simulation/data/technologies/warship_health.json
+msgid "Arrow Ships and Ramming Ships +20% health."
+msgstr "箭船与冲撞船生命值 +20%"
+
+#: simulation/data/technologies/warship_health.json
+msgid "Hypozomata"
+msgstr "加固船体"
+
+#: simulation/data/technologies/warship_ramming_attack.json
+msgid "Bronze Ram"
+msgstr "撞角冲击"
+
+#: simulation/data/technologies/warship_ramming_attack.json
+msgid "A bronze beak at the prow of the ship, used for ramming enemy ships."
+msgstr "安装在船首的青铜鸟喙状装置，用于撞击敌舰。"
+
+#: simulation/data/technologies/warship_ramming_attack.json
+msgid "Ramming Ships +30% attack damage."
+msgstr "冲撞船攻击伤害 +30%"
+
+#: simulation/data/technologies/warship_ramming_attack.json
+msgid "Embolon"
+msgstr "撞角冲击"
+
+#: simulation/data/technologies/warship_ranged_attack.json
+msgid "Flaming Projectiles"
+msgstr "燃烧的抛射物"
+
+#: simulation/data/technologies/warship_ranged_attack.json
+msgid ""
+"Flaming munitions were very useful against wooden targets such as ships."
+msgstr "燃烧的抛射物对船只等木质类目标非常有用。"
+
+#: simulation/data/technologies/warship_ranged_attack.json
+msgid "Ranged Warships +10% attack damage."
+msgstr "战船攻击伤害 +10%"
+
+#: simulation/data/technologies/warship_siege_attack.json
+msgid "Naval Ballistae"
+msgstr "海军弩炮"
+
+#: simulation/data/technologies/warship_siege_attack.json
+msgid "Mounting stronger catapults onto ships helped give added firepower."
+msgstr "在舰艇上安装更强大的抛石机有助于增加火力。"
+
+#: simulation/data/technologies/warship_siege_attack.json
+msgid "Siege Ships +20% attack range and vision range."
+msgstr "攻城船的视野和攻击范围 +20%"
+
+#: simulation/data/technologies/wonder_population_cap.json
+msgid "Glorious Expansion"
+msgstr "文明‌扩展‌"
+
+#: simulation/data/technologies/wonder_population_cap.json
+msgid "The wonder attracts many more people to your civilization."
+msgstr "文明的奇观会吸引许多移民追随，从而增加人口。"
+
+#: simulation/data/technologies/wonder_population_cap.json
+msgid ""
+"Enable the “Glorious Expansion” aura: +20% maximum population limit per "
+"Wonder owned."
+msgstr "启用“文明‌扩展‌”光环：每座奇观让人口上限 +20％"
+
+#: simulation/data/technologies/wonder_population_cap.json
+msgid "Peristasis"
+msgstr "文明‌扩展‌"

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="accountSettingsPage" hidden="true">
+
+	<script directory="gui/lobby/AccountSettingsPage/"/>
+
+	<!-- Translucent black background -->
+	<object type="image" z="100" sprite="ModernFade"/>
+
+	<object type="image" style="ModernDialog" size="50%-230 50%-140 50%+230 50%+140" z="101">
+
+		<object style="ModernLabelText" type="text" size="50%-128 -18 50%+128 14">
+			<translatableAttribute id="caption">Account settings</translatableAttribute>
+		</object>
+
+		<object size="24 32 100%-24 100%-24">
+			<object type="text" size="0 0 100% 24" style="ModernLeftLabelText">
+				<translatableAttribute id="caption">New password:</translatableAttribute>
+			</object>
+			<object name="as_PasswordInput" mask="true" mask_char="*" size="0 24 100% 48" type="input" style="ModernInput" font="sans-13"/>
+			<object type="text" size="0 50 100% 76" style="ModernLeftLabelText">
+				<translatableAttribute id="caption">Confirm new password:</translatableAttribute>
+			</object>
+			<object name="as_PasswordInputConfirm" mask="true" mask_char="*" size="0 76 100% 100" type="input" style="ModernInput" font="sans-13"/>
+			<object name="as_RequestResult" type="text" size="0 112 100% 100%-40" style="ModernLabelText"/>
+
+			<object size="18 100%-28 100%-18 100%">
+				<object type="button" name="as_Close" style="ModernButtonRed" size="0 0 50%-5 100%">
+					<translatableAttribute id="caption">Close</translatableAttribute>
+				</object>
+				<object type="button" name="as_ChangePasswordBtn" style="ModernButtonRed" size="50%+5 0 100% 100%">
+					 <translatableAttribute id="caption">Change password</translatableAttribute>
+				</object>
+			</object>
+		</object>
+	</object>
+</object>

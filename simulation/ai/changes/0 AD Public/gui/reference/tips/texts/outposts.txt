@@ -1,0 +1,4 @@
+OUTPOSTS
+Build in neutral or own territory to monitor large areas of the map.
+Cheap and quickly built, but weak and easily captured.
+Garrison Infantry to extend the vision range, and to prevent losing control over it due to territory decay.

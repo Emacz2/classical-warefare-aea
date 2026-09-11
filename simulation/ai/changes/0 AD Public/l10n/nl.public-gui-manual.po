@@ -1,0 +1,782 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# rollieoo, 2020-2021
+# Bart Groeneveld, 2017
+# bb, 2020
+# bb, 2018
+# Christof Verhoeven, 2016-2017
+# Dig Dug, 2018
+# echotangoecho ., 2017
+# Ellen Roels, 2015
+# Freagarach, 2021
+# Freagarach, 2019-2021
+# Ismail Sahin, 2017
+# Johannes Collosus, 2015
+# Marijn Billiet, 2018
+# Max Klaversma, 2014
+# niektb, 2015
+# rollieoo, 2021-2025
+# Sander Deryckere, 2015-2016
+# Willem van der Doe, 2020
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-06-16 00:22+0000\n"
+"PO-Revision-Date: 2014-06-19 17:51+0000\n"
+"Last-Translator: rollieoo, 2021-2025\n"
+"Language-Team: Dutch (http://app.transifex.com/wildfire-games/0ad/language/nl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gui/manual/intro.txt:1
+msgid "[font=\"sans-bold-18\"]0 A.D. in-game manual[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-18\"]0 A.D. in-game handleiding[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:2
+msgid ""
+"Thank you for installing 0 A.D.! This page will give a brief overview of the"
+" features available in this incomplete, under-development, alpha version of "
+"the game."
+msgstr "Bedankt voor het installeren van 0 A.D.! Deze pagina geeft een kort overzicht van de aanwezige functies in deze nog niet complete, in ontwikkeling zijnde, alpha versie van het spel."
+
+#: gui/manual/intro.txt:4
+msgid "[font=\"sans-bold-16\"]Graphics settings[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Grafische instellingen[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:5
+msgid ""
+"You can switch between fullscreen and windowed mode by pressing Alt + Enter."
+" In windowed mode, you can resize the window. If the game runs too slowly, "
+"you can change some settings in the options window: try disabling the “High-"
+"quality water effects” and “Shadows” options."
+msgstr "Met Alt + Enter kunt u wisselen tussen volledig scherm en vensterweergave. In vensterweergave kunt u de venstergrootte aanpassen. Als het spel te traag is, kunt u een aantal instellingen aanpassen in Instellingen > Opties. Schakel bijvoorbeeld de “Hoge-kwaliteit watereffecten” en “Schaduwen” opties uit."
+
+#: gui/manual/intro.txt:7
+msgid "[font=\"sans-bold-16\"]Playing the game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Spelcommando's[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:8
+msgid ""
+"The controls and gameplay should be familiar to players of traditional real-"
+"time strategy (RTS) games. There are currently a lot of missing features and"
+" poorly-balanced stats – you will probably have to wait until a beta release"
+" for it to work well."
+msgstr "De bediening van het spel en het spelverloop volgen de gebruikelijke manieren van het RTS genre. Er is momenteel nog een groot aantal ontbrekende functies en onevenwichtig AI gedrag – u zult waarschijnlijk tot een bèta release moeten wachten voordat het echt goed zal werken."
+
+#: gui/manual/intro.txt:10
+msgid "Basic controls (by default):"
+msgstr "Standaard bediening (basis instellingen):"
+
+#: gui/manual/intro.txt:11
+msgid "• Left-click to select units"
+msgstr "• Linkermuisknop om eenheden te selecteren"
+
+#: gui/manual/intro.txt:12
+msgid "• Left-click-and-drag to select groups of units"
+msgstr "• Links slepen om een groep eenheden te selecteren."
+
+#: gui/manual/intro.txt:13
+msgid "• Right-click to order units to the target"
+msgstr "• Rechts klikken om eenheden een opdracht te geven"
+
+#: gui/manual/intro.txt:14
+msgid "• Arrow keys or WASD keys to move the camera"
+msgstr "• Pijltjestoetsen of WASD om de camera te bewegen"
+
+#: gui/manual/intro.txt:15
+msgid "• Ctrl + arrow keys, or shift + mouse wheel, to rotate the camera"
+msgstr "• Ctrl + pijltjestoetsen of shift + muiswiel om de camera te roteren"
+
+#: gui/manual/intro.txt:16
+msgid ""
+"• Mouse wheel, or “hotkey.camera.zoom.in” and “hotkey.camera.zoom.out” keys,"
+" to zoom"
+msgstr "• Muiswiel of “sneltoets.camera.zoom.in” en “sneltoets.camera.zoom.uit” toetsen om te zoomen"
+
+#: gui/manual/intro.txt:18
+msgid "[font=\"sans-bold-16\"]Modes[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Modes[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:19
+msgid "The main menu gives access to two game modes:"
+msgstr "Het hoofdmenu geeft toegang tot twee spelmodes:"
+
+#: gui/manual/intro.txt:20
+msgid ""
+"• [font=\"sans-bold-14\"]Single-player[font=\"sans-14\"] – Play a sandbox "
+"game or against one or more computer players (AI). The default AI (Petra) is"
+" under development and may not always be up to date on the new features, but"
+" you can play the game with or against it nonetheless."
+msgstr "• [font=\"sans-bold-14\"]Singleplayer[font=\"sans-14\"] – Speel een zandbakspel of speel tegen één of meerdere AI tegenstanders. De AI (Petra) is in ontwikkeling en bevat dus mogelijk niet de nieuwste spelfuncties. Maar u kan er prima mee of tegen spelen."
+
+#: gui/manual/intro.txt:21
+msgid ""
+"• [font=\"sans-bold-14\"]Multiplayer[font=\"sans-14\"] – Play against human "
+"opponents over the internet."
+msgstr "• [font=\"sans-bold-14\"]Multiplayer[font=\"sans-14\"] – Speel tegen menselijke tegenstanders over het internet."
+
+#: gui/manual/intro.txt:23
+msgid ""
+"To set up a multiplayer game, one player must select the “Host game” option."
+" The game uses UDP port 20595, so the host must configure their "
+"NAT/firewall/etc. to allow this. Other players can then select “Join game” "
+"and enter the host's IP address."
+msgstr "Om een multiplayer spel te starten moet één speler de “Host een spel” optie selecteren. Het spel gebruikt UDP poort 20595, dus moet de host zijn / haar NAT, firewall enz. configureren om dit toe te staan. Andere spelers kunnen dan “Doe mee aan een spel” selecteren en het IP adres van de host invoeren."
+
+#: gui/manual/intro.txt:25
+msgid "[font=\"sans-bold-16\"]Game setup[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Wedstrijd instellen[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:26
+msgid "In a multiplayer game, only the host can alter the game setup options."
+msgstr "In een multiplayer spel kan alleen de host de instellingen wijzigen."
+
+#: gui/manual/intro.txt:28
+msgid "First, select what type of map you want to play:"
+msgstr "Kies eerst op welk type kaart u wilt spelen:"
+
+#: gui/manual/intro.txt:29
+msgid ""
+"• [font=\"sans-bold-14\"]Random map[font=\"sans-14\"] – A map created "
+"automatically from a script"
+msgstr "• [font=\"sans-bold-14\"]Willekeurige kaart[font=\"sans-14\"] – Een kaart die automatisch gegenereerd wordt door een script"
+
+#: gui/manual/intro.txt:30
+msgid ""
+"• [font=\"sans-bold-14\"]Scenario map[font=\"sans-14\"] – A map created by "
+"map designers and with fixed civilizations"
+msgstr "• [font=\"sans-bold-14\"]Scenario kaart[font=\"sans-14\"] – Een handgemaakte kaart met vaststaande beschavingen"
+
+#: gui/manual/intro.txt:31
+msgid ""
+"• [font=\"sans-bold-14\"]Skirmish map[font=\"sans-14\"] – A map created by "
+"map designers but where the civilizations can be chosen"
+msgstr "• [font=\"sans-bold-14\"]Schermutseling kaart[font=\"sans-14\"] – Een handgemaakte kaart waar de beschavingen wel gekozen kunnen worden"
+
+#: gui/manual/intro.txt:33
+msgid ""
+"Then the maps can be further filtered. The default maps are generally "
+"playable maps. Naval maps are maps where not all opponents can be reached "
+"over land and demo maps are maps used for testing purposes (generally not "
+"useful to play on). The “All Maps” filter shows all maps together in one "
+"list."
+msgstr "Daarna kunnen de kaarten verder gefilterd worden. De standaard kaarten zijn gewone speelbare kaarten. Zeekaarten zijn kaarten waar niet alle tegenstanders over het land bereikt kunnen worden, en demokaarten zijn kaarten die gebruikt worden in de ontwikkeling van het spel om functionaliteit mee te testen (deze zijn meestal niet speelbaar). De “Alle kaarten” filter toont alle kaarten in één lijst."
+
+#: gui/manual/intro.txt:35
+msgid ""
+"Finally change the settings. For random maps this includes the number of "
+"players, the size of a map, etc. For scenarios you can only select who "
+"controls which player (decides where you start on the map etc.). The options"
+" are either a human player, an AI or no player at all (the opponent will "
+"just be idle)."
+msgstr "Als laatste kunt u de instellingen van het spel wijzigen. Voor willekeurige kaarten is dit onder andere het aantal spelers en de grootte van de kaart. Voor scenario's kan u alleen selecteren wie welke beschaving speelt (en dus bijvoorbeeld waar op de kaart u begint). U kan kiezen voor een menselijke speler, de AI, of geen speler (de tegenstander zal dan inactief zijn)."
+
+#: gui/manual/intro.txt:37
+msgid "When you are ready to start, click the “Start game” button."
+msgstr "Als u klaar bent om te spelen, klik op “Start spel”."
+
+#: gui/manual/intro.txt:39
+msgid "[font=\"sans-bold-16\"]Hotkeys[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-16\"]Sneltoetsen[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:40
+msgid ""
+"You may change hotkeys in [font=\"sans-bold-14\"]Options > "
+"Hotkeys[font=\"sans-14\"] to suit your liking."
+msgstr "U kunt sneltoetsen aanpassen in [font=\"sans-bold-14\"]Instellingen > Sneltoetsen[font=\"sans-14\"]."
+
+#: gui/manual/intro.txt:42
+msgid "[font=\"sans-bold-14\"]Program-wide[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Overal in het programma[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:43
+msgid ""
+"  hotkey.exit – Immediately close the game, without asking for confirmation"
+msgstr " sneltoets.exit – Sluit het spel af zonder bevestigingsdialoog"
+
+#: gui/manual/intro.txt:44
+msgid "  hotkey.togglefullscreen – Toggle between fullscreen and windowed"
+msgstr "  sneltoets.togglefullscreen – Wissel tussen fullscreen en vensterweergave"
+
+#: gui/manual/intro.txt:45
+msgid "  hotkey.console.toggle – Toggle console"
+msgstr "  sneltoets.console.toggle – Toon / verberg console"
+
+#: gui/manual/intro.txt:46
+msgid "  hotkey.fps.toggle – Toggle frame counter (FPS)"
+msgstr "  sneltoets.fps.toggle – Toon / verberg frame teller (FPS)"
+
+#: gui/manual/intro.txt:47
+msgid ""
+"  hotkey.profile.toggle – Toggle real-time profiler (cycles through the "
+"displays of information)"
+msgstr "  sneltoets.profile.toggle – Toon / verberg real-time profiler (blader door de verschillende informatieweergaven)"
+
+#: gui/manual/intro.txt:48
+msgid ""
+"  hotkey.profile.save – Save current profiler data to “logs/profile.txt”"
+msgstr "  sneltoets.profile.save – Sla de huidige profieldata op in “logs/profile.txt”"
+
+#: gui/manual/intro.txt:49
+msgid ""
+"  hotkey.screenshot – Take screenshot (in .png format, location is displayed"
+" in the top left of the GUI after the file has been saved, and can also be "
+"seen in the console/logs if you miss it there)"
+msgstr "  sneltoets.screenshot – Maak een schermafbeelding (in .png formaat. De locatie wordt weergegeven in de linker bovenhoek nadat het bestand is opgeslagen. De locatie kan ook gevonden worden in de console of de logs)"
+
+#: gui/manual/intro.txt:50
+msgid ""
+"  hotkey.bigscreenshot – Take huge screenshot (6400×4800 pixels, in .bmp "
+"format, location is displayed in the top left of the GUI after the file has "
+"been saved, and can also be seen in the console/logs if you miss it there)"
+msgstr "  sneltoets.bigscreenshot – Maak een grote schermafbeelding (6400 x 4800 pixels in .bmp formaat. De locatie wordt weergegeven in de linker bovenhoek nadat het bestand is opgeslagen. De locatie kan ook gevonden worden in de console of de logs)"
+
+#: gui/manual/intro.txt:51
+msgid "  hotkey.tab.next – Switch to the next tab"
+msgstr "  sneltoets.tab.next – Ga naar het volgende tabblad"
+
+#: gui/manual/intro.txt:52
+msgid "  hotkey.tab.prev – Switch to the previous tab"
+msgstr "  sneltoets.tab.prev – Ga naar het vorige tabblad"
+
+#: gui/manual/intro.txt:53
+msgid "  hotkey.item.next – Switch to the next item of a list"
+msgstr "  sneltoets.item.next – Ga naar het volgende onderdeel van een lijst"
+
+#: gui/manual/intro.txt:54
+msgid "  hotkey.item.prev – Switch to the previous item of a list"
+msgstr "  sneltoets.item.next – Ga naar het vorige onderdeel van een lijst"
+
+#: gui/manual/intro.txt:56
+msgid "[font=\"sans-bold-14\"]In Game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Spel commando's[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:57
+msgid ""
+"  Double Left Click \\[on unit] – Select all of your units of the same kind "
+"on the screen (even if they're different ranks)"
+msgstr "  Dubbel klikken \\[op een eenheid] – Selecteer al uw eenheden van dezelfde soort op het scherm (zelfs als ze verschillende rangen hebben)"
+
+#: gui/manual/intro.txt:58
+msgid ""
+"  Triple Left Click \\[on unit] – Select all of your units of the same kind "
+"and the same rank on the screen"
+msgstr "  Driedubbelklik \\[op een eenheid] – Selecteer al uw eenheden van dezelfde soort en gelijke rang op het scherm"
+
+#: gui/manual/intro.txt:59
+msgid ""
+"  Alt + Double Left Click \\[on unit] – Select all your units of the same "
+"kind on the entire map (even if they have different ranks)"
+msgstr "  Alt + dubbel klikken \\[op een eenheid] – Selecteer al uw eenheden van dezelfde soort op de gehele kaart (zelfs als ze verschillende rangen hebben)"
+
+#: gui/manual/intro.txt:60
+msgid ""
+"  Alt + Triple Left Click \\[on unit] – Select all your units of the same "
+"kind and rank on the entire map"
+msgstr "  Alt + driedubbelklikken \\[op een eenheid] – Selecteer al uw eenheden van dezelfde soort en gelijke rang op de gehele kaart"
+
+#: gui/manual/intro.txt:61
+msgid "  hotkey.quicksave – Quicksave"
+msgstr "  sneltoets.quicksave – Snel opslaan"
+
+#: gui/manual/intro.txt:62
+msgid "  hotkey.quickload – Quickload"
+msgstr "  sneltoets.quickload – Snel laden"
+
+#: gui/manual/intro.txt:63
+msgid "  hotkey.session.gui.menu.toggle – Toggle menu"
+msgstr "  sneltoets.session.gui.menu.toggle – Toon / verberg menu"
+
+#: gui/manual/intro.txt:64
+msgid "  hotkey.timeelapsedcounter.toggle – Toggle time elapsed counter"
+msgstr "  sneltoets.timeelapsedcounter.toggle – Toon / verberg verstreken speltijd"
+
+#: gui/manual/intro.txt:65
+msgid "  hotkey.cancel – Close all dialogs (chat, menu)"
+msgstr "  sneltoets.cancel – Sluit alle dialogen (chat, menu)"
+
+#: gui/manual/intro.txt:66
+msgid "  hotkey.confirm – Open chat or send message"
+msgstr "  sneltoets.confirm – Open chat of stuur bericht"
+
+#: gui/manual/intro.txt:67
+msgid "  hotkey.teamchat – Send team chat"
+msgstr "  sneltoets.teamchat – Stuur teamchat"
+
+#: gui/manual/intro.txt:68
+msgid ""
+"  hotkey.privatechat – Chat with the previously selected private chat "
+"partner"
+msgstr "  sneltoets.privatechat – Chat met de laatst geselecteerde privé chat partner"
+
+#: gui/manual/intro.txt:69
+msgid "  hotkey.pause – Pause or resume the game"
+msgstr "  sneltoets.pause – Pauzeer of hervat het spel"
+
+#: gui/manual/intro.txt:70
+msgid ""
+"  hotkey.session.kill – Delete currently selected unit(s)/structure(s), ask "
+"for confirmation"
+msgstr "  sneltoets.session.kill – Vernietig de geselecteerde eenheid (eenheden) / gebouw(en), met bevestiging"
+
+#: gui/manual/intro.txt:71
+msgid ""
+"    • With hotkey.session.noconfirmation – Immediately delete currently "
+"selected unit(s)/structure(s), without asking for confirmation"
+msgstr "    • Met sneltoets.session.noconfirmation – Vernietig de geselecteerde eenheid (eenheden) / gebouw(en), zonder bevestiging"
+
+#: gui/manual/intro.txt:72
+msgid ""
+"  hotkey.selection.add – Modifier – add to selection (works with clicking "
+"and hotkeys, e.g. the idle hotkeys)"
+msgstr "  sneltoets.selection.add – Pas aan – voeg toe aan selectie (werkt met klikken en sneltoetsen, bijvoorbeeld de inactief sneltoetsen)"
+
+#: gui/manual/intro.txt:73
+msgid ""
+"  hotkey.selection.remove – Modifier – remove from selection (works with "
+"clicking and hotkeys, e.g. the idle hotkeys)"
+msgstr "  sneltoets.selection.remove – Pas aan – verwijder uit selectie (werkt met klikken en sneltoetsen, bijvoorbeeld de inactief sneltoetsen)"
+
+#: gui/manual/intro.txt:74
+msgid ""
+"  hotkey.selection.offscreen – Modifier – add all units, including offscreen"
+" units, to selection"
+msgstr "  sneltoets.selection.offscreen - Pas aan – voeg alle eenheden toe aan selectie, ook als ze niet in beeld zijn"
+
+#: gui/manual/intro.txt:75
+msgid ""
+"  hotkey.selection.cancel – Unselect all units, cancel building placement"
+msgstr "  sneltoets.selection.cancel – Deselecteer alle eenheden of onderbreek gebouwen plaatsen"
+
+#: gui/manual/intro.txt:76
+msgid "  hotkey.selection.idlebuilder – Select idle builder"
+msgstr "  sneltoets.selection.idlebuilder – Selecteer inactieve bouwer"
+
+#: gui/manual/intro.txt:77
+msgid "  hotkey.selection.idlewarrior – Select idle fighter"
+msgstr "  sneltoets.selection.idlewarrior – Selecteer inactieve soldaat"
+
+#: gui/manual/intro.txt:78
+msgid ""
+"  hotkey.selection.idleworker – Select idle worker (including citizen-"
+"soldiers)"
+msgstr "  sneltoets.selection.idleworker – Selecteer inactieve werker (inclusief burgersoldaten)"
+
+#: gui/manual/intro.txt:79
+msgid "  hotkey.selection.idleunit – Select idle unit"
+msgstr "  sneltoets.selection.idleunit – Selecteer inactieve eenheid"
+
+#: gui/manual/intro.txt:80
+msgid "  hotkey.session.stop – Stop (halt) the currently selected units"
+msgstr "  sneltoets.session.stop – Stop (halt) de activiteit van de geselecteerde eenheden"
+
+#: gui/manual/intro.txt:81
+msgid "  hotkey.session.backtowork – The unit will go back to work"
+msgstr "  sneltoets.session.backtowork – De eenheid gaat verder met de activiteit"
+
+#: gui/manual/intro.txt:82
+msgid ""
+"  hotkey.session.unload – Unload the garrisoned units of the selected "
+"structure(s)"
+msgstr "  sneltoets.session.unload – Stuur de eenheden van het geselecteerde gebouw naar buiten"
+
+#: gui/manual/intro.txt:83
+msgid ""
+"  hotkey.selection.group.save.1 – Create control group 1 (by default, "
+"respectively 2,3, ...) from the selected unit(s)/structure(s)"
+msgstr "  sneltoets.selection.group.save.1 – Stel controlgroep 1 (t/m 0) in met de geselecteerde eenheid (eenheden) / gebouw(en)"
+
+#: gui/manual/intro.txt:84
+msgid ""
+"  hotkey.selection.group.select.1 – Select the unit(s)/structure(s) in "
+"control group 1"
+msgstr "  sneltoets.selection.group.select.1 – Selecteer de eenheid (eenheden) / gebouw(en) in controlegroep 1"
+
+#: gui/manual/intro.txt:85
+msgid ""
+"  hotkey.selection.group.add.1 – Add control group 1 (to 0) to the selected "
+"unit(s)/structure(s)"
+msgstr "  sneltoets.selection.group.add.1 – Voeg de geselecteerde eenheid (eenheden) / gebouw(en) toe aan controlegroep 1 (t/m 0)"
+
+#: gui/manual/intro.txt:86
+msgid ""
+"  hotkey.camera.jump.set.1 – Mark the current camera position, for jumping "
+"back to later (by default, there are 4 possible positions)"
+msgstr "  sneltoets.camera.jump.set.1 – Sla de huidige camerapositie op, om later naar terug te keren (er zijn standaard vier posities mogelijk)"
+
+#: gui/manual/intro.txt:87
+msgid ""
+"  hotkey.camera.jump.1 – Move the camera to a marked position. Jump back to "
+"the last location if the camera is already over the marked position"
+msgstr "  sneltoets.camera.jump.1 – Verplaats de camera naar de opgeslagen positie. Spring terug naar de laatste positie indien de camera al op de opgeslagen positie is"
+
+#: gui/manual/intro.txt:88
+msgid ""
+"  hotkey.session.queueunit.1, hotkey.session.queueunit.2, "
+"hotkey.session.queueunit.3, hotkey.session.queueunit.4, "
+"hotkey.session.queueunit.5, hotkey.session.queueunit.6, "
+"hotkey.session.queueunit.7 – With training structure selected. Add the 1st, "
+"2nd, … unit shown to the training queue for all the selected structures"
+msgstr "  sneltoets.session.queueunit.1, sneltoets.session.queueunit.2, sneltoetssession.queueunit.3, sneltoets.session.queueunit.4, sneltoets.session.queueunit.5, sneltoets.session.queueunit.6, sneltoets.session.queueunit.7 – Met een rekruteringsgebouw geselecteerd. Voeg de 1e, 2e, … getoonde eenheid toe aan de rekruteringswachtrij voor alle geselecteerde gebouwen"
+
+#: gui/manual/intro.txt:89
+msgid ""
+"  hotkey.session.highlightguarded with unit(s) selected – Highlight the "
+"unit(s)/structure(s) guarded by the selection"
+msgstr "  sneltoets.session.highlightguarded met geselecteerde eenheid (eenheden – Toon welke eenheid (eenheden) / gebouw(en) bewaakt worden door de geselecteerde eenheden"
+
+#: gui/manual/intro.txt:90
+msgid ""
+"  hotkey.session.highlightguarding with unit(s)/structure(s) selected – "
+"Highlight the unit(s) guarding the selection"
+msgstr "  sneltoets.session.highlightguarding met geselecteerde eenheid (eenheden – Toon de eenheid (eenheden) die de selectie bewaken"
+
+#: gui/manual/intro.txt:91
+msgid ""
+"  highlightguarding.showstatusbars – See all status bars (which would also "
+"show the building progress)"
+msgstr "  highlightguarding.showstatusbars – Toon alle statusbalken (toont ook de voortgang van gebouwen)"
+
+#: gui/manual/intro.txt:92
+msgid "  hotkey.summary – Toggle summary window"
+msgstr "  sneltoets.summary – Toon / verberg overzichtsscherm"
+
+#: gui/manual/intro.txt:93
+msgid "  hotkey.lobby – Show the multiplayer lobby in a dialog window"
+msgstr "  sneltoets.lobby – Toon de multiplayer lobby in een dialoogvenster"
+
+#: gui/manual/intro.txt:94
+msgid "  hotkey.session.gui.diplomacy.toggle – Toggle in-game diplomacy panel"
+msgstr "  sneltoets.session.gui.diplomacy.toggle – Toon / verberg het diplomatie paneel"
+
+#: gui/manual/intro.txt:95
+msgid ""
+"  hotkey.session.gui.barter.toggle – Toggle in-game barter and trade panel"
+msgstr "  sneltoets.session.gui.barter.toggle – Toon / verberg het ruil- en handelspaneel"
+
+#: gui/manual/intro.txt:96
+msgid ""
+"  hotkey.session.gui.matchsettings.toggle – Toggle in-game match settings "
+"panel"
+msgstr "  hotkey.session.gui.matchsettings.toggle – Toon / verberg het spelinstellingenpaneel"
+
+#: gui/manual/intro.txt:97
+msgid "  hotkey.session.gui.tutorial.toggle – Toggle in-game tutorial panel"
+msgstr "  sneltoets.session.gui.tutorial.toggle – Toon / verberg het paneel met de handleiding"
+
+#: gui/manual/intro.txt:98
+msgid "  hotkey.structree – Toggle structure tree panel"
+msgstr "  sneltoets.structree – Toon / verberg het paneel met de beschavingsopbouw"
+
+#: gui/manual/intro.txt:99
+msgid "  hotkey.civinfo – Toggle civilization info panel"
+msgstr "  sneltoets.civinfo – Toon / verberg het paneel met beschavingsinformatie"
+
+#: gui/manual/intro.txt:101
+msgid "[font=\"sans-bold-14\"]Modify mouse action[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Wijzig muis actie[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:102
+msgid "  hotkey.session.garrison + Right Click on structure – Garrison"
+msgstr "  sneltoets.session.garrison + rechtsklik op gebouw – Beman gebouw"
+
+#: gui/manual/intro.txt:103
+msgid "  hotkey.session.repair + Right Click on structure – Repair"
+msgstr "  sneltoets.session.repair + rechtsklik op gebouw – Repareer gebouw"
+
+#: gui/manual/intro.txt:104
+msgid "  hotkey.session.patrol + Right Click – Patrol"
+msgstr "  sneltoets.session.patrol + rechtsklik – Patrouilleer"
+
+#: gui/manual/intro.txt:105
+msgid ""
+"  hotkey.session.queue + Right Click – Queue the move/build/gather/etc. "
+"order"
+msgstr "  sneltoets.session.queue + rechtsklik – Voeg een (verplaats / bouw / verzamel / etc.) order toe aan de wachtrij"
+
+#: gui/manual/intro.txt:106
+msgid ""
+"  hotkey.session.pushorderfront + Right Click – Modifier to push any order "
+"in front of the order queue"
+msgstr "  sneltoets.session.pushorderfront + rechtsklik – Speciale toets om een commando vooraan de wachtrij te plaatsen"
+
+#: gui/manual/intro.txt:107
+msgid ""
+"  hotkey.session.orderone + Right Click – Order one unit from the current "
+"selection to move/build/gather/etc. and unselect it. Used to quickly "
+"dispatch units with specific tasks"
+msgstr "  sneltoets.session.orderone + rechtsklik – Geef een eenheid van de huidige selectie een commando om te verplaatsen / bouwen / verzamelen / etc. en deselecteer het. Handig om eenheden snel op pad te sturen met specifieke taken."
+
+#: gui/manual/intro.txt:108
+msgid ""
+"  hotkey.session.batchtrain + Left Click when training units – Add units in "
+"batches (the batch size is 5 by default and can be changed in the options)"
+msgstr "  sneltoets.session.batchtrain + klik bij het rekruteren van eenheden – Rekruteer eenheden in groepen (de standaard groepsgrootte is 5, dit kan aangepast worden in de opties)"
+
+#: gui/manual/intro.txt:109
+msgid ""
+"  hotkey.selection.add + Left Click or Left Drag over unit on map – Add unit"
+" to selection"
+msgstr "  sneltoets.selection.add + klik of sleep over een eenheid – Voeg eenheid aan de selectie toe"
+
+#: gui/manual/intro.txt:110
+msgid ""
+"  hotkey.selection.remove + Left Click or Left Drag over unit on map – "
+"Remove unit from selection"
+msgstr "  sneltoets.selection.remove + klik of sleep over een eenheid – Verwijder de eenheid uit de selectie"
+
+#: gui/manual/intro.txt:111
+msgid ""
+"  hotkey.selection.militaryonly + Left Drag over units on map – Only select "
+"military units"
+msgstr "  sneltoets.selection.militaryonly + sleep over eenheden – Selecteer alleen militaire eenheden"
+
+#: gui/manual/intro.txt:112
+msgid ""
+"  hotkey.selection.nonmilitaryonly + Left Drag over units on map – Only "
+"select non-military units"
+msgstr "  sneltoets.selection.nonmilitaryonly + sleep over eenheden – Selecteer alleen niet-militaire eenheden"
+
+#: gui/manual/intro.txt:113
+msgid ""
+"  hotkey.selection.idleonly + Left Drag over units on map – Only select idle"
+" units"
+msgstr "  sneltoets.selection.idleonly + sleep over eenheden – Selecteer alleen inactieve eenheden"
+
+#: gui/manual/intro.txt:114
+msgid ""
+"  hotkey.selection.woundedonly + Left Drag over units on map – Only select "
+"wounded units"
+msgstr "  hotkey.selection.woundedonly + sleep over eenheden – Selecteer alleen gewonde eenheden"
+
+#: gui/manual/intro.txt:115
+msgid ""
+"  hotkey.selection.singleselection – Modifier to select units individually, "
+"opposed to per formation."
+msgstr "  sneltoets.selection.singleselection – Speciale toets om eenheden individueel te selecteren, en niet de hele formatie."
+
+#: gui/manual/intro.txt:116
+msgid ""
+"  Right Click with a structure(s) selected – Set a rally point for units "
+"created/ungarrisoned from that structure"
+msgstr "  Rechtsklik met geselecteerde gebouw(en) – Stel een verzamelpunt in voor eenheden die gerekruteerd zijn of naar buiten komen"
+
+#: gui/manual/intro.txt:117
+msgid ""
+"  hotkey.session.garrison + Right Click with unit(s) selected – Garrison (If"
+" the cursor is over an own or allied structure)"
+msgstr "  sneltoets.session.garrison + rechtsklik met geselecteerde eenheid (eenheden) – Beman gebouw (als de cursor op een eigen of geallieerd gebouw staat)"
+
+#: gui/manual/intro.txt:118
+msgid ""
+"  hotkey.session.attack + Right Click with unit(s) selected – Attack "
+"(instead of another action)"
+msgstr "  sneltoets.session.attack + rechtsklik met geselecteerde eenheid (eenheden) – Val aan (in plaats van een ander commando)"
+
+#: gui/manual/intro.txt:119
+msgid ""
+"  hotkey.session.attackmove + Right Click with unit(s) selected – Attack "
+"move (by default all enemy units and structures along the way are targeted)"
+msgstr "  sneltoets.session.attackmove + rechtsklik met geselecteerde eenheid (eenheden) – Aanvallen (standaard worden alle vijandelijke eenheden en gebouwen onderweg een doelwit)"
+
+#: gui/manual/intro.txt:120
+msgid ""
+"  hotkey.session.attackmoveUnit + Right Click with unit(s) selected – Attack"
+" move, only units along the way are targeted"
+msgstr "  hotkey.session.attackmoveUnit + rechtsklik met geselecteerde eenheid (eenheden) – Aanvallen, onderweg worden alleen eenheden een doelwit"
+
+#: gui/manual/intro.txt:121
+msgid ""
+"  hotkey.session.capture + Right Click with unit(s) selected – Capture "
+"(instead of another action)"
+msgstr "  sneltoets.session.verover + rechtsklik met geselecteerde eenheid (eenheden) – Veroveren (in plaats van een ander commando)"
+
+#: gui/manual/intro.txt:122
+msgid ""
+"  hotkey.session.snaptoedges + Mouse Move near structures – Align the new "
+"structure with an existing nearby structure"
+msgstr "  sneltoets.session.snaptoedges + muis bewegen bij gebouwen – Nieuw gebouw uitlijnen met dichtbij gelegen gebouw"
+
+#: gui/manual/intro.txt:123
+msgid "  hotkey.session.flare + Right Click – Send a flare to your allies"
+msgstr "  sneltoets.session.flare + rechtsklik – Waarschuw uw bondgenoten met een vlag"
+
+#: gui/manual/intro.txt:125
+msgid "[font=\"sans-bold-14\"]Overlays[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Overlays[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:126
+msgid "  hotkey.session.gui.toggle – Toggle the GUI"
+msgstr "  sneltoets.session.gui.toggle – Toon / verberg de GUI"
+
+#: gui/manual/intro.txt:127
+msgid ""
+"  hotkey.session.devcommands.toggle – Toggle developer overlay (with "
+"developer options)"
+msgstr "  sneltoets.session.devcommands.toggle – Toon / verberg de ontwikkelaars overlay (met opties voor ontwikkelaars)"
+
+#: gui/manual/intro.txt:128
+msgid ""
+"  hotkey.wireframe – Toggle wireframe mode (press once to get wireframes "
+"overlaid over the textured models, twice to get just the wireframes colored "
+"by the textures, thrice to get back to normal textured mode)"
+msgstr "  sneltoets.wireframe – Toon / verberg de wireframes (toets één keer om de wireframes over de vlakken heen te zien, een tweede keer om alleen de wireframes te zien en een derde keer om terug te keren naar de normale weergave)"
+
+#: gui/manual/intro.txt:129
+msgid ""
+"  hotkey.silhouettes – Toggle unit silhouettes (might give a small "
+"performance boost)"
+msgstr "  sneltoets.silhouettes – Toon / verberg silhouetten (kan een kleine snelheidswinst opleveren)"
+
+#: gui/manual/intro.txt:130
+msgid "  hotkey.session.diplomacycolors – Toggle diplomacy colors"
+msgstr "  sneltoets.session.diplomacycolors – Toon / verberg diplomatiekleuren"
+
+#: gui/manual/intro.txt:131
+msgid ""
+"  hotkey.session.toggleattackrange – Toggle attack range visualizations of "
+"selected units and structures"
+msgstr "  sneltoets.session.toggleattackrange – Toon / verberg aanvalsbereik van de geselecteerde eenheden en gebouwen"
+
+#: gui/manual/intro.txt:132
+msgid ""
+"  hotkey.session.toggleaurasrange – Toggle aura range visualizations of "
+"selected units and structures"
+msgstr "  sneltoets.session.toggleaurasrange – Toon / verberg aurabereik van de geselecteerde eenheden en gebouwen"
+
+#: gui/manual/intro.txt:133
+msgid ""
+"  hotkey.session.togglehealrange – Toggle heal range visualizations of "
+"selected units"
+msgstr "  sneltoets.session.togglehealrange – Toon / verberg genezingsbereik van de geselecteerde eenheden"
+
+#: gui/manual/intro.txt:135
+msgid "[font=\"sans-bold-14\"]Camera manipulation[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Camera hantering[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:136
+msgid "  hotkey.camera.up – Pan screen up"
+msgstr "  sneltoets.camera.up – Pan naar boven"
+
+#: gui/manual/intro.txt:137
+msgid "  hotkey.camera.down – Pan screen down"
+msgstr "  sneltoets.camera.down – Pan naar beneden"
+
+#: gui/manual/intro.txt:138
+msgid "  hotkey.camera.left – Pan screen left"
+msgstr "  sneltoets.camera.left – Pan naar links"
+
+#: gui/manual/intro.txt:139
+msgid "  hotkey.camera.right – Pan screen right"
+msgstr "  sneltoets.camera.right – Pan naar rechts"
+
+#: gui/manual/intro.txt:140
+msgid "  hotkey.camera.rotate.up – Rotate camera to look upward"
+msgstr "  sneltoets.camera.rotate.up – Roteer naar boven"
+
+#: gui/manual/intro.txt:141
+msgid "  hotkey.camera.rotate.down – Rotate camera to look downward"
+msgstr "  sneltoets.camera.rotate.down – Roteer naar beneden"
+
+#: gui/manual/intro.txt:142
+msgid "  hotkey.camera.rotate.cw – Rotate camera clockwise around terrain"
+msgstr "  sneltoets.camera.rotate.cw – Roteer camera met de klok mee"
+
+#: gui/manual/intro.txt:143
+msgid ""
+"  hotkey.camera.rotate.ccw – Rotate camera counter-clockwise around terrain"
+msgstr "  sneltoets.camera.rotate.ccw – Roteer camera tegen de klok in"
+
+#: gui/manual/intro.txt:144
+msgid ""
+"  hotkey.camera.rotate.wheel.cw – Rotate camera clockwise around terrain"
+msgstr "  sneltoets.camera.rotate.wheel.cw – Roteer camera met de klok mee"
+
+#: gui/manual/intro.txt:145
+msgid ""
+"  hotkey.camera.rotate.wheel.ccw – Rotate camera counter-clockwise around "
+"terrain"
+msgstr "  sneltoets.camera.rotate.wheel.ccw – Roteer camera tegen de klok in"
+
+#: gui/manual/intro.txt:146
+msgid ""
+"  hotkey.camera.follow – Follow the selected unit (move the camera to stop "
+"following the unit)"
+msgstr "  sneltoets.camera.follow – Volg de geselecteerde eenheid (beweeg de camera om het volgen te beëindigen)"
+
+#: gui/manual/intro.txt:147
+msgid "  hotkey.camera.reset – Reset camera zoom and orientation"
+msgstr "  sneltoets.camera.reset – Herstel camera zoom en standpunt"
+
+#: gui/manual/intro.txt:148
+msgid ""
+"  hotkey.camera.zoom.in, hotkey.camera.zoom.wheel.in – Zoom in (keep pressed"
+" for continuous zoom)"
+msgstr "  sneltoets.camera.zoom.in, sneltoets.camera.zoom.wheel.in – Zoom in (ingedrukt houden voor continue zoom)"
+
+#: gui/manual/intro.txt:149
+msgid ""
+"  hotkey.camera.zoom.out, hotkey.camera.zoom.wheel.out – Zoom out (keep "
+"pressed for continuous zoom)"
+msgstr "  sneltoets.camera.zoom.out, sneltoets.camera.zoom.wheel.out – Zoom uit (ingedrukt houden voor continue zoom)"
+
+#: gui/manual/intro.txt:150
+msgid "  hotkey.camera.pan – Keep pressed and move the mouse to pan"
+msgstr "  sneltoets.camera.pan – Houd ingedrukt en beweeg de muis om te pannen"
+
+#: gui/manual/intro.txt:152
+msgid "[font=\"sans-bold-14\"]During Structure Placement[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Bij het plaatsen van gebouwen[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:153
+msgid ""
+"  hotkey.session.rotate.ccw – Rotate structure 15 degrees counter-clockwise"
+msgstr "  sneltoets.session.rotate.ccw – Roteer het gebouw 15 graden tegen de klok in"
+
+#: gui/manual/intro.txt:154
+msgid "  hotkey.session.rotate.cw – Rotate structure 15 degrees clockwise"
+msgstr "  sneltoets.session.rotate.cw – Roteer gebouw 15 graden met de klok mee"
+
+#: gui/manual/intro.txt:155
+msgid ""
+"  Left Drag – Rotate structure using mouse (foundation will be placed on "
+"mouse release)"
+msgstr "  Links slepen – Roteer gebouw met de muis (het gebouw wordt geplaatst wanneer de muisknop wordt losgelaten)"
+
+#: gui/manual/intro.txt:157
+msgid "[font=\"sans-bold-14\"]When loading a saved game[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Bij het laden van een opgeslagen spel[font=\"sans-14\"]"
+
+#: gui/manual/intro.txt:158
+msgid "  hotkey.cancel – Cancel"
+msgstr "  sneltoets.cancel – Cancel"
+
+#: gui/manual/intro.txt:159
+msgid ""
+"  hotkey.session.savedgames.delete – Delete the selected saved game, ask for"
+" confirmation"
+msgstr "  sneltoets.session.savedgames.delete – Verwijder het geselecteerde opgeslagen spel, met bevestiging"
+
+#: gui/manual/intro.txt:160
+msgid ""
+"    • With hotkey.session.savedgames.noconfirmation – Don't ask for "
+"confirmation"
+msgstr "    • With sneltoets.session.savedgames.noconfirmation – Zonder bevestiging"
+
+#: gui/manual/manual.xml:13
+msgid "Manual"
+msgstr "Handleiding"
+
+#: gui/manual/manual.xml:21
+msgid "Close"
+msgstr "Sluiten"
+
+#: gui/manual/manual.xml:25
+msgid "View Online"
+msgstr "Bekijk online"

@@ -1,0 +1,5 @@
+FRUITS
+Apples, bananas, grapes, dates, and more...
+Grow on specific bushes and trees found on nearly all maps and count towards the resource 'food'.
+Are collected quickly and even slowly regrow over time as long as not fully depleted. But are usually only available in very small quantities.
+Expert tip: For maximum yield, distribute your Workers evenly when collecting a patch.

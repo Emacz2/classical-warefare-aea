@@ -1,0 +1,5 @@
+DOCK
+Buildable in neutral and allied territory.
+Constructs various Ships for economic and military needs.
+Also serves as a resource dropsite.
+Can be set up as a trade point for both naval and land Traders.

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant>
+      <mesh>skeletal/new/m_tunic_short.dae</mesh>
+      <props>
+        <prop actor="props/units/heads/head_kush_meroitic.xml" attachpoint="head"/>
+        <prop actor="props/units/weapons/spear.xml" attachpoint="weapon_R"/>
+        <prop actor="props/units/shields/kush_beja_rhino.xml" attachpoint="shield_arm"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="kush_cav_spearman_01">
+      <textures>
+        <texture file="skeletal/kush/tunic_basic_02_01.png" name="baseTex"/>
+        <texture file="skeletal/kush/tunic_basic_02_spec.png" name="specTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="kush_cav_spearman_02_lightskin">
+      <props>
+        <prop actor="props/units/heads/new/head_african_1.xml" attachpoint="head"/>
+      </props>
+      <textures>
+        <texture file="skeletal/kush/tunic_basic_02_02.png" name="baseTex"/>
+        <texture file="skeletal/kush/tunic_basic_02_spec.png" name="specTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="kush_cav_spearman_03_lightskin">
+      <props>
+        <prop actor="props/units/heads/new/head_african_1.xml" attachpoint="head"/>
+      </props>
+      <textures>
+        <texture file="skeletal/kush/tunic_basic_02_03.png" name="baseTex"/>
+        <texture file="skeletal/kush/tunic_basic_02_spec.png" name="specTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="kush_cav_spearman_04">
+      <textures>
+        <texture file="skeletal/kush/tunic_advanced_01_01.png" name="baseTex"/>
+        <texture file="skeletal/kush/tunic_advanced_01_spec.png" name="specTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="kush_cav_spearman_05">
+      <textures>
+        <texture file="skeletal/kush/tunic_advanced_01_02.png" name="baseTex"/>
+        <texture file="skeletal/kush/tunic_advanced_01_spec.png" name="specTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="kush_cav_spearman_06_lightskin">
+      <props>
+        <prop actor="props/units/heads/new/head_african_1.xml" attachpoint="head"/>
+      </props>
+      <textures>
+        <texture file="skeletal/kush/tunic_advanced_01_03.png" name="baseTex"/>
+        <texture file="skeletal/kush/tunic_advanced_01_spec.png" name="specTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/rider/cavalry/base_spearman_relax_shield_01.xml" name="Spearman-Relax-Shield-01" frequency="1"/>
+    <variant file="biped/rider/carry_meat.xml"/>
+  </group>
+  <group>
+    <variant frequency="1" name="Idle"/>
+    <variant file="biped/rider/promotion_shield.xml"/>
+    <variant file="biped/rider/attack_slaughter_shield_kush.xml"/>
+    <variant file="biped/gather_meat.xml"/>
+    <variant file="biped/rider/death_shield.xml"/>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

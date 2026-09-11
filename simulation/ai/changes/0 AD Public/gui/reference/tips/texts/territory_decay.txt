@@ -1,0 +1,4 @@
+TERRITORY DECAY
+Structures too far off an allied territory root (usually a Civic Center) gradually lose capture points.
+Slow down or reverse the decay process by garrisoning some units in the structure.
+When the decay is completed, the structure will be given to the player owning the closest territory root or Gaia.

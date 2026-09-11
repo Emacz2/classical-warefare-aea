@@ -1,0 +1,5 @@
+ROMAN ARMY CAMP
+Buildable in neutral or enemy territory. Good for setting up a secret base behind enemy lines or to consolidate gains within enemy territory.
+Constructs Rams and trains high-rank Citizen Soldiers.
+Fires arrows at any enemies in sight.
+Garrison units inside for protection and additional arrows.

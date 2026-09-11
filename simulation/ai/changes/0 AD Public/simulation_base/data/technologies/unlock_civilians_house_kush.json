@@ -1,0 +1,32 @@
+{
+	"genericName": "Fertility Festival",
+	"description": "A festival to celebrate fertility.",
+	"cost": {
+		"food": 250,
+		"wood": 100,
+		"metal": 100
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_village" },
+			{ "notciv": "athen" },
+			{ "notciv": "brit" },
+			{ "notciv": "cart" },
+			{ "notciv": "gaul" },
+			{ "notciv": "germ" },
+			{ "notciv": "han" },
+			{ "notciv": "iber" },
+			{ "notciv": "mace" },
+			{ "notciv": "maur" },
+			{ "notciv": "pers" },
+			{ "notciv": "ptol" },
+			{ "notciv": "rome" },
+			{ "notciv": "sele" },
+			{ "notciv": "spart" }
+		]
+	},
+	"icon": "wives_festival_african.png",
+	"researchTime": 60,
+	"tooltip": "Unlock the ability to train Civilians from houses.",
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

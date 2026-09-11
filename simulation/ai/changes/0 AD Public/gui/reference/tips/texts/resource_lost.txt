@@ -1,0 +1,3 @@
+LOST RESOURCES
+Workers cannot carry more than one type of resource at once:
+Order them to drop off their current resources at a dropsite before sending them to a new one.

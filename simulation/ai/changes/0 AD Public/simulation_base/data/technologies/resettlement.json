@@ -1,0 +1,24 @@
+{
+	"genericName": "Migratory Resettlement",
+	"description": "The migration of the Cimbrian Confederation into Gaul gave rise to independent communities and settlements.",
+	"cost": {
+		"wood": 200,
+		"stone": 200,
+		"metal": 200
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_town" },
+			{ "civ": "germ" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in Town Phase.",
+	"icon": "laurel_wreath.png",
+	"researchTime": 40,
+	"tooltip": "All Structures except for walls do not decay to neutral or enemy territory.",
+	"modifications": [
+		{ "value": "TerritoryDecay/DecayRate", "multiply": 0.00001 }
+	],
+	"affects": [ "Structure !Wall" ],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

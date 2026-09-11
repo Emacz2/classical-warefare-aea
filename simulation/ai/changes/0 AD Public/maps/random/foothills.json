@@ -1,0 +1,17 @@
+{
+	"settings" : {
+		"Name" : "Foothills",
+		"Script" : "foothills.js",
+		"Description" : "A land map with rolling hills and no obstructions.",
+		"Preview" : "foothills.png",
+		"Keywords": ["multiplayer"],
+		"SupportedBiomes": "generic/",
+		"CircularMap" : true,
+		"PlayerPlacements": [
+			"circle",
+			"river",
+			"randomGroup",
+			"stronghold"
+		]
+	}
+}

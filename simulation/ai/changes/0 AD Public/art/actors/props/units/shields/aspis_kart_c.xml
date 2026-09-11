@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant>
+      <mesh>props/shield/aspis_01_front.dae</mesh>
+      <props>
+        <prop actor="props/units/shields/props/aspis_back_bronze_purple_01.xml" attachpoint="root"/>
+        <prop actor="props/units/shields/props/aspis_handgrip_bronze_02.xml" attachpoint="handgrip"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" file="shields/kart_aspis_sacred_band_01.xml" name="Kart-ISP-C-02"/>
+    <variant frequency="1" file="shields/kart_aspis_sacred_band_02.xml" name="Kart-ISP-C-03"/>
+    <variant frequency="1" file="shields/kart_aspis_sacred_band_03.xml" name="Kart-ISP-C-04"/>
+  </group>
+  <material>player_trans_parallax_spec.xml</material>
+</actor>

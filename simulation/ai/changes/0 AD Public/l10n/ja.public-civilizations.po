@@ -1,0 +1,1332 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Akihiro Kawakami, 2013
+# Asakura, 2017
+# Asakura, 2017
+# fb66092ff180563f1e2bcd3d0cdf3d3d_85e52ff, 2014
+# Hiroyuki Kohata, 2025
+# Hiroyuki Kohata, 2025
+# jiroramo, 2013
+# Kanetaka Suto, 2013
+# Kanetaka Suto, 2014-2015
+# karubabu, 2018
+# llen_llen, 2013-2014,2016
+# llen_llen, 2014,2016
+# Mephisto Books, 2014
+# Photon “PHN” man, 2021-2022
+# red hare, 2017
+# sgensum, 2014
+# UNJIRO, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-11-12 01:27+0000\n"
+"PO-Revision-Date: 2014-06-19 17:44+0000\n"
+"Last-Translator: Hiroyuki Kohata, 2025\n"
+"Language-Team: Japanese (http://app.transifex.com/wildfire-games/0ad/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: simulation/data/civs/athen.json
+msgid "Silver Owls"
+msgstr "フクロウ銀貨"
+
+#: simulation/data/civs/athen.json
+msgid ""
+"The mines at Laureion in Attica provided Athens with a wealth of silver from"
+" which to mint her famous and highly prized coin, The Athenian Owl."
+msgstr "アッティカ地方のラウリオン鉱山から産する銀はアテナイに富をもたらしました。この銀から鋳造された有名で貴重なコインが、アテナイのフクロウ銀貨です。"
+
+#: simulation/data/civs/athen.json
+msgid "Workers +10% metal gather rate per phase advance."
+msgstr "段階が進む毎に労働者の金属採取率+10%"
+
+#: simulation/data/civs/athen.json
+msgid "Epilektoi Infantry"
+msgstr "エピレクトイ歩兵"
+
+#: simulation/data/civs/athen.json
+msgid ""
+"The best of the hoplites were chosen to form a group of elite professional "
+"soldiers."
+msgstr "最も優れた重装歩兵が選ばれ、エリートプロフェッショナル兵士の集団を結成しました。"
+
+#: simulation/data/civs/athen.json
+msgid "Elite Hoplites can promote to Champion Spearmen."
+msgstr "エリート重装歩兵はチャンピオン槍兵へ昇進できます。"
+
+#: simulation/data/civs/athen.json
+msgid "Alcibiades"
+msgstr "アルキビアデス"
+
+#: simulation/data/civs/athen.json
+msgid "Aristides"
+msgstr "アリスティデス"
+
+#: simulation/data/civs/athen.json
+msgid "Callias"
+msgstr "カリアス"
+
+#: simulation/data/civs/athen.json
+msgid "Chabrias"
+msgstr "カブリアス"
+
+#: simulation/data/civs/athen.json
+msgid "Cimon"
+msgstr "キモン"
+
+#: simulation/data/civs/athen.json
+msgid "Cleisthenes"
+msgstr "クレイステネス"
+
+#: simulation/data/civs/athen.json
+msgid "Cleon"
+msgstr "クレオン"
+
+#: simulation/data/civs/athen.json
+msgid "Cleophon"
+msgstr "クレオポン"
+
+#: simulation/data/civs/athen.json
+msgid "Conon"
+msgstr "コノン"
+
+#: simulation/data/civs/athen.json
+msgid "Demosthenes"
+msgstr "デモステネス"
+
+#: simulation/data/civs/athen.json
+msgid "Ephialtes"
+msgstr "エフィアルテス"
+
+#: simulation/data/civs/athen.json
+msgid "Hippias"
+msgstr "ヒッピアス"
+
+#: simulation/data/civs/athen.json
+msgid "Miltiades"
+msgstr "ミルティアデス"
+
+#: simulation/data/civs/athen.json
+msgid "Nicias"
+msgstr "ニキアス"
+
+#: simulation/data/civs/athen.json
+msgid "Phocion"
+msgstr "フォシオン"
+
+#: simulation/data/civs/athen.json
+msgid "Pisistratus"
+msgstr "ペイシストラトス"
+
+#: simulation/data/civs/athen.json
+msgid "Thrasybulus"
+msgstr "トラシュブロス"
+
+#: simulation/data/civs/athen.json
+msgid "Thucydides"
+msgstr "トゥキディデス"
+
+#: simulation/data/civs/athen.json
+msgid "Xenophon"
+msgstr "クセノポン"
+
+#: simulation/data/civs/brit.json
+msgid "Adminius"
+msgstr "アドミニウス"
+
+#: simulation/data/civs/brit.json
+msgid "Cassivellaunus"
+msgstr "カッシウェラウヌス"
+
+#: simulation/data/civs/brit.json
+msgid "Cogidubnus"
+msgstr "コギドゥブヌス"
+
+#: simulation/data/civs/brit.json
+msgid "Commius"
+msgstr "コンミウス "
+
+#: simulation/data/civs/brit.json
+msgid "Comux"
+msgstr "コムクス"
+
+#: simulation/data/civs/brit.json
+msgid "Dubnovellaunus"
+msgstr "ドゥブノヴェラウヌス"
+
+#: simulation/data/civs/brit.json
+msgid "Imanuentius"
+msgstr "イマヌエンティウス"
+
+#: simulation/data/civs/brit.json
+msgid "Mandubracius"
+msgstr "マンドゥブラキウス"
+
+#: simulation/data/civs/brit.json
+msgid "Prasutagus"
+msgstr "プラスタグス"
+
+#: simulation/data/civs/brit.json
+msgid "Venutius"
+msgstr "ウェヌティウス"
+
+#: simulation/data/civs/brit.json
+msgid "Vosenius"
+msgstr "ボセ二ウス"
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Deas Celtica"
+msgstr "ケルトの女神"
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Celtic religion and druidry inspired their warlike mindset."
+msgstr "ケルト宗教とドルイドが彼らの戦闘志向を刺激しました。"
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Druids increase attack rates of soldiers near them by 5%."
+msgstr "ドルイドは近くにいる兵士の攻撃率を5％上昇させます。"
+
+#: simulation/data/civs/cart.json
+msgid "Trademasters"
+msgstr "豪商"
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Carthaginians were broadly known for their extensive trade over the "
+"Mediterranean Sea."
+msgstr "カルタゴ人は地中海を越えた広範な貿易で広く知られていました。"
+
+#: simulation/data/civs/cart.json
+msgid "Trade ships are available in the Village Phase."
+msgstr "貿易船は村の段階で利用可能になります。"
+
+#: simulation/data/civs/cart.json
+msgid "Mining Economy"
+msgstr "鉱業経済"
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Carthaginian economy was centered around mining, with stone comprising "
+"much of Carthage's structures."
+msgstr "カルタゴの経済は鉱業を中心にしており、カルタゴの建造物の多くは石で構成されていました。"
+
+#: simulation/data/civs/cart.json
+msgid "Stone mining technologies are free and instant."
+msgstr "石の採掘技術は無料ですぐに利用できます。"
+
+#: simulation/data/civs/cart.json
+msgid "Numidian Cavalry"
+msgstr "ヌミディア騎兵"
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Numidian cavalry's horses, ancestors of the Berber horse, were small "
+"compared with other horses of the era, and were well adapted for faster "
+"movement over long distances."
+msgstr "ベルベル人の馬の祖先であるヌミディア騎兵の馬は、当時の他の馬に比べて小型で、長距離をより速く移動するのに適していました。"
+
+#: simulation/data/civs/cart.json
+msgid "Cavalry Javelineers +10% walk speed."
+msgstr "騎兵槍兵の歩行速度が +10%"
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal Barca"
+msgstr "ハスドルバル・バルカ"
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal Gisco"
+msgstr "ハスドルバル・ギスコ"
+
+#: simulation/data/civs/cart.json
+msgid "Hanno the Elder"
+msgstr "老ハンノ"
+
+#: simulation/data/civs/cart.json
+msgid "Mago Barca"
+msgstr "マゴ・バルカ"
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal the Fair"
+msgstr "美男子ハスドルバル"
+
+#: simulation/data/civs/cart.json
+msgid "Hanno the Great"
+msgstr "大ハンノ"
+
+#: simulation/data/civs/cart.json
+msgid "Himilco"
+msgstr "ヒミルコ"
+
+#: simulation/data/civs/cart.json
+msgid "Hampsicora"
+msgstr "ハンプシコラ"
+
+#: simulation/data/civs/cart.json
+msgid "Hannibal Gisco"
+msgstr "ハンニバル・ギスコ"
+
+#: simulation/data/civs/cart.json
+msgid "Dido"
+msgstr "ディド"
+
+#: simulation/data/civs/cart.json
+msgid "Xanthippus"
+msgstr "クサンティッポス "
+
+#: simulation/data/civs/cart.json
+msgid "Himilco Phameas"
+msgstr "ヒミルコ・ファメアス"
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal the Boetharch"
+msgstr "ハスドルバル・ボエタルク"
+
+#: simulation/data/civs/gaul.json
+msgid "Cativolcus"
+msgstr "カトゥウォルクス"
+
+#: simulation/data/civs/gaul.json
+msgid "Cingetorix"
+msgstr "キンゲトリクス"
+
+#: simulation/data/civs/gaul.json
+msgid "Ambiorix"
+msgstr "アンビオリクス"
+
+#: simulation/data/civs/gaul.json
+msgid "Liscus"
+msgstr "リスクス"
+
+#: simulation/data/civs/gaul.json
+msgid "Orgetorix"
+msgstr "オルゲトリクス"
+
+#: simulation/data/civs/gaul.json
+msgid "Valetiacus"
+msgstr "ウァレティアクス"
+
+#: simulation/data/civs/gaul.json
+msgid "Viridovix"
+msgstr "ウィリドウィクス"
+
+#: simulation/data/civs/gaul.json simulation/data/civs/germ.json
+msgid "Divico"
+msgstr "ディウィコ"
+
+#: simulation/data/civs/germ.json
+msgid "Seeresses"
+msgstr "預言者"
+
+#: simulation/data/civs/germ.json
+msgid ""
+"Seeresses accompanied the Germanic armies and envisioned prophecies of "
+"victory from sacrifices."
+msgstr "預言者たちはゲルマン軍に同行し、犠牲から勝利の神託を見出していました。"
+
+#: simulation/data/civs/germ.json
+msgid "A unique Champion Healer unit is available in City Phase."
+msgstr "ユニークなチャンピオンヒーラーユニットが都市の段階で利用可能になります。"
+
+#: simulation/data/civs/germ.json
+msgid "Claodicus"
+msgstr "クラウディウス"
+
+#: simulation/data/civs/germ.json
+msgid "Caesorix"
+msgstr "カソリクス"
+
+#: simulation/data/civs/han.json
+msgid "Liu Ying"
+msgstr "恵帝 劉盈"
+
+#: simulation/data/civs/han.json
+msgid "Liu Gong"
+msgstr "前少帝"
+
+#: simulation/data/civs/han.json
+msgid "Liu Heng"
+msgstr "文帝 劉恒"
+
+#: simulation/data/civs/han.json
+msgid "Liu Qi"
+msgstr "景帝 劉啓"
+
+#: simulation/data/civs/han.json
+msgid "Liu Che"
+msgstr "武帝 劉徹"
+
+#: simulation/data/civs/han.json
+msgid "Liu Fuling"
+msgstr "昭帝 劉弗陵"
+
+#: simulation/data/civs/han.json
+msgid "Liu He"
+msgstr "廃帝 劉賀"
+
+#: simulation/data/civs/han.json
+msgid "Liu Bingyi"
+msgstr "宣帝 劉詢"
+
+#: simulation/data/civs/han.json
+msgid "Liu Shi"
+msgstr "元帝 劉奭"
+
+#: simulation/data/civs/han.json
+msgid "Liu Ao"
+msgstr "成帝 劉驁"
+
+#: simulation/data/civs/han.json
+msgid "Liu Xin"
+msgstr "哀帝 劉欣"
+
+#: simulation/data/civs/han.json
+msgid "Liu Kan"
+msgstr "平帝 劉衎"
+
+#: simulation/data/civs/han.json
+msgid "Liu Xuan"
+msgstr "更始帝 劉玄"
+
+#: simulation/data/civs/han.json
+msgid "Liu Xiu"
+msgstr "光武帝 劉秀"
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhuang"
+msgstr "明帝 劉荘"
+
+#: simulation/data/civs/han.json
+msgid "Liu Da"
+msgstr "章帝 劉炟"
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhao"
+msgstr "和帝 劉肇"
+
+#: simulation/data/civs/han.json
+msgid "Liu Long"
+msgstr "殤帝 劉隆"
+
+#: simulation/data/civs/han.json
+msgid "Liu Hu"
+msgstr "安帝 劉祜"
+
+#: simulation/data/civs/han.json
+msgid "Liu Yi"
+msgstr "少帝 劉懿"
+
+#: simulation/data/civs/han.json
+msgid "Liu Bao"
+msgstr "順帝 劉保"
+
+#: simulation/data/civs/han.json
+msgid "Liu Bing"
+msgstr "沖帝 劉炳"
+
+#: simulation/data/civs/han.json
+msgid "Liu Zuan"
+msgstr "質帝 劉纘"
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhi"
+msgstr "桓帝 劉志"
+
+#: simulation/data/civs/han.json
+msgid "Liu Bian"
+msgstr "少帝 劉弁"
+
+#: simulation/data/civs/han.json
+msgid "Liu Xie"
+msgstr "献帝 劉協"
+
+#: simulation/data/civs/han.json
+msgid "Liu Hong"
+msgstr "少帝 劉弘"
+
+#: simulation/data/civs/iber.json
+msgid "Starting Walls"
+msgstr "始まりの壁"
+
+#: simulation/data/civs/iber.json
+msgid ""
+"With exception to alluvial plains and river valleys, stone is abundant in "
+"the Iberian Peninsula and was greatly used in construction of structures of "
+"all types."
+msgstr "沖積平野や河谷を除き、イベリア半島では石材が豊富にあり、あらゆる種類の建築に用いられました。"
+
+#: simulation/data/civs/iber.json
+msgid "Iberians start with City Walls around their base on most maps."
+msgstr "イベリア人は、ほとんどのマップで拠点の周りに街の壁を設置してスタートします。"
+
+#: simulation/data/civs/iber.json
+msgid "Massive Towers"
+msgstr "巨大な塔"
+
+#: simulation/data/civs/iber.json
+msgid ""
+"Stone Towers −50% wood cost, +150% stone cost, +33% build time, +60% health,"
+" +3 garrison capacity, and +1 default arrow count."
+msgstr "石の塔 木材コスト-50％、石材コスト+150％、建設時間+33％、HP+60％、駐留許容+3、基本の矢数+1"
+
+#: simulation/data/civs/iber.json
+msgid "Audax"
+msgstr "アウダックス"
+
+#: simulation/data/civs/iber.json
+msgid "Calcus"
+msgstr "カークス"
+
+#: simulation/data/civs/iber.json
+msgid "Ditalcus"
+msgstr "ディタルクス"
+
+#: simulation/data/civs/iber.json
+msgid "Litennon"
+msgstr "リテノン"
+
+#: simulation/data/civs/iber.json
+msgid "Minurus"
+msgstr "ミヌルス"
+
+#: simulation/data/civs/iber.json
+msgid "Olyndicus"
+msgstr "オリンディクス"
+
+#: simulation/data/civs/iber.json
+msgid "Orison"
+msgstr "オリソン"
+
+#: simulation/data/civs/iber.json
+msgid "Tanginus"
+msgstr "タンギヌス"
+
+#: simulation/data/civs/iber.json
+msgid "Tautalus"
+msgstr "タウタルス"
+
+#: simulation/data/civs/kush.json
+msgid "Kashta"
+msgstr "カシュタ"
+
+#: simulation/data/civs/kush.json
+msgid "Alara"
+msgstr "アララ"
+
+#: simulation/data/civs/kush.json
+msgid "Pebatjma"
+msgstr "ペバトマ"
+
+#: simulation/data/civs/kush.json
+msgid "Shabaka"
+msgstr "シャバカ"
+
+#: simulation/data/civs/kush.json
+msgid "Shebitku"
+msgstr "シャバタカ"
+
+#: simulation/data/civs/kush.json
+msgid "Qalhata"
+msgstr "カルハタ"
+
+#: simulation/data/civs/kush.json
+msgid "Takahatenamun"
+msgstr "タカハテナムン"
+
+#: simulation/data/civs/kush.json
+msgid "Tantamani"
+msgstr "タヌトアメン"
+
+#: simulation/data/civs/kush.json
+msgid "Atlanersa"
+msgstr "アトラネルサ"
+
+#: simulation/data/civs/kush.json
+msgid "Nasalsa"
+msgstr "ナサルサ"
+
+#: simulation/data/civs/kush.json
+msgid "Malewiebamani"
+msgstr "マルウィエバマニ"
+
+#: simulation/data/civs/kush.json
+msgid "Shanakdakhete"
+msgstr "シャナクダケテ女王"
+
+#: simulation/data/civs/kush.json
+msgid "Amanishakheto"
+msgstr "アマニシャケト女王"
+
+#: simulation/data/civs/kush.json simulation/data/civs/pers.json
+msgid "Large Rams"
+msgstr "巨大な衝角"
+
+#: simulation/data/civs/kush.json simulation/data/civs/pers.json
+msgid "Battering Rams +20% attack damage and +2 garrison capacity."
+msgstr "破城槌の攻撃力+20% 駐留許容+2"
+
+#: simulation/data/civs/mace.json
+msgid "Antipater"
+msgstr "アンティパトロス"
+
+#: simulation/data/civs/mace.json
+msgid "Philip IV"
+msgstr "ピリッポス4世"
+
+#: simulation/data/civs/mace.json
+msgid "Lysimachus"
+msgstr "リュシマコス"
+
+#: simulation/data/civs/mace.json
+msgid "Pyrrhus of Epirus"
+msgstr "ピュロス・エピロス王"
+
+#: simulation/data/civs/mace.json
+msgid "Antigonus II Gonatas"
+msgstr "アンティゴノス2世ゴナタス"
+
+#: simulation/data/civs/mace.json
+msgid "Demetrius II Aetolicus"
+msgstr "デメトリオス2世アイトリコス"
+
+#: simulation/data/civs/mace.json
+msgid "Philip V"
+msgstr "ピリッポス5世"
+
+#: simulation/data/civs/mace.json
+msgid "Perseus"
+msgstr "ペルセウス"
+
+#: simulation/data/civs/mace.json
+msgid "Craterus"
+msgstr "クラテロス"
+
+#: simulation/data/civs/mace.json
+msgid "Meleager"
+msgstr "メレアグロス"
+
+#: simulation/data/civs/mace.json simulation/data/civs/spart.json
+msgid "Lysander"
+msgstr "リュサンドロス"
+
+#: simulation/data/civs/maur.json
+msgid "Bindusara Maurya"
+msgstr "ビンドゥサーラ・マウリヤ"
+
+#: simulation/data/civs/maur.json
+msgid "Brihadratha Maurya"
+msgstr "ブリハドラタ・マウリヤ"
+
+#: simulation/data/civs/maur.json
+msgid "Dasharatha Maurya"
+msgstr "ダシャラタ・マウリヤ"
+
+#: simulation/data/civs/maur.json
+msgid "Devavarman Maurya"
+msgstr "デーヴァダルマン・マウリヤ"
+
+#: simulation/data/civs/maur.json
+msgid "Kunala Maurya"
+msgstr "クナラ・マウリヤ"
+
+#: simulation/data/civs/maur.json
+msgid "Samprati Maurya"
+msgstr "サムプラティ・マウリヤ"
+
+#: simulation/data/civs/maur.json
+msgid "Shalishuka Maurya"
+msgstr "シャリシュカ・マウリヤ"
+
+#: simulation/data/civs/maur.json
+msgid "Shatadhanvan Maurya"
+msgstr "シャッダンワン・マウリヤ"
+
+#: simulation/data/civs/maur.json
+msgid "Tivala Maurya"
+msgstr "ティヴァラ・マウリヤ"
+
+#: simulation/data/civs/pers.json
+msgid "Darics"
+msgstr "ダレイオス金貨"
+
+#: simulation/data/civs/pers.json
+msgid "Land Traders +25% trade gain."
+msgstr "商人での交易効果+25%"
+
+#: simulation/data/civs/pers.json
+msgid "Times of War"
+msgstr "戦乱の時"
+
+#: simulation/data/civs/pers.json
+msgid "The Persians were known for their large cavalry contingent."
+msgstr "ペルシャ人は大規模な騎兵部隊で知られていました。"
+
+#: simulation/data/civs/pers.json
+msgid ""
+"The batch training time of units trained in Stables decreases each phase "
+"advance."
+msgstr "馬術場で訓練された部隊のバッチ訓練時間は段階が進むごとに短縮されます。"
+
+#: simulation/data/civs/pers.json
+msgid "Satrapy Tribute"
+msgstr "属州の貢ぎ物"
+
+#: simulation/data/civs/pers.json
+msgid ""
+"The empire was divided into provinces, called “Satrapies,” that sent yearly "
+"tribute to the ruling Persian dynasty in Persepolis as a form of tax."
+msgstr "帝国はサトラップと呼ばれる総督が統治する“サトラピー”と呼ばれる州に分割され、ペルセポリスにある支配ペルシャ王朝へ毎年の賜物を税の一形態として送っていました。"
+
+#: simulation/data/civs/pers.json
+msgid ""
+"Upgrade the Throne Hall to receive a free trickle of a desired resource."
+msgstr "王座ホールをアップグレードして、望む資源の無料の流れを受け取ります。"
+
+#: simulation/data/civs/pers.json
+msgid "Cambyses II"
+msgstr "カンビュセス2世"
+
+#: simulation/data/civs/pers.json
+msgid "Bardiya"
+msgstr "バルディヤー"
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha I"
+msgstr "アルタクシャサ1世"
+
+#: simulation/data/civs/pers.json
+msgid "Darayavahush II"
+msgstr "ダーラヤワウシュ2世"
+
+#: simulation/data/civs/pers.json
+msgid "Darayavahush III"
+msgstr "ダーラヤワウシュ3世"
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha II"
+msgstr "アルタクシャサ2世"
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha III"
+msgstr "アルタクシャサ3世"
+
+#: simulation/data/civs/pers.json
+msgid "Haxamanish"
+msgstr "ハカーマニシュ"
+
+#: simulation/data/civs/pers.json
+msgid "Xsayarsa II"
+msgstr "ハシャヤーラシャー2世"
+
+#: simulation/data/civs/ptol.json
+msgid "Polybolos"
+msgstr "ギリシャ式弩砲"
+
+#: simulation/data/civs/ptol.json
+msgid "Bolt Shooters −45% attack damage and −50% attack time."
+msgstr "ボルトシューターは攻撃ダメージが-45％、攻撃時間が-50％です。"
+
+#: simulation/data/civs/ptol.json
+msgid "Nile Delta"
+msgstr "ナイル・デルタ"
+
+#: simulation/data/civs/ptol.json
+msgid ""
+"The Nile Delta is a region where the Nile River divides into several "
+"branches to flow into the Mediterranean Sea, in northern Egypt."
+msgstr "ナイルデルタは、ナイル川が複数の枝に分かれて地中海に流れ込む北エジプトの地域です。"
+
+#: simulation/data/civs/ptol.json
+msgid "The three farming technologies are available in Village Phase."
+msgstr "農業に関する3つの技術は村の段階で利用可能です。"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Philadelphus"
+msgstr "プトレマイオス愛姉王"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Epigone"
+msgstr "プトレマイオス・エピゴノス"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Eurgetes"
+msgstr "プトレマイオス恩恵王"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Epiphanes"
+msgstr "プトレマイオス顕神王"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Philometor"
+msgstr "プトレマイオス愛母王"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Eupator"
+msgstr "プトレマイオス良父王"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Alexander"
+msgstr "プトレマイオス・アレクサンドロス"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Neos Dionysos"
+msgstr "プトレマイオス新酒神王"
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Neos Philopater"
+msgstr "プトレマイオス新愛父王"
+
+#: simulation/data/civs/ptol.json
+msgid "Berenice Philopater"
+msgstr "ベレニケ・フィロパトル"
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Tryphaena"
+msgstr "クレオパトラ・トリュファイナ"
+
+#: simulation/data/civs/ptol.json
+msgid "Berenice Epiphaneia"
+msgstr "ベレニケ・エピファニア"
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Philopater"
+msgstr "クレオパトラ・フィロパトル"
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Selene"
+msgstr "クレオパトラ・セレネ"
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra II Philometora Soteira"
+msgstr "クレオパトラ2世フィロメトラ・ソテイラ"
+
+#: simulation/data/civs/ptol.json
+msgid "Arsinoe IV"
+msgstr "アルシノエ4世"
+
+#: simulation/data/civs/ptol.json
+msgid "Arsinoe II"
+msgstr "アルシノエ2世"
+
+#: simulation/data/civs/rome.json
+msgid "Fertility"
+msgstr "多産"
+
+#: simulation/data/civs/rome.json
+msgid "Rome was one of the most populous cities in the ancient world."
+msgstr "ローマは古代世界で最も人口が多い都市の一つでした。"
+
+#: simulation/data/civs/rome.json
+msgid ""
+"Women train from houses without the need to research Fertility Festival."
+msgstr "女性は「母神祭」を研究する必要なく、家から訓練できます。"
+
+#: simulation/data/civs/rome.json
+msgid "Testudo Formation"
+msgstr "テストゥド陣形"
+
+#: simulation/data/civs/rome.json
+msgid ""
+"The Romans commonly used the Testudo or 'turtle' formation for defense: "
+"Legionaries were formed into hollow squares with twelve men on each side, "
+"standing so close together that their shields overlapped like fish scales."
+msgstr "ローマは一般的にテストゥドすなわち「亀」陣形を防御に用いました。レギオン兵は1辺12名の中空の方形を形成し、互いに密集して、魚の鱗のように盾を重ねました。"
+
+#: simulation/data/civs/rome.json
+msgid "Roman Legionaries can form a Testudo."
+msgstr "ローマのレギオン兵はテストゥド陣形をとることができます。"
+
+#: simulation/data/civs/rome.json
+msgid "Centurions"
+msgstr "百人隊長"
+
+#: simulation/data/civs/rome.json
+msgid ""
+"Centurions were the officers responsible for a centuria, a group of 100 "
+"soldiers."
+msgstr "百人隊長は100人の兵士からなるセンチュリアを担当する将校でした。"
+
+#: simulation/data/civs/rome.json
+msgid "Promote Elite Rank Spearmen or Swordsmen to Champion Centurions."
+msgstr "エリートランクの槍兵または剣士をチャンピオン百人隊長へ昇進させます。"
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Junius Brutus"
+msgstr "ルキウス・ユニウス・ブルトゥス"
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Tarquinius Collatinus"
+msgstr "ルキウス・タルクィニウス・コッラティヌス"
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Julius Caesar Octavianus"
+msgstr "ガイウス・ユリウス・カエサル・オクタウィアヌス"
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Vipsanius Agrippa"
+msgstr "マルクス・ウィプサニウス・アグリッパ"
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Iulius Iullus"
+msgstr "ガイウス・ユッルス・ユッルス"
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Servilius Structus Ahala"
+msgstr "ガイウス・セルウィリウス・ストルクトゥス・アハラ"
+
+#: simulation/data/civs/rome.json
+msgid "Publius Cornelius Rufinus"
+msgstr "プブリウス・コルネリウス・ルフィヌス"
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Papirius Cursor"
+msgstr "ルシウス・パピリウス・クルソル"
+
+#: simulation/data/civs/rome.json
+msgid "Aulus Manlius Capitolinus"
+msgstr "アウルス・マンリウス・カピトリヌス"
+
+#: simulation/data/civs/rome.json
+msgid "Publius Sempronius Tuditanus"
+msgstr "プブリウス・センプロニウス・トゥディタヌス"
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Cornelius Cethegus"
+msgstr "マルクス・コルネリウス・ケテグス"
+
+#: simulation/data/civs/rome.json
+msgid "Quintus Caecilius Metellus Pius"
+msgstr "クィントゥス・カエキリウス・メテッルス・ピウス"
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Licinius Crassus"
+msgstr "マルクス・リキニウス・クラッスス"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus I Soter"
+msgstr "アンティオコス I世 ソテル"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus II Theos"
+msgstr "アンティオコス II世 ミレトス"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus II Callinicus"
+msgstr "セレウコス II世 カリニコス"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus III Ceraunus"
+msgstr "セレウコス III世 ケラウノス"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus IV Philopator"
+msgstr "セレウコス IV世 フィロパトル"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus V Eupator"
+msgstr "アンティオコス V世 エウパトル"
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius I Soter"
+msgstr "デメトリオス I世 ソテル"
+
+#: simulation/data/civs/sele.json
+msgid "Alexander I Balas"
+msgstr "アレクサンドロス I世 バラス"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VI Dionysus"
+msgstr "アンティオコス VI世 ディオニュソス"
+
+#: simulation/data/civs/sele.json
+msgid "Diodotus Tryphon"
+msgstr "ディオドトス・トリュポン"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VII Sidetes"
+msgstr "アンティオコス VII世 シデテス"
+
+#: simulation/data/civs/sele.json
+msgid "Alexander II Zabinas"
+msgstr "アレクサンドロス II世 ザビナス"
+
+#: simulation/data/civs/sele.json
+msgid "Cleopatra Thea"
+msgstr "クレオパトラ・テア"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus V Philometor"
+msgstr "セレウコス V世 フィロメトル"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VIII Grypus"
+msgstr "アンティオコス VIII世 グリュプス"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus IX Cyzicenus"
+msgstr "アンティオコス IX世 キュジケヌス"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus VI Epiphanes"
+msgstr "セレウコス VI世 エピファネス"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus X Eusebes"
+msgstr "アンティオコス X世 エウセベス"
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius III Eucaerus"
+msgstr "デメトリオス III世 エウカエルス"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XI Epiphanes"
+msgstr "アンティオコス XI世 エピファネス"
+
+#: simulation/data/civs/sele.json
+msgid "Philip I Philadelphus"
+msgstr "ピリッポス I世 フィラデルフス"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XII Dionysus"
+msgstr "アンティオコス XII世 ディオニュソス"
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus VII Kybiosaktes"
+msgstr "セレウコス VII世 キビオサクテス"
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XIII Asiaticus"
+msgstr "アンティオコス XIII世 アシアティコス"
+
+#: simulation/data/civs/sele.json
+msgid "Philip II Philoromaeus"
+msgstr "ピリッポス II世 フィロロマイオス"
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius II Nicator"
+msgstr "デメトリオス II世 ニカトール"
+
+#: simulation/data/civs/spart.json
+msgid "Ritualistic Exercise"
+msgstr "儀式的な運動"
+
+#: simulation/data/civs/spart.json
+msgid "Citizen-Soldiers +40% health and +50% melee attack hack damage."
+msgstr "市民兵は体力 +40％、近接攻撃の打撃ダメージ +50％を得ます。"
+
+#: simulation/data/civs/spart.json
+msgid "Laws of Lycurgus"
+msgstr "リュクルゴスの制"
+
+#: simulation/data/civs/spart.json
+msgid ""
+"Under the constitution written by the mythical lawgiver Lycurgus, society "
+"was shaped around the training and development of superior warriors in "
+"defense of the Spartan state."
+msgstr "神話的法案立案者リュクリウスによって書かれた憲法の下で、社会はスパルタ州を守る優れた戦士の訓練と育成を中心に形成されました。"
+
+#: simulation/data/civs/spart.json
+msgid ""
+"Champion Hoplites are available in village phase, and can promote to highly "
+"experienced Olympic Champions."
+msgstr "チャンピオン重装歩兵は村の段階で利用可能で、経験豊富なオリンピックチャンピオンへ昇進できます。"
+
+#: simulation/data/civs/spart.json
+msgid "Agoge"
+msgstr "アゴゲ制度"
+
+#: simulation/data/civs/spart.json
+msgid ""
+"The institution of the Agoge was established to rigorously train Spartan "
+"boys from the age of 6 to be fearsome warriors."
+msgstr "アゴゲ制度は、6歳からスパルタ少年を恐るべき戦士へ厳しく訓練するために設立されました。"
+
+#: simulation/data/civs/spart.json
+msgid "Champion Hoplites -10% attack time."
+msgstr "チャンピオン重装歩兵は攻撃時間を -10％短縮します。"
+
+#: simulation/data/civs/spart.json
+msgid "Agesilaus"
+msgstr "アゲシラオス"
+
+#: simulation/data/civs/spart.json
+msgid "Agesipolis"
+msgstr "アゲシポリス"
+
+#: simulation/data/civs/spart.json
+msgid "Agis II"
+msgstr "アギスII世"
+
+#: simulation/data/civs/spart.json
+msgid "Anaxandridas"
+msgstr "アナクサンドリデス"
+
+#: simulation/data/civs/spart.json
+msgid "Archidamus"
+msgstr "アルキダモス"
+
+#: simulation/data/civs/spart.json
+msgid "Cleomenes"
+msgstr "クレオメネス1世"
+
+#: simulation/data/civs/spart.json
+msgid "Dienekes"
+msgstr "ディエネケス"
+
+#: simulation/data/civs/spart.json
+msgid "Echestratus"
+msgstr "エケストラトス"
+
+#: simulation/data/civs/spart.json
+msgid "Eucleidas"
+msgstr "エウクレイダス"
+
+#: simulation/data/civs/spart.json
+msgid "Eurybiades"
+msgstr "エウリュビアデス"
+
+#: simulation/data/civs/spart.json
+msgid "Eurycrates"
+msgstr "エウリュクラテス"
+
+#: simulation/data/civs/spart.json
+msgid "Gylippus"
+msgstr "ギュリッポス"
+
+#: simulation/data/civs/spart.json
+msgid "Leotychidas"
+msgstr "レオチチダス"
+
+#: simulation/data/civs/spart.json
+msgid "Pausanias"
+msgstr "パウサニアス"
+
+#: simulation/templates/special/players/athen.xml:8
+msgid "Athenians"
+msgstr "アテナイ"
+
+#: simulation/templates/special/players/athen.xml:9
+msgid ""
+"The Greek city-state of Athens is remembered as a famed center for the arts,"
+" learning, and philosophy, as well as one of the earliest forms of "
+"democracy. That wasn't to say that they weren't warriors. Athens at its "
+"height had one of the most powerful navies in the ancient world and through "
+"conquering and colonizing built a vast empire.\\nAncient Athens rose to an "
+"imperial power after defeating the invading Persians twice in the early "
+"fifth century BC and fell in 330 BC, when they lost the Battle of Chaeronea "
+"to King Phillip II of Macedonia. While after that it never rose again to "
+"power, Athens still was renowned for its learning and its scholars were well"
+" sought out as teachers."
+msgstr "アテナイは芸術・学問・哲学の名高い中心地として、また民主主義の初期形態の一つとして記憶されています。彼らが戦士でないわけではありません。アテナイはその頂点において、古代世界で最も強力な海軍の一つを持ち、征服と植民を通じて広大な帝国を築きました。古代アテナイは紀元前5世紀初頭に侵入ペルシャ軍を2度打ち破った後、帝国として台頭しましたが、紀元前330年にマケドニアのフィリップ2世に敗北し、チェロネアの戦いで敗れ、衰退しました。その後再び権力を取り戻すことはありませんでしたが、アテナイは依然として学問で知られ、学者たちは教師として非常に求められました。"
+
+#: simulation/templates/special/players/brit.xml:8
+msgid "Britons"
+msgstr "ブリトン"
+
+#: simulation/templates/special/players/brit.xml:9
+msgid ""
+"The Britons were the Celtic tribes of the British Isles. Using chariots, "
+"longswordsmen and powerful melee soldiers, they staged fearsome revolts "
+"against Rome to protect their customs and interests. Also, they built "
+"thousands of unique structures such as hill forts, crannogs and brochs."
+msgstr "ブリトンはブリテン諸島のケルト民族です。戦車、長剣兵、強力な近接兵を駆使し、ローマに対して恐るべき反乱を起こし、自分たちの習慣と利益を守ろうとしました。また、彼らは丘上の砦やクラノグと呼ばれる水上建物、ブロッホと呼ばれる石の塔など、多くの独自建物を立てました。"
+
+#: simulation/templates/special/players/cart.xml:8
+msgid "Carthaginians"
+msgstr "カルタゴ"
+
+#: simulation/templates/special/players/cart.xml:9
+msgid ""
+"Carthage, a city-state in modern-day Tunisia, was a formidable force in the "
+"western Mediterranean, eventually taking over much of North Africa and "
+"modern-day Spain in the third century BC. The sailors of Carthage were among"
+" the fiercest contenders on the high seas, and masters of naval trade. They "
+"deployed towered War Elephants on the battlefield to fearsome effect, and "
+"had defensive walls so strong, they were never breached."
+msgstr "カルタゴは現代チュニジアにある都市国家で、西地中海で強力な勢力でした。紀元前3世紀には北アフリカと現代のスペインの大部分を支配しました。カルタゴの船員は高い海で最も凶暴な競争相手の一つで、海上貿易の大師でした。彼らは戦場に高塔付きの戦象を投入し、恐ろしい効果をもたらし、防御壁は非常に強固で、決して突破されることはありませんでした。"
+
+#: simulation/templates/special/players/gaia.xml:9
+msgid "Gaia"
+msgstr "野生"
+
+#: simulation/templates/special/players/gaul.xml:8
+msgid "Gauls"
+msgstr "ガリア"
+
+#: simulation/templates/special/players/gaul.xml:9
+msgid ""
+"The Gauls were the Celtic tribes of continental Europe. Dominated by a "
+"priestly class of Druids, they featured a sophisticated culture of advanced "
+"metalworking, agriculture, trade and even road engineering. With heavy "
+"infantry and cavalry, Gallic warriors valiantly resisted Caesar's campaign "
+"of conquest and Rome's authoritarian rule."
+msgstr "ガリア人はヨーロッパ大陸のケルト部族でした。ドルイドの神官階級が支配し、先進的な金属加工、農業、貿易、さらには道路設計に関する洗練された文化が特徴でした。重装備の歩兵と騎兵で、ガリアの兵士は、カエサルの遠征とローマの権威主義的な支配に勇敢に抵抗しました。"
+
+#. Translation: This string does NOT refer to modern-day Germans, but rather
+#. to the ancient
+#. Germanic tribes such as the Cimbri.
+#: simulation/templates/special/players/germ.xml:8
+msgid "Germans"
+msgstr "ゲルマン民族"
+
+#: simulation/templates/special/players/germ.xml:9
+msgid ""
+"The largest migration in Europe of this period was that of the Cimbri "
+"people. The Cimbri were a large group of Germanic peoples originally from "
+"the Jutland region, in the north of modern-day Denmark. In the late 2nd "
+"century BC, their migration south into Italy and France would spark the "
+"decade-long Cimbrian War against the Roman Republic, bringing \"Terror "
+"Germanicus\" to the hearts of the Roman people."
+msgstr "この時期にヨーロッパで最大の移動は、シンブリ人のものでした。シンブリ人は、現代デンマーク北部のユトランド地域出身の大規模なゲルマン民族集団でした。紀元前2世紀後半、彼らのイタリアとフランスへの南下は、ローマ共和国に対する10年間続くシンブリ戦争を引き起こし、「テロール・ゲルマンニクス」をローマ人の心に刻みました。"
+
+#: simulation/templates/special/players/han.xml:16
+msgid "Han"
+msgstr "漢"
+
+#: simulation/templates/special/players/han.xml:17
+msgid ""
+"The Han dynasty was the second imperial dynasty of China. Founded by the "
+"commoner Liu Bang, the empire lasted from 202 BC to AD 220 with a short "
+"break from AD 9 to AD 23 when Wang Mang took the throne, making it the "
+"longest imperial dynasty in Chinese history. The Han dynasty was a period of"
+" relative peace, as well as cultural and technological growth, and for that "
+"reason is considered the first \"Golden Age of China\". The name of today's "
+"largest ethnic group in the world, the Han Chinese, derives from this very "
+"period."
+msgstr "漢朝は中国の第二の帝国王朝でした。平民の劉邦が創建し、帝国は紀元前202年からAD 220年まで続き、AD9-23年の短期間を除けば、中国史上最も長い帝国王朝でした。漢朝は比較的平和で文化的・技術的発展の時期であり、そのため中国の最初の「黄金時代」とされています。今日世界最大の民族集団である漢民族の名前は、この時代から由来しています。"
+
+#: simulation/templates/special/players/iber.xml:8
+msgid "Iberians"
+msgstr "イベリア"
+
+#: simulation/templates/special/players/iber.xml:9
+msgid ""
+"The Iberians were a people of mysterious origins and language, with a strong"
+" tradition of horsemanship and metalworking. A relatively peaceful culture, "
+"they usually fought in other's battles only as mercenaries. However, they "
+"proved tenacious when Rome sought to take their land and freedom from them, "
+"and employed pioneering guerrilla tactics and flaming javelins as they "
+"fought back."
+msgstr "イベリア人の起源と言語は謎に包まれています。彼らには馬の調教と金属加工の優れた伝統がありました。比較的平和な文化で、たいてい他の戦場で傭兵としてのみ戦いました。しかしながら、ローマが彼らの土地と自由を取り上げようとしたとき、彼らは頑強さを証明し、ゲリラ戦術と炎のついた投槍を先駆的に使って反撃しました。"
+
+#: simulation/templates/special/players/kush.xml:8
+msgid "Kushites"
+msgstr "クシュ"
+
+#: simulation/templates/special/players/kush.xml:9
+msgid ""
+"The Kingdom of Kush was an African kingdom located at the confluences of the"
+" Blue Nile, White Nile, and River Atbara, in present-day Sudan. It rose "
+"following the collapse of Egypt's New Kingdom, with its early capital at "
+"Napata. In the 8th century BC, the Kushites invaded Egypt and established "
+"the Twenty-fifth dynasty, ruling as Pharaohs until expelled by the "
+"Assyrians. The capital moved to Meroe, the center of the Meroitic kingdom "
+"known as Aethiopia in Greek geography. Weakened due to internal rebellion, "
+"The kingdom lasted until the 4th century AD and was overtaken by the Kingdom"
+" of Axum. Influenced by Egyptian culture, the Kushites built throughout "
+"their reign pyramids and temples and worshipped gods like Amun."
+msgstr "クシュ王国は、現在のスーダンにある青いナイル川、白いナイル川、アトバラ川の合流点に位置するアフリカの王国でした。古代エジプトの新王国崩壊後に台頭し、初期の都はナパタでした。紀元前8世紀にクシュ人はエジプトを侵攻し、第二十五王朝を樹立し、アッシリアに追放されるまでファラオとして統治しました。首都はメロエへ移され、ギリシャ地理学でアフリカと呼ばれるメロイト王国の中心地となりました。内部反乱により弱体化し、王国は4世紀ADまで存続し、アクスム王国に占領されました。エジプト文化の影響を受け、クシュ人は統治期間中にピラミッドと神殿を建設し、アムンのような神々を崇拝しました。"
+
+#: simulation/templates/special/players/mace.xml:8
+msgid "Macedonians"
+msgstr "マケドニア"
+
+#: simulation/templates/special/players/mace.xml:9
+msgid ""
+"Macedonia was an ancient Greek kingdom, centered in the northeastern part of"
+" the Greek peninsula. Under the leadership of Alexander the Great, "
+"Macedonian forces and allies took over most of the world they knew, "
+"including Egypt, Persia and parts of the Indian subcontinent, allowing a "
+"diffusion of Hellenic and eastern cultures for years to come."
+msgstr "マケドニアは古代ギリシアの王国で、ギリシア半島北東部を中心としていました。アレクサンドロス大王の指揮の下、マケドニアとその同盟軍は、エジプト、ペルシア、インド亜大陸の一部を含む、彼らの知る世界の大部分を占領し、ギリシアと東方の文化の拡散をその後幾年も可能にしました。"
+
+#: simulation/templates/special/players/maur.xml:8
+msgid "Mauryas"
+msgstr "マウリヤ朝"
+
+#: simulation/templates/special/players/maur.xml:9
+msgid ""
+"Founded in 322 BC by Chandragupta Maurya, the Mauryan Empire was the first "
+"to rule most of the Indian subcontinent, and was one of the largest and most"
+" populous empires of antiquity. Its military featured bowmen who used the "
+"long-range bamboo longbow, fierce female warriors, chariots, and thousands "
+"of armored war elephants. Its philosophers, especially the famous Acharya "
+"Chanakya, contributed to such varied fields such as economics, religion, "
+"diplomacy, warfare, and good governance. Under the rule of Ashoka the Great,"
+" the empire saw 40 years of peace, harmony, and prosperity."
+msgstr "BC322にチャンドラグプタ・マウリヤによって設立されたマウリヤ帝国は、インド亜大陸のほとんどを統治した最初の帝国で、古代最大かつ最も人口の多い帝国の一つでした。軍は遠距離の竹の長弓を使用する弓兵、凶暴な女性戦士、戦車、そして数千頭の装甲戦象を備えていました。その哲学者、特に有名なアチャラ・チャナクヤは、経済学・宗教・外交・戦争・良政といった多様な分野に貢献しました。アショーカ大王の統治下で、帝国は40年間の平和、調和、繁栄を享受しました。"
+
+#: simulation/templates/special/players/pers.xml:8
+msgid "Persians"
+msgstr "ペルシア"
+
+#: simulation/templates/special/players/pers.xml:9
+msgid ""
+"The Persian Empire, when ruled by the Achaemenid dynasty, was one of the "
+"greatest empires of antiquity, stretching at its zenith from the Indus "
+"Valley in the east to Greece in the west. The Persians were the pioneers of "
+"empire-building of the ancient world, successfully imposing a centralized "
+"rule over various peoples with different customs, laws, religions and "
+"languages, and building a cosmopolitan army made up of contingents from each"
+" of these nations."
+msgstr "ペルシア帝国は、アケメネス朝が支配していた時代、東はインダス川流域から、西はギリシャまで広がる古代最大の帝国の一つでした。ペルシャ人は古代世界の帝国建設の先駆者であり、習慣、法律、宗教、言語の異なる様々な民族に中央集権的な支配を課し、それぞれの民族の部隊からなる国際的な軍隊を築くことに成功していました。"
+
+#: simulation/templates/special/players/ptol.xml:16
+msgid "Ptolemies"
+msgstr "プトレマイオス朝"
+
+#: simulation/templates/special/players/ptol.xml:17
+msgid ""
+"The Ptolemaic dynasty was a Macedonian Greek royal family which ruled the "
+"Ptolemaic Empire in Egypt during the Hellenistic period. Their rule lasted "
+"for 275 years, from 305 BC to 30 BC. They were the last dynasty of ancient "
+"Egypt."
+msgstr "プトレマイオス朝はマケドニア・ギリシア人の王朝でヘレニズム時代にエジプトのプトレマイオス朝帝国を支配しました。彼らの支配は紀元前305年から紀元前30年の275年に及びました。彼らは古代エジプト最後の王朝でした。"
+
+#: simulation/templates/special/players/rome.xml:8
+msgid "Romans"
+msgstr "ローマ"
+
+#: simulation/templates/special/players/rome.xml:9
+msgid ""
+"The Romans controlled one of the largest empires of the ancient world, "
+"stretching at its peak from southern Scotland to the Sahara Desert, and "
+"containing between 60 million and 80 million inhabitants, one quarter of the"
+" Earth's population at that time. Rome also remained one of the strongest "
+"nations on earth for almost 800 years. The Romans were the supreme builders "
+"of the ancient world, excelled at siege warfare and had an exquisite "
+"infantry and navy."
+msgstr "ローマは古代世界で最大級の帝国を支配し、最盛期には南スコットランドからサハラ砂漠にまで版図をひろげ、人口6000万から8000万は、当時の世界人口の４分の１にあたりました。ローマはほぼ800年続いた地球最強の国家の一つを残しもしました。ローマは古代世界最高の建設技術を持ち、包囲戦に優れ、強力な歩兵と海軍を持っていました。"
+
+#: simulation/templates/special/players/sele.xml:16
+msgid "Seleucids"
+msgstr "セレウコス朝"
+
+#: simulation/templates/special/players/sele.xml:17
+msgid ""
+"The Macedonian-Greek dynasty that ruled most of Alexander's former empire."
+msgstr "マケドニア・ギリシア人の王朝で、アレクサンドロスの帝国の遺領の大半を支配しました。"
+
+#: simulation/templates/special/players/spart.xml:6
+msgid "Spartans"
+msgstr "スパルタ"
+
+#: simulation/templates/special/players/spart.xml:7
+msgid ""
+"Sparta was a prominent city-state in Ancient Greece, and its dominant "
+"military power started in the 7th century BC. It peaked after the "
+"Peloponnesian Wars in the late fifth century BC but declined soon after, "
+"ending when they lost to Thebes in the battle of Leuctra in 371 "
+"BC.\\nSpartan culture was obsessed with military training; all Spartan boys "
+"were drafted into strict training at age seven, and their military service "
+"lasted until they were sixty. All trades were done by their serfs, the "
+"Helots. Spartans lived a strict and minimalistic lifestyle, separate from "
+"many of the other civilizations, due to reforms such as iron money, which "
+"were given by Lycurgus, the legendary lawgiver."
+msgstr "スパルタは古代ギリシャの著名な都市国家であり、その軍事力は紀元前7世紀に始まりました。ペロポネソス戦争後の5世紀末に頂点に達しましたが、すぐに衰退し、紀元前371年のレウクトラの戦いでテベイに敗北して終わりました。スパルタ文化は軍事訓練に執着しており、すべてのスパルタ少年は7歳で厳格な訓練に徴集され、軍務は60歳になるまで続きました。すべての職業は奴隷のヘロトによって行われました。スパルタ人は、リュクリウスという伝説の法案立案者が与えた鉄の貨幣などの改革により、他の多くの文明と別れた厳格でミニマリストな生活を送りました。"

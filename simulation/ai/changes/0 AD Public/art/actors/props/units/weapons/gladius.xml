@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="Base">
+      <textures>
+        <texture file="props/prop_weap.dds" name="baseTex"/>
+        <texture name="specTex" file="null_white.dds"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="gladius-plain">
+      <mesh>props/weapons/gladius_03.dae</mesh>
+    </variant>
+    <variant frequency="1" name="gladius-bloody">
+      <mesh>props/weapons/gladius_04.dae</mesh>
+    </variant>
+    <variant frequency="1" name="gladius-curve">
+      <mesh>props/weapons/gladius_05.dae</mesh>
+    </variant>
+    <variant frequency="1" name="gladius-curveblood">
+      <mesh>props/weapons/gladius_06.dae</mesh>
+    </variant>
+    <variant frequency="1" name="gladius-pommelblood">
+      <mesh>props/weapons/gladius_07.dae</mesh>
+    </variant>
+    <variant frequency="1" name="gladius-pommel">
+      <mesh>props/weapons/gladius_08.dae</mesh>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

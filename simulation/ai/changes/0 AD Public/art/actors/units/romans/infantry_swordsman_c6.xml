@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1">
+      <mesh>skeletal/new/m_armor_tunic_short.dae</mesh>
+      <props>
+        <prop actor="props/units/weapons/sheath_gladius_e.xml" attachpoint="sheath_01_R"/>
+        <prop actor="props/units/weapons/gladius.xml" attachpoint="weapon_R"/>
+        <prop actor="props/units/capes/cape_long_player.xml" attachpoint="root"/>
+      </props>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Helmet Roman">
+      <props>
+        <prop actor="props/units/helmets/rome_helmet_coolus.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="3" name="head_hele_b">
+      <props>
+        <prop actor="props/units/heads/new/head_hele_b.xml" attachpoint="head"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="rome_head_veteran">
+      <props>
+        <prop actor="props/units/heads/new/rome_head_veteran.xml" attachpoint="head"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="chainmail_05_01">
+      <textures>
+        <texture file="skeletal/rome/chainmail_05_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_05_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_05_02">
+      <textures>
+        <texture file="skeletal/rome/chainmail_05_02.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_05_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_06_01">
+      <textures>
+        <texture file="skeletal/rome/chainmail_06_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_06_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_06_02">
+      <textures>
+        <texture file="skeletal/rome/chainmail_06_02.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_06_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_07_01">
+      <textures>
+        <texture file="skeletal/rome/chainmail_07_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_07_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_07_padded_01">
+      <textures>
+        <texture file="skeletal/rome/chainmail_07_padded_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_07_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="scutum_rome_marian_02">
+      <props>
+        <prop actor="props/units/shields/scutum_rome_marian_02.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="scutum_rome_isw_06">
+      <props>
+        <prop actor="props/units/shields/scutum_rome_isw_06.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="scutum_rome_isw_09">
+      <props>
+        <prop actor="props/units/shields/scutum_rome_isw_09.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="2" name="scutum_rome_marian_04">
+      <props>
+        <prop actor="props/units/shields/scutum_rome_marian_04.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/base_swordsman_shield_ready.xml" name="Swordsman-Shield-Ready" frequency="1"/>
+    <variant file="biped/formations/testudo_top.xml"/>
+    <variant file="biped/formations/testudo_front.xml"/>
+    <variant file="biped/formations/testudo_front_left.xml"/>
+    <variant file="biped/formations/testudo_front_right.xml"/>
+    <variant file="biped/formations/testudo_left.xml"/>
+    <variant file="biped/formations/testudo_right.xml"/>
+    <variant file="biped/attack_capture.xml"/>
+    <variant file="biped/attack_slaughter.xml"/>
+    <variant file="biped/gather_praise.xml"/>
+    <variant file="biped/death_cape_long.xml"/>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

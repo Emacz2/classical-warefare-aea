@@ -1,0 +1,2396 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2026 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Adrián Chaves Fernández, 2019
+# 8fe0a0aa85a11227f8b2b9f4ce527933_86ff605, 2017
+# Albert F., 2017
+# Albert F., 2017,2019,2021
+# Arnau Barrabeig, 2017
+# Catalanoic, 2016
+# Francesc d'Assís Requesens i Roca, 2025
+# Esteve Blanch Sanmartí, 2020
+# Francesc d'Assís Requesens i Roca, 2026
+# Francesc Famadas, 2015
+# Francesc Famadas, 2015
+# Francesc Saló, 2017
+# Guillem Poy, 2015
+# Haommin, 2014
+# ignius, 2014
+# Isaac Lleida, 2014
+# Josep A.P, 2015
+# juan Aragó, 2018
+# Marc Masip Compte, 2017
+# Maria Acero-Allo, 2018
+# Nicolas Auvray, 2018
+# Peredelgrau, 2013
+# Peredelgrau, 2013
+# ribasvilanova, 2014
+# Sargis ., 2024
+# Toni GL, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2026-01-15 01:16+0000\n"
+"PO-Revision-Date: 2014-06-19 17:48+0000\n"
+"Last-Translator: Francesc d'Assís Requesens i Roca, 2026\n"
+"Language-Team: Catalan (http://app.transifex.com/wildfire-games/0ad/language/ca/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gamesettings/attributes/PlayerName.js:146
+#, javascript-format
+msgid "%(playerName)s (%(nameCount)i)"
+msgstr "%(playerName)s (%(nameCount)i)"
+
+#: gui/gamesetup/Pages/AIConfigPage/AIConfigPage.xml:13
+msgid "AI Configuration"
+msgstr "Configuració de la IA"
+
+#: gui/gamesetup/Pages/AIConfigPage/AIConfigPage.xml:29
+msgid "OK"
+msgstr "D'acord"
+
+#: gui/gamesetup/Pages/AIConfigPage/AIDescription.js:30
+msgid "AI will be disabled for this player."
+msgstr "La IA es desactivarà per a aquest jugador."
+
+#: gui/gamesetup/Pages/AIConfigPage/Controls/AIBehavior.js:29
+msgid "AI Behavior"
+msgstr "Comportament de la IA"
+
+#: gui/gamesetup/Pages/AIConfigPage/Controls/AIDifficulty.js:32
+msgid "AI Difficulty"
+msgstr "Dificultat de la IA"
+
+#: gui/gamesetup/Pages/AIConfigPage/Controls/AISelection.js:39
+msgctxt "ai"
+msgid "None"
+msgstr "Cap"
+
+#: gui/gamesetup/Pages/AIConfigPage/Controls/AISelection.js:44
+msgid "AI Player"
+msgstr "Jugador de la IA"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingControl.js:148
+#, javascript-format
+msgctxt "Title for specific setting"
+msgid "%(setting)s:"
+msgstr "%(setting)s:"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingControlCheckbox.js:57
+msgid "Yes"
+msgstr "Sí"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingControlCheckbox.js:60
+msgid "No"
+msgstr "No"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingControlDropdown.js:64
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingControlSlider.js:84
+msgctxt "settings value"
+msgid "Unknown"
+msgstr "Desconegut"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingsLayout.js:7
+msgctxt "Match settings tab name"
+msgid "Map"
+msgstr "Mapa"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingsLayout.js:29
+msgctxt "Match settings tab name"
+msgid "Player"
+msgstr "Jugador"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingsLayout.js:40
+msgctxt "Match settings tab name"
+msgid "Game Type"
+msgstr "Tipus de partida"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/AIConfigButton.js:29
+#, javascript-format
+msgid "Configure AI: %(description)s."
+msgstr "Configura la IA: %(description)s."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerAssignment.js:177
+msgid "Select player."
+msgstr "Seleccioneu el jugador."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerAssignment.js:255
+#, javascript-format
+msgid "AI: %(ai)s"
+msgstr "IA: %(ai)s"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerAssignment.js:286
+msgid "Unassigned"
+msgstr "No assignat"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerAssignment.js:317
+msgid "Removed"
+msgstr "Eliminat"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:90
+msgid "Choose the civilization for this player."
+msgstr "Trieu la civilització per a aquest jugador."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:93
+msgctxt "civilization"
+msgid "Random"
+msgstr "Aleatori"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:99
+msgid "Picks one civilization at random when the game starts."
+msgstr "Tria una civilització a l'atzar quan comença la partida."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerColor.js:48
+msgid "Pick a color."
+msgstr "Trieu un color."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerTeam.js:47
+msgid "Select player's team."
+msgstr "Trieu l'equip del jugador."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerTeam.js:50
+msgctxt "team"
+msgid "None"
+msgstr "Cap"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/PlayersPanel.xml:6
+msgid "Player Name"
+msgstr "Nom del jugador"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/PlayersPanel.xml:10
+msgid "Color"
+msgstr "Color"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/PlayersPanel.xml:18
+msgid "Civilization"
+msgstr "Civilització"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/PlayersPanel.xml:25
+msgid "Team"
+msgstr "Equip"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Buttons/MapBrowser.js:42
+msgid "Browse Maps"
+msgstr "Mostra la llista de mapes"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Buttons/MapBrowser.js:45
+#, javascript-format
+msgid "Press %(hotkey)s to view the list of available maps."
+msgstr "Premeu %(hotkey)s per veure la llista de mapes disponibles."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/AlliedView.js:26
+msgid "Allied View"
+msgstr "Vista aliada"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/AlliedView.js:30
+msgid "Toggle allied view (see what your allies see)."
+msgstr "Commutar visió aliada (veu el que els teus aliats veuen)"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Cheats.js:35
+msgid "Cheats"
+msgstr "Trucs"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Cheats.js:38
+msgid "Toggle the usability of cheats."
+msgstr "Activa o desactiva la possibilitat de fer servir trucs."
+
+#. Translation: Make sure to differentiate between the revealed map and
+#. explored map
+#. settings!
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/ExploredMap.js:26
+msgid "Explored Map"
+msgstr "Mapa explorat"
+
+#. Translation: Make sure to differentiate between the revealed map and
+#. explored map
+#. settings!
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/ExploredMap.js:30
+msgid "Toggle explored map (see initial map)."
+msgstr "Activa o desactiva el mapa explorat (permet veure el mapa inicial)."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/LastManStanding.js:31
+msgid "Last Man Standing"
+msgstr "Últim supervivent"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/LastManStanding.js:34
+msgid ""
+"Toggle whether the last remaining player or the last remaining set of allies"
+" wins."
+msgstr "Tria si el vencedor és l'últim jugador restant o l'últim equip d'aliats restant."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/LockedTeams.js:32
+msgid "Teams Locked"
+msgstr "Equips bloquejats"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/LockedTeams.js:35
+msgid "Toggle locked teams."
+msgstr "Bloqueja o desbloqueja els equips."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Nomad.js:25
+msgid "Nomad"
+msgstr "Nòmada"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Nomad.js:28
+msgid ""
+"In Nomad mode, players start with only few units and have to find a suitable"
+" place to build their city. Ceasefire is recommended."
+msgstr "En mode Nòmada els jugadors comencen amb poques unitats i han de trobar un lloc adient per construir la seva ciutat. Es recomana activar l'alto el foc."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Rating.js:31
+msgid "Rated Game"
+msgstr "Partida classificada"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Rating.js:34
+msgid "Toggle if this game will be rated for the leaderboard."
+msgstr "Permet o no que la puntuació d'aquesta partida entri a la classificació."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/RegicideGarrison.js:27
+msgid "Hero Garrison"
+msgstr "Herois refugiats"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/RegicideGarrison.js:30
+msgid "Toggle whether heroes can be garrisoned."
+msgstr "Permet o no que els herois puguin refugiar-se."
+
+#. Translation: Make sure to differentiate between the revealed map and
+#. explored map
+#. settings!
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/RevealedMap.js:26
+msgid "Revealed Map"
+msgstr "Mapa revelat"
+
+#. Translation: Make sure to differentiate between the revealed map and
+#. explored map
+#. settings!
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/RevealedMap.js:30
+msgid "Toggle revealed map (see everything)."
+msgstr "Activa o desactiva el mapa revelat (permet veure-ho tot)."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Spies.js:26
+msgid "Disable Spies"
+msgstr "Desactiva els espies"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Spies.js:29
+msgid "Disable spies during the game."
+msgstr "Desactiva els espies durant la partida."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Treasures.js:25
+msgid "Disable Treasures"
+msgstr "Desactiva els tresors"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Treasures.js:28
+msgid "Do not add treasures to the map."
+msgstr "No afegeixis tresors al mapa."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Biome.js:54
+msgid "Biome"
+msgstr "Bioma"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Biome.js:60
+msgid "Select the flora and fauna."
+msgstr "Seleccioneu la flora i la fauna."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Biome.js:63
+msgctxt "biome"
+msgid "Random"
+msgstr "Aleatori"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Biome.js:66
+msgid "Pick a biome at random."
+msgstr "Tria un bioma a l'atzar."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:57
+msgid "Daytime"
+msgstr "Dia"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:60
+msgid "Select whether the match takes place at daylight or night."
+msgstr "Selecciona si la partida té lloc de dia o de nit."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:63
+msgctxt "daytime selection"
+msgid "Random"
+msgstr "Aleatori"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:66
+msgctxt "daytime selection"
+msgid "Randomly pick a time of the day."
+msgstr "Selecciona aleatòriament una hora del dia."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/GameSpeed.js:61
+msgid "Game Speed"
+msgstr "Velocitat del joc"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/GameSpeed.js:64
+msgid "Select game speed."
+msgstr "Seleccioneu la velocitat del joc."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Landscape.js:25
+msgctxt "landscape selection"
+msgid "Random"
+msgstr "Aleatori"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Landscape.js:26
+msgctxt "landscape selection"
+msgid "Select a random landscape."
+msgstr "Selecciona un paisatge aleatori"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Landscape.js:78
+msgid "Landscape"
+msgstr "Paisatge"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Landscape.js:81
+msgid "Select one of the landscapes of this map."
+msgstr "Selecciona un dels paisatges d'aquest mapa."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapFilter.js:82
+msgid "Map Filter"
+msgstr "Filtre de mapes"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapFilter.js:85
+msgid "Select a map filter."
+msgstr "Trieu un filtre de mapa."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapSelection.js:26
+msgid "Map"
+msgstr "Mapa"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapSelection.js:141
+msgid "Select Map"
+msgstr "Selecciona el mapa"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapSelection.js:144
+msgid "Select a map to play on."
+msgstr "Trieu un mapa per jugar."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapSelection.js:150
+msgctxt "map selection"
+msgid "Random"
+msgstr "Aleatori"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapSelection.js:153
+msgid "Pick any of the given maps at random."
+msgstr "Tria qualsevol mapa a l'atzar."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapSize.js:39
+msgid "Map Size"
+msgstr "Mida del mapa"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapSize.js:42
+msgid "Select map size. (Larger sizes may reduce performance.)"
+msgstr "Trieu la mida del mapa. (Els mapes més grans poden reduir el rendiment.)"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapType.js:65
+msgid "Map Type"
+msgstr "Tipus de mapa"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapType.js:68
+msgid "Select a map type."
+msgstr "Seleccioneu el tipus de mapa."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PlayerCount.js:33
+msgid "Number of Players"
+msgstr "Nombre de jugadors"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PlayerCount.js:36
+msgid "Select number of players."
+msgstr "Trieu el nombre de jugadors."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/PlayersPanel.xml:14
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PlayerPlacement.js:53
+msgid "Player Placement"
+msgstr "Ubicació dels jugadors"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PlayerPlacement.js:56
+msgid "Select one of the starting position patterns of this map."
+msgstr "Selecciona una de les posicions inicials d'aquest mapa."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PlayerPlacement.js:60
+msgctxt "player placement"
+msgid "Random"
+msgstr "Aleatori"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PlayerPlacement.js:61
+msgctxt "player placement"
+msgid "Select a random player placement pattern when starting the game."
+msgstr "Ubica els equips de manera aleatòria a l'inici de la partida."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PopulationCap.js:29
+msgid "Unlimited"
+msgstr "Il·limitat"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PopulationCap.js:74
+msgctxt "population limit"
+msgid "Per Player"
+msgstr "Per jugador"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PopulationCap.js:77
+msgid ""
+"Warning: These settings can result in significant lag when all players reach"
+" their maximum population capacity."
+msgstr "Avís: Aquesta configuració pot provocar una desacceleració notable quan tots els jugadors arriben a la seva capacitat màxima de població."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PopulationCapType.js:35
+msgid "Population Cap Type"
+msgstr "Tipus de límit de població"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/PopulationCapType.js:38
+msgid "Select a population capacity type."
+msgstr "Selecciona un tipus de límit de població."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/StartingResources.js:50
+msgid "Starting Resources"
+msgstr "Recursos inicials"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/StartingResources.js:53
+msgid "Select the game's starting resources."
+msgstr "Trieu els recursos inicials de la partida."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/StartingResources.js:56
+#, javascript-format
+msgid "Initial amount of each resource: %(resources)s."
+msgstr "Quantitat inicial de cada recurs: %(resources)s."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/StartingResources.js:59
+msgctxt "starting resources"
+msgid "Per Player"
+msgstr "Per jugador"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/TriggerDifficulty.js:41
+msgid "Difficulty"
+msgstr "Dificultat"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/TriggerDifficulty.js:44
+msgid "Select the difficulty of this scenario."
+msgstr "Selecciona la dificultat d'aquest escenari."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/WaterLevel.js:43
+msgid "Water level"
+msgstr "Nivell d'aigua"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/WaterLevel.js:46
+msgid "Select the water level of this map."
+msgstr "Selecciona el nivell d'aigua d'aquest mapa."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/Ceasefire.js:35
+msgid "Ceasefire"
+msgstr "Alto el foc"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/Ceasefire.js:38
+msgid "Set time where no attacks are possible."
+msgstr "Durant aquest temps no es pot atacar."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/Ceasefire.js:41
+msgctxt "ceasefire"
+msgid "No ceasefire"
+msgstr "Sense alto el foc"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/Ceasefire.js:44
+#, javascript-format
+msgctxt "ceasefire"
+msgid "%(minutes)s minute"
+msgid_plural "%(minutes)s minutes"
+msgstr[0] "%(minutes)s minut"
+msgstr[1] "%(minutes)s minuts"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/RelicCount.js:38
+msgid "Relic Count"
+msgstr "Nombre de relíquies"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/RelicCount.js:41
+#, javascript-format
+msgid "%(number)s relic"
+msgid_plural "%(number)s relics"
+msgstr[0] "%(number)s relíquia"
+msgstr[1] "%(number)s relíquies"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/RelicCount.js:44
+msgid ""
+"Total number of relics spawned on the map. Relic victory is most realistic "
+"with only one or two relics. With greater numbers, the relics are important "
+"to capture to receive aura bonuses."
+msgstr "Nombre total de relíquies generades en el mapa. La victòria per captura de relíquies és més probable amb només una o dues relíquies. Amb nombres més grans, les relíquies són importants sobretot per aconseguir bonificacions d'aura."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/RelicDuration.js:38
+msgid "Relic Duration"
+msgstr "Duració de les relíquies"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/RelicDuration.js:41
+msgid "Minutes until the player has achieved Relic Victory."
+msgstr "Minuts fins que el jugador obté la victòria per relíquies."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/RelicDuration.js:47
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/WonderDuration.js:44
+#, javascript-format
+msgctxt "victory duration"
+msgid "%(min)s minute"
+msgid_plural "%(min)s minutes"
+msgstr[0] "%(min)s minut"
+msgstr[1] "%(min)s minuts"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/RelicDuration.js:50
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/WonderDuration.js:47
+msgctxt "victory duration"
+msgid "Immediate Victory."
+msgstr "Victòria immediata."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/SeaLevelRiseTime.js:38
+msgid "Sea Level Rise Time"
+msgstr "Hora de pujada de la marea"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/SeaLevelRiseTime.js:41
+msgid "Set the time when the water will start to rise."
+msgstr "Indica quan començarà a pujar la marea."
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/SeaLevelRiseTime.js:44
+#, javascript-format
+msgctxt "sea level rise time"
+msgid "%(minutes)s minute"
+msgid_plural "%(minutes)s minutes"
+msgstr[0] "%(minutes)s minut"
+msgstr[1] "%(minutes)s minuts"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/WonderDuration.js:38
+msgid "Wonder Duration"
+msgstr "Duració de la meravella"
+
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/WonderDuration.js:41
+msgid "Minutes until the player has achieved Wonder Victory"
+msgstr "Minuts fins que el jugador obté la victòria per meravella"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/CancelButton.js:17
+msgid "Back"
+msgstr "Enrere"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/CancelButton.js:20
+msgid "Return to the lobby."
+msgstr "Torna a la sala multijugador."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/CancelButton.js:23
+msgid "Return to the main menu."
+msgstr "Torna al menú principal."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/CivInfoButton.js:33
+#, javascript-format
+msgid ""
+"%(hotkey_civinfo)s / %(hotkey_structree)s: View Civilization Overview / Structure Tree\n"
+"Last opened will be reopened on click."
+msgstr "%(hotkey_civinfo)s / %(hotkey_structree)s: Mostra Resum de la civilització / Arbre d'estructures.\nSi feu clic s'obrirà l'últim que s'ha obert."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/LobbyButton.js:19
+msgid "Show the multiplayer lobby in a dialog window."
+msgstr "Mostra la sala multijugador en una finestra de diàleg."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ReadyButton.js:70
+msgid "I'm ready"
+msgstr "Estic a punt"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ReadyButton.js:71
+msgid "Stay ready"
+msgstr "Estigues a punt"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ReadyButton.js:72
+msgid "I'm not ready!"
+msgstr "No estic a punt!"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ReadyButton.js:76
+msgid "State that you are ready to play."
+msgstr "Digueu que esteu a punt per jugar."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ReadyButton.js:77
+msgid "Stay ready even when the game settings change."
+msgstr "Estigues a punt encara que la configuració del joc canviï."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ReadyButton.js:78
+msgid "State that you are not ready to play."
+msgstr "Digueu que no esteu a punt per jugar."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ResetCivsButton.js:32
+msgid ""
+"Reset any civilizations that have been selected to the default (random)."
+msgstr "Restableix totes les civilitzacions que s'hagin seleccionat als valors per defecte (aleatori)."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ResetTeamsButton.js:32
+msgid "Reset all teams to the default."
+msgstr "Restableix tots els equips als valors per defecte."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/SavedGameLabel.xml:9
+msgid "Saved game"
+msgstr "Partides desades"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/SavedGameLabel.xml:11
+msgid "The controller loaded a saved game."
+msgstr "El controlador ha carregat una partida desada."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/StartGameButton.js:56
+msgid "Start Game!"
+msgstr "Comença la partida!"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/StartGameButton.js:59
+msgid "Start a new game with the current settings."
+msgstr "Comença una partida nova amb aquestes preferències."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/StartGameButton.js:62
+msgid ""
+"Start a new game with the current settings (disabled until all players are "
+"ready)."
+msgstr "Comença una partida nova amb la configuració actual (estarà desactivat fins que tots els jugadors estiguin a punt)."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatInputPanel.js:61
+#, javascript-format
+msgid "Press %(hotkey)s to autocomplete player names or settings."
+msgstr "Premeu %(hotkey)s per autocompletar els noms dels jugadors o les opcions."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientChat.js:27
+msgid "Unknown Player"
+msgstr "Jugador desconegut"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientChat.js:47
+#, javascript-format
+msgid "<%(username)s>"
+msgstr "<%(username)s>"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientChat.js:50
+#, javascript-format
+msgid "%(username)s %(message)s"
+msgstr "%(username)s %(message)s"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientConnection.js:27
+#, javascript-format
+msgid "%(username)s has joined"
+msgstr "%(username)s ha entrat"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientConnection.js:30
+#, javascript-format
+msgid "%(username)s has left"
+msgstr "%(username)s ha marxat"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientKicked.js:22
+#, javascript-format
+msgid "%(username)s has been kicked"
+msgstr "%(username)s ha estat expulsat"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientKicked.js:25
+#, javascript-format
+msgid "%(username)s has been banned"
+msgstr "%(username)s ha estat bloquejat"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientReady.js:28
+#, javascript-format
+msgid "* %(username)s is not ready."
+msgstr "* %(username)s no està a punt."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientReady.js:29
+#, javascript-format
+msgid "* %(username)s is ready!"
+msgstr "* %(username)s està a punt!"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/GameSettingsChanged.js:22
+msgid "Game settings have been changed"
+msgstr "Les opcions del joc han canviat."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatPanel.xml:9
+msgid "Send"
+msgstr "Envia"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/StatusMessageFormat.js:24
+#, javascript-format
+msgid "== %(message)s"
+msgstr "== %(message)s"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/TimestampWrapper.js:25
+#, javascript-format
+msgid "%(time)s %(message)s"
+msgstr "%(time)s %(message)s"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/TimestampWrapper.js:28
+#, javascript-format
+msgid "\\[%(time)s]"
+msgstr "\\[%(time)s]"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/TimestampWrapper.js:31
+msgid "HH:mm"
+msgstr "HH:mm"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/GameSettingWarning.js:49
+msgid "Cheats enabled."
+msgstr "Trucs habilitats."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/GameSettingWarning.js:52
+msgid "Rated game."
+msgstr "Partida classificada."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/GameSettingsTabs.js:74
+#, javascript-format
+msgid "Click to toggle the %(name)s settings tab."
+msgstr "Feu clic per canviar la pestanya de configuració %(name)s."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/MapPreview.js:41
+msgid "No selected map"
+msgstr "Cap mapa seleccionat"
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/MapPreview.js:61
+msgid "Click to view the list of available maps."
+msgstr "Feu clic per veure la llista de mapes disponibles."
+
+#: gui/gamesetup/Pages/GameSetupPage/Panels/TipsPanel.xml:10
+msgid "Show this message in the future."
+msgstr "Mostra aquest missatge en el futur."
+
+#: gui/gamesetup/Pages/LoadingPage/LoadingPage.xml:7
+msgid "Loading"
+msgstr "S'està carregant"
+
+#: gui/gamesetup/Pages/LoadingPage/LoadingPage.xml:11
+msgid "Loading map data. Please wait…"
+msgstr "S'estan carregant les dades del mapa. Espereu..."
+
+#: gui/gamesetup/gamesetup.xml:17
+msgid "Match Setup"
+msgstr "Configuració de la partida"
+
+#: gui/gamesetup_mp/gamesetup_mp.js:111
+#, javascript-format
+msgid "%(name)s's game"
+msgstr "Partida de %(name)s"
+
+#: gui/gamesetup_mp/gamesetup_mp.js:171
+msgid "Please enter a valid server name."
+msgstr "Introduïu un nom de servidor vàlid."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:179
+#, javascript-format
+msgid "Server port number must be between %(min)s and %(max)s."
+msgstr "El número de port del servidor ha d'estar entre %(min)s i %(max)s."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:205
+msgid "Connecting to server..."
+msgstr "S'està connectant al servidor..."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:220
+msgid "Server is not running."
+msgstr "El servidor no està funcionant."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:221
+msgid "Password is invalid."
+msgstr "La contrasenya no és vàlida."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:222
+msgid "You have been banned."
+msgstr "Us han bloquejat."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:223
+msgid ""
+"Failed to get local IP of the server (it was assumed to be on the same "
+"network)."
+msgstr "No s'ha pogut obtenir la IP local del servidor (s'ha donat per fet que es trobava a la mateixa xarxa)."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:226
+#, javascript-format
+msgid "\\[Invalid value %(reason)s]"
+msgstr "\\[Valor invàlid %(reason)s]"
+
+#: gui/gamesetup_mp/gamesetup_mp.js:234
+msgid "Failed to connect to the server."
+msgstr "No s'ha pogut connectar al servidor."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:236
+msgid "Connection failed"
+msgstr "La connexió ha fallat"
+
+#: gui/gamesetup_mp/gamesetup_mp.js:331
+msgid "Registering with server..."
+msgstr "S'està registrant amb el servidor..."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:366
+msgid "Game has already started, rejoining..."
+msgstr "La partida ja ha començat, us hi esteu unint de nou..."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:431
+msgid "Game name already in use."
+msgstr "Aquest nom ja està en ús."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:444
+#, javascript-format
+msgid "Cannot host game: %(message)s."
+msgstr "No es pot crear la partida: %(message)s."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:445 gui/gamesetup_mp/gamesetup_mp.js:473
+#: gui/gamesetup_mp/gamesetup_mp.js:502 gui/gamesetup_mp/gamesetup_mp.js:516
+msgid "Error"
+msgstr "Error"
+
+#: gui/gamesetup_mp/gamesetup_mp.js:472 gui/gamesetup_mp/gamesetup_mp.js:515
+#, javascript-format
+msgid "Cannot join game: %(message)s."
+msgstr "No es pot unir a la partida: %(message)s."
+
+#: gui/gamesetup_mp/gamesetup_mp.js:530
+#, javascript-format
+msgid "%(playername)s's game"
+msgstr "Partida de %(playername)s"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:14
+msgid "Multiplayer"
+msgstr "Multijugador"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:20
+msgid "Joining an existing game."
+msgstr "Entra en un joc ja creat."
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:24 gui/gamesetup_mp/gamesetup_mp.xml:66
+msgid "Player Name:"
+msgstr "Nom del jugador:"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:34
+msgid "Server Hostname or IP:"
+msgstr "Adreça del servidor o IP:"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:44 gui/gamesetup_mp/gamesetup_mp.xml:91
+msgid "Server Port:"
+msgstr "Port del servidor:"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:48 gui/gamesetup_mp/gamesetup_mp.xml:95
+msgid "Leave blank to use the default port."
+msgstr "Deixeu-ho en blanc per utilitzar el port per defecte."
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:61
+msgid "Set up your server to host."
+msgstr "Posa a punt el servidor per començar una partida."
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:79
+msgid "Server Name:"
+msgstr "Nom del servidor:"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:108
+msgid "Server Password:"
+msgstr "Contrasenya del servidor:"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:109
+msgid "Leave blank to not require it."
+msgstr "Deixeu-ho en blanc perquè no sigui necessari."
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:123
+msgid "Continue"
+msgstr "Continua"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:127
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:137
+msgid "Password:"
+msgstr "Contrasenya:"
+
+#: gui/gamesetup_mp/gamesetup_mp.xml:147
+msgid "Confirm"
+msgstr "Confirma"
+
+#: gui/loading/ProgressBar.js:46
+#, javascript-format
+msgctxt "loading screen progress"
+msgid "%(percentage)s%%"
+msgstr "%(percentage)s%%"
+
+#: gui/loading/TitleDisplay.js:15
+#, javascript-format
+msgid "Generating “%(map)s”"
+msgstr "S'està generant “%(map)s”"
+
+#: gui/loading/TitleDisplay.js:17
+#, javascript-format
+msgid "Loading “%(map)s”"
+msgstr "S'està carregant “%(map)s”"
+
+#: gui/text/quotes.txt:1
+msgid ""
+"“Zeus \\[…] established his law: wisdom comes through suffering. \\[…] So "
+"men against their will learn to practice moderation. \\[…] Such grace is "
+"harsh and violent.” \\n— Aeschylus (“Agamemnon”, 176–183)"
+msgstr "“Zeus \\[…] establí la llei: pel sofriment a la saviesa. \\[…] Fins i tot en contra del seu voler, duu els homes a la prudència: favor que els immortals \\[...] han imposat als homes per força.” \\n— Èsquil (“Agamèmnon”, 176–183)"
+
+#: gui/text/quotes.txt:2
+msgid ""
+"“She \\[Helen] brought to Ilium her dowry, destruction.” \\n— Aeschylus "
+"(“Agamemnon”, 406)"
+msgstr "“Ella \\[Helena] portà en comptes d’un dot a Ílion la destrucció.” \\n— Èsquil (“Agamèmnon”, 406)"
+
+#: gui/text/quotes.txt:3
+msgid ""
+"“In every tyrant's heart there springs in the end this poison, that he "
+"cannot trust a friend.” \\n— Aeschylus (“Prometheus Bound”, 224–225)"
+msgstr "\"Al fons del cor de tot tirà brolla aquest verí, que no pot confiar en un amic.\" \\n— Èsquil (\"Prometeu encadenat\", 224–225)"
+
+#: gui/text/quotes.txt:4
+msgid ""
+"“Time in the long run teaches all things.” \\n— Aeschylus (“Prometheus "
+"Bound”, 981)"
+msgstr "“El temps, a la llarga, ensenya totes les coses.” \\n— Èsquil (\"Prometeu encadenat\", 981)"
+
+#: gui/text/quotes.txt:5
+msgid ""
+"“His resolve is not to seem, but to be, the best.” \\n— Aeschylus (“Seven "
+"Against Thebes”, 592)"
+msgstr "“La seva determinació no és aparentar ser el millor, sinó ser-ho.” \\n— Èsquil (\"Els set contra Tebes\", 592)"
+
+#: gui/text/quotes.txt:6
+msgid "“A prosperous fool is a grievous burden.” \\n— Aeschylus (fragment 383)"
+msgstr "\"Un ximple pròsper és una càrrega greu.\" \\n— Èsquil (fragment 383)"
+
+#: gui/text/quotes.txt:7
+msgid ""
+"“The gods help those that help themselves.” \\n— Aesop (“Hercules and the "
+"Wagoner”)"
+msgstr "\"Que els déus ajudin aquells que s'ajuden a si mateixos.\" \\n— Isop (\"Hèracles i el carreter\")"
+
+#: gui/text/quotes.txt:8
+msgid ""
+"“It is thrifty to prepare today for the wants of tomorrow.” \\n— Aesop (“The"
+" Ant and the Grasshopper”)"
+msgstr "\"Els estalviadors es preparen avui per a les necessitats de demà.\" \\n— Isop (“La cigala i la formiga”)"
+
+#: gui/text/quotes.txt:9
+msgid "“Union gives strength.” \\n— Aesop (“The Bundle of Sticks”)"
+msgstr "“La unió fa la força.” \\n— Isop (“El feix de branquillons”)"
+
+#: gui/text/quotes.txt:10
+msgid ""
+"“Never trust advice from a man in the throes of his own difficulty.” \\n— "
+"Aesop (“The Fox and the Goat”)"
+msgstr "\"No prengueu mai el consell d'un home en dificultats.\" \\n— Isop (\"La guineu i el boc en el pou\")"
+
+#: gui/text/quotes.txt:11
+msgid ""
+"“Familiarity breeds contempt; acquaintance softens prejudices.” \\n— Aesop "
+"(“The Fox and the Lion”)"
+msgstr "\"La familiaritat engendra menyspreu; l'experiència suavitza els prejudicis.\" \\n— Isop (\"La guineu i el lleó\")"
+
+#: gui/text/quotes.txt:12
+msgid ""
+"“Self-conceit may lead to self-destruction.” \\n— Aesop (“The Frog and the "
+"Ox”)"
+msgstr "\"La vanitat pot dur a l'autodestrucció.\" \\n— Isop (\"La granota i el bou\")"
+
+#: gui/text/quotes.txt:13
+msgid ""
+"“Slow and steady wins the race.” \\n— Aesop (“The Hare and the Tortoise”)"
+msgstr "\"El lent i constant guanya la cursa.\" \\n— Isop (\"La llebre i la tortuga\")"
+
+#: gui/text/quotes.txt:14
+msgid ""
+"“Better be wise by the misfortunes of others than by your own.” \\n— Aesop "
+"(“The Lion, the Ass, and the Fox Hunting”)"
+msgstr "\"És millor aprendre de la desgràcia aliena que de la pròpia.\" \\n— Isop (\"El lleó, l'ase i la guineu\")"
+
+#: gui/text/quotes.txt:15
+msgid ""
+"“Enemies' promises were made to be broken.” \\n— Aesop (“The Nurse and the "
+"Wolf”)"
+msgstr "\"Les promeses dels enemics estan fetes per trencar-se.\" \\n— Isop (\"La dida i el llop\")"
+
+#: gui/text/quotes.txt:16
+msgid "“Any excuse will serve a tyrant.” \\n— Aesop (“The Wolf and the Lamb”)"
+msgstr "\"Al tirà li serveix qualsevol excusa.\" \\n— Isop (\"El llop i l'anyell\")"
+
+#: gui/text/quotes.txt:17
+msgid ""
+"“If I have done anything noble, that is a sufficient memorial; if I have "
+"not, all the statues in the world will not preserve my memory.” \\n— "
+"Agesilaus II of Sparta (Plutarch, “Moralia”, “Sayings of Spartans”, 215a)"
+msgstr "“Si he fet res de memorable, aquest és un bon memorial; si no, cap estàtua del món conservarà la meva memòria.” \\n— Agesilau II d'Esparta (Plutarc, “Moràlia”, “Màximes d'espartans”, 215a)"
+
+#: gui/text/quotes.txt:18
+msgid ""
+"“Spartans do not ask how many, only where the enemy are.” \\n— Agis II of "
+"Sparta (Plutarch, “Moralia”, “Sayings of Spartans”, 215d)"
+msgstr "\"Els espartans no pregunten quants enemics hi ha, només on són.\" \\n— Agis II d'Esparta (Plutarc, \"Moràlia\", \"Màximes d'espartans\", 215d)"
+
+#: gui/text/quotes.txt:19
+msgid ""
+"“Weep not for me, as I suffer unjustly, I am in a happier situation than my "
+"murderers.” \\n— Agis IV of Sparta upon seeing one of his executioners cry "
+"(Plutarch, “Parallel Lives”, “Agis”, sec. 20)"
+msgstr "\"No ploreu per mi, que, tot i patir injustament, sóc més feliç que els meus botxins.\" \\n— Agis IV d'Esparta en veure un dels seus botxins plorar (Plutarc, \"Vides paral·leles\", \"Agis\", sec. 20)"
+
+#: gui/text/quotes.txt:20
+msgid ""
+"“Sex and sleep alone make me conscious that I am mortal.” \\n— Alexander the"
+" Great (Plutarch, “Parallel Lives”, “Alexander”, sec. 22)"
+msgstr "\"Només el sexe i el son em fan ser conscient que sóc mortal.\" \\n— Alexandre el Gran (Plutarc, \"Vides paral·leles\", \"Alexandre\", sec. 22)\n"
+
+#: gui/text/quotes.txt:21
+msgid ""
+"“It is very servile to live in luxury, but very royal to toil. \\[…] Don't "
+"you know that the end and object of conquest is to avoid the vices and "
+"infirmities of the subdued?” \\n— Alexander the Great (Plutarch, “Parallel "
+"Lives”, “Alexander”, sec. 40)"
+msgstr "\"És molt servil viure luxosament, però molt reial treballar. \\[...] No sabeu que la finalitat i l'objecte de la conquesta és evitar els vicis i la debilitat dels submisos?\" \\n— Alexandre el Gran (Plutarc, \"Vides paral·leles\", \"Alexandre\", sec. 40)"
+
+#: gui/text/quotes.txt:22
+msgid ""
+"“Glorious are the deeds of those who undergo labor and run the risk of "
+"danger; and it is delightful to live a life of valor and to die leaving "
+"behind immortal glory.” \\n— Alexander the Great, addressing his troops "
+"(Arrian, “The Anabasis of Alexander”, 5.26)"
+msgstr "\"Gloriosos són els gestos d'aquells que són sotmesos a la mà d'obra i corren el risc del perill; i és agradable viure una vida de valor i morir deixant la glòria immortal.\" \\n— Alexandre el Gran, adreçant-se a les tropes (Arrià, \"L'Anàbasi d'Alexandre el Gran\", 5.26)"
+
+#: gui/text/quotes.txt:23
+msgid ""
+"“I for one think that to a brave man there is no end to labors except the "
+"labors themselves, provided they lead to glorious achievements.” \\n— "
+"Alexander the Great, addressing his troops (Arrian, “The Anabasis of "
+"Alexander”, 5.26)"
+msgstr "\"Penso que, per a un home valent, els treballs no tenen altra finalitat que el treball mateix, sempre que condueixin a assoliments gloriosos.\" \\n— Alexandre el Gran, adreçant-se a les tropes (Arrià, \"L'Anàbasi d'Alexandre el Gran\", 5.26)        "
+
+#: gui/text/quotes.txt:24
+msgid ""
+"“If I were not Alexander, I should wish to be Diogenes \\[of Sinope].” \\n— "
+"Alexander the Great, impressed by the simplicity of the philosopher he had "
+"met (Plutarch, “Moralia”, “On the Fortunes of Alexander the Great”, 332a–b)"
+msgstr "\"Doncs jo, si no fos Alexandre voldria ésser Diògenes \\[de Sinope] .\" \\n— Alexandre el Gran, impressionat per la simplicitat del filòsof que havia conegut (Plutarc, \"Moràlia\", \"Sobre les fortunes d'Alexandre el Gran\", 332a-b)"
+
+#: gui/text/quotes.txt:25
+msgid ""
+"“To the strongest!” \\n— Alexander the Great, on his death bed, when asked "
+"who should succeed him as king (Arrian, “The Anabasis of Alexander”, 7.26)"
+msgstr "\"El més fort!\" \\n— Alexandre el Gran, al llit de mort, quan li van preguntar qui havia de succeir-lo com a rei (Arrià, \"L'Anàbasi d'Alexandre el Gran\", 7.26)"
+
+#: gui/text/quotes.txt:26
+msgid ""
+"“I do not steal victory.” \\n— Alexander the Great, when suggested to raid "
+"the Persians at night (Plutarch, “Parallel Lives”, “Alexander”, sec. 31)"
+msgstr "\"Jo no robo la victòria.\" \\n— Alexandre el Gran, quan se li va suggerir d'atacar els perses a la nit (Plutarc, \"Vides paral·leles\", \"Alexandre\", sec. 31)"
+
+#: gui/text/quotes.txt:27
+msgid ""
+"“Written laws are like spiders' webs; they will catch, it is true, the weak "
+"and poor, but will be torn in pieces by the rich and powerful.” \\n— "
+"Anacharsis (Plutarch, “Parallel Lives”, “Solon”, sec. 5)"
+msgstr "\"La llei és una teranyina que para les mosques i deixa passar els ocells.\" \\n— Anacarsis (Plutarc, “Vides paral·leles”, “Soló”, sec. 5)"
+
+#: gui/text/quotes.txt:28
+msgid ""
+"“The agora is an established place for men to cheat one another, and behave "
+"covetously.” \\n— Anacharsis, a Scythian philosopher who traveled to Greece "
+"(Diogenes Laertius, “The Lives and Opinions of Eminent Philosophers”, "
+"“Anacharsis”, sec. 5)"
+msgstr "\"L'àgora és un lloc establert perquè els homes s'enganyin els uns als altres i es comportin amb cobdícia.\" \\n— Anacarsis, un filòsof escita que va viatjar a Grècia (Diògenes Laerci, \"Vides i opinions de filòsofs eminents\", \"Anacarsis\", sec. 5)"
+
+#: gui/text/quotes.txt:29
+msgid ""
+"“It was not by taking care of the fields, but of ourselves, that we acquired"
+" those fields.” \\n— Anaxandridas II of Sparta (Plutarch, “Moralia”, "
+"“Sayings of Spartans”, 217a)"
+msgstr "\"No va ser per tenir cura del camps que els vam aconseguir, sinó per tenir cura de nosaltres mateixos.\" \\n— Anaxàndrides II d'Esparta (Plutarc, \"Moràlia\", \"Màximes d'espartans\", 217a)"
+
+#: gui/text/quotes.txt:30
+msgid ""
+"“States are doomed when they are unable to distinguish good men from bad.” "
+"\\n— Antisthenes (Diogenes Laertius, “The Lives and Opinions of Eminent "
+"Philosophers”, “Antisthenes”, sec. 5)"
+msgstr "\"Els estats estan condemnats quan no poden distingir els homes bons dels dolents.\" \\n— Antístenes (Diògenes Laerci, \"Vides i opinions de filòsofs eminents\", \"Antístenes\", sec. 5)"
+
+#: gui/text/quotes.txt:31
+msgid ""
+"“The fox knows many tricks; the hedgehog one good one.” \\n— Archilochus "
+"(fragment 201)"
+msgstr "\"La guineu coneix molts trucs; l'eriçó, un de bo.\" \\n— Arquíloc (fragment 201)"
+
+#: gui/text/quotes.txt:32
+msgid ""
+"“Give me a place to stand, and I shall move the world.” \\n— Archimedes, on "
+"his usage of the lever (Diodorus Siculus, “The Library of History”, "
+"fragments of book XXVI, sec. 18)"
+msgstr "\"Doneu-me un punt de suport i mouré el món.\" \\n— Arquimedes, sobre l'ús de la palanca (Diodor de Sicília, \"Bibliotheca historica\", fragments del llibre XXVI, sec. 18)"
+
+#: gui/text/quotes.txt:33
+msgid ""
+"“It is from their foes, not their friends, that cities learn the lesson of "
+"building high walls and ships of war.” \\n— Aristophanes (“Birds”)"
+msgstr "\"És dels enemics, no dels amics, que les ciutats aprenen la lliçó de construir muralles altes i vaixells de guerra.\" \\n— Aristòfanes (\"Els ocells\")"
+
+#: gui/text/quotes.txt:34
+msgid ""
+"“It is obligatory, especially for a philosopher, to sacrifice even one's "
+"closest personal ties in defense of the truth.” \\n— Aristotle (“Nicomachean"
+" Ethics”, I. 1096a.11)"
+msgstr "\"És obligatori, sobretot per a un filòsof, sacrificar els vincles personals més pròxims en defensa de la veritat.\" \\n— Aristòtil (\"Ètica a Nicòmac\", I. 1096a.11)"
+
+#: gui/text/quotes.txt:35
+msgid ""
+"“Happiness depends on leisure; for we are busy to have leisure, and make war"
+" to live in peace.” \\n— Aristotle (“Nicomachean Ethics”, X. 1177b.4)"
+msgstr "\"La felicitat depèn del temps lliure, perquè ens mantenim ocupats per tenir temps lliure i fem la guerra per viure en pau.\" \\n— Aristòtil (\"Ètica a Nicòmac\", X. 1177b.4)"
+
+#: gui/text/quotes.txt:36
+msgid ""
+"“Man is by nature a political animal.” \\n— Aristotle (“Politics”, I. "
+"1253a.2)"
+msgstr "\"L'home és, per naturalesa, un animal polític.\" \\n— Aristòtil (\"Política\", I. 1253a.2)"
+
+#: gui/text/quotes.txt:37
+msgid ""
+"“Both oligarch and tyrant mistrust the people, and therefore deprive them of"
+" their arms.” \\n— Aristotle (“Politics, V. 1311a.11)"
+msgstr "\"Tant l'oligarca com el tirà desconfien del poble i, per això, el priven de les armes.\" \\n— Aristòtil (\"Política\", V. 1311a.11)"
+
+#: gui/text/quotes.txt:38
+msgid ""
+"“I have gained this by philosophy: that I do without being commanded what "
+"others do only from fear of the law.” \\n— Aristotle (Diogenes Laertius, "
+"“The Lives and Opinions of Eminent Philosophers”, “Aristotle”, sec. 20)"
+msgstr "\"L'avantatge de la filosofia és fer, sense que t'ho ordenin, allò que altres faran per temor de la llei.\" \\n—  Aristòtil (Diògenes Laerci, \"Vides i opinions de filòsofs eminents\", Aristòtil, sec. 20)"
+
+#: gui/text/quotes.txt:39
+msgid ""
+"“I count him braver who overcomes his desires than him who conquers his "
+"enemies, for the hardest victory is over the self.” \\n— Aristotle "
+"(Stobaeus, “Florilegium”, 223)"
+msgstr "\"Considero més valent qui conquereix els seus desitjos que qui conquereix els seus enemics, ja que la victòria més dura és la victòria sobre un mateix.\" \\n—  Aristòtil (Estobeu, \"Florilegium\", 233)"
+
+#: gui/text/quotes.txt:40
+msgid ""
+"“Alexander himself, plagued by thirst, with great pain and difficulty "
+"nevertheless led the army on foot \\[…]. At this time a few of the light-"
+"armed soldiers \\[…] found some water \\[…], poured the water into a helmet "
+"and carried it to him. He took it, and commending the men who brought it, "
+"immediately poured it upon the ground in the sight of all.” \\n— Arrian "
+"about Alexander's march through the Gedrosian desert (“The Anabasis of "
+"Alexander”, 6.26)"
+msgstr "\"El mateix Alexandre, tot i estar assedegat i amb grans dolors i dificultats, va conduir l'exèrcit a peu \\[...]. Aleshores alguns soldats lleugers d'armes \\[...] van trobar aigua \\[...], i la van recollir amb els cascs per portar-n'hi. Ell la va prendre i va lloar els homes que l'havien duta, i, immediatament, la vessà a terra davant de tots.\" \\n—  Arrià sobre la marxa d'Alexandre pel desert de Gedròsia (\"L'Anàbasi d'Alexandre\", 6.26)"
+
+#: gui/text/quotes.txt:41
+msgid ""
+"“Thrusting his spear into Mithridates' face, he \\[Alexander] hurled him to "
+"the ground. Then Rhoesaces \\[a Persian] \\[…] struck him on the head with "
+"his sword. \\[…] Alexander hurled him too to the ground, piercing with his "
+"lance through his breastplate into his chest. Sphithridates \\[a Persian] "
+"had already raised his sword against Alexander from behind when Clitus \\[…]"
+" cut his arm off.” \\n— Arrian about the Battle of the Granicus (“The "
+"Anabasis of Alexander”, 1.15)"
+msgstr "\"Clavant la llança al rostre de Mitridates, \\[Alexandre] el va llançar a terra. Llavors Resaces \\[un persa] \\[...] el va colpejar amb l'espasa al cap. \\[...] Alexandre també el va fer caure a terra clavant-li la llança al pit a través de la cuirassa. Esfitridates \\[un persa] ja havia alçat l'espasa contra Alexandre per darrere quan Clit \\[...] li va tallar el braç.\" \\n— Arrià sobre la batalla del Grànic (\"L'Anàbasi d'Alexandre\", 1.15)"
+
+#: gui/text/quotes.txt:42
+msgid ""
+"“Let every man remind their descendants that they also are soldiers who must"
+" not desert the ranks of their ancestors, or retreat out of cowardice.” \\n—"
+" Aspasia (Plato, “Menexenus”, 246b)"
+msgstr "\"Que cada home recordi als seus descendents que ells també són soldats i que no han d'abandonar les files dels seus avantpassats, o quedar-se enrere per covardia.\" \\n— Aspàsia (Plató, \"Menexen\", 246b)"
+
+#: gui/text/quotes.txt:43
+msgid ""
+"“Quintilius Varus, give me back my legions!” \\n— Augustus, after three "
+"legions were annihilated in the Battle of the Teutoburg Forest (Suetonius, "
+"“Divus Augustus”, sec. 23)"
+msgstr "\"Quintili Var, torna'm les legions!\" \\n— August, després que tres legions fossin anihilades a la batalla del bosc de Teutoburg (Suetoni, “Divus Augustus”, sec. 23)"
+
+#: gui/text/quotes.txt:44
+msgid ""
+"“In my nineteenth year, on my own initiative and at my own expense, I raised"
+" an army with which I liberated the state, which was oppressed by the "
+"tyranny of a faction.” \\n— Augustus, in his autobiography (“Res Gestae Divi"
+" Augusti”, sec. 1)"
+msgstr "\"En el meu dinovè any, per iniciativa pròpia i a costa meva, vaig alçar un exèrcit amb què vaig alliberar l'estat oprimit per la tirania d'una facció.\" \\n— August, en la seva autobiografia (\"Res Gestae Divi Augusti\", sec. 1)"
+
+#: gui/text/quotes.txt:45
+msgid ""
+"“Wars, both civil and foreign, I waged throughout the world, on sea and "
+"land, and when victorious I spared all citizens who sued for pardon. The "
+"foreign nations which could with safety be pardoned I preferred to save "
+"rather than to destroy.” \\n— Augustus, in his autobiography (“Res Gestae "
+"Divi Augusti”, sec. 3)"
+msgstr "\"He lliurat tant guerres civils com a l'estranger, per terra i mar, i, quan he vençut, he perdonat aquells que demanaven perdó. Preferia salvar que destruir aquelles nacions foranes que amb seguretat es podien perdonar.\" \\n— August, en la seva autobiografia (\"Res Gestae Divi Augusti\", sec. 3)"
+
+#: gui/text/quotes.txt:46
+msgid ""
+"“Choose the course which you adopt with deliberation; but when you have "
+"adopted it, then persevere in it with firmness.” \\n— Bias of Priene "
+"(Diogenes Laertius, “The Lives and Opinions of Eminent Philosophers”, "
+"“Bias”, sec. 5)"
+msgstr "\"Tria el curs que has d'adoptar amb deliberació; però quan l'adoptis, persevera-hi amb fermesa.\" \\n— Bies de Prienne (Diògenes Laerci, \"Vides i opinions de filòsofs eminents\", \"Bies\", sec. 5)"
+
+#: gui/text/quotes.txt:47
+msgid ""
+"“How stupid it was for the king to tear out his hair in grief, as if "
+"baldness were a cure for sorrow.” \\n— Bion of Borysthenes (Cicero, "
+"“Tusculan Disputations”, III. 26)"
+msgstr "\"Que estúpid del rei arrencar-se els cabells pel dolor, com si la calvície fos la cura de la tristesa.\" \\n— Bió Boristenites (Ciceró, \"Disputes tusculanes\", III. 26)"
+
+#: gui/text/quotes.txt:48
+msgid ""
+"“He has not acquired a fortune; the fortune has acquired him.” \\n— Bion of "
+"Borysthenes, referring to a wealthy miser (Diogenes Laertius, “The Lives and"
+" Opinions of Eminent Philosophers”, “Bion”, sec. 50)"
+msgstr "\"No ha adquirit una fortuna; la fortuna l'ha adquirit a ell.\" \\n— Bió Boristenites, referint-se a un ric avar (Diògenes Laerci, \"Vides i opinions de filòsofs eminents\", \"Bió\", sec. 50)"
+
+#: gui/text/quotes.txt:49
+msgid ""
+"“Woe to the Defeated!” \\n— Brennus, Gaulish chieftain who had seized Rome "
+"(with the exception of a garrison on Capitoline Hill). When Camillus arrived"
+" from Veii and besieged him, he negotiated his withdrawal for 1000 pounds of"
+" gold, but not without using false weights and adding the weight of his "
+"sword on the scale when the Romans complained (Polybius, “Histories”, II. "
+"18)"
+msgstr "\"Ai dels vençuts!\" \\n— Brennus, cabdill gal que va envair Roma (amb excepció d'una guarnició al turó del Capitoli). Quan Camil va arribar de Veïs i el va assetjar, Brennus va negociar la seva retirada per 1000 lliures d'or, però va utilitzar pesos falsos i va afegir el pes de la seva espasa a la balança quan els romans es van queixar (Polibi, \"Històries\", II. 18)"
+
+#: gui/text/quotes.txt:50
+msgid ""
+"“Robbery, slaughter, plunder, they \\[the Romans] deceivingly name empire; "
+"they make a wasteland and call it peace.” \\n— Calgacus, Caledonian "
+"chieftain in a speech before the Battle of Mons Graupius (Tacitus, "
+"“Agricola”, 30)"
+msgstr "\"\\[Els romans] Al robatori, la matança i al saqueig li'n diuen enganyosament imperi; construeixen un erm i li'n diuen pau.\" - Calgac, un cabdill caledoni en un discurs abans de la batalla del mont Graupius (Tàcit, \"Agricola\", 30)"
+
+#: gui/text/quotes.txt:51
+msgid "“Set a thief to catch a thief.” \\n— Callimachus (“Epigrams”, 44)"
+msgstr "\"Cal un lladre per atrapar un lladre.\" \\n— Cal·límac (\"Epigrames\", 44)"
+
+#: gui/text/quotes.txt:52
+msgid ""
+"“All mankind rules its women, and we rule all mankind, but our women rule "
+"us.” \\n— Cato the Elder (Plutarch, “Moralia”, “Sayings of Romans”, 198e)"
+msgstr "\"Tots els homes governen les seves dones, i nosaltres governem tots els homes, però les nostres dones ens governen a nosaltres.\" \\n— Cató el Vell (Plutarc, \"Moràlia\", III. \"Màximes de romans\", 198e)"
+
+#: gui/text/quotes.txt:53
+msgid ""
+"“The worst ruler is one who cannot rule himself.” \\n— Cato the Elder "
+"(Plutarch, “Moralia”, “Sayings of Romans”, 198f)"
+msgstr "\"El pitjor governant és el que no es governa a si mateix.\" \\n— Cató el Vell (Plutarc, \"Moràlia\", III. \"Màximes de romans\", 198f)"
+
+#: gui/text/quotes.txt:54
+msgid ""
+"“Wise men learn more from fools than fools from the wise.” \\n— Cato the "
+"Elder (Plutarch, “Parallel Lives”, “Cato the Elder”, sec. 9)"
+msgstr "\"Els homes savis aprenen més dels ximples que els ximples dels savis.\" \\n— Cató el Vell (Plutarc, \"Vides paral·leles\", \"Cató el Vell\", sec. 9)"
+
+#: gui/text/quotes.txt:55
+msgid ""
+"“Moreover, I consider that Carthage should be destroyed.” \\n— Cato the "
+"Elder, who ended all speeches in his later life with this statement "
+"(Plutarch, “Parallel Lives”, “Cato the Elder”, sec. 27)"
+msgstr "\"A més, considero que Cartago ha de ser destruïda.\" \\n— Cató el Vell, que sempre acabava els discursos amb aquesta afirmació (Plutarc, \"Vides paral·leles\", \"Cató el Vell\", sec. 27)"
+
+#: gui/text/quotes.txt:56
+msgid ""
+"“We did not flinch but gave our lives to save Greece when her fate hung on a"
+" razor's edge.” \\n— Corinthian epitaph to their fallen of the Persian Wars "
+"(Plutarch, “Moralia”, “On the Malice of Herodotus”, 870e)"
+msgstr "\"No vam dubtar a donar les nostres vides per salvar Grècia quan el seu destí penjava d'un fil.\" \\n— Epitafi corinti als caiguts a les guerres perses (Plutarc, \"Moràlia\", \"Sobre la malícia d'Heròdot\", 870e)"
+
+#: gui/text/quotes.txt:57
+msgid ""
+"“Then the blood really flowed, for the two lines were so close that shield "
+"struck against shield, and they drove their swords into each other's faces. "
+"It was impossible for the weak or cowardly to retreat; man to man they "
+"fought like in single combat.” \\n— Curtius Rufus about the Battle of Issus "
+"(“Histories of Alexander the Great”, III. 11.5)"
+msgstr "\"Aleshores la sang va brollar de debò, perquè els dos fronts estaven tan a prop que xocaven esctuts contra escuts, i les espases es clavaven a la cara de l'altre. La retirada era impossible per als febles o covards; home contra home, lluitaven com en combat singular.\" \\n— Curci Ruf sobre la batalla d'Issos (\"Històries d'Alexandre el Gran\", III. 11.5)"
+
+#: gui/text/quotes.txt:58
+msgid ""
+"“I am Cyrus, who won for the Persians their empire. Therefore do not "
+"begrudge me this bit of earth that covers my bones.” \\n— Cyrus the Great's "
+"epitaph (Plutarch, “Parallel Lives”, “Alexander”, sec. 69)"
+msgstr "\"Sóc Cir, aquell que va conquerir un imperi per als perses. Així doncs, no mireu amb enveja el tros de terra que em cobreix els ossos.\" \\n— Epitafi de Cir el Gran (Plutarc, \"Vides paral·leles\", \"Alexandre\", sec.. 69)"
+
+#: gui/text/quotes.txt:59
+msgid ""
+"“I am Darius, the great king, king of kings, the king of Persia, the king of"
+" countries, \\[…] 23 lands in total.” \\n— Darius I (Behistun inscription, "
+"column I, 1–6)"
+msgstr "\"Jo sóc Darios, el gran rei, rei de reis, el rei de Pèrsia, el rei de països \\[...] 23 territoris en total.\" \\n— Darios I. (Inscripció de Behistun, columna I, 1-6)"
+
+#: gui/text/quotes.txt:60
+msgid ""
+"“Phraortes was captured and brought before me. I cut off his nose, his ears,"
+" and his tongue, and I put out one eye, and he was kept in chains at my "
+"palace entrance, and all the people saw him. Then I crucified him in "
+"Ecbatana; and the men who were his foremost followers \\[…] I flayed and "
+"hung out their skins, stuffed with straw.” \\n— Darius I (Behistun "
+"inscription, column II, 32)"
+msgstr "\"Fraortes va ser capturat i portat davant meu. Li vaig tallar el nas, les orelles i la llengua, i li vaig treure un ull, i el vaig deixar encadenat a l'entrada del meu palau, i tot el poble el va veure. Llavors el vaig crucificar a Ecbàtana; i als seus principals seguidors \\[...] els vaig escorxar i vaig penjar les seves pells farcides de palla.\" \\n— Darios I (Inscripció de Behistun, columna II, 32)"
+
+#: gui/text/quotes.txt:61
+msgid ""
+"“By desiring little, a poor man makes himself rich.” \\n— Democritus "
+"(fragment)"
+msgstr "“Desitjant poc, un home pobre es fa ric.” \\n— Demòcrit (fragment)"
+
+#: gui/text/quotes.txt:62
+msgid ""
+"“It is hard to be governed by one's inferior.” \\n— Democritus (fragment)"
+msgstr "“És difícil ser governat per algú inferior.” \\n— Demòcrit (fragment)"
+
+#: gui/text/quotes.txt:63
+msgid ""
+"“Physical strength is only noble in cattle, it is strength of character that"
+" is noble in men.” \\n— Democritus (fragment)"
+msgstr "\"La força física només és noble per al bestiar, per als homes és noble la fortalesa de caràcter.\" \\n— Demòcrit (fragment)"
+
+#: gui/text/quotes.txt:64
+msgid ""
+"“It is not possible to found a lasting power upon injustice, perjury, and "
+"treachery.” \\n— Demosthenes, in one of his many speeches against the rising"
+" Philip II of Macedon (“Olynthiac II”, 10)"
+msgstr "\"No es pot fonamentar un poder durador sobre la injustícia, el perjuri i la traïció.\" \\n— Demòstenes, en un dels seus nombrosos discursos en contra de l'alçament de Filip II de Macedònia (\"Olíntiques II\", 10)"
+
+#: gui/text/quotes.txt:65
+msgid ""
+"“Delivery, delivery, delivery.” \\n— Demosthenes, when asked what were the "
+"three most important elements of rhetoric (Cicero, “De Oratore”, 3.213)"
+msgstr "\"Execució, execució, execució.\" \\n— Demòstenes, preguntat pels tres elements més importants de la retòrica (Ciceró, \"De l'orador\", 3.213)"
+
+#: gui/text/quotes.txt:66
+msgid ""
+"“The Macedonians first raised an unearthly shout followed by the Persians "
+"answering, so that the whole hillside bordering the battlefield echoed back "
+"the sound, and that second roar was louder than the Macedonian war cry as "
+"five hundred thousand men shouted with one voice.” \\n— Diodorus Siculus "
+"about the Battle of Issus (“The Library of History”, XVII., sec. 33)"
+msgstr "\"Els macedonis van fer un terrible crit, seguit per la resposta dels perses, de manera que els turons que vorejaven el camp de batalla van ressonar amb l'eco, i aquest segon rugit fou més fort que el crit de guerra de Macedònia, com si cinc-cents mil homes cridessin amb una sola veu.\" \\n— Diodor de Sicília sobre la batalla d'Issos (\"Bibliotheca historica\", XVII., sec. 33)"
+
+#: gui/text/quotes.txt:67
+msgid ""
+"“Brasidas, taking his stand on the gangway, fought off from there the "
+"multitude of Athenians who converged upon him. And at the outset he slew "
+"many as they came at him, but after a while, as numerous missiles assailed "
+"him, he suffered many wounds on the front of his body.” \\n— Diodorus "
+"Siculus, on a brave Spartan at the Battle of Pylos (“The Library of "
+"History”, XXII., sec. 62)"
+msgstr "\"Bràsides, posicionant-se a la passarel·la, va combatre la multitud d'atenencs que es tancava sobre ell. I al principi en va matar molts a mesura que s'acostaven, però al cap d'una estona de lluitar sota una pluja de nombrosos projectils, va patir moltes ferides a la part davantera del cos.\" \\n— Diodor de Sicília, sobre un valent espartà a la batalla de Pilos (\"Bibliotheca historica\", XXII., sec. 62)"
+
+#: gui/text/quotes.txt:68
+msgid ""
+"“Plato had defined man as an animal, biped and featherless, and was "
+"applauded. Diogenes \\[of Sinope] plucked a fowl and brought it into the "
+"lecture-room with the words: Here is Plato's man. In consequence of which "
+"there was added to the definition: having broad nails.” \\n— Diogenes "
+"Laertius (“The Lives and Opinions of Eminent Philosophers”, “Diogenes”, sec."
+" 40)"
+msgstr "\"Plató havia definit l'home com a un animal bípede i sense plomes, i el van aplaudir. Diògenes \\[de Sinope] va plomar un pollastre i el va presentar dient: Aquí teniu l'home de Plató. En conseqüència es va afegir a la definició: amb ungles amples.\" \\n— (Diògenes Laerci, \"Vides i opinions de filòsofs eminents\", \"Diògenes\", sec. 40)"
+
+#: gui/text/quotes.txt:69
+msgid ""
+"“I am a citizen of the world.” \\n— Diogenes of Sinope (Diogenes Laertius, "
+"“The Lives and Opinions of Eminent Philosophers”, “Diogenes”, sec. 63)"
+msgstr "\"Sóc un ciutadà del món.\" \\n— Diògenes de Sinope (Diògenes Laerci, \"Vides i opinions de filòsofs eminents\", \"Diògenes\", sec. 63)"
+
+#: gui/text/quotes.txt:70
+msgid ""
+"“It is not that I am mad, it is only that my head is different from yours.” "
+"\\n— Diogenes of Sinope (Stobaeus, “Florilegium”, 51)"
+msgstr "\"No és que estigui boig, només és que el meu cap és diferent del teu.\" \\n—Diògenes de Sinope (Estobeu, \"Florilegium\", 51)"
+
+#: gui/text/quotes.txt:71
+msgid ""
+"“Yes, stand a little out of my sunshine.” \\n— Diogenes of Sinope to "
+"Alexander the Great, who asked if he could help in in any way (Plutarch, "
+"“Parallel Lives”, “Alexander”, sec. 14)"
+msgstr "\"Aparta't, que em tapes el sol\". \\n— Diògenes de Sinope, quan Alexandre el Gran li va preguntar si necessitava res (Plutarc, \"Vides paral·leles\", \"Alexandre\", sec. 14)"
+
+#: gui/text/quotes.txt:72
+msgid ""
+"“The victor is not victorious if the vanquished does not consider himself "
+"so.” \\n— Ennius (“Annales”, fragment 31.493)"
+msgstr "\"El vencedor no és victoriós si el vençut no es considera com a tal.\" \\n— Enni (\"Annals\", fragment 31.493)"
+
+#: gui/text/quotes.txt:73
+msgid ""
+"“Stranger, go tell the Spartans that we lie here, obedient to their laws.” "
+"\\n— Epitaph at Thermopylae for Leonidas and his men (Herodotus, “The "
+"Histories”, VII. 228)"
+msgstr "\"Vés, digues als espartans, estranger que passes, que aquí jaiem segons les seves lleis.\" \\n— Epitafi de Leònides i els seus homes a les Termòpiles (Heròdot, \"Històries\", VII. 228)"
+
+#: gui/text/quotes.txt:74
+msgid ""
+"“A coward turns away, but a brave man's choice is danger.” \\n— Euripides "
+"(“Iphigenia in Tauris”)"
+msgstr "\"El covard fuig, però el perill és la tria del valent.\" \\n— Eurípides (\"Ifigènia entre els taures\")"
+
+#: gui/text/quotes.txt:75
+msgid ""
+"“Brave men are made bolder by ordeals, but cowards achieve nothing.” \\n— "
+"Euripides (“Iphigenia in Tauris”)"
+msgstr "\"Els valents afronten els esforços amb coratge, però els covards no aconsegueixen res.\" \\n— Eurípides (\"Ifigènia entre els taures\")"
+
+#: gui/text/quotes.txt:76
+msgid ""
+"“Cowards do not count in battle; they are there, but not in it.” \\n— "
+"Euripides (“Meleager”)"
+msgstr "\"Els covards no compten en batalla; hi són, però no en formen part.\" \\n— Eurípides (\"Melèagre\")"
+
+#: gui/text/quotes.txt:77
+msgid ""
+"“Chance fights ever on the side of the prudent.” \\n— Euripides "
+"(“Pirithous”)"
+msgstr "\"L'atzar lluita al bàndol dels prudents.\" \\n— Eurípides (\"Pirítou\")"
+
+#: gui/text/quotes.txt:78
+msgid ""
+"“Return with your shield, or on it.” \\n— Farewell of Spartan women to their"
+" warriors, implying that cowards would throw away their shield in battle to "
+"flee (Plutarch, “Moralia”, “Sayings of Spartan Women”, 241f)"
+msgstr "\"Retorneu amb els escuts o damunt d'ells.\" \\n— Comiat de les dones espartanes als guerrers, volent dir que els covards deixarien l'escut en la batalla i fugirien (Plutarc, \"Moràlia\", XVIII. \"Màximes de dones espartanes\", 241f)"
+
+#: gui/text/quotes.txt:79
+msgid ""
+"“I came, I saw, I conquered.” \\n— Caesar, after routing Pharnaces II of "
+"Pontus in the first assault (Plutarch, “Parallel Lives”, “Caesar”, sec. 50)"
+msgstr "\"Vaig arribar, vaig veure, vaig vèncer\" \\n— Juli Cèsar, després de derrotar Farnaces II del Pont en el primer assalt (Plutarc, \"Vides paral·leles\", \"Cèsar\", sec. 50)"
+
+#: gui/text/quotes.txt:80
+msgid ""
+"“Men willingly believe what they wish.” \\n— Caesar (“De Bello Gallico”, "
+"III. 18)"
+msgstr "\"Els homes creuen de bon grat el que volen creure.\" \\n— Juli Cèsar (\"La guerra de les Gàl·lies\", III. 18)"
+
+#: gui/text/quotes.txt:81
+msgid ""
+"“It is not the well-fed long-haired man I fear, but the pale and the hungry "
+"looking.” \\n— Caesar (Plutarch, “Parallel Lives”, “Antony”, sec. 11)"
+msgstr "\"No temo l'home ben alimentat de cabells llargs, sinó el pàl·lid i famolenc.\" \\n— Juli Cèsar (Plutarc, \"Vides paral·leles\", \"Antoni\", sec. 11)"
+
+#: gui/text/quotes.txt:82
+msgid ""
+"“After fighting from noon almost to sunset, with victory doubtful, the "
+"Germans, on one side charged the enemy in a compact body, and drove them "
+"back; and, when they were put to flight, the archers were surrounded and cut"
+" to pieces.” \\n— Caesar about the Battle of Alesia (“De Bello Gallico”, "
+"VII. 80)"
+msgstr "\"Havent lluitat des del migdia fins a la posta de sol, amb la victòria incerta, els germànics van carregar per un costat contra l'enemic en un cos compacte, i els van fer recular; i, mentre els arquers fugien, els van envoltar i massacrar.\" \\n— Juli Cèsar sobre la batalla d'Alèsia (\"La guerra de les Gàl·lies\", VII. 80)"
+
+#: gui/text/quotes.txt:83
+msgid ""
+"“All the centurions of the fourth cohort were slain, and the standard-bearer"
+" killed, the standard itself lost, almost all the centurions of the other "
+"cohorts either wounded or slain, and among them the chief centurion of the "
+"legion, Publius Sextius Baculus, a very valiant man, who was so exhausted by"
+" many and severe wounds, that he was already unable to support himself.” "
+"\\n— Caesar about the Battle of the Sabis (“De Bello Gallico”, II. 25)"
+msgstr "“Tots els centurions de la quarta cohort van ser morts, també el portaestandard, l'estandard es va perdre, gairebé tots els centurions de les altres cohorts van ser morts o ferits, entre ells el primer centurió de la legió, Publi Sexti Bàcul, un home valerós que estava tan esgotat per les ferides que no podia mantenir-se dret.” \\n— Juli Cèsar sobre la batalla del Sabis (“La guerra de les Gàl·lies”, II. 25)"
+
+#: gui/text/quotes.txt:84
+msgid ""
+"“But the enemy \\[…] displayed such great courage, that when the front rank "
+"had fallen the men behind them stood on them and continue the fight from on "
+"top of the corpses; when these were killed the pile of bodies grew higher, "
+"while the survivors used the heap as a vantage point for throwing missiles "
+"at our men, or catching our spears and throwing them back.” \\n— Caesar "
+"about the Battle of the Sabis (“De Bello Gallico”, II. 27)"
+msgstr "\"Però l'enemic \\[...] va mostrar tal coratge que, quan la primera línia havia caigut, els homes que hi havia darrere s'hi enfilaven i continuaven lluitant sobre els cadàvers; quan tots ells van ser morts, la pila de cossos va créixer més encara, mentre que els supervivents usaven la muntanya de cadàvers com a parapet per disparar projectils als nostres homes, o agafar les nostres llances i llançar-les de nou.\" \\n— Juli Cèsar sobre la batalla del Sabis (\"La guerra de les Gàl·lies\", II. 27)"
+
+#: gui/text/quotes.txt:85
+msgid ""
+"“The die is cast.” \\n— Caesar, when crossing the Rubicon river with his "
+"legion into Italy, a capital offense that led to his civil war against "
+"Pompey (Suetonius, “The Lives of the Twelve Caesars”, 32)"
+msgstr "\"La sort està llançada.\" \\n— Juli Cèsar, quan va creuar el riu Rubicó amb la seva legió cap a Itàlia, una ofensa que va portar a la guerra civil conta Pompeu (Suetoni, \"Les vides dels dotze Cèsars\", 32)"
+
+#: gui/text/quotes.txt:86
+msgid ""
+"“I'd rather be the first man here than the second man in Rome.” \\n— Caesar,"
+" when passing through a barbarian village in the Alps (Plutarch, “Parallel "
+"Lives”, “Caesar”, sec. 11)"
+msgstr "\"Prefereixo ser el primer home aquí que el segon a Roma.\" \\n— Juli Cèsar, quan passava per un poble bàrbar dels Alps (Plutarc, \"Vides paral·leles\", \"Cèsar\", sec. 11)"
+
+#: gui/text/quotes.txt:87
+msgid ""
+"“Stop quoting laws, we carry weapons!” \\n— Pompey (Plutarch, “Parallel "
+"Lives”, “Pompey”, sec. 10)"
+msgstr "\"Deixeu de citar lleis, portem armes!\" \\n— Gneu Pompeu Magne (Plutarc, \"Vides paral·leles\", \"Pompeu\", sec. 10)"
+
+#: gui/text/quotes.txt:88
+msgid ""
+"“If a man put out the eye of another man, his eye shall be put out.” \\n— "
+"Hammurabi (Hammurabi's Code, sec. 196)"
+msgstr "\"Si un home ha encegat l'ull d'un altre home, el seu ull serà encegat.\" \\n— Hammurabi (Codi d'Hammurabi, sec. 196)"
+
+#: gui/text/quotes.txt:89
+msgid ""
+"“I have come not to make war on the Italians, but to aid the Italians "
+"against Rome.” \\n— Hannibal (Polybius, “Histories”, III. 85)"
+msgstr "\"No he vingut a fer la guerra contra els italians, sinó a ajudar els italians contra Roma.\" \\n— Anníbal (Polibi, \"Històries\", III. 85)"
+
+#: gui/text/quotes.txt:90
+msgid ""
+"“Let us now end the anxiety of the Romans, who can't wait for the death of "
+"an old man.” \\n— Hannibal's last words before his suicide, in exile with "
+"Flaminius pressuring the local ruler to hand him over (Livy, “History of "
+"Rome”, XXXIX. 51)"
+msgstr "\"Alliberem els romans de la seva gran preocupació, ja que no poden esperar massa la mort d'un home vell.\" \\n— Les últimes paraules d'Anníbal abans de suïcidar-se, a l'exili i amb Flamini pressionant el govern local per entregar-lo (Livi, \"Història de Roma\", XXXIX. 51)"
+
+#: gui/text/quotes.txt:91
+msgid ""
+"“Most inhuman and most arrogant of nations, they \\[the Romans] reckon the "
+"world as theirs and subject to their pleasure. With whom we are to be at "
+"war, with whom at peace, they think it right that they should determine.” "
+"\\n— Hannibal, addressing his troops (Livy, “History of Rome”, XXI. 44)"
+msgstr "\"La nació més arrogant i inhumana, \\[els romans] consideren que el món els pertany i està sotmès als seus desitjos. Amb qui estem en guerra, amb qui en pau, pensen que tenen el dret de decidir.\" \\n— Anníbal, adreçant-se a les seves tropes (Livi, \"Història de Roma\", XXI. 44)"
+
+#: gui/text/quotes.txt:92
+msgid ""
+"“You must be brave and discard all hopes of anything but victory or death.” "
+"\\n— Hannibal, addressing his troops (Livy, “History of Rome”, XXI. 44)"
+msgstr "\"Heu de ser valents i arraconar tota esperança menys la de la victòria o la mort.\" \\n— Anníbal Barca, adreçant-se a les seves tropes (Livi, \"Història de Roma\", XXI. 44)"
+
+#: gui/text/quotes.txt:93
+msgid ""
+"“War is the father and king of all things: some he has made gods, and some "
+"men; some slaves and some free.” \\n— Heraclitus (Hippolytus, “The "
+"Refutation of all Heresies”, IX. 4)"
+msgstr "\"La guerra és el pare i el rei de totes les coses: a alguns els ha fet déus, a d'altres homes; a alguns esclaus i a altres lliures.\" \\n— Heràclit (Hipòlit, \"Refutació de totes les heretgies\", IX. 4)"
+
+#: gui/text/quotes.txt:94
+msgid ""
+"“You could not step twice into the same river.” \\n— Heraclitus (Plato, "
+"“Cratylus”, 402a)"
+msgstr "\"Un home mai no pot banyar-se dues vegades al mateix riu.\" \\n— Heràclit (Plató, \"Cràtil\", 402a)"
+
+#: gui/text/quotes.txt:95
+msgid ""
+"“It is better to be envied than to be pitied.” \\n— Herodotus (“The "
+"Histories”, III. 52)"
+msgstr "\"És millor ser envejat que ser compadit.\" \\n— Heròdot (\"Històries\", III. 52)"
+
+#: gui/text/quotes.txt:96
+msgid ""
+"“In soft regions are born soft men.” \\n— Herodotus (“The Histories”, IX. "
+"122)"
+msgstr "\"A les regions toves hi neixen homes tous.\" - Heròdot (\"Històries\", IX. 122)"
+
+#: gui/text/quotes.txt:97
+msgid ""
+"“This is the bitterest pain among men, to have much knowledge but no power.”"
+" \\n— Herodotus (“The Histories”, IX. 16)"
+msgstr "\"Aquest és el dolor més amarg entre els homes, tenir molt coneixement, però cap poder.\" \\n— Heròdot (\"Històries\", IX. 16)"
+
+#: gui/text/quotes.txt:98
+msgid ""
+"“Although he \\[Xerxes] had plenty of troops he had few men.” \\n— Herodotus"
+" (“The Histories”, VII. 210)"
+msgstr "“Tot i que \\[Xerxes] tenia molts homes, tenia pocs soldats.” \\n— Heròdot (“Històries”, VII. 210)"
+
+#: gui/text/quotes.txt:99
+msgid ""
+"“The Lacedaemonians \\[Spartans] fought a memorable battle; they made it "
+"quite clear that they were the experts, and that they were fighting against "
+"amateurs.” \\n— Herodotus (“The Histories”, VII. 211)"
+msgstr "\"Els lacedemonis \\[espartans] van lliurar una batalla memorable; van deixar molt clar que eren els experts, i que lluitaven contra aficionats.\" \\n— Heròdot (\"Històries\", VII. 211)"
+
+#: gui/text/quotes.txt:100
+msgid ""
+"“Being informed \\[…] that when the Barbarians discharged their arrows they "
+"obscured the light of the sun by the multitude of the arrows, he "
+"\\[Dieneces] \\[…] said that their guest \\[…] brought them very good news, "
+"for if the Medes obscured the light of the sun, the battle against them "
+"would be in the shade and not in the sun.” \\n— Herodotus describing "
+"Dieneces, reputedly the bravest Spartan soldier at Thermopylae (Polybius, "
+"“Histories”, VII. 226)"
+msgstr "\"Quan va ser amenaçat \\[...] que les fletxes perses serien tan nombroses que taparien el sol, ell \\[Dieneces] \\[...] va dir que els havien dut molt bones notícies, perquè si els medes enfosquien la llum del sol, la batalla contra ells seria a l'ombra\" \\n— Heròdot descrivint Dieneces, el soldat espartà més valent de la batalla de les Termòpiles (Polibi, \"Històries\", VII. 226)"
+
+#: gui/text/quotes.txt:101
+msgid ""
+"“The judgment given to Croesus by each of the two oracles \\[Delphi and "
+"Thebes] was the same: If he sent an army against the Persians, he would "
+"destroy a great empire.” \\n— Herodotus, later mentioning that the empire "
+"Croesus destroyed was his own (“The Histories”, I. 53)"
+msgstr "\"La resposta que li van donar ambdós oracles \\[de Delfos i Tebes] a Cressus fou la mateixa: si enviava un exèrcit contra els perses, destruiria un gran imperi.\" \\n— Heròdot, que després aclareix que l'imperi que es va destruir va ser el de Cressus (\"Històries\", I. 53)"
+
+#: gui/text/quotes.txt:102
+msgid ""
+"“He \\[King Darius] asked who the Athenians were, and, being informed, "
+"called for his bow, and placing an arrow on the string, shot upward into the"
+" sky, saying, as he let fly the shaft: Grant me, Zeus, to revenge myself on "
+"the Athenians!” \\n— Herodotus, narrating how the Athenian support for the "
+"Ionian revolt caught the wrath of Darius I, the Persian king (“The "
+"Histories”, V. 105)"
+msgstr "\"\\[El rei Darios] preguntà qui eren els atenesos. Quan ho va saber, demanà que li portessin el seu arc, l'agafà, hi col·locà una fletxa i la disparà cap al cel tot dient: Oh Zeus, concedeix-me que em vengi dels atenesos!\" \\n— Heròdot, narrant com el suport d'Atenes a la revolta jònica va enfurismar el rei persa Darios I (\"Històries\", V. 105)"
+
+#: gui/text/quotes.txt:103
+msgid ""
+"“He \\[King Darius] asked one of his servants every day, when his dinner was"
+" spread, three times to repeat to him: Master, remember the Athenians!” \\n—"
+" Herodotus, narrating how the Athenian support for the Ionian revolt lead to"
+" the Persian Wars (“The Histories”, V. 105)"
+msgstr "\"\\[El rei Darios] ordenà a un dels seus servents que, cada cop que li servís el menjar, li repetís tres cops: Senyor, recorda't dels atenesos!\" \\n— Heròdot, narrant com el suport d'Atenes a la revolta jònica va causar les guerres Mèdiques (\"Històries\", V. 105)"
+
+#: gui/text/quotes.txt:104
+msgid ""
+"“Conquered Greece took captive her savage conqueror and brought her arts "
+"into rustic Latium.” \\n— Horace (“Epistles”, epistle I., 156–157)"
+msgstr "\"La Grècia conquerida va captivar el seu bàrbar conqueridor i va portar les seves arts al Laci rústic.\" \\n— Horaci (\"Epístoles\", epístola I., 156-157)"
+
+#: gui/text/quotes.txt:105
+msgid ""
+"“Anger is a momentary madness, so control your passion or it will control "
+"you.” \\n— Horace (“Epistles”, epistle II., 62)"
+msgstr "\"La còlera és una bogeria momentània, així que controleu la vostra passió o us acabarà controlant ella.\" \\n— Horaci (\"Epístoles\", epístola II., 62)"
+
+#: gui/text/quotes.txt:106
+msgid ""
+"“It is your concern when your neighbor's wall is on fire.” \\n— Horace "
+"(“Epistles”, epistle XVIII., 84)"
+msgstr "\"Quan la paret del veí cremi, serà també el vostre problema.\" \\n— Horaci (\"Epístoles\", epístola XVIII., 84)"
+
+#: gui/text/quotes.txt:107
+msgid ""
+"“It is sweet and honorable to die for one's country.” \\n— Horace (“Odes”, "
+"III., ode II., 13)"
+msgstr "\"Dolç i honorable és morir per la pàtria.\" \\n— Horaci (\"Odes\", III., oda II., 13)"
+
+#: gui/text/quotes.txt:108
+msgid "“I am Cyrus, king of the world…” \\n— Inscription (Cyrus Cylinder)"
+msgstr "\"Sóc Cir, rei del món...\" \\n— Inscripció (Cilindre de Cir)"
+
+#: gui/text/quotes.txt:109
+msgid ""
+"“In peace the sons bury their fathers, but in war the fathers bury their "
+"sons.” \\n— Croesus, king of Lydia (Herodotus, “The Histories”, I. 87)"
+msgstr "\"En pau, els fills enterren els pares; però en guerra, els pares enterren els fills.\" \\n— Cressus, rei de Lídia (Heròdot, \"Històries\", I. 87)"
+
+#: gui/text/quotes.txt:110
+msgid ""
+"“Whoever imposes severe punishment becomes repulsive to the people; while he"
+" who awards mild punishment becomes contemptible. But whoever imposes "
+"punishment as deserved becomes respectable.”\\n— Kauṭilya (“Arthashastra”, "
+"I.4.8–10)"
+msgstr "“Qui imposa un càstig sever esdevé repugnat per a la gent; mentre que qui atorga càstigs lleus es fa menyspreable. Però qui imposa el càstig merescut es fa respectable”. \\n— Kauṭilya (“Arthashastra”, I.4.8–10)"
+
+#: gui/text/quotes.txt:111
+msgid ""
+"“If a king is energetic, his subjects will be equally energetic.”\\n— "
+"Kauṭilya (“Arthashastra” I.19.1)"
+msgstr "“Si un rei és enèrgic, els seus súbdits seran igualment enèrgics.” \\n— Kauṭilya (“Arthashastra” I.19.1)"
+
+#: gui/text/quotes.txt:112
+msgid ""
+"“Marry a good man, and bear good children.” \\n— Leonidas, to his wife who "
+"asked what to do if he died, before he left for Thermopylae (Plutarch, "
+"“Moralia”, “Sayings of Spartans”, 225a)"
+msgstr "\"Casa't amb un bon home i tingues bons fills.\" \\n— Leònides, a la seva dona abans de partir cap a les Termòpiles, quan ella li va preguntar què havia de fer si ell moria (Plutarc, \"Moràlia\", XVI. \"Màximes d'espartans\", 225a)"
+
+#: gui/text/quotes.txt:113
+msgid ""
+"“Come and get them!” \\n— Leonidas, to the Persian messenger who demanded "
+"that he and his men lay down their arms (Plutarch, “Moralia”, “Sayings of "
+"Spartans”, 225c)"
+msgstr "\"Vine i agafa-les!\" \\n— Leònides, al missatger persa que va demanar que ell i els seus homes lliuressin les armes (Plutarc, \"Moràlia\", \"Màximes d'espartans\", 225c)"
+
+#: gui/text/quotes.txt:114
+msgid ""
+"“Some were discovered lying there alive, with thighs and tendons slashed, "
+"baring their necks and throats and bidding their conquerors drain the "
+"remnant of their blood. Others were found with their heads buried in holes "
+"dug in the ground. They had apparently made these pits for themselves.” \\n—"
+" Livy, describing the aftermath of the Battle of Cannae, where Hannibal "
+"inflicted the greatest defeat on the Romans in all their history (“History "
+"of Rome”, XXII. 51)"
+msgstr "\"Alguns els van trobar vius, amb els tendons i les cuixes tallats, amb el coll al descobert oferint als conqueridors la sang que els quedava. Altres els van trobar amb el cap enterrat en un forat a terra, aparentment fet per ells mateixos.\" \\n— Livi, descrivint les conseqüències de la batalla de Cannes, on Anníbal va provocar la major derrota romana de la història (\"Història de Roma\", XXII. 51)"
+
+#: gui/text/quotes.txt:115
+msgid ""
+"“There lay thousands upon thousands of Romans \\[…]. Here and there amidst "
+"the slain rose a gory figure whose wounds had begun to throb with the chill "
+"of dawn, and was cut down by his enemies.” \\n— Livy, describing the "
+"aftermath of the Battle of Cannae, where Hannibal inflicted the greatest "
+"defeat on the Romans in all their history (“History of Rome”, XXII. 51)"
+msgstr "\"Allà jeien milers i milers de romans \\[…]. Ací i allà enmig de la carnisseria, algun s'incorporava cobert de sang, a qui les ferides li coïen amb el fred de l'alba, i era rematat per l'enemic\". \\n— Livi, descrivint  les conseqüències de la Batalla de Cannes, on Anníbal va provocar la major derrota romana de la història (\"Història de Roma\", XXII. 51)"
+
+#: gui/text/quotes.txt:116
+msgid ""
+"“A city is well-fortified which has a wall of men instead of brick.” \\n— "
+"Lycurgus of Sparta (Plutarch, “Parallel Lives”, “Lycurgus”, sec. 19)"
+msgstr "\"Una ciutat està ben fortificada quan té un mur d'homes i no de maons.\" \\n— Licurg d'Esparta (Plutarc, \"Vides paral·leles\", \"Licurg\", sec. 19)"
+
+#: gui/text/quotes.txt:117
+msgid ""
+"“Escape, yes, but this time with my hands, not my feet.” \\n— Brutus, before"
+" committing suicide after losing a battle against Caesar's avengers "
+"(Plutarch, “Parallel Lives”, “Brutus”, sec. 52)"
+msgstr "\"Escapo, sí, però aquest cop amb les mans, no amb els peus.\" \\n— Brut, abans de suïcidar-se un cop perduda la batalla contra els venjadors del Cèsar (Plutarc, \"Vides paral·leles\", \"Brut\", sec. 52)"
+
+#: gui/text/quotes.txt:118
+msgid "“O, the times, O, the customs!” \\n— Cicero (“Against Catiline”, I.)"
+msgstr "\"Oh, temps! Oh, costums!\" \\n— Ciceró (\"Contra Catilina\", I.)"
+
+#: gui/text/quotes.txt:119
+msgid ""
+"“A war is never undertaken by the ideal State, except in defense of its "
+"honor or its safety.” \\n— Cicero (“De Re Publica”, III., 23)"
+msgstr "\"L'estat ideal mai no entra en guerra, excepte en defensa del seu honor o la seva seguretat.\" \\n— Ciceró (\"La República\", III., 23)"
+
+#: gui/text/quotes.txt:120
+msgid ""
+"“The first duty of a man is the seeking after and the investigation of "
+"truth.” \\n— Cicero (“On Duties”, I., 13)"
+msgstr "\"El primer deure de l'home és la recerca de la veritat.\" \\n— Ciceró (\"Sobre els deures\", I., 13)"
+
+#: gui/text/quotes.txt:121
+msgid ""
+"“No one is so old as to think that he cannot live one more year.” \\n— "
+"Cicero (“On Old Age”, sec. 24)"
+msgstr "\"Ningú és prou vell per pensar que no pot viure un altre any.\" \\n— Ciceró (\"Sobre la vellesa\", sec. 24)"
+
+#: gui/text/quotes.txt:122
+msgid ""
+"“Let the welfare of the people be the ultimate law.” \\n— Cicero (“On the "
+"Laws”, III., sec. 3)"
+msgstr "\"La llei suprema és el bé del poble.\" \\n— Ciceró (\"Les Lleis\", III., sec. 3)"
+
+#: gui/text/quotes.txt:123
+msgid ""
+"“Endless money forms the sinews of war.” \\n— Cicero (“Philippics”, V., sec."
+" 5)"
+msgstr "\"Els diners inesgotables són els tendons de la guerra.\" \\n— Ciceró (\"Les Filípiques\", V., sec. 5)"
+
+#: gui/text/quotes.txt:124
+msgid ""
+"“Laws are silent in time of war.” \\n— Cicero (“Pro Milone”, IV., sec. 11)"
+msgstr "\"Les lleis callen en temps de guerra.\" \\n— Ciceró (\"Pro Milone\", IV., sec. 11)"
+
+#: gui/text/quotes.txt:125
+msgid ""
+"“That, Senators, is what a favour from gangs amounts to. They refrain from "
+"murdering someone; then they boast that they have spared him!” \\n— Cicero, "
+"condemning Mark Anthony who had not killed him (yet) (“Philippics”, II., "
+"sec. 5)"
+msgstr "\"Això, senadors, és el favor que es pot esperar d'una banda de criminals. S'estan d'assassinar algú; després es vanten d'haver-li perdonat la vida!\" \\n— Ciceró, criticant Marc Antoni, que encara no l'havia mort (\"Filípiques\", II., sec. 5)"
+
+#: gui/text/quotes.txt:126
+msgid ""
+"“He did not even stand up to review his fleet when the ships were already at"
+" their fighting stations, but lay on his back and gazed up at the sky, never"
+" rising to show that he was alive until Marcus Agrippa had routed the "
+"enemy.” \\n— Mark Antony, taunting Augustus who delegated his duties as "
+"naval commander (Suetonius, “Divus Augustus”, sec. 16)"
+msgstr "\"No havia gosat mirar de fit a fit un exèrcit en ordre de batalla, sinó que, mirant al cel, s'havia ajagut tot parat i no s'havia aixecat ni comparegut davant dels soldats fins que Marc Agripa hagué posat en fuga les naus enemigues.\" \\n— Marc Antoni, burlant-se d'August que havia delegat les seves les funcions com a comandant naval (Suetoni, \"Divus Augustus\", sec. 16)"
+
+#: gui/text/quotes.txt:127
+msgid ""
+"“We live, not as we wish to, but as we can.” \\n— Menander (“Lady of "
+"Andros”, fragment 50)"
+msgstr "\"Vivim com podem, no com desitgem.\" \\n— Menandre (\"La dona d'Andros\", fragment 50)"
+
+#: gui/text/quotes.txt:128
+msgid "“The man who runs may fight again.” \\n— Menander (“Monosticha”)"
+msgstr "\"L'home que fuig pot tornar a lluitar.\" \\n— Menandre (\"Monosticha\")"
+
+#: gui/text/quotes.txt:129
+msgid ""
+"“Whom the Gods love dies young.” \\n— Menander (“The Double Deceiver”, "
+"fragment 4)"
+msgstr "\"Qui té l'amor dels déus, mor jove.\" \\n— Menandre (\"El doble mentider\", fragment 4)"
+
+#: gui/text/quotes.txt:130
+msgid "“I call a fig a fig, a spade a spade.” \\n— Menander (fragment 545 K)"
+msgstr "\"Anomeno figues les figues, i pales les pales.\" \\n— Menandre (fragment 545 K)"
+
+#: gui/text/quotes.txt:131
+msgid ""
+"“The greatest glory is won from the greatest dangers. When our fathers faced"
+" the Persians their resources could not compare to ours. In fact, they gave "
+"up even what they had. Then by wise counsels and daring deeds, not fortune "
+"and material advantages, they drove out the invaders and made our city what "
+"it is now.” \\n— Pericles (Thucydides, “History of the Peloponnesian War”, "
+"I. 144.3–4)"
+msgstr "\"La glòria més gran s'aconsegueix amb els perills més grans. Quan els nostres pares es van enfrontar als perses els seus recursos no es podien comparar als nostres. De fet, van desprendre's de tot el que tenien. Aleshores, amb saviesa i valor, no amb fortuna ni avantatges materials, van fer fora els invasors i van fer de la nostra ciutat el que és ara.\" \\n— Pèricles (Tucídides, \"Història de la guerra del Peloponès\", I. 144.3-4)"
+
+#: gui/text/quotes.txt:132
+msgid ""
+"“Instead of looking on discussion as a stumbling block in the way of action,"
+" we think it an indispensable preliminary to any wise action at all.” \\n— "
+"Pericles in his Funeral Oration for Athenians that died in the first year of"
+" the war (Thucydides, “History of the Peloponnesian War”, II. 40.2)"
+msgstr "\"No són les paraules les que perjudiquen l’acció, sinó que la discussió és indispensable per informar-se prèviament abans de fer el que cal.\" \\n— Pèricles en la seva oració fúnebre per als atenencs que van morir el primer any de guerra (Tucídides, \"Història de la guerra del Peloponès\", II. 40.2)\n"
+
+#: gui/text/quotes.txt:133
+msgid ""
+"“We alone do not think that a man ignorant of politics interferes with "
+"nothing, we think he is good for nothing.” \\n— Pericles in his Funeral "
+"Oration for Athenians that died in the first year of the war (Thucydides, "
+"“History of the Peloponnesian War”, II. 40.2)"
+msgstr "\"Som els únics que tenim el qui no pren part en els afers públics, no per tranquil, sinó per inútil.\" \\n— Pèricles en la seva oració fúnebre per als atenencs que van morir el primer any de guerra (Tucídides, \"Història de la guerra del Peloponès\", II. 40.2)"
+
+#: gui/text/quotes.txt:134
+msgid ""
+"“Future ages will wonder at us, as the present age wonders at us now.” \\n— "
+"Pericles in his Funeral Oration for Athenians that died in the first year of"
+" the war (Thucydides, “History of the Peloponnesian War”, II. 41.5)"
+msgstr "\"Serem l'admiració de generacions futures, tal com ho som de la present.\" \\n— Pèricles en la seva oració fúnebre per als atenencs que van morir el primer any de guerra (Tucídides, \"Història de la guerra del Peloponès\", II. 41.5)"
+
+#: gui/text/quotes.txt:135
+msgid ""
+"“When you realize the power of Athens, consider it was won by valiant men "
+"who knew their duty, had a sense of dishonor in fight and, if their "
+"enterprises failed, would rather give their lives than lack in civic "
+"virtue.” \\n— Pericles in his Funeral Oration for Athenians that died in the"
+" first year of the war (Thucydides, “History of the Peloponnesian War”, II. "
+"43.2)"
+msgstr "\"Quan us impressioni l'esplendor d'Atenes, penseu que tot això fou conquerit per homes audaços i sabedors de llur deure, que obraven per punt d’honor i que, si alguna vegada fracassaven en alguna empresa, no per això permetien que la ciutat es veiés privada de llur valor, sinó que li oferien la contribució més bella, el sacrifici de llurs vides.\" \\n— Pèricles en la seva oració fúnebre per als atenencs que van morir el primer any de guerra (Tucídides, \"Història de la guerra del Peloponès\", II. 43.2)"
+
+#: gui/text/quotes.txt:136
+msgid ""
+"“To heroes all earth is their tomb, and their virtues are remembered far "
+"from home where an epitaph declares them, in an unwritten record of the mind"
+" that will outlast any monument.” \\n— Pericles in his Funeral Oration for "
+"Athenians that died in the first year of the war (Thucydides, “History of "
+"the Peloponnesian War”, II. 43.3)"
+msgstr "\"Tota la terra és el sepulcre dels herois; no solament en llur propi país els commemoren les inscripcions i les esteles, sinó que fins en els països estranys perviu una memòria no escrita d’ells, gravada en el cor dels homes més que no en les pedres.\" \\n— Pèricles en la seva oració fúnebre per als atenencs que van morir el primer any de guerra (Tucídides, \"Història de la guerra del Peloponès\", II. 43.3)"
+
+#: gui/text/quotes.txt:137
+msgid ""
+"“Understand that happiness depends on freedom, and freedom depends on "
+"courage.” \\n— Pericles in his Funeral Oration for Athenians that died in "
+"the first year of the war (Thucydides, “History of the Peloponnesian War”, "
+"II. 43.4)"
+msgstr "\"Entengueu que la felicitat és fruit de la llibertat, i la llibertat, del coratge.\" \\n— Pèricles en la seva oració fúnebre per als atenencs que van morir el primer any de guerra (Tucídides, \"Història de la guerra del Peloponès\", II. 43.4)"
+
+#: gui/text/quotes.txt:138
+msgid ""
+"“Wait for the wisest of all counsellors, time.” \\n— Pericles, a cautious "
+"politician who avoided war (Plutarch, “Parallel Lives”, “Pericles”, sec. 18)"
+msgstr "\"Espereu-vos al conseller més savi de tots, el temps.\" \\n— Pèricles un polític cautelós que va evitar la guerra (Plutarc, \"Vides paral·leles\", \"Pèricles\", sec. 18)"
+
+#: gui/text/quotes.txt:139
+msgid ""
+"“Your empire is now like a tyranny: it may have been wrong to take it; it is"
+" certainly dangerous to let it go.” \\n— Pericles, addressing the Athenian "
+"assembly after a plague had weakened the city (Thucydides, “History of the "
+"Peloponnesian War”, II. 63.3)"
+msgstr "\"El vostre imperi ara és com una tirania: potser ha estat un error prendre'l, però amb certesa és perillós deixar-lo anar.\" \\n— Pèricles, adressant-se a l'assemblea d'Atenes després que una pesta hagués debilitat la ciutat (Tucídides, \"Història de la guerra del Peloponès\", II. 63.3)"
+
+#: gui/text/quotes.txt:140
+msgid ""
+"“War is sweet to those who have no experience of it, but the experienced man"
+" fears its approach in his heart.” \\n— Pindar (fragment 110)"
+msgstr "\"La guerra és dolça per a aquells que no hi tenen experiència, però a l'home experimentat li tremola el cor quan s'acosta.\" \\n— Píndar (fragment 110)"
+
+#: gui/text/quotes.txt:141
+msgid ""
+"“Themistocles robbed his fellow citizens of spear and shield, and degraded "
+"the people of Athens to the rowing-pad and the oar.” \\n— Plato, no friend "
+"of the Athenian navy (Plutarch, “Parallel Lives”, “Themistocles”, sec. 3)"
+msgstr "\"Temístocles va desproveir els seus compatriotes de la llança i l'escut i va degradar la gent d'Atenes als rems.\" \\n— Plató, no gaire amic de la flota atenesa (Plutarc, \"Vides paral·leles\", \"Temístocles\", sec. 3)"
+
+#: gui/text/quotes.txt:142
+msgid ""
+"“No guest is so welcome in a friend's house that he will not become a "
+"nuisance after three days.” \\n— Plautus (“The Swaggering Soldier”, Act III,"
+" scene 1, 146)"
+msgstr "\"Cap hoste és tan benvingut a casa d'un amic que no esdevindrà una molèstia al cap de tres dies.\" \\n— Plaute (\"El soldat fanfarró\", Acte III, escena 1, 146)"
+
+#: gui/text/quotes.txt:143
+msgid ""
+"“If you spend a thing you cannot have it too.”\\n— Plautus (“Trinummus”, Act"
+" II, scene 4, 13–14)"
+msgstr "\"Quan dones una cosa, ja no la tens; en donar-la, la perds.”\\n— Plautus (“Trinummus”, Act II, escena 4, 13–14)"
+
+#: gui/text/quotes.txt:144
+msgid ""
+"“He \\[Alexander] thought nothing invincible for the courageous, and nothing"
+" secure for the cowardly.” \\n— Plutarch (“Parallel Lives”, “Alexander”, "
+"sec. 58)"
+msgstr "\"\\[Alexandre] Creia que res per als coratjosos no és inconquerible ni segur per als covards.\" \\n— Plutarc (\"Vides paral·leles\", \"Alexandre\", sec. 58)"
+
+#: gui/text/quotes.txt:145
+msgid ""
+"“One \\[…] shot an arrow at him with such accuracy and force that it pierced"
+" his breastplate and got stuck in his ribs. \\[…] Alexander recoiled and "
+"sank to his knees. \\[…] At last Alexander killed the barbarian. But he "
+"received many wounds, at last was struck on the neck with a mace, and leaned"
+" against the city wall, his eyes still fixed upon his foes.” \\n— Plutarch "
+"about the Mallian Campaign (“Parallel Lives”, “Alexander”, sec. 63)"
+msgstr "\"Algú \\[...] va llançar-li una fletxa amb tanta precisió i força que li va foradar la cuirassa i se li va clavar a les costelles. \\[...] Alexandre va retrocedir i va caure de genolls. \\[...] Al final Alexandre va matar el bàrbar. Però va rebre moltes ferides: va ser colpejat al coll amb una maça i va recolzar-se contra els murs de la ciutat, amb els ulls fixats encara sobre els enemics.\" \\n— Plutarc sobre la campanya contra els Malaves (\"Vides paral·leles\", \"Alexandre\", sec. 63)"
+
+#: gui/text/quotes.txt:146
+msgid ""
+"“When the pirates demanded a ransom of twenty talents for him, Caesar burst "
+"out laughing. They did not know, he said, who it was that they had captured,"
+" and he volunteered to pay fifty.” \\n— Plutarch, who mentions later that "
+"Caesar got his money back and had his captors crucified (“Parallel Lives”, "
+"“Caesar”, sec. 2)"
+msgstr "\"Quan els pirates van demanar un rescat de vint talents per ell, Cèsar va esclatar a riure. No sabien, va dir, a qui havien capturat, i ell mateix es va oferir a pagar-ne cinquanta.\" \\n— Plutarc, que menciona més endavant que el Cèsar va recuperar els diners i va fer crucificar els seus captors (\"Vides paral·leles\", \"Cèsar\", sec. 2)"
+
+#: gui/text/quotes.txt:147
+msgid ""
+"“They \\[the Romans] want the centurions not so much to be adventurous and "
+"daredevils, as to be natural leaders, of a steady and reliable spirit. They "
+"do not so much want men who will initiate attacks and open the battle, but "
+"men who will hold their ground when beaten and hard-pressed, and will be "
+"ready to die at their posts.” \\n— Polybius (“Histories”, VI. 24)"
+msgstr "\"\\[Els romans] No volen que els centurions siguin aventurers i temeraris, sinó líders naturals, d'esperit calmat i fiable. No volen homes que comencin els atacs ni que obrin la batalla, sinó homes que aguantin els cops i les pressions, i que estiguin preparats per morir a les seves posicions.\" \\n— Polibi (\"Històries\", VI. 24)"
+
+#: gui/text/quotes.txt:148
+msgid ""
+"“The Roman battle line is hard to break, since it allows every man to fight "
+"both individually and collectively; so that a formation can fight in any "
+"direction, with the maniples nearest to the point of danger wheeling around "
+"to face it.” \\n— Polybius (“Histories”, XV. 15)"
+msgstr "\"El front romà és difícil de trencar perquè permet que cada home lluiti sol i en grup alhora; de tal manera que la formació pot lluitar en qualsevol direcció, i els maniples poden girar per enfrontar el perill.\" \\n— Polibi (\"Històries\", XV. 15)"
+
+#: gui/text/quotes.txt:149
+msgid ""
+"“The Athenian people are always in the position of a ship without a "
+"commander. Fear of the enemy or a storm make the crew be of one mind and "
+"obey the helmsman, everything goes well; but if they recover \\[…] they "
+"quarrel with each other \\[…], and the result has often been that, after "
+"escaping the dangers of the widest seas and the most violent storms, they "
+"wreck their ship in harbor and close to shore.” \\n— Polybius on the "
+"Athenian constitution (“Histories”, VI. 44)"
+msgstr "\"Els atenencs són com un vaixell sense capità. La por de l'enemic o d'una tempesta fa que la tripulació obeeixi el timoner com un sol home, i se'n surten; però si es recuperen \\[...] es barallen entre ells \\[...], i els resultats han estat sovint que després de superar els perills del mar obert i les tempestes més violentes, el vaixell s'enfonsa al port o prop de la costa.\" \\n— Polibi sobre la constitució dels atenencs (\"Històries\", VI. 44)"
+
+#: gui/text/quotes.txt:150
+msgid ""
+"“Most of the Romans were trampled to death by the enormous weight of the "
+"elephants; the rest were shot down in their ranks by the numerous cavalry: "
+"and there were only a very few who attempted to save themselves by flight.” "
+"\\n— Polybius on the Battle of Bagradas where a Roman army was annihilated "
+"during the First Punic War (“Histories”, I. 34)"
+msgstr "\"La majoria de romans van ser esclafats per l'enorme pes dels elefants; la resta van ser destrossats per la nombrosa cavalleria: i només molt pocs van intentar salvar-se fugint.\" \\n— Polibi sobre la batalla de Tunis on un exèrcit romà va ser aniquilat durant la Primera Guerra Púnica (\"Històries\", I. 34)"
+
+#: gui/text/quotes.txt:151
+msgid ""
+"“Hannibal gave the signal for attack; and at the same time sent orders to "
+"the troops lying in ambush on the hills to do the same, and thus delivered "
+"an assault upon the enemy at every point at once.” \\n— Polybius on the "
+"beginning of a Roman disaster at the Trasymene Lake (“Histories”, III. 84)"
+msgstr "\"Anníbal va donar el senyal d'atacar i alhora va ordenar a les tropes preparades per a l'emboscada que fessin el mateix; així va assaltar l'enemic des de tots els cantons.\" \\n— Polibi, sobre l'inici de la derrota romana a la batalla del llac Trasimè (\"Històries\", III. 84)"
+
+#: gui/text/quotes.txt:152
+msgid ""
+"“In the phalanx, the men cannot turn around singly and defend themselves: "
+"this tribune, therefore, charged them \\[from behind] and killed all he "
+"could get at; until, unable to resist, they were forced to throw away their "
+"shields and flee.” \\n— Polybius, describing the defeat of Philip V. of "
+"Macedon by Flaminius in the Battle of Cynoscephalae (“Histories”, XVIII. 26)"
+msgstr "“Atès que la seva manera d'operar no permetia a la falange macedònia de girar sobre si mateixa ni d'entaular duels individuals, aquest tribú perseguí i anà matant els enemics que tenia a l'abast, que no aconseguien de defensar-se. I al final els macedonis van veure's forçats a llençar les armes i a emprendre la fugida.” \\n— Polibi, descrivint la derrota de Filip V de Macedònia per Flaminí a la batalla de Cinoscèfales (“Històries”, XVIII. 26)"
+
+#: gui/text/quotes.txt:153
+msgid ""
+"“The Roman order on the other hand is flexible: for every Roman, once armed "
+"and on the field, is equally well equipped for every place, time, or "
+"appearance of the enemy. He is, moreover, quite ready and needs to make no "
+"change, whether he is required to fight in the main body, or in a "
+"detachment, or in a single maniple, or even by himself.” \\n— Polybius, "
+"explaining how the Romans can defeat the Macedonian phalanx (“Histories”, "
+"XVIII. 32)"
+msgstr "\"La formació romana, en canvi, és òptima, perquè tot home romà quan s'ha armat i s'adreça a la batalla, està equipat igualment per a qualsevol lloc i qualsevol ocasió, per a qualsevol aparició de l'enemic. I es troba disposat i igualment ben preparat tant per a una batalla decisiva com per a un combat parcial; lluitarà individualment o bé agrupat en maniples.\" \\n— Polibi, explicant com els romans poden derrotar la falange macedònia (\"Històries\", XVIII. 32)"
+
+#: gui/text/quotes.txt:154
+msgid ""
+"“Scipio \\[Aemilianus], when he looked upon the city \\[Carthage] as it was "
+"utterly perishing and in the last throes of its complete destruction, is "
+"said to have shed tears and wept openly for his enemies. And realized that "
+"all cities, nations, and authorities must, like men, meet their doom.” \\n— "
+"Polybius, eyewitness to the destruction of Carthage (“Histories”, XXXVIII. "
+"22)"
+msgstr "\"Escipió \\[Emilià], contemplant la ciutat \\[Cartago] mentre era brutalment arrasada i en els moments finals de la seva destrucció, es diu que va vessar llàgrimes i va plorar obertament pels seus enemics. I es va adonar que totes les ciutats, nacions i autoritats, com els homes, han d'enfrontar-se al seu fat.\" \\n— Polibi, testimoni de la caiguda de Cartago (\"Històries\", XXXVIII. 22)"
+
+#: gui/text/quotes.txt:155
+msgid ""
+"“One more such victory and the cause is lost!” \\n— Pyrrhus of Epirus after "
+"the Battle of Asculum, in which the Romans lost twice as many men but he "
+"lost a greater share of his armed forces (Plutarch, “Parallel Lives”, "
+"“Pyrrhus”, sec. 21)"
+msgstr "\"Una victòria més així i la causa està perduda!\" \\n— Pirros de l'Epir després de la batalla d'Asculum, en què els romans van perdre el doble d'homes però ell va perdre una gran part de les seves forces armades (Plutarc, \"Vides paral·leles\", \"Pirros\", sec. 21)"
+
+#: gui/text/quotes.txt:156
+msgid ""
+"“None can be free who is a slave to, and ruled by, his passions.” \\n— "
+"Pythagoras (Stobaeus, “Florilegium”, 18)"
+msgstr "\"Ningú pot ser lliure mentre sigui esclavitzat per les seves passions.\" \\n— Pitàgores (Estobeu, \"Florilegium\", 18)"
+
+#: gui/text/quotes.txt:157
+msgid ""
+"“Do not say few things in many words, but many things in few words.” \\n— "
+"Pythagoras (Stobaeus, “Florilegium”, 24)"
+msgstr "\"No digueu poc en moltes paraules, sinó molt en poques.\" \\n— Pitàgores (Estobeu, \"Florilegium\", 24)"
+
+#: gui/text/quotes.txt:158
+msgid ""
+"“Let your speech be better than silence, or be silent.” \\n— Pythagoras "
+"(Stobaeus, “Florilegium”, 24)"
+msgstr "\"Calla o digues alguna cosa millor que el silenci\". \\n— Pitàgores (Estobeu, \"Florilegium\", 24)"
+
+#: gui/text/quotes.txt:159
+msgid ""
+"“Unity strengthens even small states, while discord undermines the mightiest"
+" empires.” \\n— Sallust (“The Jugurthine War”, 10.6)"
+msgstr "\"La unitat enforteix fins i tot els estats petits, mentre que la discòrdia mina l'imperi més poderós.\" \\n— Sal·lusti (\"La guerra de Jugurta\", 10.6)"
+
+#: gui/text/quotes.txt:160
+msgid ""
+"“Ungrateful fatherland, you will not even have my bones!” \\n— Scipio "
+"Africanus in his epitaph, after he who defeated Hannibal was repeatedly "
+"accused of crimes by the Roman Senate (Valerius Maximus, “Nine books on "
+"memorable deeds and sayings”, 5.3.2)"
+msgstr "\"Pàtria ingrata, ni tan sols tindràs els meus ossos!\" - Epitafi d'Escipió Africà després de ser acusat repetidament pel Senat romà de crims, tot i havent derrotat Anníbal (Valeri Màxim, \"De Factis Dietisque Memorabilibus Libri IX\", 5.3.2)"
+
+#: gui/text/quotes.txt:161
+msgid ""
+"“Prepare for war, since you have been unable to endure a peace.” \\n— Scipio"
+" Africanus, replying to Hannibal's offer of peace terms before the Battle of"
+" Zama (Livy, “History of Rome”, XXX. 31)"
+msgstr "\"Prepara't per a la guerra, ja que no has pogut suportar la pau.\" \\n— Escipió Africà, responent l'oferta de pau d'Anníbal abans de la batalla de Zama (Livi, \"Història de Roma\", XXX. 31)"
+
+#: gui/text/quotes.txt:162
+msgid ""
+"“But tactical science is only one part of generalship. A general must be "
+"capable of equipping his forces and providing for his men. He must also be "
+"inventive, hardworking, and watchful, bullheaded and brilliant, friendly and"
+" fierce, straightforward and subtle.” \\n— Socrates (Xenophon, "
+"“Memorabilia”, 3.1.6)"
+msgstr "\"Però la tàctica només és una part de ser general. Un general ha de ser capaç d'equipar les seves forces i proveir els seus homes. També ha de ser enginyós, treballador i atent, tossut i brillant, amigable i feroç, directe i subtil.\" \\n— Sòcrates (Xenofont, \"Memorabilia\", 3.1.6)"
+
+#: gui/text/quotes.txt:163
+msgid ""
+"“It is necessary to know the strength of the city and of the enemy, so that,"
+" if the city is stronger, one may recommend her to go to war, but if weaker "
+"than the enemy, may persuade her to beware.” \\n— Socrates (Xenophon, "
+"“Memorabilia”, 3.6.9)"
+msgstr "\"Cal conèixer la fortalesa de la ciutat i de l'enemic, d'aquesta manera, si la ciutat és més forta, se li pot recomanar d'anar a la guerra, però si és més feble que l'enemic, se la pot persuadir d'anar amb compte.\" \\n— Sòcrates (Xenofont, \"Memorabilia\", 3.6.9)"
+
+#: gui/text/quotes.txt:164
+msgid ""
+"“The unexamined life is not worth living.” Socrates, in his defense when "
+"trialled for corrupting the youth and not worshipping the proper gods (he "
+"later drank hemlock after the death sentence) \\n— Plato (“Apology”, 38a)"
+msgstr "\"Una vida no examinada no val la pena de viure.\" Sòcrates, en defensa pròpia quan se'l jutjava per corrompre els joves i no adorar els déus apropiats (finalment va ser condemnat a mort i va beure cicuta) \\n— Plató (\"Apologia de Sòcrates\", 38a)"
+
+#: gui/text/quotes.txt:165
+msgid ""
+"“The hour of departure has arrived, and we go our ways – I to die, and you "
+"to live. Which is better God only knows.” Socrates, in his defense when "
+"trialled for corrupting the youth and not worshipping the proper gods (he "
+"later drank hemlock after the death sentence) \\n— Plato (“Apology”, 42a)"
+msgstr "\"L'hora de partir ha arribat, i prendrem els nostres camins: jo moriré i vosaltres viureu. Què és millor, només ho sap Déu.\" Sòcrates, en defensa pròpia quan se'l jutjava per corrompre els joves i no adorar els déus apropiats (finalment va ser condemnat a mort i va beure cicuta) \\n— Plató (\"Apologia de Sòcrates\", 38a)"
+
+#: gui/text/quotes.txt:166
+msgid ""
+"“Walls and ships are nothing without men living together inside them.” \\n— "
+"Sophocles (“Oedipus Rex”)"
+msgstr "\"Els murs i els vaixells no són res si no hi ha homes que hi visquin dins.\" \\n— Sòfocles (\"Èdip Rei\")"
+
+#: gui/text/quotes.txt:167
+msgid ""
+"“We accepted an empire that was offered to us and refused to give it up "
+"under the pressure of three of the strongest motives: fear, honor and "
+"interest. It was not we who set the example, for it has always been the law "
+"that the weak should be subject to the strong.” \\n— Speech of an Athenian "
+"embassy in Sparta (Thucydides, “History of the Peloponnesian War”, I. 76.2)"
+msgstr "\"Vam acceptar un imperi que se’ns entregava i no l’hem deixat obligats pels tres motius més importants: l’honor, el temor i la utilitat; sense ser ni tan sols els iniciadors d’aquest ús, sinó que està instituït des de sempre que el més feble sigui sotmès al més poderós.\" \\n— Discurs d'un ambaixador atenenc a Esparta (Tucídides, \"Història de la guerra del Peloponès\", I. 76.2)"
+
+#: gui/text/quotes.txt:168
+msgid ""
+"“He could boast that he found a city of brick and left it a city of "
+"marble.”\\n— Suetonius, commenting on the many building projects of Augustus"
+" in Rome (“Divus Augustus”, 28.3)"
+msgstr "\"Podia presumir que havia trobat una ciutat de maó i n'havia deixat una de marbre.\" \\n— Suetoni, comentari sobre els projectes de construcció d'August a Roma (\"Divus Augustus\", 28.3)"
+
+#: gui/text/quotes.txt:169
+msgid "“Moderation in all things.” \\n— Terence (“The Girl from Andros”, 61)"
+msgstr "\"Moderació en tot.\" \\n— Terenci (\"La dona d'Andros\", 61)"
+
+#: gui/text/quotes.txt:170
+msgid ""
+"“Fortune favors the bold.” \\n— Terence in a play about a great Athenian "
+"admiral (“Phormio”, 203)"
+msgstr "\"La fortuna somriu als valents.\" \\n— Terenci en una obra sobre un gran almirall atenenc (\"Formió\", 203)"
+
+#: gui/text/quotes.txt:171
+msgid ""
+"“I do not know how to tune the lyre or play the harp, but I do know how to "
+"raise a city that was small and unimportant to glory and greatness.” \\n— "
+"Themistocles, defending his lack of cultural sophistication (Plutarch, "
+"“Parallel Lives”, “Themistocles”, sec. 2)"
+msgstr "\"No sé afinar una lira ni tocar l'arpa, però sí que sé com fer créixer una ciutat que tal vegada fou petita i dur-la a la grandesa i a la glòria.\" \\n— Temístocles, en defensa de la seva falta de sofisticació (Plutarc, \"Vides paral·leles\", \"Temístocles\", sec. 2)"
+
+#: gui/text/quotes.txt:172
+msgid ""
+"“Strike, if you will, but listen.” \\n— Themistocles, in a heated discussion"
+" with the Spartan fleet commander who threatened to beat him with his staff,"
+" before the Battle of Salamis (Plutarch, “Parallel Lives”, “Themistocles”, "
+"sec. 11)"
+msgstr "\"Pega'm, si ho vols, però escolta.\" \\n— Temístocles, en una discussió pujada de to amb el comandant de la flota espartana que l'havia amenaçat de pegar-lo amb un bastó abans de la batalla de Salamina (Plutarc, \"Vides paral·leles\", \"Temístocles\", sec. 11)"
+
+#: gui/text/quotes.txt:173
+msgid ""
+"“The Athenians command the rest of Greece, I command the Athenians; your "
+"mother commands me, and you command your mother.” \\n— Themistocles, "
+"jokingly to his infant son (Plutarch, “Parallel Lives”, “Themistocles”, sec."
+" 18)"
+msgstr "\"Els atenencs manen sobre Grècia, jo mano sobre els atenencs; la teva mare em mana a mi i tu manes sobre la teva mare.\" \\n— Temístocles, fent broma al seu fill petit (Plutarc, \"Vides paral·leles\", \"Temístocles\", sec. 18)"
+
+#: gui/text/quotes.txt:174
+msgid ""
+"“So little pains does the mob take in finding out the truth, accepting "
+"readily the first story at hand.” \\n— Thucydides (“History of the "
+"Peloponnesian War”, I. 21.3)"
+msgstr "\"La massa no es molesta en descobrir quina és la veritat, i accepta de bon grat la primera història que sent.\" \\n— Tucídides (\"Història de la guerra de Peloponès\", I. 21.3)"
+
+#: gui/text/quotes.txt:175
+msgid ""
+"“The growth of the power of Athens, and the alarm which this caused in "
+"Sparta, made war inevitable.” \\n— Thucydides (“History of the Peloponnesian"
+" War”, I. 23.6)"
+msgstr "“El creixement del poder d'Atenes, i l'alarma que va provocar a Esparta, van fer la guerra inevitable.” \\n— Tucídides (\"Història de la guerra del Peloponès\", I. 23.6)"
+
+#: gui/text/quotes.txt:176
+msgid ""
+"“War is a matter not so much of arms as of money.” \\n— Thucydides (“History"
+" of the Peloponnesian War”, I. 83.2)"
+msgstr "“La guerra no és tan un afer d'armes, sinó de diners.” \\n— Tucídides (\"Història de la guerra del Peloponès\", I. 83.2)"
+
+#: gui/text/quotes.txt:177
+msgid ""
+"“It is a general rule of human nature that people despise those who treat "
+"them well, and look up to those who make no concessions.” \\n— Thucydides "
+"(“History of the Peloponnesian War”, III. 39.5)"
+msgstr "\"L'home per natural menysprea qui li fa la cort i admira qui se li resisteix.\" \\n— Tucídides (\"Història de la guerra de Peloponès\", III. 39.5)"
+
+#: gui/text/quotes.txt:178
+msgid ""
+"“This was the greatest action that happened in all this war, and all others "
+"that we have heard of amongst the Greeks, being to the victors most glorious"
+" and most calamitous to the vanquished. For they were utterly and at all "
+"points defeated, and their sufferings were many. Army and fleet and all they"
+" ever had perished, nothing was saved and few of so many ever returned home."
+" Thus ended the Sicilian expedition.” \\n— Thucydides (“History of the "
+"Peloponnesian War”, VII. 87.6–7)"
+msgstr "\"Aquesta va ser l'acció més gran que va succeir en tota aquesta guerra, i en totes les altres guerres entre els grecs, per ser la més gloriosa per als vencedors i la més calamitosa per als vençuts. Perquè van ser derrotats absolutament i en tots els sentits, i van tenir molts patiments. Van perdre l'exèrcit, la flota i tot el que tenien, res no es va salvar i en van tornar molt pocs. I així acabà l'expedició a Sicília.\" \\n— Tucídides (\"Història de la guerra de Peloponès\", VII. 87.6-7)"
+
+#: gui/text/quotes.txt:179
+msgid ""
+"“As the world goes, justice is only a matter between equals, while the "
+"strong do what they can and the weak suffer what they must.” \\n— "
+"Thucydides, describing Athenians addressing the defeated Melians who are "
+"unwilling to surrender (“History of the Peloponnesian War”, V. 89.1)"
+msgstr "\"Segons l'ordre natural, la justícia preval en circumstàncies d'igualtat; mentre que els forts fan el que les forces els permeten, i els dèbils s'hi sotmeten.\" \\n— Tucídides, descrivint el missatge dels atenencs al poble derrotat de Melos, que no acceptava rendir-se (\"Història de la guerra del Peloponès\", V. 89.1)"
+
+#: gui/text/quotes.txt:180
+msgid ""
+"“When the Lacedaemonians were no longer able to run after them, the "
+"skirmishers \\[…] all charged them at once, casting stones, arrows, and "
+"darts to the closest man at hand.” \\n— Thucydides, describing the Spartan "
+"disaster at the Battle of Sphacteria (“History of the Peloponnesian War”, "
+"IV. 34.2)"
+msgstr "\"Quan els lacedemonis ja no eren capaços de perseguir-los, la infanteria lleugera \\[...] va carregar de cop contra ells, llançant pedres, fletxes i dards als homes que tenien més a prop.\" \\n— Tucídides, descrivint el desastre dels espartans a la batalla d'Esfactèria (\"Història de la guerra de Peloponès\", IV. 34.2)"
+
+#: gui/text/quotes.txt:181
+msgid ""
+"“The wild beasts of Italy have their caves to retire to, but the brave "
+"veterans who spilled their blood in her cause have nothing left but air and "
+"light. They wander around homeless with their wives and children.”\\n— "
+"Tiberius Gracchus, advocating for land reform to the benefit of homeless and"
+" unemployed veterans whose lands had often been bought up while they were on"
+" campaign. (Plutarch, “Parallel Lives”, “Tiberius Gracchus”, 9.4–5)"
+msgstr "\"Les bèsties salvatges d'Itàlia tenen coves on retirar-se, però als valents veterans que van vessar la seva sang per ella no els queda res més que aire i llum. Vaguen sense llar amb les seves dones i fills.\" \\n— Tiberi Grac, advocant per la reforma agrària en benefici dels veterans sense llar ni feina, les terres dels quals sovint es compraven mentre estaven a la guerra (Plutarc, \"Vides paral·leles\", \"Tiberi Grac\", 9.4–5)"
+
+#: gui/text/quotes.txt:182
+msgid ""
+"“The soldiers fight and die to support others in wealth and luxury and they "
+"are called masters of the world without owning a single piece of farmland of"
+" their own.”\\n— Tiberius Gracchus, advocating for land reform to the "
+"benefit of homeless and unemployed veterans whose lands had often been "
+"bought up while they were on campaign. (Plutarch, “Parallel Lives”, "
+"“Tiberius Gracchus”, 9.5)"
+msgstr "\"Els soldats lluiten i moren per altres que tenen riqueses, i els diuen amos del món sense que posseeixin ni un tros de terra per cultivar.\" \\n— Tiberi Grac, advocant per la reforma agrària en benefici dels veterans sense llar ni feina, les terres dels quals sovint es compraven mentre estaven a la guerra (Plutarc, \"Vides paral·leles\", \"Tiberi Grac\", sec. 9)"
+
+#: gui/text/quotes.txt:183
+msgid ""
+"“Do not trust the horse, Trojans! I fear the Greeks even when they bring "
+"gifts.” \\n— Virgil (“Aeneid”, II. 48–49)"
+msgstr "“No us refieu del cavall, troians! Temo els grecs, fins i tot quan porten regals.” \\n— Virgili (\"L'Eneida\", II. 48–49)"
+
+#: gui/text/quotes.txt:184
+msgid "“Prepared for either alternative.” \\n— Virgil (“Aeneid”, II. 61)"
+msgstr "“Preparat per a una o altra alternativa.” \\n— Virgili (\"L'Eneida\", II. 61)"
+
+#: gui/text/quotes.txt:185
+msgid ""
+"“Homer and Hesiod ascribed to their Gods all things that are a disgrace "
+"among mortals: stealing, adultery, deceiving one another.” \\n— Xenophanes "
+"(fragment 11)"
+msgstr "“Homer i Hesíode atribuïen als seus déus totes les desgràcies dels mortals: robar, l'adulteri, enganyar-se els uns als altres .” \\n— Xenofànes (fragment 11)"
+
+#: gui/text/quotes.txt:186
+msgid ""
+"“If oxen and horses and lions had hands, and could paint, and produce works "
+"of art as men do, horses would paint the forms of the gods like horses, and "
+"oxen like oxen, and make their God's bodies each in their own image.” \\n— "
+"Xenophanes (fragment 15)"
+msgstr "“Si els bous, els cavalls i els lleons tinguessin mans i poguessin pintar i produir obres d'art com els homes, els cavalls farien déus en forma de cavall, els bous, en forma de bou i pintarien el cos dels deus a imatge seva.” \\n— Xenòfanes (fragment 15)"
+
+#: gui/text/quotes.txt:187
+msgid ""
+"“The Ethiopians make their gods black and snub-nosed, the Thracians say "
+"theirs have blue eyes and red hair.” \\n— Xenophanes (fragment 16)"
+msgstr "“Els etíops representen els seus déus negres i de nas aixafat, els tracis diuen que els seus són pèl-rojos i amb els ulls blaus.” \\n— Xenòfanes (fragment 16)"
+
+#: gui/text/quotes.txt:188
+msgid ""
+"“These are the right questions to ask, in winter around the fire \\[…]: Who "
+"are you, friend? What is your land? And how old were you when the Medes "
+"\\[Persians] came?” \\n— Xenophanes, likely referring to a punitive "
+"expedition against Greek cities in Ionia (fragment 17)"
+msgstr "“Aquestes són les millors preguntes a fer a l'hivern, al voltant del foc \\[...]: Qui sou, amic? D'on veniu? I quants anys teníeu quan van venir els medes \\[perses]?” \\n— Xenòfanes, segurament referint-se a una expedició disciplinària contra els grecs a la ciutat de Jònia (fragment 17)"
+
+#: gui/text/quotes.txt:189
+msgid ""
+"“A prudent commander will never take risks unnecessarily, except when it is "
+"clear beforehand that he will have the advantage.” \\n— Xenophon (“The "
+"Cavalry General”, 4.13)"
+msgstr "“Un comandant prudent no prendrà mai riscos innecessaris, excepte quan tingui clar des del principi que tindrà l'avantatge.” \\n— Xenofont (\"El general de la cavalleria\", 4.13)"
+
+#: gui/text/quotes.txt:190
+msgid ""
+"“Attack the enemy where he is weakest, even if that is a long way off, since"
+" hard work is less dangerous than a struggle against superior forces.” \\n— "
+"Xenophon (“The Cavalry General”, sec. 4.14)"
+msgstr "“Ataqueu l'enemic on sigui més feble, encara que sigui molt lluny, ja que la feina dura és menys perillosa que una lluita contra una força superior.” \\n— Xenofont (\"El general de la cavalleria\", sec. 4.14)"
+
+#: gui/text/quotes.txt:191
+msgid ""
+"“He should be inventive, ready to exploit all circumstances, to make a small"
+" force appear large and a large one small, to appear absent when close at "
+"hand, and within striking distance when a long way off.” \\n— Xenophon (“The"
+" Cavalry General”, sec. 5)"
+msgstr "“Hauria de ser enginyós, apunt per explotar tota circumstància, per fer que una petita força sembli enorme i una d'enorme, petita; semblar invisible quan s'està a un pas, i a poca distància quan s'està lluny.” \\n— Xenòfon (\"El general de la cavalleria\", sec. 5)"
+
+#: gui/text/quotes.txt:192
+msgid ""
+"“People are glad to obey the man whom they believe to be wiser than "
+"themselves in pursuing their interests.” \\n— Xenophon (“The Education of "
+"Cyrus”, 1.6.22)"
+msgstr "“Els homes obeeixen de bon cor aquella persona que consideren que entén més que no ells mateixos pel que fa a llurs interessos.” \\n— Xenofont (\"Ciropèdia\", 1.6.22)"
+
+#: gui/text/quotes.txt:193
+msgid ""
+"“In his campaigns during summer the general must show that he can endure the"
+" sun better than the soldiers, in winter he must show he can endure cold "
+"better; and throughout all difficulties that he can endure hardships better."
+" This will help to make him loved by his men.” \\n— Xenophon (“The Education"
+" of Cyrus”, 1.6.25)"
+msgstr "“En les campanyes d'estiu, el general ha de demostrar que pot suportar el sol millor que els soldats; a l'hivern, que pot suportar millor el fred; i en totes les dificultats, que pot suportar les penúries millor que ningú. Així serà més fàcil que els homes l'adorin.” \\n— Xenofont (\"Ciropèdia\", 1.6.25)"
+
+#: gui/text/quotes.txt:194
+msgid ""
+"“Battles are decided more by the morale of men than their physical "
+"strength.” \\n— Xenophon (“The Education of Cyrus”, 3.3.20)"
+msgstr "“Les batalles es decideixen per l'estat d'ànim dels soldats, no per la seva força física.” \\n— Xenofont (\"Ciropèdia\", 3.3.20)"
+
+#: gui/text/quotes.txt:195
+msgid ""
+"“Let's not give them enough time to arrange a defense, or to even recognize "
+"that we are human beings! We've got to appear to them like an uncontrollable"
+" nightmare of shields, swords, battle-axes and spears!” \\n— Xenophon (“The "
+"Education of Cyrus”, 4.2.22)"
+msgstr "“No els donem el temps suficient per organitzar una defensa, o fins i tot reconèixer que som éssers humans! Hem de semblar un malson incontrolable d'escuts, espases, destrals i llances!” \\n— Xenofont (\"Ciropèdia\", 4.2.22)"
+
+#: gui/text/quotes.txt:196
+msgid ""
+"“I suppose you understand, men, that pursuing, dealing blows and death, "
+"plunder, fame, freedom, power – all these are prizes for the winners; the "
+"cowardly, of course, suffer the reverse.” \\n— Xenophon (“The Education of "
+"Cyrus”, 7.1.13)"
+msgstr "“Suposo que enteneu, homes, que perseguir l'enemic, colpejar i matar, el saqueig, la fama, la llibertat, el poder – són el premi dels vencedors; els covards, per descomptat, en pateixen el contrari” \\n— Xenofont (\"Ciropèdia\", 7.1.13)"
+
+#: gui/text/quotes.txt:197
+msgid ""
+"“The man who wants that must be scheming and cunning, wily and deceitful, a "
+"thief and a robber, overreaching the enemy at every point.” \\n— Xenophon on"
+" how best to gain advantage over the enemy (“The Education of Cyrus”, "
+"1.6.26)"
+msgstr "“L'home que ho vulgui ha de ser murri i astut, intel·ligent i enganyós, un lladre i un mentider, i superar l'enemic a cada moment.” \\n— Xenofont sobre la millor manera de tenir avantatge davant l'enemic (\"Ciropèdia\", 1.6.26)"
+
+#: gui/text/quotes.txt:198
+msgid ""
+"“My men have turned into women, and my women into men!” \\n— Xerxes, "
+"watching Artemisia ram a ship while most of his fleet suffered the reverse, "
+"not knowing that the sunk vessel was his own (Herodotus, “The Histories”, "
+"VIII. 88)"
+msgstr "“Els meus homes s'han convertit en dones i les meves dones en homes!” \\n— Xerxes, veient Artemísia envestint i enfonsant un vaixell mentre la majoria de la seva flota patia el contrari, sense saber que la nau que s'enfonsava era de les seves (Heròdot, \"Històries\", VIII. 88)"
+
+#: gui/text/quotes.txt:199
+msgid ""
+"“For a thinking man is where Wisdom is at home.” \\n— Zoroaster, founder of "
+"the Zoroastrian religion (“Ahunuvaiti Gatha”, yasna 30.9)"
+msgstr "\"Perquè un home que pensa és la casa de la saviesa.\" \\n— Zaratustra, fundador de la religió zoroastrista (\"Ahunuvaiti Gatha\", yasna 30.9)"
+
+#: gui/text/quotes.txt:200
+msgid ""
+"“Do not, I beg you, disturb that.” \\n— Archimedes to a Roman soldier who "
+"was about to kill him while he was studying mathematical figures on the "
+"ground (Valerius Maximus, “Memorable Deeds and Sayings” Book VIII, ext. 7)"
+msgstr "“No ho toquis, t’ho prego.” \\n— Arquímedes a un soldat romà que estava a punt de matar-lo mentre estudiava figures matemàtiques a terra (Valerius Maximus, “Fets i dites memorables” Llibre VIII, ext. 7)"
+
+#: gui/text/quotes.txt:201
+msgid ""
+"“It was a greater victory for him to conquer his resentment than to defeat "
+"the enemy.” \\n— Marcus Furius Camillus (Livy, “Ab Urbe Condita” Book 21)"
+msgstr "“Va ser una victòria més gran vèncer el seu ressentiment que derrotar l’enemic.” \\n— Marcus Furius Camillus (Livy, “Ab Urbe Condita” Llibre 21)"
+
+#: gui/text/quotes.txt:202
+msgid ""
+"“These \\[my children] are my jewels.” \\n— Cornelia Africana (mother of "
+"Tiberius and Gaius Gracchus) to a wealthy visitor showing off her opulent "
+"jewelry (Valerius Maximus, “Memorable Deeds and Sayings” Book IV, Chapter 4)"
+msgstr "“Aquests \\[els meus fills] són les meves joies.” \\n— Cornèlia Africana (mare de Tiberi i Gai Grac), a un visitant ric que presumava de les seves joies opulentes (Valeri Maximi, “Fets i dites memorables” Llibre IV, Capítol 4)"
+
+#: gui/text/quotes.txt:203
+msgid ""
+"“I will appeal to Philip, but to Philip sober.” \\n— Foreign woman to King "
+"Philip of Macedon having received a poor ruling while he was drunk (Valerius"
+" Maximus, “Memorable Deeds and Sayings” Book VI, Chapter 2)"
+msgstr "“I apel·laré a Filip, però a un Filip serè.” \\n— Dona estrangera al rei Filip de Macedònia després de rebre una mala sentència mentre ell era ebri (Valeri Maximi, “Fets i dites memorables” Llibre VI, Capítol 2)"
+
+#: gui/text/quotes.txt:204
+msgid ""
+"“Now the empire has fallen from gold to iron and rust.” \\n— Cassius Dio "
+"referring to the Year of the Five Emperors (“Roman History” Book 73)"
+msgstr "“Ara l’imperi ha caigut de l’or al ferro i al rovell.” \\n— Cassi Dió referint-se a l’Any dels Cinc Emperadors (“Història romana” Llibre 73)"
+
+#: gui/text/quotes.txt:205
+msgid ""
+"“The man who struck his wife or child, laid violent hands on the holiest of "
+"holy things.” \\n— Plutarch (“Life of Cato”, 20)"
+msgstr "“El qui colpejava la seva dona o el seu fill posava les mans amb violència sobre la cosa més sagrada.” \\n— Plutarc (“Vida de Cató”, 20)"
+
+#: gui/text/quotes.txt:206
+msgid ""
+"“It is unbearable to lose one's native land.” \\n— Seneca the Younger "
+"(“Consolatio ad Helvium”, 12.6)"
+msgstr "“És insuportable perdre la pàtria.” \\n— Sèneca el Jove (“Consolatio ad Helvium”, 12.6)"
+
+#: gui/text/quotes.txt:207
+msgid ""
+"“I believed I was perishing with the world, and the world with me.” \\n— "
+"Pliny the Younger describing the eruption of Vesuvius (Letter 2: Epistulae "
+"6.20)"
+msgstr "“Crec que jo moria amb el món, i el món amb mi.” \\n— Plini el Jove descrivint l’erupció del Vesuvi (Carta 2: Epistulae 6.20)"
+
+#: gui/text/quotes.txt:208
+msgid ""
+"“This is a woman's resolve; as for men, they may live and be slaves.” \\n— "
+"Boudicca, rallying against Roman occupation (Tacitus's Annals, Book 14, "
+"Chapter 35)"
+msgstr "“Aquesta és la determinació d’una dona; quant als homes, que visquin i siguin esclaus.” \\n— Boudicca, encoratjant la resistència contra l’ocupació romana (Annals de Tàcit, Llibre 14, Capítol 35)"
+
+#: gui/text/quotes.txt:209
+msgid ""
+"“There are two things, knowledge and opinion; one makes its possessor know, "
+"the other to be ignorant.” \\n— (Hippocratic treatise known as “The Law”, "
+"part of the Hippocratic Corpus)"
+msgstr "“Hi ha dues coses, el coneixement i l’opinió; l’una fa que qui la posseeix sàpiga, l’altra que sigui ignorant.” \\n— (Tractat hipocràtic conegut com “La Llei”, part del Corpus hipocràtic)"
+
+#: gui/text/quotes.txt:210
+msgid ""
+"“Let them hate me, so long as they fear me.” \\n— Caligula (Suetonius, The "
+"Twelve Caesars, Book 30)"
+msgstr "“Deixa que m’odiïn mentre em temin.” \\n— Calígula (Suetoni, Els Dotze Cèsars, Llibre 30)"

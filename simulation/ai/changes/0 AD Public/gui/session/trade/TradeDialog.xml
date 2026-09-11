@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="tradeDialogPanel"
+	size="50%-100 50%-264 50%+100 50%+124"
+	type="image"
+	hidden="true"
+	sprite="ModernDialog"
+>
+	<object type="text" size="50%-96 -16 50%+96 16" style="TitleText">
+		<translatableAttribute id="caption">Barter &amp; Trade</translatableAttribute>
+	</object>
+
+	<object size="24 24 100%-24 146">
+		<include file="gui/session/trade/BarterPanel.xml"/>
+	</object>
+
+	<!-- Trade -->
+	<object size="24 168 100%-24 100%-64">
+		<include file="gui/session/trade/TradePanel.xml"/>
+	</object>
+
+	<object type="button" name="closeTrade" size="50%-64 100%-50 50%+64 100%-22" style="StoneButton">
+		<translatableAttribute id="caption">Close</translatableAttribute>
+	</object>
+</object>

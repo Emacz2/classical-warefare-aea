@@ -1,0 +1,17 @@
+{
+	"settings" : {
+		"Name" : "Alpine Lakes",
+		"Script" : "alpine_lakes.js",
+		"Description" : "High Alpine mountains surrounding deep valleys strung with mountain streams and finger-like lakes.",
+		"Preview" : "alpine_lakes.png",
+		"SupportedBiomes": "alpine/",
+		"CircularMap" : true,
+		"PlayerPlacements" : [
+			"circle",
+			"river",
+			"groupedLines",
+			"randomGroup",
+			"stronghold"
+		]
+	}
+}

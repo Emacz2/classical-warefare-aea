@@ -1,0 +1,1461 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# c2e331a438add123670fbf39846b5de3_8c31b08, 2020-2021
+# Balázs Meskó, 2020
+# Balázs Úr, 2019
+# Balázs Úr, 2015-2016
+# Hunor Hőgyes, 2024
+# Csaba Balázs, 2021
+# Farkas Máté, 2019
+# Gyuris Gellért, 2014-2015
+# Im Taylor, 2025
+# Mátyás Demeter, 2015
+# Nagy András, 2017,2020
+# Raihwy, 2025
+# Scael Blu, 2021
+# Stew Den, 2014
+# Szabó Lambert, 2021-2023
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-09-09 00:26+0000\n"
+"PO-Revision-Date: 2014-06-19 17:54+0000\n"
+"Last-Translator: Raihwy, 2025\n"
+"Language-Team: Hungarian (http://app.transifex.com/wildfire-games/0ad/language/hu/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: simulation/data/attack_effects/applystatus.json
+msgctxt "effect caused by an attack"
+msgid "Various (timed) effects."
+msgstr "Különböző (időzített) hatások."
+
+#: simulation/data/attack_effects/applystatus.json
+msgctxt "effect caused by an attack"
+msgid "Apply Status"
+msgstr "Állapot alkalmazása"
+
+#: simulation/data/attack_effects/capture.json
+msgctxt "effect caused by an attack"
+msgid "Reduces capture points of a target."
+msgstr "Csökkenti a célpont elfoglalási pontjait."
+
+#: simulation/data/attack_effects/capture.json
+msgctxt "effect caused by an attack"
+msgid "Capture"
+msgstr "Elfoglalás"
+
+#: simulation/data/attack_effects/damage.json
+msgctxt "effect caused by an attack"
+msgid "Reduces the health of a target."
+msgstr "Csökkenti a célpont életerejét."
+
+#: simulation/data/attack_effects/damage.json
+msgctxt "effect caused by an attack"
+msgid "Damage"
+msgstr "Sebzés"
+
+#: simulation/data/damage_types/crush.json
+msgctxt "damage type"
+msgid "Crush"
+msgstr "Zúzás"
+
+#: simulation/data/damage_types/crush.json
+msgctxt "damage type"
+msgid "Damage caused by sheer force, like with a club or by trampling."
+msgstr "Puszta erővel – például buzogánnyal vagy taposással – okozott sebzés."
+
+#: simulation/data/damage_types/fire.json
+msgctxt "damage type"
+msgid "Fire"
+msgstr "Tűz"
+
+#: simulation/data/damage_types/fire.json
+msgctxt "damage type"
+msgid "Damage caused by burning objects, like a torch or a flaming arrow."
+msgstr "Égő tárgyakkal – például fáklyával vagy tüzes nyíllal – okozott sebzés."
+
+#: simulation/data/damage_types/hack.json
+msgctxt "damage type"
+msgid "Hack"
+msgstr "Vágás"
+
+#: simulation/data/damage_types/hack.json
+msgctxt "damage type"
+msgid ""
+"Damage caused by sharp objects cutting or chopping, like with a sword or an "
+"axe."
+msgstr "Éles vágóeszközökkel – például karddal vagy baltával – okozott sebzés."
+
+#: simulation/data/damage_types/pierce.json
+msgctxt "damage type"
+msgid "Pierce"
+msgstr "Szúrás"
+
+#: simulation/data/damage_types/pierce.json
+msgctxt "damage type"
+msgid "Damage caused by sharp pointy objects, like arrows or spears."
+msgstr "Hegyes tárgyakkal – például nyilakkal vagy lándzsával – okozott sebzés."
+
+#: simulation/data/damage_types/poison.json
+msgctxt "damage type"
+msgid "Poison"
+msgstr "Méreg"
+
+#: simulation/data/damage_types/poison.json
+msgctxt "damage type"
+msgid ""
+"Damage caused by venomous or poisoned objects, like a snake or a poisoned "
+"weapon."
+msgstr "Mérgező vagy mérgezett dolgokkal – például egy kígyóval vagy mérgezett fegyverrel – okozott sebzés."
+
+#: simulation/data/status_effects/burning.json
+msgctxt "status effect"
+msgid "This unit causes fire damage."
+msgstr "Ez az egység tűzsebzést okoz."
+
+#: simulation/data/status_effects/burning.json
+msgctxt "status effect"
+msgid "Burning"
+msgstr "Égés"
+
+#: simulation/data/status_effects/burning.json
+msgctxt "status effect"
+msgid "This unit is burning."
+msgstr "Ez az egység lángol."
+
+#: simulation/data/status_effects/poisoned.json
+msgctxt "status effect"
+msgid "This unit causes poison damage."
+msgstr "Ez az egység méregsebzést okoz."
+
+#: simulation/data/status_effects/poisoned.json
+msgctxt "status effect"
+msgid "Poisoned"
+msgstr "Mérgezett."
+
+#: simulation/data/status_effects/poisoned.json
+msgctxt "status effect"
+msgid "This unit is poisoned."
+msgstr "Ezt az egységet megmérgezték."
+
+#: simulation/templates/campaigns/army_mace_hero_alexander.xml:24
+msgid "Army of Alexander the Great."
+msgstr "Nagy Sándor serege."
+
+#: simulation/templates/campaigns/army_mace_hero_alexander.xml:25
+msgid "Army of Alexander the Great"
+msgstr "Nagy Sándor serege"
+
+#: simulation/templates/campaigns/army_mace_hero_alexander.xml:26
+#: simulation/templates/campaigns/army_mace_standard.xml:21
+#: simulation/templates/campaigns/army_spart_hero_leonidas.xml:26
+msgid "This is what an army would look like on the Strat Map."
+msgstr "Ez az, ahogy egy seregnek ki kellene néznie a stratégiai térképen."
+
+#: simulation/templates/campaigns/army_mace_standard.xml:19
+msgid "Army of Macedonia"
+msgstr "Makedónia serege"
+
+#: simulation/templates/campaigns/army_mace_standard.xml:20
+msgid "Army of Macedon"
+msgstr "Makedónia serege"
+
+#: simulation/templates/campaigns/army_spart_hero_leonidas.xml:24
+msgid "Army of Leonidas I."
+msgstr "I. Leonidász serege."
+
+#: simulation/templates/campaigns/army_spart_hero_leonidas.xml:25
+msgid "Army of Leonidas I"
+msgstr "I. Leonidász serege"
+
+#: simulation/templates/campaigns/campaign_city_minor_test.xml:21
+#: simulation/templates/campaigns/campaign_city_test.xml:21
+msgid "Market"
+msgstr "Piac"
+
+#: simulation/templates/campaigns/campaign_city_minor_test.xml:22
+#: simulation/templates/campaigns/campaign_city_test.xml:22
+msgid "Settlement"
+msgstr "Település"
+
+#: simulation/templates/campaigns/campaign_city_minor_test.xml:23
+msgid "Minor Greek Polis"
+msgstr "Kisebb görög polisz"
+
+#: simulation/templates/campaigns/campaign_city_minor_test.xml:24
+msgid "This is a minor Greek city."
+msgstr "Ez egy kisebb görög város."
+
+#: simulation/templates/campaigns/campaign_city_test.xml:23
+msgid "Greek Polis"
+msgstr "Görög polisz"
+
+#: simulation/templates/campaigns/campaign_city_test.xml:24
+msgid "This is a major Greek city."
+msgstr "Ez egy jelentősebb görög város."
+
+#: simulation/templates/campaigns/campaign_religious_test.xml:12
+msgid "Religious Sanctuary"
+msgstr "Vallási szentély"
+
+#: simulation/templates/campaigns/campaign_religious_test.xml:13
+msgid "Greek Religious Sanctuary"
+msgstr "Görög vallási szentély"
+
+#: simulation/templates/gaia/fauna_bear_black.xml:5
+#: simulation/templates/gaia/fauna_bear_brown.xml:5
+#: simulation/templates/gaia/fauna_bear_polar.xml:5
+#: simulation/templates/gaia/fauna_lion.xml:5
+#: simulation/templates/gaia/fauna_tiger.xml:5
+msgctxt "Name of an attack, usually the weapon."
+msgid "Paws"
+msgstr "Mancsok"
+
+#: simulation/templates/gaia/fauna_bear_black.xml:24
+msgid "Black Bear"
+msgstr "Fekete medve"
+
+#: simulation/templates/gaia/fauna_bear_black.xml:25
+msgid "Ursus americanus"
+msgstr "Ursus americanus"
+
+#: simulation/templates/gaia/fauna_bear_brown.xml:24
+msgid "Brown Bear"
+msgstr "Barnamedve"
+
+#: simulation/templates/gaia/fauna_bear_brown.xml:25
+msgid "Ursus arctos"
+msgstr "Ursus arctos"
+
+#: simulation/templates/gaia/fauna_bear_polar.xml:24
+msgid "Polar Bear"
+msgstr "Jegesmedve"
+
+#: simulation/templates/gaia/fauna_bear_polar.xml:25
+msgid "Ursus maritimus"
+msgstr "Ursus maritimus"
+
+#: simulation/templates/gaia/fauna_boar.xml:5
+#: simulation/templates/gaia/fauna_hippopotamus.xml:5
+#: simulation/templates/gaia/fauna_walrus.xml:5
+msgctxt "Name of an attack, usually the weapon."
+msgid "Tusks"
+msgstr "Agyar"
+
+#: simulation/templates/gaia/fauna_boar.xml:23
+msgid "Wild Boar"
+msgstr "Vaddisznó"
+
+#: simulation/templates/gaia/fauna_boar.xml:24
+msgid "Sus scrofa"
+msgstr "Sus scrofa"
+
+#: simulation/templates/gaia/fauna_camel.xml:14
+msgid "Dromedary"
+msgstr "Dromedár"
+
+#: simulation/templates/gaia/fauna_camel.xml:15
+msgid "Camelus dromedarius"
+msgstr "Camelus dromedarius (teve)"
+
+#: simulation/templates/gaia/fauna_cattle_bull.xml:5
+msgctxt "Name of an attack, usually the weapon."
+msgid "Horns"
+msgstr "Szarv"
+
+#: simulation/templates/gaia/fauna_cattle_bull.xml:25
+msgid "Bull"
+msgstr "Bika"
+
+#: simulation/templates/gaia/fauna_cattle_bull.xml:26
+#: simulation/templates/gaia/fauna_cattle_cow.xml:21
+msgid "Bos taurus taurus"
+msgstr "Bos taurus taurus"
+
+#: simulation/templates/gaia/fauna_cattle_cow.xml:20
+msgid "Cow"
+msgstr "Marha"
+
+#: simulation/templates/gaia/fauna_cattle_sanga.xml:20
+msgid "Sanga Cattle"
+msgstr "Sanga marha"
+
+#: simulation/templates/gaia/fauna_cattle_sanga.xml:21
+msgid "Bos taurus africanus"
+msgstr "Bos taurus africanus"
+
+#: simulation/templates/gaia/fauna_cattle_zebu.xml:20
+msgid "Zebu"
+msgstr "Zebu"
+
+#: simulation/templates/gaia/fauna_cattle_zebu.xml:21
+msgid "Bos taurus indicus"
+msgstr "Bos taurus indicus"
+
+#: simulation/templates/gaia/fauna_chicken.xml:11
+msgid "Chicken"
+msgstr "Csirke"
+
+#: simulation/templates/gaia/fauna_chicken.xml:12
+msgid "Gallus gallus domesticus"
+msgstr "Gallus gallus domesticus"
+
+#: simulation/templates/gaia/fauna_crocodile_nile.xml:5
+msgctxt "Name of an attack, usually the weapon."
+msgid "Teeth"
+msgstr "Fog"
+
+#: simulation/templates/gaia/fauna_crocodile_nile.xml:23
+msgid "Nile Crocodile"
+msgstr "Nílusi krokodil"
+
+#: simulation/templates/gaia/fauna_crocodile_nile.xml:24
+msgid "Crocodylus niloticus"
+msgstr "Crocodylus niloticus"
+
+#: simulation/templates/gaia/fauna_deer.xml:11
+msgid "Red Deer"
+msgstr "Gímszarvas"
+
+#: simulation/templates/gaia/fauna_deer.xml:12
+msgid "Cervus elaphus"
+msgstr "Cervus elaphus"
+
+#: simulation/templates/gaia/fauna_dog_mastiff.xml:5
+#: simulation/templates/gaia/fauna_dog_wolfhound.xml:5
+#: simulation/templates/gaia/fauna_fox_arctic.xml:5
+#: simulation/templates/gaia/fauna_fox_red.xml:5
+#: simulation/templates/gaia/fauna_wolf.xml:5
+msgctxt "Name of an attack, usually the weapon."
+msgid "Fangs"
+msgstr "Agyarak"
+
+#: simulation/templates/gaia/fauna_dog_mastiff.xml:24
+msgid "Mastiff"
+msgstr "Masztiff"
+
+#: simulation/templates/gaia/fauna_dog_mastiff.xml:25
+#: simulation/templates/gaia/fauna_dog_wolfhound.xml:25
+msgid "Canis lupus familiaris"
+msgstr "Canis lupus familiaris"
+
+#: simulation/templates/gaia/fauna_dog_wolfhound.xml:24
+msgid "Wolfhound"
+msgstr "Farkaskutya"
+
+#: simulation/templates/gaia/fauna_donkey.xml:11
+msgid "Donkey"
+msgstr "Szamár"
+
+#: simulation/templates/gaia/fauna_donkey.xml:12
+msgid "Equus africanus asinus"
+msgstr "Equus africanus asinus"
+
+#: simulation/templates/gaia/fauna_elephant_african_bush.xml:5
+#: simulation/templates/gaia/fauna_elephant_asian.xml:5
+#: simulation/templates/gaia/fauna_elephant_north_african.xml:5
+msgctxt "Name of an attack, usually the weapon."
+msgid "Trunk"
+msgstr "Ormány"
+
+#: simulation/templates/gaia/fauna_elephant_african_bush.xml:25
+msgid "African Bush Elephant"
+msgstr "Afrikai elefánt"
+
+#: simulation/templates/gaia/fauna_elephant_african_bush.xml:26
+#: simulation/templates/gaia/fauna_elephant_african_infant.xml:12
+msgid "Loxodonta africana"
+msgstr "Loxodonta africana"
+
+#: simulation/templates/gaia/fauna_elephant_african_infant.xml:11
+msgid "African Bush Elephant Calf"
+msgstr "Afrikai elefántborjú"
+
+#: simulation/templates/gaia/fauna_elephant_asian.xml:25
+msgid "Asian Elephant"
+msgstr "Ázsiai elefánt"
+
+#: simulation/templates/gaia/fauna_elephant_asian.xml:26
+#: simulation/templates/gaia/fauna_elephant_asian_infant.xml:12
+msgid "Elephas maximus"
+msgstr "Elephas maximus"
+
+#: simulation/templates/gaia/fauna_elephant_asian_infant.xml:11
+msgid "Asian Elephant Calf"
+msgstr "Ázsiai elefántborjú"
+
+#: simulation/templates/gaia/fauna_elephant_north_african.xml:25
+msgid "African Forest Elephant"
+msgstr "Erdei elefánt"
+
+#: simulation/templates/gaia/fauna_elephant_north_african.xml:26
+msgid "Loxodonta cyclotis"
+msgstr "Loxodonta cyclotis"
+
+#: simulation/templates/gaia/fauna_fox_arctic.xml:24
+msgid "Arctic Fox"
+msgstr "Sarki róka"
+
+#: simulation/templates/gaia/fauna_fox_arctic.xml:25
+msgid "Vulpes lagopus"
+msgstr "Vulpes lagopus"
+
+#: simulation/templates/gaia/fauna_fox_red.xml:24
+msgid "Red Fox"
+msgstr "Vörös róka"
+
+#: simulation/templates/gaia/fauna_fox_red.xml:25
+msgid "Vulpes vulpes"
+msgstr "Vulpes vulpes"
+
+#: simulation/templates/gaia/fauna_gazelle.xml:11
+msgid "Thomson's Gazelle"
+msgstr "Thomson-gazella"
+
+#: simulation/templates/gaia/fauna_gazelle.xml:12
+msgid "Eudorcas thomsonii"
+msgstr "Eudorcas thomsonii"
+
+#: simulation/templates/gaia/fauna_giraffe.xml:11
+msgid "Giraffe"
+msgstr "Zsiráf"
+
+#: simulation/templates/gaia/fauna_giraffe.xml:12
+#: simulation/templates/gaia/fauna_giraffe_infant.xml:12
+msgid "Giraffa camelopardalis"
+msgstr "Giraffa camelopardalis"
+
+#: simulation/templates/gaia/fauna_giraffe_infant.xml:11
+msgid "Juvenile Giraffe"
+msgstr "Fiatal zsiráf"
+
+#: simulation/templates/gaia/fauna_goat.xml:20
+msgid "Goat"
+msgstr "Kecske"
+
+#: simulation/templates/gaia/fauna_goat.xml:21
+msgid "Capra aegagrus hircus"
+msgstr "Capra aegagrus hircus"
+
+#: simulation/templates/gaia/fauna_hippopotamus.xml:24
+msgid "Hippopotamus"
+msgstr "Víziló"
+
+#: simulation/templates/gaia/fauna_hippopotamus.xml:25
+msgid "Hippopotamus amphibius"
+msgstr "Hippopotamus amphibius"
+
+#: simulation/templates/gaia/fauna_horse.xml:14
+msgid "Horse"
+msgstr "Ló"
+
+#: simulation/templates/gaia/fauna_horse.xml:15
+msgid "Equus ferus caballus"
+msgstr "Equus ferus caballus"
+
+#: simulation/templates/gaia/fauna_horse_pony.xml:8
+msgid "Pony"
+msgstr "Póni"
+
+#: simulation/templates/gaia/fauna_lion.xml:23
+msgid "Lion"
+msgstr "Oroszlán"
+
+#: simulation/templates/gaia/fauna_lion.xml:24
+msgid "Panthera leo"
+msgstr "Panthera leo"
+
+#: simulation/templates/gaia/fauna_lioness.xml:4
+msgid "Lioness"
+msgstr "Nőstény oroszlán"
+
+#: simulation/templates/gaia/fauna_muskox.xml:11
+msgid "Muskox"
+msgstr "Pézsmatulok"
+
+#: simulation/templates/gaia/fauna_muskox.xml:12
+msgid "Ovibos moschatus"
+msgstr "Ovibos moschatus"
+
+#: simulation/templates/gaia/fauna_peacock.xml:11
+msgid "Peacock"
+msgstr "Páva"
+
+#: simulation/templates/gaia/fauna_peacock.xml:12
+msgid "Pavo cristatus"
+msgstr "Pavo cristatus"
+
+#: simulation/templates/gaia/fauna_pig.xml:20
+msgid "Pig"
+msgstr "Disznó"
+
+#: simulation/templates/gaia/fauna_pig.xml:21
+msgid "Sus scrofa domesticus"
+msgstr "Sus scrofa domesticus"
+
+#: simulation/templates/gaia/fauna_pig_flaming.xml:18
+msgid "Flaming Pig"
+msgstr "Égő malac"
+
+#: simulation/templates/gaia/fauna_piglet.xml:11
+msgid "Piglet"
+msgstr "Malac"
+
+#: simulation/templates/gaia/fauna_rabbit.xml:11
+msgid "Rabbit"
+msgstr "Nyúl"
+
+#: simulation/templates/gaia/fauna_rabbit.xml:12
+msgid "Oryctolagus cuniculus"
+msgstr "Oryctolagus cuniculus"
+
+#: simulation/templates/gaia/fauna_rhinoceros_white.xml:5
+msgctxt "Name of an attack, usually the weapon."
+msgid "Horn"
+msgstr "Szarv"
+
+#: simulation/templates/gaia/fauna_rhinoceros_white.xml:24
+msgid "White Rhinoceros"
+msgstr "Szélesszájú orrszarvú"
+
+#: simulation/templates/gaia/fauna_rhinoceros_white.xml:25
+msgid "Ceratotherium simum"
+msgstr "Ceratotherium simum"
+
+#: simulation/templates/gaia/fauna_shark.xml:12
+msgid "Great White Shark"
+msgstr "Fehér cápa"
+
+#: simulation/templates/gaia/fauna_shark.xml:13
+msgid "Carcharodon carcharias"
+msgstr "Carcharodon carcharias"
+
+#: simulation/templates/gaia/fauna_sheep.xml:20
+msgid "Sheep"
+msgstr "Bárány"
+
+#: simulation/templates/gaia/fauna_sheep.xml:21
+msgid "Ovis aries"
+msgstr "Ovis aries"
+
+#: simulation/templates/gaia/fauna_tiger.xml:23
+msgid "Tiger"
+msgstr "Tigris"
+
+#: simulation/templates/gaia/fauna_tiger.xml:24
+msgid "Panthera tigris"
+msgstr "Panthera tigris"
+
+#: simulation/templates/gaia/fauna_walrus.xml:24
+msgid "Walrus"
+msgstr "Rozmár"
+
+#: simulation/templates/gaia/fauna_walrus.xml:25
+msgid "Odobenus rosmarus"
+msgstr "Odobenus rosmarus"
+
+#: simulation/templates/gaia/fauna_whale_fin.xml:11
+msgid "Fin Whale"
+msgstr "Barázdásbálna"
+
+#: simulation/templates/gaia/fauna_whale_fin.xml:12
+msgid "Balaenoptera physalus"
+msgstr "Balaenoptera physalus"
+
+#: simulation/templates/gaia/fauna_whale_humpback.xml:11
+msgid "Humpback Whale"
+msgstr "Hosszúszárnyú bálna"
+
+#: simulation/templates/gaia/fauna_whale_humpback.xml:12
+msgid "Megaptera novaeangliae"
+msgstr "Megaptera novaeangliae"
+
+#: simulation/templates/gaia/fauna_wildebeest.xml:11
+msgid "Blue Wildebeest"
+msgstr "Csíkos gnú"
+
+#: simulation/templates/gaia/fauna_wildebeest.xml:12
+msgid "Connochaetes taurinus"
+msgstr "Connochaetes taurinus"
+
+#: simulation/templates/gaia/fauna_wolf.xml:24
+msgid "Wolf"
+msgstr "Farkas"
+
+#: simulation/templates/gaia/fauna_wolf.xml:25
+msgid "Canis lupus"
+msgstr "Canis lupus"
+
+#: simulation/templates/gaia/fauna_wolf_arctic.xml:4
+msgid "Arctic Wolf"
+msgstr "Sarki farkas"
+
+#: simulation/templates/gaia/fauna_zebra.xml:11
+msgid "Common Zebra"
+msgstr "Alföldi zebra"
+
+#: simulation/templates/gaia/fauna_zebra.xml:12
+msgid "Equus quagga"
+msgstr "Equus quagga"
+
+#: simulation/templates/gaia/fish/tilapia.xml:4
+msgid "Tilapia"
+msgstr "Tilápia"
+
+#: simulation/templates/gaia/fish/tuna.xml:4
+msgid "Tuna"
+msgstr "Tonhal"
+
+#: simulation/templates/gaia/fruit/apple.xml:7
+msgid "Apple"
+msgstr "Alma"
+
+#: simulation/templates/gaia/fruit/banana.xml:7
+msgid "Banana"
+msgstr "Banán"
+
+#: simulation/templates/gaia/fruit/berry_01.xml:4
+#: simulation/templates/gaia/fruit/berry_02.xml:4
+#: simulation/templates/gaia/fruit/berry_03.xml:4
+#: simulation/templates/gaia/fruit/berry_04.xml:4
+#: simulation/templates/gaia/fruit/berry_05.xml:4
+msgid "Berries"
+msgstr "Bogyók"
+
+#: simulation/templates/gaia/fruit/date.xml:8
+#: simulation/templates/gaia/tree/date_palm.xml:4
+#: simulation/templates/gaia/tree/date_palm_dead.xml:4
+msgid "Date Palm"
+msgstr "Datolyapálma"
+
+#: simulation/templates/gaia/fruit/fig.xml:8
+msgid "Fig"
+msgstr "Füge"
+
+#: simulation/templates/gaia/fruit/grapes.xml:4
+msgid "Grapes"
+msgstr "Szőlő"
+
+#: simulation/templates/gaia/rooster.xml:4
+msgid "Rooster"
+msgstr "Kakas"
+
+#: simulation/templates/gaia/ruins/column_doric.xml:8
+msgid "Doric Column"
+msgstr "Dór oszlop"
+
+#: simulation/templates/gaia/ruins/metal_statue_apollo.xml:9
+msgid "Apollo"
+msgstr "Apollo"
+
+#: simulation/templates/gaia/ruins/metal_statue_discobolus.xml:8
+msgid "Discobolus"
+msgstr "Diszkobolosz"
+
+#: simulation/templates/gaia/ruins/metal_statue_isis.xml:9
+msgid "Isis Cult Image"
+msgstr "Ízisz kultusz kép"
+
+#: simulation/templates/gaia/ruins/metal_statue_poseidon.xml:8
+msgid "Poseidon"
+msgstr "Poszeidón"
+
+#: simulation/templates/gaia/ruins/metal_statue_wolf.xml:9
+msgid "Capitoline Wolf"
+msgstr "Capitoliumi farkas"
+
+#: simulation/templates/gaia/ruins/pyramid_great.xml:8
+msgid "Great Pyramid"
+msgstr "Nagy piramis"
+
+#: simulation/templates/gaia/ruins/pyramid_minor.xml:8
+msgid "Minor Pyramid"
+msgstr "Kisebb piramis"
+
+#: simulation/templates/gaia/ruins/roman_rostrum.xml:8
+msgid "Roman Rostrum"
+msgstr "Római hajóorr"
+
+#: simulation/templates/gaia/ruins/standing_stone.xml:8
+#: simulation/templates/gaia/treasure/standing_stone.xml:8
+msgid "Celtic Standing Stone"
+msgstr "Kelta állókő"
+
+#: simulation/templates/gaia/ruins/stone_column_roman.xml:8
+msgid "Roman Column"
+msgstr "Római oszlop"
+
+#: simulation/templates/gaia/ruins/stone_statues_egyptian.xml:8
+msgid "Egyptian Statue"
+msgstr "Egyiptomi szobor"
+
+#: simulation/templates/gaia/ruins/stone_statues_kushite.xml:8
+msgid "Kushite Statue"
+msgstr "Kusita szobor"
+
+#: simulation/templates/gaia/ruins/stone_statues_kushite_bird.xml:9
+#: simulation/templates/gaia/ruins/stone_statues_kushite_lion.xml:9
+#: simulation/templates/gaia/ruins/stone_statues_kushite_ram.xml:9
+#: simulation/templates/gaia/ruins/stone_structure_farmstead.xml:9
+#: simulation/templates/gaia/ruins/stone_structure_house.xml:9
+#: simulation/templates/gaia/ruins/stone_structure_small.xml:9
+#: simulation/templates/gaia/ruins/stone_structure_tower.xml:9
+msgid "Stone Resource"
+msgstr "Kőforrás"
+
+#: simulation/templates/gaia/ruins/stone_statues_kushite_bird.xml:10
+msgid "Kushite Bird Statue"
+msgstr "Kusita madárszobor"
+
+#: simulation/templates/gaia/ruins/stone_statues_kushite_lion.xml:10
+msgid "Apademak Lion Statue"
+msgstr "Apademak oroszlán szobor"
+
+#: simulation/templates/gaia/ruins/stone_statues_kushite_ram.xml:10
+msgid "Ammon-Ra Ram Statue"
+msgstr "Ámon-Rá kos szobor"
+
+#: simulation/templates/gaia/ruins/stone_statues_persian_lamassu.xml:8
+msgid "Lamassu Statue"
+msgstr "Lamassu szobor"
+
+#: simulation/templates/gaia/ruins/stone_statues_roman.xml:8
+msgid "Roman Statue"
+msgstr "Római szobor"
+
+#: simulation/templates/gaia/ruins/stone_structure_farmstead.xml:10
+msgid "Ruined Farmstead"
+msgstr "Romos tanya"
+
+#: simulation/templates/gaia/ruins/stone_structure_house.xml:10
+msgid "Ruined House"
+msgstr "Romos ház"
+
+#: simulation/templates/gaia/ruins/stone_structure_small.xml:10
+msgid "Ruined Structure"
+msgstr "Romos építmény"
+
+#: simulation/templates/gaia/ruins/stone_structure_tower.xml:10
+msgid "Ruined Tower"
+msgstr "Romos torony"
+
+#: simulation/templates/gaia/ruins/unfinished_greek_temple.xml:8
+msgid "Unfinished Greek Temple"
+msgstr "Befejezetlen görög templom"
+
+#: simulation/templates/gaia/treasure/food_barrel.xml:8
+#: simulation/templates/gaia/treasure/food_bin.xml:8
+#: simulation/templates/gaia/treasure/food_crate.xml:8
+#: simulation/templates/gaia/treasure/food_jars.xml:8
+msgid "Food Treasure"
+msgstr "Élelemkincs"
+
+#: simulation/templates/gaia/treasure/food_barrels_buried.xml:8
+msgid "Half-buried Barrels"
+msgstr "Félig elásott hordók"
+
+#: simulation/templates/gaia/treasure/food_persian_big.xml:8
+msgid "Persian Food Stores"
+msgstr "Perzsa élelemraktárak"
+
+#: simulation/templates/gaia/treasure/food_persian_small.xml:8
+msgid "Persian Food Treasure"
+msgstr "Perzsa élelemkincs"
+
+#: simulation/templates/gaia/treasure/golden_fleece.xml:8
+msgid "Golden Fleece"
+msgstr "Aranygyapjú"
+
+#: simulation/templates/gaia/treasure/metal.xml:8
+msgid "Secret Box"
+msgstr "Titkos doboz"
+
+#: simulation/templates/gaia/treasure/metal_persian_big.xml:8
+msgid "Persian Wares"
+msgstr "Perzsa áruk"
+
+#: simulation/templates/gaia/treasure/metal_persian_small.xml:8
+msgid "Persian Rugs"
+msgstr "Perzsa szőnyegek"
+
+#: simulation/templates/gaia/treasure/metal_weapons_small.xml:8
+msgid "Iron Weapons"
+msgstr "Vasfegyverek"
+
+#: simulation/templates/gaia/treasure/pegasus.xml:8
+msgid "Pegasus"
+msgstr "Pegazus"
+
+#: simulation/templates/gaia/treasure/shipwreck.xml:8
+#: simulation/templates/gaia/treasure/shipwreck_ram_bow.xml:8
+#: simulation/templates/gaia/treasure/shipwreck_sail_boat.xml:8
+#: simulation/templates/gaia/treasure/shipwreck_sail_boat_cut.xml:8
+msgid "Shipwreck"
+msgstr "Hajóroncs"
+
+#: simulation/templates/gaia/treasure/shipwreck_debris.xml:8
+msgid "Shipwreck Cargo"
+msgstr "Hajóroncs rakomány"
+
+#: simulation/templates/gaia/treasure/special_argo.xml:8
+msgid "The Argo"
+msgstr "Az Argó"
+
+#: simulation/templates/gaia/treasure/special_argo.xml:9
+msgid "Mythological Treasure"
+msgstr "Mitológiai kincs"
+
+#: simulation/templates/gaia/treasure/special_argo.xml:10
+msgid "The mythological ship of the hero Theseus and his Argonauts."
+msgstr "A mitológiai hős Thészeusz és Argonautái hajója."
+
+#: simulation/templates/gaia/treasure/stone.xml:8
+msgid "Stone Treasure"
+msgstr "Kőkincs"
+
+#: simulation/templates/gaia/treasure/stone_pile_granite.xml:4
+msgid "Cut Granite"
+msgstr "Vágott gránit"
+
+#: simulation/templates/gaia/treasure/stone_pile_granite_large.xml:8
+msgid "Cut Stone"
+msgstr "Vágott kő"
+
+#: simulation/templates/gaia/treasure/stone_pile_red.xml:8
+#: simulation/templates/gaia/treasure/stone_pile_sandstone.xml:4
+msgid "Cut Sandstone"
+msgstr "Vágott homokkő"
+
+#: simulation/templates/gaia/treasure/wood.xml:8
+msgid "Wood Treasure"
+msgstr "Fakincs"
+
+#: simulation/templates/gaia/treasure/wood_lumber.xml:8
+msgid "Milled Lumber"
+msgstr "Fűrészelt faanyag"
+
+#: simulation/templates/gaia/tree/acacia.xml:4
+msgid "Acacia"
+msgstr "Akácia"
+
+#: simulation/templates/gaia/tree/acacia_large.xml:4
+msgid "Ancient Acacia"
+msgstr "Ősi Akác"
+
+#: simulation/templates/gaia/tree/aleppo_pine.xml:4
+msgid "Aleppo Pine"
+msgstr "Aleppó-fenyő"
+
+#: simulation/templates/gaia/tree/bamboo.xml:4
+#: simulation/templates/gaia/tree/bamboo_single.xml:4
+msgid "Bamboo"
+msgstr "Bambusz"
+
+#: simulation/templates/gaia/tree/bamboo_dragon.xml:8
+msgid "Dragon Bamboo"
+msgstr "Óriásbambusz"
+
+#: simulation/templates/gaia/tree/banyan.xml:8
+msgid "Banyan"
+msgstr "Banyán"
+
+#: simulation/templates/gaia/tree/baobab.xml:8
+#: simulation/templates/gaia/tree/baobab_3_mature.xml:8
+#: simulation/templates/gaia/tree/baobab_4_dead.xml:8
+msgid "Baobab"
+msgstr "Majomkenyérfa"
+
+#: simulation/templates/gaia/tree/baobab_1_sapling.xml:4
+msgid "Baobab Sapling"
+msgstr "Majomkenyérfa csemete"
+
+#: simulation/templates/gaia/tree/baobab_2_young.xml:4
+msgid "Young Baobab"
+msgstr "Fiatal majomkenyérfa"
+
+#: simulation/templates/gaia/tree/bush_badlands.xml:4
+msgid "Hardy Bush"
+msgstr "Klímatűrő bokor"
+
+#: simulation/templates/gaia/tree/bush_mediterranean.xml:4
+msgid "Scrub"
+msgstr "Cserje"
+
+#: simulation/templates/gaia/tree/bush_mediterranean_dry.xml:4
+msgid "Dry Scrub"
+msgstr "Száraz bozótos"
+
+#: simulation/templates/gaia/tree/carob.xml:4
+msgid "Carob"
+msgstr "Szentjánoskenyérfa"
+
+#: simulation/templates/gaia/tree/cedar_atlas_1_sapling.xml:4
+msgid "Atlas Cedar Sapling"
+msgstr "Atlaszcédrus csemete"
+
+#: simulation/templates/gaia/tree/cedar_atlas_2_young.xml:4
+#: simulation/templates/gaia/tree/cedar_atlas_3_mature.xml:4
+#: simulation/templates/gaia/tree/cedar_atlas_4_dead.xml:4
+msgid "Atlas Cedar"
+msgstr "Atlaszcédrus"
+
+#: simulation/templates/gaia/tree/cherry_blossom.xml:4
+msgid "Cherry Blossom"
+msgstr "Cseresznyevirág"
+
+#: simulation/templates/gaia/tree/cretan_date_palm_patch.xml:8
+#: simulation/templates/gaia/tree/cretan_date_palm_short.xml:4
+#: simulation/templates/gaia/tree/cretan_date_palm_tall.xml:4
+msgid "Cretan Date Palm"
+msgstr "Krétai datolyapálma"
+
+#: simulation/templates/gaia/tree/cypress.xml:4
+#: simulation/templates/gaia/tree/cypress_wild.xml:4
+#: simulation/templates/gaia/tree/cypress_windswept.xml:4
+msgid "Cypress"
+msgstr "Ciprus"
+
+#: simulation/templates/gaia/tree/dead.xml:4
+#: simulation/templates/gaia/tree/temperate.xml:4
+#: simulation/templates/gaia/tree/temperate_autumn.xml:4
+#: simulation/templates/gaia/tree/temperate_winter.xml:4
+msgid "Deciduous Tree"
+msgstr "Lombhullató fa"
+
+#: simulation/templates/gaia/tree/elm.xml:4
+#: simulation/templates/gaia/tree/elm_dead.xml:4
+msgid "Elm"
+msgstr "Szilfa"
+
+#: simulation/templates/gaia/tree/euro_beech.xml:4
+#: simulation/templates/gaia/tree/euro_beech_aut.xml:4
+msgid "European Beech"
+msgstr "Európai bükk"
+
+#: simulation/templates/gaia/tree/euro_birch.xml:4
+msgid "Silver Birch"
+msgstr "Közönséges nyír"
+
+#: simulation/templates/gaia/tree/fir.xml:4
+#: simulation/templates/gaia/tree/fir_winter.xml:4
+msgid "Fir"
+msgstr "Jegenyefenyő"
+
+#: simulation/templates/gaia/tree/fir_sapling.xml:4
+msgid "Fir Sapling"
+msgstr "Jegenyefenyő csemete"
+
+#: simulation/templates/gaia/tree/juniper_prickly.xml:4
+msgid "Prickly Juniper"
+msgstr "Vörös boróka"
+
+#: simulation/templates/gaia/tree/mangrove.xml:4
+msgid "Mangrove"
+msgstr "Mangrove"
+
+#: simulation/templates/gaia/tree/maple.xml:4
+#: simulation/templates/gaia/tree/maple_autumn.xml:4
+msgid "Maple"
+msgstr "Juharfa"
+
+#: simulation/templates/gaia/tree/medit_fan_palm.xml:4
+msgid "Mediterranean Fan Palm"
+msgstr "Lószőrpálma"
+
+#: simulation/templates/gaia/tree/oak.xml:4
+#: simulation/templates/gaia/tree/oak_aut.xml:4
+#: simulation/templates/gaia/tree/oak_aut_new.xml:4
+#: simulation/templates/gaia/tree/oak_dead.xml:4
+#: simulation/templates/gaia/tree/oak_new.xml:4
+msgid "Oak"
+msgstr "Tölgy"
+
+#: simulation/templates/gaia/tree/oak_holly.xml:4
+#: simulation/templates/gaia/tree/oak_holly_autumn.xml:4
+msgid "Holly Oak"
+msgstr "Magyaltölgy"
+
+#: simulation/templates/gaia/tree/oak_hungarian.xml:4
+#: simulation/templates/gaia/tree/oak_hungarian_autumn.xml:4
+msgid "Hungarian Oak"
+msgstr "Magyar tölgy"
+
+#: simulation/templates/gaia/tree/oak_large.xml:4
+msgid "Large Oak"
+msgstr "Nagy tölgy"
+
+#: simulation/templates/gaia/tree/olive.xml:7
+msgid "Olive"
+msgstr "Olajbogyó"
+
+#: simulation/templates/gaia/tree/palm_areca.xml:4
+msgid "Areca Palm"
+msgstr "Aranypálma"
+
+#: simulation/templates/gaia/tree/palm_doum.xml:4
+msgid "Doum Palm"
+msgstr "Mézeskalács-pálma"
+
+#: simulation/templates/gaia/tree/palm_palmyra.xml:4
+msgid "Palmyra Palm"
+msgstr "Palmira-pálma"
+
+#: simulation/templates/gaia/tree/palm_royal.xml:4
+msgid "Royal Palm"
+msgstr "Királypálma"
+
+#: simulation/templates/gaia/tree/palm_tropic.xml:4
+msgid "Palm"
+msgstr "Pálma"
+
+#: simulation/templates/gaia/tree/palm_tropical.xml:4
+msgid "Tropical Palm"
+msgstr "Trópusi pálma"
+
+#: simulation/templates/gaia/tree/pine.xml:4
+#: simulation/templates/gaia/tree/pine_w.xml:4
+msgid "Pine"
+msgstr "Fenyő"
+
+#: simulation/templates/gaia/tree/pine_black.xml:4
+#: simulation/templates/gaia/tree/pine_black_dead.xml:4
+msgid "Black Pine"
+msgstr "Feketefenyő"
+
+#: simulation/templates/gaia/tree/pine_maritime.xml:4
+#: simulation/templates/gaia/tree/pine_maritime_short.xml:4
+msgid "Maritime Pine"
+msgstr "Tengerparti fenyő"
+
+#: simulation/templates/gaia/tree/poplar.xml:4
+#: simulation/templates/gaia/tree/poplar_dead.xml:4
+#: simulation/templates/gaia/tree/poplar_lombardy_autumn.xml:4
+msgid "Poplar"
+msgstr "Nyárfa"
+
+#: simulation/templates/gaia/tree/poplar_lombardy.xml:4
+#: simulation/templates/gaia/tree/poplar_lombardy_dead.xml:4
+msgid "Black Poplar"
+msgstr "Fekete nyár"
+
+#: simulation/templates/gaia/tree/senegal_date_palm.xml:4
+msgid "Senegal Date Palm"
+msgstr "Szenegáli datolyapálma"
+
+#: simulation/templates/gaia/tree/strangler.xml:8
+msgid "Strangler Fig"
+msgstr "Fojtogató füge"
+
+#: simulation/templates/gaia/tree/tamarix.xml:4
+msgid "Tamarix"
+msgstr "Tamariszkusz"
+
+#: simulation/templates/gaia/tree/teak.xml:8
+msgid "Teak"
+msgstr "Tikfa"
+
+#: simulation/templates/gaia/tree/toona.xml:4
+msgid "Toona"
+msgstr "Kínai mahagón"
+
+#: simulation/templates/gaia/tree/tropic_rainforest.xml:4
+msgid "Rainforest Tree"
+msgstr "Esőerdei fa"
+
+#: simulation/templates/mixins/builder.xml:44
+msgid "Builder"
+msgstr "Építő"
+
+#: simulation/templates/mixins/bush.xml:4
+msgid "Bush"
+msgstr "Bokor"
+
+#: simulation/templates/mixins/cataphract.xml:14
+msgid "Cataphract Cavalry"
+msgstr "Kataphraktosz lovasság"
+
+#: simulation/templates/mixins/cataphract.xml:15
+msgid "Cataphract"
+msgstr "Kataphraktosz "
+
+#: simulation/templates/mixins/chariot.xml:16
+msgid "Chariot"
+msgstr "Harci szekér"
+
+#: simulation/templates/mixins/fireship.xml:25
+msgid "Ignited"
+msgstr "Meggyújt"
+
+#: simulation/templates/mixins/longsword.xml:22
+msgid "Longsword"
+msgstr "Hosszú kard"
+
+#: simulation/templates/mixins/mercenary.xml:29
+msgid "Mercenary"
+msgstr "Zsoldos"
+
+#: simulation/templates/mixins/pirate.xml:29
+msgid "Pirate"
+msgstr "Kalóz"
+
+#: simulation/templates/mixins/rotary_mill.xml:17
+#: simulation/templates/mixins/rotary_mill.xml:18
+msgid "Rotary Mill"
+msgstr "Forgómalom"
+
+#: simulation/templates/mixins/rotary_mill.xml:19
+msgid "RotaryMill"
+msgstr "Forgómalom"
+
+#: simulation/templates/mixins/rotary_mill.xml:22
+msgid ""
+"Dropsite for harvested Food. Capture one of these to increase nearby food "
+"production."
+msgstr "Lerakóhely az összegyűjtött élelem számára. Elfoglalásával hatékonyabbá válik közelében az élelemtermelés."
+
+#: simulation/templates/mixins/shrine.xml:12
+#: simulation/templates/mixins/shrine.xml:13
+#: simulation/templates/mixins/shrine.xml:14
+msgid "Shrine"
+msgstr "Szentély"
+
+#: simulation/templates/mixins/shrine.xml:18
+msgid "Train Elite Healers and heal garrisoned units."
+msgstr "Elit gyógyítók képzése és a helyőrségben lévő egységek gyógyítása."
+
+#: simulation/templates/mixins/trading_post.xml:8
+msgid "Trading Post"
+msgstr "Kereskedőház"
+
+#: simulation/templates/obstructors/movement_24x24.xml:9
+#: simulation/templates/obstructors/movement_36x36.xml:9
+#: simulation/templates/obstructors/movement_8x36.xml:9
+#: simulation/templates/obstructors/movement_8x8.xml:9
+msgid "Movement Obstructor"
+msgstr "Mozgás akadályozó"
+
+#: simulation/templates/obstructors/movement_24x24.xml:11
+#: simulation/templates/obstructors/movement_36x36.xml:11
+#: simulation/templates/obstructors/movement_8x36.xml:11
+#: simulation/templates/obstructors/movement_8x8.xml:11
+msgid "Placement obstructor to prevent movement and construction."
+msgstr "Elhelyezési akadályozó a mozgás és az építkezés megakadályozására."
+
+#: simulation/templates/obstructors/placement.xml:10
+msgid "Obstructor"
+msgstr "Akadály"
+
+#: simulation/templates/obstructors/placement.xml:12
+#: simulation/templates/obstructors/placement_24x24.xml:11
+#: simulation/templates/obstructors/placement_36x36.xml:11
+#: simulation/templates/obstructors/placement_8x36.xml:11
+#: simulation/templates/obstructors/placement_8x8.xml:11
+msgid "Placement obstructor to prevent construction but not movement"
+msgstr "Elhelyezkedési akadályozó az építkezés megakadályozására, de a mozgást nem."
+
+#: simulation/templates/obstructors/placement_24x24.xml:9
+#: simulation/templates/obstructors/placement_36x36.xml:9
+#: simulation/templates/obstructors/placement_8x36.xml:9
+#: simulation/templates/obstructors/placement_8x8.xml:9
+msgid "Placement Obstructor"
+msgstr "Elhelyezkedési akadály"
+
+#: simulation/templates/skirmish/structures/default_house_10.xml:5
+msgid ""
+"Changes in a 10-pop house for civilisations with those houses, is deleted "
+"for other civs"
+msgstr "Átváltozik egy 10 személyes házzá azoknál a civilizációknál, ahol van ilyen ház. Más civilizációknál törlődik."
+
+#: simulation/templates/skirmish/structures/default_house_5.xml:8
+msgid ""
+"Changes in a 5-pop house for civilisations with those houses, is deleted for"
+" other civs"
+msgstr "Átváltozik egy 5 személyes házzá azoknál a civilizációknál, ahol van ilyen ház. Más civilizációknál törlődik."
+
+#: simulation/templates/special/formations/anti_cavalry.xml:5
+#: simulation/templates/special/formations/testudo.xml:5
+msgid "Melee Infantry only, requires at least 16."
+msgstr "Csak közelharci gyalogosok, legalább 16 szükséges."
+
+#: simulation/templates/special/formations/anti_cavalry.xml:25
+msgid "Anti Cavalry"
+msgstr "Lovasság-elhárítás"
+
+#: simulation/templates/special/formations/anti_cavalry.xml:26
+msgid "Square formation of Melee Infantry to fight Cavalry."
+msgstr "Közelharci gyalogság négyzet alakzatban a lovasság ellen."
+
+#: simulation/templates/special/formations/battle_line.xml:13
+msgid "Battle Line"
+msgstr "Harcvonal"
+
+#: simulation/templates/special/formations/battle_line.xml:15
+msgid "Common formation for frontal attacks."
+msgstr "Gyakori alakzat frontális támadásokhoz."
+
+#: simulation/templates/special/formations/box.xml:5
+msgid "Requires at least 4 Soldiers or Siege engines."
+msgstr "Legalább 4 katona vagy ostromgép szükséges."
+
+#: simulation/templates/special/formations/box.xml:12
+msgid "Box"
+msgstr "Doboz"
+
+#: simulation/templates/special/formations/box.xml:14
+msgid "Square formation to protect all sides."
+msgstr "Négyzet alakzat minden oldal védelmére."
+
+#: simulation/templates/special/formations/column_closed.xml:10
+msgid "Forced March"
+msgstr "Erőltetett menet"
+
+#: simulation/templates/special/formations/column_closed.xml:12
+msgid "Closed column formation for risky movements."
+msgstr "Zárt oszlopalakzat kockázatos mozgásokhoz."
+
+#: simulation/templates/special/formations/column_open.xml:10
+msgid "Column Open"
+msgstr "Nyílt oszlop"
+
+#: simulation/templates/special/formations/column_open.xml:12
+msgid "Dispersed formation for open field crossings."
+msgstr "Szétszórt alakzat nyílt terepen való átkeléshez."
+
+#: simulation/templates/special/formations/flank.xml:5
+msgid "Requires at least 8 Soldiers or Siege engines."
+msgstr "Legalább 8 katona vagy ostromgép szükséges."
+
+#: simulation/templates/special/formations/flank.xml:11
+msgid "Flank"
+msgstr "Szárny"
+
+#: simulation/templates/special/formations/flank.xml:13
+msgid "Formation to protect the sides or surprise attack the enemy flank."
+msgstr "Alakzat az oldalak védelmére vagy az ellenséges oldal meglepetésszerű támadására."
+
+#: simulation/templates/special/formations/line_closed.xml:9
+msgid "Close Order"
+msgstr "Összezárási parancs"
+
+#: simulation/templates/special/formations/line_closed.xml:11
+msgid "Flexible closed line formation."
+msgstr "Rugalmas zárt vonalú alakzat."
+
+#: simulation/templates/special/formations/line_open.xml:11
+msgid "Open Order"
+msgstr "Szétnyílási parancs"
+
+#: simulation/templates/special/formations/line_open.xml:13
+msgid "Dispersed formation for open field combat."
+msgstr "Szétszórt alakzat nyílt terepen való harcra."
+
+#: simulation/templates/special/formations/null.xml:7
+msgid "None"
+msgstr "Nincs"
+
+#: simulation/templates/special/formations/phalanx.xml:5
+msgid "Infantry Hoplites only, requires at least 10."
+msgstr "Csak gyalogos hopliták, legalább 10 szükséges."
+
+#: simulation/templates/special/formations/phalanx.xml:23
+msgid "Phalanx"
+msgstr "Phalanx"
+
+#: simulation/templates/special/formations/phalanx.xml:25
+msgid "Compact formation of Infantry Hoplites creating a shield wall."
+msgstr "Gyalogos hopliták kompakt alakzata pajzsfalat alkotva."
+
+#: simulation/templates/special/formations/scatter.xml:8
+msgid "Scatter"
+msgstr "Szétszóródás"
+
+#: simulation/templates/special/formations/shield_wall.xml:5
+msgid "Infantry Spearmen only, requires at least 10."
+msgstr "Csak Lándzsás gyalogosok, legalább 10 szükséges."
+
+#: simulation/templates/special/formations/shield_wall.xml:24
+msgid "Shield Wall"
+msgstr "Pajzsfal"
+
+#: simulation/templates/special/formations/shield_wall.xml:26
+msgid "Compact formation of Infantry Spearmen creating a shield wall."
+msgstr "Gyalogos lándzsások kompakt alakzata pajzsfalat alkotva."
+
+#: simulation/templates/special/formations/ships/column.xml:5
+#: simulation/templates/special/formations/ships/line_staggered.xml:5
+msgid "Requires at least 4 Ships."
+msgstr "Legalább 4 hajóra van szükség."
+
+#: simulation/templates/special/formations/ships/column.xml:14
+msgid "Maneuvering Column"
+msgstr "Manőverező oszlop"
+
+#: simulation/templates/special/formations/ships/column.xml:16
+msgid "A column formation for fleet maneuvers."
+msgstr "A flotta manővereihez használt oszlopalakzat."
+
+#: simulation/templates/special/formations/ships/flank.xml:5
+msgid "Requires at least 8 Ships."
+msgstr "Legalább 8 hajót igényel."
+
+#: simulation/templates/special/formations/ships/flank.xml:14
+msgid "Flanking Formation"
+msgstr "Oldalazó alakzat"
+
+#: simulation/templates/special/formations/ships/flank.xml:16
+msgid "Formation to protect the sides or surprise attack the enemy flanks."
+msgstr "Alakzat az oldalsó védelemre vagy az ellenséges oldalak meglepetésszerű megtámadására."
+
+#: simulation/templates/special/formations/ships/line_staggered.xml:17
+msgid "Fleet Battle Line"
+msgstr "Flotta csatasor"
+
+#: simulation/templates/special/formations/ships/line_staggered.xml:19
+msgid "Common fleet formation for frontal attacks."
+msgstr "Gyakori flottaalakzat frontális támadásokhoz."
+
+#: simulation/templates/special/formations/skirmish.xml:4
+msgid "Ranged Soldiers only, requires at least 2."
+msgstr "Csak távolsági katonák, legalább 2 szükséges."
+
+#: simulation/templates/special/formations/skirmish.xml:14
+msgid "Skirmish"
+msgstr "Csatározás"
+
+#: simulation/templates/special/formations/skirmish.xml:16
+msgid "Dispersed formation for reconnaissance, ambushes or hit-and-run."
+msgstr "Szétszórt alakzat felderítéshez, csapdákhoz vagy rajtaütéshez."
+
+#: simulation/templates/special/formations/syntagma.xml:5
+msgid "Infantry Pikemen only, requires at least 16."
+msgstr "Csak gyalogos pikások, legalább 16 szükséges."
+
+#: simulation/templates/special/formations/syntagma.xml:29
+msgid "Syntagma"
+msgstr "Szüntagma"
+
+#: simulation/templates/special/formations/syntagma.xml:31
+msgid "Compact formation of Infantry Pikemen creating a defensive wall."
+msgstr "Gyalogsági lándzsások kompakt alakzata, amely védőfalat hoz létre."
+
+#: simulation/templates/special/formations/testudo.xml:70
+msgid "Testudo"
+msgstr "Teknős"
+
+#: simulation/templates/special/formations/testudo.xml:72
+msgid "Compact formation of Melee Infantry creating a shield shell."
+msgstr "A közelharci gyalogság kompakt alakzata pajzsburok létrehozásával."
+
+#: simulation/templates/special/formations/wedge.xml:5
+msgid "Cavalry only, requires at least 6."
+msgstr "Csak lovasság, legalább 6 szükséges."
+
+#: simulation/templates/special/formations/wedge.xml:16
+msgid "Wedge"
+msgstr "Ék"
+
+#: simulation/templates/special/formations/wedge.xml:18
+msgid "Triangular Cavalry formation to break through enemy lines."
+msgstr "Háromszög alakzatú lovassági alakzat az ellenséges vonalak áttörésére."
+
+#: simulation/templates/special/rallypoint.xml:5
+msgid "Rally point flag"
+msgstr "Gyülekezési pont zászlója"
+
+#: simulation/templates/special/spy.xml:16
+msgid "Spy"
+msgstr "Kém"
+
+#: simulation/templates/template_formation.xml:15
+msgid "Requires at least 2 Soldiers or Siege Engines."
+msgstr "Legalább 2 katona vagy ostromgép szükséges."
+
+#: simulation/templates/template_gaia.xml:7
+msgid "Gaia"
+msgstr "Gaia"
+
+#: simulation/templates/gaia/fish/generic.xml:4
+#: simulation/templates/template_gaia_fish.xml:8
+msgid "Fish"
+msgstr "Hal"
+
+#: simulation/templates/template_gaia_fish.xml:10
+msgid "Catch fish for food."
+msgstr "Halászat élelemért."
+
+#: simulation/templates/template_gaia_fruit.xml:8
+msgid "Fruit"
+msgstr "Gyümölcs"
+
+#: simulation/templates/template_gaia_fruit.xml:9
+msgid "Pick fruit for food."
+msgstr "Gyümölcs szedése élemért."
+
+#: simulation/templates/template_gaia_ore.xml:8
+msgid "Metal Mine"
+msgstr "Fémbánya"
+
+#: simulation/templates/template_gaia_ore.xml:9
+msgid "Mine ore for metal."
+msgstr "Érc bányászása fémért."
+
+#: simulation/templates/gaia/rock/aegean_cut.xml:8
+#: simulation/templates/gaia/rock/india_cut.xml:8
+#: simulation/templates/gaia/rock/nubia_cut.xml:8
+#: simulation/templates/gaia/rock/sahara_cut.xml:8
+#: simulation/templates/gaia/rock/temperate_cut.xml:8
+#: simulation/templates/template_gaia_rock.xml:8
+msgid "Stone Quarry"
+msgstr "Kőfejtő"
+
+#: simulation/templates/template_gaia_rock.xml:9
+msgid "Quarry rock for stone."
+msgstr "Kő fejtése kőért."
+
+#: simulation/templates/template_gaia_ruins.xml:8
+msgid "Ruins"
+msgstr "Romok"
+
+#: simulation/templates/template_gaia_ruins.xml:9
+msgid "Demolish ruins for stone."
+msgstr "Romok lerombolása kőért."
+
+#: simulation/templates/template_gaia_treasure.xml:8
+msgid "Treasure"
+msgstr "Kincs"
+
+#: simulation/templates/template_gaia_treasure.xml:9
+msgid "Collect treasures for resources."
+msgstr "Kincsek gyűjtése nyersanyagért."
+
+#: simulation/templates/template_gaia_tree.xml:8
+msgid "Tree"
+msgstr "Fa"
+
+#: simulation/templates/template_gaia_tree.xml:9
+msgid "Chop trees for wood."
+msgstr "Fák kivágása fáért."
+
+#: simulation/templates/template_structure.xml:46
+msgid "Structure"
+msgstr "Épület"
+
+#: simulation/templates/template_unit.xml:39
+msgid "Unit"
+msgstr "Egység"
+
+#: simulation/templates/template_wallset.xml:9
+#: simulation/templates/template_wallset.xml:11
+msgid "Wall"
+msgstr "Fal"
+
+#: simulation/templates/template_wallset.xml:10
+msgid "Wall off an area."
+msgstr "Terület elfalazása."

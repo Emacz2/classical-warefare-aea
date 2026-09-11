@@ -1,0 +1,4 @@
+SIEGE WARSHIP
+The heaviest standard warship. Available to the Carthaginians, Ptolemies, Romans, Seleucids, and Han Chinese.
+Strong crush damage and long range make it good against Arrow Ships and structures near the shore.
+Countered by melee ships, such as Ramming Ships and Fire Ships, and other Siege Ships.

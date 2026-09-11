@@ -1,0 +1,1354 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Albin Nilsson, 2021
+# Daniel, 2016,2025
+# Daniel Nylander, 2025-2026
+# Jacob Carlsson, 2015
+# Karl Jonatan Nyberg, 2016,2025
+# efef6ec5b435a041fce803c7f8af77d2_2341d43, 2020-2021
+# Kristoffer Grundström, 2016
+# Martin H, 2020
+# Mattias Münster, 2019
+# Olle Sjöström, 2024
+# Olle Sjöström, 2024
+# Peter Freund, 2023
+# Peter Freund, 2023
+# Sam Johnsson, 2015
+# theschitz, 2015
+# WFG Transifex, 2025
+# WFG Transifex, 2025-2026
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-05-20 00:18+0000\n"
+"PO-Revision-Date: 2014-06-19 17:50+0000\n"
+"Last-Translator: WFG Transifex, 2025-2026\n"
+"Language-Team: Swedish (http://app.transifex.com/wildfire-games/0ad/language/sv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.js:56
+msgid "Changing password…"
+msgstr "Ändrar lösenord…"
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.js:65
+msgid "Request timed out."
+msgstr "Begäran tog timeout."
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.js:67
+msgid "Password changed successfully."
+msgstr "Lösenordsändring lyckades."
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.js:96
+#: gui/prelobby/common/credentials/credentials.js:23
+msgid "Please choose a longer password"
+msgstr "Välj ett längre lösenord"
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.js:99
+#: gui/prelobby/common/credentials/credentials.js:36
+msgid "Passwords do not match"
+msgstr "Lösenorden stämmer inte överens"
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.xml:12
+#: gui/lobby/LobbyPage/LobbyPage.xml:28
+msgid "Account settings"
+msgstr "Kontoinställningar"
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.xml:17
+msgid "New password:"
+msgstr "Nytt lösenord:"
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.xml:21
+msgid "Confirm new password:"
+msgstr "Bekräfta nytt lösenord:"
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.xml:28
+msgid "Close"
+msgstr "Stäng"
+
+#: gui/lobby/AccountSettingsPage/AccountSettingsPage.xml:31
+msgid "Change password"
+msgstr "Ändra lösenord"
+
+#: gui/lobby/LeaderboardPage/LeaderboardPage.xml:17
+msgid "Rank"
+msgstr "Rang"
+
+#: gui/lobby/LeaderboardPage/LeaderboardPage.xml:20
+#: gui/lobby/LobbyPage/GameList.xml:13 gui/lobby/LobbyPage/PlayerList.xml:21
+msgid "Name"
+msgstr "Namn"
+
+#: gui/lobby/LeaderboardPage/LeaderboardPage.xml:23
+#: gui/lobby/LobbyPage/GameList.xml:28 gui/lobby/LobbyPage/PlayerList.xml:24
+msgid "Rating"
+msgstr "Värdering"
+
+#: gui/lobby/LeaderboardPage/LeaderboardPage.xml:28
+#: gui/lobby/ProfilePage/ProfilePage.xml:61
+msgid "Back"
+msgstr "Tillbaka"
+
+#: gui/lobby/LeaderboardPage/LeaderboardPage.xml:32
+msgid "Update"
+msgstr "Uppdatera"
+
+#: gui/lobby/LobbyPage/AnnouncementHandler.js:19
+#: gui/lobby/LobbyPage/Chat/ChatMessages/ChatMessageFormatAnnouncement.js:24
+msgid "Notice"
+msgstr "Observera"
+
+#: gui/lobby/LobbyPage/Buttons/BuddyButton.js:69
+msgid "Mark as Buddy"
+msgstr "Markera som kompis"
+
+#: gui/lobby/LobbyPage/Buttons/BuddyButton.js:70
+msgid "Unmark as Buddy"
+msgstr "Avmarkera som kompis"
+
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:43
+msgid "Your active mods do not match the mods of this game."
+msgstr "Dina aktiva mods matchar inte spelets mods."
+
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:45
+msgid "Do you want to switch to the mod selection page?"
+msgstr "Vill du byta till sidan för att välja mods?"
+
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:46
+msgid "Incompatible mods"
+msgstr "Inkompatibla mods"
+
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:62
+msgid "The game has already started. Do you want to join as observer?"
+msgstr "Matchen har redan startat. Vill du ansluta dig som observatör?"
+
+#. Translation: Join the game currently selected in the list.
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:98
+msgid "Join Game"
+msgstr "Anslut till spel"
+
+#: gui/lobby/LeaderboardPage/LeaderboardPage.xml:12
+#: gui/lobby/LobbyPage/Buttons/LeaderboardButton.js:9
+msgid "Leaderboard"
+msgstr "Topplistan"
+
+#: gui/lobby/LobbyPage/Buttons/ProfileButton.js:9
+#: gui/lobby/ProfilePage/ProfilePage.xml:12
+msgid "Player Profile Lookup"
+msgstr "Slå upp spelarprofil"
+
+#: gui/lobby/LobbyPage/Buttons/QuitButton.js:16
+msgctxt "previous page"
+msgid "Back"
+msgstr "Tillbaka"
+
+#: gui/lobby/LobbyPage/Buttons/QuitButton.js:17
+msgctxt "previous page"
+msgid "Main Menu"
+msgstr "Huvudmeny"
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:32
+#, javascript-format
+msgid ""
+"The command '%(cmd)s' is not supported. Try %(help)s to get more information"
+" about the supported commands."
+msgstr "Kommandot '%(cmd)s' är inte stött. Testa %(help)s för att få mer information om de stöttade kommandona."
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:45
+#, javascript-format
+msgid "The command '%(cmd)s' is restricted to moderators."
+msgstr "Kommandot '%(cmd)s' är bara tillgängligt för moderatorer."
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:67
+#, javascript-format
+msgid "The command '%(cmd)s' requires at least one argument."
+msgstr "Kommandot '%(cmd)s' kräver minst ett argument."
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:88
+msgid "Set your state to 'Away'."
+msgstr "Ändra din status till 'Borta'."
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:95
+msgid "Set your state to 'Online'."
+msgstr "Ändra din status till 'Online'."
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:102
+msgid "Kick a specified user from the lobby. Usage: /kick nick reason"
+msgstr "Sparka en användare från lobbyn. Användning: /kick användarnamn anledning"
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:114
+msgid "Ban a specified user from the lobby. Usage: /ban nick reason"
+msgstr "Stäng av en användare från lobbyn: Användning: /ban användarnamn anledning"
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:126
+msgid "Show this help."
+msgstr "Visa denna hjälpdialog."
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:129
+msgid "Chat commands:"
+msgstr "Chattkommandon:"
+
+#. Translation: Chat command help format
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:133
+#, javascript-format
+msgid "%(command)s - %(description)s"
+msgstr "%(command)s - %(description)s"
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:147
+msgid "Send a chat message about yourself. Example: /me goes swimming."
+msgstr "Skicka ett chattmeddelande om dig själv. Exempel: /me går och badar."
+
+#. Translation: Chat command
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:150
+msgid "/me"
+msgstr "/me"
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:154
+msgid ""
+"Send text as a chat message (even if it starts with slash). Example: /say "
+"/help is a great command."
+msgstr "Skicka text som chattmeddelande (även om den börjar med ett snedstreck). Exempel: /say /help är ett bra kommando."
+
+#. Translation: Chat command
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:157
+msgid "/say"
+msgstr "/say"
+
+#: gui/lobby/LobbyPage/Chat/ChatCommandHandler.js:161
+msgid "Clear all chat scrollback."
+msgstr "Rensa all chatthistoria."
+
+#: gui/lobby/LobbyPage/Chat/ChatMessages/ChatMessageFormatAnnouncement.js:26
+#, javascript-format
+msgid ""
+"== %(prefix)s:\n"
+"%(message)s"
+msgstr "== %(prefix)s:\n%(message)s"
+
+#. Translation: Chat message issued using the ‘/me’ command.
+#: gui/lobby/LobbyPage/Chat/ChatMessages/ChatMessageFormatMe.js:24
+#, javascript-format
+msgid "* %(sender)s %(message)s"
+msgstr "* %(sender)s %(message)s"
+
+#: gui/lobby/LobbyPage/Chat/ChatMessages/ChatMessageFormatSay.js:29
+#, javascript-format
+msgid "<%(sender)s>"
+msgstr "<%(sender)s>"
+
+#: gui/lobby/LobbyPage/Chat/ChatMessages/ChatMessageFormatSay.js:31
+#, javascript-format
+msgid "%(sender)s %(message)s"
+msgstr "%(sender)s %(message)s"
+
+#: gui/lobby/LobbyPage/Chat/ChatMessages/ChatMessagePrivateWrapper.js:23
+msgid "Private"
+msgstr "Privat"
+
+#: gui/lobby/LobbyPage/Chat/ChatMessages/ChatMessagePrivateWrapper.js:25
+#, javascript-format
+msgid "(%(private)s) %(message)s"
+msgstr "(%(private)s) %(message)s"
+
+#: gui/lobby/LobbyPage/Chat/ChatPanel.xml:12
+msgid "Send"
+msgstr "Skicka"
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:47
+#, javascript-format
+msgid "%(nick)s has joined."
+msgstr "%(nick)s har anslutit."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:48
+#, javascript-format
+msgid "%(nick)s has left."
+msgstr "%(nick)s har lämnat lobbyn."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:70
+#, javascript-format
+msgid "%(oldnick)s is now known as %(newnick)s."
+msgstr "%(oldnick)s är nu känd som %(newnick)s."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:107
+msgid "You have been muted."
+msgstr "Du har tystats."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:108
+#, javascript-format
+msgid "%(nick)s has been muted."
+msgstr "%(nick)s har blivit tystad."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:112
+msgid "You are now a moderator."
+msgstr "Du är nu en moderator."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:113
+#, javascript-format
+msgid "%(nick)s is now a moderator."
+msgstr "%(nick)s är nu en moderator."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:118
+msgid "You have been unmuted."
+msgstr "Du är inte tystad längre."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:119
+#, javascript-format
+msgid "%(nick)s has been unmuted."
+msgstr "%(nick)s är inte tystad längre."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:124
+msgid "You are not a moderator anymore."
+msgstr "Du är inte moderator längre."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:125
+#, javascript-format
+msgid "%(nick)s is not a moderator anymore."
+msgstr "%(nick)s är inte moderator längre."
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:152
+#, javascript-format
+msgid "%(nick)s changed the lobby subject to:"
+msgstr "%(nick)s ändrade lobbyämnet till:"
+
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageEvents.js:153
+#, javascript-format
+msgid "%(nick)s deleted the lobby subject."
+msgstr "%(nick)s tog bort lobbyämnet."
+
+#. Translation: Chat status message
+#: gui/lobby/LobbyPage/Chat/StatusMessages/StatusMessageFormat.js:25
+#, javascript-format
+msgid "== %(message)s"
+msgstr "== %(message)s"
+
+#: gui/lobby/LobbyPage/Chat/SystemMessages/SystemMessageEvents.js:55
+msgid "Connected."
+msgstr "Ansluten."
+
+#: gui/lobby/LobbyPage/Chat/SystemMessages/SystemMessageEvents.js:56
+msgid "Disconnected."
+msgstr "Frånkopplad."
+
+#. Translation: Caption for system notifications shown in the chat panel
+#: gui/lobby/LobbyPage/Chat/SystemMessages/SystemMessageFormat.js:25
+msgid "System:"
+msgstr "System:"
+
+#: gui/lobby/LobbyPage/Chat/SystemMessages/SystemMessageFormat.js:32
+#, javascript-format
+msgid "=== %(system)s %(message)s"
+msgstr "=== %(system)s %(message)s"
+
+#. Translation: Chat message format when there is a time prefix.
+#: gui/lobby/LobbyPage/Chat/TimestampWrapper.js:25
+#, javascript-format
+msgid "%(time)s %(message)s"
+msgstr "%(time)s %(message)s"
+
+#. Translation: Time prefix as shown in the multiplayer lobby (when you enable
+#. it in the
+#. options page).
+#: gui/lobby/LobbyPage/Chat/TimestampWrapper.js:28
+#, javascript-format
+msgid "\\[%(time)s]"
+msgstr "\\[%(time)s]"
+
+#: gui/lobby/LobbyPage/ConnectionHandler.js:45
+msgid "BANNED"
+msgstr "AVSTÄNGD"
+
+#: gui/lobby/LobbyPage/ConnectionHandler.js:45
+msgid "KICKED"
+msgstr "SPARKAD"
+
+#: gui/lobby/LobbyPage/ConnectionHandler.js:61
+msgid "You have been disconnected from the lobby. Do you want to reconnect?"
+msgstr "Du har blivit frånkopplad från lobbyn. Vill du återansluta?"
+
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:63
+#: gui/lobby/LobbyPage/ConnectionHandler.js:62
+#: gui/prelobby/common/credentials/credentials.js:56
+msgid "Confirmation"
+msgstr "Bekräftelse"
+
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:47
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:64
+#: gui/lobby/LobbyPage/ConnectionHandler.js:63
+#: gui/prelobby/common/credentials/credentials.js:57
+msgid "No"
+msgstr "Nej"
+
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:47
+#: gui/lobby/LobbyPage/Buttons/JoinButton.js:64
+#: gui/lobby/LobbyPage/ConnectionHandler.js:63
+#: gui/prelobby/common/credentials/credentials.js:57
+msgid "Yes"
+msgstr "Ja"
+
+#. Translation: The number of players and observers in this game
+#: gui/lobby/LobbyPage/Game.js:310
+#, javascript-format
+msgid "%(current)s/%(max)s +%(observercount)s"
+msgstr "%(current)s/%(max)s +%(observercount)s"
+
+#. Translation: The number of players in this game
+#: gui/lobby/LobbyPage/Game.js:313
+#, javascript-format
+msgid "%(current)s/%(max)s"
+msgstr "%(current)s/%(max)s"
+
+#: gui/lobby/LobbyPage/GameButtons.xml:6
+msgid "Host New Game"
+msgstr "Var värd för nytt spel"
+
+#: gui/lobby/LobbyPage/GameButtons.xml:10
+msgid "Host Saved Game"
+msgstr "Var värd för sparat spel"
+
+#: gui/lobby/LobbyPage/GameDetails.js:65
+msgctxt "victory condition"
+msgid "Endless Game"
+msgstr "Oändligt spel"
+
+#: gui/lobby/LobbyPage/GameDetails.js:109
+#, javascript-format
+msgid ""
+"You have some incompatible mods:\n"
+"%(details)s"
+msgstr "Du har några inkompatibla moddar:\n%(details)s"
+
+#: gui/lobby/LobbyPage/GameDetails.js:123
+msgid "This mod does not affect MP compatibility"
+msgstr "Detta moddet påverkar inte MP kompabilitet"
+
+#: gui/lobby/LobbyPage/GameDetails.js:142
+#, javascript-format
+msgid "Host: %(playername)s"
+msgstr "Värd: %(playername)s"
+
+#: gui/lobby/LobbyPage/GameDetails.js:144
+#, javascript-format
+msgid "Players: %(current)s/%(total)s"
+msgstr "Spelare: %(current)s/%(total)s"
+
+#: gui/lobby/LobbyPage/GameDetails.js:146
+msgid "Victory Conditions:"
+msgstr "Segervillkor:"
+
+#. Translation: Comma used to concatenate victory conditions
+#: gui/lobby/LobbyPage/GameDetails.js:149
+msgid ", "
+msgstr ", "
+
+#: gui/lobby/LobbyPage/GameDetails.js:151
+msgid "Mods:"
+msgstr "Mods:"
+
+#: gui/lobby/LobbyPage/GameDetails.js:153
+msgid "Mods (incompatible):"
+msgstr "Moddar (inkompatibla):"
+
+#. Translation: %(time)s is the hour and minute here.
+#: gui/lobby/LobbyPage/GameDetails.js:156
+#, javascript-format
+msgid "Game started at %(time)s"
+msgstr "Spelet började %(time)s"
+
+#: gui/lobby/LobbyPage/Chat/TimestampWrapper.js:33
+#: gui/lobby/LobbyPage/GameDetails.js:158
+msgid "HH:mm"
+msgstr "HH:mm"
+
+#: gui/lobby/LobbyPage/GameDetails.js:160
+msgid "Map Type:"
+msgstr "Karttyp:"
+
+#: gui/lobby/LobbyPage/GameDetails.js:162
+msgid "Map Size:"
+msgstr "Kartstorlek:"
+
+#: gui/lobby/LobbyPage/GameDetails.js:164
+msgid "Map Description:"
+msgstr "Kartbeskrivning:"
+
+#: gui/lobby/LobbyPage/GameList.xml:16
+msgid "Map Name"
+msgstr "Kartnamn"
+
+#: gui/lobby/LobbyPage/GameList.xml:19
+msgctxt "map"
+msgid "Size"
+msgstr "Storlek"
+
+#: gui/lobby/LobbyPage/GameList.xml:22
+msgctxt "map"
+msgid "Type"
+msgstr "Typ"
+
+#: gui/lobby/LobbyPage/GameList.xml:25
+msgid "Players"
+msgstr "Spelare"
+
+#: gui/lobby/LobbyPage/GameListFilters.xml:7
+msgid "Show only open games"
+msgstr "Visa bara öppna spel"
+
+#: gui/lobby/LobbyPage/GameListFilters/MapSize.js:9
+msgctxt "map size"
+msgid "Any"
+msgstr "Alla"
+
+#: gui/lobby/LobbyPage/GameListFilters/MapType.js:9
+#: gui/lobby/LobbyPage/GameListFilters/Rating.js:11
+msgctxt "map"
+msgid "Any"
+msgstr "Alla"
+
+#: gui/lobby/LobbyPage/GameListFilters/PlayerCount.js:10
+msgctxt "player number"
+msgid "Any"
+msgstr "Alla"
+
+#: gui/lobby/LobbyPage/GameListFilters/Rating.js:19
+#, javascript-format
+msgctxt "gamelist filter"
+msgid "> %(rating)s"
+msgstr "> %(rating)s"
+
+#: gui/lobby/LobbyPage/GameListFilters/Rating.js:20
+#, javascript-format
+msgctxt "gamelist filter"
+msgid "< %(rating)s"
+msgstr "< %(rating)s"
+
+#: gui/lobby/LobbyPage/KickStrings.js:39
+msgid "You have been kicked from the lobby!"
+msgstr "Du har sparkats från lobbyn!"
+
+#: gui/lobby/LobbyPage/KickStrings.js:40
+msgid "You have been banned from the lobby!"
+msgstr "Du har blivit avstängd från lobbyn!"
+
+#: gui/lobby/LobbyPage/KickStrings.js:43
+#, javascript-format
+msgid "%(nick)s has been kicked from the lobby."
+msgstr "%(nick)s har sparkats från lobbyn."
+
+#: gui/lobby/LobbyPage/KickStrings.js:44
+#, javascript-format
+msgid "%(nick)s has been banned from the lobby."
+msgstr "%(nick)s har stängts av från lobbyn."
+
+#: gui/lobby/LobbyPage/KickStrings.js:49
+#, javascript-format
+msgctxt "lobby kick"
+msgid "Reason: %(reason)s"
+msgstr "Anledning: %(reason)s"
+
+#: gui/lobby/LobbyPage/LobbyPage.xml:13 gui/prelobby/entrance/entrance.xml:14
+msgid "Multiplayer Lobby"
+msgstr "Flerspelarlobby"
+
+#: gui/lobby/LobbyPage/PlayerColor.js:34
+#, javascript-format
+msgid "%(nick)s (%(rating)s)"
+msgstr "%(nick)s (%(rating)s)"
+
+#: gui/lobby/LobbyPage/PlayerList.js:197
+msgid "Online"
+msgstr "Ansluten"
+
+#: gui/lobby/LobbyPage/PlayerList.js:203
+msgid "Away"
+msgstr "Borta"
+
+#: gui/lobby/LobbyPage/PlayerList.js:209
+msgid "Busy"
+msgstr "Upptagen"
+
+#: gui/lobby/LobbyPage/PlayerList.js:215
+msgid "Offline"
+msgstr "Frånkopplad"
+
+#: gui/lobby/LobbyPage/PlayerList.js:221
+msgctxt "lobby presence"
+msgid "Unknown"
+msgstr "Okänd"
+
+#: gui/lobby/LobbyPage/PlayerList.xml:4
+msgid "Search for Player"
+msgstr "Sök efter spelare"
+
+#: gui/lobby/LobbyPage/PlayerList.xml:18
+msgid "Status"
+msgstr "Status"
+
+#: gui/lobby/LobbyPage/ProfilePanel.js:106
+msgid "N/A"
+msgstr "Inte tillgänglig"
+
+#: gui/lobby/LobbyPage/ProfilePanel.js:112
+msgid "Moderator"
+msgstr "Moderator"
+
+#: gui/lobby/LobbyPage/ProfilePanel.js:113
+msgid "Player"
+msgstr "Spelare"
+
+#: gui/lobby/LobbyPage/ProfilePanel.js:114
+msgid "Muted Player"
+msgstr "Tystad spelare"
+
+#: gui/lobby/LobbyPage/ProfilePanel.js:120
+msgctxt "Used for an undefined winning rate"
+msgid "-"
+msgstr "-"
+
+#: gui/lobby/LobbyPage/ProfilePanel.js:122
+#, javascript-format
+msgid "%(percentage)s%%"
+msgstr "%(percentage)s%%"
+
+#: gui/lobby/LobbyPage/ProfilePanel.xml:8
+#: gui/lobby/ProfilePage/ProfilePage.xml:30
+msgid "Current Rank:"
+msgstr "Aktuell rang:"
+
+#: gui/lobby/LobbyPage/ProfilePanel.xml:12
+#: gui/lobby/ProfilePage/ProfilePage.xml:34
+msgid "Highest Rating:"
+msgstr "Högsta värdering:"
+
+#: gui/lobby/LobbyPage/ProfilePanel.xml:16
+#: gui/lobby/ProfilePage/ProfilePage.xml:38
+msgid "Total Games:"
+msgstr "Totala spel:"
+
+#: gui/lobby/LobbyPage/ProfilePanel.xml:20
+#: gui/lobby/ProfilePage/ProfilePage.xml:42
+msgid "Wins:"
+msgstr "Vinster:"
+
+#: gui/lobby/LobbyPage/ProfilePanel.xml:24
+#: gui/lobby/ProfilePage/ProfilePage.xml:46
+msgid "Losses:"
+msgstr "Förluster:"
+
+#: gui/lobby/LobbyPage/ProfilePanel.xml:28
+#: gui/lobby/ProfilePage/ProfilePage.xml:50
+msgid "Win Rate:"
+msgstr "Vinstprocent:"
+
+#: gui/lobby/ProfilePage/ProfilePage.js:97
+#, javascript-format
+msgid "Player \"%(nick)s\" not found."
+msgstr "Spelaren \"%(nick)s\" hittades inte."
+
+#: gui/lobby/ProfilePage/ProfilePage.xml:16
+msgid "Enter playername:"
+msgstr "Ange spelarnamn:"
+
+#: gui/lobby/ProfilePage/ProfilePage.xml:22
+msgid "View Profile"
+msgstr "Se profil"
+
+#: gui/lobby/ProfilePage/ProfilePage.xml:55
+msgid "Please enter a player name."
+msgstr "Ange ett spelarnamn."
+
+#: gui/prelobby/common/credentials/confirmpassword.xml:4
+msgid "Password again:"
+msgstr "Bekräfta lösenord:"
+
+#: gui/prelobby/common/credentials/credentials.js:5
+msgid "Please enter your username"
+msgstr "Ange ditt användarnamn"
+
+#: gui/prelobby/common/credentials/credentials.js:8
+msgid "Invalid username"
+msgstr "Ogiltigt användarnamn"
+
+#: gui/prelobby/common/credentials/credentials.js:19
+msgctxt "register"
+msgid "Please enter your password"
+msgstr "Ange ditt lösenord"
+
+#: gui/prelobby/common/credentials/credentials.js:20
+msgctxt "login"
+msgid "Please enter your password"
+msgstr "Ange ditt lösenord"
+
+#: gui/prelobby/common/credentials/credentials.js:32
+msgid "Please enter your password again"
+msgstr "Ange ditt lösenord igen"
+
+#: gui/prelobby/common/credentials/credentials.js:55
+msgid "Are you sure you want to delete the password after connecting?"
+msgstr "Är du säker att du vill ta bort lösenordet efter anslutning?"
+
+#: gui/prelobby/common/credentials/credentials.xml:6
+msgid "Login:"
+msgstr "Användarnamn:"
+
+#: gui/prelobby/common/credentials/credentials.xml:15
+msgid "Password:"
+msgstr "Lösenord:"
+
+#: gui/prelobby/common/credentials/rememberpassword.xml:7
+msgid "Remember Password"
+msgstr "Kom ihåg lösenord"
+
+#: gui/prelobby/common/feedback/feedback.js:4
+msgid ""
+"Unknown error. This usually occurs because the same IP address is not "
+"allowed to register more than one account within one hour."
+msgstr "Okänt fel. Detta sker oftast på grund av att samma IP-adress inte kan registrera mer än ett konto inom en timme."
+
+#: gui/prelobby/common/feedback/feedback.xml:10
+#: gui/prelobby/entrance/entrance.xml:30
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:1
+msgid ""
+"[font=\"sans-bold-18\"]0 A.D. Empires Ascendant Multiplayer Lobby Privacy "
+"Policy[/font]"
+msgstr "[font=\"sans-bold-18\"]Integritetspolicy för 0 A.D. Empires Ascendant Multiplayer Lobby[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:3
+msgid "[font=\"sans-bold-14\"]Document Date:[/font] 2025-04-10"
+msgstr "[font=\"sans-bold-14\"]Dokumentdatum:[/font] 2025-04-10"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:5
+msgid ""
+"[font=\"sans-bold-16\"]Personal data processed by Wildfire Games and "
+"purposes of processing:[/font]"
+msgstr "[font=\"sans-bold-16\"]Personuppgifter som behandlas av Wildfire Games och ändamålen med behandlingen:[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:6
+msgid "[font=\"sans-bold-14\"]1. Player name[/font]"
+msgstr "[font=\"sans-bold-14\"]1. Spelarnamn[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:7
+msgid ""
+"The player is identified by a name that the player chooses at the time of "
+"registration."
+msgstr "Spelaren identifieras med ett namn som spelaren väljer vid tidpunkten för registreringen."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:8
+msgid ""
+"Having a unique player name is a requirement to gain a rating, to allow "
+"players, moderators and developers to identify players they met before, "
+"communicate about the game, coordinate matches and enables moderators to "
+"enforce the Terms of Use."
+msgstr "Att ha ett unikt spelarnamn är ett krav för att få en rating, att låta spelare, moderatorer och utvecklare att identifiera spelare de träffade innan, kommunicera om spelet, samordna matcher och göra det möjligt för moderatorer att upprätthålla användarvillkoren."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:9
+msgid ""
+"The player name serves as a pseudonym. The identity (natural person) of "
+"players is not known to Wildfire Games, except where personally identifiable"
+" information (such as the real name) was disclosed on the Lobby Chat, other "
+"services of Wildfire Games or elsewhere in the public, or when the IP "
+"address is used to bring criminal proceedings."
+msgstr "Spelarnamnet fungerar som en pseudonym. Spelarnas identitet (fysisk person) känns inte till av Wildfire Games, förutom där personligt identifierbar information (såsom riktiga namn) avslöjats i lobbychatten, andra tjänster av Wildfire Games eller någon annanstans i allmänheten, eller när IP-adressen används för att väcka åtal."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:11
+msgid "[font=\"sans-bold-14\"]2. Password[/font]"
+msgstr "[font=\"sans-bold-14\"]2. Lösenord[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:12
+msgid ""
+"A player is authenticated using a password that the player chooses at the "
+"time of registration."
+msgstr "En spelare autentiseras med ett lösenord som spelaren väljer vid tidpunkten för registreringen."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:13
+msgid ""
+"Wildfire Games only receives an encrypted version of the password, so that "
+"the password chosen by the user is not revealed to Wildfire Games or others "
+"in case of a breach."
+msgstr "Wildfire Games tar endast emot en krypterad version av lösenordet, så att lösenordet som användaren valt inte avslöjas för Wildfire Games eller andra i händelse av ett intrång."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:15
+msgid "[font=\"sans-bold-14\"]3. IP address[/font]"
+msgstr "[font=\"sans-bold-14\"]3. IP-adress[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:16
+msgid ""
+"When a player hosts a match in the Multiplayer Lobby, the IP address of that"
+" player is sent to every player who is online, so that other players can "
+"join that game."
+msgstr "När en spelare är värd för en match i flerspelarlobbyn skickas deras IP-adress till alla spelare som är online, så att andra spelare kan ansluta sig till det spelet."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:17
+msgid ""
+"Wildfire Games stores players IP addresses and may infer publicly available "
+"geolocation and internet service provider data (for example \"geolite2\") "
+"from the IP address in order to:"
+msgstr "Wildfire Games lagrar spelares IP-adresser och kan slå upp offentligt tillgängliga geolocation- och internetleverantördata (till exempel \"geolite2\") från IP-adressen för att:"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:18
+msgid ""
+" 1. Enforce the Terms of Use where persons create multiple accounts without "
+"Wildfire Games permission, in particular after having been banned from the "
+"service for violating the Terms of Use."
+msgstr " 1. Genomdriva användarvillkoren där personer skapar flera konton utan tillstånd från Wildfire Games, särskilt efter att ha tagits bort från tjänsten för överträdelse mot användarvillkoren."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:19
+msgid ""
+"    IP addresses will not be saved for longer than three years for this "
+"purpose."
+msgstr " IP-adresser sparas inte längre än tre år för detta ändamål."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:20
+msgid ""
+" 2. Make it possible to bring criminal proceedings in case of a cyberattack "
+"(EU Court of Justice Press Release No 112/16)."
+msgstr " 2. Göra det möjligt att väcka åtal i händelse av en cyberattack (EU-domstolens pressmeddelande nr 112/16)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:21
+msgid ""
+"Wildfire Games will not use the IP address logs for any other purpose, in "
+"particular not for marketing, not otherwise disclose IP addresses to the "
+"public or third parties and erase IP addresses if they are not relevant for "
+"the stated purposes anymore."
+msgstr "Wildfire Games kommer inte att använda IP-adressloggarna för något annat ändamål, särskilt inte för marknadsföring, inte på annat sätt avslöja IP-adresser till allmänheten eller tredje part och radera IP-adresser om de inte är relevanta för de angivna syftena längre."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:23
+msgid "[font=\"sans-bold-14\"]4. Online presence[/font]"
+msgstr "[font=\"sans-bold-14\"]4. Online-närvaro[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:24
+msgid ""
+"Which players are currently connected to the Multiplayer Lobby and which "
+"match they joined is shown to all online players."
+msgstr "Vilka spelare som för närvarande är anslutna till flerspelarlobbyn och vilken match de ansluter till visas för alla anslutna spelare."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:26
+msgid "[font=\"sans-bold-14\"]5. Chat messages[/font]"
+msgstr "[font=\"sans-bold-14\"]5. Chattmeddelanden[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:27
+msgid ""
+"The Multiplayer Lobby features a public chat room that enables players to "
+"discuss the game and organize multiplayer matches."
+msgstr "Flerspelarlobbyn har ett offentligt chattrum som gör det möjligt för spelare att diskutera spelet och organisera flerspelarmatcher."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:28
+msgid ""
+"Wildfire Games stores a log of the public chat messages and online presence "
+"to meet the following purposes:"
+msgstr "Wildfire Games lagrar en logg över offentliga chattmeddelanden och online-närvaro för att uppfylla följande syften:"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:29
+msgid " 1. Moderators may screen chat messages to enforce the Terms of Use."
+msgstr " 1. Moderatorer får inse chattmeddelanden för att upprätthålla användarvillkoren."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:30
+msgid ""
+" 2. Wildfire Games may address or resolve bug reports, balancing issues or "
+"feature proposals indicated by players in the chat room."
+msgstr " 2. Wildfire Games kan ta itu med eller lösa buggrapporter, balansfrågor eller förslag som anges av spelare i chattrummet."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:31
+msgid ""
+" 3. Wildfire Games may assess trends amongst discussed topics, the growth of"
+" the active community and use these indicators as feedback to assess, "
+"improve and direct development of the game and the service."
+msgstr " 3. Wildfire Games kan bedöma trender bland diskuterade ämnen, tillväxten av den aktiva communityn och använda dessa indikatorer som återkoppling för att bedöma, förbättra och styra utveckling av spelet och tjänsten."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:33
+msgid "[font=\"sans-bold-14\"]6. Match statistics[/font]"
+msgstr "[font=\"sans-bold-14\"]6. Matchstatistik[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:34
+msgid ""
+"Players can gain a rating on the Multiplayer Lobby that reflects their skill"
+" at the game."
+msgstr "Spelare kan få ett betyg i flerspelarlobbyn som återspeglar deras skicklighet i spelet."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:35
+msgid ""
+"The rating of all players is published by Wildfire Games and allows players "
+"to focus on competitive or balanced matchmaking if they wish to."
+msgstr "Graderingen av alla spelare publiceras av Wildfire Games och tillåter spelare att fokusera på tävlingsinriktning eller balanserad matchning om de vill."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:36
+msgid ""
+"During a rated match, players send data relating to the game (such as the "
+"number of units trained, resources gathered and the winner of the match) to "
+"Wildfire Games, so that Wildfire Games can adapt the players ratings based "
+"on these statistics."
+msgstr "Under en värderad match skickar spelare data om spelet (såsom antalet utbildade enheter, insamlade resurser och vinnaren av matchen) till Wildfire Games, så att Wildfire Games kan anpassa spelarens värdering baserat på denna statistik."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:37
+msgid "Wildfire Games stores match statistics to:"
+msgstr "Wildfire Games lagrar matchstatistik för att:"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:38
+msgid ""
+" 1. Verify the accuracy of the rating score and identify and enforce Terms "
+"of Use violations relating to that."
+msgstr " 1. Kontrollera riktigheten i betygpoängen och identifiera och hantera överträdelser av användarvillkor i samband med detta."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:39
+msgid ""
+" 2. Compute and publish community statistics to improve the game and the "
+"service, for example to improve the balancing of the game or to make certain"
+" aspects of the game more appealing."
+msgstr " 2. Beräkna och publicera community-statistik för att förbättra spelet och tjänsten, till exempel för att förbättra balanseringen av spelet eller för att göra vissa aspekter av spelet mer tilltalande."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:41
+msgid "[font=\"sans-bold-14\"]Security of processing:[/font]"
+msgstr "[font=\"sans-bold-14\"]Säkerhet för bearbetning:[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:42
+msgid ""
+"The transmission of personal data is secured using TLS encryption (GDPR 32)."
+msgstr "Överföringen av personuppgifter säkras med TLS-kryptering (GDPR 32)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:43
+msgid ""
+"Personal data is protected against unintentional loss in encrypted backups "
+"for additional time (GDPR 30.1.g, GDPR 32)."
+msgstr "Personuppgifter skyddas mot oavsiktlig förlust i krypterade säkerhetskopior under ytterligare tid (GDPR 30.1.g, GDPR 32)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:45
+msgid ""
+"All personal data that Wildfire Games processes is obtained from the user "
+"(GDPR 14)."
+msgstr "Alla personuppgifter som Wildfire Games bearbetar erhålls från användaren (GDPR 14)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:46
+msgid ""
+"Wildfire Games reserves the right to delete any service data (including "
+"personal data) at any time, except where a user has objected to the erasure "
+"of his or her personal data for performance of a legal claim."
+msgstr "Wildfire Games förbehåller sig rätten att när som helst radera all servicedata (inklusive personuppgifter), utom när en användare har invänt mot att hens personuppgifter tas bort för att ett juridiskt anspråk ska kunna framföras."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:48
+msgid "[font=\"sans-bold-16\"]Legal basis for the processing:[/font]"
+msgstr "[font=\"sans-bold-16\"]Rättslig grund för behandlingen:[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:49
+msgid ""
+"1. The processing is necessary for the performance of the service defined in"
+" the terms (GDPR 6.1.b)."
+msgstr "1. Behandlingen är nödvändig för utförandet av den tjänst som definieras i villkoren (GDPR 6.1.b)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:50
+msgid ""
+"2. Wildfire Games has legitimate interests in providing the Multiplayer "
+"Lobby, in the development and improvement of 0 A.D. and the Multiplayer "
+"Lobby, in enforcing the Terms of Use and in the protection against "
+"cyberattacks (GDPR 6.1.f)."
+msgstr "2. Wildfire Games har berättigade intressen av att tillhandahålla Multiplayer Lobby, utveckla och förbättra 0 A.D. och Multiplayer Lobby, tillämpa användarvillkoren och skydda mot cyberattacker (GDPR 6.1.f)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:51
+msgid ""
+"3. Wildfire Games does not process any further data for the Multiplayer "
+"Lobby and does not ask for consent to process data (GDPR 6.1.a, GDPR 7, GDPR"
+" 8, GDPR 13.2.c)."
+msgstr "3. Wildfire Games behandlar inte ytterligare data för flerspelarlobby och ber inte om samtycke till att behandla data (GDPR 6.1.a, GDPR 7, GDPR 8, GDPR 13.2.c)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:53
+msgid "[font=\"sans-bold-16\"]User rights:[/font]"
+msgstr "[font=\"sans-bold-16\"]Användarrättigheter:[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:54
+msgid ""
+"1. Contact Wildfire Games, by sending an email to webmaster at wildfiregames"
+" dot com (GDPR 13.1.a, GDPR 13.1.b)."
+msgstr "1. Kontakta Wildfire Games genom att skicka ett mail till webmaster snabel-a wildfiregames punkt com (GDPR 13.1.a, GDPR 13.1.b)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:55
+msgid "   To exercise any user right, please refer to this contact."
+msgstr "   För att utöva en användarrättighet hänvisas till denna kontakt."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:56
+msgid "2. Right of access to personal data concerning him or her (GDPR 15)."
+msgstr "2. Rätt till tillgång till personuppgifter som rör hen (GDPR 15)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:57
+msgid ""
+"3. Right to obtain personal data in a machine-readable format (GDPR 20)."
+msgstr "3. Rätt att erhålla personuppgifter i maskinläsbart format (GDPR 20)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:58
+msgid "4. Right to rectification of inaccurate personal data (GDPR 16)."
+msgstr "4. Rätt till rättelse av felaktiga personuppgifter (GDPR 16)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:59
+msgid ""
+"5. Right to erasure of personal data where it is not relevant to the stated "
+"purposes, if the data was processed unlawfully or if the user objects to the"
+" processing and has overriding legitimate grounds (GDPR 17)."
+msgstr "5. Rätt till radering av personuppgifter som inte är relevanta för de angivna ändamålen, om uppgifterna har behandlats på ett olagligt sätt eller om användaren motsätter sig behandlingen och har tvingande legitima skäl (GDPR 17)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:60
+msgid ""
+"6. Right to restriction of personal data processing where the accuracy of "
+"the data is contested by the user, if the data was processed unlawfully or "
+"if the user requires the data for a legal claim (GDPR 18)."
+msgstr "6. Rätt till begränsning av behandlingen av personuppgifter om användaren har bestridit uppgifternas riktighet, om uppgifterna har behandlats på ett olagligt sätt eller om användaren kräver uppgifter för ett juridiskt anspråk (GDPR 18)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:61
+msgid ""
+"7. Right to object to the processing of personal data concerning him or her "
+"on grounds relating to their particular situation (GDPR 21)."
+msgstr "7. Rätt att invända mot behandlingen av personuppgifter som rör hen av skäl som hänför sig till deras särskilda situation (GDPR 21)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:62
+msgid ""
+"8. Right to lodge a complaint with a supervisory authority (GDPR 13.2.d, "
+"GDPR 77)."
+msgstr "8. Rätt att inge klagomål till en tillsynsmyndighet (GDPR 13.2.d, GDPR 77)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:63
+msgid ""
+"Requests that are manifestly unfounded or excessive are not responded to or "
+"may be charged (GDPR 12.4, GDPR 12.5)."
+msgstr "Begäran som är uppenbart ogrundade eller överdrivna besvaras inte eller kan komma att debiteras (GDPR 12.4, GDPR 12.5)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:65
+msgid "[font=\"sans-bold-16\"]Wildfire Games obligations:[/font]"
+msgstr "[font=\"sans-bold-16\"]Wildfire Games skyldigheter:[/font]"
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:66
+msgid ""
+" 1. Wildfire Games demonstrates compliance with GDPR (GDPR 5.2 "
+"'accountability')."
+msgstr " 1. Wildfire Games visar efterlevnad av GDPR (GDPR 5.2 \"ansvarighet\")."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:67
+msgid ""
+" 2. Wildfire Games documents their processing activities appropriately, in "
+"particular the categories of processed personal data and security measures "
+"to protect it (GDPR 30)."
+msgstr " 2. Wildfire Games dokumenterar sin behandling på lämpligt sätt, särskilt kategorierna av bearbetade personuppgifter och säkerhetsåtgärder för att skydda dessa (GDPR 30)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:68
+msgid ""
+" 3. Wildfire Games processes personal data lawfully, fairly and "
+"transparently (GDPR 5.1.a, GDPR 12.1)."
+msgstr " 3. Wildfire Games behandlar personuppgifter lagligt, rättvist och transparent (GDPR 5.1.a, GDPR 12.1)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:69
+msgid ""
+" 4. Wildfire Games informs users of the purposes, legal grounds, legitimate "
+"interests and retention periods of personal data processing at the time it "
+"is processed, recipients of personal data and where applicable, transfer of "
+"personal data to third countries and automated decision-making (GDPR "
+"13.1.c-f, GDPR 13.2.a, GDPR 13.2.e-f, GDPR 15.1, GDPR 15.4)."
+msgstr " 4. Wildfire Games informerar användarna om ändamålen, de rättsliga grunderna, de legitima intressena och lagringsperioderna för behandling av personuppgifter vid den tidpunkt då de behandlas, mottagarna av personuppgifter och, i förekommande fall, överföring av personuppgifter till tredje land och automatiserat beslutsfattande (GDPR 13.1. c-f, GDPR 13.2. a, GDPR 13.2.e-f, GDPR 15,1, GDPR 15,4)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:70
+msgid ""
+" 5. Wildfire Games does not process personal data for purposes other than "
+"the specified ones (GDPR 5.1.b, 'purpose limitation', GDPR 13.3)."
+msgstr " 5. Wildfire Games behandlar inte personuppgifter för andra ändamål än de angivna (GDPR 5.1.b, ”ändamålsbegränsning”, GDPR 13.3)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:71
+msgid ""
+" 6. Wildfire Games does not process personal data that is not needed for the"
+" specified purposes (GDPR 5.1.c, 'data minimization')."
+msgstr " 6. Wildfire Games behandlar inte personuppgifter som inte behövs för de angivna ändamålen (GDPR 5.1.c, \"uppgiftsminimering\")."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:72
+msgid ""
+" 7. Wildfire Games uses a storage form that does not allow identification of"
+" natural persons for longer than necessary (GDPR 5.1.e 'storage "
+"limitation')."
+msgstr " 7. Wildfire Games använder ett lagringsformat som inte tillåter identifiering av fysiska personer under längre tid än nödvändigt (GDPR 5.1.e \"lagringsbegränsning\")."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:73
+msgid ""
+" 8. Wildfire Games secures personal data processing to prevent unauthorized "
+"or unlawful processing and accidental loss (GDPR 5.1.f. 'integrity and "
+"confidentiality')."
+msgstr " 8. Wildfire Games säkerställer behandlingen av personuppgifter för att förhindra obehörig eller olaglig behandling och oavsiktlig förlust (GDPR 5.1.f. ”integritet och konfidentialitet”)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:74
+msgid ""
+" 9. Wildfire Games informs users of their right to access, to rectify, to "
+"erase personal data and the right to restrict, to withdraw consent to, to "
+"object to personal data processing and to complain at a supervisory "
+"authority (GDPR 13.2.b, GDPR 13.2.c, GDPR 13.2.d)."
+msgstr " 9. Wildfire Games informerar användarna om deras rätt att få till gång till, att rätta till, att radera personuppgifter och rätten att begränsa, att återkalla samtycke till, att invända mot behandling av personuppgifter och att klaga hos en tillsynsmyndighet (GDPR 13.2.b, GDPR 13.2.c, GDPR 13.2.d)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:75
+msgid ""
+"10. Wildfire Games facilitates the exercise of user rights where possible "
+"(GDPR 12.2), without undue delay (GDPR 12.3)."
+msgstr "10. Wildfire Games underlättar utövandet av användarrättigheter om möjligt (GDPR 12.2), utan onödigt dröjsmål (GDPR 12.3)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:76
+msgid ""
+"11. Wildfire Games informs the users that to exercise their rights, users "
+"might need to provide additional information to identify the natural person "
+"or the data (GDPR 12.6, GDPR 13.2.e)."
+msgstr "11. Wildfire Games informerar användarna om att användare kan behöva lämna ytterligare information för att identifiera den fysiska personen eller data för att utöva sina rättigheter (GDPR 12.6, GDPR 13.2.e)."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:77
+msgid ""
+"12. Wildfire Games will not knowingly collect personal data from children "
+"under the age of 13 (Children's Online Privacy Protection Act). If you "
+"believe Wildfire Games received any personal data from or about a child "
+"under 13, please contact Wildfire Games."
+msgstr "12. Wildfire Games kommer inte medvetet att samla in personuppgifter från barn under 13 år (Children's Online Privacy Protection Act). Om du tror att Wildfire Games har fått några personuppgifter från eller om ett barn under 13, vänligen kontakta Wildfire Games."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:78
+msgid ""
+"13. Where Wildfire Games processes sensitive personal data based on "
+"legitimate interests, Wildfire Games considers performing, recording and "
+"periodically reviewing Legitimate Interests Assessments and Data Protection "
+"Impact Assessments (GDPR 35) to become confident that the individual's "
+"interests do not override Wildfire Games legitimate interests, and that "
+"Wildfire Games is not using personal data in intrusive ways unless there is "
+"a very good reason to."
+msgstr "13. Om Wildfire Games bearbetar känsliga personuppgifter baserat på legitima intressen, anser Wildfire Games att de utför, registrerar och regelbundet granskar bedömningar av berättigade intressen och konsekvensbedömningar avseende dataskydd (GDPR 35) för att säkerställa att individens intressen inte åsidosätter Wildfire Games legitima intressen, och att Wildfire Games inte använder personuppgifter på ett inkräktande sätt om det inte finns en mycket bra anledning till det."
+
+#: gui/prelobby/common/terms/Privacy_Policy.txt:80
+msgid ""
+"For further information on Wildfire Games Privacy Policies, visit "
+"https://gitea.wildfiregames.com/0ad/0ad/wiki/UserDataProtection"
+msgstr "För mer information om Wildfire Games integritet, besök https://gitea.wildfiregames.com/0ad/0ad/wiki/UserDataProtection"
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:1
+msgid ""
+"[font=\"sans-bold-18\"]0 A.D. Empires Ascendant Multiplayer Lobby Terms of "
+"Service[/font]"
+msgstr "[font=\"sans-bold-18\"]Användarvillkor för 0 A.D. Empires Ascendant Multiplayer Lobby[/font]"
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:3
+#: gui/prelobby/common/terms/Terms_of_Use.txt:3
+msgid "[font=\"sans-bold-14\"]Document Date:[/font] 2023-07-27"
+msgstr "[font=\"sans-bold-14\"]Dokumentdatum:[/font] 2023-07-27"
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:5
+msgid ""
+"The 0 A.D. Empires Ascendant Multiplayer Lobby is an online service provided"
+" by Wildfire Games that allows players to set up online multiplayer matches,"
+" discuss the game in a public chat room and gain a rating that reflects "
+"their skill."
+msgstr "0 A.D. Empires Ascendant Multiplayer Lobby är en onlinetjänst som tillhandahålls av Wildfire Games och som gör det möjligt för spelare att skapa onlinematcher för flera spelare, diskutera spelet i ett offentligt chattrum och få ett betyg som speglar deras skicklighet."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:7
+msgid ""
+"Due to the subject matter of historic warfare, description and depiction of "
+"violence and the language on the Multiplayer Lobby, 0 A.D. and the "
+"Multiplayer Lobby are not directed to young children (COPPA §312.2)."
+msgstr "På grund av temat historisk krigföring, beskrivningar och skildringar av våld samt språket i Multiplayer Lobby är 0 A.D. och Multiplayer Lobby inte avsedda för små barn (COPPA §312.2)."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:8
+msgid "The minimum age to use the Multiplayer Lobby is 13."
+msgstr "Minimiåldern för att använda flerspelarlobbyn är 13."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:10
+#: gui/prelobby/common/terms/Terms_of_Use.txt:5
+msgid ""
+"[font=\"sans-bold-14\"]By using the 0 A.D. Multiplayer Lobby, you agree "
+"to:[/font]"
+msgstr "[font=\"sans-bold-14\"]Genom att använda 0 A.D. Multiplayer Lobby samtycker du till följande:[/font]"
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:11
+msgid " 1. Follow all usage policies."
+msgstr " 1. Följa alla användarvillkor."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:12
+msgid ""
+" 2. Not use the service with third-party software or mods that prevents the "
+"user from being informed of updated Terms and Conditions, unless authorized "
+"by a Wildfire Games team member."
+msgstr " 2. Inte använda tjänsten med programvara från tredje part eller mods som hindrar användaren från att informeras om uppdaterade användarvillkor, om inte auktoriserad av Wildfire Games."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:13
+msgid ""
+" 3. Use the service at your own risk. Wildfire Games does not take "
+"responsibility for the content posted by users or damages resulting from "
+"this service."
+msgstr " 3. Använda tjänsten på egen risk. Wildfire Games tar inte ansvar för innehåll som publiceras av användare eller skador till följd av denna tjänst."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:15
+msgid "[font=\"sans-bold-14\"]Wildfire Games reserves the right to:[/font]"
+msgstr "[font=\"sans-bold-14\"]Wildfire Games förbehåller sig rätten att:[/font]"
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:16
+msgid ""
+" 1. Moderate the service, i.e. to enforce the Terms of Use by restricting, "
+"suspending or terminating user accounts."
+msgstr " 1. Moderera tjänsten, det vill säga att genomdriva användarvillkoren genom att begränsa, stänga av eller avsluta användarkonton."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:17
+msgid " 2. Appoint others to moderate the service."
+msgstr " 2. Utse andra till att moderera tjänsten."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:18
+msgid " 3. Discontinue or interrupt any part of the service at any time."
+msgstr " 3. Stänga ner eller avbryta någon del av tjänsten när som helst."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:19
+msgid ""
+" 4. Change the service or the terms. The document date of the terms indicate"
+" its version, and the user is informed of the new terms before being able to"
+" use the service again."
+msgstr " 4. Ändra tjänsten eller villkoren. Dokumentets datum anger dess version och användaren informeras om de nya villkoren innan de kan använda tjänsten igen."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:20
+msgid ""
+" 5. Process personal data in accordance with the Lobby Privacy Policy, the "
+"General Data Protection Regulation (GDPR) and the Children's Online Privacy "
+"Protection Act (COPPA) where applicable."
+msgstr " 5. Behandla personuppgifter i enlighet med integritetspolicyn för lobbyn, den allmänna dataskyddsförordningen (GDPR) och Children's Online Privacy Protection Act (COPPA) i tillämpliga fall."
+
+#: gui/prelobby/common/terms/Terms_of_Service.txt:22
+msgid ""
+"If parts of the terms are held to be illegal or otherwise unenforceable, the"
+" remainder of the terms shall still apply ('severability')."
+msgstr "Om delar av villkoren anses vara olagliga eller på annat sätt omöjliga att verkställa, ska återstoden av villkoren fortfarande gälla (\"avskiljbarhet\")."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:1
+msgid ""
+"[font=\"sans-bold-18\"]0 A.D. Empires Ascendant Multiplayer Lobby Terms of "
+"Use[/font]"
+msgstr "[font=\"sans-bold-18\"]Användarvillkor för 0 A.D. Empires Ascendant Multiplayer Lobby[/font]"
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:6
+msgid ""
+" 1. a. Only create one account per person on the service unless authorized "
+"by Wildfire Games."
+msgstr " 1. a. Skapa bara ett konto per person för tjänsten, såvida det inte är auktoriserat av Wildfire Games."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:7
+msgid ""
+"    b. Not share your account with anyone and not publish or divulge to "
+"anyone the account password."
+msgstr "   b. Dela inte ditt konto med någon och publicera eller avslöja inte heller kontolösenordet för någon."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:8
+msgid ""
+" 2. Not impersonate other users of the service and only use your registered "
+"username in multiplayer matches."
+msgstr " 2. Inte imitera andra användare av tjänsten och endast använda ditt registrerade användarnamn i matcher med flera spelare."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:9
+msgid " 3. Not post profanity, pejorative terms or pornographic content."
+msgstr " 3. Inte posta svordomar, nedsättande termer eller pornografiskt innehåll."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:10
+msgid ""
+" 4. Not harass, harm, intimidate, discriminate, threaten, defame, cause "
+"damage to others or purposefully demean the worth of others using this "
+"service."
+msgstr " 4. Inte trakassera, skada, skrämma, diskriminera, hota, förtala, skada andra eller avsiktligt förgöra andras värde med hjälp av denna tjänst."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:11
+msgid ""
+" 5. Not violate the privacy of others by disclosing personally identifiable "
+"information (for example real name, location, ID) or private details (for "
+"example social media or messenger account names) of others without their "
+"consent."
+msgstr " 5. Inte kränka andras integritet genom att avslöja personligt identifierbar information (till exempel riktiga namn, plats, ID) eller privata uppgifter (till exempel sociala medier eller chattanvändarnamn) av andra utan deras medgivande."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:12
+msgid " 6. Not incite violence or promote illegal acts."
+msgstr " 6. Inte väcka våld eller främja olagliga handlingar."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:13
+msgid ""
+" 7. Not attempt to artificially adjust any user of the service's rating or "
+"any of the statistics which impact it. (Examples of this are, but are not "
+"limited to: cheating in ranked games, reverse engineering the service, and "
+"taking advantage of other users of the service.)"
+msgstr " 7. Inte försöka artificiellt justera någon användare av tjänstens värdering eller någon av statistiken som påverkar denna. (Exempel på detta är, men är inte begränsade till: fusk i värderade matcher, bakåtkompilering av tjänsten eller att dra nytta av andra användare av tjänsten)"
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:14
+msgid ""
+" 8. Not undermine the intended gameplay or purposefully gain unfair "
+"advantages in multiplayer matches (for example cheating, using exploits or "
+"bugs)."
+msgstr " 8. Inte undergräva det avsedda spelet eller uppnå otillbörliga fördelar i flerspelarmatcher (till exempel fuska, med hjälp av exploits eller buggar)."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:15
+msgid ""
+" 9. Not spam the service and not post large amounts of repetitive or "
+"unwanted messages."
+msgstr " 9. Inte spamma tjänsten och inte posta stora mängder repetitiva eller oönskade meddelanden."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:16
+msgid ""
+"10. Not use the service to promote specific goods, services, or products "
+"unless authorized by Wildfire Games."
+msgstr "10. Inte använda tjänsten för att marknadsföra specifika varor, tjänster eller produkter om inte auktoriserad av Wildfire Games."
+
+#: gui/prelobby/common/terms/Terms_of_Use.txt:18
+msgid ""
+"If a moderator deems your behavior to be inconsistent with these terms, your"
+" account may be restricted, suspended or terminated."
+msgstr "Om en moderator bedömer att ditt beteende är oförenligt med dessa villkor kan ditt konto bli begränsat, avstängt eller avslutat."
+
+#: gui/prelobby/common/terms/termslobby.js:9
+msgid "Terms of Service"
+msgstr "Tjänstevillkor"
+
+#: gui/prelobby/common/terms/termslobby.js:10
+msgid "Please read and accept the Terms of Service."
+msgstr "Vänligen läs och godkänn tjänstevillkoren."
+
+#: gui/prelobby/common/terms/termslobby.js:19
+msgid "Terms of Use"
+msgstr "Användarvillkor"
+
+#: gui/prelobby/common/terms/termslobby.js:20
+msgid "Please read and accept the Terms of Use."
+msgstr "Vänligen läs och godkänn användarvillkoren."
+
+#: gui/prelobby/common/terms/termslobby.js:29
+msgid "Privacy Policy"
+msgstr "Integritetspolicy"
+
+#: gui/prelobby/common/terms/termslobby.js:30
+msgid "Please read and accept the Privacy Policy."
+msgstr "Vänligen läs och godkänn integritetspolicyn."
+
+#: gui/prelobby/entrance/entrance.xml:20
+msgid "Create a new account"
+msgstr "Skapa nytt konto"
+
+#: gui/prelobby/entrance/entrance.xml:25
+msgid "Login to an existing account"
+msgstr "Logga in med ett befintligt konto"
+
+#: gui/prelobby/login/login.js:5
+msgid "Connect"
+msgstr "Anslut"
+
+#: gui/prelobby/login/login.js:34
+msgid "Connecting…"
+msgstr "Ansluter…"
+
+#: gui/prelobby/login/login.xml:14
+msgid "Connect to the game lobby"
+msgstr "Anslut till spellobby"
+
+#: gui/prelobby/register/register.js:3
+msgid "Register"
+msgstr "Registrera"
+
+#: gui/prelobby/register/register.js:26
+msgid "Registering…"
+msgstr "Registrerar…"
+
+#: gui/prelobby/register/register.js:40
+msgid "Registered"
+msgstr "Registrerad"
+
+#: gui/prelobby/register/register.xml:14
+msgid "Registration"
+msgstr "Registrering"

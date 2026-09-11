@@ -1,0 +1,5 @@
+BATCH TRAINING
+Hold down the 'Batch Production' hotkey (by default SHIFT) while left-clicking on the desired unit on the training panel.
+Left-click repeatedly to add the same number of units to the batch every time.
+Customize the default batch size in the game options or scroll on the mousewheel while pressing the said hotkey to temporarily adjust it during a game.
+Combine with the autoqueue for maximum efficiency.

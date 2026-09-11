@@ -1,0 +1,25 @@
+{
+	"genericName": "Celtic Auxiliaries",
+	"description": "The Second Punic War, Celtic troops were mainly auxiliaries.",
+	"cost": {
+		"metal": 550
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "civ": "cart" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in City Phase.",
+	"icon": "handshake.png",
+	"researchTime": 45,
+	"tooltip": "Mercenaries −50% metal cost but +50 food cost.",
+	"modifications": [
+		{ "value": "Cost/Resources/metal", "multiply": 0.5 },
+		{ "value": "Cost/Resources/food", "add": 50 },
+		{ "value": "Loot/metal", "multiply": 0.5 },
+		{ "value": "Loot/food", "add": 5 }
+	],
+	"affects": ["Mercenary Swordsman"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

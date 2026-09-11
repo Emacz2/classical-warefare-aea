@@ -1,0 +1,5 @@
+SPEARMEN
+The basic Melee Infantry available to every civilization in the game.
+Use against Cavalry for an attack bonus.
+Decent melee hack damage makes them good front line troops.
+Countered by ranged units and Swordsmen, so support your Spearmen with those or Cavalry yourself.

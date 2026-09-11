@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object size="0 135 100%-16 100%-66" name="treeSection">
+	<object name="phaseIdents">
+		<repeat count="4" var="n">
+			<object name="phase[n]_ident" hidden="true">
+				<object name="phase[n]_icon" type="image" size="16 32 16+48 32+48"/>
+				<object name="phase[n]_bars">
+					<repeat count="4" var="k">
+						<object name="phase[n]_bar[k]" type="image" style="ProdBar" z="-10">
+							<object name="phase[n]_bar[k]_icon" type="image" style="ProdBox"/>
+						</object>
+					</repeat>
+				</object>
+			</object>
+		</repeat>
+	</object>
+
+	<object type="image" style="TreeDisplay" size="48+16+8 0 100% 100%">
+		<object name="structures" type="scrollpanel" orientation="horizontal" scrollbar_style="ModernScrollBar">
+			<repeat count="40" var="s">
+				<object type="image" style="StructBox" name="structure[s]" hidden="true">
+					<object type="text" style="StructNamePrimary" name="structure[s]_name"/>
+					<object type="button" style="StructIcon" name="structure[s]_icon"/>
+					<object name="structure[s]_productionRows">
+						<repeat count="4">
+							<object style="ProdBoxRow">
+								<repeat count="24">
+									<object type="button" style="ProdBox"/>
+								</repeat>
+							</object>
+						</repeat>
+					</object>
+				</object>
+			</repeat>
+		</object>
+	</object>
+</object>

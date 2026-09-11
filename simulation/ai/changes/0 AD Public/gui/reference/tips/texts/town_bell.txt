@@ -1,0 +1,4 @@
+TOWN BELL
+When under attack use the gold bell to notify Civilians to garrison in structures.
+Use the silver bell to notify units to return to work.
+The bell is available in Civic Centers and Dropsites.

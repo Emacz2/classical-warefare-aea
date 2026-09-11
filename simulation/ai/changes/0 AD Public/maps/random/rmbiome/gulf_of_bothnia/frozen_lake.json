@@ -1,0 +1,82 @@
+{
+	"Description": {
+		"Title": "Frozen Lake",
+		"Description": "Thick ice has formed on the gulf which is capable of withstanding any weight. All plants are covered in snow, but there are large herds of migrating deer who try to find some food under the snow."
+	},
+	"Environment": {
+		"SkySet": "stormy",
+		"SunColor": { "r": 0.99866, "g": 0.9995, "b": 1.08284 },
+		"SunElevation": 0.462494,
+		"SunRotation": -1.70047,
+		"AmbientColor": { "r": 0.334118, "g": 0.332157, "b": 0.334118 },
+		"Water": {
+			"Frozen": true,
+			"WaterBody": {
+				"Type": "lake",
+				"Color": { "r": 0.0784314, "g": 0.237059, "b": 0.299608 },
+				"Tint": { "r": 0.471, "g": 0.75, "b": 0.501961 },
+				"Murkiness": 0.97,
+				"Waviness": 3
+			}
+		},
+		"Fog": {
+			"FogThickness": 0.000005,
+			"FogFactor": 0.002,
+			"FogColor": { "r": 0.8, "g": 0.8, "b": 0.8 }
+		},
+		"Postproc": {
+			"PostprocEffect": "hdr",
+			"Brightness": 0.015625,
+			"Saturation": 0.96,
+			"Contrast": 0.98,
+			"Bloom": 0.16
+		}
+	},
+	"Terrains": {
+		"mainTerrain": "alpine_snow_01",
+		"forestFloor1": "alpine_snow_02",
+		"cliff": "alpine_snow_02",
+		"tier1Terrain":	"alpine_snow_01",
+		"tier2Terrain": "alpine_snow_02",
+		"tier3Terrain": "alpine_snow_01",
+		"road": "alpine_snow_01",
+		"roadWild": "alpine_snow_02",
+		"shore": "alpine_snow_02",
+		"water": "alpine_ice_01"
+	},
+	"Gaia": {
+		"tree1": "gaia/tree/fir_winter",
+		"tree2": "gaia/tree/fir_winter",
+		"tree3": "gaia/tree/temperate_winter",
+		"tree4": "gaia/tree/fir_winter",
+		"tree5": "gaia/tree/temperate_winter",
+		"fruitBush": "gaia/fruit/berry_02",
+		"chicken": "gaia/fauna_chicken",
+		"mainHuntableAnimal": "gaia/fauna_deer",
+		"secondaryHuntableAnimal": "gaia/fauna_deer",
+		"fish": "gaia/fish/generic",
+		"stoneLarge": "gaia/rock/polar_02",
+		"stoneSmall": "gaia/rock/alpine_small",
+		"metalLarge": "gaia/ore/polar_01",
+		"metalSmall": "gaia/ore/aegean_anatolian_small_01"
+	},
+	"Decoratives": {
+		"grass": "gaia/tree/bush_temperate_winter",
+		"grassShort": "gaia/tree/bush_temperate_winter",
+		"rockLarge": "gaia/tree/bush_temperate_winter",
+		"rockMedium": "actor|geology/stone_granite_med.xml",
+		"bushMedium": "gaia/tree/bush_temperate_winter",
+		"bushSmall": "gaia/tree/bush_temperate_winter"
+	},
+	"ResourceCounts": {
+		"fish": { "min": 6, "max": 25 },
+		"bush": { "min": 13, "max": 50 },
+		"hunt": {"min": 10, "max": 80 },
+		"berries": {"min": 2, "max": 10 }
+	},
+	"Heights": {
+		"seaGround": 0.05,
+		"shore": 0.4,
+		"land": 0.6
+	}
+}

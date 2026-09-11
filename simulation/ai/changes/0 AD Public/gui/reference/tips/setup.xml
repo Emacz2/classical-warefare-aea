@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+
+<setup>
+
+		<icon name="BulletPoint"
+			sprite="stretched:tipdisplay/bullet-point.png"
+			size="8 8"
+		/>
+
+</setup>

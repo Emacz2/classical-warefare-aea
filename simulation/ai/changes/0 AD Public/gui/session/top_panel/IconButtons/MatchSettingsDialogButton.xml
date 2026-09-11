@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object
+	type="button"
+	name="matchSettingsButton"
+	size="100%-194 4 100%-166 32"
+	style="iconButton"
+	tooltip_style="sessionToolTip"
+	hotkey="session.gui.matchsettings.toggle"
+>
+	<object
+		size="2 3 100%-4 100%-3"
+		type="image"
+		sprite="stretched:session/icons/match-settings.png"
+		ghost="true"
+	/>
+</object>
+

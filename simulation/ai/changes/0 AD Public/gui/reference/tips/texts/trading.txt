@@ -1,0 +1,4 @@
+TRADING
+Train Traders for trading on land at the Market and Merchantmen for seaborne trade at the Dock.
+Create a trade route by selecting a Trader or Merchantman and right-clicking on two trade points (Dock or Market). Longer distances yield more profits!
+Open the "Barter & Trade" dialog next to the menu in the top right corner to set how much of each resource type you want to trade for.

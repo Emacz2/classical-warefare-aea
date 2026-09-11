@@ -1,0 +1,4 @@
+FISHING
+Fish the seas for a bountiful harvest.
+Fishing boats can carry a large amount of food and gather faster than Workers on fields.
+Careful! Fish are not an infinite resource! Although they do slowly repopulate when left alone.

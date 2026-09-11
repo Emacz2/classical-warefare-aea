@@ -1,0 +1,2 @@
+ORDER ONE UNIT
+When right-clicking While holding the “Order one unit” hotkey (by default ALT), only one random unit from the current selection will perform the assigned task.

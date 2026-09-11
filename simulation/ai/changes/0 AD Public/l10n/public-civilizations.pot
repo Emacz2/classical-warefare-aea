@@ -1,0 +1,1286 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D. — Empires Ascendant\n"
+"POT-Creation-Date: 2025-11-12 01:27+0000\n"
+"PO-Revision-Date: 2025-11-12 01:27+0000\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: simulation/data/civs/athen.json
+msgid "Silver Owls"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid ""
+"The mines at Laureion in Attica provided Athens with a wealth of silver from which to "
+"mint her famous and highly prized coin, The Athenian Owl."
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Workers +10% metal gather rate per phase advance."
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Epilektoi Infantry"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "The best of the hoplites were chosen to form a group of elite professional soldiers."
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Elite Hoplites can promote to Champion Spearmen."
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Alcibiades"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Aristides"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Callias"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Chabrias"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Cimon"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Cleisthenes"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Cleon"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Cleophon"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Conon"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Demosthenes"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Ephialtes"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Hippias"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Miltiades"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Nicias"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Phocion"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Pisistratus"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Thrasybulus"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Thucydides"
+msgstr ""
+
+#: simulation/data/civs/athen.json
+msgid "Xenophon"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Adminius"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Cassivellaunus"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Cogidubnus"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Commius"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Comux"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Dubnovellaunus"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Imanuentius"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Mandubracius"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Prasutagus"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Venutius"
+msgstr ""
+
+#: simulation/data/civs/brit.json
+msgid "Vosenius"
+msgstr ""
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Deas Celtica"
+msgstr ""
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Celtic religion and druidry inspired their warlike mindset."
+msgstr ""
+
+#: simulation/data/civs/brit.json simulation/data/civs/gaul.json
+msgid "Druids increase attack rates of soldiers near them by 5%."
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Trademasters"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Carthaginians were broadly known for their extensive trade over the Mediterranean "
+"Sea."
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Trade ships are available in the Village Phase."
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Mining Economy"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Carthaginian economy was centered around mining, with stone comprising much of "
+"Carthage's structures."
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Stone mining technologies are free and instant."
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Numidian Cavalry"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid ""
+"The Numidian cavalry's horses, ancestors of the Berber horse, were small compared with "
+"other horses of the era, and were well adapted for faster movement over long distances."
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Cavalry Javelineers +10% walk speed."
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal Barca"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal Gisco"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Hanno the Elder"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Mago Barca"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal the Fair"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Hanno the Great"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Himilco"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Hampsicora"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Hannibal Gisco"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Dido"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Xanthippus"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Himilco Phameas"
+msgstr ""
+
+#: simulation/data/civs/cart.json
+msgid "Hasdrubal the Boetharch"
+msgstr ""
+
+#: simulation/data/civs/gaul.json
+msgid "Cativolcus"
+msgstr ""
+
+#: simulation/data/civs/gaul.json
+msgid "Cingetorix"
+msgstr ""
+
+#: simulation/data/civs/gaul.json
+msgid "Ambiorix"
+msgstr ""
+
+#: simulation/data/civs/gaul.json
+msgid "Liscus"
+msgstr ""
+
+#: simulation/data/civs/gaul.json
+msgid "Orgetorix"
+msgstr ""
+
+#: simulation/data/civs/gaul.json
+msgid "Valetiacus"
+msgstr ""
+
+#: simulation/data/civs/gaul.json
+msgid "Viridovix"
+msgstr ""
+
+#: simulation/data/civs/gaul.json simulation/data/civs/germ.json
+msgid "Divico"
+msgstr ""
+
+#: simulation/data/civs/germ.json
+msgid "Seeresses"
+msgstr ""
+
+#: simulation/data/civs/germ.json
+msgid ""
+"Seeresses accompanied the Germanic armies and envisioned prophecies of victory from "
+"sacrifices."
+msgstr ""
+
+#: simulation/data/civs/germ.json
+msgid "A unique Champion Healer unit is available in City Phase."
+msgstr ""
+
+#: simulation/data/civs/germ.json
+msgid "Claodicus"
+msgstr ""
+
+#: simulation/data/civs/germ.json
+msgid "Caesorix"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Ying"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Gong"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Heng"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Qi"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Che"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Fuling"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu He"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Bingyi"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Shi"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Ao"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Xin"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Kan"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Xuan"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Xiu"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhuang"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Da"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhao"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Long"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Hu"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Yi"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Bao"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Bing"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Zuan"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Zhi"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Bian"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Xie"
+msgstr ""
+
+#: simulation/data/civs/han.json
+msgid "Liu Hong"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Starting Walls"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid ""
+"With exception to alluvial plains and river valleys, stone is abundant in the Iberian "
+"Peninsula and was greatly used in construction of structures of all types."
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Iberians start with City Walls around their base on most maps."
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Massive Towers"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid ""
+"Stone Towers −50% wood cost, +150% stone cost, +33% build time, +60% health, +3 "
+"garrison capacity, and +1 default arrow count."
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Audax"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Calcus"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Ditalcus"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Litennon"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Minurus"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Olyndicus"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Orison"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Tanginus"
+msgstr ""
+
+#: simulation/data/civs/iber.json
+msgid "Tautalus"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Kashta"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Alara"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Pebatjma"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Shabaka"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Shebitku"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Qalhata"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Takahatenamun"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Tantamani"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Atlanersa"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Nasalsa"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Malewiebamani"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Shanakdakhete"
+msgstr ""
+
+#: simulation/data/civs/kush.json
+msgid "Amanishakheto"
+msgstr ""
+
+#: simulation/data/civs/kush.json simulation/data/civs/pers.json
+msgid "Large Rams"
+msgstr ""
+
+#: simulation/data/civs/kush.json simulation/data/civs/pers.json
+msgid "Battering Rams +20% attack damage and +2 garrison capacity."
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Antipater"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Philip IV"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Lysimachus"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Pyrrhus of Epirus"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Antigonus II Gonatas"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Demetrius II Aetolicus"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Philip V"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Perseus"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Craterus"
+msgstr ""
+
+#: simulation/data/civs/mace.json
+msgid "Meleager"
+msgstr ""
+
+#: simulation/data/civs/mace.json simulation/data/civs/spart.json
+msgid "Lysander"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Bindusara Maurya"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Brihadratha Maurya"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Dasharatha Maurya"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Devavarman Maurya"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Kunala Maurya"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Samprati Maurya"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Shalishuka Maurya"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Shatadhanvan Maurya"
+msgstr ""
+
+#: simulation/data/civs/maur.json
+msgid "Tivala Maurya"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Darics"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Land Traders +25% trade gain."
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Times of War"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "The Persians were known for their large cavalry contingent."
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "The batch training time of units trained in Stables decreases each phase advance."
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Satrapy Tribute"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid ""
+"The empire was divided into provinces, called “Satrapies,” that sent yearly tribute to "
+"the ruling Persian dynasty in Persepolis as a form of tax."
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Upgrade the Throne Hall to receive a free trickle of a desired resource."
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Cambyses II"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Bardiya"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha I"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Darayavahush II"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Darayavahush III"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha II"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Artaxshacha III"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Haxamanish"
+msgstr ""
+
+#: simulation/data/civs/pers.json
+msgid "Xsayarsa II"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Polybolos"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Bolt Shooters −45% attack damage and −50% attack time."
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Nile Delta"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid ""
+"The Nile Delta is a region where the Nile River divides into several branches to flow "
+"into the Mediterranean Sea, in northern Egypt."
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "The three farming technologies are available in Village Phase."
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Philadelphus"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Epigone"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Eurgetes"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Epiphanes"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Philometor"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Eupator"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Alexander"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Neos Dionysos"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Ptolemy Neos Philopater"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Berenice Philopater"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Tryphaena"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Berenice Epiphaneia"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Philopater"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra Selene"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Cleopatra II Philometora Soteira"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Arsinoe IV"
+msgstr ""
+
+#: simulation/data/civs/ptol.json
+msgid "Arsinoe II"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Fertility"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Rome was one of the most populous cities in the ancient world."
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Women train from houses without the need to research Fertility Festival."
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Testudo Formation"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid ""
+"The Romans commonly used the Testudo or 'turtle' formation for defense: Legionaries "
+"were formed into hollow squares with twelve men on each side, standing so close "
+"together that their shields overlapped like fish scales."
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Roman Legionaries can form a Testudo."
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Centurions"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Centurions were the officers responsible for a centuria, a group of 100 soldiers."
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Promote Elite Rank Spearmen or Swordsmen to Champion Centurions."
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Junius Brutus"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Tarquinius Collatinus"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Julius Caesar Octavianus"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Vipsanius Agrippa"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Iulius Iullus"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Gaius Servilius Structus Ahala"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Publius Cornelius Rufinus"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Lucius Papirius Cursor"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Aulus Manlius Capitolinus"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Publius Sempronius Tuditanus"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Cornelius Cethegus"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Quintus Caecilius Metellus Pius"
+msgstr ""
+
+#: simulation/data/civs/rome.json
+msgid "Marcus Licinius Crassus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus I Soter"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus II Theos"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus II Callinicus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus III Ceraunus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus IV Philopator"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus V Eupator"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius I Soter"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Alexander I Balas"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VI Dionysus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Diodotus Tryphon"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VII Sidetes"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Alexander II Zabinas"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Cleopatra Thea"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus V Philometor"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus VIII Grypus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus IX Cyzicenus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus VI Epiphanes"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus X Eusebes"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius III Eucaerus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XI Epiphanes"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Philip I Philadelphus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XII Dionysus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Seleucus VII Kybiosaktes"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Antiochus XIII Asiaticus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Philip II Philoromaeus"
+msgstr ""
+
+#: simulation/data/civs/sele.json
+msgid "Demetrius II Nicator"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Ritualistic Exercise"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Citizen-Soldiers +40% health and +50% melee attack hack damage."
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Laws of Lycurgus"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid ""
+"Under the constitution written by the mythical lawgiver Lycurgus, society was shaped "
+"around the training and development of superior warriors in defense of the Spartan "
+"state."
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid ""
+"Champion Hoplites are available in village phase, and can promote to highly experienced"
+" Olympic Champions."
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Agoge"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid ""
+"The institution of the Agoge was established to rigorously train Spartan boys from the "
+"age of 6 to be fearsome warriors."
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Champion Hoplites -10% attack time."
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Agesilaus"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Agesipolis"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Agis II"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Anaxandridas"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Archidamus"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Cleomenes"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Dienekes"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Echestratus"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Eucleidas"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Eurybiades"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Eurycrates"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Gylippus"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Leotychidas"
+msgstr ""
+
+#: simulation/data/civs/spart.json
+msgid "Pausanias"
+msgstr ""
+
+#: simulation/templates/special/players/athen.xml:8
+msgid "Athenians"
+msgstr ""
+
+#: simulation/templates/special/players/athen.xml:9
+msgid ""
+"The Greek city-state of Athens is remembered as a famed center for the arts, learning, "
+"and philosophy, as well as one of the earliest forms of democracy. That wasn't to say "
+"that they weren't warriors. Athens at its height had one of the most powerful navies in"
+" the ancient world and through conquering and colonizing built a vast empire.\\nAncient"
+" Athens rose to an imperial power after defeating the invading Persians twice in the "
+"early fifth century BC and fell in 330 BC, when they lost the Battle of Chaeronea to "
+"King Phillip II of Macedonia. While after that it never rose again to power, Athens "
+"still was renowned for its learning and its scholars were well sought out as teachers."
+msgstr ""
+
+#: simulation/templates/special/players/brit.xml:8
+msgid "Britons"
+msgstr ""
+
+#: simulation/templates/special/players/brit.xml:9
+msgid ""
+"The Britons were the Celtic tribes of the British Isles. Using chariots, longswordsmen "
+"and powerful melee soldiers, they staged fearsome revolts against Rome to protect their"
+" customs and interests. Also, they built thousands of unique structures such as hill "
+"forts, crannogs and brochs."
+msgstr ""
+
+#: simulation/templates/special/players/cart.xml:8
+msgid "Carthaginians"
+msgstr ""
+
+#: simulation/templates/special/players/cart.xml:9
+msgid ""
+"Carthage, a city-state in modern-day Tunisia, was a formidable force in the western "
+"Mediterranean, eventually taking over much of North Africa and modern-day Spain in the "
+"third century BC. The sailors of Carthage were among the fiercest contenders on the "
+"high seas, and masters of naval trade. They deployed towered War Elephants on the "
+"battlefield to fearsome effect, and had defensive walls so strong, they were never "
+"breached."
+msgstr ""
+
+#: simulation/templates/special/players/gaia.xml:9
+msgid "Gaia"
+msgstr ""
+
+#: simulation/templates/special/players/gaul.xml:8
+msgid "Gauls"
+msgstr ""
+
+#: simulation/templates/special/players/gaul.xml:9
+msgid ""
+"The Gauls were the Celtic tribes of continental Europe. Dominated by a priestly class "
+"of Druids, they featured a sophisticated culture of advanced metalworking, agriculture,"
+" trade and even road engineering. With heavy infantry and cavalry, Gallic warriors "
+"valiantly resisted Caesar's campaign of conquest and Rome's authoritarian rule."
+msgstr ""
+
+#. Translation: This string does NOT refer to modern-day Germans, but rather to the ancient
+#. Germanic tribes such as the Cimbri.
+#: simulation/templates/special/players/germ.xml:8
+msgid "Germans"
+msgstr ""
+
+#: simulation/templates/special/players/germ.xml:9
+msgid ""
+"The largest migration in Europe of this period was that of the Cimbri people. The "
+"Cimbri were a large group of Germanic peoples originally from the Jutland region, in "
+"the north of modern-day Denmark. In the late 2nd century BC, their migration south into"
+" Italy and France would spark the decade-long Cimbrian War against the Roman Republic, "
+"bringing \"Terror Germanicus\" to the hearts of the Roman people."
+msgstr ""
+
+#: simulation/templates/special/players/han.xml:16
+msgid "Han"
+msgstr ""
+
+#: simulation/templates/special/players/han.xml:17
+msgid ""
+"The Han dynasty was the second imperial dynasty of China. Founded by the commoner Liu "
+"Bang, the empire lasted from 202 BC to AD 220 with a short break from AD 9 to AD 23 "
+"when Wang Mang took the throne, making it the longest imperial dynasty in Chinese "
+"history. The Han dynasty was a period of relative peace, as well as cultural and "
+"technological growth, and for that reason is considered the first \"Golden Age of "
+"China\". The name of today's largest ethnic group in the world, the Han Chinese, "
+"derives from this very period."
+msgstr ""
+
+#: simulation/templates/special/players/iber.xml:8
+msgid "Iberians"
+msgstr ""
+
+#: simulation/templates/special/players/iber.xml:9
+msgid ""
+"The Iberians were a people of mysterious origins and language, with a strong tradition "
+"of horsemanship and metalworking. A relatively peaceful culture, they usually fought in"
+" other's battles only as mercenaries. However, they proved tenacious when Rome sought "
+"to take their land and freedom from them, and employed pioneering guerrilla tactics and"
+" flaming javelins as they fought back."
+msgstr ""
+
+#: simulation/templates/special/players/kush.xml:8
+msgid "Kushites"
+msgstr ""
+
+#: simulation/templates/special/players/kush.xml:9
+msgid ""
+"The Kingdom of Kush was an African kingdom located at the confluences of the Blue Nile,"
+" White Nile, and River Atbara, in present-day Sudan. It rose following the collapse of "
+"Egypt's New Kingdom, with its early capital at Napata. In the 8th century BC, the "
+"Kushites invaded Egypt and established the Twenty-fifth dynasty, ruling as Pharaohs "
+"until expelled by the Assyrians. The capital moved to Meroe, the center of the Meroitic"
+" kingdom known as Aethiopia in Greek geography. Weakened due to internal rebellion, The"
+" kingdom lasted until the 4th century AD and was overtaken by the Kingdom of Axum. "
+"Influenced by Egyptian culture, the Kushites built throughout their reign pyramids and "
+"temples and worshipped gods like Amun."
+msgstr ""
+
+#: simulation/templates/special/players/mace.xml:8
+msgid "Macedonians"
+msgstr ""
+
+#: simulation/templates/special/players/mace.xml:9
+msgid ""
+"Macedonia was an ancient Greek kingdom, centered in the northeastern part of the Greek "
+"peninsula. Under the leadership of Alexander the Great, Macedonian forces and allies "
+"took over most of the world they knew, including Egypt, Persia and parts of the Indian "
+"subcontinent, allowing a diffusion of Hellenic and eastern cultures for years to come."
+msgstr ""
+
+#: simulation/templates/special/players/maur.xml:8
+msgid "Mauryas"
+msgstr ""
+
+#: simulation/templates/special/players/maur.xml:9
+msgid ""
+"Founded in 322 BC by Chandragupta Maurya, the Mauryan Empire was the first to rule most"
+" of the Indian subcontinent, and was one of the largest and most populous empires of "
+"antiquity. Its military featured bowmen who used the long-range bamboo longbow, fierce "
+"female warriors, chariots, and thousands of armored war elephants. Its philosophers, "
+"especially the famous Acharya Chanakya, contributed to such varied fields such as "
+"economics, religion, diplomacy, warfare, and good governance. Under the rule of Ashoka "
+"the Great, the empire saw 40 years of peace, harmony, and prosperity."
+msgstr ""
+
+#: simulation/templates/special/players/pers.xml:8
+msgid "Persians"
+msgstr ""
+
+#: simulation/templates/special/players/pers.xml:9
+msgid ""
+"The Persian Empire, when ruled by the Achaemenid dynasty, was one of the greatest "
+"empires of antiquity, stretching at its zenith from the Indus Valley in the east to "
+"Greece in the west. The Persians were the pioneers of empire-building of the ancient "
+"world, successfully imposing a centralized rule over various peoples with different "
+"customs, laws, religions and languages, and building a cosmopolitan army made up of "
+"contingents from each of these nations."
+msgstr ""
+
+#: simulation/templates/special/players/ptol.xml:16
+msgid "Ptolemies"
+msgstr ""
+
+#: simulation/templates/special/players/ptol.xml:17
+msgid ""
+"The Ptolemaic dynasty was a Macedonian Greek royal family which ruled the Ptolemaic "
+"Empire in Egypt during the Hellenistic period. Their rule lasted for 275 years, from "
+"305 BC to 30 BC. They were the last dynasty of ancient Egypt."
+msgstr ""
+
+#: simulation/templates/special/players/rome.xml:8
+msgid "Romans"
+msgstr ""
+
+#: simulation/templates/special/players/rome.xml:9
+msgid ""
+"The Romans controlled one of the largest empires of the ancient world, stretching at "
+"its peak from southern Scotland to the Sahara Desert, and containing between 60 million"
+" and 80 million inhabitants, one quarter of the Earth's population at that time. Rome "
+"also remained one of the strongest nations on earth for almost 800 years. The Romans "
+"were the supreme builders of the ancient world, excelled at siege warfare and had an "
+"exquisite infantry and navy."
+msgstr ""
+
+#: simulation/templates/special/players/sele.xml:16
+msgid "Seleucids"
+msgstr ""
+
+#: simulation/templates/special/players/sele.xml:17
+msgid "The Macedonian-Greek dynasty that ruled most of Alexander's former empire."
+msgstr ""
+
+#: simulation/templates/special/players/spart.xml:6
+msgid "Spartans"
+msgstr ""
+
+#: simulation/templates/special/players/spart.xml:7
+msgid ""
+"Sparta was a prominent city-state in Ancient Greece, and its dominant military power "
+"started in the 7th century BC. It peaked after the Peloponnesian Wars in the late fifth"
+" century BC but declined soon after, ending when they lost to Thebes in the battle of "
+"Leuctra in 371 BC.\\nSpartan culture was obsessed with military training; all Spartan "
+"boys were drafted into strict training at age seven, and their military service lasted "
+"until they were sixty. All trades were done by their serfs, the Helots. Spartans lived "
+"a strict and minimalistic lifestyle, separate from many of the other civilizations, due"
+" to reforms such as iron money, which were given by Lycurgus, the legendary lawgiver."
+msgstr ""
+

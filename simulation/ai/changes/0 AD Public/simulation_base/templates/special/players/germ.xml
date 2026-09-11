@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_player">
+  <Auras datatype="tokens">
+    teambonuses/germ_player_teambonus
+  </Auras>
+  <Identity>
+    <Civ>germ</Civ>
+    <GenericName comment="Translation: This string does NOT refer to modern-day Germans, but rather to the ancient Germanic tribes such as the Cimbri.">Germans</GenericName>
+    <History>The largest migration in Europe of this period was that of the Cimbri people. The Cimbri were a large group of Germanic peoples originally from the Jutland region, in the north of modern-day Denmark. In the late 2nd century BC, their migration south into Italy and France would spark the decade-long Cimbrian War against the Roman Republic, bringing "Terror Germanicus" to the hearts of the Roman people.</History>
+    <Icon>emblems/emblem_germ.png</Icon>
+  </Identity>
+  <Player>
+    <Formations datatype="tokens">
+      special/formations/shield_wall
+      special/formations/anti_cavalry
+    </Formations>
+  </Player>
+</Entity>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant>
+      <mesh>props/statue_poseidon.dae</mesh>
+      <props>
+        <prop actor="props/special/eyecandy/statue_poseidon_cover.xml" attachpoint="root"/>
+      </props>
+      <textures>
+        <texture file="props/statue_poseidon_diffuse.png" name="baseTex"/>
+        <texture file="props/statue_poseidon_spec.png" name="specTex"/>
+        <texture file="props/statue_poseidon_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

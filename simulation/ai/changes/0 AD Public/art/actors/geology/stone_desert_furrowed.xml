@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant name="Desert Furrowed Stone" frequency="1">
+      <textures>
+        <texture file="gaia/stonequarry_desert.png" name="baseTex"/>
+        <texture file="gaia/stonequarry_desert_spec.png" name="specTex"/>
+        <texture file="gaia/stonequarry_desert_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant name="01" frequency="1">
+      <mesh>gaia/stone_furrowed_01.dae</mesh>
+    </variant>
+    <variant name="02" frequency="1">
+      <mesh>gaia/stone_furrowed_02.dae</mesh>
+    </variant>
+    <variant name="03" frequency="1">
+      <mesh>gaia/stone_furrowed_03.dae</mesh>
+    </variant>
+    <variant name="04" frequency="1">
+      <mesh>gaia/stone_furrowed_04.dae</mesh>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

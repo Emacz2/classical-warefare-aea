@@ -1,0 +1,203 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Catalanoic, 2021
+# Francesc Saló, 2021
+# Arnau Barrabeig, 2021
+# Maria Acero-Allo, 2021
+# Haommin, 2021
+# Francesc d'Assís Requesens i Roca, 2025
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D. — Empires Ascendant\n"
+"POT-Creation-Date: 2025-02-06 01:24+0000\n"
+"PO-Revision-Date: 2021-04-23 16:19+0000\n"
+"Last-Translator: Francesc d'Assís Requesens i Roca, 2025\n"
+"Language-Team: Catalan (https://app.transifex.com/wildfire-games/teams/17418/ca/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: campaigns/new_maps.json
+msgctxt "Campaign Template"
+msgid "Demo campaign - new maps"
+msgstr "Campanya de demostració - mapes nous"
+
+#: campaigns/new_maps.json
+msgctxt "Campaign Template"
+msgid ""
+"Discover the new and improved maps in Release XXVIII with a demo campaign, "
+"taking you through all of them."
+msgstr ""
+"Descobriu els nous mapes millorats de la versió XXVIII amb una campanya de "
+"demostració on els podreu provar tots."
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "Tutorial"
+msgstr "Tutorial"
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "Learn how to play 0 A.D."
+msgstr "Apreneu a jugar al 0 A.D."
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "Introductory Tutorial"
+msgstr "Tutorial introductori"
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "This is a basic tutorial to get you started playing 0 A.D."
+msgstr "Aquest és un tutorial bàsic per aprendre a jugar al 0 A.D."
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "Economy Walkthrough"
+msgstr "Tutorial d'economia"
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid ""
+"This map will give a rough guide for starting the game effectively.  Early "
+"in the game the most important thing is to gather resources as fast as "
+"possible so you are able to build enough troops later. Warning: This is very"
+" fast at the start, be prepared to run through the initial bit several "
+"times."
+msgstr ""
+"Aquest mapa és una guia bàsica sobre com començar una partida. A l'inici del"
+" joc, el més important és acumular recursos tan ràpid com es pugui per poder"
+" reclutar tropes. Advertència: A l'inici va molt ràpid, prepareu-vos per "
+"repetir el tros inicial moltes vegades."
+
+#: gui/campaigns/default_menu/CampaignMenu.js:185
+msgctxt "campaign status"
+msgid "Completed"
+msgstr "Completat"
+
+#: gui/campaigns/default_menu/CampaignMenu.js:187
+msgctxt "campaign status"
+msgid "Available"
+msgstr "Disponible"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:14
+msgid "Campaign Name"
+msgstr "Nom de la campanya"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:27
+msgctxt "campaignLevelList"
+msgid "Scenario Name"
+msgstr "Nom de l'escenari"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:31
+msgctxt "campaignLevelList"
+msgid "Status"
+msgstr "Estat"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:45
+msgid "No scenario selected"
+msgstr "No s'ha seleccionat cap escenari"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:58
+msgid "Back to Main Menu"
+msgstr "Torna al menú principal"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:62
+msgid "Saved Games"
+msgstr "Partides desades"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:66
+msgid "Start Scenario"
+msgstr "Comença l'escenari"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:69
+msgid "Resume Saved Game"
+msgstr "Continua amb la partida desada"
+
+#: gui/campaigns/load_modal/LoadModal.js:18
+msgid "file cannot be loaded"
+msgstr "no es pot carregar el fitxer"
+
+#: gui/campaigns/load_modal/LoadModal.js:104
+#, javascript-format
+msgid "Are you sure you want to delete run %s? This cannot be undone."
+msgstr ""
+"Segur que voleu esborrar la partida %s? Aquesta acció no es pot desfer."
+
+#: gui/campaigns/load_modal/LoadModal.js:105
+msgid "Confirmation"
+msgstr "Confirmació"
+
+#: gui/campaigns/load_modal/LoadModal.js:106
+msgid "No"
+msgstr "No"
+
+#: gui/campaigns/load_modal/LoadModal.js:106
+msgid "Yes"
+msgstr "Sí"
+
+#: gui/campaigns/load_modal/LoadModal.xml:13
+#: gui/campaigns/load_modal/LoadModal.xml:39
+msgid "Load Campaign"
+msgstr "Carrega la campanya"
+
+#: gui/campaigns/load_modal/LoadModal.xml:20
+msgid "No ongoing campaigns."
+msgstr "No hi ha campanyes en marxa."
+
+#: gui/campaigns/load_modal/LoadModal.xml:24
+msgid "Name of selected run:"
+msgstr "Nom de la partida seleccionada:"
+
+#: gui/campaigns/load_modal/LoadModal.xml:31
+#: gui/campaigns/new_modal/NewCampaignModal.xml:23
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: gui/campaigns/load_modal/LoadModal.xml:35
+msgid "Delete"
+msgstr "Esborra"
+
+#: gui/campaigns/new_modal/NewCampaignModal.xml:12
+msgid "Start a campaign"
+msgstr "Comença una campanya"
+
+#: gui/campaigns/new_modal/NewCampaignModal.xml:16
+msgid "Please enter the name of your new campaign run:"
+msgstr "Introduïu el nom de la partida nova:"
+
+#: gui/campaigns/new_modal/NewCampaignModal.xml:27
+#: gui/campaigns/setup/CampaignSetupPage.xml:55
+msgid "Start Campaign"
+msgstr "Comença la campanya"
+
+#: gui/campaigns/setup/CampaignSetupPage.js:40
+msgid "No campaign selected."
+msgstr "No s'ha seleccionat cap campanya."
+
+#: gui/campaigns/setup/CampaignSetupPage.xml:10
+msgid "Campaigns"
+msgstr "Campanyes"
+
+#: gui/campaigns/setup/CampaignSetupPage.xml:26
+msgctxt "campaignsetup"
+msgid "Name"
+msgstr "Nom"
+
+#: gui/campaigns/setup/CampaignSetupPage.xml:37
+msgid "No Campaign selected"
+msgstr "No s'ha seleccionat cap campanya"
+
+#: gui/campaigns/setup/CampaignSetupPage.xml:50
+msgid "Main Menu"
+msgstr "Menú principal"
+
+#: gui/common/campaigns/CampaignRun.js:115
+#, javascript-format
+msgid "%(userDesc)s - %(templateName)s"
+msgstr "%(userDesc)s - %(templateName)s"

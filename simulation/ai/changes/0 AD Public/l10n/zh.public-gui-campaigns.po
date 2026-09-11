@@ -1,0 +1,198 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# rentt777, 2021
+# Christian Xia, 2021
+# loms126, 2021
+# ma xiaoming, 2021
+# liu lizhi, 2021
+# Ziming Li, 2023
+# 周雪琪, 2025
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D. — Empires Ascendant\n"
+"POT-Creation-Date: 2025-02-06 01:24+0000\n"
+"PO-Revision-Date: 2021-04-23 16:19+0000\n"
+"Last-Translator: 周雪琪, 2025\n"
+"Language-Team: Chinese (https://app.transifex.com/wildfire-games/teams/17418/zh/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: campaigns/new_maps.json
+msgctxt "Campaign Template"
+msgid "Demo campaign - new maps"
+msgstr "演示战役 - 新地图"
+
+#: campaigns/new_maps.json
+msgctxt "Campaign Template"
+msgid ""
+"Discover the new and improved maps in Release XXVIII with a demo campaign, "
+"taking you through all of them."
+msgstr "通过演示战役体验“Release28版本”带来的全新优化的地图和新功能。"
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "Tutorial"
+msgstr "新手教程"
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "Learn how to play 0 A.D."
+msgstr "0 a.d 新手入门指南"
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "Introductory Tutorial"
+msgstr "入门教程"
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "This is a basic tutorial to get you started playing 0 A.D."
+msgstr "这是一份基础教程，教你开始游玩 0 A.D."
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid "Economy Walkthrough"
+msgstr "经济运营教程"
+
+#: campaigns/tutorial.json
+msgctxt "Campaign Template"
+msgid ""
+"This map will give a rough guide for starting the game effectively.  Early "
+"in the game the most important thing is to gather resources as fast as "
+"possible so you are able to build enough troops later. Warning: This is very"
+" fast at the start, be prepared to run through the initial bit several "
+"times."
+msgstr ""
+"这张地图将为你提供高效开局大致指引；游戏初期最重要的是尽可能的快速采集资源，以便后续能建造足够士兵部队。注释：开局节奏极快，建议反复练习初始阶段。"
+
+#: gui/campaigns/default_menu/CampaignMenu.js:185
+msgctxt "campaign status"
+msgid "Completed"
+msgstr "已完成"
+
+#: gui/campaigns/default_menu/CampaignMenu.js:187
+msgctxt "campaign status"
+msgid "Available"
+msgstr "可用的"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:14
+msgid "Campaign Name"
+msgstr "战役名"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:27
+msgctxt "campaignLevelList"
+msgid "Scenario Name"
+msgstr "剧本名"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:31
+msgctxt "campaignLevelList"
+msgid "Status"
+msgstr "状态"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:45
+msgid "No scenario selected"
+msgstr "未选剧本"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:58
+msgid "Back to Main Menu"
+msgstr "返回主菜单"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:62
+msgid "Saved Games"
+msgstr "游戏存档"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:66
+msgid "Start Scenario"
+msgstr "开始剧本"
+
+#: gui/campaigns/default_menu/CampaignMenu.xml:69
+msgid "Resume Saved Game"
+msgstr "继续已存档的游戏"
+
+#: gui/campaigns/load_modal/LoadModal.js:18
+msgid "file cannot be loaded"
+msgstr "无法加载文件"
+
+#: gui/campaigns/load_modal/LoadModal.js:104
+#, javascript-format
+msgid "Are you sure you want to delete run %s? This cannot be undone."
+msgstr "您确定要删除%s？该操作不可恢复。"
+
+#: gui/campaigns/load_modal/LoadModal.js:105
+msgid "Confirmation"
+msgstr "确定"
+
+#: gui/campaigns/load_modal/LoadModal.js:106
+msgid "No"
+msgstr "否"
+
+#: gui/campaigns/load_modal/LoadModal.js:106
+msgid "Yes"
+msgstr "是"
+
+#: gui/campaigns/load_modal/LoadModal.xml:13
+#: gui/campaigns/load_modal/LoadModal.xml:39
+msgid "Load Campaign"
+msgstr "加载战役"
+
+#: gui/campaigns/load_modal/LoadModal.xml:20
+msgid "No ongoing campaigns."
+msgstr "当前没有可加载的战役…"
+
+#: gui/campaigns/load_modal/LoadModal.xml:24
+msgid "Name of selected run:"
+msgstr "当前选择的战役："
+
+#: gui/campaigns/load_modal/LoadModal.xml:31
+#: gui/campaigns/new_modal/NewCampaignModal.xml:23
+msgid "Cancel"
+msgstr "取消"
+
+#: gui/campaigns/load_modal/LoadModal.xml:35
+msgid "Delete"
+msgstr "删除"
+
+#: gui/campaigns/new_modal/NewCampaignModal.xml:12
+msgid "Start a campaign"
+msgstr "战役存档"
+
+#: gui/campaigns/new_modal/NewCampaignModal.xml:16
+msgid "Please enter the name of your new campaign run:"
+msgstr "输入战役存档名："
+
+#: gui/campaigns/new_modal/NewCampaignModal.xml:27
+#: gui/campaigns/setup/CampaignSetupPage.xml:55
+msgid "Start Campaign"
+msgstr "开始战役"
+
+#: gui/campaigns/setup/CampaignSetupPage.js:40
+msgid "No campaign selected."
+msgstr "未选战役"
+
+#: gui/campaigns/setup/CampaignSetupPage.xml:10
+msgid "Campaigns"
+msgstr "战役"
+
+#: gui/campaigns/setup/CampaignSetupPage.xml:26
+msgctxt "campaignsetup"
+msgid "Name"
+msgstr "名字"
+
+#: gui/campaigns/setup/CampaignSetupPage.xml:37
+msgid "No Campaign selected"
+msgstr "未选战役"
+
+#: gui/campaigns/setup/CampaignSetupPage.xml:50
+msgid "Main Menu"
+msgstr "主菜单"
+
+#: gui/common/campaigns/CampaignRun.js:115
+#, javascript-format
+msgid "%(userDesc)s - %(templateName)s"
+msgstr "%(userDesc)s - %(templateName)s"

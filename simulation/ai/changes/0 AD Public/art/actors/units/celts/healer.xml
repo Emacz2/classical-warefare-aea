@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant file="biped/base_healer_male.xml">
+      <mesh>skeletal/new/m_armor_pants_tunic_long.dae</mesh>
+      <props>
+        <prop actor="props/units/heads/new/head_celt.xml" attachpoint="head"/>
+        <prop actor="props/units/helmets/celt_helmet_mistletoe.xml" attachpoint="helmet"/>
+        <prop actor="props/units/staff.xml" attachpoint="weapon_R"/>
+        <prop actor="props/units/weapons/csword.xml" attachpoint="weapon_L"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="healer-outfit-1">
+      <textures>
+        <texture file="skeletal/celt/druid_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="healer-outfit-2">
+      <textures>
+        <texture file="skeletal/celt/druid_02.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="healer-outfit-3">
+      <textures>
+        <texture file="skeletal/celt/druid_03.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="healer-outfit-4">
+      <textures>
+        <texture file="skeletal/celt/druid_04.png" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Idle"/>
+    <variant file="biped/attack_capture.xml"/>
+    <variant file="biped/attack_slaughter.xml"/>
+    <variant file="biped/gather_praise.xml"/>
+    <variant file="biped/death_infantry.xml"/>
+  </group>
+  <group>
+    <variant>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

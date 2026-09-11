@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="Base">
+      <mesh>skeletal/new/m_armor_tunic_short.dae</mesh>
+      <props>
+        <prop actor="props/units/weapons/spear_lance_cavalry_reverse.xml" attachpoint="weapon_R"/>
+        <prop actor="props/units/shields/rome_parma_a.xml" attachpoint="shield_arm"/>
+        <prop actor="props/units/weapons/sheath_gladius.xml" attachpoint="sheath_01_R"/>
+        <prop actor="props/units/capes/rider/cape_long_player.xml" attachpoint="root"/>
+      </props>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="gaul">
+      <props>
+		<prop actor="props/units/heads/new/head_celt.xml" attachpoint="head"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="iber">
+      <props>
+		<prop actor="props/units/heads/new/head_beard_longhair.xml" attachpoint="head"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="thrac">
+      <props>
+		<prop actor="props/units/heads/new/head_hele_h.xml" attachpoint="head"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="4" name="Helmet Roman">
+      <props>
+        <prop actor="props/units/helmets/rome_helmet_coolus.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="2" name="Helmet Gallic">
+      <props>
+        <prop actor="props/units/helmets/rome_helmet_gallic.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Helmet Montefortino">
+      <props>
+        <prop actor="props/units/helmets/rome_helmet_montefortino.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="No Helmet">
+    </variant>
+  </group>
+  <group>
+    <variant frequency="2" name="rome-chainmail-1a">
+      <textures>
+        <texture file="skeletal/rome/chainmail_01_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_01_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="2" name="rome-chainmail-1b">
+      <textures>
+        <texture file="skeletal/rome/chainmail_01_02.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_01_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="rome-chainmail-1c">
+      <textures>
+        <texture file="skeletal/rome/chainmail_01_03.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_01_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="iber-chainmail-2a">
+      <textures>
+        <texture file="skeletal/iber/chainmail_01_02.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="iber-chainmail-2b">
+      <textures>
+        <texture file="skeletal/iber/chainmail_01_04.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="iber-chainmail-2c">
+      <textures>
+        <texture file="skeletal/iber/chainmail_02_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/rider/cavalry/base_spearman_relax_shield_01.xml" name="Spearman-Relax-Shield-01" frequency="1"/>
+    <variant file="biped/rider/carry_meat.xml"/>
+  </group>
+  <group>
+    <variant frequency="1" name="Idle"/>
+    <variant file="biped/rider/promotion_shield.xml"/>
+    <variant file="biped/rider/attack_slaughter_shield_rome.xml"/>
+    <variant file="biped/gather_meat.xml"/>
+    <variant file="biped/rider/death_shield.xml"/>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

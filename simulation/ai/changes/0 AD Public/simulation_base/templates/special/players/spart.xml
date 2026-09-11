@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_player">
+  <Auras datatype="tokens">teambonuses/spart_player_teambonus</Auras>
+  <Identity>
+    <Civ>spart</Civ>
+    <GenericName>Spartans</GenericName>
+    <History>Sparta was a prominent city-state in Ancient Greece, and its dominant military power started in the 7th century BC. It peaked after the Peloponnesian Wars in the late fifth century BC but declined soon after, ending when they lost to Thebes in the battle of Leuctra in 371 BC.\nSpartan culture was obsessed with military training; all Spartan boys were drafted into strict training at age seven, and their military service lasted until they were sixty. All trades were done by their serfs, the Helots. Spartans lived a strict and minimalistic lifestyle, separate from many of the other civilizations, due to reforms such as iron money, which were given by Lycurgus, the legendary lawgiver.</History>
+    <Icon>emblems/emblem_spartans.png</Icon>
+  </Identity>
+  <Player>
+    <Formations datatype="tokens">
+      special/formations/phalanx
+    </Formations>
+  </Player>
+</Entity>

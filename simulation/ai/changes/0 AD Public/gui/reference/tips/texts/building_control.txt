@@ -1,0 +1,4 @@
+CONTROLLING BUILDINGS
+You can control a building's arrows independently from its rally point:
+Right-click with the hotkey "Focus Fire" ("F" by default) to direct all arrow fire to a target unit or building. (Left)
+Right-click alone to set the rally point on a unit. (Right)

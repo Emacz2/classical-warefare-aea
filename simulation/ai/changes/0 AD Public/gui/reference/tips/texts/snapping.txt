@@ -1,0 +1,3 @@
+SNAPPING
+Align structures by keeping the snap hotkey pressed during placement.
+Conserves space for future construction, and comes in useful for obstructing raiding enemies.

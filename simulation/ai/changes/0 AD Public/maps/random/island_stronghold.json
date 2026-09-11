@@ -1,0 +1,19 @@
+{
+	"settings" : {
+		"Name" : "Island Stronghold",
+		"Script" : "island_stronghold.js",
+		"Description" : "Teams start off with nearly adjacent civic centers on a small island, offering a fortified base from which to expand.",
+		"Keywords": ["naval"],
+		"Preview" : "island_stronghold.png",
+		"SupportedBiomes": [
+			"generic/temperate",
+			"generic/arctic",
+			"generic/sahara",
+			"generic/alpine",
+			"generic/aegean",
+			"generic/india",
+			"generic/autumn"
+		],
+		"CircularMap" : true
+	}
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant file="biped/base_archer_chariot_ready.xml" frequency="100" name="Base">
+      <mesh>props/helmet/pers_neckguard.dae</mesh>
+      <textures>
+        <texture file="props/helmet/pers_neckguard_bronze.png" name="baseTex"/>
+        <texture file="props/helmet/pers_neckguard_norm.png" name="normTex"/>
+        <texture file="props/helmet/pers_neckguard_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Idle"/>
+    <variant file="biped/attack_ranged_archer_hip.xml"/>
+    <variant file="biped/attack_capture.xml"/>
+    <variant file="biped/gather_praise.xml"/>
+    <variant name="carry_meat"/>
+    <variant file="biped/death_infantry.xml"/>
+  </group>
+  <material>no_trans_parallax_spec.xml</material>
+</actor>

@@ -1,0 +1,5 @@
+WAR DOG
+A unique dog unit that the Britons can train at the Cavalry Stable.
+Has low health, but is fast and will fearlessly attack enemies.
+Cannot capture or destroy structures.
+Use them as support in your army or for quick raids.

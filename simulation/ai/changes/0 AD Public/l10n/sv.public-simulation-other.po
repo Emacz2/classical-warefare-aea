@@ -1,0 +1,1073 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2026 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Albin Nilsson, 2021
+# Daniel Nylander, 2025-2026
+# efef6ec5b435a041fce803c7f8af77d2_2341d43, 2016,2020
+# Jacob Carlsson, 2015
+# Jimmi Elofsson, 2017
+# efef6ec5b435a041fce803c7f8af77d2_2341d43, 2016
+# efef6ec5b435a041fce803c7f8af77d2_2341d43, 2020
+# Kristoffer Grundström, 2015-2016
+# Martin H, 2020
+# Mattias Münster, 2019
+# Olle Sjöström, 2021
+# Olle Sjöström, 2021
+# Peter Freund, 2023
+# Peter Freund, 2023
+# Sam Johnsson, 2015
+# Ted Svendsen, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2026-01-16 01:16+0000\n"
+"PO-Revision-Date: 2014-06-19 17:53+0000\n"
+"Last-Translator: Daniel Nylander, 2025-2026\n"
+"Language-Team: Swedish (http://app.transifex.com/wildfire-games/0ad/language/sv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: simulation/ai/petra/chatHelper.js:5
+#, javascript-format
+msgid ""
+"I am starting a massive military campaign against %(_player_)s, come and "
+"join me."
+msgstr "Jag startar en massiv militär kampanj mot %(_player_)s, kom och hjälp mig."
+
+#: simulation/ai/petra/chatHelper.js:6
+#, javascript-format
+msgid ""
+"I have set up a huge army to crush %(_player_)s. Join me and you will have "
+"your share of the loot."
+msgstr "Jag har byggt upp en stor armé för att krossa %(_player_)s. Gå med mig och du kommer att få din del av bytet."
+
+#: simulation/ai/petra/chatHelper.js:7
+#, javascript-format
+msgid ""
+"I am launching an unprecedented attack against %(_player_)s. Bring your "
+"armies and we may soon win this war."
+msgstr "Jag inleder en aldrig tidigare skådad attack mot %(_player_)s. Ta med era arméer så kanske vi snart kan vinna detta krig."
+
+#: simulation/ai/petra/chatHelper.js:10
+#, javascript-format
+msgid "I am launching an attack against %(_player_)s."
+msgstr "Jag startar en attack mot %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:11
+#, javascript-format
+msgid "I have just sent an army against %(_player_)s."
+msgstr "Jag har just skickat en armé mot %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:12
+#, javascript-format
+msgid "I am sending an army against %(_player_)s."
+msgstr "Jag skickar en armé mot %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:18
+#, javascript-format
+msgid "Let me regroup my army and I will then join you against %(_player_)s."
+msgstr "Låt mig omgruppera min armé så ansluter jag mig till dig mot %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:19
+#, javascript-format
+msgid "I am finishing preparations to attack %(_player_)s."
+msgstr "Jag avslutar förberedelserna för att attackera %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:22
+#, javascript-format
+msgid ""
+"Sorry, I do not have enough soldiers currently; but my next attack will "
+"target %(_player_)s."
+msgstr "Tyvärr, jag har inte tillräckligt med soldater just nu; men min nästa attack kommer att riktas mot %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:23
+#, javascript-format
+msgid ""
+"Sorry, I still need to strengthen my army. However, I will attack "
+"%(_player_)s next."
+msgstr "Tyvärr, jag måste fortsätta stärka min armé. Dock kommer jag att attackera %(_player_)s härnäst."
+
+#: simulation/ai/petra/chatHelper.js:26
+#, javascript-format
+msgid ""
+"I cannot help you against %(_player_)s for the time being, I am planning to "
+"attack %(_player_2)s first."
+msgstr "Jag kan inte hjälpa dig mot %(_player_)s just nu, jag planerar att attackera %(_player_2)s först."
+
+#: simulation/ai/petra/chatHelper.js:31
+#, javascript-format
+msgid "Here is a gift for you, %(_player_)s. Make good use of it."
+msgstr "Här är en gåva till dig, %(_player_)s. Använd den väl."
+
+#: simulation/ai/petra/chatHelper.js:32
+#, javascript-format
+msgid "I see you are in a bad situation, %(_player_)s. I hope this helps."
+msgstr "Jag ser att du är i en svår situation, %(_player_)s. Jag hoppas att detta hjälper."
+
+#: simulation/ai/petra/chatHelper.js:33
+#, javascript-format
+msgid ""
+"I can help you this time, %(_player_)s, but you should manage your resources"
+" more carefully in the future."
+msgstr "Jag kan hjälpa dig denna gången %(_player_)s, men du borde vara mer varsam med dina resurser i framtiden."
+
+#: simulation/ai/petra/chatHelper.js:37
+#, javascript-format
+msgid "I am in need of %(resource)s, can you help? I will make it up to you."
+msgstr "Jag behöver %(resource)s, kan du hjälpa mig? Jag kommer gottgöra dig."
+
+#: simulation/ai/petra/chatHelper.js:38
+#, javascript-format
+msgid ""
+"I would participate more efficiently in our common war effort if you could "
+"provide me some %(resource)s."
+msgstr "Jag skulle delta mer effektivt i vår gemensamma krigsinsats om du kunde förse mig med %(resource)s."
+
+#: simulation/ai/petra/chatHelper.js:39
+#, javascript-format
+msgid ""
+"If you can spare me some %(resource)s, I will be able to strengthen my army."
+msgstr "Om du ger mig lite %(resource)s kan jag stärka min armé."
+
+#: simulation/ai/petra/chatHelper.js:43
+#, javascript-format
+msgid ""
+"I have set up a new route with %(_player_)s. Trading will be profitable for "
+"all of us."
+msgstr "Jag har byggt en ny handelsväg med %(_player_)s. Handeln kommer vara lönsam för oss alla."
+
+#: simulation/ai/petra/chatHelper.js:44
+#, javascript-format
+msgid ""
+"A new trade route is set up with %(_player_)s. Take your share of the "
+"profits."
+msgstr "En ny handelsväg har satts upp med %(_player_)s. Ta din andel av vinsten."
+
+#: simulation/ai/petra/chatHelper.js:49
+#, javascript-format
+msgid "%(_player_)s and I are now allies."
+msgstr "%(_player_)s och jag är allierade nu."
+
+#: simulation/ai/petra/chatHelper.js:52
+#, javascript-format
+msgid "%(_player_)s and I are now neutral."
+msgstr "%(_player_)s och jag är neutrala nu."
+
+#: simulation/ai/petra/chatHelper.js:55
+#, javascript-format
+msgid "%(_player_)s and I are now enemies."
+msgstr "%(_player_)s och jag är fiender nu."
+
+#: simulation/ai/petra/chatHelper.js:62
+#, javascript-format
+msgid "I cannot accept your offer to become allies, %(_player_)s."
+msgstr "Jag kan inte acceptera ditt erbjudande att bli allierade, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:63
+#, javascript-format
+msgid "I must decline your offer of alliance, %(_player_)s."
+msgstr "Jag måste avböja ditt erbjudande om allians, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:64
+#, javascript-format
+msgid "An alliance with you is not in my best interest, %(_player_)s."
+msgstr "En allians med dig ligger inte i mitt intresse, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:67
+#, javascript-format
+msgid ""
+"I will not be your ally, %(_player_)s. However, I will consider a neutrality"
+" pact."
+msgstr "Jag kommer inte att bli allierad med dig, %(_player_)s. Däremot kommer jag att överväga en neutralitetspakt."
+
+#: simulation/ai/petra/chatHelper.js:68
+#, javascript-format
+msgid ""
+"I reject your request for alliance, %(_player_)s, but we could become "
+"neutral."
+msgstr "Jag avvisar din begäran om allians %(_player_)s, men vi kan vara neutrala."
+
+#: simulation/ai/petra/chatHelper.js:69
+#, javascript-format
+msgid "%(_player_)s, only a neutrality agreement is conceivable to me."
+msgstr "%(_player_)s, bara ett neutralitetsavtal är tänkbart för mig."
+
+#: simulation/ai/petra/chatHelper.js:72
+#, javascript-format
+msgid ""
+"Our previous alliance did not work out, %(_player_)s. I must decline your "
+"offer."
+msgstr "Vår tidigare allians fungerade inte %(_player_)s. Jag måste avböja ditt erbjudande."
+
+#: simulation/ai/petra/chatHelper.js:73
+#, javascript-format
+msgid "I won’t ally you again, %(_player_)s!"
+msgstr "Jag tänker inte bli allierad med dig igen, %(_player_)s!"
+
+#: simulation/ai/petra/chatHelper.js:74
+#, javascript-format
+msgid "No more alliances between us, %(_player_)s!"
+msgstr "Inga fler allianser mellan oss, %(_player_)s!"
+
+#: simulation/ai/petra/chatHelper.js:75
+#, javascript-format
+msgid "Your request for peace means nothing to me anymore, %(_player_)s!"
+msgstr "Din begäran om fred betyder ingenting för mig längre, %(_player_)s!"
+
+#: simulation/ai/petra/chatHelper.js:76
+#, javascript-format
+msgid ""
+"My answer to your repeated peace proposal will remain war, %(_player_)s!"
+msgstr "Mitt svar till dina upprepade fredsförslag förblir krig, %(_player_)s!"
+
+#: simulation/ai/petra/chatHelper.js:79
+#, javascript-format
+msgid ""
+"I will accept your offer to become allies, %(_player_)s. We will both "
+"benefit from this partnership."
+msgstr "Jag accepterar ditt förslag att bli allierade, %(_player_)s. Vi kommer båda att gagnas av detta partnerskap."
+
+#: simulation/ai/petra/chatHelper.js:80
+#, javascript-format
+msgid "An alliance between us is a good idea, %(_player_)s."
+msgstr "En allians mellan oss är en bra idé, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:81
+#, javascript-format
+msgid ""
+"Let both of our people prosper from a peaceful association, %(_player_)s."
+msgstr "Låt båda våra folk blomstra från denna fredliga förening, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:82
+#, javascript-format
+msgid "We have found common ground, %(_player_)s. I accept the alliance."
+msgstr "Vi har hittat en gemensam grund, %(_player_)s. Jag accepterar denna allians."
+
+#: simulation/ai/petra/chatHelper.js:83
+#, javascript-format
+msgid "%(_player_)s, consider us allies from now on."
+msgstr "%(_player_)s, du kan se oss som allierade från och med nu."
+
+#: simulation/ai/petra/chatHelper.js:86
+#, javascript-format
+msgid ""
+"I will ally with you, %(_player_)s, but only if you send me a tribute of "
+"%(_amount_)s %(_resource_)s."
+msgstr "Jag kommer att bli allierad med dig, %(_player_)s, men bara om du skickar mig en tribut av %(_amount_)s %(_resource_)s till mig."
+
+#: simulation/ai/petra/chatHelper.js:87
+#, javascript-format
+msgid ""
+"%(_player_)s, you must send me a tribute of %(_amount_)s %(_resource_)s "
+"before I accept an alliance with you."
+msgstr "%(_player_)s, du måste skicka mig en tribut av %(_amount_)s %(_resource_)s för att jag skall acceptera en allians."
+
+#: simulation/ai/petra/chatHelper.js:88
+#, javascript-format
+msgid ""
+"Unless you send me %(_amount_)s %(_resource_)s, an alliance won’t be formed,"
+" %(_player_)s."
+msgstr "Om du inte skickar mig %(_amount_)s %(_resource_)s så kommer en allians inte bildas, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:91
+#, javascript-format
+msgid ""
+"%(_player_)s, my offer still stands. I will ally with you only if you send "
+"me a tribute of %(_amount_)s %(_resource_)s."
+msgstr "%(_player_)s, mitt erbjudande kvarstår. Jag kommer att alliera mig med dig om du skickar mig en tribut av %(_amount_)s %(_resource_)s."
+
+#: simulation/ai/petra/chatHelper.js:92
+#, javascript-format
+msgid ""
+"I’m still waiting for %(_amount_)s %(_resource_)s before accepting your "
+"alliance, %(_player_)s."
+msgstr "Jag väntar fortfarande på %(_amount_)s %(_resource_)s innan jag godkänner din allians, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:93 simulation/ai/petra/chatHelper.js:114
+#, javascript-format
+msgid ""
+"%(_player_)s, if you do not send me part of the %(_amount_)s %(_resource_)s "
+"tribute soon, I will break off our negotiations."
+msgstr "%(_player_)s, om du inte skickar mig en gåva av %(_amount_)s %(_resource_)s snart, så kommer jag att avbryta våra förhandlingar."
+
+#: simulation/ai/petra/chatHelper.js:98
+#, javascript-format
+msgid "I will not become neutral with you, %(_player_)s."
+msgstr "Jag kommer inte att bli neutral med dig, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:99
+#, javascript-format
+msgid "%(_player_)s, I must decline your request for a neutrality pact."
+msgstr "%(_player_)s, jag måste avböja din förfrågan angående en neutralitetspakt."
+
+#: simulation/ai/petra/chatHelper.js:102
+#, javascript-format
+msgid ""
+"Our previous neutrality agreement ended in failure, %(_player_)s; I will not"
+" consider another one."
+msgstr "Vår förra neutralitetspakt slutade i ett misslyckande %(_player_)s; jag kommer inte överväga en ny."
+
+#: simulation/ai/petra/chatHelper.js:105
+#, javascript-format
+msgid ""
+"I welcome your request for peace between our civilizations, %(_player_)s. I "
+"will accept."
+msgstr "Jag välkomnar din förfrågan om fred mellan våra civilisationer, %(_player_)s. Jag accepterar."
+
+#: simulation/ai/petra/chatHelper.js:106
+#, javascript-format
+msgid ""
+"%(_player_)s, I will accept your neutrality request. May both our "
+"civilizations benefit."
+msgstr "%(_player_)s, jag accepterar din förfrågan om neutralitet. Må båda våra civilisationer blomstra."
+
+#: simulation/ai/petra/chatHelper.js:109
+#, javascript-format
+msgid ""
+"If you send me a tribute of %(_amount_)s %(_resource_)s, I will accept your "
+"neutrality request, %(_player_)s."
+msgstr "Om du skickar mig %(_amount_)s %(_resource_)s så accepterar jag din neutralitetsförfrågan %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:110
+#, javascript-format
+msgid ""
+"%(_player_)s, if you send me %(_amount_)s %(_resource_)s, I will accept a "
+"neutrality pact."
+msgstr "%(_player_)s, om du skickar mig %(_amount_)s %(_resource_)s så accepterar jag din neutralitetsförfrågan."
+
+#: simulation/ai/petra/chatHelper.js:113
+#, javascript-format
+msgid ""
+"%(_player_)s, I will not accept your neutrality request unless you tribute "
+"me %(_amount_)s %(_resource_)s soon."
+msgstr "%(_player_)s, jag kommer inte acceptera din neutralitetsförfrågan om du inte skänker mig %(_amount_)s %(_resource_)s snarast."
+
+#: simulation/ai/petra/chatHelper.js:122
+#, javascript-format
+msgid ""
+"%(_player_)s, it would help both of our civilizations if we formed an "
+"alliance. If you become allies with me, I will respond in kind."
+msgstr "%(_player_)s, det skulle hjälpa båda våra civilisationer om vi formar en allians. Om du allierar dig med mig så kommer jag göra samma sak."
+
+#: simulation/ai/petra/chatHelper.js:125
+#, javascript-format
+msgid "%(_player_)s, my offer for an alliance has expired."
+msgstr "%(_player_)s, mitt erbjudande om en allians har löpt ut."
+
+#: simulation/ai/petra/chatHelper.js:126
+#, javascript-format
+msgid ""
+"%(_player_)s, I have rescinded my previous offer for an alliance between us."
+msgstr "%(_player_)s, jag har upphävt mitt tidigare erbjudande om en allians mellan oss."
+
+#: simulation/ai/petra/chatHelper.js:131
+#, javascript-format
+msgid ""
+"%(_player_)s, I would like to request a neutrality pact between our "
+"civilizations. If you become neutral with me, I will respond in kind."
+msgstr "%(_player_)s, jag skulle vilja begära en neutralitetspakt mellan våra civilisationer. Om du blir neutral med mig så kommer jag göra samma sak."
+
+#: simulation/ai/petra/chatHelper.js:132
+#, javascript-format
+msgid ""
+"%(_player_)s, it would be both to our benefit if we negotiated a neutrality "
+"pact. I will become neutral with you if you do the same."
+msgstr "%(_player_)s, det skulle vara till fördel får båda om vi förhandlade fram en neutralitetspakt. Jag kommer att bli neutral med dig om du gör detsamma."
+
+#: simulation/ai/petra/chatHelper.js:135
+#, javascript-format
+msgid "%(_player_)s, I have decided to revoke my offer for a neutrality pact."
+msgstr "%(_player_)s, jag har beslutat att återkalla mitt erbjudande om en neutralitetspaket."
+
+#: simulation/ai/petra/chatHelper.js:136
+#, javascript-format
+msgid ""
+"%(_player_)s, as you have failed to respond to my request for peace between "
+"us, I have abrogated my offer."
+msgstr "%(_player_)s, eftersom du inte har svarat på min begäran om fred mellan oss har jag upphävt mitt erbjudande."
+
+#: simulation/ai/petra/chatHelper.js:143
+msgid ""
+"My armies failed while defending my empire. Please honor our alliance and "
+"send help!"
+msgstr "Mina arméer misslyckades när jag försvarade mitt imperium. Vänligen hedra vår allians och skicka hjälp!"
+
+#: simulation/ai/petra/chatHelper.js:144
+msgid ""
+"My humble armies feel weak and tired. My civilization depends on our "
+"alliance, please send help!"
+msgstr "Mina ödmjuka arméer känner sig svaga och trötta. Min civilisation är beroende av vår allians, snälla skicka hjälp!"
+
+#: simulation/ai/petra/chatHelper.js:145
+msgid "I need your help. Please do not let my armies fall!"
+msgstr "Jag behöver din hjälp. Låt inte mina arméer falla!"
+
+#: simulation/ai/petra/chatHelper.js:148
+msgid ""
+"My empire regained its old strength, now it is time to seek revenge "
+"together!"
+msgstr "Mitt imperium har återfått sin gamla styrka, nu är det dags att söka hämnd tillsammans!"
+
+#: simulation/ai/petra/chatHelper.js:149
+msgid ""
+"My civilization raised from the ashes. Now my armies feel stronger and eager"
+" to fight for our alliance."
+msgstr "Min civilisation har rest sig ur askan. Nu känner mina arméer sig starkare och ivriga att kämpa för vår allians."
+
+#: simulation/ai/petra/data.json
+msgid "Petra Bot"
+msgstr "Petra Bot"
+
+#: simulation/ai/petra/data.json
+msgid ""
+"Petra is the default 0 A.D. AI bot. Please report issues to Wildfire Games (see the link in the main menu).\n"
+"\n"
+"The AI's resource gathering rate and trade gain depend on the difficulty level (Sandbox −58%, Very Easy −44%, Easy −25%, Medium ±0%, Hard +25%, Very Hard +56%). The easiest levels also have a slower research, training, and building rate. In addition, the Sandbox level does not expand nor attack."
+msgstr "Petra är standard-AI-bot i 0 A.D. Rapportera eventuella problem till Wildfire Games (se länken i huvudmenyn).\n\nAI:ns resursinsamlingstakt och handelsvinst beror på svårighetsgraden (Sandlåda −58%, Mycket lätt −44%, Lätt −25%, Medel ±0%, Svår +25%, Mycket svår +56%). De enklaste nivåerna har också en långsammare forsknings-, tränings- och byggtakt. Dessutom expanderar eller attackerar Sandlådenivån inte."
+
+#: simulation/components/BuildRestrictions.js:101
+#, javascript-format
+msgid "%(name)s cannot be built due to unknown error"
+msgstr "%(name)s kan inte byggas på grunda av okänt fel"
+
+#: simulation/components/BuildRestrictions.js:125
+#, javascript-format
+msgid "%(name)s cannot be built in unexplored area"
+msgstr "%(name)s kan inte byggas i outforskad terräng"
+
+#: simulation/components/BuildRestrictions.js:170
+#, javascript-format
+msgid "%(name)s cannot be built on another building or resource"
+msgstr "%(name)s kan inte byggas ovanpå en annan byggnad eller resurs"
+
+#: simulation/components/BuildRestrictions.js:174
+#, javascript-format
+msgid "%(name)s cannot be built on invalid terrain"
+msgstr "%(name)s kan inte byggas på ogiltig terräng"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:209
+msgctxt "Territory type"
+msgid "own"
+msgstr "egen"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:212
+msgctxt "Territory type"
+msgid "unconnected own"
+msgstr "oanslutet eget"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:218
+msgctxt "Territory type"
+msgid "allied"
+msgstr "allierad"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:221
+msgctxt "Territory type"
+msgid "unconnected allied"
+msgstr "oanslutet allierat"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:227
+msgctxt "Territory type"
+msgid "neutral"
+msgstr "neutral"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:234
+msgctxt "Territory type"
+msgid "enemy"
+msgstr "fiende"
+
+#: simulation/components/BuildRestrictions.js:239
+#, javascript-format
+msgid ""
+"%(name)s cannot be built in %(territoryType)s territory. Valid territories: "
+"%(validTerritories)s"
+msgstr "%(name)s kan inte byggas i %(territoryType)s territorium. Tillåtna territorier: %(validTerritories)s"
+
+#: simulation/components/BuildRestrictions.js:253
+#, javascript-format
+msgid "%(name)s must be built on a valid shoreline"
+msgstr "%(name)s måste byggas vid giltig kustlinje"
+
+#: simulation/components/BuildRestrictions.js:279
+#, javascript-format
+msgid ""
+"%(name)s too close to a %(category)s, must be at least %(distance)s meter "
+"away"
+msgid_plural ""
+"%(name)s too close to a %(category)s, must be at least %(distance)s meters "
+"away"
+msgstr[0] "%(name)s för nära en %(category)s, måste vara minst %(distance)s meter ifrån"
+msgstr[1] "%(name)s för nära en %(category)s, måste vara minst %(distance)s meter bort"
+
+#: simulation/components/BuildRestrictions.js:300
+#, javascript-format
+msgid ""
+"%(name)s too far from a %(category)s, must be within %(distance)s meter"
+msgid_plural ""
+"%(name)s too far from a %(category)s, must be within %(distance)s meters"
+msgstr[0] "%(name)s för långt ifrån %(category)s, måste vara inom %(distance)s meter"
+msgstr[1] "%(name)s för långt ifrån %(category)s, måste vara inom %(distance)s meter"
+
+#. Translation: Territory types being displayed as part of a list like "Valid
+#. territories:
+#. own, ally".
+#: simulation/components/BuildRestrictions.js:340
+msgctxt "Territory type list"
+msgid "own"
+msgstr "egen"
+
+#. Translation: Territory types being displayed as part of a list like "Valid
+#. territories:
+#. own, ally".
+#: simulation/components/BuildRestrictions.js:342
+msgctxt "Territory type list"
+msgid "ally"
+msgstr "allierad"
+
+#. Translation: Territory types being displayed as part of a list like "Valid
+#. territories:
+#. own, ally".
+#: simulation/components/BuildRestrictions.js:344
+msgctxt "Territory type list"
+msgid "neutral"
+msgstr "neutral"
+
+#. Translation: Territory types being displayed as part of a list like "Valid
+#. territories:
+#. own, ally".
+#: simulation/components/BuildRestrictions.js:346
+msgctxt "Territory type list"
+msgid "enemy"
+msgstr "fiende"
+
+#: simulation/components/CeasefireManager.js:99
+#, javascript-format
+msgid "You can attack in %(time)s"
+msgstr "Du kan attackera om %(time)s"
+
+#: simulation/components/CeasefireManager.js:112
+msgid "You can attack now!"
+msgstr "Du kan attackera nu!"
+
+#: simulation/components/EndGameManager.js:169
+#, javascript-format
+msgid "%(lastPlayer)s has won (last player alive)."
+msgid_plural "%(players)s and %(lastPlayer)s have won (last players alive)."
+msgstr[0] "%(lastPlayer)s har vunnit (sista levande spelare)"
+msgstr[1] "%(players)s och %(lastPlayer)s har segrat (sista levande spelare)"
+
+#: simulation/components/EndGameManager.js:177
+msgid "Last remaining player wins."
+msgstr "Sista spelaren kvar vinner."
+
+#: simulation/components/EntityLimits.js:195
+#, javascript-format
+msgid "%(category)s build limit of %(limit)s reached"
+msgstr "%(category)s maximalt antal %(limit)s nått"
+
+#: simulation/components/EntityLimits.js:197
+#, javascript-format
+msgid "%(category)s training limit of %(limit)s reached"
+msgstr "%(category)s maximalt träningsantal %(limit)s uppnått"
+
+#: simulation/components/EntityLimits.js:201
+#, javascript-format
+msgid "%(category)s limit of %(limit)s reached"
+msgstr "%(category)s begränsning av %(limit)s nått"
+
+#: simulation/components/Player.js:308
+#, javascript-format
+msgid "Insufficient resources - %(resourceAmount1)s %(resourceType1)s"
+msgstr "Otillräckliga resurser - %(resourceAmount1)s %(resourceType1)s"
+
+#: simulation/components/Player.js:310
+#, javascript-format
+msgid ""
+"Insufficient resources - %(resourceAmount1)s %(resourceType1)s, "
+"%(resourceAmount2)s %(resourceType2)s"
+msgstr "Otillräckliga resurser - %(resourceAmount1)s %(resourceType1)s, %(resourceAmount2)s %(resourceType2)s"
+
+#: simulation/components/Player.js:312
+#, javascript-format
+msgid ""
+"Insufficient resources - %(resourceAmount1)s %(resourceType1)s, "
+"%(resourceAmount2)s %(resourceType2)s, %(resourceAmount3)s %(resourceType3)s"
+msgstr "Otillräckliga resurser - %(resourceAmount1)s %(resourceType1)s, %(resourceAmount2)s %(resourceType2)s, %(resourceAmount3)s %(resourceType3)s"
+
+#: simulation/components/Player.js:314
+#, javascript-format
+msgid ""
+"Insufficient resources - %(resourceAmount1)s %(resourceType1)s, "
+"%(resourceAmount2)s %(resourceType2)s, %(resourceAmount3)s "
+"%(resourceType3)s, %(resourceAmount4)s %(resourceType4)s"
+msgstr "Otillräckliga resurser - %(resourceAmount1)s %(resourceType1)s, %(resourceAmount2)s %(resourceType2)s, %(resourceAmount3)s %(resourceType3)s, %(resourceAmount4)s %(resourceType4)s"
+
+#: simulation/components/ProductionQueue.js:312
+msgid "Entity is being upgraded. Cannot start production."
+msgstr "Entiteten uppgraderas. Kan inte starta produktion."
+
+#: simulation/components/ProductionQueue.js:327
+msgid "The production queue is full."
+msgstr "Produktionskön är full."
+
+#: simulation/components/ProductionQueue.js:455
+msgid "Could not auto-queue unit, de-activating."
+msgstr "Kunde inte auto-köa enhet, avaktiverar."
+
+#: simulation/components/Trainer.js:321
+msgid "Can't find free space to spawn trained units."
+msgstr "Kan inte hitta ledigt utrymme för att skapa tränade enheter."
+
+#: simulation/components/Upgrade.js:242
+msgid "Entity is producing. Cannot start upgrading."
+msgstr "Entiteten producerar. Kan inte starta uppgradering."
+
+#: simulation/data/settings/game_speeds.json
+msgid "Turtle (0.1×)"
+msgstr "Sköldpadda (0,1×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Slow (0.25×)"
+msgstr "Mycket långsam (0,25×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Leisurely (0.5×)"
+msgstr "Långsam (0,5×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Relaxed (0.75×)"
+msgstr "Avslappnad (0,75×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Normal (1×)"
+msgstr "Normal (1×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Fast (1.25×)"
+msgstr "Snabb (1,25×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Very Fast (1.5×)"
+msgstr "Mycket snabb (1,5×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Insane (2×)"
+msgstr "Sinnessjukt (2×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Fast Forward (5×)"
+msgstr "Snabbspola (5×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Fast Forward (10×)"
+msgstr "Snabbspola (10×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Fast Forward (20×)"
+msgstr "Snabbspola (20×)"
+
+#: simulation/data/settings/map_sizes.json
+msgid "Tiny"
+msgstr "Mycket liten"
+
+#: simulation/data/settings/map_sizes.json
+msgid "This map size has barely any room for even the most basic resources."
+msgstr "Denna kartstorlek har knappt något utrymme för även de mest grundläggande resurserna."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Small"
+msgstr "Liten"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"Small maps are suitable for 1v1 matches, as players can reach the enemy "
+"quickly while still having some room to expand."
+msgstr "Små kartor är lämpliga för 1v1-matcher, eftersom spelare snabbt kan nå fienden medan de fortfarande har lite utrymme att expandera."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Normal"
+msgstr "Normal"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"This map size provides plenty of space for two players, but even eight "
+"players fit."
+msgstr "Denna kartstorleken ger gott om utrymme för två spelare, men även åtta spelare får plats."
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"This is the ideal mapsize for 4 to 8 players, because there is plenty of "
+"space to expand while the neighbors are quickly reachable."
+msgstr "Det här är den perfekta kartstorleken för 4 till 8 spelare, eftersom det finns gott om plats att expandera medan grannarna snabbt kan nås."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Large"
+msgstr "Stor"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"The large mapsize is recommended when great portions of the map are covered "
+"with water or inaccessible mountains."
+msgstr "Den stora kartstorleken rekommenderas när stora delar av kartan är täckta med vatten eller otillgängliga berg."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Very Large"
+msgstr "Väldigt stor"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"Very large maps are not recommended as it takes very long to reach the enemy"
+" and the game performance can be reduced."
+msgstr "Mycket stora kartor rekommenderas inte eftersom det tar mycket lång tid att nå fienden och spelprestandan kan minskas."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Giant"
+msgstr "Gigantisk"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"Giant maps are not recommended as it takes very long to reach the enemy and "
+"the game performance can be reduced."
+msgstr "Stora kartor rekommenderas inte eftersom det tar mycket lång tid att nå fienden och spelprestandan kan försämras."
+
+#: simulation/data/settings/player_defaults.json
+msgid "Gaia"
+msgstr "Gaia"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 1"
+msgstr "Spelare 1"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 2"
+msgstr "Spelare 2"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 3"
+msgstr "Spelare 3"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 4"
+msgstr "Spelare 4"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 5"
+msgstr "Spelare 5"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 6"
+msgstr "Spelare 6"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 7"
+msgstr "Spelare 7"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 8"
+msgstr "Spelare 8"
+
+#: simulation/data/settings/player_placements.json
+msgid "Circle"
+msgstr "Cirkel"
+
+#: simulation/data/settings/player_placements.json
+msgid "Players are placed in a circle spanning the map."
+msgstr "Spelarna placeras i en cirkel som sträcker sig över kartan."
+
+#: simulation/data/settings/player_placements.json
+msgid "River"
+msgstr "Flod"
+
+#: simulation/data/settings/player_placements.json
+msgid "Allied players are placed on two parallel lines."
+msgstr "Allierade spelare placeras på två parallella linjer."
+
+#: simulation/data/settings/player_placements.json
+msgid "Grouped Lines"
+msgstr "Grupperade linjer"
+
+#: simulation/data/settings/player_placements.json
+msgid "Allied players are placed along opposing radial lines."
+msgstr "Allierade spelare placeras längs motsatta radiella linjer."
+
+#: simulation/data/settings/player_placements.json
+msgid "Random Group"
+msgstr "Slumpmässig grupp"
+
+#: simulation/data/settings/player_placements.json
+msgid "Allied players are grouped, but otherwise placed randomly on the map."
+msgstr "Allierade spelare grupperas, men placeras annars slumpmässigt på kartan."
+
+#: simulation/data/settings/player_placements.json
+msgid "Stronghold"
+msgstr "Högborg"
+
+#: simulation/data/settings/player_placements.json
+msgid "Allied players are tightly grouped together."
+msgstr "Allierade spelare är tätt grupperade tillsammans."
+
+#: simulation/data/settings/population_capacities.json
+msgid "Player Population"
+msgstr "Spelarbefolkning"
+
+#: simulation/data/settings/population_capacities.json
+msgid "Player Population Cap"
+msgstr "Gräns för spelarbefolkning"
+
+#: simulation/data/settings/population_capacities.json
+msgid "Locked population cap for all players."
+msgstr "Låst befolkningsgräns för alla spelare."
+
+#: simulation/data/settings/population_capacities.json
+msgid "Choose the player population cap."
+msgstr "Välj spelarens befolkningsgräns."
+
+#: simulation/data/settings/population_capacities.json
+msgid "Team Population"
+msgstr "Lagbefolkning"
+
+#: simulation/data/settings/population_capacities.json
+msgid "Team Population Cap"
+msgstr "Gräns för lagbefolkning"
+
+#: simulation/data/settings/population_capacities.json
+msgid ""
+"Distributes a team's total population cap evenly over all its living "
+"members. Enables the setting 'Locked teams'."
+msgstr "Fördelar ett lags totala befolkningsgräns jämnt över alla dess levande medlemmar. Aktiverar inställningen ”Låsta lag”."
+
+#: simulation/data/settings/population_capacities.json
+msgid "Choose the team population cap."
+msgstr "Välj lagets befolkningsgräns."
+
+#: simulation/data/settings/population_capacities.json
+msgid "World Population"
+msgstr "Världsbefolkning"
+
+#: simulation/data/settings/population_capacities.json
+msgid "World Population Cap"
+msgstr "Världsbefolkningsgräns"
+
+#: simulation/data/settings/population_capacities.json
+msgid "Distributes the total population cap evenly over all living players."
+msgstr "Fördelar den totala befolkningsgränsen jämnt över alla levande spelare."
+
+#: simulation/data/settings/population_capacities.json
+msgid "Choose the world population cap."
+msgstr "Välj världens befolkningsgräns."
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Very Low"
+msgstr "Mycket låg"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Low"
+msgstr "Låg"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Medium"
+msgstr "Mellan"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "High"
+msgstr "Hög"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Very High"
+msgstr "Mycket hög"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Deathmatch"
+msgstr "Dödsmatch"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Very Easy"
+msgstr "Väldigt lätt"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Choose this difficulty if you are discovering 0 A.D."
+msgstr "Välj denna svårighetsgrad om du utforskar 0 A.D."
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Easy"
+msgstr "Lätt"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Choose this difficulty if you do not like being knocked down."
+msgstr "Välj denna svårighetsgrad om du inte gillar att bli nedslagen."
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid ""
+"Choose this difficulty if you have already a good experience with 0 A.D."
+msgstr "Välj denna svårighetsgrad om du redan har god erfarenhet av 0 A.D."
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Hard"
+msgstr "Svår"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Choose this difficulty if you want to be really challenged."
+msgstr "Använd denna svårighetsgrad om du verkligen vill utmanas."
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Very Hard"
+msgstr "Mycket svår"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Choose this difficulty if you do not mind being swept out."
+msgstr "Använd denna svårighetsgrad om du inte har något emot att bli utplånad."
+
+#: simulation/data/settings/map_sizes.json
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Medium"
+msgstr "Mellan"
+
+#: simulation/data/settings/victory_conditions/capture_the_relic.json
+msgid "Capture the Relic"
+msgstr "Erövra reliken"
+
+#: simulation/data/settings/victory_conditions/capture_the_relic.json
+msgid ""
+"Capture all relics spread across the map and keep them for a certain time to"
+" win the game."
+msgstr "Erövra alla reliker som finns på kartan och försvara dem i en viss tid för att vinna spelet."
+
+#: simulation/data/settings/victory_conditions/conquest.json
+msgid "Conquest"
+msgstr "Erövring"
+
+#: simulation/data/settings/victory_conditions/conquest.json
+msgid ""
+"Defeat opponents by killing all their units and destroying all their "
+"structures."
+msgstr "Besegra motståndare genom att döda alla deras enheter och förstöra alla deras byggnader."
+
+#: simulation/data/settings/victory_conditions/conquest_civic_centers.json
+msgid "Conquest Civic Centers"
+msgstr "Erövra samhällscentrum"
+
+#: simulation/data/settings/victory_conditions/conquest_civic_centers.json
+msgid "Defeat opponents by destroying all their fully built civic centers."
+msgstr "Besegra motståndarna genom att förstöra alla deras färdigbyggda samhällscentrum."
+
+#: simulation/data/settings/victory_conditions/conquest_structures.json
+msgid "Conquest Structures"
+msgstr "Erövra byggnader"
+
+#: simulation/data/settings/victory_conditions/conquest_structures.json
+msgid "Defeat opponents by destroying all their structures."
+msgstr "Besegra motståndare genom att förstöra alla deras byggnader."
+
+#: simulation/data/settings/victory_conditions/conquest_units.json
+msgid "Conquest Units"
+msgstr "Erövring soldater"
+
+#: simulation/data/settings/victory_conditions/conquest_units.json
+msgid "Defeat opponents by killing all their units."
+msgstr "Besegra motståndare genom att döda alla deras enheter."
+
+#: simulation/data/settings/victory_conditions/regicide.json
+msgid "Regicide"
+msgstr "Regicid"
+
+#: simulation/data/settings/victory_conditions/regicide.json
+msgid "Defeat opponents by killing their hero."
+msgstr "Besegra motståndare genom att döda deras hjälte."
+
+#: simulation/data/settings/victory_conditions/wonder.json
+msgid "Wonder"
+msgstr "Underverk"
+
+#: simulation/data/settings/victory_conditions/wonder.json
+msgid ""
+"Be the first to build or capture a Wonder and keep it for a certain time to "
+"win the game. The timer will be reset when the Wonder is destroyed or "
+"captured. If the allied victory mode is enabled, the timer will also be "
+"reset when the alliances of the owner change."
+msgstr "Var den första att bygga eller erövra ett underverk och behåll det för en viss tid för att vinna spelet. Timern kommer återställas om underverket förstörs eller erövras. Om spelläget allierad vinst är aktiverad, kommer timern också att återställas när ägarens allianser förändras."
+
+#: simulation/helpers/Cheat.js:60
+#, javascript-format
+msgid "%(player)s has been defeated (cheat)."
+msgstr "%(player)s har blivit besegrad (fusk)."
+
+#: simulation/helpers/Cheat.js:74
+msgid "You need to select a building that trains units."
+msgstr "Du måste markera en byggnad som kan träna soldater."
+
+#: simulation/helpers/Commands.js:81
+msgid "(Cheat - control all units)"
+msgstr "(Fusk - kontrollera alla enheter)"
+
+#: simulation/helpers/Commands.js:96
+msgid "(Cheat - reveal map)"
+msgstr "(Fusk - visa karta)"
+
+#: simulation/helpers/Commands.js:446
+#, javascript-format
+msgid "%(player)s has resigned."
+msgstr "%(player)s has gett upp."
+
+#: simulation/helpers/Commands.js:624
+msgid "(Cheat - promoted units)"
+msgstr "(Fusk - befordrade enheter)"
+
+#: simulation/helpers/Commands.js:745
+msgid ""
+"Cannot upgrade as distance requirements are not verified or terrain is "
+"obstructed."
+msgstr "Kan inte uppgradera eftersom distanskrav inte kan verifieras eller terrängen är skymd."
+
+#: simulation/helpers/Commands.js:787
+#, javascript-format
+msgid "Attack against %(_player_)s requested."
+msgstr "Attack mot %(_player_)s begärs."
+
+#: simulation/helpers/Commands.js:826
+msgid "There are no bribable units"
+msgstr "Det finns inga mutbara enheter"
+
+#: simulation/helpers/Commands.js:947
+msgid "Unable to unload unit(s)."
+msgstr "Kunde inte lasta av enhet(er)."
+
+#: simulation/helpers/Commands.js:961
+msgid "Some unit(s) can't go back to work"
+msgstr "Några enhet(er) kan inte gå tillbaka till arbetet"
+
+#: simulation/helpers/Commands.js:980
+#, javascript-format
+msgid "%(unit)s can't be controlled."
+msgstr "%(unit)s kan inte kontrolleras."
+
+#: simulation/helpers/Commands.js:1231
+msgid "The building's technology requirements are not met."
+msgstr "Byggnadens teknologikrav är inte uppfyllda."

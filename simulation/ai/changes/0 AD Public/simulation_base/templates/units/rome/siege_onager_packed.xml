@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_siege_stonethrower_onager">
+  <Footprint replace="">
+    <Square width="6.0" depth="14.0"/>
+    <Height>5.0</Height>
+  </Footprint>
+  <Identity>
+    <Civ>rome</Civ>
+    <SpecificName>Onager</SpecificName>
+    <Icon>units/rome/siege_onager.png</Icon>
+    <Requirements>
+      <Techs datatype="tokens">roman_reforms -phase_city</Techs>
+    </Requirements>
+  </Identity>
+  <Pack>
+    <Entity>units/rome/siege_onager_unpacked</Entity>
+    <State>packed</State>
+  </Pack>
+  <VisualActor>
+    <Actor>units/romans/siege_onager_packed.xml</Actor>
+  </VisualActor>
+</Entity>

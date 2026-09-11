@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant name="javelin ammo">
+      <mesh>props/weap_javelin_shaft_quiver.dae</mesh>
+      <props>
+        <prop actor="props/units/weapons/jav.xml" attachpoint="ammo_a"/>
+        <prop actor="props/units/weapons/jav.xml" attachpoint="ammo_b"/>
+        <prop actor="props/units/weapons/blades/jav_blade.xml" attachpoint="blade"/>
+      </props>
+      <textures>
+        <texture file="props/prop_weap.dds" name="baseTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

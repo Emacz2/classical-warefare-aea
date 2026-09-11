@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objects>
+
+	<script directory="gui/common/"/>
+	<script directory="gui/prelobby/common/credentials/"/>
+	<script directory="gui/prelobby/common/feedback/"/>
+	<script directory="gui/prelobby/common/terms/"/>
+	<script directory="gui/prelobby/login/"/>
+	<script file="gui/lobby/password.js"/>
+
+	<object type="image" style="ModernDialog" size="50%-230 50%-188 50%+230 50%+188">
+
+		<object style="ModernLabelText" type="text" size="50%-128 -18 50%+128 14">
+			<translatableAttribute id="caption">Connect to the game lobby</translatableAttribute>
+		</object>
+
+		<object size="0 30 100% 100">
+			<include file="gui/prelobby/common/credentials/credentials.xml"/>
+		</object>
+
+		<object size="0 105 100% 125">
+			<include file="gui/prelobby/common/credentials/rememberpassword.xml"/>
+		</object>
+
+		<object size="0 140 100% 254">
+			<include file="gui/prelobby/common/terms/termslobby.xml"/>
+		</object>
+
+		<object size="0 244 100% 100%">
+			<include file="gui/prelobby/common/feedback/feedback.xml"/>
+		</object>
+
+	</object>
+
+</objects>

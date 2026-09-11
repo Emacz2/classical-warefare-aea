@@ -1,0 +1,4 @@
+CELTIC HEAVY ARROW SHIP
+The main Warship for the Britons, Gauls, and Iberians.
+Can transport up to 40 units.
+Research special technologies to improve them with greater health and garrison capacity.

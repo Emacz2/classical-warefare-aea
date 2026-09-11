@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<SoundGroup>
+	<Gain>.4</Gain>
+	<Priority>80</Priority>
+	<Pitch>1.0</Pitch>
+	<ConeGain>1</ConeGain>
+	<Looping>0</Looping>
+	<RandOrder>1</RandOrder>
+	<RandGain>1</RandGain>
+	<GainUpper>0.6</GainUpper>
+	<GainLower>0.3</GainLower>
+	<RandPitch>1</RandPitch>
+	<PitchUpper>1.5</PitchUpper>
+	<PitchLower>1.0</PitchLower>
+	<Threshold>100</Threshold>
+	<Path>audio/attack/weapon/</Path>
+	<Sound>bow_attack_01.ogg</Sound>
+	<Sound>bow_attack_02.ogg</Sound>
+	<Sound>bow_attack_03.ogg</Sound>
+	<Sound>bow_attack_04.ogg</Sound>
+	<Sound>bow_attack_05.ogg</Sound>
+	<Sound>bow_attack_06.ogg</Sound>
+	<Sound>bow_attack_07.ogg</Sound>
+	<Sound>bow_attack_08.ogg</Sound>
+	<Sound>bow_attack_09.ogg</Sound>
+	<Sound>bow_attack_10.ogg</Sound>
+	<Sound>bow_attack_11.ogg</Sound>
+	<Sound>bow_attack_12.ogg</Sound>
+</SoundGroup>

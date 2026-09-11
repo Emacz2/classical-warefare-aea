@@ -1,0 +1,6 @@
+TEMPLE
+Town Phase structure available to all civilizations.
+Trains Healers to heal your troops on the battlefield.
+Offers a series of helpful healing technologies.
+Its aura heals nearby units.
+Garrison wounded units inside for even quicker healing.

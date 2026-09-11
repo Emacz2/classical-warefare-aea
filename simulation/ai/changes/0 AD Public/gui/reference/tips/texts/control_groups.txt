@@ -1,0 +1,4 @@
+CONTROL GROUPS
+Save your current selection to a hotkey by pressing CTRL + a number from 0 to 9 (by default) simultaneously.
+After the control group has been created, quickly select them again by pressing the assigned number.
+A double click additionally centers the camera to the selection.

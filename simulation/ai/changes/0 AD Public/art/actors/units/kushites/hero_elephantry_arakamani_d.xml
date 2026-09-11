@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant file="biped/base_elephant_driver_relax_shield.xml" frequency="100" name="Base">
+      <mesh>skeletal/new/m_tunic_long.dae</mesh>
+      <props>
+        <prop actor="props/units/heads/head_kush_nubian.xml" attachpoint="head"/>
+        <prop actor="props/units/weapons/kush_nubian_mace.xml" attachpoint="weapon_R"/>
+        <prop actor="props/units/heads/kush_dread_hair.xml" attachpoint="head"/>
+        <prop actor="props/units/shields/kush_beja_reinforced_gold_rhino.xml" attachpoint="shield_arm"/>
+        <prop actor="props/units/heads/kush_nubian_ostrich_feathers_b.xml" attachpoint="head"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant name="Kushite Advanced Archer Infantry 01">
+      <textures>
+        <texture file="skeletal/kush/skirt_lion_01.png" name="baseTex"/>
+        <texture file="skeletal/kush/skirt_lion_01_spec.png" name="specTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+    <variant name="Kushite Advanced Archer Infantry 03">
+      <mesh>skeletal/new/m_tunic_short.dae</mesh>
+      <textures>
+        <texture file="skeletal/kush/skirt_leopard_01_medium.png" name="baseTex"/>
+        <texture file="skeletal/kush/skirt_leopard_01_spec.png" name="specTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

@@ -1,0 +1,6 @@
+SIEGE TOWER
+A mobile tower that shoots projectiles at any enemy in sight.
+An empty siege tower fires no projectiles. Garrison up to 10 units to maximize firepower.
+Up to 10 additional units can be garrisoned for protection, but they do not increase firepower.
+Countered by Rams and Cavalry Swordsmen.
+Available to the Han, Macedonians, Ptolemies, and Seleucids.

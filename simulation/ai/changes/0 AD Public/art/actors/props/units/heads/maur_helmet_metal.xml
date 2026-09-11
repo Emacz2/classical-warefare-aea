@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="Maur helmet a">
+      <textures>
+        <texture file="props/helmet/maur_helmet_metal_a.png" name="baseTex"/>
+        <texture name="specTex" file="null_white.dds"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="Maur helmet b">
+      <textures>
+        <texture file="props/helmet/maur_helmet_metal_b.png" name="baseTex"/>
+        <texture name="specTex" file="null_white.dds"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="metal a">
+      <mesh>props/helmet/maur_helmet_metal_a.dae</mesh>
+    </variant>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

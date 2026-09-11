@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <float/>
+  <group>
+    <variant file="others/ships/main_sail_base.xml" name="Trireme Sail">
+      <mesh>props/athen_trireme_main_sail.dae</mesh>
+      <textures>
+        <texture file="props/ptol_sail_norm.png" name="normTex"/>
+        <texture file="props/sail_spec_1.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="owl 1">
+      <textures>
+        <texture file="props/athen_sail_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="pegasus">
+      <textures>
+        <texture file="props/athen_sail_02.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="owl 2">
+      <textures>
+        <texture file="props/athen_sail_03.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="alpha">
+      <textures>
+        <texture file="props/athen_sail_04.png" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>player_trans_parallax_spec.xml</material>
+</actor>

@@ -1,0 +1,3 @@
+SELECT WOUNDED UNITS
+Hold down the “Select only wounded units” hotkey ('O' by default) and drag to select only wounded units.
+Customize the threshold in Settings > Game Session.

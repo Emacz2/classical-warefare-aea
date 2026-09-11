@@ -1,0 +1,2 @@
+LOOT
+When you kill units or destroy structures, you will gain a certain number of resources, plus what they are carrying.

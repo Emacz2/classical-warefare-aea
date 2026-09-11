@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant name="Base">
+      <textures>
+        <texture file="props/hele_tile_c.dds" name="baseTex"/>
+        <texture file="props/hele_tile_c_norm.png" name="normTex"/>
+        <texture file="props/hele_tile_c_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Temple A">
+      <mesh>structural/hele_temple_a_base.dae</mesh>
+      <props>
+        <prop actor="props/structures/hellenes/temple_a_columns.xml" attachpoint="root"/>
+        <prop actor="props/structures/hellenes/temple_a_struct.xml" attachpoint="root"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Temple B">
+      <mesh>structural/hele_temple_b_base.dae</mesh>
+      <props>
+        <prop actor="props/structures/hellenes/temple_b_struct.xml" attachpoint="root"/>
+        <prop actor="props/structures/hellenes/temple_b_columns.xml" attachpoint="root"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Temple C">
+      <mesh>structural/hele_temple_c_base.dae</mesh>
+      <props>
+        <prop actor="props/structures/hellenes/temple_b_struct.xml" attachpoint="root"/>
+        <prop actor="props/structures/hellenes/temple_c_columns.xml" attachpoint="root"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant name="ungarrisoned" frequency="1"/>
+    <variant name="garrisoned">
+      <props>
+        <prop actor="props/special/common/garrison_flag_hele.xml" attachpoint="garrisoned" selectable="false"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant name="alive" frequency="1"/>
+    <variant file="structures/destruction_medium.xml"/>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

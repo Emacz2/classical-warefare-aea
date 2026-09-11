@@ -1,0 +1,4 @@
+CARTHAGINIAN NAVAL SHIPYARD
+Special Dock of the Carthaginians to construct Warships.
+Garrison Ships inside to slowly repair them.
+Much stronger than other Docks, but also more expensive.

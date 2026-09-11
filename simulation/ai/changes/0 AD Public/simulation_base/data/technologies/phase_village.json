@@ -1,0 +1,21 @@
+{
+	"genericName": "Village Phase",
+	"specificName": {
+		"athen": "Kōmē",
+		"brit": "Ialon",
+		"cart": "Kapr",
+		"gaul": "Ialon",
+		"han": "Xiāng",
+		"iber": "Treba",
+		"kush": "Wḥyt",
+		"mace": "Kōmē",
+		"maur": "Gāma",
+		"pers": "Āvahana",
+		"ptol": "Kōmē",
+		"rome": "Vicus",
+		"sele": "Kōmē",
+		"spart": "Kōmā"
+	},
+	"autoResearch": true,
+	"icon": "village_phase.png"
+}

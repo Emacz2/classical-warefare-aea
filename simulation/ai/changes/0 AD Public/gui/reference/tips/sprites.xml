@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<sprites>
+	<!-- TIP IMAGE FRAME-->
+	<sprite name="TipImageFrame">
+		<!-- sides -->
+		<image
+			texture="global/border/line_horiz.png"
+			texture_size="0 0 64 4"
+			size="4 0 100%-4 4"
+		/>
+		<image
+			texture="global/border/line_vert.png"
+			texture_size="0 0 4 64"
+			size="100%-4 4 100% 100%-4"
+		/>
+		<image
+			texture="global/border/line_horiz.png"
+			texture_size="0 0 64 4"
+			size="4 100%-4 100%-4 100%"
+		/>
+		<image
+			texture="global/border/line_vert.png"
+			texture_size="0 0 4 64"
+			size="0 4 4 100%-4"
+		/>
+
+		<!-- corners -->
+		<image
+			texture="global/border/line_corner_top_right.png"
+			texture_size="0 0 4 4"
+			size="100%-4 0 100% 4"
+		/>
+		<image
+			texture="global/border/line_corner_bottom_right.png"
+			texture_size="0 0 4 4"
+			size="100%-4 100%-4 100% 100%"
+		/>
+		<image
+			texture="global/border/line_corner_bottom_left.png"
+			texture_size="0 0 4 4"
+			size="0 100%-4 4 100%"
+		/>
+		<image
+			texture="global/border/line_corner_top_left.png"
+			texture_size="0 0 4 4"
+			size="0 0 4 4"
+		/>
+	</sprite>
+
+	<!-- TIP TEXT BACKGROUND-->
+	<sprite name="TipTextBackground">
+		<image
+			texture="tipdisplay/parchment.png"
+			size="0 0 100% 100%"
+			real_texture_placement="-4 0 317 386"
+		/>
+	</sprite>
+
+
+	<!-- PREVIOUS TIP BUTTON
+		Note that the textures are mirrored horizontally (by setting the texure_size) -->
+
+	<sprite name="PreviousTipButton">
+		<image
+			texture="tipdisplay/button-highlight_base.png"
+			texture_size="100% 0 0 100%"
+			size="-10 -10 100%+10 100%+10"
+			real_texture_placement="16 0 80 64"
+		/>
+		<image
+			texture="tipdisplay/button-decoration_front.png"
+			texture_size="100% 0 0 100%"
+			size="0 0 24 100%"
+			real_texture_placement="-8 0 24 32"
+		/>
+
+		<image
+			texture="tipdisplay/button-decoration_back.png"
+			texture_size="100% 0 0 100%"
+			size="100%-24 0 100%-12 100%"
+			real_texture_placement="12 0 28 32"
+		/>
+	</sprite>
+
+	<sprite name="PreviousTipButtonOver">
+		<image
+			texture="tipdisplay/button-highlight_over.png"
+			texture_size="100% 0 0 100%"
+			size="-10 -10 100%+10 100%+10"
+			real_texture_placement="16 0 80 64"
+		/>
+		<image
+			texture="tipdisplay/button-decoration_front.png"
+			texture_size="100% 0 0 100%"
+			size="0 0 24 100%"
+			real_texture_placement="-8 0 24 32"
+		/>
+
+		<image
+			texture="tipdisplay/button-decoration_back.png"
+			texture_size="100% 0 0 100%"
+			size="100%-24 0 100%-12 100%"
+			real_texture_placement="12 0 28 32"
+		/>
+	</sprite>
+
+	<sprite name="PreviousTipButtonPressed">
+		<image
+			texture="tipdisplay/button-highlight_pressed.png"
+			texture_size="100% 0 0 100%"
+			size="-10 -10 100%+10 100%+10"
+			real_texture_placement="16 0 80 64"
+		/>
+		<image
+			texture="tipdisplay/button-decoration_front.png"
+			texture_size="100% 0 0 100%"
+			size="0 0 24 100%"
+			real_texture_placement="-8 0 24 32"
+		/>
+
+		<image
+			texture="tipdisplay/button-decoration_back.png"
+			texture_size="100% 0 0 100%"
+			size="100%-24 0 100%-12 100%"
+			real_texture_placement="12 0 28 32"
+		/>
+	</sprite>
+
+	<sprite name="PreviousTipButtonDisabled">
+		<effect add_color="70 65 50"/>
+		<image
+			texture="tipdisplay/button-highlight_disabled.png"
+			texture_size="100% 0 0 100%"
+			size="-10 -10 100%+10 100%+10"
+			real_texture_placement="16 0 80 64"
+		/>
+		<image
+			texture="tipdisplay/button-decoration_front.png"
+			texture_size="100% 0 0 100%"
+			size="0 0 24 100%"
+			real_texture_placement="-8 0 24 32"
+		/>
+
+		<image
+			texture="tipdisplay/button-decoration_back.png"
+			texture_size="100% 0 0 100%"
+			size="100%-24 0 100%-12 100%"
+			real_texture_placement="12 0 28 32"
+		/>
+	</sprite>
+
+	<sprite name="PreviousTipButtonMask">
+		<image backcolor="0 0 0"/>
+		<image
+			backcolor="255 255 255"
+			size="0 0 100%-12 100%"
+		/>
+	</sprite>
+
+
+	<!-- NEXT TIP BUTTON -->
+
+	<sprite name="NextTipButton">
+		<image
+			texture="tipdisplay/button-highlight_base.png"
+			size="-10 -10 100%+10 100%+10"
+		/>
+		<image
+			texture="tipdisplay/button-decoration_back.png"
+			size="12 0 24 100%"
+		/>
+
+		<image
+			texture="tipdisplay/button-decoration_front.png"
+			size="100%-24 -2 100% 100%+2"
+		/>
+	</sprite>
+
+	<sprite name="NextTipButtonOver">
+		<image
+			texture="tipdisplay/button-highlight_over.png"
+			size="-10 -10 100%+10 100%+10"
+		/>
+		<image
+			texture="tipdisplay/button-decoration_back.png"
+			size="12 0 24 100%"
+		/>
+
+		<image
+			texture="tipdisplay/button-decoration_front.png"
+			size="100%-24 -2 100% 100%+2"
+		/>
+	</sprite>
+
+	<sprite name="NextTipButtonPressed">
+		<image
+			texture="tipdisplay/button-highlight_pressed.png"
+			size="-10 -10 100%+10 100%+10"
+		/>
+		<image
+			texture="tipdisplay/button-decoration_back.png"
+			size="12 0 24 100%"
+		/>
+
+		<image
+			texture="tipdisplay/button-decoration_front.png"
+			size="100%-24 -2 100% 100%+2"
+		/>
+	</sprite>
+
+	<sprite name="NextTipButtonDisabled">
+		<effect add_color="70 65 50"/>
+		<image
+			texture="tipdisplay/button-highlight_disabled.png"
+			size="-10 -10 100%+10 100%+10"
+		/>
+		<image
+			texture="tipdisplay/button-decoration_back.png"
+			size="12 0 24 100%"
+		/>
+
+		<image
+			texture="tipdisplay/button-decoration_front.png"
+			size="100%-24 -2 100% 100%+2"
+		/>
+	</sprite>
+
+
+	<!-- PREVIOUS IMAGE BUTTON -->
+
+	<sprite name="PreviousImageButton">
+		<effect add_color="255 255 255"/>
+		<image
+			texture="tipdisplay/arrow.png"
+		/>
+	</sprite>
+
+	<sprite name="PreviousImageButtonOver">
+		<effect add_color="152 133 43"/>
+		<image
+			texture="tipdisplay/arrow.png"
+		/>
+	</sprite>
+
+	<sprite name="PreviousImageButtonPressed">
+		<effect add_color="204 180 57"/>
+		<image
+			texture="tipdisplay/arrow.png"
+		/>
+	</sprite>
+
+	<sprite name="PreviousImageButtonDisabled">
+		<effect add_color="90 90 90"/>
+		<image
+			texture="tipdisplay/arrow.png"
+		/>
+	</sprite>
+
+
+	<!-- NEXT IMAGE BUTTON
+		Note that the textures are mirrored horizontally (by setting the texure_size) -->
+
+	<sprite name="NextImageButton">
+		<effect add_color="255 255 255"/>
+		<image
+			texture="tipdisplay/arrow.png"
+			texture_size="100% 0 0 100%"
+			real_texture_placement="-16 0 16 32"
+		/>
+	</sprite>
+
+	<sprite name="NextImageButtonOver">
+		<effect add_color="152 133 43"/>
+		<image
+			texture="tipdisplay/arrow.png"
+			texture_size="100% 0 0 100%"
+			real_texture_placement="-16 0 16 32"
+		/>
+	</sprite>
+
+	<sprite name="NextImageButtonPressed">
+		<effect add_color="204 180 57"/>
+		<image
+			texture="tipdisplay/arrow.png"
+			texture_size="100% 0 0 100%"
+			real_texture_placement="-16 0 16 32"
+		/>
+	</sprite>
+
+	<sprite name="NextImageButtonDisabled">
+		<effect add_color="90 90 90"/>
+		<image
+			texture="tipdisplay/arrow.png"
+			texture_size="100% 0 0 100%"
+			real_texture_placement="-16 0 16 32"
+		/>
+	</sprite>
+
+
+	<!-- TITLE DECO -->
+	<sprite name="TipTitleDecoration">
+		<image
+			texture="tipdisplay/title-ornament.png"
+			size="0 0 16 100%"
+		/>
+		<image
+			texture="tipdisplay/title-ornament.png"
+			texture_size="100% 0 0 100%"
+			size="100%-16 0 100% 100%"
+		/>
+		<image
+			backcolor="black"
+			size="11 9 100%-11 11"
+		/>
+	</sprite>
+</sprites>

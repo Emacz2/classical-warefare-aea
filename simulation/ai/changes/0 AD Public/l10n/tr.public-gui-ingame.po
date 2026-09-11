@@ -1,0 +1,1944 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Abdullah Ilgaz, 2013-2014
+# A, 2023
+# Ahmet Elgun, 2021
+# ali topçu, 2018
+# Barış Aydın, 2021
+# Berke Güvenç, 2016
+# Cem Aktas, 2015,2017,2021
+# Cem Sivil, 2021
+# Cenk Yıldızlı, 2021
+# Ebubekir Tabak, 2013
+# Emre AYTAÇ, 2013
+# Emre JILTA, 2020,2026
+# Erdem Aydogan, 2016
+# Eren Ramiz, 2016
+# mahmut özcan, 2013
+# Furkan Çevik, 2013
+# Günay Yılmaz, 2019-2021
+# Hüseyin Cem Aras, 2015
+# İrfan Sunay, 2018
+# Kemal Oktay Aktoğan, 2017
+# mehmet akar, 2013
+# Merve BİÇKES, 2014
+# Mete Han, 2013
+# Muha Aliss, 2017,2021
+# Muhammed Aydın, 2013
+# Necibe E, 2016
+# Nicolas Auvray, 2017
+# Onur Kılıç, 2017
+# reprezalio, 2014
+# schaft, 2014
+# Serif Gunenc, 2017
+# Serkan, 2013
+# sicey, 2015
+# Stanislas Dolcini, 2021,2023
+# Taha Karadoğan, 2016
+# Günay Yılmaz, 2020
+# Tayfun Toprakcıoğlu, 2017
+# ubuntuki, 2014
+# Butterfly, 2013
+# volcanology, 2014
+# Volkan Gezer, 2014-2015
+# Volkan SARIBÜLBÜL, 2015
+# 3909d6133b383976bde86621da215840_711025d, 2025
+# 9d4282795e87ad099e39d98812f1a822_ade2f01, 2014-2017,2019,2021-2023
+# Yasin Karaaslan, 2025
+# Yavuz Karakişi, 2014
+# Yunus Emre  Çakmak, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-11-03 01:30+0000\n"
+"PO-Revision-Date: 2014-06-19 17:49+0000\n"
+"Last-Translator: Emre JILTA, 2020,2026\n"
+"Language-Team: Turkish (http://app.transifex.com/wildfire-games/0ad/language/tr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: gui/session/Cheats.js:78
+msgid "This cheat requires a numeric parameter."
+msgstr "Bu hile sayısal bir parametre gerektirir."
+
+#: gui/session/GameSpeedControl.xml:11
+msgid "Choose game speed"
+msgstr "Oyun hızını seç"
+
+#: gui/session/Menu.js:39
+#, javascript-format
+msgid "Press %(hotkey)s to toggle this menu."
+msgstr "Bu menüyü açıp kapatmak için %(hotkey)s tuşuna basın."
+
+#: gui/session/MenuButtons.js:33
+msgid "Chat"
+msgstr "Sohbet"
+
+#: gui/session/MenuButtons.js:54
+msgid "Save"
+msgstr "Kaydet"
+
+#: gui/session/MenuButtons.js:78
+msgid "Summary"
+msgstr "Özet"
+
+#: gui/session/MenuButtons.js:91
+#, javascript-format
+msgid "Press %(hotkey)s to open the summary screen."
+msgstr "Özet ekranını açmak için %(hotkey)s tuşuna basın."
+
+#: gui/session/MenuButtons.js:133
+msgid "Lobby"
+msgstr "Lobi"
+
+#: gui/session/MenuButtons.js:142
+#, javascript-format
+msgid ""
+"Press %(hotkey)s to open the multiplayer lobby page without leaving the "
+"game."
+msgstr "Oyundan çıkmadan çok oyunculu lobisine girmek için %(hotkey)s tuşuna basın."
+
+#: gui/session/MenuButtons.js:161
+msgid "Options"
+msgstr "Seçenekler"
+
+#: gui/session/MenuButtons.js:180
+msgid "Hotkeys"
+msgstr "Kısayollar"
+
+#: gui/session/MenuButtons.js:213
+msgid "Resume"
+msgstr "Devam ettir"
+
+#: gui/session/MenuButtons.js:213
+msgid "Pause"
+msgstr "Duraklat"
+
+#: gui/session/MenuButtons.js:214
+#, javascript-format
+msgid "Press %(hotkey)s to pause or resume the game."
+msgstr "Oyunu durdurmak ya da devam etmek için %(hotkey)s tuşuna basın."
+
+#: gui/session/MenuButtons.js:230
+msgid "Resign"
+msgstr "Teslim Ol"
+
+#: gui/session/MenuButtons.js:254 gui/session/NetworkStatusOverlay.xml:9
+msgid "Exit"
+msgstr "Çıkış"
+
+#: gui/session/NetworkDelayOverlay.js:62
+#, javascript-format
+msgid "Delay to live stream: %(delay)ss"
+msgstr "Canlı Yayın gecikmesi:%(delay)s s"
+
+#: gui/session/NetworkStatusOverlay.js:38
+msgid "Connection to the server has been authenticated."
+msgstr "Sunucu bağlantısı doğrulandı."
+
+#: gui/session/NetworkStatusOverlay.js:39
+msgid "Connected to the server."
+msgstr "Sunucuya bağlanıldı."
+
+#: gui/session/NetworkStatusOverlay.js:40
+msgid "Connection to the server has been lost."
+msgstr "Sunucu bağlantısı koptu."
+
+#: gui/session/NetworkStatusOverlay.js:42
+msgid "Waiting for players to connect:"
+msgstr "Oyuncuların bağlanması bekleniyor:"
+
+#: gui/session/NetworkStatusOverlay.js:43
+msgid "Synchronizing gameplay with other players…"
+msgstr "Oyun diğer oyuncularla senkronize ediliyor..."
+
+#: gui/session/NetworkStatusOverlay.js:47
+msgctxt "Separator for a list of client loading messages"
+msgid ", "
+msgstr ", "
+
+#. Translation: The "x" means "times", with the mathematical meaning of
+#. multiplication.
+#: gui/session/OverlayCounterElapsedTime.js:33
+#, javascript-format
+msgid "%(time)s (%(speed)sx)"
+msgstr "%(time)s (%(speed)sx)"
+
+#: gui/session/PauseOverlay.js:40
+#: gui/session/message_box/OutOfSyncNetwork.js:20
+msgctxt "Separator for a list of players"
+msgid ", "
+msgstr ", "
+
+#: gui/session/PauseOverlay.js:45
+#, javascript-format
+msgid "Paused by %(players)s"
+msgstr "%(players)s tarafından durduruldu"
+
+#: gui/session/PauseOverlay.xml:7
+msgid "Game Paused"
+msgstr "Oyun Duraklatıldı"
+
+#: gui/session/PauseOverlay.xml:11
+msgid "Click to Resume Game"
+msgstr "Oyuna Geri Dönmek İçin Tıklayın"
+
+#: gui/session/ResearchProgress.js:114 gui/session/selection_details.js:257
+#: gui/session/selection_details.js:275 gui/session/selection_panels.js:604
+msgctxt "countdown format"
+msgid "m:ss"
+msgstr "m:ss"
+
+#. Translation: String displayed when the research is paused. E.g. by being
+#. garrisoned or
+#. when not the first item in the queue.
+#: gui/session/ResearchProgress.js:117 gui/session/selection_panels.js:616
+msgid "This item is paused."
+msgstr "Bu öğe duraklatıldı."
+
+#: gui/session/chat/ChatAddressees.js:103
+msgctxt "chat addressee"
+msgid "Everyone"
+msgstr "Herkes"
+
+#: gui/session/chat/ChatAddressees.js:109
+msgctxt "chat addressee"
+msgid "Allies"
+msgstr "Müttefikler"
+
+#: gui/session/chat/ChatAddressees.js:110
+msgctxt "chat message context"
+msgid "Ally"
+msgstr "Müttefik"
+
+#: gui/session/chat/ChatAddressees.js:119
+msgctxt "chat addressee"
+msgid "Enemies"
+msgstr "Düşmanlar"
+
+#: gui/session/chat/ChatAddressees.js:120
+msgctxt "chat message context"
+msgid "Enemy"
+msgstr "Düşman"
+
+#: gui/session/chat/ChatAddressees.js:129
+msgctxt "chat addressee"
+msgid "Observers"
+msgstr "İzleyiciler"
+
+#: gui/session/chat/ChatAddressees.js:130
+msgctxt "chat message context"
+msgid "Observer"
+msgstr "İzleyici"
+
+#: gui/session/chat/ChatAddressees.js:137
+msgctxt "chat message context"
+msgid "Private"
+msgstr "Özel"
+
+#: gui/session/chat/ChatHistory.js:54
+#, javascript-format
+msgid "%(time)s %(message)s"
+msgstr "%(time)s %(message)s"
+
+#: gui/session/chat/ChatHistory.js:66
+#, javascript-format
+msgid "\\[%(time)s]"
+msgstr "\\[%(time)s]"
+
+#: gui/session/chat/ChatHistory.js:67
+msgid "HH:mm"
+msgstr "HH:mm"
+
+#: gui/session/chat/ChatHistory.js:87
+msgctxt "chat history filter"
+msgid "Chat and notifications"
+msgstr "Sohbet ve bildirimler"
+
+#: gui/session/chat/ChatHistory.js:92
+msgctxt "chat history filter"
+msgid "Chat messages"
+msgstr "Sohbet mesajları"
+
+#: gui/session/chat/ChatHistory.js:97
+msgctxt "chat history filter"
+msgid "Players chat"
+msgstr "Oyuncular sohbet"
+
+#: gui/session/chat/ChatHistory.js:104
+msgctxt "chat history filter"
+msgid "Ally chat"
+msgstr "Müttefik sohbet"
+
+#: gui/session/chat/ChatHistory.js:111
+msgctxt "chat history filter"
+msgid "Enemy chat"
+msgstr "Düşman sohbet"
+
+#: gui/session/chat/ChatHistory.js:118
+msgctxt "chat history filter"
+msgid "Observer chat"
+msgstr "İzleyici sohbet"
+
+#: gui/session/chat/ChatHistory.js:125
+msgctxt "chat history filter"
+msgid "Private chat"
+msgstr "Özel sohbet"
+
+#: gui/session/chat/ChatHistory.js:130
+msgctxt "chat history filter"
+msgid "Game notifications"
+msgstr "Oyun Bildirimleri"
+
+#: gui/session/chat/ChatHistory.js:135
+msgctxt "chat history filter"
+msgid "Network notifications"
+msgstr "Ağ Bildirimleri"
+
+#: gui/session/chat/ChatInput.js:36
+msgctxt "chat input"
+msgid "Type the message to send."
+msgstr "Göndermek için mesaj yaz."
+
+#: gui/session/chat/ChatInput.js:42
+#, javascript-format
+msgid "Press %(hotkey)s to open the public chat."
+msgstr "Genel sohbeti açmak için %(hotkey)s tuşuna basın."
+
+#: gui/session/chat/ChatInput.js:45
+#, javascript-format
+msgid "Press %(hotkey)s to open the observer chat."
+msgstr "İzleyici sohbetini açmak için %(hotkey)s tuşuna bas."
+
+#: gui/session/chat/ChatInput.js:46
+#, javascript-format
+msgid "Press %(hotkey)s to open the ally chat."
+msgstr "Müttefik sohbetini açmak için %(hotkey)s tuşuna bas."
+
+#: gui/session/chat/ChatInput.js:48
+#, javascript-format
+msgid "Press %(hotkey)s to open the previously selected private chat."
+msgstr "Daha önce seçilen özel sohbeti açmak için %(hotkey)s tuşuna basın."
+
+#. Translation: A player that left the game joins again
+#: gui/session/chat/ChatMessageFormatNetwork.js:24
+#, javascript-format
+msgid "%(player)s is starting to rejoin the game."
+msgstr "%(player)s tekrar katıldığı oyun başlatılıyor."
+
+#. Translation: A player joins the game for the first time
+#: gui/session/chat/ChatMessageFormatNetwork.js:26
+#, javascript-format
+msgid "%(player)s is starting to join the game."
+msgstr "%(player)s bu oyuna katılıyor."
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:37
+#, javascript-format
+msgid "%(player)s has left the game."
+msgstr "%(player)s oyundan ayrıldı."
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:51
+#, javascript-format
+msgid "%(username)s has been banned"
+msgstr "%(username)s adlı kullanıcı yasaklandı"
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:52
+#, javascript-format
+msgid "%(username)s has been kicked"
+msgstr "%(username)s adlı kullanıcı atıldı"
+
+#. Translation: A player that left the game joins again
+#: gui/session/chat/ChatMessageFormatNetwork.js:71
+#, javascript-format
+msgid "%(player)s has rejoined the game."
+msgstr "%(player)s oyuna katıldı."
+
+#. Translation: A player joins the game for the first time
+#: gui/session/chat/ChatMessageFormatNetwork.js:73
+#, javascript-format
+msgid "%(player)s has joined the game."
+msgstr "%(player)s bu oyuna katıldı."
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:62
+#, javascript-format
+msgid "<%(user)s>"
+msgstr "<%(user)s>"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:174
+#, javascript-format
+msgid "(%(context)s) %(userTag)s %(message)s"
+msgstr "(%(context)s) %(userTag)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:175
+#, javascript-format
+msgid "%(userTag)s %(message)s"
+msgstr "%(userTag)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:178
+#, javascript-format
+msgid "(%(context)s) * %(user)s %(message)s"
+msgstr "(%(context)s) * %(user)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:179
+#, javascript-format
+msgid "* %(user)s %(message)s"
+msgstr "* %(user)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:16
+#, javascript-format
+msgid "%(icon)sYour livestock has been attacked by %(attacker)s!"
+msgstr "%(icon)sHayvanların %(attacker)s tarafından saldırıya uğradı!"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:17
+#, javascript-format
+msgid "%(icon)sYou have been attacked by %(attacker)s!"
+msgstr "%(icon)s %(attacker)s tarafından saldırıya uğradın!"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:27
+msgid "Click to focus on the attacked unit."
+msgstr "Saldırılan birime odaklanmak için tıklayın."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:46
+#, javascript-format
+msgid "%(player)s bartered %(amountGiven)s for %(amountGained)s."
+msgstr "%(player)s, %(amountGiven)s vererek %(amountGained)s aldı.  "
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:81
+#, javascript-format
+msgid "You are now allied with %(player)s."
+msgstr "Artık %(player)s ile ittifaksınız."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:82
+#, javascript-format
+msgid "You are now at war with %(player)s."
+msgstr "Artık %(player)s ile savaştasınız."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:83
+#, javascript-format
+msgid "You are now neutral with %(player)s."
+msgstr "Artık %(player)s ile tarafsızsınız."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:86
+#, javascript-format
+msgid "%(player)s is now allied with you."
+msgstr "%(player)s sizin dostunuz oldu."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:87
+#, javascript-format
+msgid "%(player)s is now at war with you."
+msgstr "%(player)s sizin düşmanınız oldu."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:88
+#, javascript-format
+msgid "%(player)s is now neutral with you."
+msgstr "%(player)s artık sizinle dost ya da düşman değil."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:91
+#, javascript-format
+msgid "%(player)s is now allied with %(player2)s."
+msgstr "%(player)s %(player2)s ile dost oldu."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:92
+#, javascript-format
+msgid "%(player)s is now at war with %(player2)s."
+msgstr "%(player)s %(player2)s ile düşman oldu."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:93
+#, javascript-format
+msgid "%(player)s is now neutral with %(player2)s."
+msgstr "%(player)s artık %(player2)s ile tarafsız oldu."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:109
+#, javascript-format
+msgid "%(player)s is advancing to the %(phaseName)s."
+msgstr "%(player)s %(phaseName)sna ilerliyor."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:111
+#, javascript-format
+msgid "The %(phaseName)s of %(player)s has been aborted."
+msgstr "%(player)s %(phaseName)snı iptal etti."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:114
+#, javascript-format
+msgid "%(player)s has reached the %(phaseName)s."
+msgstr "%(player)s, %(phaseName)s'na ulaştı."
+
+#. Translation: This comma is used for separating first to penultimate
+#. elements in an
+#. enumeration.
+#: gui/session/chat/ChatMessageFormatSimulation.js:142
+msgid ", "
+msgstr ", "
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:159
+#, javascript-format
+msgid "%(player)s has sent you %(amounts)s."
+msgstr "%(player)s size gönderdi %(amounts)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:161
+#, javascript-format
+msgid "You have sent %(player2)s %(amounts)s."
+msgstr "%(player2)s  %(amounts)s gönderdin"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:166
+#, javascript-format
+msgid "%(player)s has sent %(player2)s %(amounts)s."
+msgstr "%(player)s %(player2)s e gönderdi %(amounts)s."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:197
+#, javascript-format
+msgid "%(icon)s%(player)s has sent a flare."
+msgstr "%(icon)s%(player)s bir işaret fişeği attı."
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:204
+msgid "Click to focus on the flare's location."
+msgstr "İşaret fişeğinin konumuna odaklanmak için tıklayın."
+
+#: gui/session/chat/chat_window.xml:19
+msgctxt "chat input"
+msgid "Filter:"
+msgstr "Filtre:"
+
+#: gui/session/chat/chat_window.xml:29
+msgctxt "chat input"
+msgid "Filter the chat history."
+msgstr "Sohbet geçmişini filtreleyin."
+
+#: gui/session/chat/chat_window.xml:46
+msgctxt "chat input"
+msgid "To:"
+msgstr "Kime:"
+
+#: gui/session/chat/chat_window.xml:55
+msgctxt "chat input"
+msgid "Select chat addressee."
+msgstr "Sohbet adresi seçin."
+
+#: gui/session/chat/chat_window.xml:60
+msgctxt "chat input"
+msgid "Text:"
+msgstr "Mesaj:"
+
+#: gui/session/chat/chat_window.xml:72
+msgid "Cancel"
+msgstr "İptal"
+
+#: gui/session/chat/chat_window.xml:86
+msgctxt "chat"
+msgid "History"
+msgstr "Geçmiş"
+
+#: gui/session/chat/chat_window.xml:91
+msgid "Send"
+msgstr "Gönder"
+
+#: gui/session/developer_overlay/DeveloperOverlay.js:78
+msgid "The Developer Overlay was opened."
+msgstr "Bu Geliştirici Kaplaması açıldı."
+
+#: gui/session/developer_overlay/DeveloperOverlay.js:79
+msgid "The Developer Overlay was closed."
+msgstr "Bu Geliştirici Kaplaması kapandı."
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:15
+msgid "Control all units"
+msgstr "Tüm birimleri yönet"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:42
+msgid "Change perspective"
+msgstr "Kamera açısı değiştir"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:60
+msgid "Display selection state"
+msgstr "Ekran seçim durumu"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:73
+msgid "Pathfinder overlay"
+msgstr "Yol Bulucu kaplaması"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:86
+msgid "Hierarchical pathfinder overlay"
+msgstr "Hiyerarşik Yol Bulucu Kaplaması"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:99
+msgid "Obstruction overlay"
+msgstr "Tıkama kaplaması"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:112
+msgid "Unit motion overlay"
+msgstr "Birim hareket göstergesi"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:125
+msgid "Range overlay"
+msgstr "Alan kaplaması"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:138
+msgid "Bounding box overlay"
+msgstr "Çerçeveleme kutu kaplaması"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:151
+msgid "Restrict camera"
+msgstr "Kamerayı kısıtla"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:169
+msgid "Reveal map"
+msgstr "Haritayı göster"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:195
+msgid "Enable time warp"
+msgstr "Zaman atlaması aktif"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:214
+msgid "Activate Rejoin Test"
+msgstr "Aktif tekrar katılma testi"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:248
+msgid "Promote selected units"
+msgstr "Seçilen birimleri terfi ettir."
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:269
+msgid "Enable culling"
+msgstr "Toplamayı etkinleştir"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:287
+msgid "Lock cull camera"
+msgstr "Toplama kamerayı sabitle"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:305
+msgid "Display camera frustum"
+msgstr "Kamera alanını göster"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:323
+msgid "Display shadows frustum"
+msgstr "Gölge alanını göster"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:22
+msgid "Render Debug Mode Disabled"
+msgstr "Hata Ayıklama Modu Oluşturma Devre Dışı "
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:23
+msgid "Render Debug Mode AO"
+msgstr "Hata Ayıklama Modu AO'yu Oluştur"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:24
+msgid "Render Debug Mode Alpha"
+msgstr "Hata Ayıklama Modu Alfa Oluştur"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:25
+msgid "Render Debug Mode Custom"
+msgstr "Hata Ayıklama Modu Özel İşleme "
+
+#: gui/session/developer_overlay/TimeWarp.js:6
+msgid "Time warp mode"
+msgstr "Zaman tüneli modu"
+
+#: gui/session/developer_overlay/TimeWarp.js:7
+msgid ""
+"Note: time warp mode is a developer option, and not intended for use over "
+"long periods of time. Using it incorrectly may cause the game to run out of "
+"memory or crash."
+msgstr "Not: zaman tüneli modu geliştirici seçeneğidir, ve zamanda büyük bölümlerin kullanımı için tasarlanmamıştır. Yanlış kullanımı oyunda bellek dolması veya çökmesine neden olabilir."
+
+#: gui/session/dialogs/yes_no.xml:11
+msgid "Question"
+msgstr "Soru"
+
+#: gui/session/dialogs/yes_no.xml:15
+msgid "Yes or no?"
+msgstr "Evet veya hayır?"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:15
+msgid "Name"
+msgstr "İsim"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:18
+msgid "Civilization"
+msgstr "Medeniyet"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:21
+msgid "Team"
+msgstr "Takım"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:24
+msgid "Theirs"
+msgstr "Onların"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:27
+msgid "A"
+msgstr "D"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:31
+msgid "N"
+msgstr "T"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:35
+msgid "E"
+msgstr "D"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:39
+msgid "Tribute"
+msgstr "Haraç"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:90
+#: gui/session/match_settings/MatchSettingsDialog.xml:43
+#: gui/session/trade/TradeDialog.xml:22
+msgid "Close"
+msgstr "Kapat"
+
+#: gui/session/diplomacy/DiplomacyDialogCeasefireCounter.js:27
+#, javascript-format
+msgctxt "ceasefire"
+msgid "Remaining ceasefire time: %(time)s."
+msgstr "Kalan ateşkes süresi: %(time)s."
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:85
+#: gui/session/diplomacy/DiplomacyDialogColorsButton.js:30
+#: gui/session/minimap/MiniMapDiplomacyColorsButton.js:36
+msgid "Toggle Diplomacy Colors"
+msgstr "Diplomasi renklerini değiştir"
+
+#: gui/session/diplomacy/playercontrols/AttackRequestButton.js:38
+msgid "Request your allies to attack this enemy"
+msgstr "Bu düşmana saldırmak için müttefiklerine istek gönder"
+
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:73
+msgctxt "team"
+msgid "None"
+msgstr "Yok"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:28
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:76
+msgid "Ally"
+msgstr "Müttefik"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:32
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:79
+msgid "Neutral"
+msgstr "Tarafsız"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:36
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:82
+msgid "Enemy"
+msgstr "Düşman"
+
+#: gui/session/diplomacy/playercontrols/SpyRequestButton.js:138
+msgid ""
+"Bribe a random unit from this player and share its vision during a limited "
+"period."
+msgstr "Bu oyuncudan rasgele bir birime rüşvet vermek ve görüşünü sınırlı bir süre boyunca paylaşmak."
+
+#: gui/session/diplomacy/playercontrols/SpyRequestButton.js:141
+msgid "A failed bribe will cost you:"
+msgstr "Başarısız bir rüşvet size mal olur:"
+
+#: gui/session/diplomacy/playercontrols/StanceButton.js:60
+msgctxt "diplomatic stance selection"
+msgid "x"
+msgstr "x"
+
+#: gui/session/diplomacy/playercontrols/TributeButton.js:112
+#, javascript-format
+msgid ""
+"Tribute %(resourceAmount)s %(resourceType)s to %(playerName)s. Shift-click "
+"to tribute %(greaterAmount)s."
+msgstr "%(playerName)s oyuncusuna %(resourceAmount)s %(resourceType)s kaynakları gönder.  Shift + tıklayarak %(greaterAmount)s gönder."
+
+#: gui/session/input.js:195
+#, javascript-format
+msgid "Basic range: %(range)s meter"
+msgid_plural "Basic range: %(range)s meters"
+msgstr[0] "Menzil: %(range)s metre"
+msgstr[1] "Menzil: %(range)s metre"
+
+#: gui/session/input.js:196
+#, javascript-format
+msgid "Average bonus range: %(range)s meter"
+msgid_plural "Average bonus range: %(range)s meters"
+msgstr[0] "Ortalama ilave menzil: %(range)s metre"
+msgstr[1] "Ortalama ilave menzil: %(range)s metre"
+
+#: gui/session/input.js:719
+msgid "Cannot build wall here!"
+msgstr "Buraya duvar yapılamaz!"
+
+#: gui/session/message_box/DeleteSelectionConfirmation.js:10
+msgid "Delete"
+msgstr "Sil"
+
+#: gui/session/message_box/DeleteSelectionConfirmation.js:11
+msgid "Destroy everything currently selected?"
+msgstr "Seçili olan her şey yok edilsin mi?"
+
+#: gui/session/dialogs/yes_no.xml:24
+#: gui/session/message_box/DeleteSelectionConfirmation.js:14
+#: gui/session/message_box/QuitConfirmationMenu.js:72
+#: gui/session/message_box/ResignConfirmation.js:9
+msgid "No"
+msgstr "Hayır"
+
+#: gui/session/dialogs/yes_no.xml:19
+#: gui/session/message_box/DeleteSelectionConfirmation.js:17
+#: gui/session/message_box/QuitConfirmationMenu.js:75
+#: gui/session/message_box/ResignConfirmation.js:12
+msgid "Yes"
+msgstr "Evet"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:15
+#: gui/session/message_box/OutOfSyncReplay.js:26
+#, javascript-format
+msgid "Out-Of-Sync error on turn %(turn)s."
+msgstr "%(turn)s. turda Out-Of-Sync hatası!"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:19
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Players: %(players)s"
+msgstr "Oyuncular: %(players)s"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:24
+msgctxt "Out-Of-Sync"
+msgid "Your game state is identical to the hosts game state."
+msgstr "Oyun durumunuz oyun kurucunun oyun durumuyla aynıdır."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:25
+msgctxt "Out-Of-Sync"
+msgid "Your game state differs from the hosts game state."
+msgstr "Oyun durumunuz oyun kurucunun oyun durumundan farklıdır."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:31
+msgctxt "Out-Of-Sync"
+msgid "Rejoining Multiplayer games with AIs is not supported yet!"
+msgstr "Çok oyunculu oyunlarda YZ'larla tekrar katılmak henüz desteklenmiyor!"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:34
+msgctxt "Out-Of-Sync"
+msgid "Ensure all players use the same mods."
+msgstr "Tüm oycuncuların aynı modları kullandığından emin olun."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:35
+msgctxt "Out-Of-Sync"
+msgid "Click on \"Report a Bug\" in the main menu to help fix this."
+msgstr "Ana menüdeki \"Bug Bildir\" butonuna tıklayarak sorunun giderilmesine yardımcı olabilirsiniz."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:36
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Replay saved to %(filepath)s"
+msgstr "Replay dosyası %(filepath)s'e kaydedildi."
+
+#: gui/session/message_box/OutOfSyncNetwork.js:39
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Dumping current state to %(filepath)s"
+msgstr "Geçerli durum atılıyor %(filepath)s"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:51
+#: gui/session/message_box/OutOfSyncReplay.js:23
+msgid "Out of Sync"
+msgstr "Senkron Değil"
+
+#. Translation: This is shown if replay is out of sync
+#: gui/session/message_box/OutOfSyncReplay.js:28
+msgid "Out-Of-Sync"
+msgstr "Senkronizasyon dışı."
+
+#: gui/session/message_box/QuitConfirmation.js:6
+#: gui/session/message_box/QuitConfirmationMenu.js:4
+#: gui/session/message_box/ResignConfirmation.js:5
+msgid "Confirmation"
+msgstr "Onay"
+
+#: gui/session/message_box/QuitConfirmation.js:9
+msgid "The game has finished, what do you want to do?"
+msgstr "Tekrar bitti, ne yapmak istiyorsunuz?"
+
+#. Translation: Shown in the Dialog that shows up when the game finishes
+#: gui/session/message_box/QuitConfirmation.js:15
+#: gui/session/message_box/QuitConfirmationReplay.js:23
+msgid "Stay"
+msgstr "Kal"
+
+#. Translation: Shown in the Dialog that shows up when the game finishes
+#: gui/session/message_box/QuitConfirmation.js:20
+#: gui/session/message_box/QuitConfirmationReplay.js:28
+msgid "Quit and View Summary"
+msgstr "Çık ve Özeti Görüntüle"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:54
+msgid "VICTORIOUS!"
+msgstr "ZAFER!"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:55
+msgid "DEFEATED!"
+msgstr "YENİLDİN!"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:57
+msgid "Do you want to quit?"
+msgstr "Çıkmak istiyor musun?"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:5
+msgid "Do you want to resign or will you return soon?"
+msgstr "Ayrılmak mı etmek istiyorsun yoksa yakında dönecek misin?"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:8
+msgid "I will return"
+msgstr "Geri döneceğim"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:12
+msgid "I resign"
+msgstr "Ayrılacağım"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:53
+msgid ""
+"Are you sure you want to quit? Leaving will disconnect all other players."
+msgstr "Çıkmak istediğine emin misin? Ayrıldığında diğer tüm oyuncuların bağlantıları kesilecek."
+
+#: gui/session/message_box/QuitConfirmationMenu.js:67
+msgid "Are you sure you want to quit?"
+msgstr "Çıkmak istediğinizden emin misiniz?"
+
+#: gui/session/message_box/QuitConfirmationReplay.js:14
+msgctxt "replayFinished"
+msgid "Confirmation"
+msgstr "Onay"
+
+#: gui/session/message_box/QuitConfirmationReplay.js:17
+msgctxt "replayFinished"
+msgid "The replay has finished. What do you want to do?"
+msgstr "Tekrar bitti. Ne yapmak istiyorsunuz?"
+
+#: gui/session/message_box/ResignConfirmation.js:6
+msgid "Are you sure you want to resign?"
+msgstr "Teslim olmak istediğinize emin misiniz?"
+
+#: gui/session/messages.js:107
+msgid "You have won!"
+msgstr "Helal, süper, devam."
+
+#: gui/session/messages.js:108
+msgid "You have been defeated!"
+msgstr "Tekrar deneyiniz."
+
+#: gui/session/messages.js:392
+msgid "Click to quit this tutorial."
+msgstr "Eğitimden çıkmak için tıklayınız"
+
+#: gui/session/message_box/QuitConfirmation.js:25
+#: gui/session/message_box/QuitConfirmationReplay.js:33
+#: gui/session/messages.js:393
+msgid "Quit"
+msgstr "Çıkış"
+
+#: gui/session/messages.js:397
+msgid "Click when ready."
+msgstr "Hazır olduğunda tıkla."
+
+#: gui/session/messages.js:401
+msgid "Follow the instructions."
+msgstr "Talimatları takip et."
+
+#: gui/session/messages.js:550
+msgid "Unknown Player"
+msgstr "Bilinmeyen Oyuncu"
+
+#: gui/session/minimap/MiniMapFlareButton.js:52
+msgid "Send a flare to your allies."
+msgstr "Müttefiklerinize bir işaret fişeği gönderin."
+
+#: gui/session/minimap/MiniMapFlareButton.js:53
+msgid "Send a flare to other observers."
+msgstr "Diğer gözlemcilere bir işaret fişeği gönderin."
+
+#: gui/session/minimap/MiniMapIdleWorkerButton.js:43
+msgid ""
+"Find idle worker\n"
+"Number of idle workers."
+msgstr "Çalışmayan işçiyi bul\nÇalışmayan işçi sayısı."
+
+#: gui/session/selection_details.js:62
+#, javascript-format
+msgid "%(secondaryName)s — Packed"
+msgstr "%(secondaryName)s — Paketlendi"
+
+#: gui/session/selection_details.js:64
+msgid "Packed"
+msgstr "Paketlendi"
+
+#: gui/session/chat/ChatAddressees.js:79 gui/session/selection_details.js:75
+#, javascript-format
+msgid "\\[OFFLINE] %(player)s"
+msgstr "\\[ÇEVRİMDIŞI] %(player)s"
+
+#: gui/session/selection_details.js:81
+#, javascript-format
+msgid "%(rank)s Rank"
+msgstr "%(rank)s Rütbesi"
+
+#: gui/session/selection_details.js:133
+#, javascript-format
+msgid "%(hitpoints)s / %(maxHitpoints)s"
+msgstr "%(hitpoints)s / %(maxHitpoints)s"
+
+#: gui/session/selection_details.js:173
+#, javascript-format
+msgid "%(capturePoints)s / %(maxCapturePoints)s"
+msgstr "%(capturePoints)s / %(maxCapturePoints)s"
+
+#: gui/session/selection_details.js:180
+msgid "Capture Points"
+msgstr "Ele Geçirme Puanları"
+
+#: gui/session/selection_details.js:190
+#, javascript-format
+msgid "%(experience)s %(current)s / %(required)s"
+msgstr "%(experience)s %(current)s / %(required)s"
+
+#: gui/session/selection_details.js:191 gui/session/selection_details.js:197
+msgid "Experience:"
+msgstr "Tecrübe"
+
+#: gui/session/selection_details.js:196
+#, javascript-format
+msgid "%(experience)s %(current)s"
+msgstr "%(experience)s %(current)s"
+
+#: gui/session/selection_details.js:206
+msgid "∞"
+msgstr "∞"
+
+#: gui/session/selection_details.js:207 gui/session/selection_details.js:233
+#: gui/session/selection_details.js:263
+#, javascript-format
+msgid "%(amount)s / %(max)s"
+msgstr "%(amount)s / %(max)s"
+
+#: gui/session/selection_details.js:215
+#, javascript-format
+msgid "%(resource)s:"
+msgstr "%(resource)s:"
+
+#: gui/session/selection_details.js:246 gui/session/unit_actions.js:685
+#: gui/session/unit_actions.js:694 gui/session/unit_actions.js:712
+#: gui/session/unit_actions.js:1266
+#, javascript-format
+msgid "Gain: %(gain)s"
+msgstr "Kazanç: %(gain)s"
+
+#: gui/session/selection_details.js:255 gui/session/selection_details.js:273
+#, javascript-format
+msgid ""
+"(%(number)s)\n"
+"%(time)s"
+msgstr "(%(number)s)\n%(time)s"
+
+#: gui/session/selection_details.js:267
+msgid "Current/max gatherers"
+msgstr "Olan/en fazla toplayıcı"
+
+#: gui/session/selection_details.js:297
+#, javascript-format
+msgid "(%(secondaryName)s)"
+msgstr "(%(secondaryName)s)"
+
+#: gui/session/selection_details.js:472
+msgid "Capture Points:"
+msgstr "Yakalama Noktaları:"
+
+#: gui/session/selection_details.js:480
+#, javascript-format
+msgid "%(label)s: %(details)s\n"
+msgstr "%(label)s: %(details)s\n"
+
+#: gui/session/selection_details.js:481
+msgid "Garrison Size"
+msgstr "Garnizon Büyüklüğü"
+
+#: gui/session/selection_details.js:486
+#, javascript-format
+msgid "%(label)s %(details)s\n"
+msgstr "%(label)s %(details)s\n"
+
+#: gui/session/selection_details.js:487
+msgid "Carrying:"
+msgstr "Taşıma:"
+
+#: gui/session/selection_details.js:490 gui/session/selection_details.js:499
+#, javascript-format
+msgid "%(type)s %(amount)s"
+msgstr "%(type)s %(amount)s"
+
+#: gui/session/selection_details.js:495
+#, javascript-format
+msgid "%(label)s %(details)s"
+msgstr "%(label)s %(details)s"
+
+#: gui/session/selection_details.js:496
+msgid "Loot:"
+msgstr "Yağma:"
+
+#. Translation: Used in the trading gain tooltip
+#: gui/session/selection_details.js:557
+#, javascript-format
+msgid "%(gain)s (%(player)s)"
+msgstr "%(gain)s (%(player)s)"
+
+#. Translation: Used in the trading gain tooltip to concatenate profits of
+#. different players
+#: gui/session/selection_details.js:581
+msgid "+"
+msgstr "+"
+
+#: gui/session/selection_details.js:588
+msgctxt "Separation mark in an enumeration"
+msgid ", "
+msgstr ", "
+
+#: gui/session/selection_panels.js:67
+msgid "Raise an alert!"
+msgstr "Alarm çal!"
+
+#: gui/session/selection_panels.js:69
+msgid "Alert nearby Civilians to seek refuge."
+msgstr "Yakındaki sivillere sığınak aramaları konusunda uyarıda bulunun."
+
+#: gui/session/selection_panels.js:71
+msgid "Alert nearby Traders to seek refuge."
+msgstr "Yakındaki Tüccarları sığınmaları konusunda uyarın."
+
+#: gui/session/selection_panels.js:73
+msgid "Alert nearby vulnerable units to seek refuge."
+msgstr "Yakındaki savunmasız birimleri sığınma bulmaları konusunda uyarın."
+
+#: gui/session/selection_panels.js:77
+msgid "End the alert."
+msgstr "Alarmı sonlandır."
+
+#: gui/session/selection_panels.js:79
+msgid "Unload nearby Civilians."
+msgstr "Yakındaki sivilleri tahliye edin."
+
+#: gui/session/selection_panels.js:81
+msgid "Unload nearby Traders."
+msgstr "Yakındaki Tüccarları bırakın."
+
+#: gui/session/selection_panels.js:83
+msgid "Unload nearby vulnerable units."
+msgstr "Yakındaki savunmasız birimleri bırakın."
+
+#: gui/session/selection_panels.js:297
+msgid "Default formation is disabled."
+msgstr "Varsayılan düzen devre dışı."
+
+#: gui/session/selection_panels.js:298
+msgid "Right-click to disable the default formation feature."
+msgstr "Varsayılan düzen özelliğini devre dışı bırakmak için sağ tıklayın."
+
+#: gui/session/selection_panels.js:301
+msgid "This is the default formation, used for movement orders."
+msgstr "Bu, hareket etmeyle ilgili emirler için kullanılan varsayılan düzendir."
+
+#: gui/session/selection_panels.js:302
+msgid "Right-click to set this as the default formation."
+msgstr "Bunu varsayılan düzen olarak ayarlamak için sağ tıklayın."
+
+#: gui/session/selection_panels.js:358
+#, javascript-format
+msgid "Unload %(name)s"
+msgstr "Kaldır %(name)s"
+
+#: gui/session/selection_panels.js:359
+msgid "Single-click to unload 1. Shift-click to unload all of this type."
+msgstr "Tek tıklamayla 1 tane kaldır. Shift + tıklama ile bu türdeki tümünü kaldır."
+
+#: gui/session/selection_panels.js:361 gui/session/selection_panels.js:935
+#, javascript-format
+msgid "Player: %(playername)s"
+msgstr "Oyuncu: %(playername)s"
+
+#: gui/session/selection_panels.js:397
+msgid "Lock Gate"
+msgstr "Geçidi Kilitle"
+
+#: gui/session/selection_panels.js:403
+msgid "Unlock Gate"
+msgstr "Geçidi Aç"
+
+#: gui/session/selection_panels.js:454
+msgid "Pack"
+msgstr "Paketle"
+
+#: gui/session/selection_panels.js:462
+msgid "Unpack"
+msgstr "Paketi aç"
+
+#: gui/session/selection_panels.js:470
+msgid "Cancel Packing"
+msgstr "Paketlemeyi Durdu"
+
+#: gui/session/selection_panels.js:478
+msgid "Cancel Unpacking"
+msgstr "Paketi Açmayı Durdur"
+
+#: gui/session/selection_panels.js:576
+msgid "The auto-queue will try to train this item later."
+msgstr "Otomatik sıra, bu öğeyi daha sonra eğitecektir."
+
+#: gui/session/selection_panels.js:579
+msgid "Insufficient population capacity:"
+msgstr "Yetersiz nüfüs kapasitesi:"
+
+#: gui/session/selection_panels.js:580
+#, javascript-format
+msgid "%(population)s %(neededSlots)s"
+msgstr "%(population)s %(neededSlots)s"
+
+#: gui/session/selection_panels.js:800
+#, javascript-format
+msgid "%(number)s entity of class %(class)s"
+msgid_plural "%(number)s entities of class %(class)s"
+msgstr[0] "%(class)s sınıfındaki %(number)s varlıkları"
+msgstr[1] "%(class)s  sınıftaki %(number)s varlıkları  "
+
+#: gui/session/selection_panels.js:806
+#, javascript-format
+msgid "Remaining: %(entityCounts)s"
+msgstr "Kalan: %(entityCounts)s"
+
+#: gui/session/selection_panels.js:807
+msgctxt "Separator for a list of entity counts"
+msgid ", "
+msgstr ", "
+
+#: gui/session/selection_panels.js:859
+msgid "Cannot research while upgrading."
+msgstr "Geliştirilirken araştırılamaz."
+
+#: gui/session/selection_panels.js:1088
+msgid "Cannot train while upgrading."
+msgstr "Geliştirilirken eğitilemez."
+
+#: gui/session/selection_panels.js:1155
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s (%(secondaryName)s). %(tooltip)s"
+msgstr "%(primaryName)s (%(secondaryName)s)'a yükselt.%(tooltip)s"
+
+#: gui/session/selection_panels.js:1161
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s (%(secondaryName)s)."
+msgstr "%(primaryName)s (%(secondaryName)s) 'a yükselt."
+
+#: gui/session/selection_panels.js:1169
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s. %(tooltip)s"
+msgstr "%(primaryName)s'a yükselt. %(tooltip)s"
+
+#: gui/session/selection_panels.js:1174
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s."
+msgstr "%(primaryName)s'a yükselt."
+
+#: gui/session/selection_panels.js:1212
+msgid "Cancel Upgrading"
+msgstr "Geliştirmeyi Durdur"
+
+#: gui/session/selection_panels.js:1226
+msgid ""
+"Cannot upgrade when the entity is training, researching or already "
+"upgrading."
+msgid_plural ""
+"Cannot upgrade when all entities are training, researching or already "
+"upgrading."
+msgstr[0] "Bütün birimler eğitilirken, araştırılırken ya da zaten geliştiriliyorken geliştirilemez."
+msgstr[1] "Bütün birimler eğitilirken, araştırılırken ya da zaten geliştiriliyorken geliştirilemez."
+
+#: gui/session/selection_panels_helpers.js:53
+msgctxt "stance"
+msgid "Violent"
+msgstr "Şiddetli"
+
+#: gui/session/selection_panels_helpers.js:55
+msgctxt "stance"
+msgid "Aggressive"
+msgstr "Saldırgan"
+
+#: gui/session/selection_panels_helpers.js:57
+msgctxt "stance"
+msgid "Defensive"
+msgstr "Savunmacı"
+
+#: gui/session/selection_panels_helpers.js:59
+msgctxt "stance"
+msgid "Passive"
+msgstr "Etkisiz"
+
+#: gui/session/selection_panels_helpers.js:61
+msgctxt "stance"
+msgid "Standground"
+msgstr "Çanakkale geçilmez."
+
+#: gui/session/selection_panels_helpers.js:73
+msgctxt "stance"
+msgid "Attack nearby opponents, focus on attackers and chase while visible"
+msgstr "Yakındaki düşmana saldır, saldırganlara odaklan ve hazır görünebilirlerken yakala"
+
+#: gui/session/selection_panels_helpers.js:75
+msgctxt "stance"
+msgid "Attack nearby opponents"
+msgstr "Yakındaki rakiplerden saldırı"
+
+#: gui/session/selection_panels_helpers.js:77
+msgctxt "stance"
+msgid ""
+"Attack nearby opponents, chase a short distance and return to the original "
+"location"
+msgstr "Yakındaki rakiplere saldır, kısa bir mesafe takip et ve asıl mevkiine geri dön."
+
+#: gui/session/selection_panels_helpers.js:79
+msgctxt "stance"
+msgid "Flee if attacked"
+msgstr "Saldırı olursa kaçar"
+
+#: gui/session/selection_panels_helpers.js:81
+msgctxt "stance"
+msgid "Attack opponents in range, but don't move"
+msgstr "Düşmana belirli bir mesafeden saldır ama yaklaşma"
+
+#: gui/session/selection_panels_helpers.js:95
+#, javascript-format
+msgid "Current Count: %(count)s, Limit: %(limit)s."
+msgstr "Mevcut Sayı: %(count)s, sınır: %(limit)s."
+
+#: gui/session/selection_panels_helpers.js:109
+#, javascript-format
+msgid "%(changer)s enlarges the limit with %(change)s."
+msgstr "%(changer)s ile %(change)s kadar sınır büyür."
+
+#: gui/session/selection_panels_helpers.js:110
+#, javascript-format
+msgid "%(changer)s lessens the limit with %(change)s."
+msgstr "%(changer)s ile %(change)s kadar sınır küçültülür."
+
+#: gui/session/selection_panels_helpers.js:140
+msgid "Can be constructed only once."
+msgstr "Sadece bir kez inşa edilebilir."
+
+#: gui/session/selection_panels_helpers.js:142
+#, javascript-format
+msgid "Could only be constructed %(limit)s time."
+msgid_plural "Could only be constructed %(limit)s times."
+msgstr[0] ""
+msgstr[1] "Sadece %(limit)s kez inşa edilebilir."
+
+#: gui/session/selection_panels_helpers.js:148
+#, javascript-format
+msgid "Can be constructed %(count)s more time."
+msgid_plural "Can be constructed %(count)s more times."
+msgstr[0] "%(count)s kez daha inşa edilebilir."
+msgstr[1] "%(count)s kez daha inşa edilebilir."
+
+#: gui/session/selection_panels_helpers.js:155
+msgid "Could only be trained once."
+msgid_plural "Could only be trained %(limit)s times."
+msgstr[0] "Sadece bir kez inşa edilebilir."
+msgstr[1] "Sadece %(limit)s kez inşa edilebilir."
+
+#: gui/session/selection_panels_helpers.js:159
+msgid "Can be trained only once."
+msgstr "Sadece bir kez eğitilebilir."
+
+#: gui/session/selection_panels_helpers.js:161
+#, javascript-format
+msgid "Can be trained %(count)s more time."
+msgid_plural "Can be trained %(count)s more times."
+msgstr[0] "%(count)s kez daha eğitilebilir."
+msgstr[1] "%(count)s kez daha eğitilebilir."
+
+#: gui/session/selection_panels_helpers.js:168
+msgid "Could only be created once."
+msgid_plural "Could only be created %(limit)s times."
+msgstr[0] "Sedece bir kez oluşturabilir."
+msgstr[1] "Sadece %(limit)s kez oluşturabilir."
+
+#: gui/session/selection_panels_helpers.js:172
+msgid "Can be created only once."
+msgstr "Sedece bir kez oluşturabilir."
+
+#: gui/session/selection_panels_helpers.js:174
+#, javascript-format
+msgid "Can be created %(count)s more time."
+msgid_plural "Can be created %(count)s more times."
+msgstr[0] "%(count)s kez daha oluşturabilir."
+msgstr[1] "%(count)s kez daha oluşturabilir."
+
+#: gui/session/selection_panels_helpers.js:203
+#, javascript-format
+msgid "%(buildings)s*%(batchSize)s"
+msgstr "%(buildings)s*%(batchSize)s"
+
+#: gui/session/selection_panels_helpers.js:217
+#, javascript-format
+msgid "%(action)s to train %(number)s (%(fullBatch)s + %(remainderBatch)s)."
+msgstr "%(action)s  %(number)s (%(fullBatch)s + %(remainderBatch)s) yetiştir."
+
+#: gui/session/selection_panels_helpers.js:219
+#, javascript-format
+msgid "%(action)s to train %(number)s (%(fullBatch)s)."
+msgstr "%(action)s %(number)s (%(fullBatch)s) yetiştirin."
+
+#: gui/session/selection_panels_helpers.js:221
+#, javascript-format
+msgid "%(action)s to train %(number)s."
+msgstr "%(number)s tane eğitmek için %(action)s."
+
+#: gui/session/selection_panels_helpers.js:226
+msgid "Shift-click"
+msgstr "Üst karakter-tıklama"
+
+#: gui/session/selection_panels_left/garrison_panel.xml:16
+#: gui/session/selection_panels_middle/single_details_area.xml:66
+msgid "Health"
+msgstr "Sağlık"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:43
+msgid "Capture points"
+msgstr "Saldırı noktaları"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:86
+msgid "Attack and Resistance"
+msgstr "Saldırı ve Direnç"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:101
+msgid "Experience"
+msgstr "Tecrübe"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:109
+msgid "Rank"
+msgstr "Sıra"
+
+#: gui/session/selection_panels_right/queue_panel.xml:8
+msgid "Production queue"
+msgstr "Üretim kuyruğu"
+
+#: gui/session/session_objects/selection_group_icons.xml:7
+msgid ""
+"Click to select grouped units, double-click to focus the grouped units and "
+"right-click to disband the group."
+msgstr "Gruplanmış birimlere tıklayın, çift tıklayarak gruplanmış birimlere odaklanın ve sağ tıklayarak grubu dağıtın."
+
+#: gui/session/top_panel/BuildLabel.xml:6
+msgid "Release XXVIII: Boiorix"
+msgstr "Sürüm XXVIII: Boiorix"
+
+#: gui/session/top_panel/CivIcon.js:68
+#, javascript-format
+msgid ""
+"%(civ)s\n"
+"%(hotkey_civinfo)s: View Civilization Overview\n"
+"%(hotkey_structree)s: View Structure Tree\n"
+"Last opened view will be reopened on click."
+msgstr "%(civ)s\n%(hotkey_civinfo)sUygarlık Özeti\n%(hotkey_structree)sYapı Ağacı\nSon açılan tıklandığında yeniden açılacaktır."
+
+#: gui/session/top_panel/CounterManager.js:100
+#, javascript-format
+msgid "%(order)s: %(hotkey)s to change order."
+msgstr "%(order)s:%(hotkey)s emri değiştir."
+
+#: gui/session/top_panel/CounterManager.js:104
+msgid "Unordered"
+msgstr "Sıralanmamış"
+
+#: gui/session/top_panel/CounterManager.js:106
+msgid "Descending"
+msgstr "Azalan"
+
+#: gui/session/top_panel/CounterManager.js:107
+msgid "Ascending"
+msgstr "Artan"
+
+#: gui/session/top_panel/CounterManager.js:135
+#, javascript-format
+msgid "%(playername)s: %(statValue)s"
+msgstr "%(playername)s: %(statValue)s"
+
+#. Translation: Do not insert spaces around the slash symbol for this exact
+#. string. Keep only
+#. one space between popLimit and popMax.
+#: gui/session/top_panel/CounterPopulation.js:61
+#: gui/session/top_panel/CounterPopulation.js:65
+#, javascript-format
+msgid "%(popCount)s/%(popLimit)s (%(popMax)s)"
+msgstr "%(popCount)s/%(popLimit)s (%(popMax)s)"
+
+#: gui/session/top_panel/CounterPopulation.js:63
+msgid "Population: current/limit (max)"
+msgstr "Nüfus: şuan/limit(azami)"
+
+#: gui/session/top_panel/FollowPlayer.xml:11
+#: gui/session/top_panel/FollowPlayer.xml:15
+msgctxt "observer mode"
+msgid "Follow Player"
+msgstr "Oyuncuyu Takip et"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:10
+#: gui/session/top_panel/IconButtons/DiplomacyDialogButton.js:29
+msgid "Diplomacy"
+msgstr "Diplomasi"
+
+#: gui/session/top_panel/IconButtons/GameSpeedButton.xml:9
+msgid "Game Speed"
+msgstr "Oyun Hızı"
+
+#: gui/session/match_settings/MatchSettingsDialog.xml:15
+#: gui/session/top_panel/IconButtons/MatchSettingsDialogButton.js:23
+msgid "Match Settings"
+msgstr "Eşleştirme Ayarları"
+
+#: gui/session/top_panel/MenuButton.xml:15
+msgid "Menu"
+msgstr "Menü"
+
+#: gui/session/top_panel/PlayerViewControl.js:123
+msgid "Observer"
+msgstr "İzleyici"
+
+#: gui/session/top_panel/PlayerViewControl.xml:13
+msgid "Choose player to view"
+msgstr "Görüntülenecek oyuncuyu seçin"
+
+#: gui/session/top_panel/PlayerViewControl.xml:17
+msgid "Observer Mode"
+msgstr "İzleyici Modu"
+
+#: gui/session/trade/BarterButton.js:108
+#, javascript-format
+msgid "Buy %(resource)s"
+msgstr "Satın al %(resource)s"
+
+#: gui/session/trade/BarterButton.js:109
+#, javascript-format
+msgid "Sell %(resource)s"
+msgstr "Sat %(resource)s"
+
+#: gui/session/trade/BarterButton.js:110
+#, javascript-format
+msgctxt "buy action"
+msgid "+%(amount)s"
+msgstr "+%(amount)s"
+
+#: gui/session/trade/BarterButton.js:111
+#, javascript-format
+msgctxt "sell action"
+msgid "-%(amount)s"
+msgstr "-%(amount)s"
+
+#: gui/session/trade/BarterPanel.xml:5
+msgid "Barter"
+msgstr "Takas"
+
+#: gui/session/trade/BarterPanel.xml:13
+msgid "Sell:"
+msgstr "Satış:"
+
+#: gui/session/trade/BarterPanel.xml:17
+msgid "Buy:"
+msgstr "Alış:"
+
+#: gui/session/trade/BarterPanel.xml:21
+msgid "No Markets Available"
+msgstr "Pazaryeri bulunmamaktadır"
+
+#: gui/session/trade/TradeButton.js:56
+#, javascript-format
+msgctxt "trading good ratio"
+msgid "%(amount)s%%"
+msgstr "%%%(amount)s"
+
+#: gui/session/trade/TradeButtonManager.js:80
+#, javascript-format
+msgid ""
+"Select one type of goods you want to modify by clicking on it, and then use "
+"the arrows of the other types to modify their shares. You can also press "
+"%(hotkey)s while selecting one type of goods to bring its share to 100%%."
+msgstr "Değiştirmek istediğiniz bir ürün türünü tıklatarak seçin ve ardından paylaşımlarını değiştirmek için diğer türlerin oklarını kullanın. Ayrıca, tuşuna basabilirsiniz. %(hotkey)s Payını 100'e çıkarmak için bir tür mal seçerken%%."
+
+#: gui/session/trade/TradeDialogBarterPanel.js:45
+#, javascript-format
+msgid ""
+"Start by selecting the resource you wish to sell from the upper row. For "
+"each time the lower buttons are pressed, %(quantity)s of the upper resource "
+"will be sold for the displayed quantity of the lower. Press and hold "
+"%(hotkey)s to temporarily multiply the traded amount by %(multiplier)s."
+msgstr "Üst sıradan satmak istediğiniz kaynağı seçerek başlayın. Alt düğmelere her basıldığında, %(quantity)s Alt kaynağın görüntülenen miktarı için satılacaktır. basın ve basılı tutun %(hotkey)s Işlem gören miktarı geçici olarak çarpmak için %(multiplier)s."
+
+#: gui/session/trade/TradePanel.xml:5
+msgid "Trade"
+msgstr "Ticaret"
+
+#: gui/session/trade/TradePanel.xml:14
+msgid "Resources:"
+msgstr "Kaynaklar:"
+
+#: gui/session/trade/TraderStatusTextLand.js:15
+#, javascript-format
+msgid "There is %(numberTrading)s land trader trading"
+msgid_plural "There are %(numberTrading)s land traders trading"
+msgstr[0] "%(numberTrading)s kara ticareti var"
+msgstr[1] "%(numberTrading)s kervan ticaret yapıyor"
+
+#: gui/session/trade/TraderStatusTextLand.js:25
+#, javascript-format
+msgid "%(numberOfLandTraders)s inactive"
+msgid_plural "%(numberOfLandTraders)s inactive"
+msgstr[0] "%(numberOfLandTraders)s devre dışı"
+msgstr[1] "%(numberOfLandTraders)s devre dışı"
+
+#: gui/session/trade/TraderStatusTextLand.js:30
+#, javascript-format
+msgid "%(numberOfLandTraders)s land trader inactive"
+msgid_plural "%(numberOfLandTraders)s land traders inactive"
+msgstr[0] "%(numberOfLandTraders)s kara tüccarı devre dışı"
+msgstr[1] "%(numberOfLandTraders)s kervanlar devre dışı"
+
+#: gui/session/trade/TraderStatusTextLand.js:40
+#, javascript-format
+msgid "%(numberGarrisoned)s garrisoned on a trading merchant ship"
+msgid_plural "%(numberGarrisoned)s garrisoned on a trading merchant ship"
+msgstr[0] "%(numberGarrisoned)s ticari gemideki garnizon"
+msgstr[1] " Ticari gemi %(numberGarrisoned)s birlik var"
+
+#: gui/session/trade/TraderStatusTextLand.js:45
+#, javascript-format
+msgid ""
+"There is %(numberGarrisoned)s land trader garrisoned on a trading merchant "
+"ship"
+msgid_plural ""
+"There are %(numberGarrisoned)s land traders garrisoned on a trading merchant"
+" ship"
+msgstr[0] " %(numberGarrisoned)s ticaret gemisinde kara garnizonları vardır"
+msgstr[1] " %(numberGarrisoned)s ticaret gemisinde kara garnizonları vardır"
+
+#: gui/session/trade/TraderStatusTextLand.js:65
+#, javascript-format
+msgid "%(openingTradingString)s, and %(garrisonedString)s."
+msgstr "%(openingTradingString)s, ve %(garrisonedString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:66
+#, javascript-format
+msgid ""
+"%(openingTradingString)s, %(garrisonedString)s, and %(inactiveString)s."
+msgstr "%(openingTradingString)s, %(garrisonedString)s, ve %(inactiveString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:69
+#: gui/session/trade/TraderStatusTextShip.js:47
+#, javascript-format
+msgid "%(openingTradingString)s."
+msgstr "%(openingTradingString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:70
+#: gui/session/trade/TraderStatusTextShip.js:46
+#, javascript-format
+msgid "%(openingTradingString)s, and %(inactiveString)s."
+msgstr "%(openingTradingString)s, ve %(inactiveString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:75
+#, javascript-format
+msgid "%(openingGarrisonedString)s."
+msgstr "%(openingGarrisonedString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:76
+#, javascript-format
+msgid "%(openingGarrisonedString)s, and %(inactiveString)s."
+msgstr "%(openingGarrisonedString)s, ve %(inactiveString)s."
+
+#: gui/session/trade/TraderStatusTextLand.js:79
+#: gui/session/trade/TraderStatusTextShip.js:50
+#, javascript-format
+msgid "There is %(inactiveString)s."
+msgid_plural "There are %(inactiveString)s."
+msgstr[0] "%(inactiveString)s var."
+msgstr[1] "%(inactiveString)s var."
+
+#: gui/session/trade/TraderStatusTextLand.js:80
+msgid "There are no land traders."
+msgstr "Hiçbir kervan yok."
+
+#: gui/session/trade/TraderStatusTextShip.js:14
+#, javascript-format
+msgid "There is %(numberTrading)s merchant ship trading"
+msgid_plural "There are %(numberTrading)s merchant ships trading"
+msgstr[0] "%(numberTrading)s ticaret gemisi ticaret yapar"
+msgstr[1] "%(numberTrading)s ticaret gemisi ticaret yapıyor"
+
+#: gui/session/trade/TraderStatusTextShip.js:24
+#, javascript-format
+msgid "%(numberOfShipTraders)s inactive"
+msgid_plural "%(numberOfShipTraders)s inactive"
+msgstr[0] "%(numberOfShipTraders)s devre dışı"
+msgstr[1] "%(numberOfShipTraders)s devre dışı"
+
+#: gui/session/trade/TraderStatusTextShip.js:29
+#, javascript-format
+msgid "%(numberOfShipTraders)s merchant ship inactive"
+msgid_plural "%(numberOfShipTraders)s merchant ships inactive"
+msgstr[0] "%(numberOfShipTraders)s ticari gemi devredışı"
+msgstr[1] "%(numberOfShipTraders)s ticari gemiler devredışı"
+
+#: gui/session/trade/TraderStatusTextShip.js:51
+msgid "There are no merchant ships."
+msgstr "Hiçbir ticaret gemisi yok."
+
+#: gui/session/tutorial_panel.xml:11
+msgid "Ready"
+msgstr "Hazır"
+
+#: gui/session/unit_actions.js:624
+msgid ""
+"This is the origin trade market.\n"
+"Right-click to cancel trade route."
+msgstr "Bu kaynak ticaret pazarı.\nTicaret yolunu iptal etmek için sağ tıklayın."
+
+#: gui/session/unit_actions.js:683
+msgid "Origin trade market."
+msgstr "Ticaret başlangıç pazarı."
+
+#: gui/session/unit_actions.js:693
+msgid "Destination trade market."
+msgstr "Ticaret varış pazarı."
+
+#: gui/session/unit_actions.js:700
+msgid "Right-click to set as origin trade market"
+msgstr "Ticaret başlangıç pazarı olarak ayarlamak için sağ tıklayın"
+
+#: gui/session/unit_actions.js:707 gui/session/unit_actions.js:1272
+msgid "This market is too close to the origin market."
+msgstr "Bu market kaynak markete çok yakın."
+
+#: gui/session/unit_actions.js:711
+msgid "Right-click to set as destination trade market."
+msgstr "Ticaret varış pazarı olarak ayarlamak için sağ tıklayın"
+
+#: gui/session/unit_actions.js:778 gui/session/unit_actions.js:1204
+#, javascript-format
+msgid "Current turrets: %(occupied)s/%(capacity)s"
+msgstr "Seçili Küçük Kuleler: %(occupied)s/%(capacity)s"
+
+#: gui/session/unit_actions.js:844 gui/session/unit_actions.js:1187
+#, javascript-format
+msgid "Current garrison: %(garrisoned)s/%(capacity)s"
+msgstr "Şu anki birlik: %(garrisoned)s/%(capacity)s"
+
+#: gui/session/unit_actions.js:1263
+msgid "Right-click to establish a default route for new traders."
+msgstr "Yeni tacirlere varsayılan güzergah belirlemek için sağ tıklayın."
+
+#: gui/session/unit_actions.js:1267
+#, javascript-format
+msgid "Expected gain: %(gain)s"
+msgstr "Hedeflenen kazanç: %(gain)s"
+
+#: gui/session/unit_actions.js:1401
+msgid "This entity cannot be controlled."
+msgid_plural "These entities cannot be controlled."
+msgstr[0] "Bu varlık kontrol edilemez."
+msgstr[1] "Bu varlıklar kontrol edilemez."
+
+#: gui/session/unit_actions.js:1447
+msgid "Unload All"
+msgstr "Hepsini boşalt"
+
+#: gui/session/unit_actions.js:1448
+msgid "Order all units to leave the selected entities."
+msgstr "Tüm birliklerin seçili birimleri terk etmesini emret."
+
+#: gui/session/unit_actions.js:1483
+msgid "Unload Turrets"
+msgstr "Kuleleri boşalt"
+
+#: gui/session/unit_actions.js:1484
+msgid "Order all units to leave the selected turret points."
+msgstr "Tüm birliklerin seçili taret noktalarını terk etmelerini emredin."
+
+#: gui/session/unit_actions.js:1504
+msgid "Self-Destruct"
+msgstr "Kendini imha etme"
+
+#: gui/session/unit_actions.js:1505
+msgid "Destroy the selected entities."
+msgstr "Seçili varlıkları yok et."
+
+#: gui/session/unit_actions.js:1507
+#, javascript-format
+msgid "Use %(hotkey)s to avoid the confirmation dialog."
+msgstr "Onay iletişim kutularından kaçınmak için kısayol tuşlarını kullanın; %(hotkey)s "
+
+#: gui/session/unit_actions.js:1559
+msgid "Abort"
+msgstr "İptal"
+
+#: gui/session/unit_actions.js:1560
+msgid "Cancel the current orders for the selected units."
+msgstr "Seçili birimler için mevcut emirleri iptal edin."
+
+#: gui/session/unit_actions.js:1581
+msgid "Attack"
+msgstr "Atak:"
+
+#: gui/session/unit_actions.js:1582
+msgid ""
+"Send the selected units on attack move to the specified location after "
+"dropping resources."
+msgstr "Seçili birlikleri elindekileri bıraktıktan sonra saldırmak için belirlenmiş konuma gönder."
+
+#: gui/session/unit_actions.js:1604
+msgid "Garrison"
+msgstr "Garnizon"
+
+#: gui/session/unit_actions.js:1605
+msgid "Order the selected units to garrison in a structure or another unit."
+msgstr "Seçili birliklerin bir yapıda veya başka bir birimde garnizon kurmasını emredin."
+
+#: gui/session/unit_actions.js:1627
+msgid "Occupy Turret"
+msgstr "Taret İşgal Et"
+
+#: gui/session/unit_actions.js:1628
+msgid "Order the selected units to occupy a turret point."
+msgstr "Seçilen birimleri bir küçük kuleyi işgal etmelerini emredin."
+
+#: gui/session/unit_actions.js:1650
+msgid "Unload"
+msgstr "Boşalt"
+
+#: gui/session/unit_actions.js:1651
+msgid "Order the selected units to leave their turret points."
+msgstr "Seçili birliklerin taret noktalarını terk etmelerini emredin."
+
+#: gui/session/unit_actions.js:1671
+msgid "Repair"
+msgstr "Onar"
+
+#: gui/session/unit_actions.js:1672
+msgid "Order the selected units to repair a structure, ship, or siege engine."
+msgstr "Seçilen birimlere binayı, gemiyi ya da kuşatma makinasını tamir etme komutu ver."
+
+#: gui/session/unit_actions.js:1693
+msgid "Focus on Rally Point"
+msgstr "Toplanma noktasına git."
+
+#: gui/session/unit_actions.js:1694
+msgid "Center the view on the selected rally point."
+msgstr "Görünümü seçilen toplanma noktasına ortalayın."
+
+#: gui/session/unit_actions.js:1731
+msgid "Back to Work"
+msgstr "Çalışmaya Dön"
+
+#: gui/session/unit_actions.js:1732
+msgid "Order the selected units to resume their work."
+msgstr "Seçili birimlerin çalışmalarına devam etmelerini emredin."
+
+#: gui/session/unit_actions.js:1753
+msgid "Guard"
+msgstr "Koruma"
+
+#: gui/session/unit_actions.js:1754
+msgid "Order the selected units to guard a structure or unit."
+msgstr "Seçilen birimlere bir binayı ya da birimi koruma komutu ver."
+
+#: gui/session/unit_actions.js:1774
+msgid "Abort Guard"
+msgstr "Muhafızı iptal et"
+
+#: gui/session/unit_actions.js:1775
+msgid "Order the selected units to stop guarding."
+msgstr "Seçilen birliklerin nöbet tutmayı bırakmalarını emredin."
+
+#: gui/session/top_panel/IconButtons/TradeDialogButton.js:31
+#: gui/session/trade/TradeDialog.xml:9 gui/session/unit_actions.js:1795
+msgid "Barter & Trade"
+msgstr "Takas & Ticaret"
+
+#: gui/session/unit_actions.js:1796
+msgid "Open the dialog for managing resource trading and bartering."
+msgstr "Kaynak ticareti ve takasını yönetmek için iletişim kutusunu açın."
+
+#: gui/session/unit_actions.js:1816
+msgid "Patrol"
+msgstr "Devriye"
+
+#: gui/session/unit_actions.js:1817
+msgid ""
+"Order to repeatedly go to a point and come back, attacking all enemies along"
+" the way."
+msgstr "Bir noktaya defalarca gidip geri gelme ve yol üzerindeki tüm düşmanlara saldırma emri."
+
+#: gui/session/unit_actions.js:1845
+msgid "Share Dropsite"
+msgstr "Yükün bırakıldığı alanı paylaş"
+
+#: gui/session/unit_actions.js:1846
+msgid "Allow allies to use this dropsite, now locked."
+msgstr "Müttefiklerin bu bırakma alanını kullanmasına izin verin, şimdi kilitli."
+
+#: gui/session/unit_actions.js:1851
+msgid "Lock Dropsite"
+msgstr "Yükün bırakıldığı alanı kilitle"
+
+#: gui/session/unit_actions.js:1852
+msgid "Prevent allies from using this dropsite, now shared."
+msgstr "Müttefiklerin bu yükün bırakıldığı alanı kullanmasını önleyin, şimdi paylaşılıyor."
+
+#: gui/session/unit_actions.js:1887
+msgid "Locked Dropsite"
+msgstr "Yükün bırakıldığı alan kilitli"
+
+#: gui/session/unit_actions.js:1888
+msgid "The use of this dropsite is prohibited."
+msgstr "Bu yükün bırakıldığı alan kullanımı yasaktır."
+
+#: gui/session/unit_actions.js:1894
+msgid "Shared Dropsite"
+msgstr "Yükün bırakıldığı alanı paylaşılmış"
+
+#: gui/session/unit_actions.js:1895
+msgid "Allies are allowed to use this dropsite."
+msgstr "Müttefiklerin bu geçici depoyu kullanmalarına izin verildi."
+
+#: gui/session/unit_actions.js:1896
+msgid "You are allowed to use this dropsite."
+msgstr "Bu yükün bırakıldığı alan kullanmanıza izin verilmektedir."
+
+#: gui/session/unit_actions.js:1915
+msgid "Activate Auto-Queue"
+msgstr "Otomatik Sırayı Etkinleştir"
+
+#: gui/session/unit_actions.js:1916
+msgid "Activate the production auto-queue for the selected structures."
+msgstr "Seçili yapılar için üretim otomatik kuyruğunu etkinleştirin."
+
+#: gui/session/unit_actions.js:1936
+msgid "Deactivate Auto-Queue"
+msgstr "Otomatik Kuyruğu Devre Dışı Bırak"
+
+#: gui/session/unit_actions.js:1937
+msgid "Deactivate the production auto-queue for the selected structures."
+msgstr "Seçili yapılar için üretim otomatik kuyruğunu devre dışı bırakın."
+
+#: gui/session/unit_actions.js:2002
+msgid "The entity has to be killed before it can be gathered from"
+msgstr "İşletme, toplanmadan önce öldürülmelidir."
+
+#: gui/session/unit_actions.js:2005
+msgid ""
+"You cannot destroy this entity as you own less than half the capture points"
+msgstr "Bu nesneyi yok edemezsiniz çünkü yarısından azı görürür bir şekilde."
+
+#: gui/session/unit_actions.js:2008
+msgid "This entity is undeletable"
+msgstr "Bu unite silinemez"

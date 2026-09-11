@@ -1,0 +1,3 @@
+ELEPHANT STABLE
+Available to some civilizations to train Elephants.
+Units gain experience while garrisoned inside.

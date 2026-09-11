@@ -1,0 +1,1895 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2025 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Cheng-Chia Tseng, 2014
+# CAGD_lulofun滷肉飯, 2019
+# Cirro Yuan, 2013
+# Hiunn-hué, 2018
+# Karinsu Hsu, 2018
+# Yuan Chang, 2017
+# 黃柏諺, 2013-2017
+# kevinhykuo, 2014
+# Money, 2018
+# Po-Chun Huang, 2014
+# ryat, 2015
+# samrmrf, 2013
+# 青海, 2018
+# Shoichi Chou, 2018,2021
+# Stanislas Dolcini, 2021
+# StarAtt, 2021
+# 又齊 劉, 2018
+# 周雪琪, 2021
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2025-11-03 01:30+0000\n"
+"PO-Revision-Date: 2014-06-19 17:49+0000\n"
+"Last-Translator: Yuan Chang, 2021-2025\n"
+"Language-Team: Chinese (Taiwan) (http://app.transifex.com/wildfire-games/0ad/language/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: gui/session/Cheats.js:78
+msgid "This cheat requires a numeric parameter."
+msgstr "這個作弊密技需要一個數字參數。"
+
+#: gui/session/GameSpeedControl.xml:11
+msgid "Choose game speed"
+msgstr "選擇遊戲速度"
+
+#: gui/session/Menu.js:39
+#, javascript-format
+msgid "Press %(hotkey)s to toggle this menu."
+msgstr "按%(hotkey)s切換選單"
+
+#: gui/session/MenuButtons.js:33
+msgid "Chat"
+msgstr "聊天"
+
+#: gui/session/MenuButtons.js:54
+msgid "Save"
+msgstr "儲存"
+
+#: gui/session/MenuButtons.js:78
+msgid "Summary"
+msgstr "摘要"
+
+#: gui/session/MenuButtons.js:91
+#, javascript-format
+msgid "Press %(hotkey)s to open the summary screen."
+msgstr "按 %(hotkey)s 開啟摘要畫面。"
+
+#: gui/session/MenuButtons.js:133
+msgid "Lobby"
+msgstr "大廳"
+
+#: gui/session/MenuButtons.js:142
+#, javascript-format
+msgid ""
+"Press %(hotkey)s to open the multiplayer lobby page without leaving the "
+"game."
+msgstr "按 %(hotkey)s 在不離開遊戲的情況下打開多人遊戲大廳。"
+
+#: gui/session/MenuButtons.js:161
+msgid "Options"
+msgstr "選項"
+
+#: gui/session/MenuButtons.js:180
+msgid "Hotkeys"
+msgstr "快捷鍵"
+
+#: gui/session/MenuButtons.js:213
+msgid "Resume"
+msgstr "繼續遊戲"
+
+#: gui/session/MenuButtons.js:213
+msgid "Pause"
+msgstr "暫停"
+
+#: gui/session/MenuButtons.js:214
+#, javascript-format
+msgid "Press %(hotkey)s to pause or resume the game."
+msgstr "按%(hotkey)s暫停或回到遊戲"
+
+#: gui/session/MenuButtons.js:230
+msgid "Resign"
+msgstr "投降"
+
+#: gui/session/MenuButtons.js:254 gui/session/NetworkStatusOverlay.xml:9
+msgid "Exit"
+msgstr "退出"
+
+#: gui/session/NetworkDelayOverlay.js:62
+#, javascript-format
+msgid "Delay to live stream: %(delay)ss"
+msgstr "即時串流延遲：%(delay)s秒"
+
+#: gui/session/NetworkStatusOverlay.js:38
+msgid "Connection to the server has been authenticated."
+msgstr "已驗證與伺服器間的連線。"
+
+#: gui/session/NetworkStatusOverlay.js:39
+msgid "Connected to the server."
+msgstr "已連線至伺服器。"
+
+#: gui/session/NetworkStatusOverlay.js:40
+msgid "Connection to the server has been lost."
+msgstr "與伺服器的連線已中斷。"
+
+#: gui/session/NetworkStatusOverlay.js:42
+msgid "Waiting for players to connect:"
+msgstr "等待玩家連線："
+
+#: gui/session/NetworkStatusOverlay.js:43
+msgid "Synchronizing gameplay with other players…"
+msgstr "正在與其他玩家的遊戲同步…"
+
+#: gui/session/NetworkStatusOverlay.js:47
+msgctxt "Separator for a list of client loading messages"
+msgid ", "
+msgstr "、"
+
+#. Translation: The "x" means "times", with the mathematical meaning of
+#. multiplication.
+#: gui/session/OverlayCounterElapsedTime.js:33
+#, javascript-format
+msgid "%(time)s (%(speed)sx)"
+msgstr "%(time)s (%(speed)sx)"
+
+#: gui/session/PauseOverlay.js:40
+#: gui/session/message_box/OutOfSyncNetwork.js:20
+msgctxt "Separator for a list of players"
+msgid ", "
+msgstr "、"
+
+#: gui/session/PauseOverlay.js:45
+#, javascript-format
+msgid "Paused by %(players)s"
+msgstr "由 %(players)s 暫停"
+
+#: gui/session/PauseOverlay.xml:7
+msgid "Game Paused"
+msgstr "遊戲已暫停"
+
+#: gui/session/PauseOverlay.xml:11
+msgid "Click to Resume Game"
+msgstr "點按可繼續遊戲"
+
+#: gui/session/ResearchProgress.js:114 gui/session/selection_details.js:257
+#: gui/session/selection_details.js:275 gui/session/selection_panels.js:604
+msgctxt "countdown format"
+msgid "m:ss"
+msgstr "m:ss"
+
+#. Translation: String displayed when the research is paused. E.g. by being
+#. garrisoned or
+#. when not the first item in the queue.
+#: gui/session/ResearchProgress.js:117 gui/session/selection_panels.js:616
+msgid "This item is paused."
+msgstr "此項目已暫停。"
+
+#: gui/session/chat/ChatAddressees.js:103
+msgctxt "chat addressee"
+msgid "Everyone"
+msgstr "每個人"
+
+#: gui/session/chat/ChatAddressees.js:109
+msgctxt "chat addressee"
+msgid "Allies"
+msgstr "盟友"
+
+#: gui/session/chat/ChatAddressees.js:110
+msgctxt "chat message context"
+msgid "Ally"
+msgstr "同盟"
+
+#: gui/session/chat/ChatAddressees.js:119
+msgctxt "chat addressee"
+msgid "Enemies"
+msgstr "敵人"
+
+#: gui/session/chat/ChatAddressees.js:120
+msgctxt "chat message context"
+msgid "Enemy"
+msgstr "敵方"
+
+#: gui/session/chat/ChatAddressees.js:129
+msgctxt "chat addressee"
+msgid "Observers"
+msgstr "觀察者"
+
+#: gui/session/chat/ChatAddressees.js:130
+msgctxt "chat message context"
+msgid "Observer"
+msgstr "觀察者"
+
+#: gui/session/chat/ChatAddressees.js:137
+msgctxt "chat message context"
+msgid "Private"
+msgstr "私人"
+
+#: gui/session/chat/ChatHistory.js:54
+#, javascript-format
+msgid "%(time)s %(message)s"
+msgstr "%(time)s %(message)s"
+
+#: gui/session/chat/ChatHistory.js:66
+#, javascript-format
+msgid "\\[%(time)s]"
+msgstr "\\[%(time)s]"
+
+#: gui/session/chat/ChatHistory.js:67
+msgid "HH:mm"
+msgstr "HH:mm"
+
+#: gui/session/chat/ChatHistory.js:87
+msgctxt "chat history filter"
+msgid "Chat and notifications"
+msgstr "聊天與通知"
+
+#: gui/session/chat/ChatHistory.js:92
+msgctxt "chat history filter"
+msgid "Chat messages"
+msgstr "聊天訊息"
+
+#: gui/session/chat/ChatHistory.js:97
+msgctxt "chat history filter"
+msgid "Players chat"
+msgstr "玩家聊天"
+
+#: gui/session/chat/ChatHistory.js:104
+msgctxt "chat history filter"
+msgid "Ally chat"
+msgstr "同盟聊天"
+
+#: gui/session/chat/ChatHistory.js:111
+msgctxt "chat history filter"
+msgid "Enemy chat"
+msgstr "敵人聊天"
+
+#: gui/session/chat/ChatHistory.js:118
+msgctxt "chat history filter"
+msgid "Observer chat"
+msgstr "觀察者聊天"
+
+#: gui/session/chat/ChatHistory.js:125
+msgctxt "chat history filter"
+msgid "Private chat"
+msgstr "私人聊天"
+
+#: gui/session/chat/ChatHistory.js:130
+msgctxt "chat history filter"
+msgid "Game notifications"
+msgstr "遊戲通知"
+
+#: gui/session/chat/ChatHistory.js:135
+msgctxt "chat history filter"
+msgid "Network notifications"
+msgstr "網路狀態通知"
+
+#: gui/session/chat/ChatInput.js:36
+msgctxt "chat input"
+msgid "Type the message to send."
+msgstr "輸入想傳送的訊息。"
+
+#: gui/session/chat/ChatInput.js:42
+#, javascript-format
+msgid "Press %(hotkey)s to open the public chat."
+msgstr "按 %(hotkey)s 以開啟公開聊天。"
+
+#: gui/session/chat/ChatInput.js:45
+#, javascript-format
+msgid "Press %(hotkey)s to open the observer chat."
+msgstr "按 %(hotkey)s 以開啟觀察者聊天。"
+
+#: gui/session/chat/ChatInput.js:46
+#, javascript-format
+msgid "Press %(hotkey)s to open the ally chat."
+msgstr "按 %(hotkey)s 以開啟同盟聊天。"
+
+#: gui/session/chat/ChatInput.js:48
+#, javascript-format
+msgid "Press %(hotkey)s to open the previously selected private chat."
+msgstr "按 %(hotkey)s 以開啟先前選定的私人聊天。"
+
+#. Translation: A player that left the game joins again
+#: gui/session/chat/ChatMessageFormatNetwork.js:24
+#, javascript-format
+msgid "%(player)s is starting to rejoin the game."
+msgstr "%(player)s 正在開始重新加入遊戲。"
+
+#. Translation: A player joins the game for the first time
+#: gui/session/chat/ChatMessageFormatNetwork.js:26
+#, javascript-format
+msgid "%(player)s is starting to join the game."
+msgstr "%(player)s 正在開始加入遊戲。"
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:37
+#, javascript-format
+msgid "%(player)s has left the game."
+msgstr "%(player)s 已離開遊戲。"
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:51
+#, javascript-format
+msgid "%(username)s has been banned"
+msgstr "%(username)s 已被封禁"
+
+#: gui/session/chat/ChatMessageFormatNetwork.js:52
+#, javascript-format
+msgid "%(username)s has been kicked"
+msgstr "%(username)s 已被踢出"
+
+#. Translation: A player that left the game joins again
+#: gui/session/chat/ChatMessageFormatNetwork.js:71
+#, javascript-format
+msgid "%(player)s has rejoined the game."
+msgstr "%(player)s 已經重新加入遊戲。"
+
+#. Translation: A player joins the game for the first time
+#: gui/session/chat/ChatMessageFormatNetwork.js:73
+#, javascript-format
+msgid "%(player)s has joined the game."
+msgstr "%(player)s 已加入遊戲。"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:62
+#, javascript-format
+msgid "<%(user)s>"
+msgstr "<%(user)s>"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:174
+#, javascript-format
+msgid "(%(context)s) %(userTag)s %(message)s"
+msgstr "(%(context)s) %(userTag)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:175
+#, javascript-format
+msgid "%(userTag)s %(message)s"
+msgstr "%(userTag)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:178
+#, javascript-format
+msgid "(%(context)s) * %(user)s %(message)s"
+msgstr "(%(context)s) * %(user)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatPlayer.js:179
+#, javascript-format
+msgid "* %(user)s %(message)s"
+msgstr "* %(user)s %(message)s"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:16
+#, javascript-format
+msgid "%(icon)sYour livestock has been attacked by %(attacker)s!"
+msgstr "%(icon)s 您的家畜正被 %(attacker)s 攻擊！"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:17
+#, javascript-format
+msgid "%(icon)sYou have been attacked by %(attacker)s!"
+msgstr "%(icon)s 您正被 %(attacker)s 攻擊！"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:27
+msgid "Click to focus on the attacked unit."
+msgstr "點擊以聚焦在被攻擊的單位。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:46
+#, javascript-format
+msgid "%(player)s bartered %(amountGiven)s for %(amountGained)s."
+msgstr "%(player)s 以 %(amountGiven)s 交換 %(amountGained)s。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:81
+#, javascript-format
+msgid "You are now allied with %(player)s."
+msgstr "您現在與 %(player)s 同盟。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:82
+#, javascript-format
+msgid "You are now at war with %(player)s."
+msgstr "您現在與 %(player)s 交戰。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:83
+#, javascript-format
+msgid "You are now neutral with %(player)s."
+msgstr "您現在與 %(player)s 處於中立。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:86
+#, javascript-format
+msgid "%(player)s is now allied with you."
+msgstr "%(player)s 現在與你同盟。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:87
+#, javascript-format
+msgid "%(player)s is now at war with you."
+msgstr "%(player)s 現在與你交戰。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:88
+#, javascript-format
+msgid "%(player)s is now neutral with you."
+msgstr "%(player)s 現與你處於中立。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:91
+#, javascript-format
+msgid "%(player)s is now allied with %(player2)s."
+msgstr "%(player)s 現在與 %(player2)s 同盟。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:92
+#, javascript-format
+msgid "%(player)s is now at war with %(player2)s."
+msgstr "%(player)s 現在與 %(player2)s 交戰。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:93
+#, javascript-format
+msgid "%(player)s is now neutral with %(player2)s."
+msgstr "%(player)s 現與 %(player2)s 處於中立。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:109
+#, javascript-format
+msgid "%(player)s is advancing to the %(phaseName)s."
+msgstr "%(player)s 正在進階到 %(phaseName)s。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:111
+#, javascript-format
+msgid "The %(phaseName)s of %(player)s has been aborted."
+msgstr "%(player)s 的 %(phaseName)s 已放棄。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:114
+#, javascript-format
+msgid "%(player)s has reached the %(phaseName)s."
+msgstr "%(player)s 已經到達 %(phaseName)s。"
+
+#. Translation: This comma is used for separating first to penultimate
+#. elements in an
+#. enumeration.
+#: gui/session/chat/ChatMessageFormatSimulation.js:142
+msgid ", "
+msgstr "、"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:159
+#, javascript-format
+msgid "%(player)s has sent you %(amounts)s."
+msgstr "%(player)s 已傳送給您 %(amounts)s。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:161
+#, javascript-format
+msgid "You have sent %(player2)s %(amounts)s."
+msgstr "您已傳送給 %(player2)s %(amounts)s。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:166
+#, javascript-format
+msgid "%(player)s has sent %(player2)s %(amounts)s."
+msgstr "%(player)s 已傳送給 %(player2)s %(amounts)s。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:197
+#, javascript-format
+msgid "%(icon)s%(player)s has sent a flare."
+msgstr "%(icon)s%(player)s 已發送信號彈。"
+
+#: gui/session/chat/ChatMessageFormatSimulation.js:204
+msgid "Click to focus on the flare's location."
+msgstr "點擊以聚焦在信號彈的位置。"
+
+#: gui/session/chat/chat_window.xml:19
+msgctxt "chat input"
+msgid "Filter:"
+msgstr "過濾器："
+
+#: gui/session/chat/chat_window.xml:29
+msgctxt "chat input"
+msgid "Filter the chat history."
+msgstr "過濾聊天歷史。"
+
+#: gui/session/chat/chat_window.xml:46
+msgctxt "chat input"
+msgid "To:"
+msgstr "給："
+
+#: gui/session/chat/chat_window.xml:55
+msgctxt "chat input"
+msgid "Select chat addressee."
+msgstr "選擇聊天訊息收件人。"
+
+#: gui/session/chat/chat_window.xml:60
+msgctxt "chat input"
+msgid "Text:"
+msgstr "文字："
+
+#: gui/session/chat/chat_window.xml:72
+msgid "Cancel"
+msgstr "取消"
+
+#: gui/session/chat/chat_window.xml:86
+msgctxt "chat"
+msgid "History"
+msgstr "歷史"
+
+#: gui/session/chat/chat_window.xml:91
+msgid "Send"
+msgstr "傳送"
+
+#: gui/session/developer_overlay/DeveloperOverlay.js:78
+msgid "The Developer Overlay was opened."
+msgstr "開發者覆蓋層已開啟。"
+
+#: gui/session/developer_overlay/DeveloperOverlay.js:79
+msgid "The Developer Overlay was closed."
+msgstr "開發者覆蓋層已關閉。"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:15
+msgid "Control all units"
+msgstr "控制所有單位"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:42
+msgid "Change perspective"
+msgstr "變更視角"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:60
+msgid "Display selection state"
+msgstr "顯示選取狀態"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:73
+msgid "Pathfinder overlay"
+msgstr "尋路覆蓋層"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:86
+msgid "Hierarchical pathfinder overlay"
+msgstr "分級尋路覆蓋層"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:99
+msgid "Obstruction overlay"
+msgstr "障礙覆蓋層"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:112
+msgid "Unit motion overlay"
+msgstr "單位移動覆蓋層"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:125
+msgid "Range overlay"
+msgstr "射程覆蓋層"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:138
+msgid "Bounding box overlay"
+msgstr "邊框覆蓋層"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:151
+msgid "Restrict camera"
+msgstr "限制鏡頭"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:169
+msgid "Reveal map"
+msgstr "顯示地圖"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:195
+msgid "Enable time warp"
+msgstr "啟用時間跳躍"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:214
+msgid "Activate Rejoin Test"
+msgstr "啟用重新加入測試"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:248
+msgid "Promote selected units"
+msgstr "晉升選定的單位"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:269
+msgid "Enable culling"
+msgstr "啟用淘汰"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:287
+msgid "Lock cull camera"
+msgstr "鎖定觀戰鏡頭。"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:305
+msgid "Display camera frustum"
+msgstr "顯示鏡頭角錐"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:323
+msgid "Display shadows frustum"
+msgstr "顯示陰影角錐"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:22
+msgid "Render Debug Mode Disabled"
+msgstr "已停用渲染偵錯模式"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:23
+msgid "Render Debug Mode AO"
+msgstr "渲染偵錯模式環境光遮蔽"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:24
+msgid "Render Debug Mode Alpha"
+msgstr "渲染偵錯模式透明度"
+
+#: gui/session/developer_overlay/DeveloperOverlayControlDropDowns.js:25
+msgid "Render Debug Mode Custom"
+msgstr "渲染偵錯模式自訂"
+
+#: gui/session/developer_overlay/TimeWarp.js:6
+msgid "Time warp mode"
+msgstr "時間跳躍模式"
+
+#: gui/session/developer_overlay/TimeWarp.js:7
+msgid ""
+"Note: time warp mode is a developer option, and not intended for use over "
+"long periods of time. Using it incorrectly may cause the game to run out of "
+"memory or crash."
+msgstr "注意：時間跳躍模式是開發者選項，不建議長時間使用。不恰當的使用可能會導致記憶體耗盡或是遊戲當機。"
+
+#: gui/session/dialogs/yes_no.xml:11
+msgid "Question"
+msgstr "問題"
+
+#: gui/session/dialogs/yes_no.xml:15
+msgid "Yes or no?"
+msgstr "是或否？"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:15
+msgid "Name"
+msgstr "名稱"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:18
+msgid "Civilization"
+msgstr "文明"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:21
+msgid "Team"
+msgstr "團隊"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:24
+msgid "Theirs"
+msgstr "他們的"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:27
+msgid "A"
+msgstr "盟"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:31
+msgid "N"
+msgstr "中"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:35
+msgid "E"
+msgstr "敵"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:39
+msgid "Tribute"
+msgstr "貢品"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:90
+#: gui/session/match_settings/MatchSettingsDialog.xml:43
+#: gui/session/trade/TradeDialog.xml:22
+msgid "Close"
+msgstr "關閉"
+
+#: gui/session/diplomacy/DiplomacyDialogCeasefireCounter.js:27
+#, javascript-format
+msgctxt "ceasefire"
+msgid "Remaining ceasefire time: %(time)s."
+msgstr "保持停火的時間：%(time)s。"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:85
+#: gui/session/diplomacy/DiplomacyDialogColorsButton.js:30
+#: gui/session/minimap/MiniMapDiplomacyColorsButton.js:36
+msgid "Toggle Diplomacy Colors"
+msgstr "切換外交顏色"
+
+#: gui/session/diplomacy/playercontrols/AttackRequestButton.js:38
+msgid "Request your allies to attack this enemy"
+msgstr "請求您的盟友來攻擊這個敵人"
+
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:73
+msgctxt "team"
+msgid "None"
+msgstr "無"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:28
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:76
+msgid "Ally"
+msgstr "同盟"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:32
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:79
+msgid "Neutral"
+msgstr "中立"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:36
+#: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:82
+msgid "Enemy"
+msgstr "敵方"
+
+#: gui/session/diplomacy/playercontrols/SpyRequestButton.js:138
+msgid ""
+"Bribe a random unit from this player and share its vision during a limited "
+"period."
+msgstr "隨機賄賂此玩家手下的一個單位，在一定時間內分享其視野。"
+
+#: gui/session/diplomacy/playercontrols/SpyRequestButton.js:141
+msgid "A failed bribe will cost you:"
+msgstr "一次失敗的賄賂會花費您："
+
+#: gui/session/diplomacy/playercontrols/StanceButton.js:60
+msgctxt "diplomatic stance selection"
+msgid "x"
+msgstr "x"
+
+#: gui/session/diplomacy/playercontrols/TributeButton.js:112
+#, javascript-format
+msgid ""
+"Tribute %(resourceAmount)s %(resourceType)s to %(playerName)s. Shift-click "
+"to tribute %(greaterAmount)s."
+msgstr "進貢 %(resourceAmount)s %(resourceType)s 給 %(playerName)s。Shift 加上點擊以進貢 %(greaterAmount)s。"
+
+#: gui/session/input.js:195
+#, javascript-format
+msgid "Basic range: %(range)s meter"
+msgid_plural "Basic range: %(range)s meters"
+msgstr[0] "基本範圍：%(range)s 公尺"
+
+#: gui/session/input.js:196
+#, javascript-format
+msgid "Average bonus range: %(range)s meter"
+msgid_plural "Average bonus range: %(range)s meters"
+msgstr[0] "平均加成範圍：%(range)s 公尺"
+
+#: gui/session/input.js:719
+msgid "Cannot build wall here!"
+msgstr "無法在此建築城牆！"
+
+#: gui/session/message_box/DeleteSelectionConfirmation.js:10
+msgid "Delete"
+msgstr "刪除"
+
+#: gui/session/message_box/DeleteSelectionConfirmation.js:11
+msgid "Destroy everything currently selected?"
+msgstr "摧毀目前所選的任何事物？"
+
+#: gui/session/dialogs/yes_no.xml:24
+#: gui/session/message_box/DeleteSelectionConfirmation.js:14
+#: gui/session/message_box/QuitConfirmationMenu.js:72
+#: gui/session/message_box/ResignConfirmation.js:9
+msgid "No"
+msgstr "否"
+
+#: gui/session/dialogs/yes_no.xml:19
+#: gui/session/message_box/DeleteSelectionConfirmation.js:17
+#: gui/session/message_box/QuitConfirmationMenu.js:75
+#: gui/session/message_box/ResignConfirmation.js:12
+msgid "Yes"
+msgstr "是"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:15
+#: gui/session/message_box/OutOfSyncReplay.js:26
+#, javascript-format
+msgid "Out-Of-Sync error on turn %(turn)s."
+msgstr "在回合 %(turn)s 的未同步錯誤。"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:19
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Players: %(players)s"
+msgstr "玩家：%(players)s"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:24
+msgctxt "Out-Of-Sync"
+msgid "Your game state is identical to the hosts game state."
+msgstr "您的遊戲狀態與主持人的遊戲狀態相同。"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:25
+msgctxt "Out-Of-Sync"
+msgid "Your game state differs from the hosts game state."
+msgstr "您的遊戲狀態與主持人的遊戲狀態不同。"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:31
+msgctxt "Out-Of-Sync"
+msgid "Rejoining Multiplayer games with AIs is not supported yet!"
+msgstr "目前尚不支援重新加入有 AI 的多人遊戲！"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:34
+msgctxt "Out-Of-Sync"
+msgid "Ensure all players use the same mods."
+msgstr "確保所有玩家都使用相同的模組。"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:35
+msgctxt "Out-Of-Sync"
+msgid "Click on \"Report a Bug\" in the main menu to help fix this."
+msgstr "在主選單點擊「回報漏洞」來協助修復這個問題。"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:36
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Replay saved to %(filepath)s"
+msgstr "重播已儲存至 %(filepath)s"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:39
+#, javascript-format
+msgctxt "Out-Of-Sync"
+msgid "Dumping current state to %(filepath)s"
+msgstr "將目前的狀態轉儲到 %(filepath)s"
+
+#: gui/session/message_box/OutOfSyncNetwork.js:51
+#: gui/session/message_box/OutOfSyncReplay.js:23
+msgid "Out of Sync"
+msgstr "未同步"
+
+#. Translation: This is shown if replay is out of sync
+#: gui/session/message_box/OutOfSyncReplay.js:28
+msgid "Out-Of-Sync"
+msgstr "未同步"
+
+#: gui/session/message_box/QuitConfirmation.js:6
+#: gui/session/message_box/QuitConfirmationMenu.js:4
+#: gui/session/message_box/ResignConfirmation.js:5
+msgid "Confirmation"
+msgstr "確認"
+
+#: gui/session/message_box/QuitConfirmation.js:9
+msgid "The game has finished, what do you want to do?"
+msgstr "遊戲已結束，您接下來想要做什麼？"
+
+#. Translation: Shown in the Dialog that shows up when the game finishes
+#: gui/session/message_box/QuitConfirmation.js:15
+#: gui/session/message_box/QuitConfirmationReplay.js:23
+msgid "Stay"
+msgstr "留下"
+
+#. Translation: Shown in the Dialog that shows up when the game finishes
+#: gui/session/message_box/QuitConfirmation.js:20
+#: gui/session/message_box/QuitConfirmationReplay.js:28
+msgid "Quit and View Summary"
+msgstr "退出並查看摘要"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:54
+msgid "VICTORIOUS!"
+msgstr "勝利！"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:55
+msgid "DEFEATED!"
+msgstr "戰敗！"
+
+#: gui/session/message_box/QuitConfirmationDefeat.js:57
+msgid "Do you want to quit?"
+msgstr "您是否要退出？"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:5
+msgid "Do you want to resign or will you return soon?"
+msgstr "您是想要投降？還是會很快回來？"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:8
+msgid "I will return"
+msgstr "我會回來"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:12
+msgid "I resign"
+msgstr "我要投降"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:53
+msgid ""
+"Are you sure you want to quit? Leaving will disconnect all other players."
+msgstr "您確定要離開嗎？這將會造成其他玩家斷線。"
+
+#: gui/session/message_box/QuitConfirmationMenu.js:67
+msgid "Are you sure you want to quit?"
+msgstr "您確定要退出？"
+
+#: gui/session/message_box/QuitConfirmationReplay.js:14
+msgctxt "replayFinished"
+msgid "Confirmation"
+msgstr "確認"
+
+#: gui/session/message_box/QuitConfirmationReplay.js:17
+msgctxt "replayFinished"
+msgid "The replay has finished. What do you want to do?"
+msgstr "重播已結束。您想要退出嗎？"
+
+#: gui/session/message_box/ResignConfirmation.js:6
+msgid "Are you sure you want to resign?"
+msgstr "您確定要投降？"
+
+#: gui/session/messages.js:107
+msgid "You have won!"
+msgstr "您已獲勝！"
+
+#: gui/session/messages.js:108
+msgid "You have been defeated!"
+msgstr "您被擊敗！"
+
+#: gui/session/messages.js:392
+msgid "Click to quit this tutorial."
+msgstr "點擊以離開本教學。"
+
+#: gui/session/message_box/QuitConfirmation.js:25
+#: gui/session/message_box/QuitConfirmationReplay.js:33
+#: gui/session/messages.js:393
+msgid "Quit"
+msgstr "退出"
+
+#: gui/session/messages.js:397
+msgid "Click when ready."
+msgstr "準備好的時候請按下按鈕。"
+
+#: gui/session/messages.js:401
+msgid "Follow the instructions."
+msgstr "按照說明進行操作。"
+
+#: gui/session/messages.js:550
+msgid "Unknown Player"
+msgstr "未知玩家"
+
+#: gui/session/minimap/MiniMapFlareButton.js:52
+msgid "Send a flare to your allies."
+msgstr "向你的盟友發送信號彈。"
+
+#: gui/session/minimap/MiniMapFlareButton.js:53
+msgid "Send a flare to other observers."
+msgstr "向其他觀察者發送信號彈。"
+
+#: gui/session/minimap/MiniMapIdleWorkerButton.js:43
+msgid ""
+"Find idle worker\n"
+"Number of idle workers."
+msgstr "尋找閒置工人\n閒置工人的人數。"
+
+#: gui/session/selection_details.js:62
+#, javascript-format
+msgid "%(secondaryName)s — Packed"
+msgstr "%(secondaryName)s — 已包裝"
+
+#: gui/session/selection_details.js:64
+msgid "Packed"
+msgstr "打包"
+
+#: gui/session/chat/ChatAddressees.js:79 gui/session/selection_details.js:75
+#, javascript-format
+msgid "\\[OFFLINE] %(player)s"
+msgstr "\\[離線] %(player)s"
+
+#: gui/session/selection_details.js:81
+#, javascript-format
+msgid "%(rank)s Rank"
+msgstr "%(rank)s 等級"
+
+#: gui/session/selection_details.js:133
+#, javascript-format
+msgid "%(hitpoints)s / %(maxHitpoints)s"
+msgstr "%(hitpoints)s / %(maxHitpoints)s"
+
+#: gui/session/selection_details.js:173
+#, javascript-format
+msgid "%(capturePoints)s / %(maxCapturePoints)s"
+msgstr "%(capturePoints)s / %(maxCapturePoints)s"
+
+#: gui/session/selection_details.js:180
+msgid "Capture Points"
+msgstr "占領值"
+
+#: gui/session/selection_details.js:190
+#, javascript-format
+msgid "%(experience)s %(current)s / %(required)s"
+msgstr "%(experience)s %(current)s / %(required)s"
+
+#: gui/session/selection_details.js:191 gui/session/selection_details.js:197
+msgid "Experience:"
+msgstr "經驗："
+
+#: gui/session/selection_details.js:196
+#, javascript-format
+msgid "%(experience)s %(current)s"
+msgstr "%(experience)s %(current)s"
+
+#: gui/session/selection_details.js:206
+msgid "∞"
+msgstr "∞"
+
+#: gui/session/selection_details.js:207 gui/session/selection_details.js:233
+#: gui/session/selection_details.js:263
+#, javascript-format
+msgid "%(amount)s / %(max)s"
+msgstr "%(amount)s / %(max)s"
+
+#: gui/session/selection_details.js:215
+#, javascript-format
+msgid "%(resource)s:"
+msgstr "%(resource)s："
+
+#: gui/session/selection_details.js:246 gui/session/unit_actions.js:685
+#: gui/session/unit_actions.js:694 gui/session/unit_actions.js:712
+#: gui/session/unit_actions.js:1266
+#, javascript-format
+msgid "Gain: %(gain)s"
+msgstr "收益：%(gain)s"
+
+#: gui/session/selection_details.js:255 gui/session/selection_details.js:273
+#, javascript-format
+msgid ""
+"(%(number)s)\n"
+"%(time)s"
+msgstr "(%(number)s)\n%(time)s"
+
+#: gui/session/selection_details.js:267
+msgid "Current/max gatherers"
+msgstr "目前 / 最大採集人數"
+
+#: gui/session/selection_details.js:297
+#, javascript-format
+msgid "(%(secondaryName)s)"
+msgstr "（%(secondaryName)s）"
+
+#: gui/session/selection_details.js:472
+msgid "Capture Points:"
+msgstr "占領值："
+
+#: gui/session/selection_details.js:480
+#, javascript-format
+msgid "%(label)s: %(details)s\n"
+msgstr "%(label)s：%(details)s\n"
+
+#: gui/session/selection_details.js:481
+msgid "Garrison Size"
+msgstr "駐軍大小"
+
+#: gui/session/selection_details.js:486
+#, javascript-format
+msgid "%(label)s %(details)s\n"
+msgstr "%(label)s %(details)s\n"
+
+#: gui/session/selection_details.js:487
+msgid "Carrying:"
+msgstr "攜帶："
+
+#: gui/session/selection_details.js:490 gui/session/selection_details.js:499
+#, javascript-format
+msgid "%(type)s %(amount)s"
+msgstr "%(type)s %(amount)s"
+
+#: gui/session/selection_details.js:495
+#, javascript-format
+msgid "%(label)s %(details)s"
+msgstr "%(label)s %(details)s"
+
+#: gui/session/selection_details.js:496
+msgid "Loot:"
+msgstr "戰利品："
+
+#. Translation: Used in the trading gain tooltip
+#: gui/session/selection_details.js:557
+#, javascript-format
+msgid "%(gain)s (%(player)s)"
+msgstr "%(gain)s (%(player)s)"
+
+#. Translation: Used in the trading gain tooltip to concatenate profits of
+#. different players
+#: gui/session/selection_details.js:581
+msgid "+"
+msgstr "+"
+
+#: gui/session/selection_details.js:588
+msgctxt "Separation mark in an enumeration"
+msgid ", "
+msgstr "、"
+
+#: gui/session/selection_panels.js:67
+msgid "Raise an alert!"
+msgstr "引發警報！"
+
+#: gui/session/selection_panels.js:69
+msgid "Alert nearby Civilians to seek refuge."
+msgstr "警告附近的市民尋找掩護。"
+
+#: gui/session/selection_panels.js:71
+msgid "Alert nearby Traders to seek refuge."
+msgstr "警告附近的商人尋找掩護。"
+
+#: gui/session/selection_panels.js:73
+msgid "Alert nearby vulnerable units to seek refuge."
+msgstr "警示附近的脆弱單位尋找掩護。"
+
+#: gui/session/selection_panels.js:77
+msgid "End the alert."
+msgstr "停止警報。"
+
+#: gui/session/selection_panels.js:79
+msgid "Unload nearby Civilians."
+msgstr "卸載附近的市民。"
+
+#: gui/session/selection_panels.js:81
+msgid "Unload nearby Traders."
+msgstr "卸載附近的商人。"
+
+#: gui/session/selection_panels.js:83
+msgid "Unload nearby vulnerable units."
+msgstr "卸載附近的脆弱單位。"
+
+#: gui/session/selection_panels.js:297
+msgid "Default formation is disabled."
+msgstr "已停用預設陣型。"
+
+#: gui/session/selection_panels.js:298
+msgid "Right-click to disable the default formation feature."
+msgstr "右鍵點擊以停用預設編隊功能。"
+
+#: gui/session/selection_panels.js:301
+msgid "This is the default formation, used for movement orders."
+msgstr "這是預設編隊，用於移動命令。"
+
+#: gui/session/selection_panels.js:302
+msgid "Right-click to set this as the default formation."
+msgstr "右鍵點擊以將其設定為預設編隊。"
+
+#: gui/session/selection_panels.js:358
+#, javascript-format
+msgid "Unload %(name)s"
+msgstr "卸載 %(name)s"
+
+#: gui/session/selection_panels.js:359
+msgid "Single-click to unload 1. Shift-click to unload all of this type."
+msgstr "單擊卸載 1 名單位。按住 Shift 點擊卸載所有該類型的單位。"
+
+#: gui/session/selection_panels.js:361 gui/session/selection_panels.js:935
+#, javascript-format
+msgid "Player: %(playername)s"
+msgstr "玩家：%(playername)s"
+
+#: gui/session/selection_panels.js:397
+msgid "Lock Gate"
+msgstr "鎖住大門"
+
+#: gui/session/selection_panels.js:403
+msgid "Unlock Gate"
+msgstr "解鎖大門"
+
+#: gui/session/selection_panels.js:454
+msgid "Pack"
+msgstr "打包"
+
+#: gui/session/selection_panels.js:462
+msgid "Unpack"
+msgstr "解包"
+
+#: gui/session/selection_panels.js:470
+msgid "Cancel Packing"
+msgstr "取消打包"
+
+#: gui/session/selection_panels.js:478
+msgid "Cancel Unpacking"
+msgstr "取消解包"
+
+#: gui/session/selection_panels.js:576
+msgid "The auto-queue will try to train this item later."
+msgstr "自動佇列會嘗試晚點訓練這個項目。"
+
+#: gui/session/selection_panels.js:579
+msgid "Insufficient population capacity:"
+msgstr "人口上限不足："
+
+#: gui/session/selection_panels.js:580
+#, javascript-format
+msgid "%(population)s %(neededSlots)s"
+msgstr "%(population)s %(neededSlots)s"
+
+#: gui/session/selection_panels.js:800
+#, javascript-format
+msgid "%(number)s entity of class %(class)s"
+msgid_plural "%(number)s entities of class %(class)s"
+msgstr[0] "%(number)s 給等級 %(class)s"
+
+#: gui/session/selection_panels.js:806
+#, javascript-format
+msgid "Remaining: %(entityCounts)s"
+msgstr "剩餘：%(entityCounts)s"
+
+#: gui/session/selection_panels.js:807
+msgctxt "Separator for a list of entity counts"
+msgid ", "
+msgstr "、"
+
+#: gui/session/selection_panels.js:859
+msgid "Cannot research while upgrading."
+msgstr "升級時無法研究。"
+
+#: gui/session/selection_panels.js:1088
+msgid "Cannot train while upgrading."
+msgstr "升級時無法訓練。"
+
+#: gui/session/selection_panels.js:1155
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s (%(secondaryName)s). %(tooltip)s"
+msgstr "升級成%(primaryName)s（%(secondaryName)s）。%(tooltip)s"
+
+#: gui/session/selection_panels.js:1161
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s (%(secondaryName)s)."
+msgstr "升級成%(primaryName)s（%(secondaryName)s）。"
+
+#: gui/session/selection_panels.js:1169
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s. %(tooltip)s"
+msgstr "升級成%(primaryName)s。%(tooltip)s"
+
+#: gui/session/selection_panels.js:1174
+#, javascript-format
+msgid "Upgrade to a %(primaryName)s."
+msgstr "升級成%(primaryName)s。"
+
+#: gui/session/selection_panels.js:1212
+msgid "Cancel Upgrading"
+msgstr "取消升級"
+
+#: gui/session/selection_panels.js:1226
+msgid ""
+"Cannot upgrade when the entity is training, researching or already "
+"upgrading."
+msgid_plural ""
+"Cannot upgrade when all entities are training, researching or already "
+"upgrading."
+msgstr[0] "當所有實體在訓練、研究或已經升級時無法升級。"
+
+#: gui/session/selection_panels_helpers.js:53
+msgctxt "stance"
+msgid "Violent"
+msgstr "狂暴"
+
+#: gui/session/selection_panels_helpers.js:55
+msgctxt "stance"
+msgid "Aggressive"
+msgstr "積極的"
+
+#: gui/session/selection_panels_helpers.js:57
+msgctxt "stance"
+msgid "Defensive"
+msgstr "防禦"
+
+#: gui/session/selection_panels_helpers.js:59
+msgctxt "stance"
+msgid "Passive"
+msgstr "被動"
+
+#: gui/session/selection_panels_helpers.js:61
+msgctxt "stance"
+msgid "Standground"
+msgstr "堅守"
+
+#: gui/session/selection_panels_helpers.js:73
+msgctxt "stance"
+msgid "Attack nearby opponents, focus on attackers and chase while visible"
+msgstr "攻擊鄰近的對手，聚焦攻擊者並在可見時追蹤"
+
+#: gui/session/selection_panels_helpers.js:75
+msgctxt "stance"
+msgid "Attack nearby opponents"
+msgstr "攻擊鄰近的對手"
+
+#: gui/session/selection_panels_helpers.js:77
+msgctxt "stance"
+msgid ""
+"Attack nearby opponents, chase a short distance and return to the original "
+"location"
+msgstr "攻擊鄰近的對手，追蹤一小段距離然後回到原位"
+
+#: gui/session/selection_panels_helpers.js:79
+msgctxt "stance"
+msgid "Flee if attacked"
+msgstr "被攻擊時逃跑"
+
+#: gui/session/selection_panels_helpers.js:81
+msgctxt "stance"
+msgid "Attack opponents in range, but don't move"
+msgstr "攻擊範圍內的對手，但不會移動"
+
+#: gui/session/selection_panels_helpers.js:95
+#, javascript-format
+msgid "Current Count: %(count)s, Limit: %(limit)s."
+msgstr "現有數量：%(count)s，限制：%(limit)s。"
+
+#: gui/session/selection_panels_helpers.js:109
+#, javascript-format
+msgid "%(changer)s enlarges the limit with %(change)s."
+msgstr "%(changer)s 將限制增大 %(change)s。"
+
+#: gui/session/selection_panels_helpers.js:110
+#, javascript-format
+msgid "%(changer)s lessens the limit with %(change)s."
+msgstr "%(changer)s 將限制減少 %(change)s。"
+
+#: gui/session/selection_panels_helpers.js:140
+msgid "Can be constructed only once."
+msgstr "僅能被建造一次。"
+
+#: gui/session/selection_panels_helpers.js:142
+#, javascript-format
+msgid "Could only be constructed %(limit)s time."
+msgid_plural "Could only be constructed %(limit)s times."
+msgstr[0] "僅能被建造 %(limit)s 次。"
+
+#: gui/session/selection_panels_helpers.js:148
+#, javascript-format
+msgid "Can be constructed %(count)s more time."
+msgid_plural "Can be constructed %(count)s more times."
+msgstr[0] "還可以建造 %(count)s 次。"
+
+#: gui/session/selection_panels_helpers.js:155
+msgid "Could only be trained once."
+msgid_plural "Could only be trained %(limit)s times."
+msgstr[0] "還可以被訓練 %(limit)s 次。"
+
+#: gui/session/selection_panels_helpers.js:159
+msgid "Can be trained only once."
+msgstr "只能被訓練一次。"
+
+#: gui/session/selection_panels_helpers.js:161
+#, javascript-format
+msgid "Can be trained %(count)s more time."
+msgid_plural "Can be trained %(count)s more times."
+msgstr[0] "還可以被訓練 %(count)s 次。"
+
+#: gui/session/selection_panels_helpers.js:168
+msgid "Could only be created once."
+msgid_plural "Could only be created %(limit)s times."
+msgstr[0] "僅能被建立 %(limit)s 次。"
+
+#: gui/session/selection_panels_helpers.js:172
+msgid "Can be created only once."
+msgstr "僅能被建立一次。"
+
+#: gui/session/selection_panels_helpers.js:174
+#, javascript-format
+msgid "Can be created %(count)s more time."
+msgid_plural "Can be created %(count)s more times."
+msgstr[0] "還可以被建立 %(count)s 次。"
+
+#: gui/session/selection_panels_helpers.js:203
+#, javascript-format
+msgid "%(buildings)s*%(batchSize)s"
+msgstr "%(buildings)s*%(batchSize)s"
+
+#: gui/session/selection_panels_helpers.js:217
+#, javascript-format
+msgid "%(action)s to train %(number)s (%(fullBatch)s + %(remainderBatch)s)."
+msgstr "%(action)s 訓練 %(number)s (%(fullBatch)s + %(remainderBatch)s)。"
+
+#: gui/session/selection_panels_helpers.js:219
+#, javascript-format
+msgid "%(action)s to train %(number)s (%(fullBatch)s)."
+msgstr "%(action)s 訓練 %(number)s (%(fullBatch)s)。"
+
+#: gui/session/selection_panels_helpers.js:221
+#, javascript-format
+msgid "%(action)s to train %(number)s."
+msgstr "%(action)s 訓練 %(number)s。"
+
+#: gui/session/selection_panels_helpers.js:226
+msgid "Shift-click"
+msgstr "Shift-左鍵點擊"
+
+#: gui/session/selection_panels_left/garrison_panel.xml:16
+#: gui/session/selection_panels_middle/single_details_area.xml:66
+msgid "Health"
+msgstr "生命值"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:43
+msgid "Capture points"
+msgstr "占領值"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:86
+msgid "Attack and Resistance"
+msgstr "攻擊和抗性"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:101
+msgid "Experience"
+msgstr "經驗"
+
+#: gui/session/selection_panels_middle/single_details_area.xml:109
+msgid "Rank"
+msgstr "等級"
+
+#: gui/session/selection_panels_right/queue_panel.xml:8
+msgid "Production queue"
+msgstr "生產佇列"
+
+#: gui/session/session_objects/selection_group_icons.xml:7
+msgid ""
+"Click to select grouped units, double-click to focus the grouped units and "
+"right-click to disband the group."
+msgstr "左鍵點擊選擇群組單位，左鍵點擊兩次聚焦單位隊組，右鍵點擊解散群組。"
+
+#: gui/session/top_panel/BuildLabel.xml:6
+msgid "Release XXVIII: Boiorix"
+msgstr "發布版 XXVIII：Boiorix（波約里克斯）"
+
+#: gui/session/top_panel/CivIcon.js:68
+#, javascript-format
+msgid ""
+"%(civ)s\n"
+"%(hotkey_civinfo)s: View Civilization Overview\n"
+"%(hotkey_structree)s: View Structure Tree\n"
+"Last opened view will be reopened on click."
+msgstr "%(civ)s\n%(hotkey_civinfo)s：檢視文明總覽\n%(hotkey_structree)s：檢視科技樹\n點擊將開啟上次開啟的地方"
+
+#: gui/session/top_panel/CounterManager.js:100
+#, javascript-format
+msgid "%(order)s: %(hotkey)s to change order."
+msgstr "%(order)s：%(hotkey)s 來改變排序。"
+
+#: gui/session/top_panel/CounterManager.js:104
+msgid "Unordered"
+msgstr "未排序"
+
+#: gui/session/top_panel/CounterManager.js:106
+msgid "Descending"
+msgstr "降冪"
+
+#: gui/session/top_panel/CounterManager.js:107
+msgid "Ascending"
+msgstr "升冪"
+
+#: gui/session/top_panel/CounterManager.js:135
+#, javascript-format
+msgid "%(playername)s: %(statValue)s"
+msgstr "%(playername)s：%(statValue)s"
+
+#. Translation: Do not insert spaces around the slash symbol for this exact
+#. string. Keep only
+#. one space between popLimit and popMax.
+#: gui/session/top_panel/CounterPopulation.js:61
+#: gui/session/top_panel/CounterPopulation.js:65
+#, javascript-format
+msgid "%(popCount)s/%(popLimit)s (%(popMax)s)"
+msgstr "%(popCount)s/%(popLimit)s (%(popMax)s)"
+
+#: gui/session/top_panel/CounterPopulation.js:63
+msgid "Population: current/limit (max)"
+msgstr "人口：當前 / 限制 (最大)"
+
+#: gui/session/top_panel/FollowPlayer.xml:11
+#: gui/session/top_panel/FollowPlayer.xml:15
+msgctxt "observer mode"
+msgid "Follow Player"
+msgstr "跟隨玩家"
+
+#: gui/session/diplomacy/DiplomacyDialog.xml:10
+#: gui/session/top_panel/IconButtons/DiplomacyDialogButton.js:29
+msgid "Diplomacy"
+msgstr "外交"
+
+#: gui/session/top_panel/IconButtons/GameSpeedButton.xml:9
+msgid "Game Speed"
+msgstr "遊戲速度"
+
+#: gui/session/match_settings/MatchSettingsDialog.xml:15
+#: gui/session/top_panel/IconButtons/MatchSettingsDialogButton.js:23
+msgid "Match Settings"
+msgstr "對戰設定"
+
+#: gui/session/top_panel/MenuButton.xml:15
+msgid "Menu"
+msgstr "選單"
+
+#: gui/session/top_panel/PlayerViewControl.js:123
+msgid "Observer"
+msgstr "觀察者"
+
+#: gui/session/top_panel/PlayerViewControl.xml:13
+msgid "Choose player to view"
+msgstr "選擇要觀看的玩家"
+
+#: gui/session/top_panel/PlayerViewControl.xml:17
+msgid "Observer Mode"
+msgstr "觀察者模式"
+
+#: gui/session/trade/BarterButton.js:108
+#, javascript-format
+msgid "Buy %(resource)s"
+msgstr "購買 %(resource)s"
+
+#: gui/session/trade/BarterButton.js:109
+#, javascript-format
+msgid "Sell %(resource)s"
+msgstr "賣出 %(resource)s"
+
+#: gui/session/trade/BarterButton.js:110
+#, javascript-format
+msgctxt "buy action"
+msgid "+%(amount)s"
+msgstr "+%(amount)s"
+
+#: gui/session/trade/BarterButton.js:111
+#, javascript-format
+msgctxt "sell action"
+msgid "-%(amount)s"
+msgstr "-%(amount)s"
+
+#: gui/session/trade/BarterPanel.xml:5
+msgid "Barter"
+msgstr "交換"
+
+#: gui/session/trade/BarterPanel.xml:13
+msgid "Sell:"
+msgstr "賣出："
+
+#: gui/session/trade/BarterPanel.xml:17
+msgid "Buy:"
+msgstr "買入："
+
+#: gui/session/trade/BarterPanel.xml:21
+msgid "No Markets Available"
+msgstr "無可用的市集"
+
+#: gui/session/trade/TradeButton.js:56
+#, javascript-format
+msgctxt "trading good ratio"
+msgid "%(amount)s%%"
+msgstr "%(amount)s%%"
+
+#: gui/session/trade/TradeButtonManager.js:80
+#, javascript-format
+msgid ""
+"Select one type of goods you want to modify by clicking on it, and then use "
+"the arrows of the other types to modify their shares. You can also press "
+"%(hotkey)s while selecting one type of goods to bring its share to 100%%."
+msgstr "在您想要修改的物資上點選以選取，然後使用其他類型的資源的箭頭來調整它們的份額。您也可以在選取其中一種物資時按下 %(hotkey)s 來將其份額提升至 100%%。"
+
+#: gui/session/trade/TradeDialogBarterPanel.js:45
+#, javascript-format
+msgid ""
+"Start by selecting the resource you wish to sell from the upper row. For "
+"each time the lower buttons are pressed, %(quantity)s of the upper resource "
+"will be sold for the displayed quantity of the lower. Press and hold "
+"%(hotkey)s to temporarily multiply the traded amount by %(multiplier)s."
+msgstr "首先在上面那一行中選擇您要出售的資源。每次按下按鈕時，上面的資源將會賣出 %(quantity)s 到較低的資源數。按著 %(hotkey)s 鍵暫時將所有數量以 %(multiplier)s 增加。"
+
+#: gui/session/trade/TradePanel.xml:5
+msgid "Trade"
+msgstr "貿易"
+
+#: gui/session/trade/TradePanel.xml:14
+msgid "Resources:"
+msgstr "資源："
+
+#: gui/session/trade/TraderStatusTextLand.js:15
+#, javascript-format
+msgid "There is %(numberTrading)s land trader trading"
+msgid_plural "There are %(numberTrading)s land traders trading"
+msgstr[0] "有 %(numberTrading)s 個陸地商人正在進行貿易"
+
+#: gui/session/trade/TraderStatusTextLand.js:25
+#, javascript-format
+msgid "%(numberOfLandTraders)s inactive"
+msgid_plural "%(numberOfLandTraders)s inactive"
+msgstr[0] "%(numberOfLandTraders)s 閒置"
+
+#: gui/session/trade/TraderStatusTextLand.js:30
+#, javascript-format
+msgid "%(numberOfLandTraders)s land trader inactive"
+msgid_plural "%(numberOfLandTraders)s land traders inactive"
+msgstr[0] "%(numberOfLandTraders)s 個陸地商人閒置"
+
+#: gui/session/trade/TraderStatusTextLand.js:40
+#, javascript-format
+msgid "%(numberGarrisoned)s garrisoned on a trading merchant ship"
+msgid_plural "%(numberGarrisoned)s garrisoned on a trading merchant ship"
+msgstr[0] "商船共有 %(numberGarrisoned)s 個守衛"
+
+#: gui/session/trade/TraderStatusTextLand.js:45
+#, javascript-format
+msgid ""
+"There is %(numberGarrisoned)s land trader garrisoned on a trading merchant "
+"ship"
+msgid_plural ""
+"There are %(numberGarrisoned)s land traders garrisoned on a trading merchant"
+" ship"
+msgstr[0] "有 %(numberGarrisoned)s 個陸地商人駐守於商船"
+
+#: gui/session/trade/TraderStatusTextLand.js:65
+#, javascript-format
+msgid "%(openingTradingString)s, and %(garrisonedString)s."
+msgstr "%(openingTradingString)s，及 %(garrisonedString)s。"
+
+#: gui/session/trade/TraderStatusTextLand.js:66
+#, javascript-format
+msgid ""
+"%(openingTradingString)s, %(garrisonedString)s, and %(inactiveString)s."
+msgstr "%(openingTradingString)s，%(garrisonedString)s，及 %(inactiveString)s。"
+
+#: gui/session/trade/TraderStatusTextLand.js:69
+#: gui/session/trade/TraderStatusTextShip.js:47
+#, javascript-format
+msgid "%(openingTradingString)s."
+msgstr "%(openingTradingString)s。"
+
+#: gui/session/trade/TraderStatusTextLand.js:70
+#: gui/session/trade/TraderStatusTextShip.js:46
+#, javascript-format
+msgid "%(openingTradingString)s, and %(inactiveString)s."
+msgstr "%(openingTradingString)s，及 %(inactiveString)s。"
+
+#: gui/session/trade/TraderStatusTextLand.js:75
+#, javascript-format
+msgid "%(openingGarrisonedString)s."
+msgstr "%(openingGarrisonedString)s。"
+
+#: gui/session/trade/TraderStatusTextLand.js:76
+#, javascript-format
+msgid "%(openingGarrisonedString)s, and %(inactiveString)s."
+msgstr "%(openingGarrisonedString)s，及 %(inactiveString)s。"
+
+#: gui/session/trade/TraderStatusTextLand.js:79
+#: gui/session/trade/TraderStatusTextShip.js:50
+#, javascript-format
+msgid "There is %(inactiveString)s."
+msgid_plural "There are %(inactiveString)s."
+msgstr[0] "有 %(inactiveString)s。"
+
+#: gui/session/trade/TraderStatusTextLand.js:80
+msgid "There are no land traders."
+msgstr "沒有陸地上的商人。"
+
+#: gui/session/trade/TraderStatusTextShip.js:14
+#, javascript-format
+msgid "There is %(numberTrading)s merchant ship trading"
+msgid_plural "There are %(numberTrading)s merchant ships trading"
+msgstr[0] "有 %(numberTrading)s 艘商船正在貿易"
+
+#: gui/session/trade/TraderStatusTextShip.js:24
+#, javascript-format
+msgid "%(numberOfShipTraders)s inactive"
+msgid_plural "%(numberOfShipTraders)s inactive"
+msgstr[0] "%(numberOfShipTraders)s 閒置"
+
+#: gui/session/trade/TraderStatusTextShip.js:29
+#, javascript-format
+msgid "%(numberOfShipTraders)s merchant ship inactive"
+msgid_plural "%(numberOfShipTraders)s merchant ships inactive"
+msgstr[0] "%(numberOfShipTraders)s 艘商船閒置"
+
+#: gui/session/trade/TraderStatusTextShip.js:51
+msgid "There are no merchant ships."
+msgstr "沒有商船。"
+
+#: gui/session/tutorial_panel.xml:11
+msgid "Ready"
+msgstr "就緒"
+
+#: gui/session/unit_actions.js:624
+msgid ""
+"This is the origin trade market.\n"
+"Right-click to cancel trade route."
+msgstr "這裡是貿易市集的起點。\n右鍵點擊以取消貿易路線。"
+
+#: gui/session/unit_actions.js:683
+msgid "Origin trade market."
+msgstr "貿易市集起點。"
+
+#: gui/session/unit_actions.js:693
+msgid "Destination trade market."
+msgstr "貿易市集目的地。"
+
+#: gui/session/unit_actions.js:700
+msgid "Right-click to set as origin trade market"
+msgstr "右鍵點擊以設為貿易市集起點。"
+
+#: gui/session/unit_actions.js:707 gui/session/unit_actions.js:1272
+msgid "This market is too close to the origin market."
+msgstr "這個市集和起點市集太過靠近。"
+
+#: gui/session/unit_actions.js:711
+msgid "Right-click to set as destination trade market."
+msgstr "右鍵點擊以設為貿易市集目的地。"
+
+#: gui/session/unit_actions.js:778 gui/session/unit_actions.js:1204
+#, javascript-format
+msgid "Current turrets: %(occupied)s/%(capacity)s"
+msgstr "當前塔樓：%(occupied)s/%(capacity)s"
+
+#: gui/session/unit_actions.js:844 gui/session/unit_actions.js:1187
+#, javascript-format
+msgid "Current garrison: %(garrisoned)s/%(capacity)s"
+msgstr "目前駐軍：%(garrisoned)s/%(capacity)s"
+
+#: gui/session/unit_actions.js:1263
+msgid "Right-click to establish a default route for new traders."
+msgstr "右鍵單擊以幫商人設定預設貿易路線。"
+
+#: gui/session/unit_actions.js:1267
+#, javascript-format
+msgid "Expected gain: %(gain)s"
+msgstr "預期收益：%(gain)s"
+
+#: gui/session/unit_actions.js:1401
+msgid "This entity cannot be controlled."
+msgid_plural "These entities cannot be controlled."
+msgstr[0] "無法控制這些實體。"
+
+#: gui/session/unit_actions.js:1447
+msgid "Unload All"
+msgstr "卸載全部"
+
+#: gui/session/unit_actions.js:1448
+msgid "Order all units to leave the selected entities."
+msgstr "命令全部單位離開選取的實體。"
+
+#: gui/session/unit_actions.js:1483
+msgid "Unload Turrets"
+msgstr "卸載塔樓"
+
+#: gui/session/unit_actions.js:1484
+msgid "Order all units to leave the selected turret points."
+msgstr "命令全部單位離開選取的塔樓點。"
+
+#: gui/session/unit_actions.js:1504
+msgid "Self-Destruct"
+msgstr "自毀"
+
+#: gui/session/unit_actions.js:1505
+msgid "Destroy the selected entities."
+msgstr "摧毀選取的實體。"
+
+#: gui/session/unit_actions.js:1507
+#, javascript-format
+msgid "Use %(hotkey)s to avoid the confirmation dialog."
+msgstr "使用 %(hotkey)s 以避免確認對話框。"
+
+#: gui/session/unit_actions.js:1559
+msgid "Abort"
+msgstr "中止"
+
+#: gui/session/unit_actions.js:1560
+msgid "Cancel the current orders for the selected units."
+msgstr "為選取的單位取消當前的命令。"
+
+#: gui/session/unit_actions.js:1581
+msgid "Attack"
+msgstr "攻擊"
+
+#: gui/session/unit_actions.js:1582
+msgid ""
+"Send the selected units on attack move to the specified location after "
+"dropping resources."
+msgstr "在放回資源後，將選取的單位用移動攻擊送達指定的位置。"
+
+#: gui/session/unit_actions.js:1604
+msgid "Garrison"
+msgstr "駐守"
+
+#: gui/session/unit_actions.js:1605
+msgid "Order the selected units to garrison in a structure or another unit."
+msgstr "命令選定的單位駐守至建築或另一個單位內。"
+
+#: gui/session/unit_actions.js:1627
+msgid "Occupy Turret"
+msgstr "佔領塔樓"
+
+#: gui/session/unit_actions.js:1628
+msgid "Order the selected units to occupy a turret point."
+msgstr "命令選取的單位據守塔樓。"
+
+#: gui/session/unit_actions.js:1650
+msgid "Unload"
+msgstr "卸載"
+
+#: gui/session/unit_actions.js:1651
+msgid "Order the selected units to leave their turret points."
+msgstr "命令選取的單位離開他們的塔樓點。"
+
+#: gui/session/unit_actions.js:1671
+msgid "Repair"
+msgstr "修復"
+
+#: gui/session/unit_actions.js:1672
+msgid "Order the selected units to repair a structure, ship, or siege engine."
+msgstr "命令選定的單位修復建築、船隻或攻城器。"
+
+#: gui/session/unit_actions.js:1693
+msgid "Focus on Rally Point"
+msgstr "聚焦在集結點"
+
+#: gui/session/unit_actions.js:1694
+msgid "Center the view on the selected rally point."
+msgstr "將選取的集結點置中於視角。"
+
+#: gui/session/unit_actions.js:1731
+msgid "Back to Work"
+msgstr "回去工作"
+
+#: gui/session/unit_actions.js:1732
+msgid "Order the selected units to resume their work."
+msgstr "命令選取的單位恢復他們的工作。"
+
+#: gui/session/unit_actions.js:1753
+msgid "Guard"
+msgstr "守衛"
+
+#: gui/session/unit_actions.js:1754
+msgid "Order the selected units to guard a structure or unit."
+msgstr "命令選定的單位守衛建築或單位。"
+
+#: gui/session/unit_actions.js:1774
+msgid "Abort Guard"
+msgstr "中止守衛"
+
+#: gui/session/unit_actions.js:1775
+msgid "Order the selected units to stop guarding."
+msgstr "命令選取的單位中止守衛。"
+
+#: gui/session/top_panel/IconButtons/TradeDialogButton.js:31
+#: gui/session/trade/TradeDialog.xml:9 gui/session/unit_actions.js:1795
+msgid "Barter & Trade"
+msgstr "交換與貿易"
+
+#: gui/session/unit_actions.js:1796
+msgid "Open the dialog for managing resource trading and bartering."
+msgstr "開啟對話窗來管理資源買賣與交換。"
+
+#: gui/session/unit_actions.js:1816
+msgid "Patrol"
+msgstr "巡邏"
+
+#: gui/session/unit_actions.js:1817
+msgid ""
+"Order to repeatedly go to a point and come back, attacking all enemies along"
+" the way."
+msgstr "命令重複前往一個點然後返回，攻擊沿途的所有敵人。"
+
+#: gui/session/unit_actions.js:1845
+msgid "Share Dropsite"
+msgstr "共享存放點"
+
+#: gui/session/unit_actions.js:1846
+msgid "Allow allies to use this dropsite, now locked."
+msgstr "允許盟友使用此存放點，現在鎖住了。"
+
+#: gui/session/unit_actions.js:1851
+msgid "Lock Dropsite"
+msgstr "鎖住存放點"
+
+#: gui/session/unit_actions.js:1852
+msgid "Prevent allies from using this dropsite, now shared."
+msgstr "防止盟友使用這個存放點，現在是共享的。"
+
+#: gui/session/unit_actions.js:1887
+msgid "Locked Dropsite"
+msgstr "鎖定的存放點"
+
+#: gui/session/unit_actions.js:1888
+msgid "The use of this dropsite is prohibited."
+msgstr "禁止使用此存放點。"
+
+#: gui/session/unit_actions.js:1894
+msgid "Shared Dropsite"
+msgstr "共享的存放點"
+
+#: gui/session/unit_actions.js:1895
+msgid "Allies are allowed to use this dropsite."
+msgstr "允許盟友使用此存放點。"
+
+#: gui/session/unit_actions.js:1896
+msgid "You are allowed to use this dropsite."
+msgstr "您被允許使用此存放點。"
+
+#: gui/session/unit_actions.js:1915
+msgid "Activate Auto-Queue"
+msgstr "啟用自動佇列"
+
+#: gui/session/unit_actions.js:1916
+msgid "Activate the production auto-queue for the selected structures."
+msgstr "啟用所選建築的產物自動佇列。"
+
+#: gui/session/unit_actions.js:1936
+msgid "Deactivate Auto-Queue"
+msgstr "停用自動佇列"
+
+#: gui/session/unit_actions.js:1937
+msgid "Deactivate the production auto-queue for the selected structures."
+msgstr "停用所選建築的產物自動佇列。"
+
+#: gui/session/unit_actions.js:2002
+msgid "The entity has to be killed before it can be gathered from"
+msgstr "該實體必須被殺死，在您可以從其採集前"
+
+#: gui/session/unit_actions.js:2005
+msgid ""
+"You cannot destroy this entity as you own less than half the capture points"
+msgstr "您無法摧毀此實體，因為您的占領值不到一半"
+
+#: gui/session/unit_actions.js:2008
+msgid "This entity is undeletable"
+msgstr "此實體無法刪除"

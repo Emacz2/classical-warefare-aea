@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1">
+      <mesh>skeletal/new/m_armor_tunic_short.dae</mesh>
+      <props>
+        <prop actor="props/units/weapons/sheath_gladius_e.xml" attachpoint="sheath_01_R"/>
+        <prop actor="props/units/weapons/gladius.xml" attachpoint="weapon_R"/>
+      </props>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="5" name="Helmet Roman">
+      <props>
+        <prop actor="props/units/helmets/rome_helmet_coolus.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Helmet Gallic">
+      <props>
+        <prop actor="props/units/helmets/rome_helmet_gallic.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="3" name="head_hele_b">
+      <props>
+        <prop actor="props/units/heads/new/head_hele_b.xml" attachpoint="head"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="rome_head_veteran">
+      <props>
+        <prop actor="props/units/heads/new/rome_head_veteran.xml" attachpoint="head"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="chainmail_05_01">
+      <textures>
+        <texture file="skeletal/rome/chainmail_05_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_05_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_05_02">
+      <textures>
+        <texture file="skeletal/rome/chainmail_05_02.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_05_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_06_01">
+      <textures>
+        <texture file="skeletal/rome/chainmail_06_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_06_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_06_02">
+      <textures>
+        <texture file="skeletal/rome/chainmail_06_02.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_06_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_07_01">
+      <textures>
+        <texture file="skeletal/rome/chainmail_07_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_07_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="chainmail_07_padded_01">
+      <textures>
+        <texture file="skeletal/rome/chainmail_07_padded_01.png" name="baseTex"/>
+        <texture file="skeletal/rome/chainmail_07_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="scutum_rome_marian_01">
+      <props>
+        <prop actor="props/units/shields/scutum_rome_marian_01.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="scutum_rome_marian_02">
+      <props>
+        <prop actor="props/units/shields/scutum_rome_marian_02.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="scutum_rome_marian_03">
+      <props>
+        <prop actor="props/units/shields/scutum_rome_marian_03.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/base_swordsman_shield_relax_rome.xml"/>
+    <variant file="biped/formations/testudo_top.xml"/>
+    <variant file="biped/formations/testudo_front.xml"/>
+    <variant file="biped/formations/testudo_front_left.xml"/>
+    <variant file="biped/formations/testudo_front_right.xml"/>
+    <variant file="biped/formations/testudo_left.xml"/>
+    <variant file="biped/formations/testudo_right.xml"/>
+    <variant file="biped/carry_food.xml"/>
+    <variant file="biped/carry_meat.xml"/>
+    <variant file="biped/carry_wood.xml"/>
+    <variant file="biped/carry_stone.xml"/>
+    <variant file="biped/carry_metal.xml"/>
+    <variant file="biped/approach_tree.xml"/>
+    <variant file="biped/approach_grain.xml"/>
+    <variant file="biped/approach_fruit.xml"/>
+    <variant file="biped/approach_meat.xml"/>
+    <variant file="biped/approach_rock.xml"/>
+    <variant file="biped/approach_ore.xml"/>
+    <variant file="biped/approach_ruins.xml"/>
+    <variant file="biped/approach_praise.xml"/>
+  </group>
+  <group>
+    <variant frequency="1" name="Idle"/>
+    <variant file="biped/attack_capture.xml"/>
+    <variant file="biped/attack_slaughter.xml"/>
+    <variant file="biped/death_infantry.xml"/>
+    <variant file="biped/gather_tree.xml"/>
+    <variant file="biped/gather_grain.xml"/>
+    <variant file="biped/gather_fruit.xml"/>
+    <variant file="biped/gather_meat.xml"/>
+    <variant file="biped/gather_rock.xml"/>
+    <variant file="biped/gather_ore.xml"/>
+    <variant file="biped/gather_ruins.xml"/>
+    <variant file="biped/gather_praise.xml"/>
+    <variant file="biped/build.xml"/>
+    <variant file="biped/build_farm.xml"/>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

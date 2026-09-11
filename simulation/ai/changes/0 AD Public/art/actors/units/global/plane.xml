@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant>
+      <mesh>structural/aeroplane.dae</mesh>
+      <props>
+        <prop actor="props/units/weapons/rock_flaming.xml" attachpoint="projectile"/>
+      </props>
+      <textures>
+        <texture file="structural/mustang.png" name="baseTex"/>
+        <texture name="specTex" file="null_white.dds"/>
+        <texture file="default_norm.png" name="normTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

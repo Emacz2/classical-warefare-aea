@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object
+	name="savedGameLabel"
+	type="text"
+	style="ModernLabelText"
+	tooltip_style="onscreenToolTip"
+	hidden="true">
+
+	<translatableAttribute id="caption">Saved game</translatableAttribute>
+
+	<translatableAttribute id="tooltip">The controller loaded a saved game.</translatableAttribute>
+</object>

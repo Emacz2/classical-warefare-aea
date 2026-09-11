@@ -1,0 +1,102 @@
+{
+	"Description": {
+		"Title": "Rhine Valley (Fall)",
+		"Description": "The first leaves have fallen. The landscape is a dazzling dash of colors irrevocably intertwined. The native beech and oak trees of this temperate zone display a multi-colored foliage while animals try to prepare for the approaching winter."
+	},
+	"Environment": {
+		"SunColor": { "r": 1.032, "g": 0.99, "b": 0.866 },
+		"SunElevation": 0.446,
+		"SunRotation": -0.488,
+		"AmbientColor": { "r": 0.364706, "g": 0.376471, "b": 0.419608 },
+		"Water": {
+			"WaterBody": {
+				"Color": { "r": 0.419608, "g": 0.364706, "b": 0.313726 },
+				"Tint": { "r": 0.501961, "g": 0.501961, "b": 0.247059 },
+				"Murkiness": 0.97,
+				"Waviness": 5
+			}
+		},
+		"Fog": {
+			"FogThickness": 0.0,
+			"FogFactor": 0.0024,
+			"FogColor": { "r": 0.894118, "g": 0.894118, "b": 0.894118 }
+		},
+		"Postproc": {
+			"PostprocEffect": "hdr",
+			"Saturation": 0.95,
+			"Contrast": 1.05,
+			"Bloom": 0.16
+		}
+	},
+	"Terrains": {
+		"mainTerrain": [
+			"autumn_grass_02"
+		],
+		"forestFloor1": "autumn_forestfloor_01",
+		"forestFloor2": "autumn_forestfloor_02",
+		"cliff": [
+			"temperate_cliff_01",
+			"temperate_cliff_02"
+		],
+		"tier1Terrain": [
+			"autumn_grass_dirt_01"
+		],
+		"tier2Terrain": [
+			"autumn_grass_01"
+		],
+		"tier3Terrain": [
+			"autumn_grass_mud_01"
+		],
+		"tier4Terrain": [
+			"autumn_grass_04"
+		],
+		"hill": [
+			"temperate_rocks_dirt_01"
+		],
+		"dirt": [
+			"autumn_grass_dirt_01",
+			"autumn_grass_dirt_02",
+			"autumn_grass_dirt_03",
+			"autumn_grass_dirt_04"
+		],
+		"road": "temperate_paving_03",
+		"roadWild": "temperate_rocks_dirt_01",
+		"shoreBlend": "autumn_grass_dirt_01",
+		"shore": "autumn_grass_mud_01",
+		"water": "autumn_mud_01"
+	},
+	"Gaia": {
+		"tree1": "gaia/tree/oak_holly_autumn",
+        "tree2": "gaia/tree/oak_hungarian_autumn",
+        "tree3": "gaia/tree/poplar_dead",
+        "tree4": "gaia/tree/oak_holly_autumn",
+        "tree5": "gaia/tree/maple_autumn",
+		"fruitBush": "gaia/fruit/berry_01",
+		"chicken": "gaia/fauna_chicken",
+		"fish": "gaia/fish/tuna",
+		"mainHuntableAnimal": "gaia/fauna_deer",
+		"secondaryHuntableAnimal": "gaia/fauna_sheep",
+		"stoneLarge": "gaia/rock/temperate_large",
+		"stoneSmall": "gaia/rock/temperate_small",
+		"metalLarge": "gaia/ore/temperate_01",
+		"metalSmall": "gaia/ore/temperate_small_01"
+	},
+	"Decoratives": {
+		"grass": "actor|props/flora/grass_soft_dry_small.xml",
+		"grassShort": "actor|props/flora/grass_temp_field_brown.xml",
+		"reeds": "actor|props/flora/cattails.xml",
+		"lillies": "actor|props/flora/water_lillies.xml",
+		"rockLarge": "actor|geology/stone_granite_med.xml",
+		"rockMedium": "actor|geology/stone_granite_small.xml",
+		"bushMedium": "actor|props/flora/bush_temperate_autumn",
+		"bushSmall": "actor|props/flora/bush_medit_sm_dry.xml",
+		"tree": "actor|flora/trees/elm_dead.xml"
+	},
+	"ResourceCounts": {
+		"trees": {
+			"min": 1000,
+			"max": 3000,
+			"forestProbability": 0.7
+		}
+	}
+}

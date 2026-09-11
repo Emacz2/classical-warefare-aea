@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="Standing Stone A">
+      <mesh>props/standingstone_a.dae</mesh>
+    </variant>
+    <variant frequency="1" name="Standing Stone B">
+      <mesh>props/standingstone_b.dae</mesh>
+    </variant>
+    <variant frequency="1" name="Standing Stone C">
+      <mesh>props/standingstone_c.dae</mesh>
+    </variant>
+    <variant frequency="1" name="Standing Stone D">
+      <mesh>props/standingstone_d.dae</mesh>
+    </variant>
+    <variant frequency="1" name="Standing Stone E">
+      <mesh>props/standingstone_e.dae</mesh>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="100" name="texture">
+      <textures>
+        <texture file="structural/celt_temple.png" name="baseTex"/>
+        <texture file="structural/celt_temple_norm.png" name="normTex"/>
+        <texture file="structural/celt_temple_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

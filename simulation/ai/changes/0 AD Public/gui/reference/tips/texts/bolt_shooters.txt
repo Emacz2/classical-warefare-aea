@@ -1,0 +1,5 @@
+BOLT SHOOTERS
+Long-ranged Siege Engines effective against units.
+Expensive and slow, but deal the most Pierce damage in the game.
+Can be destroyed easily, so always keep some guards around them.
+Use them to shatter tight infantry formations and to defend terrain choke points.

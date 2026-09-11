@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant name="thracian-04">
+      <mesh>props/helmet/hele_thracian_d.dae</mesh>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Bronze">
+      <textures>
+        <texture file="props/helmet/hele_thracian_04_bronze.png" name="baseTex"/>
+        <texture file="props/helmet/hele_thracian_04_norm.png" name="normTex"/>
+        <texture file="props/helmet/hele_thracian_04_bronze_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="No - Mask">
+      <props>
+        <prop actor="" attachpoint="root"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Masked">
+      <props>
+        <prop actor="props/units/helmets/props/hele_thracian_mask_b2.xml" attachpoint="root"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Crested - 01">
+      <props>
+        <prop actor="props/units/helmets/props/hele_crest_thracian_bronze_02_small.xml" attachpoint="crest"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Crested - 02">
+      <props>
+        <prop actor="props/units/helmets/props/hele_crest_thracian_bronze_02.xml" attachpoint="crest"/>
+      </props>
+    </variant>
+  </group>
+  <material>player_trans_parallax_spec.xml</material>
+</actor>

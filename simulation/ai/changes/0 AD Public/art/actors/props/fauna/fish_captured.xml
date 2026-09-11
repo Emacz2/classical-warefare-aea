@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="100" name="Mesh">
+      <mesh>skeletal/fish_single.dae</mesh>
+      <animations>
+        <animation frequency="1" file="others/fish_idle_captured.dae" name="idle" id="idle1" speed="130"/>
+        <animation frequency="1" file="others/fish_idle_captured.dae" name="idle" id="idle2" speed="115"/>
+        <animation frequency="1" file="others/fish_idle_captured.dae" name="idle" id="idle3" speed="145"/>
+        <animation frequency="1" file="others/fish_idle_captured.dae" name="walk" id="walk1" speed="8"/>
+        <animation frequency="1" file="others/fish_idle_captured.dae" name="walk" id="walk2" speed="9"/>
+        <animation frequency="1" file="others/fish_idle_captured.dae" name="walk" id="walk3" speed="10"/>
+      </animations>
+      <textures>
+        <texture file="skeletal/animal_fish_generic.png" name="baseTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

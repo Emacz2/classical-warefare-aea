@@ -1,0 +1,12 @@
+{
+	"genericName": "Cimbrian Caravans",
+	"autoResearch": true,
+	"description": "Women and children accompanied the Germanic armies on long-range migrations.",
+	"requirements": { "civ": "germ" },
+	"icon": "feminine_mystique.png",
+	"tooltip": "Civilians +0.5 movement speed.",
+	"modifications": [
+		{ "value": "UnitMotion/WalkSpeed", "add": 0.5 }
+	],
+	"affects": [ "Civilian" ]
+}

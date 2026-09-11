@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <group>
+    <variant frequency="100" name="Base">
+      <mesh>props/weapons/crossbow/weap_han_liannu.dae</mesh>
+      <textures>
+        <texture file="structural/rome_ballista.png" name="baseTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+      <props>
+        <prop actor="props/units/weapons/arrow_front.xml" attachpoint="projectile"/>
+        <prop actor="props/units/weapons/arrow_back.xml" attachpoint="loaded-projectile"/>
+      </props>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

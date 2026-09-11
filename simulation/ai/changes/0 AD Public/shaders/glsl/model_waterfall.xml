@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<program type="glsl">
+
+	<vertex file="glsl/model_waterfall.vs">
+		<stream name="pos" attribute="a_vertex"/>
+		<stream name="normal" attribute="a_normal"/>
+		<stream name="uv0" attribute="a_uv0"/>
+		<stream name="uv1" attribute="a_uv1"/>
+	</vertex>
+
+	<fragment file="glsl/model_waterfall.fs"/>
+
+</program>

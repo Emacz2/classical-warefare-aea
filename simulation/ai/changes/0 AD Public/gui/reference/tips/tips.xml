@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objects>
+	<script directory="gui/common/"/>
+	<script directory="gui/reference/tips/"/>
+	<script directory="gui/reference/common/Buttons/"/>
+    <object type="image" sprite="BackgroundTranslucent"/>
+	<object type="image" size="50%-488 50%-255 50%+488 50%+255" sprite="ModernDialog">
+		<object style="TitleText" type="text" size="50%-128 -18 50%+128 14">
+			<translatableAttribute id="caption">Tips and Tricks</translatableAttribute>
+		</object>
+		<object size="50%-452 50%-215 50%+452 50%+191">
+			<include file="gui/reference/tips/sections/TipDisplay.xml"/>
+		</object>
+		<include file="gui/reference/common/Buttons/CloseButton.xml"/>
+	</object>
+</objects>

@@ -1,0 +1,11 @@
+{
+	"settings" : {
+		"Name" : "Hyrcanian Shores",
+		"Script" : "hyrcanian_shores.js",
+		"Description" : "Each player starts in a coastal area between forested hills and the Sea. Inspired by the southern regions of the Caspian Sea known in Antiquity as Hyrcania.",
+		"SupportedBiomes": "generic",
+		"Keywords": ["multiplayer"],
+		"Preview" : "hyrcanian_shores.png",
+		"CircularMap" : true
+	}
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="spec_champ|template_unit_champion_infantry_archer">
+  <Attack>
+    <Ranged>
+	  <AttackName>Bow</AttackName>
+      <Damage>
+        <Pierce>15.5</Pierce>
+      </Damage>
+      <MaxRange>45</MaxRange>
+      <PrepareTime>300</PrepareTime>
+      <RepeatTime>1750</RepeatTime>
+      <Projectile>
+        <Speed>60</Speed>
+        <Spread>2.2</Spread>
+        <Gravity>50</Gravity>
+        <FriendlyFire>false</FriendlyFire>
+        <LaunchPoint y="3"/>
+      </Projectile>
+      <PreferredClasses datatype="tokens">Human</PreferredClasses>
+      <ApplyStatus>
+        <Poisoned>
+          <Interval>600</Interval>
+          <Damage>
+            <Poison>2</Poison>
+          </Damage>
+          <Stackability>Stack</Stackability>
+          <Duration>3600</Duration>
+        </Poisoned>
+      </ApplyStatus>
+    </Ranged>
+  </Attack>
+  <Cost>
+    <Resources>
+      <food>0</food>
+      <wood>100</wood>
+      <metal>90</metal>
+    </Resources>
+  </Cost>
+  <Health>
+    <Max>90</Max>
+  </Health>
+  <Identity>
+    <Civ>maur</Civ>
+    <Phenotype>female</Phenotype>
+    <GenericName>Maiden Guard Archer</GenericName>
+    <SpecificName>Visha Kanya</SpecificName>
+	<Tooltip>Strong versus heavily armored units.</Tooltip>
+    <Icon>units/maur/champion_maiden_archer.png</Icon>
+  </Identity>
+  <Resistance>
+    <Entity>
+      <Damage>
+        <Hack op="add">-2</Hack>
+        <Pierce op="add">1</Pierce>
+      </Damage>
+    </Entity>
+  </Resistance>
+  <VisualActor>
+    <Actor>units/mauryas/infantry_archer_c.xml</Actor>
+  </VisualActor>
+  <UnitMotion>
+    <WalkSpeed op="add">2.0</WalkSpeed>
+    <Acceleration op="add">15.0</Acceleration>
+  </UnitMotion>
+</Entity>

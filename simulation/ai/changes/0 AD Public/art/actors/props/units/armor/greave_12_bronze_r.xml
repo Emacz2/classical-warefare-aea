@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <group>
+    <variant>
+      <mesh>props/armor/greave_10_r.dae</mesh>
+      <textures>
+        <texture file="props/armor/greave_12_bronze.png" name="baseTex"/>
+        <texture file="props/armor/greave_12_norm.png" name="normTex"/>
+        <texture file="props/armor/greave_12_bronze_spec.png" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

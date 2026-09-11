@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant name="Temple of baal">
+      <mesh>structural/kart_wonder.dae</mesh>
+      <props>
+        <prop actor="props/structures/carthaginians/wonder_decals.xml" attachpoint="root"/>
+        <prop actor="props/structures/carthaginians/wonder_dirt.xml" attachpoint="root"/>
+        <prop actor="particle/smoke_light.xml" attachpoint="smoke"/>
+        <prop actor="flora/trees/palm_date_new.xml" attachpoint="palm_1"/>
+        <prop actor="flora/trees/palm_date_new_2.xml" attachpoint="palm_2"/>
+        <prop actor="flora/trees/palm_date_new_3.xml" attachpoint="palm_3"/>
+        <prop actor="flora/trees/palm_date_new.xml" attachpoint="palm_4"/>
+        <prop actor="flora/trees/palm_date_new_3.xml" attachpoint="palm_5"/>
+        <prop actor="flora/trees/palm_date_new_4.xml" attachpoint="palm_6"/>
+        <prop actor="flora/trees/palm_date_new_3.xml" attachpoint="palm_7"/>
+        <prop actor="flora/trees/palm_date_new.xml" attachpoint="palm_8"/>
+        <prop actor="flora/trees/palm_date_new.xml" attachpoint="palm_9"/>
+        <prop actor="flora/trees/palm_date_new_3.xml" attachpoint="palm_10"/>
+        <prop actor="flora/trees/palm_date_new_2.xml" attachpoint="palm_11"/>
+        <prop actor="flora/trees/palm_date_new_4.xml" attachpoint="palm_12"/>
+        <prop actor="flora/trees/palm_date_new_3.xml" attachpoint="palm_13"/>
+        <prop actor="flora/trees/palm_date_new.xml" attachpoint="palm_14"/>
+        <prop actor="flora/trees/palm_date_new_3.xml" attachpoint="palm_15"/>
+        <prop actor="flora/trees/palm_date_new_2.xml" attachpoint="palm_16"/>
+        <prop actor="flora/trees/palm_date_new_3.xml" attachpoint="palm_17"/>
+      </props>
+      <textures>
+        <texture file="structural/kart_struct.dds" name="baseTex"/>
+        <texture file="structural/kart_struct_norm.png" name="normTex"/>
+        <texture file="structural/kart_struct_spec.png" name="specTex"/>
+        <texture file="structural/ao/kart_wonder.png" name="aoTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="ungarrisoned"/>
+    <variant name="garrisoned">
+      <props>
+        <prop actor="props/special/common/garrison_flag_kart.xml" attachpoint="garrisoned" selectable="false"/>
+        <prop actor="props/special/common/garrison_flag_kart.xml" attachpoint="garrisoned_1" selectable="false"/>
+        <prop actor="props/special/common/garrison_flag_kart.xml" attachpoint="garrisoned_2" selectable="false"/>
+        <prop actor="props/special/common/garrison_flag_kart.xml" attachpoint="garrisoned_3" selectable="false"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant name="alive" frequency="1"/>
+    <variant file="structures/cart/light_damage.xml"/>
+    <variant file="structures/cart/medium_damage.xml"/>
+    <variant file="structures/cart/heavy_damage.xml"/>
+    <variant file="structures/cart/destruction_large.xml">
+      <props>
+        <prop actor="props/structures/carthaginians/wonder_decals.xml" attachpoint="root"/>
+      </props>
+    </variant>
+  </group>
+  <material>player_trans_ao_parallax_spec.xml</material>
+</actor>

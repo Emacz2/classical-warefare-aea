@@ -1,0 +1,3 @@
+EMBASSIES AND MERCENARY CAMPS
+Special structures allowing you to hire Mercenaries for your army.
+Mercenaries cannot gather resources, but only cost metal, are trained quickly, and start at Advanced rank.

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_unit_support_civilian">
+  <Identity>
+    <Civ>skirm</Civ>
+    <Icon>units/athen/support_civilian.png</Icon>
+  </Identity>
+  <SkirmishReplacer>
+    <general>units/{civ}/support_civilian</general>
+  </SkirmishReplacer>
+  <VisualActor>
+    <Actor>units/athenians/citizen_{phenotype}.xml</Actor>
+  </VisualActor>
+</Entity>

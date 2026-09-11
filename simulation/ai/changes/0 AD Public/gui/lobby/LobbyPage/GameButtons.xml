@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object>
+	<object name="joinButton" size="0 100%-104 100% 100%-81" type="button" style="ModernButtonRed"/>
+
+	<object name="hostButton" size="0 100%-79 100% 100%-54" type="button" style="ModernButtonRed">
+		<translatableAttribute id="caption">Host New Game</translatableAttribute>
+	</object>
+
+	<object name="hostSavedGameButton" size="0 100%-52 100% 100%-27" type="button" style="ModernButtonRed">
+		<translatableAttribute id="caption">Host Saved Game</translatableAttribute>
+	</object>
+
+	<object name="leaveButton" size="0 100%-25 100% 100%" type="button" style="ModernButtonRed"/>
+</object>

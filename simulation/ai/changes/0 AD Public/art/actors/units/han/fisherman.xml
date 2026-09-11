@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant>
+      <mesh>skeletal/new/m_tunic_long.dae</mesh>
+      <props>
+        <prop actor="props/units/heads/head_china.xml" attachpoint="head"/>
+        <prop actor="props/units/row.xml" attachpoint="weapon_L"/>
+        <prop actor="props/units/helmets/han_ricehat.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant name="Tunic-01">
+      <textures>
+        <texture file="skeletal/han/tunic_01_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant name="Tunic-02">
+      <textures>
+        <texture file="skeletal/han/tunic_01_02.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant name="Tunic-03">
+      <textures>
+        <texture file="skeletal/han/tunic_01_03.png" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/fisher/base_han.xml"/>
+    <variant file="biped/fisher/carry_han.xml">
+      <props>
+        <prop actor="props/units/row.xml" attachpoint="weapon_L"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Idle"/>
+    <variant file="biped/fisher/gather_fish.xml"/>
+    <variant file="biped/fisher/walk.xml">
+      <props>
+        <prop actor="props/units/row.xml" attachpoint="weapon_L"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

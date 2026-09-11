@@ -1,84 +1,59 @@
-EXPERT BENCHMARKS — IT14.92
+EXPERT BENCHMARKS — IT14.93
 
-PRIMARY RULE
-Forecast -> desired workforce -> resource access/infrastructure -> worker orders.
-Permanent metadata describes long-term ownership; ACTUAL gather orders describe current
-economic work. No fallback subsystem should be allowed to contradict the forecast.
+PRIMARY GOAL
+Repair the IT14.92 opening Storehouse / live-cutting-front regression without changing
+systems that were not implicated by the replay.
 
 FROZEN / KEEP
-- Preserve IT14.90 future-farmer crews: normally 3-4 future farmers build the Field and stay.
+- Preserve IT14.92 forecast authority and actual-work resource balancing.
+- Preserve IT14.90 3-4 future-farmer Field crews.
+- Preserve IT14.91 natural-food > Field behavior.
 - Preserve IT14.90 bounded attack-move and CC capture finish.
-- Preserve IT14.91 natural-food > Field and near-border natural-food expansion.
-- Preserve IT14.88 healer/no-bolt/Iphicratean behavior and IT14.89 Scythian Police gate.
-- attackManager.js and attackPlan.js must remain unchanged from IT14.91.
+- Preserve healer/no-bolt/Iphicratean/Scythian Police behavior.
+- attackManager.js and attackPlan.js remain unchanged.
 
-1) SCREENSHOT RESOURCE-MISMATCH REFERENCE TEST
-IT14.91 failure around ~13:35:
-  ~190 food / 45 wood / 3727 stone / 3325 metal
-  forecast says wood critical, stone/metal surplus
-  many civilians physically mine stone/metal while metadata still says food_owned.
-IT14.92 targets:
-- [EXPERT-FORECAST] must continue to identify wood as critical/short.
-- Within a few forecast cycles, physically mining surplus workers should peel to wood.
-- Look for: [EXPERT-FORECAST] peel ... stone->wood or metal->wood actual-over-metadata=1.
-- Stone/metal gatherer counts should fall sharply instead of continuing toward 4k+ banks.
-- Do not permanently convert future farmers into lumberjacks merely because they help a
-  critical wood shortage temporarily.
+1) OPENING STOREHOUSE REFERENCE TEST
+Reference: 2026-09-11 Eurasian Steppe screenshot/replay.
+IT14.92 built a small near-CC Storehouse, then almost immediately built a better second
+Storehouse while workers were already spreading across unrelated trees.
 
-2) OPENING NON-REGRESSION
-- Opening food civilians go to natural food/Farmstead, not stone/metal because an order
-  briefly failed.
-- Opening wood citizen-soldiers/civilians stay on wood unless the existing proven opening
-  rules explicitly move them.
-- The forecast may diagnose shortage at t=0 but must not destroy the scripted opening.
+IT14.93 targets:
+- Expect one early line:
+    [EXPERT-WOOD-OPEN] selected wood=... approach=... avgDrop=... candidates=...
+- The first Storehouse should normally serve the largest sustainable legal opening forest,
+  even when it requires a noticeably longer one-time builder walk from the CC.
+- A 300-500 wood clump should not beat a 1500+ wood forest merely because it is closer.
+- Do not queue Storehouse #2 immediately after #1 completes.
+- Storehouse #2 is blocked for the 45-second establishment grace period, then ordinary
+  economic-value rules resume.
 
-3) FIELD / FUTURE-FARMER RECOVERY
-- After the ~20-civilian wood tranche, new civilians remain the normal permanent farm crew.
-- 3-4 future farmers build each new Field and stay farming.
-- If CC civilian production has already ended and future farmers are temporarily working
-  elsewhere, a wanted Field must reclaim 3-4 eligible post-opening future farmers rather
-  than wait forever for nonexistent "new civilians".
-- No 15-20 worker Field swarm.
+2) ERROR-SPAM HARD PASS/FAIL
+- ZERO occurrences of:
+    woodsite.averageDropDistance must be a finite number
+- ZERO repeated exceptions from petraApiAdapter finite() caused by woodsite metrics.
+- [EXPERT-IT14.93] diagnostics should continue throughout the replay, proving the Expert
+  controller is not aborting each update.
 
-4) WOOD CUTTING-FRONT / SECOND STOREHOUSE TEST
-Reference visual failure: workers left an economical blue forest edge and walked across
-base to a red forest even though another Storehouse could have advanced along blue.
-IT14.92 targets:
-- The current district follows live targeted trees, not just the old Storehouse radius.
-- If >=8 committed workers have >=450 practical wood and average haul >=14m, strongly
-  consider advancing another Storehouse on that SAME cutting front.
-- Do not clear all old WORKSITE_ID assignments merely because trees receded beyond 30/52m.
-- Distant migration should happen only when the live district is genuinely exhausted,
-  stalled, unsafe, or no longer economical.
-- Keep IT14.87 emergency release intact.
+3) OPENING WOOD COHERENCE
+- Opening citizen soldiers build the selected Storehouse and chop the forest it services.
+- Newly assigned wood workers should prefer that established district/cutting front.
+- Do not scatter workers across global trees while a healthy serviced opening forest exists.
+- The 14.92 live cutting-front logic remains available later as the forest recedes.
 
-5) STOREHOUSE INTENT TEST
-- Mixed/mineral Storehouse with workers=0 must be rejected unless a forecast-critical
-  resource makes it a deliberate prebuild.
-- Completing a mixed/stone/metal Storehouse must NOT convert its builders into woodcutters.
-- Expect: [EXPERT-SERVICE] completed storehouse preserves builders resource=mixed|stone|metal.
-- A wood Storehouse may still commit its wood builders normally.
+4) ECONOMY NON-REGRESSION
+- Forecast remains the cross-resource authority after the protected opening.
+- Surplus stone/metal workers can still peel toward actual shortages.
+- Future farmers remain reclaimable for new Fields and stay on those Fields after building.
+- Natural food still preempts Fields when economically accessible.
 
-6) FOUR-RESOURCE FLOAT CONTROL
-- If bank + current income cannot cover projected spending, that resource is liquid-short
-  even if plenty of raw stock exists nearby.
-- If a bank itself covers projected spending comfortably, zero current gather rate alone
-  must not create a crisis.
-- 3k+ stone/metal with no imminent spending should become donors, not continue absorbing
-  20-30 workers while food/wood are short.
-- Fallback work should never choose a forecast-surplus resource while a legal short/critical
-  resource exists.
-- If all resources are already comfortably covered, do not churn workers just to equalize
-  giant floats; spending/production should consume the banks.
+5) STOREHOUSE LATER-GAME NON-REGRESSION
+- The 45-second grace applies only after the first Storehouse completes.
+- Later second/third Storehouses are still allowed where measured haul improvement and
+  remaining resource mass justify them.
+- Advancing a Storehouse along a live cutting front remains legal after the grace period.
+- IT14.87 emergency release remains available for a genuinely dead/stalled wood district.
 
-7) NATURAL FOOD > FARMING
-- Safe worthwhile natural food just outside territory still preempts the next Field.
-- Farmstead must place legally on our side of the border and service that patch.
-- Do not regress the separate natural-food Farmstead vs permanent farm-hub caps.
-
-8) COMBAT FREEZE / OBSERVE ONLY
-- Do not attribute new attack behavior to IT14.92: attackManager.js and attackPlan.js are unchanged.
-- [EXPERT-ATTACK-MOVE] remains bounded.
-- [EXPERT-CAPTURE-FINISH] remains available.
-- Long zero-pop cleanup remains a WATCH item for a later isolated combat patch if economy
-  fixes do not materially shorten games.
+6) COMBAT OBSERVE ONLY
+- No combat code changed in IT14.93.
+- Do not attribute attack timing/movement differences to this patch unless they are an
+  indirect consequence of a healthier economy.

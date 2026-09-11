@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant>
+      <mesh>skeletal/new/m_armor_tunic_short.dae</mesh>
+      <props>
+        <prop actor="props/units/heads/new/head_iber_su1.xml" attachpoint="head"/>
+        <prop actor="props/units/weapons/jav_ammo.xml" attachpoint="ammo"/>
+        <prop actor="props/units/shields/iber_round_large_01_all.xml" attachpoint="shield"/>
+        <prop actor="props/units/capes/rider/cape_med_player.xml" attachpoint="root"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Iberian-Helmet-Chalidean-Basic">
+      <props>
+        <prop actor="props/units/helmets/hele_chalcidean_b6.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Iberian-Helmet-Chalidean-Advanced">
+      <props>
+        <prop actor="props/units/helmets/iber_chalcidean_a2.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Iberian-Helmet-Montefortino-01">
+      <props>
+        <prop actor="props/units/helmets/iber_helmet_montefortino_01.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Iber-Scale-01-01">
+      <textures>
+        <texture file="skeletal/iber/scale_01_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="Iber-Scale-01-02">
+      <textures>
+        <texture file="skeletal/iber/scale_01_02.png" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/rider/cavalry/base_javelin_fast.xml" frequency="1" name="Javelinist-Fast"/>
+    <variant file="biped/rider/cavalry/attack_ranged_javelin.xml" name="attack_ranged">
+      <props>
+        <prop actor="props/units/weapons/jav_projectile_flame.xml" attachpoint="projectile"/>
+      </props>
+    </variant>
+    <variant file="biped/rider/attack_slaughter_shield_iber.xml"/>
+    <variant file="biped/rider/death_ranged.xml"/>
+    <variant file="biped/gather_meat.xml"/>
+  </group>
+  <group>
+    <variant>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

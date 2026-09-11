@@ -1,0 +1,1062 @@
+# Translation template for 0 A.D. — Empires Ascendant.
+# Copyright (C) 2026 Wildfire Games
+# This file is distributed under the same license as the 0 A.D. — Empires Ascendant
+# project.
+# Translators:
+# Aziz Rahmad, 2014-2015,2021
+# Dabiq 1441, 2021
+# Eggar Tirtayasa, 2014
+# Muhammad Furqon Abrori, 2016
+# Joshua Randiny, 2015-2016
+# nurhakam, 2023
+# Samuel, 2016
+# Ulzeta Ulzeta, 2020
+msgid ""
+msgstr ""
+"Project-Id-Version: 0 A.D.\n"
+"POT-Creation-Date: 2026-01-16 01:16+0000\n"
+"PO-Revision-Date: 2014-06-19 17:53+0000\n"
+"Last-Translator: nurhakam, 2023\n"
+"Language-Team: Indonesian (http://app.transifex.com/wildfire-games/0ad/language/id/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: id\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: simulation/ai/petra/chatHelper.js:5
+#, javascript-format
+msgid ""
+"I am starting a massive military campaign against %(_player_)s, come and "
+"join me."
+msgstr "Aku memulai operasi militer besar-besaran melawan %(_player_)s, ayo ikut aku."
+
+#: simulation/ai/petra/chatHelper.js:6
+#, javascript-format
+msgid ""
+"I have set up a huge army to crush %(_player_)s. Join me and you will have "
+"your share of the loot."
+msgstr "Aku telah membuat pasukan besar untuk menghancurkan %(_player_)s. Bergabunglah denganku, maka kau akan mendapat bagian dari rampasannya."
+
+#: simulation/ai/petra/chatHelper.js:7
+#, javascript-format
+msgid ""
+"I am launching an unprecedented attack against %(_player_)s. Bring your "
+"armies and we may soon win this war."
+msgstr ""
+
+#: simulation/ai/petra/chatHelper.js:10
+#, javascript-format
+msgid "I am launching an attack against %(_player_)s."
+msgstr "Aku meluncurkan serangan kepada %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:11
+#, javascript-format
+msgid "I have just sent an army against %(_player_)s."
+msgstr "Aku baru saja mengirim pasukan kepada %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:12
+#, javascript-format
+msgid "I am sending an army against %(_player_)s."
+msgstr ""
+
+#: simulation/ai/petra/chatHelper.js:18
+#, javascript-format
+msgid "Let me regroup my army and I will then join you against %(_player_)s."
+msgstr "Aku akan mengumpulkan pasukan lalu aku akan membantumu melawan %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:19
+#, javascript-format
+msgid "I am finishing preparations to attack %(_player_)s."
+msgstr "Aku sedang bersiap untuk melawan %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:22
+#, javascript-format
+msgid ""
+"Sorry, I do not have enough soldiers currently; but my next attack will "
+"target %(_player_)s."
+msgstr "Maafkan aku, aku tidak punya cukup prajurit sekarang; tapi sasaran seranganku selanjutnya adalah %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:23
+#, javascript-format
+msgid ""
+"Sorry, I still need to strengthen my army. However, I will attack "
+"%(_player_)s next."
+msgstr "Maafkan aku, aku masih harus memperkuat pasukanku. Tetapi, aku akan menyerang %(_player_)s berikutnya."
+
+#: simulation/ai/petra/chatHelper.js:26
+#, javascript-format
+msgid ""
+"I cannot help you against %(_player_)s for the time being, I am planning to "
+"attack %(_player_2)s first."
+msgstr "Aku tidak bisa membantumu melawan %(_player_)s sekarang, aku sedang berencana menyerang %(_player_2)s dahulu."
+
+#: simulation/ai/petra/chatHelper.js:31
+#, javascript-format
+msgid "Here is a gift for you, %(_player_)s. Make good use of it."
+msgstr "Ini hadiah untukmu, %(_player_)s. Gunakanlah dengan baik."
+
+#: simulation/ai/petra/chatHelper.js:32
+#, javascript-format
+msgid "I see you are in a bad situation, %(_player_)s. I hope this helps."
+msgstr "Kulihat engkau dalam keadaan buruk, %(_player_)s. Semoga membantu."
+
+#: simulation/ai/petra/chatHelper.js:33
+#, javascript-format
+msgid ""
+"I can help you this time, %(_player_)s, but you should manage your resources"
+" more carefully in the future."
+msgstr "Aku bisa membantumu kali ini, %(_player_)s, tapi kau harus mengelola sumberdayamu lebih baik selanjutnya."
+
+#: simulation/ai/petra/chatHelper.js:37
+#, javascript-format
+msgid "I am in need of %(resource)s, can you help? I will make it up to you."
+msgstr "Aku sedang mebutuhkan %(resource)s, bisakah kau menolongku? Aku akan menggantinya."
+
+#: simulation/ai/petra/chatHelper.js:38
+#, javascript-format
+msgid ""
+"I would participate more efficiently in our common war effort if you could "
+"provide me some %(resource)s."
+msgstr "Aku dapat turut serta dalam upaya perang kita dengan lebih efisien  jika engkau membantuku dengan memberi beberapa %(resource)s."
+
+#: simulation/ai/petra/chatHelper.js:39
+#, javascript-format
+msgid ""
+"If you can spare me some %(resource)s, I will be able to strengthen my army."
+msgstr "Jika engkau dapat menyisakanku beberapa %(resource)s, aku dapat memperkuat pasukanku."
+
+#: simulation/ai/petra/chatHelper.js:43
+#, javascript-format
+msgid ""
+"I have set up a new route with %(_player_)s. Trading will be profitable for "
+"all of us."
+msgstr "Aku sudah mengatur jalur dagang baru dengan %(_player_)s. Perdagangan ini akan menguntungkan kita semua."
+
+#: simulation/ai/petra/chatHelper.js:44
+#, javascript-format
+msgid ""
+"A new trade route is set up with %(_player_)s. Take your share of the "
+"profits."
+msgstr "Sebuah jalur dagang baru telah dibuat dengan %(_player_)s. Ambillah bagianmu dari penghasilannya."
+
+#: simulation/ai/petra/chatHelper.js:49
+#, javascript-format
+msgid "%(_player_)s and I are now allies."
+msgstr "%(_player_)s dan aku sekarang bersekutu."
+
+#: simulation/ai/petra/chatHelper.js:52
+#, javascript-format
+msgid "%(_player_)s and I are now neutral."
+msgstr "%(_player_)s dan aku sekarang saling netral."
+
+#: simulation/ai/petra/chatHelper.js:55
+#, javascript-format
+msgid "%(_player_)s and I are now enemies."
+msgstr "%(_player_)s dan aku sekarang bermusuhan."
+
+#: simulation/ai/petra/chatHelper.js:62
+#, javascript-format
+msgid "I cannot accept your offer to become allies, %(_player_)s."
+msgstr "Saya tidak bisa menerima pemberian Anda untuk menjadi sekutu, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:63
+#, javascript-format
+msgid "I must decline your offer of alliance, %(_player_)s."
+msgstr ""
+
+#: simulation/ai/petra/chatHelper.js:64
+#, javascript-format
+msgid "An alliance with you is not in my best interest, %(_player_)s."
+msgstr ""
+
+#: simulation/ai/petra/chatHelper.js:67
+#, javascript-format
+msgid ""
+"I will not be your ally, %(_player_)s. However, I will consider a neutrality"
+" pact."
+msgstr "Aku tidak ingin menjadi sekutumu, %(_player_)s. Tapi, aku akan mempertimbangkan janji damai."
+
+#: simulation/ai/petra/chatHelper.js:68
+#, javascript-format
+msgid ""
+"I reject your request for alliance, %(_player_)s, but we could become "
+"neutral."
+msgstr "Aku menolak permintaanmu untuk membentuk persekutuan, %(_player_)s, tapi kita bisa saling netral saja."
+
+#: simulation/ai/petra/chatHelper.js:69
+#, javascript-format
+msgid "%(_player_)s, only a neutrality agreement is conceivable to me."
+msgstr "%(_player_)s, hanya perjanjian netral yang mungkin terlaksana bagi saya."
+
+#: simulation/ai/petra/chatHelper.js:72
+#, javascript-format
+msgid ""
+"Our previous alliance did not work out, %(_player_)s. I must decline your "
+"offer."
+msgstr "Persekutuan kita sebelumnya tidak bekerja dengan baik, %(_player_)s. Aku harus menolak tawaranmu."
+
+#: simulation/ai/petra/chatHelper.js:73
+#, javascript-format
+msgid "I won’t ally you again, %(_player_)s!"
+msgstr "Aku tak akan menjadi sekutumu lagi, %(_player_)s!"
+
+#: simulation/ai/petra/chatHelper.js:74
+#, javascript-format
+msgid "No more alliances between us, %(_player_)s!"
+msgstr "Tidak ada persekutuan lagi di antara kita, %(_player_)s!"
+
+#: simulation/ai/petra/chatHelper.js:75
+#, javascript-format
+msgid "Your request for peace means nothing to me anymore, %(_player_)s!"
+msgstr "Permintaan damaimu tidak berarti lagi bagiku, %(_player_)s!"
+
+#: simulation/ai/petra/chatHelper.js:76
+#, javascript-format
+msgid ""
+"My answer to your repeated peace proposal will remain war, %(_player_)s!"
+msgstr "Jawabanku untuk tawaran damaimu yang diulang-ulang itu adalah tetap perang, %(_player_)s!"
+
+#: simulation/ai/petra/chatHelper.js:79
+#, javascript-format
+msgid ""
+"I will accept your offer to become allies, %(_player_)s. We will both "
+"benefit from this partnership."
+msgstr "Aku akan menerima tawaranmu untuk menjadi sekutu, %(_player_)s. Kita berdua akan diuntungkan dari kerja sama ini."
+
+#: simulation/ai/petra/chatHelper.js:80
+#, javascript-format
+msgid "An alliance between us is a good idea, %(_player_)s."
+msgstr "Persekutuan di antara kita adalah gagasan yang bagus, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:81
+#, javascript-format
+msgid ""
+"Let both of our people prosper from a peaceful association, %(_player_)s."
+msgstr "Semoga rakyat kita berdua makmur karena sebuah persatuan yang damai, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:82
+#, javascript-format
+msgid "We have found common ground, %(_player_)s. I accept the alliance."
+msgstr "Kita berhasil mendapatkan kesepakatan bersama, %(_player_)s. Aku terima persekutuan ini."
+
+#: simulation/ai/petra/chatHelper.js:83
+#, javascript-format
+msgid "%(_player_)s, consider us allies from now on."
+msgstr "%(_player_)s, kita bersekutu mulai dari sekarang."
+
+#: simulation/ai/petra/chatHelper.js:86
+#, javascript-format
+msgid ""
+"I will ally with you, %(_player_)s, but only if you send me a tribute of "
+"%(_amount_)s %(_resource_)s."
+msgstr "Aku akan menjadi sekutumu, %(_player_)s, hanya jika engkau memberikanku upeti sebesar %(_amount_)s %(_resource_)s."
+
+#: simulation/ai/petra/chatHelper.js:87
+#, javascript-format
+msgid ""
+"%(_player_)s, you must send me a tribute of %(_amount_)s %(_resource_)s "
+"before I accept an alliance with you."
+msgstr "%(_player_)s, Anda harus mengirimkan upeti kepadaku sebesar %(_amount_)s %(_resource_)s sebelum saya menerima aliansi dengan Anda."
+
+#: simulation/ai/petra/chatHelper.js:88
+#, javascript-format
+msgid ""
+"Unless you send me %(_amount_)s %(_resource_)s, an alliance won’t be formed,"
+" %(_player_)s."
+msgstr "Jika engkau tidak mengirimku %(_amount_)s %(_resource_)s, persekutuan tidak akan terbentuk, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:91
+#, javascript-format
+msgid ""
+"%(_player_)s, my offer still stands. I will ally with you only if you send "
+"me a tribute of %(_amount_)s %(_resource_)s."
+msgstr "%(_player_)s, permintaanku masih berlaku. Aku akan menjadi sekutumu jika engkau mengirimkan upeti sebesar %(_amount_)s %(_resource_)s kepadaku."
+
+#: simulation/ai/petra/chatHelper.js:92
+#, javascript-format
+msgid ""
+"I’m still waiting for %(_amount_)s %(_resource_)s before accepting your "
+"alliance, %(_player_)s."
+msgstr "Aku masih menunggu %(_amount_)s %(_resource_)s sebelum menerima persekutuan denganmu, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:93 simulation/ai/petra/chatHelper.js:114
+#, javascript-format
+msgid ""
+"%(_player_)s, if you do not send me part of the %(_amount_)s %(_resource_)s "
+"tribute soon, I will break off our negotiations."
+msgstr "%(_player_)s, jika engkau tidak segera mengirimkan sebagian upeti dari %(_amount_)s %(_resource_)s, aku akan membatalkan perundingan kita."
+
+#: simulation/ai/petra/chatHelper.js:98
+#, javascript-format
+msgid "I will not become neutral with you, %(_player_)s."
+msgstr "Aku tak akan menjadi netral denganmu, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:99
+#, javascript-format
+msgid "%(_player_)s, I must decline your request for a neutrality pact."
+msgstr "%(_player_)s, aku harus menolak tawaran janji damaimu."
+
+#: simulation/ai/petra/chatHelper.js:102
+#, javascript-format
+msgid ""
+"Our previous neutrality agreement ended in failure, %(_player_)s; I will not"
+" consider another one."
+msgstr "Perjanjian damai kita sebelumnya berakhir dengan kegagalan, %(_player_)s; aku tak akan mempertimbangkan perjanjian lagi."
+
+#: simulation/ai/petra/chatHelper.js:105
+#, javascript-format
+msgid ""
+"I welcome your request for peace between our civilizations, %(_player_)s. I "
+"will accept."
+msgstr "Aku sambut tawaranmu atas perdamaian di antara bangsa kita, %(_player_)s. Aku akan menerimanya."
+
+#: simulation/ai/petra/chatHelper.js:106
+#, javascript-format
+msgid ""
+"%(_player_)s, I will accept your neutrality request. May both our "
+"civilizations benefit."
+msgstr "%(_player_)s, aku akan menerima tawaran perdamaianmu. Semoga kedua bangsa kita diuntungkan."
+
+#: simulation/ai/petra/chatHelper.js:109
+#, javascript-format
+msgid ""
+"If you send me a tribute of %(_amount_)s %(_resource_)s, I will accept your "
+"neutrality request, %(_player_)s."
+msgstr "Jika engkau mengirimkanku upeti sebanyak %(_amount_)s %(_resource_)s, aku akan menerima permintaan damaimu, %(_player_)s."
+
+#: simulation/ai/petra/chatHelper.js:110
+#, javascript-format
+msgid ""
+"%(_player_)s, if you send me %(_amount_)s %(_resource_)s, I will accept a "
+"neutrality pact."
+msgstr "%(_player_)s, jika kau mengirimkanku %(_amount_)s %(_resource_)s, aku akan menerima sebuah janji perdamaian."
+
+#: simulation/ai/petra/chatHelper.js:113
+#, javascript-format
+msgid ""
+"%(_player_)s, I will not accept your neutrality request unless you tribute "
+"me %(_amount_)s %(_resource_)s soon."
+msgstr "%(_player_)s, aku tidak akan menerima permintaan damai darimu kecuali jika kau segera mengirimkanku upeti sebanyak %(_amount_)s %(_resource_)s."
+
+#: simulation/ai/petra/chatHelper.js:122
+#, javascript-format
+msgid ""
+"%(_player_)s, it would help both of our civilizations if we formed an "
+"alliance. If you become allies with me, I will respond in kind."
+msgstr "%(_player_)s, bangsa kita berdua akan terbantu jika kita membentuk sebuah aliansi. Jika kau jadi sekutuku, akan kuterima."
+
+#: simulation/ai/petra/chatHelper.js:125
+#, javascript-format
+msgid "%(_player_)s, my offer for an alliance has expired."
+msgstr "%(_player_)s, tawaranku untuk membentuk persekutuan telah berakhir."
+
+#: simulation/ai/petra/chatHelper.js:126
+#, javascript-format
+msgid ""
+"%(_player_)s, I have rescinded my previous offer for an alliance between us."
+msgstr "%(_player_)s, aku telah membatalkan tawaranku sebelumnya untuk membentuk persekutuan bersama."
+
+#: simulation/ai/petra/chatHelper.js:131
+#, javascript-format
+msgid ""
+"%(_player_)s, I would like to request a neutrality pact between our "
+"civilizations. If you become neutral with me, I will respond in kind."
+msgstr "%(_player_)s, saya ingin menawarkan janji damai antara bangsa kita. Jika kau berdamai denganku, aku akan berdamai juga padamu."
+
+#: simulation/ai/petra/chatHelper.js:132
+#, javascript-format
+msgid ""
+"%(_player_)s, it would be both to our benefit if we negotiated a neutrality "
+"pact. I will become neutral with you if you do the same."
+msgstr "%(_player_)s, kita berdua akan diuntungkan bila membentuk perjanjian damai. Aku akan berdamai denganmu jika engkau melakukan hal yang sama."
+
+#: simulation/ai/petra/chatHelper.js:135
+#, javascript-format
+msgid "%(_player_)s, I have decided to revoke my offer for a neutrality pact."
+msgstr "%(_player_)s, Aku telah memilih untuk menarik tawaranku atas janji perdamaian."
+
+#: simulation/ai/petra/chatHelper.js:136
+#, javascript-format
+msgid ""
+"%(_player_)s, as you have failed to respond to my request for peace between "
+"us, I have abrogated my offer."
+msgstr "%(_player_)s, karena kau telah gagal menanggapi tawaran perdamaian antara kita, aku telah membatalkan tawaranku."
+
+#: simulation/ai/petra/chatHelper.js:143
+msgid ""
+"My armies failed while defending my empire. Please honor our alliance and "
+"send help!"
+msgstr "Pasukanku gagal mempertahankan kerajaan. Mohon kirimkan bantuan sesuai dengan perjanjian aliansi kita!"
+
+#: simulation/ai/petra/chatHelper.js:144
+msgid ""
+"My humble armies feel weak and tired. My civilization depends on our "
+"alliance, please send help!"
+msgstr ""
+
+#: simulation/ai/petra/chatHelper.js:145
+msgid "I need your help. Please do not let my armies fall!"
+msgstr ""
+
+#: simulation/ai/petra/chatHelper.js:148
+msgid ""
+"My empire regained its old strength, now it is time to seek revenge "
+"together!"
+msgstr ""
+
+#: simulation/ai/petra/chatHelper.js:149
+msgid ""
+"My civilization raised from the ashes. Now my armies feel stronger and eager"
+" to fight for our alliance."
+msgstr ""
+
+#: simulation/ai/petra/data.json
+msgid "Petra Bot"
+msgstr "Petra Bot"
+
+#: simulation/ai/petra/data.json
+msgid ""
+"Petra is the default 0 A.D. AI bot. Please report issues to Wildfire Games (see the link in the main menu).\n"
+"\n"
+"The AI's resource gathering rate and trade gain depend on the difficulty level (Sandbox −58%, Very Easy −44%, Easy −25%, Medium ±0%, Hard +25%, Very Hard +56%). The easiest levels also have a slower research, training, and building rate. In addition, the Sandbox level does not expand nor attack."
+msgstr ""
+
+#: simulation/components/BuildRestrictions.js:101
+#, javascript-format
+msgid "%(name)s cannot be built due to unknown error"
+msgstr "%(name)s tak dapat dibangun karena alasan yang tak diketahui"
+
+#: simulation/components/BuildRestrictions.js:125
+#, javascript-format
+msgid "%(name)s cannot be built in unexplored area"
+msgstr "%(name)s tak dapat dibangun di daerah tak terjelajahi"
+
+#: simulation/components/BuildRestrictions.js:170
+#, javascript-format
+msgid "%(name)s cannot be built on another building or resource"
+msgstr "%(name)s tak dapat dibangun di atas bangunan lain atau sumberdaya"
+
+#: simulation/components/BuildRestrictions.js:174
+#, javascript-format
+msgid "%(name)s cannot be built on invalid terrain"
+msgstr "%(name)s tak dapat dibangun di dataran tak sah"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:209
+msgctxt "Territory type"
+msgid "own"
+msgstr "sendiri"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:212
+msgctxt "Territory type"
+msgid "unconnected own"
+msgstr "tidak terhubung sendiri"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:218
+msgctxt "Territory type"
+msgid "allied"
+msgstr "sekutu"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:221
+msgctxt "Territory type"
+msgid "unconnected allied"
+msgstr "sekutu tak terhubung"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:227
+msgctxt "Territory type"
+msgid "neutral"
+msgstr "netral"
+
+#. Translation: territoryType being displayed in a translated sentence in the
+#. form: "House
+#. cannot be built in %(territoryType)s territory.".
+#: simulation/components/BuildRestrictions.js:234
+msgctxt "Territory type"
+msgid "enemy"
+msgstr "musuh"
+
+#: simulation/components/BuildRestrictions.js:239
+#, javascript-format
+msgid ""
+"%(name)s cannot be built in %(territoryType)s territory. Valid territories: "
+"%(validTerritories)s"
+msgstr "%(name)s tak dapat dibangun di wilayah %(territoryType)s. Wilayah sah: %(validTerritories)s"
+
+#: simulation/components/BuildRestrictions.js:253
+#, javascript-format
+msgid "%(name)s must be built on a valid shoreline"
+msgstr "%(name)s harus dibangun pada garis pantai yang sah"
+
+#: simulation/components/BuildRestrictions.js:279
+#, javascript-format
+msgid ""
+"%(name)s too close to a %(category)s, must be at least %(distance)s meter "
+"away"
+msgid_plural ""
+"%(name)s too close to a %(category)s, must be at least %(distance)s meters "
+"away"
+msgstr[0] "%(name)s terlalu dekat dengan %(category)s, harus berjarak setidaknya %(distance)s meter"
+
+#: simulation/components/BuildRestrictions.js:300
+#, javascript-format
+msgid ""
+"%(name)s too far from a %(category)s, must be within %(distance)s meter"
+msgid_plural ""
+"%(name)s too far from a %(category)s, must be within %(distance)s meters"
+msgstr[0] "%(name)s terlalu jauh dari %(category)s, harus berada dalam jarak %(distance)s meter"
+
+#. Translation: Territory types being displayed as part of a list like "Valid
+#. territories:
+#. own, ally".
+#: simulation/components/BuildRestrictions.js:340
+msgctxt "Territory type list"
+msgid "own"
+msgstr "sendiri"
+
+#. Translation: Territory types being displayed as part of a list like "Valid
+#. territories:
+#. own, ally".
+#: simulation/components/BuildRestrictions.js:342
+msgctxt "Territory type list"
+msgid "ally"
+msgstr "sekutu"
+
+#. Translation: Territory types being displayed as part of a list like "Valid
+#. territories:
+#. own, ally".
+#: simulation/components/BuildRestrictions.js:344
+msgctxt "Territory type list"
+msgid "neutral"
+msgstr "netral"
+
+#. Translation: Territory types being displayed as part of a list like "Valid
+#. territories:
+#. own, ally".
+#: simulation/components/BuildRestrictions.js:346
+msgctxt "Territory type list"
+msgid "enemy"
+msgstr "musuh"
+
+#: simulation/components/CeasefireManager.js:99
+#, javascript-format
+msgid "You can attack in %(time)s"
+msgstr "Anda bisa menyerang dalam %(time)s"
+
+#: simulation/components/CeasefireManager.js:112
+msgid "You can attack now!"
+msgstr "Anda bisa menyerang sekarang!"
+
+#: simulation/components/EndGameManager.js:169
+#, javascript-format
+msgid "%(lastPlayer)s has won (last player alive)."
+msgid_plural "%(players)s and %(lastPlayer)s have won (last players alive)."
+msgstr[0] "%(players)s dan %(lastPlayer)s telah menang (pemain terakhir tersisa)."
+
+#: simulation/components/EndGameManager.js:177
+msgid "Last remaining player wins."
+msgstr "Pemain terakhir bertahan menang."
+
+#: simulation/components/EntityLimits.js:195
+#, javascript-format
+msgid "%(category)s build limit of %(limit)s reached"
+msgstr "Batas pembangunan %(category)s sebanyak %(limit)s dicapai"
+
+#: simulation/components/EntityLimits.js:197
+#, javascript-format
+msgid "%(category)s training limit of %(limit)s reached"
+msgstr "Batas pelatihan %(category)s sebanyak %(limit)s dicapai"
+
+#: simulation/components/EntityLimits.js:201
+#, javascript-format
+msgid "%(category)s limit of %(limit)s reached"
+msgstr "Batas %(category)s sebanyak %(limit)s dicapai"
+
+#: simulation/components/Player.js:308
+#, javascript-format
+msgid "Insufficient resources - %(resourceAmount1)s %(resourceType1)s"
+msgstr "Sumber daya kurang - %(resourceAmount1)s %(resourceType1)s"
+
+#: simulation/components/Player.js:310
+#, javascript-format
+msgid ""
+"Insufficient resources - %(resourceAmount1)s %(resourceType1)s, "
+"%(resourceAmount2)s %(resourceType2)s"
+msgstr "Sumber daya kurang - %(resourceAmount1)s %(resourceType1)s, %(resourceAmount2)s %(resourceType2)s"
+
+#: simulation/components/Player.js:312
+#, javascript-format
+msgid ""
+"Insufficient resources - %(resourceAmount1)s %(resourceType1)s, "
+"%(resourceAmount2)s %(resourceType2)s, %(resourceAmount3)s %(resourceType3)s"
+msgstr "Sumber daya kurang - %(resourceAmount1)s %(resourceType1)s, %(resourceAmount2)s %(resourceType2)s, %(resourceAmount3)s %(resourceType3)s"
+
+#: simulation/components/Player.js:314
+#, javascript-format
+msgid ""
+"Insufficient resources - %(resourceAmount1)s %(resourceType1)s, "
+"%(resourceAmount2)s %(resourceType2)s, %(resourceAmount3)s "
+"%(resourceType3)s, %(resourceAmount4)s %(resourceType4)s"
+msgstr "Sumber daya kurang - %(resourceAmount1)s %(resourceType1)s, %(resourceAmount2)s %(resourceType2)s, %(resourceAmount3)s %(resourceType3)s, %(resourceAmount4)s %(resourceType4)s"
+
+#: simulation/components/ProductionQueue.js:312
+msgid "Entity is being upgraded. Cannot start production."
+msgstr "Entitas sedang ditingkatkan. Tidak dapat memulai produksi."
+
+#: simulation/components/ProductionQueue.js:327
+msgid "The production queue is full."
+msgstr "Antrean produksi penuh."
+
+#: simulation/components/ProductionQueue.js:455
+msgid "Could not auto-queue unit, de-activating."
+msgstr "Tidak bisa antre-otomatis unit, mematikan."
+
+#: simulation/components/Trainer.js:321
+msgid "Can't find free space to spawn trained units."
+msgstr "Tidak dapat menemukan daerah kosong untuk mengeluarkan unit yang dilatih"
+
+#: simulation/components/Upgrade.js:242
+msgid "Entity is producing. Cannot start upgrading."
+msgstr "Entitas sedang memproduksi. Tidak dapat memulai peningkatan."
+
+#: simulation/data/settings/game_speeds.json
+msgid "Turtle (0.1×)"
+msgstr "Kura-kura (0.1×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Slow (0.25×)"
+msgstr "Lambat (0.25×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Leisurely (0.5×)"
+msgstr "Leluasa (0.5×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Relaxed (0.75×)"
+msgstr "Santai (0.75×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Normal (1×)"
+msgstr "Normal (1×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Fast (1.25×)"
+msgstr "Cepat (1.25×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Very Fast (1.5×)"
+msgstr "Sangat Cepat (1.5×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Insane (2×)"
+msgstr "Gila (2×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Fast Forward (5×)"
+msgstr "Maju Cepat (5×)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Fast Forward (10×)"
+msgstr "Maju Cepat (10x)"
+
+#: simulation/data/settings/game_speeds.json
+msgid "Fast Forward (20×)"
+msgstr "Maju Cepat (20×)"
+
+#: simulation/data/settings/map_sizes.json
+msgid "Tiny"
+msgstr "Mungil"
+
+#: simulation/data/settings/map_sizes.json
+msgid "This map size has barely any room for even the most basic resources."
+msgstr "Ukuran peta ini hampir tidak punya ruang bahkan untuk kebanyakan sumberdaya dasar."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Small"
+msgstr "Kecil"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"Small maps are suitable for 1v1 matches, as players can reach the enemy "
+"quickly while still having some room to expand."
+msgstr "Peta kecil cocok untuk pertarungan 1v1, karena pemain dapat mencapai musuh dengan cepat sementara masih punya beberapa ruang untuk ekspansi."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Normal"
+msgstr "Normal"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"This map size provides plenty of space for two players, but even eight "
+"players fit."
+msgstr "Ukuran peta ini menyediakan banyak ruang untuk dua pemain, tetapi bahkan bisa memuat delapan pemain."
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"This is the ideal mapsize for 4 to 8 players, because there is plenty of "
+"space to expand while the neighbors are quickly reachable."
+msgstr "Ini adalah ukuran peta yang ideal untuk 4 sampai 8 pemain, karena masih ada cukup banyak tempat untuk ekspansi sementara tetangga dapat dicapai dengan cepat."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Large"
+msgstr "Besar"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"The large mapsize is recommended when great portions of the map are covered "
+"with water or inaccessible mountains."
+msgstr "Ukuran peta besar disarankan jika sebagian besar peta ditutupi oleh air atau gunung yang tidak bisa dilewati."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Very Large"
+msgstr "Sangat Besar"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"Very large maps are not recommended as it takes very long to reach the enemy"
+" and the game performance can be reduced."
+msgstr "Peta sangat besar tidak disarankan karena membutuhkan waktu yang sangat lama untuk mencapai musuh dan performa permainan dapat berkurang."
+
+#: simulation/data/settings/map_sizes.json
+msgid "Giant"
+msgstr "Raksasa"
+
+#: simulation/data/settings/map_sizes.json
+msgid ""
+"Giant maps are not recommended as it takes very long to reach the enemy and "
+"the game performance can be reduced."
+msgstr ""
+
+#: simulation/data/settings/player_defaults.json
+msgid "Gaia"
+msgstr "Gaia"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 1"
+msgstr "Pemain 1"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 2"
+msgstr "Pemain 2"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 3"
+msgstr "Pemain 3"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 4"
+msgstr "Pemain 4"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 5"
+msgstr "Pemain 5"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 6"
+msgstr "Pemain 6"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 7"
+msgstr "Pemain 7"
+
+#: simulation/data/settings/player_defaults.json
+msgid "Player 8"
+msgstr "Pemain 8"
+
+#: simulation/data/settings/player_placements.json
+msgid "Circle"
+msgstr "Melingkar"
+
+#: simulation/data/settings/player_placements.json
+msgid "Players are placed in a circle spanning the map."
+msgstr ""
+
+#: simulation/data/settings/player_placements.json
+msgid "River"
+msgstr "Sungai"
+
+#: simulation/data/settings/player_placements.json
+msgid "Allied players are placed on two parallel lines."
+msgstr ""
+
+#: simulation/data/settings/player_placements.json
+msgid "Grouped Lines"
+msgstr ""
+
+#: simulation/data/settings/player_placements.json
+msgid "Allied players are placed along opposing radial lines."
+msgstr ""
+
+#: simulation/data/settings/player_placements.json
+msgid "Random Group"
+msgstr "Kelompok Acak"
+
+#: simulation/data/settings/player_placements.json
+msgid "Allied players are grouped, but otherwise placed randomly on the map."
+msgstr "Pemain sekutu dikelompokkan, tetapi jika tidak bersekutu akan ditempatkan secara acak di peta."
+
+#: simulation/data/settings/player_placements.json
+msgid "Stronghold"
+msgstr "Benteng"
+
+#: simulation/data/settings/player_placements.json
+msgid "Allied players are tightly grouped together."
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "Player Population"
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "Player Population Cap"
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "Locked population cap for all players."
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "Choose the player population cap."
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "Team Population"
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "Team Population Cap"
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid ""
+"Distributes a team's total population cap evenly over all its living "
+"members. Enables the setting 'Locked teams'."
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "Choose the team population cap."
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "World Population"
+msgstr "Populasi Dunia"
+
+#: simulation/data/settings/population_capacities.json
+msgid "World Population Cap"
+msgstr "Batas Populasi Dunia"
+
+#: simulation/data/settings/population_capacities.json
+msgid "Distributes the total population cap evenly over all living players."
+msgstr ""
+
+#: simulation/data/settings/population_capacities.json
+msgid "Choose the world population cap."
+msgstr ""
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Very Low"
+msgstr "Sangat Sedikit"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Low"
+msgstr "Sedikit"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Medium"
+msgstr "Sedang"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "High"
+msgstr "Banyak"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Very High"
+msgstr "Sangat Banyak"
+
+#: simulation/data/settings/starting_resources.json
+msgctxt "startingResources"
+msgid "Deathmatch"
+msgstr "Peperangan Habis-habisan"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Very Easy"
+msgstr "Sangat Mudah"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Choose this difficulty if you are discovering 0 A.D."
+msgstr ""
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Easy"
+msgstr "Mudah"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Choose this difficulty if you do not like being knocked down."
+msgstr "Pilih kesulitan ini jika Anda tidak suka dirobohkan."
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid ""
+"Choose this difficulty if you have already a good experience with 0 A.D."
+msgstr ""
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Hard"
+msgstr "Susah"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Choose this difficulty if you want to be really challenged."
+msgstr "Pilih tingkat kesulitan ini jika Anda ingin benar-benar tertantang."
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Very Hard"
+msgstr "Sangat Susah"
+
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Choose this difficulty if you do not mind being swept out."
+msgstr "Pilih kesulitan ini jika Anda tidak keberatan dibantai."
+
+#: simulation/data/settings/map_sizes.json
+#: simulation/data/settings/trigger_difficulties.json
+msgid "Medium"
+msgstr "Sedang"
+
+#: simulation/data/settings/victory_conditions/capture_the_relic.json
+msgid "Capture the Relic"
+msgstr "Rebut Pusaka"
+
+#: simulation/data/settings/victory_conditions/capture_the_relic.json
+msgid ""
+"Capture all relics spread across the map and keep them for a certain time to"
+" win the game."
+msgstr "Rebut semua pusaka yang tersebar di seluruh peta dan simpanlah mereka dalam jangka waktu tertentu untuk memenangkan permainan."
+
+#: simulation/data/settings/victory_conditions/conquest.json
+msgid "Conquest"
+msgstr "Taklukkan"
+
+#: simulation/data/settings/victory_conditions/conquest.json
+msgid ""
+"Defeat opponents by killing all their units and destroying all their "
+"structures."
+msgstr "Kalahkan lawan dengan membunuh semua unit mereka dan menghancurkan semua bangunan mereka."
+
+#: simulation/data/settings/victory_conditions/conquest_civic_centers.json
+msgid "Conquest Civic Centers"
+msgstr "Penaklukan Pusat Bangsa"
+
+#: simulation/data/settings/victory_conditions/conquest_civic_centers.json
+msgid "Defeat opponents by destroying all their fully built civic centers."
+msgstr ""
+
+#: simulation/data/settings/victory_conditions/conquest_structures.json
+msgid "Conquest Structures"
+msgstr "Taklukkan Bangunan"
+
+#: simulation/data/settings/victory_conditions/conquest_structures.json
+msgid "Defeat opponents by destroying all their structures."
+msgstr "Kalahkan lawan dengan menghancurkan semua bangunan mereka."
+
+#: simulation/data/settings/victory_conditions/conquest_units.json
+msgid "Conquest Units"
+msgstr "Taklukkan Unit"
+
+#: simulation/data/settings/victory_conditions/conquest_units.json
+msgid "Defeat opponents by killing all their units."
+msgstr "Kalahkan musuh dengan membunuh semua unitnya."
+
+#: simulation/data/settings/victory_conditions/regicide.json
+msgid "Regicide"
+msgstr "Regisida"
+
+#: simulation/data/settings/victory_conditions/regicide.json
+msgid "Defeat opponents by killing their hero."
+msgstr "Kalahkan musuh dengan membunuh pahlawannya."
+
+#: simulation/data/settings/victory_conditions/wonder.json
+msgid "Wonder"
+msgstr "Keajaiban Dunia"
+
+#: simulation/data/settings/victory_conditions/wonder.json
+msgid ""
+"Be the first to build or capture a Wonder and keep it for a certain time to "
+"win the game. The timer will be reset when the Wonder is destroyed or "
+"captured. If the allied victory mode is enabled, the timer will also be "
+"reset when the alliances of the owner change."
+msgstr "Jadilah yang pertama kali membangun atau merebut sebuah Keajaiban Dunia dan menjaganya dalam waktu tertentu untuk memenangkan permainan. Hitungan mundur akan diatur ulang ketika Keajaiban Dunia dihancurkan atau direbut. Jika kemenangan sekutu diaktifkan, hitungan mundur juga akan diatur ulang ketika persekutuan pemiliknya berubah."
+
+#: simulation/helpers/Cheat.js:60
+#, javascript-format
+msgid "%(player)s has been defeated (cheat)."
+msgstr "%(player)s telah dikalahkan (cheat)."
+
+#: simulation/helpers/Cheat.js:74
+msgid "You need to select a building that trains units."
+msgstr "Anda perlu memilih bangunan untuk melatih unit."
+
+#: simulation/helpers/Commands.js:81
+msgid "(Cheat - control all units)"
+msgstr "(Cheat - kontrol seluruh unit)"
+
+#: simulation/helpers/Commands.js:96
+msgid "(Cheat - reveal map)"
+msgstr "(Cheat - ungkapkan peta)"
+
+#: simulation/helpers/Commands.js:446
+#, javascript-format
+msgid "%(player)s has resigned."
+msgstr "%(player)s telah mengundurkan diri."
+
+#: simulation/helpers/Commands.js:624
+msgid "(Cheat - promoted units)"
+msgstr "(Cheat - unit naik pangkat)"
+
+#: simulation/helpers/Commands.js:745
+msgid ""
+"Cannot upgrade as distance requirements are not verified or terrain is "
+"obstructed."
+msgstr "Tidak dapat meningkatkan karena persyaratan jarak tidak terpenuhi atau medan terhalang."
+
+#: simulation/helpers/Commands.js:787
+#, javascript-format
+msgid "Attack against %(_player_)s requested."
+msgstr "Penyerangan melawan %(_player_)s diminta."
+
+#: simulation/helpers/Commands.js:826
+msgid "There are no bribable units"
+msgstr "Tidak ada unit yang bisa disogok"
+
+#: simulation/helpers/Commands.js:947
+msgid "Unable to unload unit(s)."
+msgstr "Tidak dapat mengeluarkan unit."
+
+#: simulation/helpers/Commands.js:961
+msgid "Some unit(s) can't go back to work"
+msgstr "Beberapa unit tidak bisa kembali bekerja"
+
+#: simulation/helpers/Commands.js:980
+#, javascript-format
+msgid "%(unit)s can't be controlled."
+msgstr "%(unit)s tidak dapat dikendalikan."
+
+#: simulation/helpers/Commands.js:1231
+msgid "The building's technology requirements are not met."
+msgstr "Persyaratan teknologi bangunan ini belum terpenuhi."

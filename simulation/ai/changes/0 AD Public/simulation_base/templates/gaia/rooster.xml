@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="gaia/fauna_chicken">
+  <Identity>
+    <GenericName>Rooster</GenericName>
+    <Icon>gaia/fauna_chicken.png</Icon>
+  </Identity>
+  <VisualActor>
+    <Actor>fauna/rooster.xml</Actor>
+  </VisualActor>
+</Entity>

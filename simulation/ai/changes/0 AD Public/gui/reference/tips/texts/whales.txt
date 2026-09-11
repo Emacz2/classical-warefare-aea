@@ -1,0 +1,4 @@
+WHALES
+An oceanic resource providing 2000 food.
+Gatherable by Fishing Boats after the whale is killed.
+Roam around the oceans of the game and flee when attacked.

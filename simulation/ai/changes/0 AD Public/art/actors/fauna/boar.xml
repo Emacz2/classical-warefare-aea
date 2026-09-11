@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="100" name="Boar">
+      <animations>
+        <animation file="quadraped/animal_boar_idle_02.dae" name="Idle" speed="10"/>
+        <animation file="quadraped/animal_boar_attack_01.dae" name="attack_melee" speed="120"/>
+        <animation file="quadraped/animal_boar_walk_01.dae" name="Walk" speed="10"/>
+        <animation file="quadraped/animal_boar_run_01.dae" name="Run" speed="8"/>
+        <animation file="quadraped/animal_boar_death_01.dae" name="Death" speed="50"/>
+      </animations>
+      <mesh>skeletal/animal_boar.dae</mesh>
+      <textures>
+        <texture file="skeletal/animal_boar_01.png" name="baseTex"/>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="100" name="normal"/>
+    <variant frequency="0" name="feeding">
+      <animations>
+        <animation file="quadraped/animal_boar_idle_01.dae" name="Idle" speed="10"/>
+      </animations>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="100" name="Idle"/>
+    <variant name="death">
+      <props>
+        <prop actor="props/units/blood_01.xml" attachpoint="root"/>
+      </props>
+    </variant>
+  </group>
+  <material>no_trans_norm_spec.xml</material>
+</actor>

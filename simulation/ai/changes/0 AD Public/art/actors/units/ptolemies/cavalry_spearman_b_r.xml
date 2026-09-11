@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant>
+      <mesh>skeletal/new/m_tunic_short.dae</mesh>
+      <props>
+        <prop actor="props/units/heads/new/head_hele_b.xml" attachpoint="head"/>
+        <prop actor="props/units/weapons/spear_lance_cavalry.xml" attachpoint="weapon_R"/>
+        <prop actor="props/units/shields/ptol_cav_spear_a.xml" attachpoint="shield_arm"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="Straw hat">
+      <props>
+        <prop actor="props/units/helmets/hele_straw_01.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Kausia cap">
+      <props>
+        <prop actor="props/units/helmets/hele_kausia_cap.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="mace/tunic_hellenistic_01_01">
+      <textures>
+        <texture file="skeletal/mace/tunic_hellenistic_01_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="mace/tunic_hellenistic_01_03">
+      <textures>
+        <texture file="skeletal/mace/tunic_hellenistic_01_03.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="hele_tunic_hellenistic_basic_2_a">
+      <textures>
+        <texture file="skeletal/mace/tunic_hellenistic_01_02.png" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/rider/cavalry/base_spearman_ready_shield_aspis_reverse.xml" name="Spearman-Relax-Shield-Aspis-Reverse" frequency="1"/>
+    <variant file="biped/rider/carry_meat.xml"/>
+  </group>
+  <group>
+    <variant frequency="1" name="Idle"/>
+    <variant file="biped/rider/attack_slaughter_shield_hele.xml"/>
+    <variant file="biped/rider/promotion_shield.xml"/>
+    <variant file="biped/gather_meat.xml"/>
+    <variant file="biped/rider/death_aspis.xml"/>
+  </group>
+  <group>
+    <variant>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

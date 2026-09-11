@@ -1,0 +1,4 @@
+CATAPULTS
+Long-ranged Siege Engines.
+Devastating against structures, but also expensive and slow.
+Pack up into carts for movement, and unpack into stationary engines for attack!

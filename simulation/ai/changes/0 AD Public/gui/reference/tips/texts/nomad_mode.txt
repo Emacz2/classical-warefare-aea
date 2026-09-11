@@ -1,0 +1,5 @@
+NOMAD MODE
+Only available for the "Random" map type.
+Players will be randomly dropped on the map without a Civic Center.
+Requires the "Medium" starting resource setting in order for players to be able to build their first one.
+Don't immediately start building the Civic Center, scout for a good location for your base first.

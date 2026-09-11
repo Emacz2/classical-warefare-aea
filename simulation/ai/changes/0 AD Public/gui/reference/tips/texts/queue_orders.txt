@@ -1,0 +1,4 @@
+QUEUE ORDERS
+While holding the “Queue order” hotkey (by default SHIFT), queue multiple tasks for units by right-clicking.
+Once a task is done they will automatically execute their next task.
+The queue will be reset if the unit receives a manual order.

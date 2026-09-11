@@ -1,0 +1,4 @@
+PYRAMIDS OF MEROË
+Special structures available to the Kushites.
+The small pyramids improve the gathering rate of workers around them.
+The large pyramids increase the military capabilities of soldiers around them.

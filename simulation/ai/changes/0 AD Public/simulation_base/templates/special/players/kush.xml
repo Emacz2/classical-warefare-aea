@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity parent="template_player">
+  <Auras datatype="tokens">
+    teambonuses/kush_player_teambonus
+  </Auras>
+  <Identity>
+    <Civ>kush</Civ>
+    <GenericName>Kushites</GenericName>
+    <History>The Kingdom of Kush was an African kingdom located at the confluences of the Blue Nile, White Nile, and River Atbara, in present-day Sudan. It rose following the collapse of Egypt's New Kingdom, with its early capital at Napata. In the 8th century BC, the Kushites invaded Egypt and established the Twenty-fifth dynasty, ruling as Pharaohs until expelled by the Assyrians. The capital moved to Meroe, the center of the Meroitic kingdom known as Aethiopia in Greek geography. Weakened due to internal rebellion, The kingdom lasted until the 4th century AD and was overtaken by the Kingdom of Axum. Influenced by Egyptian culture, the Kushites built throughout their reign pyramids and temples and worshipped gods like Amun.</History>
+    <Icon>emblems/emblem_kushites.png</Icon>
+  </Identity>
+  <Player>
+    <Formations datatype="tokens">
+      special/formations/syntagma
+    </Formations>
+  </Player>
+</Entity>

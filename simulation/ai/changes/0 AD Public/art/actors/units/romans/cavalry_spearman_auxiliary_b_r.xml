@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="Base">
+      <mesh>skeletal/new/m_tunic_short.dae</mesh>
+      <props>
+        <prop actor="props/units/weapons/spear_lance_cavalry_reverse.xml" attachpoint="weapon_R"/>
+        <prop actor="props/units/weapons/sheath_gladius.xml" attachpoint="sheath_01_R"/>
+      </props>
+      <textures>
+        <texture file="default_norm.png" name="normTex"/>
+        <texture file="null_black.dds" name="specTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="gaul">
+      <props>
+		<prop actor="props/units/heads/new/head_celt.xml" attachpoint="head"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="iber">
+      <props>
+		<prop actor="props/units/heads/new/head_beard_longhair.xml" attachpoint="head"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="thrac">
+      <props>
+		<prop actor="props/units/heads/new/head_hele_h.xml" attachpoint="head"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="iber_tunic_01_03">
+      <textures>
+        <texture file="skeletal/iber/tunic_01_03.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="iber_tunic_01_04">
+      <textures>
+        <texture file="skeletal/iber/tunic_01_04.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="iber_tunic_01_05">
+      <textures>
+        <texture file="skeletal/iber/tunic_01_05.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="gaul_tunic_01_03">
+      <textures>
+        <texture file="skeletal/gaul/tunic_01_03.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="gaul_tunic_sleeveless_01_01">
+      <textures>
+        <texture file="skeletal/gaul/tunic_sleeveless_01_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="gaul_tunic_sleeveless_01_02">
+      <textures>
+        <texture file="skeletal/gaul/tunic_sleeveless_01_02.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="thrac_tunic_basic_01_01">
+      <textures>
+        <texture file="skeletal/thrac/tunic_basic_01_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="thrac_tunic_basic_02_01">
+      <textures>
+        <texture file="skeletal/thrac/tunic_basic_02_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+    <variant frequency="1" name="thrac_tunic_basic_04_01">
+      <textures>
+        <texture file="skeletal/thrac/tunic_basic_04_01.png" name="baseTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant file="biped/rider/cavalry/base_spearman_relax_reverse_02.xml" name="Spearman-Relax-Reverse-02" frequency="1"/>
+    <variant file="biped/rider/carry_meat.xml"/>
+  </group>
+  <group>
+    <variant frequency="1" name="Idle"/>
+    <variant file="biped/rider/promotion.xml"/>
+    <variant file="biped/rider/attack_slaughter_shield_rome.xml"/>
+    <variant file="biped/gather_meat.xml"/>
+    <variant file="biped/rider/death_shield.xml"/>
+  </group>
+  <material>player_trans_norm_spec.xml</material>
+</actor>

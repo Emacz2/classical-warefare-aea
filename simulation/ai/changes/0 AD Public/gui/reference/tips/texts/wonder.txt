@@ -1,0 +1,5 @@
+WONDER
+A powerful and expensive late-game structure available to all civilizations.
+Represents an actual monumental structure built by that culture in antiquity.
+Provides the technology “Glorious Expansion” which increases your maximum population capacity by 20%.
+Enable the victory condition “Wonder” in the game setup and race to see who can build one first (and control it for a certain amount of time)!

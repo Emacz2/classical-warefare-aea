@@ -1,0 +1,3 @@
+DIPLOMACY COLORS
+Enable diplomacy colors by clicking the icon beside the minimap or pressing Alt+X.
+Allies are shown in green, enemies in red, and your own units in blue.

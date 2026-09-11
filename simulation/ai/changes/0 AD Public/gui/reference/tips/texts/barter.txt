@@ -1,0 +1,3 @@
+BARTER
+At the Market structure, a player can exchange a resource for another of a different type.
+Rates are affected globally by all players. Turn this into an advantage by checking prices regularly.

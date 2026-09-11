@@ -1,0 +1,4 @@
+PIKEMEN
+Available to the Kushites, Macedonians, Ptolemies, and Seleucids.
+Heavily armored, but low attack damage.
+Use against Cavalry or against other Melee Infantry to pin them in place.

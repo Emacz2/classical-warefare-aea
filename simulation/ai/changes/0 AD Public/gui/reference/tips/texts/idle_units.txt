@@ -1,0 +1,2 @@
+SELECT IDLE UNITS
+Hold down the idle units hotkey ('I' by default) and drag to select only idle units.

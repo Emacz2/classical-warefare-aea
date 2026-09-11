@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant frequency="1" name="Briton Civic Center" file="structures/defensive_building.xml">
+      <mesh>structural/brit_civic_centre_struct1.dae</mesh>
+      <props>
+        <prop actor="props/structures/britons/civic_centre_props_1.xml" attachpoint="root"/>
+        <prop actor="props/structures/britons/civic_centre_props_new.xml" attachpoint="root"/>
+        <prop actor="props/structures/britons/civic_centre_wood_c.xml" attachpoint="root"/>
+        <prop actor="props/structures/britons/civic_centre_roof.xml" attachpoint="root"/>
+        <prop actor="props/structures/decals/gravel_5x5.xml" attachpoint="root"/>
+        <prop actor="particle/smoke_light_delay.xml" attachpoint="smoke"/>
+      </props>
+      <textures>
+        <texture file="structural/brit_struct_1.png" name="baseTex"/>
+        <texture file="structural/celt_struct_1_norm.png" name="normTex"/>
+        <texture file="structural/celt_struct_1_spec.png" name="specTex"/>
+        <texture file="structural/ao/brit_civic_centre.png" name="aoTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="ungarrisoned"/>
+    <variant name="garrisoned">
+      <props>
+        <prop actor="props/special/common/garrison_flag_celt.xml" attachpoint="garrisoned" selectable="false"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="alive"/>
+    <variant file="structures/destruction_large.xml">
+      <props>
+        <prop actor="props/structures/britons/civic_centre_props_1.xml" attachpoint="root"/>
+        <prop actor="props/structures/britons/civic_centre_props_new.xml" attachpoint="root"/>
+        <prop actor="props/structures/britons/civic_centre_wood_c.xml" attachpoint="root"/>
+        <prop actor="props/structures/britons/civic_centre_roof.xml" attachpoint="root"/>
+      </props>
+    </variant>
+  </group>
+  <material>player_trans_ao_parallax_spec.xml</material>
+</actor>

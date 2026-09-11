@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<object
+	name="chatDialogPanel"
+	type="image"
+	hidden="true"
+	sprite="genericPanel"
+	z="90"
+>
+	<!-- Mock objects storing the chat window size -->
+	<object name="chatDialogPanelLarge" size="50%-216 22%-75 50%+216 78%-85"/>
+	<object name="chatDialogPanelSmall" size="50%-216 50%-140 50%+216 50%-20"/>
+
+	<!-- Chat History Page -->
+	<object type="image" name="chatHistoryPage" size="0 0 100% 100%-120">
+
+		<!-- Chat History Filter -->
+		<object type="text" name="chatHistoryFilterCaption" size="16 12 60 32" style="ModernLeftLabelText">
+			<translatableAttribute id="caption" context="chat input">Filter:</translatableAttribute>
+		</object>
+
+		<object
+			type="dropdown"
+			name="chatHistoryFilter"
+			size="75 10 100%-16 34"
+			style="ModernDropDown"
+			tooltip_style="sessionToolTipBold"
+		>
+			<translatableAttribute id="tooltip" context="chat input">Filter the chat history.</translatableAttribute>
+		</object>
+
+		<object
+			type="text"
+			name="chatHistoryText"
+			size="10 46 100%-10 100%"
+			sprite="ModernDarkBoxGold"
+			style="ChatPanel"
+		/>
+	</object>
+
+	<!-- Chat input elements -->
+	<object name="chatPage" size="0 100%-128 100% 100%">
+
+		<!-- Message addressee -->
+		<object type="text" name="chatAddresseeCaption" size="16 100%-114 50 100%-90" style="ModernLeftLabelText">
+			<translatableAttribute id="caption" context="chat input">To:</translatableAttribute>
+		</object>
+		<object
+			name="chatAddressee"
+			type="dropdown"
+			size="75 100%-116 100%-16 100%-90"
+			style="ModernDropDown"
+			tooltip_style="sessionToolTipBold"
+		>
+			<translatableAttribute id="tooltip" context="chat input">Select chat addressee.</translatableAttribute>
+		</object>
+
+		<!-- Message text -->
+		<object type="text" name="chatInputCaption" size="16 100%-82 50 100%-58" style="ModernLeftLabelText">
+			<translatableAttribute id="caption" context="chat input">Text:</translatableAttribute>
+		</object>
+		<object
+			type="input"
+			name="chatInput"
+			size="75 100%-82 100%-16 100%-56"
+			style="ModernInput"
+			max_length="1024"
+		/>
+
+		<!-- Cancel Button -->
+		<object name="closeChat" size="16 100%-48 30%+16 100%-12" type="button" style="StoneButton">
+			<translatableAttribute id="caption">Cancel</translatableAttribute>
+		</object>
+
+		<!-- Extended Chat Checkbox -->
+		<object
+			type="checkbox"
+			name="extendedChat"
+			checked="false"
+			style="ModernTickBox"
+			size="50%-40 100%-40 50%-20 100%-12"
+		/>
+
+		<!-- Extended Chat Label -->
+		<object type="text" size="50%-20 100%-48 50%+50 100%-12" text_align="left" text_valign="center" textcolor="white">
+			<translatableAttribute id="caption" context="chat">History</translatableAttribute>
+		</object>
+
+		<!-- Send Button -->
+		<object name="sendChat" size="70%-16 100%-48 100%-16 100%-12" type="button" style="StoneButton">
+			<translatableAttribute id="caption">Send</translatableAttribute>
+		</object>
+	</object>
+
+</object>

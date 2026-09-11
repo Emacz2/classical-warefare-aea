@@ -1,0 +1,5 @@
+EXPERIENCE AND RANKS
+Soldiers gain experience while fighting or being garrisoned in their training facility.
+Experience progresses them through a set of ranks, "Basic" => "Advanced" => "Elite", displayed by an icon above their healthbar.
+Higher ranks increase a unit's damage and resistance, but lower its gather rates.
+As they advance, they even change their visual appearance too - i.e. upgrading their equipment!

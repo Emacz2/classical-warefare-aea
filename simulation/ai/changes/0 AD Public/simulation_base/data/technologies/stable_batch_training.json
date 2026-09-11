@@ -1,0 +1,22 @@
+{
+	"genericName": "Conscription",
+	"description": "Decreases training time of cavalry if they are trained in batches or squadrons. Large batches will benefit more than small batches.\nIn mathematical terms: The training time of one batch gets divided by `batchSize^0.1`.",
+	"cost": {
+		"food": 500
+	},
+	"requirements": {
+		"all": [
+			{ "tech": "phase_city" },
+			{ "notciv": "pers" }
+		]
+	},
+	"requirementsTooltip": "Unlocked in City Phase.",
+	"icon": "horseshoe_gold.png",
+	"researchTime": 40,
+	"tooltip": "Decrease batch training time of units trained in Stables.",
+	"modifications": [
+		{ "value": "Trainer/BatchTimeModifier", "add": -0.1 }
+	],
+	"affects": ["Stable"],
+	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"
+}

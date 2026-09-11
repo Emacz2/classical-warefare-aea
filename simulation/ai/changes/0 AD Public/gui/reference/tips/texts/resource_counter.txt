@@ -1,0 +1,4 @@
+RESOURCE COUNTER
+Located in the top left corner of the screen.
+Keep tabs on how much of each resource you've stockpiled in your treasury and how many units are currently gathering them.
+Keep an eye on it while playing to avoid running out in crucial moments.
