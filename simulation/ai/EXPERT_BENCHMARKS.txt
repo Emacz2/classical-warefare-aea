@@ -1,66 +1,31 @@
-EXPERT BENCHMARKS — IT14.95
+EXPERT AI PETRA — PERSISTENT BENCHMARK LEADERBOARD
+=================================================
 
-PRIMARY GOAL
-Fix the delayed permanent-food pipeline, enforce the user's 70-civilian Civic Centre
-contract, and make completed Cleruchies productive military buildings WITHOUT changing
-IT14.93 opening/resource placement or IT14.94 combat/expansion behavior.
+CANONICAL BENCHMARK
+Athens Expert (difficulty 6) vs Athens Very Hard (difficulty 5)
+Mainland Balanced | 200 population | +35% Expert gather/trade bonus
 
-FROZEN / HARD NON-REGRESSION
-- Opening Storehouse still chooses the best sustainable forest.
-- Storehouse #2 still respects the opening establishment grace.
-- No woodsite.averageDropDistance finite-number error spam.
-- Keep IT14.92 forecast/actual-work economy authority.
-- Keep 3-4 permanent future-farmer Field crews.
-- Keep IT14.94 pressure-hold, proportional defense, repeat Cleruchy expansion,
-  failed-anchor fallback and Gymnasium/Prytaneion placement recovery.
-- attackManager.js and attackPlan.js must be byte-for-byte IT14.94.
+DEFINITIONS
+- BREAK: first sustained sample after 10:00 where Very Hard is below 50 population and never recovers to 50+.
+- DEFEATED: actual match-end / Very Hard defeated time. If only 30-second statistics samples support the finish, record the narrowest supported window.
+- FINISH GAP: DEFEATED minus BREAK.
 
-1) FIELD #6 / FOOD-CAPACITY TEST
-On a map where natural food expires and desiredFields exceeds the real Field pipeline:
-- if food is critical/short and 3+ future farmers are available, the watchdog uses its
-  fast critical response rather than waiting minutes;
-- a [EXPERT-FIELD-WATCH] request does NOT reset progress unless built+foundation+queued
-  actually rises;
-- expect [EXPERT-FARM-CREW] field ... futureBuilders=3-4 ... stay=farmer;
-- established lumberjacks/miners must not swarm a Field and then return to work;
-- do not repeat the IT14.94 5-Field plateau from ~6:07 to ~9:30.
+TOP 3 — PERMANENT UNTIL BEATEN
+Rank  Version   Break    Defeated       Finish Gap
+1     IT14.46   11:30    19:25.6        7:55.6
+2     IT14.49   13:00    22:31.6        9:31.6
+3     IT14.44   17:00    25:00-25:30    8:00-8:30
 
-2) CIVIC CENTRE 70-CIVILIAN CONTRACT
-Until permanent civilians >=70:
-- CC queues civilians continuously;
-- ordinary doctrine selection/arming cannot queue CC infantry;
-- no optional hunting/pursuit cavalry from the CC;
-- Barracks/Cleruchy military production is allowed normally.
+LEADERBOARD RULE
+- Do not replace these entries with ordinary regression games, different civilizations, different maps, or human-vs-AI tests.
+- A newer version enters the Top 3 only after a CLEAN run under the canonical benchmark conditions beats the defeated time of an existing entry.
+- Sort primarily by DEFEATED time. BREAK is retained because it distinguishes how quickly Expert actually broke the opponent from how long cleanup took.
+- If a new result qualifies, insert it in order and drop the slowest entry. Otherwise this table stays unchanged.
 
-Legitimate below-70 exception:
-- real incoming attack/defense;
-- launched attack;
-- P1 rush already near its launch package;
-- P2/P3 major attack actually near launch.
-When such an exception queues a CC soldier, expect:
-  [EXPERT-CC] military-exception reason=... civilians=X/70
+HISTORICAL NOTES
+- IT14.46 was the first clean sub-20-minute +35% victory.
+- IT14.49: BREAK=13:00, DEFEATED=22:31.6.
+- IT14.44: Very Hard fell below 50 permanently at 17:00 and was at 6 pop at 25:00 / 0 at 25:30.
 
-At >=70 civilians:
-- normal cc-cap military production may resume.
-
-3) CLERUCHY PRODUCTION TEST
-After:
-  [EXPERT-EXPAND] cleruchy-complete count=1
-expect the completed building to start contributing military training when resources/pop allow:
-  [EXPERT-MIL] queued cleruchy-auto soldiers=... trainer=...
-  [EXPERT-TRAIN] cleruchy-auto trainer=... depth=.../2
-It should keep current+next shallow work and not sit permanently idle.
-
-4) IT14.94 COMBAT/EXPANSION REGRESSION TEST
-- P2 locally-won bad exchange still gives [EXPERT-PRESSURE] hold rather than needless reboom.
-- Small raid gets bounded [EXPERT-DEF] response, not the whole army.
-- failed Cleruchy anchor is blacklisted and next candidate is tried.
-- repeat Cleruchies remain legal under renewed scarcity, count <=3.
-
-5) OPENING / RESOURCE SANITY
-First 5-8 minutes:
-- IT14.93 opening Storehouse behavior unchanged;
-- no immediate second Storehouse regression;
-- no new Farmstead/house/woodline placement regression;
-- no new idle-opening regression;
-- [EXPERT-IT14.95] diagnostics continue throughout the replay.
+CURRENT VERSION
+IT14.97 is a regression/fix build until it earns a canonical benchmark result. Do not alter the Top 3 merely because IT14.97 wins a non-canonical matchup.

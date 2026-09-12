@@ -1,0 +1,66 @@
+EXPERT AI PETRA — IT14.97 CHANGE REPORT
+=======================================
+
+PURPOSE
+IT14.97 is a narrow cleanup/non-regression build. The 14.96 economy/strategy recovery remains intact.
+This version fixes the opening Storehouse regression seen on Aegean/Steppe-like sparse maps and restores the persistent historical benchmark leaderboard.
+
+FILES CHANGED FROM IT14.96
+- petra/expertDecisionController.js
+- petra/expertDecision/petraMechanicalCollector.js
+- petra/expertDecision/policy.js
+- EXPERT_BENCHMARKS.txt
+- IT14.97_CHANGE_REPORT.txt [NEW]
+
+PACKAGE CLEANUP
+- Removed IT14.85-IT14.96 top-level change reports from the test ZIP.
+- Future test ZIPs keep only the current change report + persistent EXPERT_BENCHMARKS.txt.
+- Historical leaderboard is no longer overwritten by a version-specific checklist.
+
+1) OPENING STOREHOUSE — BEST SERVICEABLE FOREST
+14.96 still fed the IT14.93 selector only trees already inside our territory. On sparse maps that let a weak 300-500 wood CC clump win, then the later wood system discovered the better border forest and paid for Storehouse #2 almost immediately.
+
+14.97:
+- opening scan includes same-land neutral wood within the 180m opening search;
+- a forest is eligible only if at least one nearby Storehouse position is in our own territory and on the same land access;
+- sustainable opening forest floor = 800 wood when such a candidate exists; smaller clumps are bridge-only;
+- legal Storehouse offset is included in scoring so a remote neutral forest cannot win merely because its resource center is rich;
+- a materially richer sustainable forest can dominate a closer weaker one when the extra one-time builder walk is reasonable;
+- opening Storehouse candidate ring is broad enough on the FIRST attempt to reach the legal edge of a neutral-border forest;
+- diagnostic now reports mode, total/own/neutral wood, approach, legal offset and average drop distance.
+
+Expected example:
+  [EXPERT-WOOD-OPEN] selected mode=sustainable wood=1500 own=400 neutral=1100 approach=95.0 legalOffset=16.0 ...
+
+2) BORDER WOOD IS ACTUALLY SERVICEABLE AFTER THE BUILD
+A Storehouse legally built inside our territory can now service same-land neutral trees inside its local wood radius. The current district-health/cutting-front logic also counts those neutral continuation trees. This prevents the AI from selecting a border forest correctly and then immediately pretending the neutral half of that same forest does not exist.
+
+3) PERSISTENT TOP-3 BENCHMARK RESTORED
+Canonical Athens Expert vs Athens Very Hard, Mainland Balanced, 200 pop, +35%:
+  #1 IT14.46  BREAK 11:30  DEFEATED 19:25.6
+  #2 IT14.49  BREAK 13:00  DEFEATED 22:31.6
+  #3 IT14.44  BREAK 17:00  DEFEATED 25:00-25:30
+Only a clean canonical benchmark that beats an existing defeated time may change this table.
+
+FROZEN / NOT REWRITTEN
+- IT14.96 zero-sustained-idle recovery
+- IT14.96 second-Barracks economic gate
+- IT14.96 Field #6 recovery
+- IT14.96 hunt-cavalry economic pulse
+- IT14.96 poor-wood strategy adaptation / fast-P2 / Market-barter / expansion logic
+- IT14.96 Athens Forge/slinger scarcity branch
+- IT14.96 compact housing
+- IT14.94 pressure/defense/repeat-expansion behavior
+- attackManager.js and attackPlan.js
+- initialWoodWorksite.js selection mathematics
+- woodWorksite.js
+
+ACCEPTANCE TEST
+The first 90 seconds matter most:
+- no throwaway Storehouse beside the CC when a materially better legal border forest exists;
+- Storehouse #1 should be the real lumber district;
+- Storehouse #2 should not appear immediately just to correct Storehouse #1;
+- opening lumberjacks should actually chop the selected Storehouse forest, including neutral-edge trees it legally services.
+
+RUNTIME TAG
+[EXPERT-IT14.97]

@@ -224,12 +224,15 @@ const DEFAULT_POLICY = Object.freeze({
   // combat-cavalry investment only and must have an actual production purpose.
   huntingCavalryPopulation: 30,
   huntingCavalryMinimumHuntForTwo: 450,
-  huntingCavalryMinimumHuntForThree: 800,
+  huntingCavalryMinimumHuntForThree: 650,
   huntingCavalryEarlyRushMinimumHuntForTwo: 900,
   huntingCavalryEarlyRushMinimumHuntForThree: 1400,
-  huntingCavalryCCMinimumTime: 180,
-  huntingCavalryFoodReserve: 250,
-  huntingCavalryTrainingPriority: 965,
+  // IT14.96: rich wild-game is an economic exception to the 70-civilian CC rule.
+  // Around pop 30, two additional pursuit hunters may interrupt civilian production
+  // briefly, then the CC immediately resumes civilians.
+  huntingCavalryCCMinimumTime: 120,
+  huntingCavalryFoodReserve: 120,
+  huntingCavalryTrainingPriority: 1120,
   firstBarracksPopulation: 30,
   minimumFieldsBeforeBarracks: 2,
   secondBarracksPopulation: 0,
@@ -269,14 +272,15 @@ const DEFAULT_POLICY = Object.freeze({
   phase2TwoBarracksFourFieldEscapeMinimumFailures: 8,
   phase2TwoBarracksFourFieldEscapeNaturalFood: 200,
   phase2TwoBarracksFourFieldEscapeCostCoverage: 0.60,
-  secondBarracksHardFieldPipeline: 2,
+  // IT14.96: no timer may force Barracks #2 ahead of the permanent food economy.
+  secondBarracksHardFieldPipeline: 6,
   secondBarracksEarlyNaturalFood: 1200,
   // If natural food alone can safely bridge two production buildings, do not require
   // speculative fields merely to unlock Barracks #2.
   secondBarracksEarlyNaturalRunwaySeconds: 120,
   secondBarracksHardNaturalFood: 800,
   secondBarracksEarlyFoodBank: 350,
-  minimumCompletedFieldsBeforeSecondBarracks: 5,
+  minimumCompletedFieldsBeforeSecondBarracks: 6,
   foodRateSafetyMargin: 1.12,
   foodBankBridgeForSecondBarracks: 900,
   secondBarracksMinimumFoodBridgeSeconds: 60,
@@ -678,8 +682,10 @@ const DEFAULT_POLICY = Object.freeze({
   houseWoodWorksiteExclusionRadius: 24,
   // IT14.85: compact houses should form small blocks, but never occupy a likely next
   // Storehouse pad in a healthy forest district.
-  houseSnapGap: 0.75,
-  houseClusterMaximumMembers: 3,
+  // IT14.96: keep houses genuinely compact. Continue filling an existing block
+  // instead of declaring a three-house component "full" and starting another gap.
+  houseSnapGap: 0.25,
+  houseClusterMaximumMembers: 12,
   // IT14.89: a one-house hole between compact blocks is preferred before starting
   // another block. Economy/resource reservations still veto the candidate.
   houseGapFillSnapTolerance: 2.5,
@@ -880,14 +886,23 @@ const DEFAULT_POLICY = Object.freeze({
   // A fixed construction plan that never creates a foundation is cancelled and
   // replanned quickly so one queue/builder/pathing stall cannot destroy the build.
   openingStorehouseAwaitingFoundationRetrySeconds: 10,
-  // IT14.93: opening lumber economics. Prefer the best sustainable owned forest
-  // over a small clump merely because it is closer to the CC. The CC approach walk
+  // IT14.93/14.97 opening lumber economics. Prefer the best sustainable same-land
+  // forest that can be legally serviced from our territory over a small CC clump. The CC approach walk
   // happens once; worker-to-dropsite walking repeats for the life of the forest.
   openingWoodSearchRadius: 180,
   openingWoodClusterRadius: 40,
   openingWoodApproachWeight: 0.35,
   openingWoodDropWeight: 6,
   openingWoodTreeCountWeight: 16,
+  // IT14.97: the opening wood search sees same-land neutral forest near our border.
+  // A small owned clump is a bridge, not a reason to ignore a sustainable neutral-edge
+  // forest that can be serviced by a legal Storehouse in our own territory.
+  openingWoodMinimumSustainableAmount: 800,
+  openingWoodLegalPlacementRadius: 32,
+  openingWoodLegalOffsetWeight: 6,
+  openingWoodDominanceRatio: 1.75,
+  openingWoodDominanceMaxExtraApproach: 90,
+  openingWoodDominanceMaxApproach: 170,
   openingStorehouseSecondStorehouseGraceSeconds: 45,
   // IT14.64 housing is production-critical: an unfounded House cannot monopolize the
   // one-house task slot indefinitely.
@@ -1027,6 +1042,10 @@ const DEFAULT_POLICY = Object.freeze({
   // Temporary/fallback lumberjacks may only use trees actually serviced by a
   // completed storehouse or market. This prevents remote no-dropsite wood camps.
   fallbackWoodDropsiteRadius: 36,
+  // IT14.96 last-resort bridge: when every in-territory wood target is gone and the
+  // wood forecast is critical, neutral same-land trees within this dropsite distance
+  // may be chopped while expansion/Storehouse recovery is being established.
+  emergencyNeutralWoodMaximumDropDistance: 90,
   // IT14.41: temporary overflow work should be genuinely productive, not a one-tick
   // waypoint between food capacity checks. Keep a temporary wood assignment for this
   // long unless food has entered explicit recovery mode.
@@ -1311,8 +1330,10 @@ const DEFAULT_POLICY = Object.freeze({
   expertRecoveryMarketPriority: 112,
   // Worker-order escalation: a gather command that remains idle is a failed solution.
   // Blacklist that immediate target for the worker and rotate to another resource.
-  expertFallbackOrderVerifySeconds: 2.5,
-  expertFallbackEscalateAfterFailures: 2,
+  // IT14.96: failed gather orders are corrected quickly; sustained economic idles
+  // are never an acceptable steady state.
+  expertFallbackOrderVerifySeconds: 1.25,
+  expertFallbackEscalateAfterFailures: 1,
   // Attack-plan champions are specialists, not a substitute for siege and citizen
   // infantry. These caps apply to Petra's normal AttackPlan production path too.
   expertAttackPlanChampionGlobalCap: 6,
@@ -1405,6 +1426,22 @@ const DEFAULT_POLICY = Object.freeze({
   woodPracticalDistrictFringeDistance: 34,
   woodCrisisImmediateBank: 250,
   woodCrisisImmediateActiveWorkers: 2,
+  // IT14.96 adaptive wood-scarcity escape. A P1 rush is an opportunity, not a suicide
+  // pact; P2/P3 plans also adapt to the map. If the opening cannot fund sustained wood
+  // production, keep one Barracks, accelerate Town, then use Market/barter and/or
+  // territorial expansion. Unlaunched P1 rushes are cancelled into the P2 recovery lane.
+  strategyWoodPivotMinimumTime: 120,
+  strategyWoodPivotMaximumWoodBank: 350,
+  strategyWoodPivotMaximumAccessibleWood: 900,
+  strategyWoodPivotMaximumLocalWood: 500,
+  strategyWoodPivotMaximumIncomeRate: 9,
+  strategyWoodPivotPhase2MinimumTime: 300,
+  strategyWoodPivotPhase2MinimumPopulation: 55,
+  strategyWoodPivotPhase2MinimumFields: 4,
+  strategyWoodPivotPhase2CostCoverage: 0.65,
+  strategyWoodPivotMarketMinimumDonorBank: 650,
+  strategyWoodPivotBarterMinimumDonorFloat: 350,
+  strategyWoodPivotBaseExpansionMinimumPopulation: 55,
   woodNewDistrictMinimumAmount: 600,
   woodEmergencyNewDistrictMinimumAmount: 350,
   // IT14.54: these are SOFT caps on LIVE WOOD-SERVICE DISTRICTS, not global

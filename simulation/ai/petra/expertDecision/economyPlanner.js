@@ -232,7 +232,7 @@ function fieldDemand(state, policy) {
   desiredFields = Math.min(liveFieldCeiling, Math.max(0, Math.ceil(desiredFields)));
   const missingFields = Math.max(0, desiredFields - existingFields);
 
-  // Barracks #2 launch math: five COMPLETE fields is the physical minimum. After that,
+  // Barracks #2 launch math: six COMPLETE fields is the normal physical minimum. After that,
   // use actual delivered income + already-pending fields and ask whether the current
   // food bank can bridge the remaining deficit for long enough to finish the transition.
   // This replaces IT13's pathological "11-12 fields before barracks #2" gate.
@@ -505,18 +505,30 @@ function planEconomy(rawState, overrides = {}) {
   const secondEarlyReady = secondNaturalReady ||
     (fieldPipeline >= policy.secondBarracksEarlyFieldPipeline &&
      (naturalFoodRemaining >= policy.secondBarracksEarlyNaturalFood || state.resources.food >= policy.secondBarracksEarlyFoodBank));
-  // IT14.28: hard means hard. IT14.27 still let the measured-food model veto the
-  // second barracks after the deadline, which delayed Athens until ~8:15 despite a
-  // huge wood bank. At the hard deadline, two fields in the pipeline are enough; the
-  // building should exist so production can scale as food recovers.
-  const secondHardReady = secondHardWindow && fieldPipeline >= policy.secondBarracksHardFieldPipeline;
+  // IT14.96: the old "hard deadline" is now only a time window. It may never override
+  // the actual food/wood capacity tests below; an empty second trainer is negative value.
   const requiredSecondSupportedFields = Math.max(1, Number(policy.secondBarracksRequiredSupportedFields) || 6);
   const supportedSecondFields = state.food.fieldCapacityKnown ?
     Math.max(fieldPipeline, Number(state.food.supportedFieldSlots) || 0) :
     Math.max(fieldPipeline, Math.max(1, state.structures.farmstead + state.foundations.farmstead + state.queued.farmstead) * policy.fieldsPerFarmstead);
   const secondLayoutReady = farm.naturalFirstHold || supportedSecondFields >= requiredSecondSupportedFields;
-  const secondCapacityReady = farm.naturalFirstHold ||
-    ((farm.secondBarracksFoodReady || secondEarlyReady || secondHardReady) && secondLayoutReady);
+  // IT14.96: a timer is not an economy. When natural food is gone, Barracks #2 requires
+  // six COMPLETED Fields plus enough measured/projected food throughput. It also waits
+  // through a forecast-proven wood crisis: a second production building is useless when
+  // the first one cannot be kept supplied.
+  const secondPermanentFoodReady = state.structures.field >= policy.minimumCompletedFieldsBeforeSecondBarracks;
+  const secondMeasuredTarget = Math.max(0, Number(state.food.twoBarracksFoodBurnRate) || 0) *
+    Math.max(1, Number(policy.foodRateSafetyMargin) || 1.12) * 0.90;
+  const secondThroughputReady = !state.food.measuredFoodIncomeAvailable ||
+    Math.max(0, Number(state.food.measuredFoodIncomeRate) || 0) >= secondMeasuredTarget;
+  const measuredWood = Math.max(0, Number(state.flags.measuredWoodIncomeRate) || 0);
+  const accessibleWood = Math.max(0, Number(state.flags.woodForecastAccessible) || 0);
+  const realWoodCrisis = !!state.flags.woodIncomeStalled ||
+    (state.flags.woodForecastStatus === "critical" && measuredWood < 8 && accessibleWood < 1200);
+  const woodProductionReady = !realWoodCrisis && (
+    measuredWood >= 8 || Math.max(0, Number(state.resources.wood) || 0) >= 450 || accessibleWood >= 1200);
+  const secondCapacityReady = farm.naturalFirstHold ? (secondEarlyReady && woodProductionReady) :
+    (secondPermanentFoodReady && secondThroughputReady && secondLayoutReady && woodProductionReady);
 
   // IT14.75: Barracks #2 is NOT allowed to manufacture farm topology.
   // The shared permanent-food planner owns Farmstead expansion and must first fill
@@ -570,10 +582,13 @@ function planEconomy(rawState, overrides = {}) {
   const forgePipeline = state.structures.forge + state.foundations.forge + state.queued.forge;
   const forgePending = state.foundations.forge + state.queued.forge;
   let transitionForgeTarget = 0;
-  const forgeOneReady = state.structures.barracks >= 2 &&
+  const scarcityForgeReady = state.phase >= 2 && state.flags.athensWoodScarcityForge &&
+    state.structures.barracks >= 1 && state.population.used >= 55 &&
+    (state.structures.field >= 6 || infrastructureNaturalReady);
+  const forgeOneReady = (scarcityForgeReady || state.structures.barracks >= 2 &&
     state.population.used >= policy.phase2Forge1Population &&
     (state.structures.field >= policy.phase2ForgeTransitionMinimumFields || infrastructureNaturalReady) &&
-    (state.phase >= 2 || state.time >= policy.phase2ForgeTransitionTime) &&
+    (state.phase >= 2 || state.time >= policy.phase2ForgeTransitionTime)) &&
     !p1TemplePriorityPending;
   if (forgeOneReady)
     transitionForgeTarget = 1;

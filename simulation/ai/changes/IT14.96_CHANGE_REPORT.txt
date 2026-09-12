@@ -1,0 +1,187 @@
+EXPERT AI PETRA — IT14.96 CHANGE REPORT
+=======================================
+
+PURPOSE
+IT14.96 is a recovery-focused economy/strategy correction based on the failed 14.95
+Athens P2 Tech Push replay on Eurasian Steppe. 14.95 could reach 28-44 sustained idle
+workers, remain stuck at five Fields while food was critical, construct a second Barracks
+without the economy to use it, and completely lose active wood production.
+
+14.96 treats those as linked failures rather than independent thresholds:
+- a worker must receive real productive work instead of an accepted idle state;
+- production capacity is built only when the resource economy can support it;
+- permanent food capacity is allowed to pull its own future-farmer crew out of temporary
+  work when food is genuinely critical;
+- a strategy that the map cannot fund is allowed to adapt instead of blindly following
+  the opening roll;
+- sparse-map wood scarcity gets a deliberate path toward Town, Market/barter, expansion,
+  and (Athens) a low-wood Forge/slinger response.
+
+FILES CHANGED FROM IT14.95
+- petra/expertDecisionController.js
+- petra/expertDecision/economyPlanner.js
+- petra/expertDecision/policy.js
+- EXPERT_BENCHMARKS.txt
+- IT14.96_CHANGE_REPORT.txt                  [NEW]
+
+FROZEN / NON-REGRESSION
+- IT14.93 initial Storehouse / best-sustainable-woodline selector is byte-for-byte unchanged.
+- IT14.92/14.93 wood-worksite module is byte-for-byte unchanged.
+- IT14.94 attackManager.js and attackPlan.js are byte-for-byte unchanged from IT14.95.
+- IT14.94 pressure persistence, proportional defense and repeat-expansion/blacklist logic remain.
+- IT14.95 completed-Cleruchy military production remains.
+- No healer, siege, attack-move, CC-capture, first-Storehouse, Cleruchy-placement or general
+  AttackPlan rewrite in this version.
+
+1) HARD NO-IDLE ECONOMY RECOVERY
+14.95 failure:
+- many fallback workers were repeatedly issued gather orders that failed or targeted
+  already-saturated supplies;
+- a failed cross-resource deposit attempt could still be treated as if productive work
+  had been issued;
+- the forecast could filter every fallback resource as surplus, leaving a worker with
+  no productive assignment;
+- sparse maps could have wood physically present but no formally serviced wood candidate.
+
+14.96:
+- a deposit-before-retarget only counts when a real return-resource order was issued;
+- fallback assignment tries multiple targets inside a resource class instead of accepting
+  the first failed target;
+- Petra's same-turn TC gatherer reservation remains active so later workers see supplies
+  reserved by earlier assignments in the same update;
+- failed fallback orders are verified after ~1.25s and rotate after the first failure;
+- if the forecast filters every preferred resource, Expert overrides the surplus veto:
+  inefficient gathering is better than standing idle;
+- if the preferred list still fails, every gatherable resource class is tried before
+  [EXPERT-NO-IDLE] NO-TARGET is accepted;
+- critical wood may use otherwise-unserviced own-territory trees as a temporary bridge;
+- if own wood is literally unavailable, same-land neutral wood near an existing wood
+  dropsite may be used as a last-resort bridge while expansion/recovery proceeds.
+
+Expected diagnostics:
+  [EXPERT-NO-IDLE] hard productive fallback ...
+  [EXPERT-NO-IDLE] ULTIMATE ...                (only when normal preference failed)
+  [EXPERT-RECOVERY] failed-order ... action=retarget
+Sustained multi-dozen idle counts are a failure condition for this build.
+
+2) SECOND BARRACKS IS NOW ECONOMY-CONTROLLED
+14.95 built Barracks #2 while the live wood district was collapsing and the permanent
+food economy was still only five Fields.
+
+14.96 normal no-natural-food contract:
+- require six COMPLETED Fields, not merely a pipeline/timer;
+- require measured food throughput close to the projected CC + two-Barracks burn;
+- require supported Field layout;
+- reject Barracks #2 during a real forecast-proven wood crisis;
+- the old hard deadline is only a time window and can no longer override these tests.
+
+Rich natural-food maps keep the existing alternate path when natural food genuinely has
+enough stock/runway to support the second trainer.
+
+Offline economy-planner checks before packaging:
+- 5 Fields + healthy resources: NO Barracks #2;
+- 6 Fields + inadequate food income: NO Barracks #2;
+- 6 Fields + adequate food/wood throughput: Barracks #2 authorized;
+- 6 Fields + critical low-income/low-access wood: NO Barracks #2;
+- genuinely rich natural-food runway: early Barracks #2 still allowed.
+
+3) FIELD #6: FOOD CAPACITY OUTRANKS TEMPORARY WORK
+14.95 could repeatedly request pipeline 5/6 but fail to find a future-farmer crew because
+those same civilians were temporarily protecting a critical wood assignment.
+
+14.96:
+- when natural food is gone and food forecast is short/critical, Field construction is
+  allowed to recover eligible post-opening civilians even from a temporarily short
+  resource assignment;
+- the system first attempts to recover the normal three-worker minimum crew;
+- the two-worker emergency minimum remains only a final launch floor;
+- request != progress remains from 14.95: only a real queued/foundation/completed Field
+  resets the Field progress timer.
+
+4) HUNT CAVALRY IS AN ECONOMIC EXCEPTION TO THE 70-CIVILIAN CC RULE
+14.95 incorrectly blocked optional hunting cavalry until 70 civilians.
+
+14.96:
+- ordinary CC military remains blocked below 70 except real attack/defense exceptions;
+- rich safe wild game is different: around pop 30 / ~2:00, the CC may briefly reduce its
+  civilian queue depth and train up to two additional pursuit hunters when hunt value
+  warrants it;
+- immediately afterward the CC resumes civilians toward 70;
+- doctrine label does not suppress profitable hunt: P1/P2/P3 use the same safe-hunt
+  economics.
+
+5) ADAPTIVE WOOD-SCARCITY STRATEGY
+A rolled strategy is now a plan, not a prison.
+
+Around ~2:00, while still in Village Phase, Expert evaluates:
+- wood forecast state;
+- current wood bank;
+- immediately accessible + local worksite wood;
+- delivered wood income / genuine stall state.
+
+If wood is critically poor (or severely short under stricter stock limits):
+- unlaunched Early/Late P1 rushes are cancelled;
+- already-trained soldiers remain useful reserve units;
+- doctrine adapts to P2 Tech Push;
+- ordinary P2/P3 rolls keep their identity but enter the same wood-recovery lane;
+- one Barracks is enough for the recovery build;
+- optional P1 eco sweep is suppressed so scarce wood is not spent ahead of Town;
+- Village soldier production protects phase wood and will choose a zero-wood unit if one
+  is legitimately available rather than blindly funding wood-heavy infantry.
+
+Expected diagnostic:
+  [EXPERT-STRATEGY] ADAPT <old>->... reason=wood-scarcity ...
+
+6) FAST-TOWN WOOD RECOVERY: MARKET / BARTER / EXPANSION
+When adaptive wood-scarcity mode is active:
+- Town may be queued from one Barracks after ~5:00, ~55 pop and at least four Fields
+  (or healthy natural-food infrastructure), with ~65% phase-cost coverage;
+- once Town is reached, a Market can be requested specifically as a wood-recovery barter
+  valve when non-wood bank is available;
+- forecast barter may use a lower donor-float floor specifically to buy critical wood;
+- non-Athens scarcity base expansion may begin from ~55 pop when wood is the missing
+  resource instead of waiting for the normal later threshold;
+- Athens keeps its existing Cleruchy scarcity-expansion path, including P1 emergency
+  expansion and IT14.94 repeat/blacklist behavior.
+
+Expected diagnostics:
+  [EXPERT-PHASE] ... lane=wood-scarcity-pivot
+  [EXPERT-RECOVERY] build=market reason=wood-pivot ...
+  [EXPERT-FORECAST] barter ... buy=wood ...
+  [EXPERT-EXPAND] ... primary=wood ...
+
+7) ATHENS LOW-WOOD FORGE / SLINGER RESPONSE
+The failed 14.95 game rolled P2 Forge-Tech Push but never built a Forge.
+
+14.96 Town behavior:
+- if Athens still has a critical wood forecast, Forge #1 may be built with one Barracks
+  once the permanent-food economy is established;
+- the existing unlock logic still verifies the LIVE unlock tech cost and will not pretend
+  a wood-cost tech is a zero-wood solution;
+- during the adaptive wood-recovery branch, the food reserve for the intended slinger
+  unlock is relaxed so the branch can activate before the economy has already recovered;
+- military selection already prefers a legitimate zero-wood slinger under protected-wood
+  conditions once the unlock actually exists.
+
+Offline planner check: Town + one Barracks + six Fields + Athens wood-critical flag
+correctly authorizes Forge #1.
+
+8) COMPACT HOUSING
+- house snap edge target reduced from 0.75m to 0.25m;
+- a compact component may continue to 12 houses instead of being declared full at 3;
+- existing gap-fill and all obstruction/resource-placement vetoes remain;
+- house diagnostic now reports center distance AND estimated edge gap instead of calling
+  center-to-center distance a "gap".
+
+VALIDATION BEFORE PACKAGING
+- all 58 Petra JavaScript files: node --check PASS;
+- all 58 Petra JavaScript files: vm.SourceTextModule parse PASS;
+- changed-file audit against IT14.95;
+- frozen attackManager.js, attackPlan.js, initialWoodWorksite.js and woodWorksite.js
+  hash-compared byte-for-byte against IT14.95;
+- synthetic economy-planner checks for Barracks #2 and scarcity Forge;
+- packaged ZIP integrity and extract-vs-working-tree comparison required before release.
+
+NOTE
+These are static/offline checks plus pure-planner tests. The real acceptance test remains
+an actual 0 A.D. replay, especially on sparse Steppe/Sahara-like wood and a rich-hunt map.

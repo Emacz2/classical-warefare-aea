@@ -65,8 +65,8 @@ function ownerAt(context, position) {
 }
 
 function allowedWoodTerritory(gameState, owner, playerId, context = {}) {
-  // Expert opening civilians stay inside their own territory. Neutral/allied wood is
-  // an explicit opt-in only; the live opening controller does not enable it.
+  // Neutral/allied wood is explicit opt-in. IT14.97 enables neutral wood only for
+  // same-land opening/border lumber districts that can be served from our territory.
   if (owner === playerId)
     return true;
   if (owner === 0 && context.allowNeutralWood === true)
@@ -272,12 +272,15 @@ function collectInitialWoodCandidates(gameState, context) {
     const anchorSq = squareDistance(pos, anchorPosition);
     if (anchorSq > searchSq)
       continue;
+    const territoryOwner = ownerAt(context, pos);
     trees.push({
       id: ent.id(),
       remaining,
       saturated: !!isSupplyFull(gameState, ent),
       position: pos,
-      anchorDistance: Math.sqrt(anchorSq)
+      anchorDistance: Math.sqrt(anchorSq),
+      territoryOwner,
+      neutral: territoryOwner === 0
     });
   }
   trees.sort((a, b) => a.anchorDistance - b.anchorDistance || a.id - b.id);
