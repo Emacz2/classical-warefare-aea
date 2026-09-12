@@ -77,10 +77,12 @@ const DEFAULT_POLICY = Object.freeze({
   expertCivilianQueueDepthStartPopulation: 24,
   expertProductionVillagerPriority: 1000,
   expertProductionSoldierPriority: 950,
-  // IT14.78 CC contract: every doctrine keeps the Civic Centre civilian-only until
-  // at least 30 permanent civilians exist. Only an ACTIVE P1 rush may then borrow
-  // the CC for one-unit infantry pulses; boom doctrines remain civilian-only to 70.
-  expertP1CCInfantryMinimumCivilians: 30,
+  // IT14.95 CC contract: the Civic Centre grows to 70 civilians for every doctrine.
+  // Below 70, military production from the CC is allowed only for a real attack/defense
+  // state; selecting a P1 doctrine alone is not enough.
+  expertP1CCInfantryMinimumCivilians: 30, // retained for legacy priority/read compatibility
+  expertCCP1AttackExceptionArmyFraction: 0.75,
+  expertCCP1AttackExceptionMinimumArmy: 12,
   expertP1CCMilitaryPriority: 1010,
   expertP1ReserveAttackMinimumArmy: 45,
   expertP1ReserveAttackMinimumTime: 360,
@@ -828,6 +830,9 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.94: one expansion is not a lifetime cap. The first healthy expansion remains
   // optional; additional Cleruchies require renewed scarcity and are spaced/cooldown-bound.
   athensCleruchyMaximumCount: 3,
+  // IT14.95: completed Cleruchies contribute forward military production.
+  expertCleruchyProductionQueueDepth: 2,
+  expertCleruchyTrainingBatch: 1,
   athensCleruchyRepeatCooldownSeconds: 90,
   athensCleruchyMinimumRepeatSpacing: 72,
   athensCleruchyFailedAnchorCooldownSeconds: 90,

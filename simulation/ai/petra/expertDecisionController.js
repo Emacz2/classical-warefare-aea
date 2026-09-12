@@ -400,13 +400,52 @@ export class ExpertDecisionController
 
 	ccCivilianTrainingTarget(gameState)
 	{
+		// IT14.95 global CC economy contract: every doctrine grows to seventy permanent
+		// civilians from the Civic Centre.  A real attack/defense may temporarily interleave
+		// one military unit, but selecting a rush doctrine by itself never lowers this target.
+		return Math.max(70, Number(mergePolicy().civilianCap) || 70);
+	}
+
+	ccMilitaryExceptionReason(gameState)
+	{
+		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+		const target = this.ccCivilianTrainingTarget(gameState);
+		if (workers.civilians >= target)
+			return "civilian-cap";
+
+		// A genuine base defense may borrow the CC for one emergency military pulse.
+		const defense = this.expertDefenseState;
+		if (defense && defense.active && Math.max(0, Number(defense.foeCount) || 0) > 0)
+			return "defense";
+
+		// Once an Expert attack is actually on the field, reinforcements are a legitimate
+		// exception to the civilian-only rule regardless of doctrine/phase.
+		for (const plan of this.expertCombatPlans(true))
+			if (plan && plan.expertAuthorityOwned && plan.unitCollection && plan.unitCollection.length > 0)
+				return "active-attack";
+
 		const doctrine = this.ensureStrategicDoctrine(gameState);
-		// IT14.74 boom invariant: P2 Tech Push and P3 Boom never use the Civic Centre
-		// for soldiers/hunting cavalry until 70 permanent civilians actually exist.
-		// Barracks remain the continuous citizen-soldier production engine throughout.
-		if (doctrine && (doctrine.id === "p2_tech_push" || doctrine.id === "p3_boom_all_in"))
-			return 70;
-		return this.currentCivilianCap(gameState);
+		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
+		// P1 is the only case where the attack can be real before seventy civilians.  Do
+		// not confuse mere doctrine selection/early arming with "doing a P1 attack": the
+		// rush must already be near its actual launch package.
+		if (doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"))
+		{
+			const targetArmy = Math.max(12, Number(doctrine.rushSize) || 20);
+			const fraction = Math.max(0.5, Math.min(1, Number(policy.expertCCP1AttackExceptionArmyFraction) || 0.75));
+			const minimum = Math.max(Number(policy.expertCCP1AttackExceptionMinimumArmy) || 12, Math.ceil(targetArmy * fraction));
+			const manager = this.HQ && this.HQ.attackManager;
+			for (const plan of manager && manager.upcomingAttacks && manager.upcomingAttacks[AttackPlan.TYPE_RUSH] || [])
+				if (plan && plan.expertAuthorityOwned && plan.unitCollection &&
+				    (plan.expertLaunchAuthorized || plan.unitCollection.length >= minimum))
+					return "p1-attack";
+		}
+
+		// P2/P3 plans are only created/retained near a real attack package.  Re-use the
+		// existing near-launch test rather than inventing another doctrine-specific timer.
+		if (this.expertMajorAttackNearLaunch(gameState))
+			return "major-attack";
+		return undefined;
 	}
 
 	isP3BoomDoctrine(gameState)
@@ -4344,9 +4383,10 @@ export class ExpertDecisionController
 				" open=" + Number(capacity.openFieldSlots || 0) + " food=" + Math.round(foodBank) +
 				" natural=" + Math.round(naturalRemaining) + " stalled=" + Math.round(now - this.lastFieldPipelineProgressAt) + "s");
 		}
-		// Restart the timer after issuing a rescue request; if it never materializes, the
-		// ordinary field lifecycle retries it and this watchdog can fire again later.
-		this.lastFieldPipelineProgressAt = now;
+		// IT14.95: issuing a request is NOT progress.  The timer is reset only when the
+		// real Field pipeline (built + foundation + queued) increases above.  In 14.94 the
+		// watchdog could request Field #6, lose that request to crew availability, reset its
+		// own timer, and then wait another full interval while food remained critical.
 		return { ...frame, "actions": [action, ...(frame.actions || [])] };
 	}
 
@@ -8372,13 +8412,11 @@ export class ExpertDecisionController
 	trainExpertHuntingCavalry(gameState, cc)
 	{
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
-		const doctrine = this.ensureStrategicDoctrine(gameState);
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
-		// IT14.78: before 30 civilians the CC is civilian-only for EVERY doctrine.
-		// Boom doctrines preserve the stronger existing civilian-only-to-70 contract.
-		if (workers.civilians < (Number(policy.expertP1CCInfantryMinimumCivilians) || 30))
-			return false;
-		if (doctrine && (doctrine.id === "p2_tech_push" || doctrine.id === "p3_boom_all_in") && workers.civilians < 70)
+		// IT14.95: "CC civilians only to 70" also means no optional hunting cavalry
+		// steals Civic Centre time before the economic target. Combat exceptions are
+		// handled by trainExpertMilitary; hunt cavalry is never an emergency defender.
+		if (workers.civilians < this.ccCivilianTrainingTarget(gameState))
 			return false;
 		if (!cc || gameState.getPopulation() < policy.huntingCavalryPopulation ||
 		    (Number(gameState.ai.elapsedTime) || 0) < (Number(policy.huntingCavalryCCMinimumTime) || 180))
@@ -9459,15 +9497,11 @@ export class ExpertDecisionController
 		if (workers.civilians >= cap)
 			return false;
 		const work = this.expertCivilianWorkCount(gameState, queues, cc);
-		const doctrine = this.ensureStrategicDoctrine(gameState);
-		const attacks = this.HQ.attackManager;
-		const p1RushArming = doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush") &&
-			workers.civilians >= (Number(policy.expertP1CCInfantryMinimumCivilians) || 30) &&
-			!(attacks && (attacks.expertRushHasLaunched || attacks.expertRushRecoveryMode));
-		// IT14.78: keep civilian growth alive, but stop buffering two civilian batches
-		// ahead of a live P1 rush. One civilian batch plus one CC infantry pulse can
-		// interleave while the Barracks remain the primary soldier engine.
-		const desiredDepth = p1RushArming ? 1 :
+		const militaryException = this.ccMilitaryExceptionReason(gameState);
+		// IT14.95: selecting/arming a P1 doctrine no longer reduces civilian buffering.
+		// Only a genuine active/near-launch attack or base defense may interleave a single
+		// CC military pulse before seventy civilians.
+		const desiredDepth = militaryException && militaryException !== "civilian-cap" ? 1 :
 			(gameState.getPopulation() >= (Number(policy.expertCivilianQueueDepthStartPopulation) || 24) ?
 				Math.max(1, Number(policy.expertProductionQueueDepth) || 2) : 1);
 		if (work.batches >= desiredDepth)
@@ -9536,9 +9570,9 @@ export class ExpertDecisionController
 
 		const policy = mergePolicy();
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
-		// Before the civilian cap, leave one modest food reserve so the CC can resume
-		// civilians after a military pulse. At the cap the CC may join military production.
-		const reserve = workers.civilians >= this.currentCivilianCap(gameState) ? 0 : policy.soldierFoodReserve;
+		// IT14.95: protect civilian growth to the real CC target (70), not a lower
+		// doctrine-specific economic cap. Barracks/Cleruchies may still spend normally.
+		const reserve = workers.civilians >= this.ccCivilianTrainingTarget(gameState) ? 0 : policy.soldierFoodReserve;
 		const resources = gameState.getResources();
 		const athensResourceSlingerWindow = gameState.getPlayerCiv() === "athen" &&
 			(Number(resources.wood) || 0) <= (Number(policy.athensSlingerLowWood) || 300) &&
@@ -9635,25 +9669,26 @@ export class ExpertDecisionController
 		// current army is already large. Siege retains first claim on reserved population;
 		// infantry orders may wait behind the cap as immediate casualty replacements.
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
-		const doctrine = this.ensureStrategicDoctrine(gameState);
-		const attacks = this.HQ.attackManager;
-		const atCivilianCap = workers.civilians >= this.ccCivilianTrainingTarget(gameState);
-		const p1RushDoctrine = doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush");
-		const p1RushArming = p1RushDoctrine &&
-			workers.civilians >= (Number(policy.expertP1CCInfantryMinimumCivilians) || 30) &&
-			!(attacks && (attacks.expertRushHasLaunched || attacks.expertRushRecoveryMode));
+		const civilianTarget = this.ccCivilianTrainingTarget(gameState);
+		const atCivilianCap = workers.civilians >= civilianTarget;
+		const militaryException = atCivilianCap ? "civilian-cap" : this.ccMilitaryExceptionReason(gameState);
 
-		// IT14.78 CC contract:
-		//   * <30 civilians: ZERO CC infantry for every doctrine.
-		//   * P1 rush only: after 30, the CC may add one-unit infantry pulses while
-		//     Barracks remain the continuous soldier engine and civilian growth continues.
-		//   * P2/P3/non-rush: the CC remains civilian-only to the 70-civilian target.
+		// IT14.95 CC contract:
+		//   * below 70 civilians: CIVILIANS ONLY from the CC by default;
+		//   * exceptions are real combat states (P1 attack package, active P2/P3 attack,
+		//     or meaningful base defense), never doctrine selection alone;
+		//   * at 70 civilians the CC may join ordinary military production.
 		let ccQueued = false;
-		if (cc && p1RushArming && (Number(gameState.ai.elapsedTime) || 0) - this.lastP1CCSoldierQueueAt >= 20)
+		if (cc && !atCivilianCap && militaryException &&
+		    (Number(gameState.ai.elapsedTime) || 0) - this.lastP1CCSoldierQueueAt >= 20)
 		{
-			ccQueued = this.queueExpertSoldierBatch(gameState, queues, cc, "cc-rush", 1, 1, false);
+			ccQueued = this.queueExpertSoldierBatch(gameState, queues, cc, "cc-combat", 1, 1, false);
 			if (ccQueued)
+			{
 				this.lastP1CCSoldierQueueAt = Number(gameState.ai.elapsedTime) || 0;
+				aiWarn("[EXPERT-CC] military-exception reason=" + militaryException +
+					" civilians=" + workers.civilians + "/" + civilianTarget);
+			}
 		}
 		if (cc && !ccQueued && atCivilianCap)
 			this.queueExpertSoldierBatch(gameState, queues, cc, "cc-cap", 1,
@@ -9696,6 +9731,24 @@ export class ExpertDecisionController
 				delete this.trainerIdleSince[barracks.id()];
 				if (source === "barracks-opening")
 					this.firstBarracksSoldierBatchQueued = true;
+			}
+		}
+
+		// IT14.95: a completed Athens Cleruchy is also a forward military production
+		// building, not a one-time territorial marker. Dynamically inspect its live
+		// trainable CitizenSoldier roster and keep a shallow current+next queue just like
+		// a Barracks. This intentionally does not alter Cleruchy placement/expansion logic.
+		if (gameState.getPlayerCiv() === "athen")
+		{
+			const cleruchyType = gameState.applyCiv(BUILDING_SPECS.cleruchy.template);
+			const cleruchies = this.structuresByTemplate(gameState, cleruchyType).sort((a, b) => a.id() - b.id());
+			for (const cleruchy of cleruchies)
+			{
+				const depth = Math.max(1, Number(policy.expertCleruchyProductionQueueDepth) || 2);
+				const batch = Math.max(1, Number(policy.expertCleruchyTrainingBatch) || 1);
+				if (this.queueExpertSoldierBatch(gameState, queues, cleruchy, "cleruchy-auto", batch, depth, true))
+					aiWarn("[EXPERT-TRAIN] cleruchy-auto trainer=" + cleruchy.id() + " depth=" +
+						this.expertSoldierWorkCount(queues, cleruchy) + "/" + depth);
 			}
 		}
 	}
@@ -14363,7 +14416,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.94] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.95] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -14429,7 +14482,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.94] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.95] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

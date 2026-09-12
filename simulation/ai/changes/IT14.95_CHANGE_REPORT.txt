@@ -1,0 +1,111 @@
+EXPERT AI PETRA — IT14.95 CHANGE REPORT
+=======================================
+
+PURPOSE
+IT14.95 is a narrow production/food-capacity correction based on the 2026-09-11
+Athens Expert replay. IT14.93 opening/resource work and IT14.94 pressure/defense/
+repeat-expansion changes are intentionally preserved.
+
+The replay exposed three specific issues:
+1) Field #6 was delayed for minutes despite food:critical, no natural food and a
+   watchdog that had already requested the next Field;
+2) Early-P1 doctrine selection allowed the Civic Centre to interleave soldiers at
+   only ~42 civilians, slowing the economic target and starving the future-farmer
+   pipeline;
+3) a completed Cleruchy successfully expanded territory but then sat idle instead
+   of contributing military production.
+
+FILES CHANGED FROM IT14.94
+- petra/expertDecisionController.js
+- petra/expertDecision/policy.js
+- EXPERT_BENCHMARKS.txt
+- IT14.95_CHANGE_REPORT.txt                  [NEW]
+
+FROZEN / NON-REGRESSION
+- IT14.93 opening Storehouse selection is unchanged.
+- IT14.93 Storehouse #2 establishment grace is unchanged.
+- IT14.92 forecast/actual-work resource authority is unchanged.
+- IT14.94 P2 pressure persistence, defense sizing, Cleruchy repeat expansion,
+  failed-anchor blacklist and premium-building placement recovery are unchanged.
+- IT14.90 permanent future-farmer ownership/3-4 Field crews are preserved.
+- attackManager.js and attackPlan.js are byte-for-byte unchanged from IT14.94.
+- No woodline placement, Storehouse placement, Farmstead geometry, Field packing,
+  healer, siege, attack-move, CC-capture or general AttackPlan rewrite.
+
+1) FIELD PROGRESS WATCHDOG: REQUEST != PROGRESS
+Previous behavior:
+- the watchdog correctly detected a stalled Field pipeline;
+- merely INSERTING a rescue Field action reset lastFieldPipelineProgressAt;
+- if the future-farmer crew layer then rejected/delayed that action, the watchdog
+  believed it had made progress and waited another interval;
+- in the reference replay Expert sat at 5 Fields from roughly 6:07 to ~9:30 while
+  food was critical and natural food was gone.
+
+IT14.95:
+- lastFieldPipelineProgressAt is reset ONLY when the real pipeline increases
+  (built Field + Field foundation + queued Field);
+- a rescue request that fails to acquire a valid crew does not hide the stall;
+- the existing 3-4 newly-trained future-farmer crew rule remains unchanged;
+- the 2-builder food-emergency escape remains an emergency only.
+
+Expected diagnostic:
+  [EXPERT-FIELD-WATCH] force next field ...
+followed promptly by:
+  [EXPERT-FARM-CREW] field ... futureBuilders=... stay=farmer
+and a real queued/foundation Field.
+
+2) GLOBAL CIVIC-CENTRE CIVILIAN TARGET = 70
+Previous behavior:
+- P2/P3 already protected CC civilian production to 70;
+- P1 rush doctrines could lower the practical CC target and begin cc-rush military
+  pulses while only ~42 civilians existed;
+- that slowed civilian growth and delayed the new-civilian farm pipeline.
+
+IT14.95 contract:
+- EVERY doctrine has a CC civilian target of 70;
+- below 70 the CC trains civilians by default;
+- selecting or merely arming a P1 doctrine is NOT an exception;
+- one-unit CC military pulses below 70 are allowed only for a real combat state:
+    * meaningful base defense;
+    * an attack already on the field;
+    * a P1 rush already near its real launch package (~75% / minimum 12);
+    * an existing P2/P3 major attack that is actually near launch;
+- at 70 civilians the CC may join normal military production;
+- optional pursuit/hunting cavalry from the CC is also blocked until 70 civilians.
+
+Barracks and Cleruchies remain free to train soldiers before 70.
+
+Expected diagnostics:
+  [EXPERT-PRODUCTION] cc-continuity ... cap=70 ...
+No ordinary [EXPERT-MIL] queued cc-* soldiers below 70 unless accompanied by:
+  [EXPERT-CC] military-exception reason=... civilians=X/70
+
+3) COMPLETED CLERUCHIES TRAIN MILITARY UNITS
+Previous behavior:
+- IT14.94 could finally build/rebuild a useful Cleruchy;
+- after completion the Cleruchy was not part of Expert's continuous military
+  production loop and could remain idle.
+
+IT14.95:
+- every completed Athens Cleruchy is enrolled as a forward military trainer;
+- it dynamically reads the current CWA trainable roster through the same existing
+  CitizenSoldier selector used by normal Expert infantry production;
+- queue depth is shallow (2), one unit per refill, so it supplements rather than
+  overwhelms Barracks composition/resource planning;
+- it inherits normal population, resource, combat-ownership and police gating.
+
+Expected diagnostics after Cleruchy completion:
+  [EXPERT-MIL] queued cleruchy-auto soldiers=... trainer=...
+  [EXPERT-TRAIN] cleruchy-auto trainer=... depth=.../2
+
+VALIDATION BEFORE PACKAGING
+- all Petra JavaScript files: node --check PASS;
+- all Petra JavaScript files: independent vm.SourceTextModule parse PASS;
+- changed-file audit against IT14.94;
+- frozen attackManager.js, attackPlan.js, initialWoodWorksite.js and woodWorksite.js
+  hash-compared byte-for-byte against IT14.94;
+- packaged ZIP extracted and compared byte-for-byte to the working tree;
+- unzip -t PASS.
+
+NOTE
+These are static/offline checks. 0 A.D. replay testing is still required.

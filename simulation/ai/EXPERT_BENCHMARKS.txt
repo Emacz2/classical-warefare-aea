@@ -1,66 +1,66 @@
-EXPERT BENCHMARKS — IT14.94
+EXPERT BENCHMARKS — IT14.95
 
 PRIMARY GOAL
-Make Expert harder in the areas the 2026-09-11 human-vs-Expert replay exposed—battlefield
-judgment, proportional defense, repeated resource expansion and premium-infrastructure
-placement—without regressing the IT14.93 opening/resource fixes.
+Fix the delayed permanent-food pipeline, enforce the user's 70-civilian Civic Centre
+contract, and make completed Cleruchies productive military buildings WITHOUT changing
+IT14.93 opening/resource placement or IT14.94 combat/expansion behavior.
 
 FROZEN / HARD NON-REGRESSION
-- Opening Storehouse must still choose the best sustainable forest, not a tiny near-CC clump.
-- No immediate Storehouse #2 during the 45-second establishment grace.
-- ZERO woodsite.averageDropDistance finite-number error spam.
+- Opening Storehouse still chooses the best sustainable forest.
+- Storehouse #2 still respects the opening establishment grace.
+- No woodsite.averageDropDistance finite-number error spam.
 - Keep IT14.92 forecast/actual-work economy authority.
-- Keep future-farmer Field crews, natural-food priority, healer escort, no-bolt rule,
-  Iphicratean optionality, house/farm geometry, CC civilian continuity and siege behavior.
+- Keep 3-4 permanent future-farmer Field crews.
+- Keep IT14.94 pressure-hold, proportional defense, repeat Cleruchy expansion,
+  failed-anchor fallback and Gymnasium/Prytaneion placement recovery.
+- attackManager.js and attackPlan.js must be byte-for-byte IT14.94.
 
-1) P2 PRESSURE-HOLD TEST
-When a normal P2/P3-nonterminal attack has a poor historical casualty exchange but still
-owns the local battlefield:
-- expect [EXPERT-PRESSURE] hold ...
-- DO NOT expect [EXPERT-REBOOM] bad-exchange solely at readings resembling
-  56v0 / 50v1 / 74v0 / 64v0 / 84v0 with a 40+ army;
-- if static defenses are present, a short REGROUP is acceptable, but the same attack plan
-  should survive and resume;
-- if the army genuinely collapses/outnumbers locally, ordinary reboom MUST still happen.
+1) FIELD #6 / FOOD-CAPACITY TEST
+On a map where natural food expires and desiredFields exceeds the real Field pipeline:
+- if food is critical/short and 3+ future farmers are available, the watchdog uses its
+  fast critical response rather than waiting minutes;
+- a [EXPERT-FIELD-WATCH] request does NOT reset progress unless built+foundation+queued
+  actually rises;
+- expect [EXPERT-FARM-CREW] field ... futureBuilders=3-4 ... stay=farmer;
+- established lumberjacks/miners must not swarm a Field and then return to work;
+- do not repeat the IT14.94 5-Field plateau from ~6:07 to ~9:30.
 
-2) DEFENSE TEST
-For a raid of roughly 8-12 units while Expert has a large 70-100-man military:
-- [EXPERT-DEF] mobilize should show a bounded response, not the entire army;
-- home/reserve soldiers should answer before pulling the active offensive army;
-- main attack pressure should continue where practical;
-- a large/outmatching enemy attack may still mobilize everything;
-- normal engage should not fire with 22 assembled against 36 unless the enemy is already
-  inside the immediate-engage radius.
+2) CIVIC CENTRE 70-CIVILIAN CONTRACT
+Until permanent civilians >=70:
+- CC queues civilians continuously;
+- ordinary doctrine selection/arming cannot queue CC infantry;
+- no optional hunting/pursuit cavalry from the CC;
+- Barracks/Cleruchy military production is allowed normally.
 
-3) REPEAT EXPANSION TEST
-Athens:
-- first Cleruchy behavior remains valid;
-- if later resource scarcity returns, a second and eventually third Cleruchy are legal;
-- repeat expansion must be >=72m from an existing Cleruchy and respect the 90s completion
-  cooldown;
-- later frontier search may extend outward from a completed Cleruchy rather than staying
-  trapped in the original CC ring;
-- no more than one live Cleruchy build task/foundation at a time.
+Legitimate below-70 exception:
+- real incoming attack/defense;
+- launched attack;
+- P1 rush already near its launch package;
+- P2/P3 major attack actually near launch.
+When such an exception queues a CC soldier, expect:
+  [EXPERT-CC] military-exception reason=... civilians=X/70
 
-4) CLERUCHY PLACEMENT FALLBACK TEST
-If a chosen frontier district cannot legally place:
-- expect [EXPERT-EXPAND] blacklist cleruchy-anchor ...
-- the next attempt should choose a distinct candidate, not repeat the same x/z forever;
-- no repeated 6056-rejection loop against the same resource anchor;
-- Cleruchy fallback must remain near useful frontier resources, not become a random
-  home-base building.
+At >=70 civilians:
+- normal cc-cap military production may resume.
 
-5) ATHENS PREMIUM TRANSITION TEST
-On a mature Town/City Athens economy with enough bank:
-- if [EXPERT-ATHENS] build=gymnasium appears and the first search fails, the widened owned-
-  territory grid should have a materially better chance to place it;
-- once built, the pre-existing champion training doctrine should be free to operate;
-- this patch does NOT require a new cavalry doctrine or force champions when unaffordable.
+3) CLERUCHY PRODUCTION TEST
+After:
+  [EXPERT-EXPAND] cleruchy-complete count=1
+expect the completed building to start contributing military training when resources/pop allow:
+  [EXPERT-MIL] queued cleruchy-auto soldiers=... trainer=...
+  [EXPERT-TRAIN] cleruchy-auto trainer=... depth=.../2
+It should keep current+next shallow work and not sit permanently idle.
 
-6) OPENING/ECONOMY SANITY CHECK
-In the first 5-8 minutes compare against IT14.93:
-- Storehouse #1 location and opening workers should look the same or better, not different
-  because of 14.94;
+4) IT14.94 COMBAT/EXPANSION REGRESSION TEST
+- P2 locally-won bad exchange still gives [EXPERT-PRESSURE] hold rather than needless reboom.
+- Small raid gets bounded [EXPERT-DEF] response, not the whole army.
+- failed Cleruchy anchor is blacklisted and next candidate is tried.
+- repeat Cleruchies remain legal under renewed scarcity, count <=3.
+
+5) OPENING / RESOURCE SANITY
+First 5-8 minutes:
+- IT14.93 opening Storehouse behavior unchanged;
+- no immediate second Storehouse regression;
+- no new Farmstead/house/woodline placement regression;
 - no new idle-opening regression;
-- no new Farmstead/Field/house placement regression;
-- [EXPERT-IT14.94] diagnostics must continue throughout the replay.
+- [EXPERT-IT14.95] diagnostics continue throughout the replay.
