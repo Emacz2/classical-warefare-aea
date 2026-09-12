@@ -113,6 +113,7 @@ function decidePostOpeningCivilianJob(input = {}) {
   const farmersPerField = Math.max(1, finiteNonNegativeInteger(input.farmersPerField, 4));
   const farmCapacity = Math.max(0, fields * farmersPerField);
   const requiredFoodWorkers = Math.max(0, finiteNonNegativeInteger(input.requiredFoodWorkers, 10));
+  const targetWoodCivilians = Math.max(0, finiteNonNegativeInteger(input.targetWoodCivilians, 20));
   const naturalFoodAvailable = !!input.naturalFoodAvailable;
   const surplusWoodFoodBank = Math.max(0, Number(input.foodSurplusNewCivilianWoodBank) || 1200);
   const surplusWoodFoodRatio = Math.max(1, Number(input.foodSurplusNewCivilianWoodRatio) || 1.75);
@@ -127,12 +128,11 @@ function decidePostOpeningCivilianJob(input = {}) {
   const stoneTarget = Math.max(0, finiteNonNegativeInteger(input.miningTargetStoneWorkers, 6));
   const metalTarget = Math.max(0, finiteNonNegativeInteger(input.miningTargetMetalWorkers, 6));
 
-  // IT14.20 contract: ordinary civilians own food after the opening 20-civilian
-  // wood tranche. Citizen-soldiers carry later wood growth. A food-owned civilian
-  // may TEMPORARILY chop wood when no completed food slot exists, but its permanent
-  // job remains food_owned so the next field immediately pulls it back.
-  if (woodCivilians < 20)
-    return { job: "wood", reason: "restore the 20-civilian opening wood workforce" };
+  // IT15.0 contract: the size of the dedicated-civilian wood tranche is strategic.
+  // Rush doctrines use only the opening three trained lumber civilians; citizen-soldiers
+  // carry secondary-resource growth. Boom/tech doctrines retain the larger default.
+  if (woodCivilians < targetWoodCivilians)
+    return { job: "wood", reason: `restore the ${targetWoodCivilians}-civilian strategic wood workforce` };
 
   if (foodWorkers < requiredFoodWorkers) {
     if (naturalFoodAvailable)
@@ -280,8 +280,9 @@ function foodWoodFeedbackDirective(input = {}) {
   // there would regress a strong opening. Existing wood civilians only move when the
   // wood bank is itself healthy and genuinely ahead of food.
   const woodCanFundRecovery = wood >= recoveryWoodBank && wood > food;
-  const reassignCount = recovery && nearTermFoodCapacity && woodCanFundRecovery ?
-    Math.min(availableWoodCivilians, strongRecovery ? maxReassign : Math.min(1, maxReassign)) : 0;
+  const catastrophicFoodBank = food < 150 && wood >= 1000;
+  const reassignCount = recovery && woodCanFundRecovery && (nearTermFoodCapacity || catastrophicFoodBank) ?
+    Math.min(availableWoodCivilians, strongRecovery ? maxReassign : Math.min(2, maxReassign)) : 0;
 
   const woodRelease = time >= startTime && !recovery &&
     fields >= releaseFields && food >= releaseFoodBank &&

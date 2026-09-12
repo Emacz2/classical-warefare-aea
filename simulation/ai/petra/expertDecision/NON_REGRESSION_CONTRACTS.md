@@ -604,3 +604,13 @@ Replay regressions locked by IT14:
 - Rich Athens P2 maintains 12 champion hoplites + 5 champion javelineers; rich P3 maintains 15 + 5.
 - Elite quota is live/queued/training, so elite deaths reopen elite slots; normal citizen-soldier deaths remain normal replacements.
 - Champion crossbows/Gastraphetes are not deliberately replenished by the elite maintainer; generic AttackPlan champion-crossbow cap is zero.
+
+## IT15.0 no-idle / food-backbone contract
+- Rush dedicated civilians own food. Early P1 targets 34 (40 recovery), Late P1 targets 36 (42 recovery) through Town Phase; City/recovery may reopen 65.
+- Rush doctrines keep only the three trained opening civilian lumberjacks; after six Fields those three migrate to food and citizen-soldiers own secondary resources.
+- A natural-Farmstead builder crew stays in its local food district. Safe neutral fruit serviced by that Farmstead is valid food; generic fallback may not send the crew across the map.
+- Zero legal Field slots plus missing desired Fields and <=25% natural food can force a dedicated farming hub; no impossible two-existing-Fields prerequisite.
+- Wicker Baskets recognizes nearby owned or neutral fruit supplies, not only owned connected-cluster count.
+- A completed Barracks never waits for a preferred unaffordable unit while any valid citizen-soldier is affordable. Unfunded standby preferences are replaceable.
+- Expert-owned civilian garrisoning has an Expert-owned unload path after threat-clear cooldown.
+- Healthy serviced wood plus a healthy bank is not Storehouse-expansion evidence; same-patch deepening must service a meaningful local wood pocket.

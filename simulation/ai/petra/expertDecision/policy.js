@@ -82,7 +82,8 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.98 CC contract: 65 is the global ceiling, while Late-P1 uses a lower
   // economy-conditioned target so the CC can become a third military trainer.
   // A short recovery allowance is permitted only when real productive labor is efficient.
-  expertLateP1CivilianRecoveryCap: 55,
+  expertLateP1CivilianRecoveryCap: 42,
+  expertEarlyP1CivilianRecoveryCap: 40,
   expertLateP1CivilianEfficiencyMinimum: 0.90,
   expertLateP1CivilianWalkingMaximum: 0.25,
   expertP1CCInfantryMinimumCivilians: 30, // retained for legacy priority/read compatibility
@@ -631,9 +632,9 @@ const DEFAULT_POLICY = Object.freeze({
   foodRecoveryWoodFoodRatio: 1.50,
   foodRecoveryStrongWoodFoodRatio: 2.25,
   foodRecoveryRateRatio: 1.05,
-  foodRecoveryMinimumCivilianWood: 12,
-  foodRecoveryReassignBatch: 2,
-  foodRecoveryReassignCooldownSeconds: 12,
+  foodRecoveryMinimumCivilianWood: 0,
+  foodRecoveryReassignBatch: 6,
+  foodRecoveryReassignCooldownSeconds: 6,
   // IT14.67 Pro-Economy correction. When food is genuinely starving while wood is
   // overflowing, reserve citizen-soldiers may temporarily become food workers/builders.
   // This is deliberately exceptional: normal doctrine still keeps soldiers off farms.
@@ -641,7 +642,7 @@ const DEFAULT_POLICY = Object.freeze({
   proFoodEmergencyWoodBank: 1000,
   proFoodEmergencyReleaseFoodBank: 500,
   proFoodEmergencyReleaseWoodBank: 750,
-  proFoodEmergencySoldierTarget: 6,
+  proFoodEmergencySoldierTarget: 8,
   dynamicWoodShortageBank: 350,
   foodSurplusRedirectThreshold: 900,
   foodSurplusPauseFarmExpansion: 1000,

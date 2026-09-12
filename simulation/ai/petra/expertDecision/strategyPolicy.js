@@ -1,4 +1,4 @@
-// IT14.99 strategic doctrine layer.
+// IT15.0 strategic doctrine layer.
 // A doctrine is selected once per match and then serialized by the Expert controller.
 // The goal is not to hard-code one perfect build, but to let the same mechanical
 // economy execute several coherent timings without changing difficulty bonuses.
@@ -8,7 +8,7 @@ const DOCTRINES = Object.freeze({
     id: "early_p1_rush",
     label: "Early P1 Rush",
     weight: 0.25,
-    softCivilianCap: 42,
+    softCivilianCap: 34,
     softCapUntil: 390,
     soldierTrainingStartTime: 105,
     rushes: 1,
@@ -18,6 +18,13 @@ const DOCTRINES = Object.freeze({
       barracksReserveTime: 90,
       barracksTargetTime: 105,
       barracksHardDeadline: 125,
+      // IT15.0: rush civilians are the dedicated food backbone. After the
+      // opening 3-civilian lumber pulse, citizen-soldiers own secondary resources.
+      targetWoodCivilians: 3,
+      maxDynamicWoodCivilians: 3,
+      foodSurplusNewCivilianWoodBank: 99999,
+      fieldFloorSixPopulation: 45,
+      fieldFloorEightPopulation: 75,
       secondBarracksReserveTime: 190,
       secondBarracksTargetTime: 210,
       secondBarracksHardDeadline: 235,
@@ -32,7 +39,7 @@ const DOCTRINES = Object.freeze({
     id: "late_p1_rush",
     label: "Late P1 Timing Rush",
     weight: 0.25,
-    softCivilianCap: 48,
+    softCivilianCap: 36,
     softCapUntil: 570,
     soldierTrainingStartTime: 135,
     rushes: 1,
@@ -42,6 +49,13 @@ const DOCTRINES = Object.freeze({
       barracksReserveTime: 115,
       barracksTargetTime: 135,
       barracksHardDeadline: 155,
+      // IT15.0 Steven-derived labor model: dedicated civilians own food.
+      // Citizen-soldiers gather wood/stone/metal until mobilization.
+      targetWoodCivilians: 3,
+      maxDynamicWoodCivilians: 3,
+      foodSurplusNewCivilianWoodBank: 99999,
+      fieldFloorSixPopulation: 45,
+      fieldFloorEightPopulation: 75,
       secondBarracksReserveTime: 205,
       secondBarracksTargetTime: 225,
       secondBarracksHardDeadline: 245,

@@ -293,10 +293,21 @@ function woodWorksiteDecision(state, policy) {
   // IT14.46: a large crew on one rich forest can justify a second dropsite even before
   // depletion. This is the human "work both faces of the same forest" pattern.
   const denseWorksite = state.workers.wood >= Math.max(16, policy.woodExpansionWorkerThreshold + 4) &&
-    w.localWoodAmount >= 1800 && w.averageDropDistance > 14;
+    w.localWoodAmount >= 1800 && w.averageDropDistance > 14 &&
+    (Number(state.resources.wood) || 0) < 500;
   const continuityEmergency = !!(state.flags.phaseWoodCrisis || state.flags.woodIncomeStalled);
   const proactiveHandoff = state.workers.wood >= (policy.woodProactiveHandoffWorkers || 12) &&
-    w.localWoodAmount <= (policy.woodProactiveHandoffAmount || 1300) && !w.alternativeExistingWorksite;
+    w.localWoodAmount <= (policy.woodProactiveHandoffAmount || 1300) && !w.alternativeExistingWorksite &&
+    (Number(state.resources.wood) || 0) < 700;
+
+  // IT15.0: a rich serviced forest plus a healthy wood bank is not a reason to buy
+  // another Storehouse. 14.99 opened extra small woodlines while thousands of usable
+  // wood remained. Reuse the current district until depletion/delivery evidence is real.
+  const bankedHealthyDistrict = !continuityEmergency &&
+    (Number(state.resources.wood) || 0) >= 700 &&
+    w.localWoodAmount >= Math.max(Number(policy.localWoodHealthyAmount) || 800, 1800);
+  if (bankedHealthyDistrict)
+    return { status: "healthy_banked", expand: false, reason: "current serviced forest and wood bank are healthy; do not open another woodline" };
 
   // IT14.58: do not wait for a large lumber camp to hit single-digit connected wood.
   // The new dropsite can be built while the old cohort finishes the current patch.
@@ -822,15 +833,19 @@ function planEconomy(rawState, overrides = {}) {
     // missing, no Field is pending and the opening hub has zero legal slots, hub #2 is
     // the recovery mechanism even when hub #1 managed only one (or zero) Fields. This
     // removes the circular 1-field-opening -> no-second-hub -> permanent starvation lock.
-    const forcedCapacityHubReady = foodCapacityDeadlock && naturalGroundClearedForPermanentHub && (
-      currentFarmsteads === 1 ||
-      currentFarmsteads === 2 && existingFields >= 2
-    );
+    // IT15.0: zero legal field slots is the evidence. Do not require two existing
+    // fields from a two-Farmstead natural-food network before admitting that the network
+    // cannot fit them. That circular prerequisite created the 14.99 two-Farmstead /
+    // one-Field starvation state.
+    const naturalLowForForcedHub = naturalGroundClearedForPermanentHub ||
+      Math.max(0, Number(state.food.territoryNaturalRatio) || 0) <= 0.25;
+    const forcedCapacityHubReady = foodCapacityDeadlock && naturalLowForForcedHub &&
+      currentFarmsteads >= 1 && currentFarmsteads <= 2;
     // A permanent hub is a LAST resort after existing natural-food ground has cleared.
     // Natural-expansion Farmsteads above remain allowed because they are paying for an
     // actual new food district; this guard applies only to extra permanent farm hubs.
     const permanentHubNeeded = farm.missingFields > 0 && openFieldSlots <= 0 &&
-      pendingFields === 0 && naturalGroundClearedForPermanentHub &&
+      pendingFields === 0 && (naturalGroundClearedForPermanentHub || forcedCapacityHubReady) &&
       (saturatedHubReady || saturatedNetworkReady || constrainedOpeningHubReady || forcedCapacityHubReady);
     const farmsteadActionAlreadyPlanned = actions.some(action => action && action.kind === "farmstead" && (action.type === "BUILD" || action.type === "RESERVE"));
     if (permanentHubNeeded && currentFarmsteads < Math.max(1, Number(policy.maximumFarmsteads) || 3) &&
