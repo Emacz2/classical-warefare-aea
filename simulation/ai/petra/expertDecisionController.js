@@ -1268,9 +1268,8 @@ export class ExpertDecisionController
 		const neutral = { food: 0, wood: 0, stone: 0, metal: 0 };
 		const ownRadius = Math.max(20, Number(policy.resourceForecastOwnAccessibleRadius) || 55);
 		const ownRadius2 = ownRadius * ownRadius;
-		const neutralRadius = Math.max(20, Number(policy.resourceForecastNeutralRadius) || 72);
-		const neutralRadius2 = neutralRadius * neutralRadius;
-		const neutralWeight = Math.max(0, Math.min(1, Number(policy.resourceForecastNeutralSupplyWeight) || 0.8));
+		// IT15.1: neutral resources are expansion intelligence, not immediately-accessible
+		// economic stock. The forecast must not count resources workers are forbidden to gather.
 		const cap = Math.max(100, Number(policy.resourceForecastSupplyCapPerEntity) || 5000);
 		const anchorsByType = {};
 		for (const type of ["food", "wood", "stone", "metal"])
@@ -1298,8 +1297,6 @@ export class ExpertDecisionController
 				const owner = this.HQ.territoryMap.getOwner(pos);
 				if (owner === PlayerID && anchorsByType[type].some(anchor => SquareVectorDistance(anchor, pos) <= ownRadius2))
 					own[type] += amount;
-				else if (owner === 0 && anchorsByType[type].some(anchor => SquareVectorDistance(anchor, pos) <= neutralRadius2))
-					neutral[type] += amount * neutralWeight;
 			}
 		}
 		return { own, neutral };
@@ -2151,7 +2148,7 @@ export class ExpertDecisionController
 				    SquareVectorDistance(pos, cc.position()) > scanRadius * scanRadius)
 					continue;
 				const owner = this.HQ.territoryMap.getOwner(pos);
-				if (owner !== PlayerID && owner !== 0)
+				if (owner !== PlayerID)
 					continue;
 				++fruitSupplyCount;
 				fruitRemaining += Math.max(0, Number(supply.resourceSupplyAmount()) || 0);
@@ -4603,7 +4600,6 @@ export class ExpertDecisionController
 			    hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry") ||
 			    ent.getMetadata(PlayerID, EXPERT_FUTURE_FARMER) !== true ||
 			    ent.getMetadata(PlayerID, EXPERT_FUTURE_FARM_TASK) !== undefined ||
-			    Number.isFinite(Number(ent.getMetadata(PlayerID, FARM_LOCK))) ||
 			    ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
 			    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
 			    ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined)
@@ -4628,7 +4624,7 @@ export class ExpertDecisionController
 			{
 				if (!ent || !entityPosition(ent) || !ent.getMetadata || !hasClass(ent, "Civilian") || hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry") ||
 				    ent.getMetadata(PlayerID, EXPERT_FUTURE_FARMER) === true || ent.getMetadata(PlayerID, EXPERT_FUTURE_FARM_TASK) !== undefined ||
-				    Number.isFinite(Number(ent.getMetadata(PlayerID, FARM_LOCK))) || ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
+				    ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
 				    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined)
 					continue;
 				const ordinal = Number(ent.getMetadata(PlayerID, CIVILIAN_ORDINAL));
@@ -4674,13 +4670,24 @@ export class ExpertDecisionController
 				Math.max(0, Number(natural.totalNaturalRemaining) || 0) <= 0);
 			const minimum = emergency ? emergencyMinimum : normalMinimum;
 			const available = future.length - cursor;
+			// IT15.1: never delete a required Field because the special future-farmer
+			// pool is empty. IT15.0 FARM_LOCKed the first crews, stopped creating new
+			// civilians at the rush cap, and then discarded every later Field action.
 			if (available < minimum)
 			{
+				const count = Math.max(1, Math.min(target, normalMinimum));
+				actions.push({ ...action,
+					"builderCount": count,
+					"requiredBuilderIds": undefined,
+					"builderPool": ["farm", "food_owned", "food"],
+					"builderJobPriority": { "farm": 8, "food_owned": 7, "food": 6 }
+				});
 				if ((Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastFutureFarmCrewWaitDiag) || -99999) >= 8)
 				{
 					this.lastFutureFarmCrewWaitDiag = Number(gameState.ai.elapsedTime) || 0;
-					aiWarn("[EXPERT-FARM-CREW] wait new-civilians=" + available + "/" + minimum +
-						" role=" + (action.role || "field") + " food=" + Math.round(Number(bank.food) || 0));
+					aiWarn("[EXPERT-FARM-CREW] reuse-existing-food available=" + available + "/" + minimum +
+						" builders=" + count + " role=" + (action.role || "field") +
+						" food=" + Math.round(Number(bank.food) || 0));
 				}
 				continue;
 			}
@@ -4690,11 +4697,8 @@ export class ExpertDecisionController
 			actions.push({ ...action,
 				"builderCount": count,
 				"requiredBuilderIds": selected.map(ent => ent.id()),
-				// Required IDs make this broad job list safe: a future farmer may be
-				// temporarily on wood/minerals while waiting, but no established worker
-				// can enter the Field crew.
-				"builderPool": ["food", "food_owned", "farm", "wood", "stone", "metal"],
-				"builderJobPriority": { "food_owned": 6, "food": 5, "farm": 4, "wood": 2, "stone": 1, "metal": 1 }
+				"builderPool": ["food", "food_owned", "farm"],
+				"builderJobPriority": { "farm": 8, "food_owned": 7, "food": 6 }
 			});
 			if ((Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastFutureFarmCrewDiag) || -99999) >= 6)
 			{
@@ -5285,10 +5289,8 @@ export class ExpertDecisionController
 		// IT14.97: "best opening forest" means the best same-land forest we can
 		// economically service from a legal Storehouse in our territory. IT14.93's
 		// selector was still fed OWN trees only, so sparse maps could pick a 300-500
-		// wood clump beside the CC and discover the real border forest only after
-		// Storehouse #1 was already paid for. Include neutral wood in the opening
-		// search, then reject any forest that cannot be reached by a legal own-territory
-		// Storehouse position near its cutting mass.
+		// IT15.1: opening wood is owned-territory only. A neutral border forest is
+		// an expansion opportunity, not a legal opening gather district.
 		const collect = allowNeutralWood => collectInitialWoodCandidates(gameState, {
 			"getLandAccess": getLandAccess,
 			"isSupplyFull": isSupplyFull,
@@ -5299,7 +5301,7 @@ export class ExpertDecisionController
 			"searchRadius": Number(policy.openingWoodSearchRadius) || 180,
 			"allowNeutralWood": !!allowNeutralWood
 		});
-		let trees = collect(true);
+		let trees = collect(false);
 		const choose = candidates => selectInitialWoodWorksite(candidates, cc.position(), {
 			"radius": Number(policy.openingWoodClusterRadius) || 40,
 			"approachWeight": Number(policy.openingWoodApproachWeight) || 0.35,
@@ -5350,18 +5352,6 @@ export class ExpertDecisionController
 
 		let ranked = selection && selection.position ? (selection.ranked && selection.ranked.length ? selection.ranked : [selection])
 			.map(annotate).filter(Boolean) : [];
-		// Safety fallback: if neutral-aware scouting found only forests too far outside the
-		// border to service legally, fall back to the old own-territory search rather than
-		// stalling the entire opening.
-		if (!ranked.length)
-		{
-			trees = collect(false);
-			selection = choose(trees);
-			treeById.clear();
-			for (const tree of trees) treeById.set(Number(tree.id), tree);
-			ranked = selection && selection.position ? (selection.ranked && selection.ranked.length ? selection.ranked : [selection])
-				.map(annotate).filter(Boolean) : [];
-		}
 		if (!ranked.length)
 		{
 			this.initialWoodSelection = selection;
@@ -5840,6 +5830,7 @@ export class ExpertDecisionController
 		this.civilianRoster = reconciled.roster;
 		const byId = new Map(civilians.map(ent => [String(ent.id()), ent]));
 		const openingEnd = policy.startingNaturalFoodCivilians + policy.secondTrainedFoodCivilians + policy.targetWoodCivilians;
+		const rushFoodCivilianDoctrine = !!(doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"));
 		// If Wicker peeled one/two opening berry civilians to wood because no secondary
 		// natural branch existed, count those workers INSIDE the 20-civilian wood tranche.
 		// Otherwise the ordinal script would quietly create 21-22 permanent wood civilians.
@@ -5872,6 +5863,33 @@ export class ExpertDecisionController
 			const current = ent.getMetadata(PlayerID, JOB_METADATA);
 			const hadPermanentJob = ["wood", "food", "food_owned", "farm", "stone", "metal"].includes(current);
 			let desired;
+
+			// IT15.1 Steven contract: a rush build's dedicated civilians ARE the food engine.
+			// Only the three scripted opening lumber civilians may remain on wood before the
+			// permanent six-Field backbone exists. Every other dedicated civilian is
+			// food-owned regardless of a stale "permanent" wood/stone/metal job inherited
+			// from an earlier decision tick. Citizen-soldiers own the secondary economy.
+			const openingLumberCivilian = entry.ordinal > policy.startingNaturalFoodCivilians &&
+				entry.ordinal <= policy.startingNaturalFoodCivilians + policy.firstTrainedWoodCivilians;
+			if (rushFoodCivilianDoctrine && (!openingLumberCivilian || fields >= 6))
+			{
+				if (entry.ordinal > openingEnd && ent.getMetadata(PlayerID, EXPERT_FUTURE_FARMER) !== true)
+					ent.setMetadata(PlayerID, EXPERT_FUTURE_FARMER, true);
+				if (current !== "food" && current !== "food_owned" && current !== "farm")
+				{
+					if (current === "wood")
+						woodCivilians = Math.max(0, woodCivilians - 1);
+					else if (current === "stone")
+						stoneWorkers = Math.max(0, stoneWorkers - 1);
+					else if (current === "metal")
+						metalWorkers = Math.max(0, metalWorkers - 1);
+					this.setDesiredJob(gameState, ent, "food_owned", { "force": true });
+					++foodWorkers;
+					aiWarn("[EXPERT-FOOD-DOCTRINE] civilian=" + ent.id() + " " + (current || "none") +
+						"->food_owned ordinal=" + entry.ordinal + " fields=" + fields);
+				}
+				continue;
+			}
 
 			if (entry.ordinal <= openingEnd)
 			{
@@ -6658,6 +6676,8 @@ export class ExpertDecisionController
 				    (resource.status === "surplus" || resource.floatAmount >= 300 || resource.coverageRatio >= 1.5))
 					donorOrder.push(resource.type);
 		const donorRank = new Map(donorOrder.map((type, index) => [type, index]));
+		const rushFoodCivilianDoctrine = this.strategyDoctrine &&
+			(this.strategyDoctrine.id === "early_p1_rush" || this.strategyDoctrine.id === "late_p1_rush");
 		const candidates = [];
 		for (const ent of gameState.getOwnUnits().values())
 		{
@@ -6673,6 +6693,10 @@ export class ExpertDecisionController
 				continue;
 			const soldier = hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry");
 			const civilian = hasClass(ent, "Civilian") && !soldier;
+			// IT15.1: generic forecast balancing may move citizen-soldiers, but it may not
+			// dismantle the rush's dedicated-civilian food backbone after syncJobs built it.
+			if (civilian && rushFoodCivilianDoctrine)
+				continue;
 			if (soldier && balance.target === "food")
 				continue;
 			// Permanent civilian wood ownership normally remains capped by the opening
@@ -6767,7 +6791,7 @@ export class ExpertDecisionController
 		return false;
 	}
 
-	setDesiredJob(gameState, ent, desired)
+	setDesiredJob(gameState, ent, desired, options = {})
 	{
 		if (!ent || !ent.getMetadata || !ent.setMetadata)
 			return false;
@@ -6777,7 +6801,8 @@ export class ExpertDecisionController
 			return false;
 		const cross = isCrossResourceJobChange(current, desired);
 		const now = Number(gameState.ai.elapsedTime) || 0;
-		const urgent = cross && this.resourceJobChangeUrgent(gameState, current, desired);
+		const forced = !!(options && options.force);
+		const urgent = forced || (cross && this.resourceJobChangeUrgent(gameState, current, desired));
 		const permanentCivilian = hasClass(ent, "Civilian") && !hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry");
 		// IT14.71 user contract: once a civilian owns a resource, that resource is
 		// effectively permanent. Construction may interrupt work without changing the
@@ -6819,6 +6844,10 @@ export class ExpertDecisionController
 			ent.setMetadata(PlayerID, FOOD_PREVIOUS_SITE, undefined);
 			ent.setMetadata(PlayerID, EXPERT_JOB_LEASE_UNTIL, now + mergePolicy().resourceJobLeaseSeconds);
 			ent.setMetadata(PlayerID, EXPERT_JOB_LEASE_RESOURCE, jobResourceType(desired));
+			// A forced doctrine transfer must also cancel the old engine gather order;
+			// changing metadata alone does not make a lumberjack stop chopping.
+			if (forced && ent.stopMoving)
+				ent.stopMoving();
 		}
 		ent.setMetadata(PlayerID, JOB_METADATA, desired);
 		ent.setMetadata(PlayerID, PENDING_JOB_METADATA, undefined);
@@ -7525,9 +7554,8 @@ export class ExpertDecisionController
 			"accessIndex": accessIndex,
 			"playerId": PlayerID,
 			"radius": radius,
-			// IT14.97: if an owned Storehouse legally sits on our border, neutral trees
-			// inside its tight service radius are part of that lumber district.
-			"allowNeutralWood": true
+			// IT15.1: serviced wood must still lie inside our territory.
+			"allowNeutralWood": false
 		});
 	}
 
@@ -7738,7 +7766,7 @@ export class ExpertDecisionController
 			"territoryMap": this.HQ.territoryMap, "anchorPosition": targetCenter,
 			"accessIndex": accessIndex, "playerId": PlayerID,
 			"searchRadius": Math.max(40, Number(policy.woodCuttingFrontSearchRadius) || 82),
-			"allowNeutralWood": true
+			"allowNeutralWood": false
 		});
 		const fringe2 = Math.pow(Math.max(Number(policy.woodCuttingFrontFringeDistance) || 38,
 			Number(policy.woodClusterLinkDistance) || 22), 2);
@@ -7783,7 +7811,7 @@ export class ExpertDecisionController
 			"getLandAccess": getLandAccess, "isSupplyFull": isSupplyFull,
 			"territoryMap": this.HQ.territoryMap, "anchorPosition": current,
 			"accessIndex": accessIndex, "playerId": PlayerID, "searchRadius": policy.woodClusterSearchRadius,
-			"allowNeutralWood": true
+			"allowNeutralWood": false
 		});
 		const connected = this.connectedWoodCluster(nearby, current, Number(policy.woodClusterLinkDistance) || 22);
 		const fringe2 = Math.pow(Math.max(Number(policy.woodPracticalDistrictFringeDistance) || 34,
@@ -8476,185 +8504,17 @@ export class ExpertDecisionController
 
 	neutralFoodAnnexCandidate(gameState, ccPos, accessIndex)
 	{
-		const policy = mergePolicy();
-		if (!ccPos || !gameState.getResourceSupplies) return undefined;
-		const supplies = [];
-		for (const supply of gameState.getResourceSupplies("food").values())
-		{
-			const pos = entityPosition(supply);
-			if (!pos || hasClass(supply, "Animal") || !supply.resourceSupplyAmount || supply.resourceSupplyAmount() <= 0 ||
-			    getLandAccess(gameState, supply) !== accessIndex || this.HQ.territoryMap.getOwner(pos) !== 0) continue;
-			const d = Math.sqrt(SquareVectorDistance(pos, ccPos));
-			if (d < policy.neutralFoodAnnexMinimumCCDistance || d > policy.neutralFoodAnnexMaximumCCDistance) continue;
-			supplies.push(supply);
-		}
-		let best;
-		for (const seed of supplies)
-		{
-			const near = supplies.filter(other => SquareVectorDistance(seed.position(), other.position()) <= policy.neutralFoodAnnexClusterRadius ** 2);
-			const ids = [...new Set(near.map(e => e.id()))];
-			const remaining = near.reduce((sum,e)=>sum + Math.max(0, Number(e.resourceSupplyAmount()) || 0), 0);
-			if (remaining < policy.neutralFoodAnnexMinimumRemaining) continue;
-			const position = centerOf(near) || seed.position();
-			const distance = Math.sqrt(SquareVectorDistance(position, ccPos));
-			const score = remaining - 2 * distance;
-			if (!best || score > best.score) best = { position, remaining, ids, distance, score };
-		}
-		return best;
+		// IT15.1 sovereignty: neutral food may motivate a future territorial expansion,
+		// but it is never an economic gather/Farmstead target before ownership changes.
+		return undefined;
 	}
 
 
-	// IT14.91: a safe, worthwhile neutral berry/fruit district just outside the border
-	// outranks another Field. The Farmstead itself must still resolve to our territory.
+	// IT15.1 compatibility stub. Neutral food does not preempt Fields; territorial
+	// expansion must claim the resource first.
 	applyForecastNaturalFoodExpansion(gameState, frame, cc, accessIndex, foodNetwork)
 	{
-		if (!cc || !entityPosition(cc))
-			return frame;
-		const policy = mergePolicy();
-		const now = Number(gameState.ai.elapsedTime) || 0;
-		if (now - this.lastForecastNaturalFoodAt < (Number(policy.resourceForecastNaturalFoodCooldownSeconds) || 24))
-			return frame;
-		if (this.foundationsByClass(gameState, "Farmstead").length || this.activeTaskByKind.farmstead)
-			return frame;
-		const currentFarmsteads = this.builtByClass(gameState, "Farmstead").length;
-		if (currentFarmsteads < 1 || currentFarmsteads >= (Number(policy.maximumNaturalFoodFarmsteads) || 5))
-			return frame;
-		const candidate = this.neutralFoodAnnexCandidate(gameState, cc.position(), accessIndex);
-		if (!candidate || candidate.remaining < (Number(policy.resourceForecastNaturalFoodMinimumRemaining) || 350))
-			return frame;
-		const cluster = { center: candidate.position, ids: candidate.ids, remaining: candidate.remaining };
-		if (this.foodClusterCovered(gameState, cluster) ||
-		    this.activeNaturalExpansionCluster && this.clustersOverlap(cluster, this.activeNaturalExpansionCluster))
-			return frame;
-		const actions = [...(frame.actions || [])];
-		if (actions.some(action => action && action.kind === "farmstead" && (action.type === "BUILD" || action.type === "RESERVE")))
-			return frame;
-		const fieldIndex = actions.findIndex(action => action && action.kind === "field" && (action.type === "BUILD" || action.type === "RESERVE"));
-		const foodForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
-		const ownNatural = Math.max(0, Number(foodNetwork && foodNetwork.totalRemaining) || 0);
-		const usefulNow = fieldIndex >= 0 || ownNatural <= (Number(policy.neutralFoodAnnexOwnFoodThreshold) || 1000) ||
-			foodForecast && (foodForecast.status === "critical" || foodForecast.status === "short");
-		if (!usefulNow)
-			return frame;
-		// Natural food preempts all ordinary Field plans this frame. Emergency field
-		// construction remains possible on a later frame if the Farmstead cannot place.
-		const kept = actions.filter(action => !(action && action.kind === "field" &&
-			(action.type === "BUILD" || action.type === "RESERVE")));
-		kept.push({ type: "BUILD", kind: "farmstead", role: "natural_frontier",
-			priority: Number(policy.resourceForecastNaturalFoodPriority) || 126,
-			builderCount: 4, builderPool: ["food", "food_owned", "farm"],
-			resourceAnchor: [...candidate.position], resourceSourceIds: [...candidate.ids],
-			reason: "safe neutral natural food outranks permanent Field remaining=" + Math.round(candidate.remaining) });
-		this.lastForecastNaturalFoodAt = now;
-		aiWarn("[EXPERT-FORECAST] natural-food PREEMPT field=" + (fieldIndex >= 0 ? 1 : 0) +
-			" remaining=" + Math.round(candidate.remaining) + " distance=" + candidate.distance.toFixed(1) +
-			" ownNatural=" + Math.round(ownNatural));
-		return { ...frame, actions: kept };
-	}
-
-	resourceWorkersBySupply(gameState)
-	{
-		const counts = new Map();
-		for (const worker of gameState.getOwnUnits().values())
-		{
-			if (!worker || !worker.getMetadata || !this.isExpertEconomyEntity(worker) || worker.getMetadata(PlayerID, "PartOfArmy"))
-				continue;
-			const id = Number(worker.getMetadata(PlayerID, SUPPLY_ID));
-			if (Number.isFinite(id))
-				counts.set(id, (counts.get(id) || 0) + 1);
-		}
-		return counts;
-	}
-
-	forecastStorehouseCandidate(gameState, cc, accessIndex)
-	{
-		if (!cc || !entityPosition(cc) || !gameState.getResourceSupplies)
-			return undefined;
-		const policy = mergePolicy();
-		const ccPos = cc.position();
-		const maxRadius = Math.max(50, Number(policy.resourceForecastStorehouseSearchRadius) || 115);
-		const maxRadius2 = maxRadius * maxRadius;
-		const clusterRadius = Math.max(20, Number(policy.resourceForecastStorehouseRadius) || 42);
-		const clusterRadius2 = clusterRadius * clusterRadius;
-		const workers = this.resourceWorkersBySupply(gameState);
-		const weights = { wood: Number(policy.resourceForecastStorehouseWoodWeight) || 1,
-			stone: Number(policy.resourceForecastStorehouseStoneWeight) || 0.75,
-			metal: Number(policy.resourceForecastStorehouseMetalWeight) || 0.85 };
-		const workerBonus = Math.max(0, Number(policy.resourceForecastStorehouseWorkerBonus) || 120);
-		const records = [];
-		const existingStores = this.builtByClass(gameState, "Storehouse").filter(ent => entityPosition(ent));
-		for (const generic of ["wood", "stone", "metal"])
-			for (const supply of gameState.getResourceSupplies(generic).values())
-			{
-				const pos = entityPosition(supply);
-				if (!pos || !supply.resourceSupplyAmount || getLandAccess(gameState, supply) !== accessIndex)
-					continue;
-				const owner = this.HQ.territoryMap.getOwner(pos);
-				if (owner !== PlayerID && owner !== 0)
-					continue;
-				// Neutral supplies are only proactive candidates if they are close to our current
-				// economic footprint; farther resources belong to territorial expansion.
-				let footprintDistance = SquareVectorDistance(pos, ccPos);
-				for (const store of existingStores)
-					footprintDistance = Math.min(footprintDistance, SquareVectorDistance(pos, store.position()));
-				if (footprintDistance > maxRadius2)
-					continue;
-				const amount = Math.min(Number(supply.resourceSupplyAmount()) || 0,
-					Math.max(100, Number(policy.resourceForecastSupplyCapPerEntity) || 5000));
-				if (amount <= 0)
-					continue;
-				records.push({ id: supply.id(), generic, position: [...pos], amount,
-					workers: workers.get(supply.id()) || 0, owner });
-			}
-		if (!records.length)
-			return undefined;
-		// Minerals are high-value seeds; for forests sample the richest/most-worked trees.
-		const seeds = records.slice().sort((a, b) =>
-			Number(b.generic !== "wood") - Number(a.generic !== "wood") || b.workers - a.workers || b.amount - a.amount).slice(0, 96);
-		let best;
-		for (const seed of seeds)
-		{
-			const cluster = records.filter(record => SquareVectorDistance(seed.position, record.position) <= clusterRadius2);
-			if (!cluster.length)
-				continue;
-			let value = 0, workerCount = 0;
-			const types = new Set();
-			for (const record of cluster)
-			{
-				value += record.amount * weights[record.generic] + record.workers * workerBonus;
-				workerCount += record.workers;
-				types.add(record.generic);
-			}
-			const points = cluster.map(record => ({ position: record.position,
-				weight: Math.max(1, record.amount * weights[record.generic] + record.workers * workerBonus), generic: record.generic }));
-			const center = this.weightedResourceCenter(points);
-			if (!center)
-				continue;
-			const critical = cluster.some(record => this.forecastResourceCritical(record.generic));
-			// Wood-only proactive camps are left to the dedicated wood-district rollover;
-			// otherwise a healthy first forest could get an unnecessary second Storehouse.
-			// A single worked mineral deposit may still justify proactive service.
-			if (types.size === 1 && cluster[0].generic === "wood")
-				continue;
-			// Building geometry is subordinate to labor intent. A zero-worker corridor is
-			// only a deliberate prebuild when one of its resources is forecast-critical;
-			// otherwise wait until at least one real worker proves the district is useful.
-			if (workerCount < 1 && !critical)
-				continue;
-			const minValue = critical ? Number(policy.resourceForecastStorehouseCriticalMinimumValue) || 350 :
-				Number(policy.resourceForecastStorehouseMinimumValue) || 700;
-			if (value < minValue)
-				continue;
-			const gain = this.storehouseAverageDistanceGain(gameState, "mixed", points, center);
-			const minGain = critical ? Number(policy.resourceForecastStorehouseCriticalMinimumGain) || 2 :
-				Number(policy.resourceForecastStorehouseMinimumGain) || 4;
-			if (Number.isFinite(gain) && gain < minGain)
-				continue;
-			const score = value + workerCount * workerBonus + (Number.isFinite(gain) ? gain * 150 : 3000) + types.size * 180;
-			if (!best || score > best.score)
-				best = { center, records: cluster, value, workerCount, resourceTypes: types.size, gain, critical, score };
-		}
-		return best;
+		return frame;
 	}
 
 	applyForecastStorehouseInfrastructure(gameState, frame, cc, accessIndex)
@@ -8670,6 +8530,20 @@ export class ExpertDecisionController
 			return frame;
 		// Scanning tree clusters is intentionally periodic even when no candidate wins.
 		this.lastForecastStorehouseAt = now;
+		const desiredFields = frame && frame.economy && frame.economy.derived ?
+			Math.max(0, Number(frame.economy.derived.desiredFields) || 0) : 0;
+		const fieldPipeline = this.builtByClass(gameState, "Field").length + this.foundationsByClass(gameState, "Field").length;
+		const foodForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
+		const naturalRemaining = frame && frame.state && frame.state.food ?
+			Math.max(0, Number(frame.state.food.totalNaturalRemaining) || 0) : 0;
+		if (fieldPipeline < desiredFields && (naturalRemaining <= 0 ||
+		    foodForecast && (foodForecast.status === "critical" || foodForecast.status === "short")))
+		{
+			// IT15.1: do not spend the Field wood on speculative mixed/mineral service
+			// while permanent food capacity is behind target. Dedicated wood rollover is
+			// handled separately and may still build the Storehouse needed to reach owned wood.
+			return frame;
+		}
 		const candidate = this.forecastStorehouseCandidate(gameState, cc, accessIndex);
 		if (!candidate)
 			return frame;
@@ -8713,7 +8587,7 @@ export class ExpertDecisionController
 			    getLandAccess(gameState, supply) !== accessIndex || SquareVectorDistance(supplyPos, pos) > r2)
 				continue;
 			const owner = this.HQ.territoryMap.getOwner(supplyPos);
-			if (owner !== 0 && owner !== PlayerID)
+			if (owner !== PlayerID)
 				continue;
 			supplies.push(supply);
 			amount += Math.max(0, Number(supply.resourceSupplyAmount()) || 0);
@@ -10772,7 +10646,7 @@ export class ExpertDecisionController
 				"territoryMap": this.HQ.territoryMap, "anchorPosition": districtAnchor,
 				"accessIndex": accessIndex, "playerId": PlayerID,
 				"searchRadius": Math.max(Number(policy.woodClusterSearchRadius) || 0, Number(policy.woodCuttingFrontSearchRadius) || 82),
-				"allowNeutralWood": true
+				"allowNeutralWood": false
 			});
 			const currentCluster = this.connectedWoodCluster(nearby, districtAnchor, policy.woodClusterLinkDistance);
 			// IT14.87: graph connectivity is too literal for economic geography. Add one
@@ -12760,14 +12634,12 @@ export class ExpertDecisionController
 		if (!ent || !entityPosition(ent) || !home || !entityPosition(home))
 			return false;
 		const radius = Math.max(30, Number(mergePolicy().farmWorkerHomeRadius) || 55);
-		for (const generic of ["food", "wood", "stone", "metal"])
+		// IT15.1 Steven labor contract: food-home civilians are the permanent food
+		// backbone. They do not become local lumberjacks/miners when a Field is missing.
+		for (const generic of ["food"])
 		{
-			// IT15.0: a natural-food Farmstead may deliberately service safe neutral
-			// fruit just outside the ownership border. Do not build the dropsite and
-			// then pretend that nearby food vanished because ownerAt() is neutral.
-			let source = generic === "food" && gameState.getResourceSupplies ?
-				[...gameState.getResourceSupplies("food").values()] :
-				this.resourceCandidatesInOwnTerritory(gameState, ent, accessIndex, generic);
+			let source = gameState.getResourceSupplies ?
+				[...gameState.getResourceSupplies("food").values()] : [];
 			let candidates = source.filter(supply =>
 			{
 				const pos = entityPosition(supply);
@@ -12778,7 +12650,7 @@ export class ExpertDecisionController
 					if (hasClass(supply, "Animal") || hasClass(supply, "Field"))
 						return false;
 					const owner = this.HQ.territoryMap.getOwner(pos);
-					if (owner !== PlayerID && owner !== 0)
+					if (owner !== PlayerID)
 						return false;
 				}
 				return !supply.resourceSupplyAmount || supply.resourceSupplyAmount() > 0;
@@ -12825,7 +12697,7 @@ export class ExpertDecisionController
 				if (!supply || !entityPosition(supply) || !supply.resourceSupplyAmount || supply.resourceSupplyAmount() <= 0)
 					return false;
 				const owner = this.HQ.territoryMap.getOwner(supply.position());
-				return owner === PlayerID || owner === 0;
+				return owner === PlayerID;
 			});
 			const lockedRemaining = lockedLive.reduce((sum, supply) =>
 				sum + Math.max(0, Number(supply.resourceSupplyAmount()) || 0), 0);
@@ -12998,14 +12870,17 @@ export class ExpertDecisionController
 			// This is productive work on its own food infrastructure, not a resource shuffle.
 			if (this.assignFoodInfrastructureWorker(gameState, ent))
 				return true;
-			// Do not park a ninth civilian beside a full berry patch. Keep this worker
-			// FOOD-OWNED, but let it chop at the primary woodsite temporarily. Because
-			// the metadata remains food_owned, the next update immediately retries food
-			// and claims a newly opened farm slot instead of inflating woodCivilians.
 			if (ent.getMetadata(PlayerID, JOB_METADATA) !== "food_owned")
 				ent.setMetadata(PlayerID, JOB_METADATA, "food_owned");
-			// IT14.75 hard no-idle rule: food ownership is metadata, not permission to
-			// stand still. Prefer wood, then stone/metal if no usable wood target exists.
+			const rushFoodBackbone = this.strategyDoctrine &&
+				(this.strategyDoctrine.id === "early_p1_rush" || this.strategyDoctrine.id === "late_p1_rush");
+			if (rushFoodBackbone)
+			{
+				// IT15.1: missing food capacity is infrastructure debt. Do not hide it by
+				// converting the dedicated civilian food backbone into wood/stone/metal.
+				this.diagnoseWorkerOrder(ent, "food-capacity-miss", 0, "FOOD_CAPACITY_DEBT");
+				return false;
+			}
 			const fallbackAssigned = this.assignSafeFallback(gameState, ent, accessIndex, ["wood", "stone", "metal"]);
 			this.diagnoseWorkerOrder(ent, "food-capacity-miss", 0, fallbackAssigned ?
 				(currentRemaining > 0 ? "NATURAL_PATCH_CAP_PRODUCTIVE_FALLBACK" : "NO_FOOD_CAPACITY_PRODUCTIVE_FALLBACK") :
@@ -13075,7 +12950,9 @@ export class ExpertDecisionController
 		if (!ent || !entityPosition(ent))
 			return false;
 		const futureFarmer = ent.getMetadata && ent.getMetadata(PlayerID, EXPERT_FUTURE_FARMER) === true;
-		const fieldFoundations = futureFarmer ? this.foundationsByClass(gameState, "Field").filter(foundation =>
+		const foodJob = ent.getMetadata && ent.getMetadata(PlayerID, JOB_METADATA);
+		const foodInfrastructureEligible = futureFarmer || ["food", "food_owned", "farm"].includes(foodJob);
+		const fieldFoundations = foodInfrastructureEligible ? this.foundationsByClass(gameState, "Field").filter(foundation =>
 		{
 			if (!foundation || !entityPosition(foundation)) return false;
 			const taskId = foundation.getMetadata && foundation.getMetadata(PlayerID, "expertTaskId");
@@ -13711,6 +13588,15 @@ export class ExpertDecisionController
 		const need = this.resourceServiceNeed(gameState, accessIndex);
 		if (!need || !need.center)
 			return frame;
+		const desiredFields = frame && frame.economy && frame.economy.derived ?
+			Math.max(0, Number(frame.economy.derived.desiredFields) || 0) : 0;
+		const fieldPipeline = this.builtByClass(gameState, "Field").length + this.foundationsByClass(gameState, "Field").length;
+		const naturalRemaining = frame && frame.state && frame.state.food ?
+			Math.max(0, Number(frame.state.food.totalNaturalRemaining) || 0) : 0;
+		const foodForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
+		if (need.generic !== "wood" && need.generic !== "food" && fieldPipeline < desiredFields &&
+		    (naturalRemaining <= 0 || foodForecast && (foodForecast.status === "critical" || foodForecast.status === "short")))
+			return frame;
 		const kind = need.generic === "food" ? "farmstead" : "storehouse";
 		// Never cancel another dropsite obligation that this same planning frame has
 		// already selected (for example natural-food expansion or wood rollover).
@@ -13896,27 +13782,8 @@ export class ExpertDecisionController
 					serviceDistance.set(supply.id(), best);
 					out.push(supply);
 				}
-				// If own territory is literally out of usable wood, allow a short neutral
-				// bridge rather than idling. Scarcity expansion still runs in parallel.
-				if (!out.length && dropsites.length)
-				{
-					const maxDrop = Math.max(40, Number(mergePolicy().emergencyNeutralWoodMaximumDropDistance) || 90);
-					const maxDrop2 = maxDrop * maxDrop;
-					for (const supply of gameState.getResourceSupplies("wood").values())
-					{
-						if (!supply || !entityPosition(supply) || !supply.resourceSupplyAmount || supply.resourceSupplyAmount() <= 0 ||
-						    isSupplyFull(gameState, supply) || getLandAccess(gameState, supply) !== accessIndex ||
-						    this.HQ.territoryMap.getOwner(supply.position()) !== 0)
-							continue;
-						let best = Infinity;
-						for (const site of dropsites)
-							best = Math.min(best, SquareVectorDistance(supply.position(), site.position()));
-						if (best > maxDrop2)
-							continue;
-						serviceDistance.set(supply.id(), best);
-						out.push(supply);
-					}
-				}
+				// IT15.1: no neutral wood bridge. If owned territory has no serviced
+				// wood, expansion/Storehouse recovery must solve it before workers gather.
 			}
 		}
 		out.sort((a, b) => {
@@ -14093,10 +13960,16 @@ export class ExpertDecisionController
 				{
 					if (this.assignFoodHomeLocalWork(gameState, ent, home, accessIndex))
 						continue;
-					// The permanent-food planner owns this worker. Do not "rescue" it by
-					// sending it across the map and recreating the exact walk churn we are
-					// trying to eliminate. A local Field/Farmstead foundation will claim it.
 					this.diagnoseWorkerOrder(ent, "food-home-wait", homeId, "NO_LOCAL_PRODUCTIVE_TARGET");
+					continue;
+				}
+				const rushFoodBackbone = this.strategyDoctrine &&
+					(this.strategyDoctrine.id === "early_p1_rush" || this.strategyDoctrine.id === "late_p1_rush");
+				if (rushFoodBackbone)
+				{
+					// IT15.1: never hide missing farm capacity with a wood/mineral fallback.
+					// The planner will create the missing Field and this worker is eligible to build it.
+					this.diagnoseWorkerOrder(ent, "food-capacity-debt", 0, "AWAIT_FOOD_INFRASTRUCTURE");
 					continue;
 				}
 			}
@@ -14155,7 +14028,8 @@ export class ExpertDecisionController
 		for (const supply of gameState.getResourceSupplies("food").values())
 		{
 			const pos = entityPosition(supply);
-			if (!pos || !hasClass(supply, "Animal") || getLandAccess(gameState, supply) !== accessIndex)
+			if (!pos || !hasClass(supply, "Animal") || getLandAccess(gameState, supply) !== accessIndex ||
+			    this.HQ.territoryMap.getOwner(pos) !== PlayerID)
 				continue;
 			if (SquareVectorDistance(pos, cc.position()) > 50*50)
 				continue;
@@ -14309,7 +14183,7 @@ export class ExpertDecisionController
 			if (getLandAccess(gameState, supply) !== accessIndex || hasClass(supply, "Domestic"))
 				continue;
 			const owner = this.HQ.territoryMap.getOwner(pos);
-			if (owner !== 0 && owner !== PlayerID)
+			if (owner !== PlayerID)
 				continue;
 			if (SquareVectorDistance(pos, cc.position()) > policy.cavalryHuntSearchRadius * policy.cavalryHuntSearchRadius)
 				continue;
@@ -14498,6 +14372,21 @@ export class ExpertDecisionController
 			if (!entityPosition(ent) || !this.isExpertEconomyEntity(ent))
 				continue;
 			this.trackResourceRoundTrip(gameState, ent);
+			// IT15.1 hard territory gate: no stale metadata/live order may preserve an
+			// economic gather target after that resource lies outside our territory.
+			const liveSupplyId = Number(ent.getMetadata(PlayerID, SUPPLY_ID));
+			const liveSupply = Number.isFinite(liveSupplyId) ? gameState.getEntityById(liveSupplyId) : undefined;
+			if (liveSupply && entityPosition(liveSupply) && liveSupply.resourceSupplyType &&
+			    this.HQ.territoryMap.getOwner(liveSupply.position()) !== PlayerID)
+			{
+				ent.setMetadata(PlayerID, SUPPLY_ID, undefined);
+				ent.setMetadata(PlayerID, WORKSITE_ID, undefined);
+				ent.setMetadata(PlayerID, EXPERT_FALLBACK_LEASE_RESOURCE, undefined);
+				ent.setMetadata(PlayerID, EXPERT_FALLBACK_LEASE_UNTIL, undefined);
+				aiWarn("[EXPERT-TERRITORY] revoke worker=" + ent.id() + " target=" + liveSupplyId +
+					" owner=" + this.HQ.territoryMap.getOwner(liveSupply.position()));
+			}
+
 			if (ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined)
 				continue;
 			const pendingJob = ent.getMetadata(PlayerID, PENDING_JOB_METADATA);
@@ -14658,16 +14547,9 @@ export class ExpertDecisionController
 		this.syncJobs(gameState, foodNetwork, preAssignmentFoodThroughput);
 		const foodAlternative = this.alternativeFoodInfo(gameState, foodContext, foodObservation);
 		this.applyPostWickerBerryPeel(gameState, foodObservation, foodAlternative);
-		const neutralFoodAnnex = this.neutralFoodAnnexCandidate(gameState, cc.position(), accessIndex);
-		const allFoodClusters = neutralFoodAnnex && foodNetwork.totalRemaining <= mergePolicy().neutralFoodAnnexOwnFoodThreshold ?
-			[...foodNetwork.clusters, { ids: neutralFoodAnnex.ids, center: neutralFoodAnnex.position, remaining: neutralFoodAnnex.remaining, neutralAnnex: true }] :
-			foodNetwork.clusters;
-		if (neutralFoodAnnex && gameState.ai.elapsedTime - this.lastNeutralFoodAnnexDiag >= 30)
-		{
-			this.lastNeutralFoodAnnexDiag = gameState.ai.elapsedTime;
-			aiWarn("[EXPERT-ANNEX] neutral-food remaining=" + Math.round(neutralFoodAnnex.remaining) + " distance=" + neutralFoodAnnex.distance.toFixed(1) +
-				" ownNatural=" + Math.round(foodNetwork.totalRemaining) + " plan=wicker+influence");
-		}
+		// IT15.1: economic food planning is own-territory only. Neutral food is not
+		// appended to the working cluster graph; territorial expansion must claim it first.
+		const allFoodClusters = foodNetwork.clusters;
 		const woodsite = this.collectWoodsite(gameState, cc, accessIndex);
 		const preWoodWorkers = this.economyWorkerMetrics(gameState);
 		const woodContinuity = this.updateWoodContinuityWatchdog(gameState, preWoodWorkers, woodsite);
@@ -14888,10 +14770,8 @@ export class ExpertDecisionController
 		frame = this.applySecondaryDepletionFieldTrigger(gameState, frame);
 		frame = this.applyPreThirdFarmsteadCapacityRescan(gameState, frame, accessIndex);
 		frame = this.applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex);
-		// IT14.91: natural food gets FINAL refusal on this frame's Field spending. Running
-		// after all Field watchdog/rescan paths guarantees that a safe neutral food district
-		// really does preempt the Field, but before farm crews are committed to that Field.
-		frame = this.applyForecastNaturalFoodExpansion(gameState, frame, cc, accessIndex, foodNetwork);
+		// IT15.1: neutral food never preempts permanent Fields. A neutral food district
+		// becomes an economic target only after territorial expansion claims it.
 		frame = this.applyFutureFarmerFieldCrews(gameState, frame);
 		frame = this.applyFarmHubRetryCooldown(gameState, frame);
 		// IT14.91: proactively service a useful mixed wood/stone/metal corridor before
@@ -15104,7 +14984,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.0] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.1] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -15170,7 +15050,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.0] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.1] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

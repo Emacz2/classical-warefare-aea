@@ -614,3 +614,13 @@ Replay regressions locked by IT14:
 - A completed Barracks never waits for a preferred unaffordable unit while any valid citizen-soldier is affordable. Unfunded standby preferences are replaceable.
 - Expert-owned civilian garrisoning has an Expert-owned unload path after threat-clear cooldown.
 - Healthy serviced wood plus a healthy bank is not Storehouse-expansion evidence; same-patch deepening must service a meaningful local wood pocket.
+
+
+## IT15.1 food-backbone / sovereignty contracts
+- IT15.1 supersedes IT15.0's neutral-food exception: economic gathering is owned-territory only.
+- Rush dedicated civilians are food workers and food-infrastructure builders. Before six Fields, only the three scripted opening civilian lumberjacks may remain on wood; every other dedicated civilian is force-owned by food even if stale permanent-job metadata says wood/stone/metal. At six Fields those three also migrate to food. Citizen-soldiers own secondary resources.
+- A missing Field is infrastructure debt; it must not be hidden by converting food-owned civilians into lumberjacks/miners.
+- A required Field action may never be discarded because no newly-trained future-farmer crew exists. Existing food/farm civilians must be reused to build the next Field.
+- Early/Late P1 rushes keep the 6-Field permanent-food floor alive while natural food remains; natural-first logic may not erase that strategic floor.
+- Expert economic gather targets must be inside PlayerID territory. Neutral-border wood/food/minerals are expansion targets only; no emergency neutral-wood bridge is permitted, and neutral stock does not count as immediately accessible economic supply.
+- Operational wood collectors are owned-territory only. If owned wood is unserviced, build/roll a Storehouse or expand territory rather than long-haul outside the border.

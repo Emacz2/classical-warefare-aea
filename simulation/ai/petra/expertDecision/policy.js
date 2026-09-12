@@ -1060,10 +1060,9 @@ const DEFAULT_POLICY = Object.freeze({
   // Temporary/fallback lumberjacks may only use trees actually serviced by a
   // completed storehouse or market. This prevents remote no-dropsite wood camps.
   fallbackWoodDropsiteRadius: 36,
-  // IT14.96 last-resort bridge: when every in-territory wood target is gone and the
-  // wood forecast is critical, neutral same-land trees within this dropsite distance
-  // may be chopped while expansion/Storehouse recovery is being established.
-  emergencyNeutralWoodMaximumDropDistance: 90,
+  // IT15.1 sovereignty invariant: Expert never gathers resources outside owned
+  // territory. Retained only as a compatibility constant; operational code ignores it.
+  emergencyNeutralWoodMaximumDropDistance: 0,
   // IT14.41: temporary overflow work should be genuinely productive, not a one-tick
   // waypoint between food capacity checks. Keep a temporary wood assignment for this
   // long unless food has entered explicit recovery mode.

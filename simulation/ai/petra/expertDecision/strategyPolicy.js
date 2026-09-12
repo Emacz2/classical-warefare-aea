@@ -1,4 +1,4 @@
-// IT15.0 strategic doctrine layer.
+// IT15.1 strategic doctrine layer.
 // A doctrine is selected once per match and then serialized by the Expert controller.
 // The goal is not to hard-code one perfect build, but to let the same mechanical
 // economy execute several coherent timings without changing difficulty bonuses.
@@ -23,8 +23,11 @@ const DOCTRINES = Object.freeze({
       targetWoodCivilians: 3,
       maxDynamicWoodCivilians: 3,
       foodSurplusNewCivilianWoodBank: 99999,
-      fieldFloorSixPopulation: 45,
-      fieldFloorEightPopulation: 75,
+      // IT15.1: establish permanent food before berries are gone. Six Fields should
+      // be the normal rush food backbone, not a late-game recovery reaction.
+      territoryNaturalFarmTransitionRatio: 0.70,
+      fieldFloorSixPopulation: 40,
+      fieldFloorEightPopulation: 70,
       secondBarracksReserveTime: 190,
       secondBarracksTargetTime: 210,
       secondBarracksHardDeadline: 235,
@@ -54,8 +57,11 @@ const DOCTRINES = Object.freeze({
       targetWoodCivilians: 3,
       maxDynamicWoodCivilians: 3,
       foodSurplusNewCivilianWoodBank: 99999,
-      fieldFloorSixPopulation: 45,
-      fieldFloorEightPopulation: 75,
+      // IT15.1: establish permanent food before berries are gone. Six Fields should
+      // be the normal rush food backbone, not a late-game recovery reaction.
+      territoryNaturalFarmTransitionRatio: 0.70,
+      fieldFloorSixPopulation: 40,
+      fieldFloorEightPopulation: 70,
       secondBarracksReserveTime: 205,
       secondBarracksTargetTime: 225,
       secondBarracksHardDeadline: 245,

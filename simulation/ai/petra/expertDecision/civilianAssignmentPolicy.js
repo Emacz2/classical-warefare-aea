@@ -128,7 +128,7 @@ function decidePostOpeningCivilianJob(input = {}) {
   const stoneTarget = Math.max(0, finiteNonNegativeInteger(input.miningTargetStoneWorkers, 6));
   const metalTarget = Math.max(0, finiteNonNegativeInteger(input.miningTargetMetalWorkers, 6));
 
-  // IT15.0 contract: the size of the dedicated-civilian wood tranche is strategic.
+  // IT15.1 contract: the size of the dedicated-civilian wood tranche is strategic.
   // Rush doctrines use only the opening three trained lumber civilians; citizen-soldiers
   // carry secondary-resource growth. Boom/tech doctrines retain the larger default.
   if (woodCivilians < targetWoodCivilians)

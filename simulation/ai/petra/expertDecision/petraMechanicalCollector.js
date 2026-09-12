@@ -65,14 +65,10 @@ function ownerAt(context, position) {
 }
 
 function allowedWoodTerritory(gameState, owner, playerId, context = {}) {
-  // Neutral/allied wood is explicit opt-in. IT14.97 enables neutral wood only for
-  // same-land opening/border lumber districts that can be served from our territory.
-  if (owner === playerId)
-    return true;
-  if (owner === 0 && context.allowNeutralWood === true)
-    return true;
-  return !!(context.allowAlliedWood === true && gameState &&
-    typeof gameState.isPlayerMutualAlly === "function" && gameState.isPlayerMutualAlly(owner));
+  // IT15.1 hard sovereignty invariant: economic wood targets must already be
+  // inside our own territory. Neutral/allied forests belong to expansion planning,
+  // never to the current lumber district.
+  return owner === playerId;
 }
 
 function collectFoodCandidates(gameState, context) {

@@ -215,12 +215,12 @@ function fieldDemand(state, policy) {
   // no-idle capacity invariant. Surplus food simply suppresses extra burn-rate growth.
   desiredFields = Math.max(desiredFields, capacityFields, permanentFieldFloor);
 
-  // IT14.74: no permanent-field pipeline at all above the 40% combined-natural threshold.
-  // Completed/founded/queued fields are already represented by existingFields, so this
-  // also prevents a temporary zero-slot reading while a foundation is pending from
-  // manufacturing a new Farmstead.
+  // IT15.1: natural food still has priority, but it may NOT erase a strategic permanent-
+  // food floor. IT15.0 could know that six/eight Fields were required and then reset the
+  // target back to the current count merely because berries remained. Keep the staircase
+  // alive so Fields finish before the natural-food cliff.
   if (naturalFirstHold)
-    desiredFields = existingFields;
+    desiredFields = Math.max(existingFields, permanentFieldFloor);
 
   // IT14.32: ten permanent fields is the normal mature target. Fields 11-12 are
   // emergency reserve capacity only when the live food bank is actually short.
