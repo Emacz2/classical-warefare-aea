@@ -7,7 +7,8 @@ Mainland Balanced | 200 population | +35% Expert gather/trade bonus
 
 DEFINITIONS
 - BREAK: first sustained sample after 10:00 where Very Hard is below 50 population and never recovers to 50+.
-- DEFEATED: actual match-end / Very Hard defeated time. If only 30-second statistics samples support the finish, record the narrowest supported window.
+- DEFEATED: the decisive conquest defeat point — when all conquest-critical enemy units/structures are destroyed and the opponent is effectively defeated. Do NOT use trailing replay-end time if the replay continues after this point.
+- If only sampled statistics/log diagnostics support the finish, record the narrowest supported time window.
 - FINISH GAP: DEFEATED minus BREAK.
 
 TOP 3 — PERMANENT UNTIL BEATEN
@@ -22,10 +23,20 @@ LEADERBOARD RULE
 - Sort primarily by DEFEATED time. BREAK is retained because it distinguishes how quickly Expert actually broke the opponent from how long cleanup took.
 - If a new result qualifies, insert it in order and drop the slowest entry. Otherwise this table stays unchanged.
 
+LATEST VERIFIED NON-CANONICAL RESULT
+IT14.98 — Athens Expert vs Gaul Very Hard
+Mainland Balanced | 200 population | +35% Expert bonus
+BREAK: 10:30
+DEFEATED: 14:55-15:00
+FINISH GAP: 4:25-4:30
+Replay continued to approximately 15:04, but that trailing time is NOT used for DEFEATED.
+Reason not ranked in canonical Top 3: opponent civilization was Gaul rather than Athens.
+
 HISTORICAL NOTES
 - IT14.46 was the first clean sub-20-minute +35% victory.
 - IT14.49: BREAK=13:00, DEFEATED=22:31.6.
 - IT14.44: Very Hard fell below 50 permanently at 17:00 and was at 6 pop at 25:00 / 0 at 25:30.
+- IT14.98 produced a very fast non-canonical victory against Gaul Very Hard: BREAK 10:30, decisive defeat between 14:55 and 15:00.
 
 CURRENT VERSION
-IT14.97 is a regression/fix build until it earns a canonical benchmark result. Do not alter the Top 3 merely because IT14.97 wins a non-canonical matchup.
+IT14.99 is the active regression/test build. Its Gaul result is preserved above, but the canonical Athens-vs-Athens Top 3 remains unchanged until IT14.98 earns a qualifying canonical run.

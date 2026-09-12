@@ -421,7 +421,7 @@ Replay regressions locked by IT14:
 ## IT14.68 production-continuity / phase-handoff / P2-kill contract
 
 - Expert gather/trade multiplier remains 1.35. IT14.67's barter correction, Champion caps, premium reinforcement, timing-strength gates and natural-food behavior remain in force unless explicitly superseded below.
-- Production continuity is a hard floor. After the protected opening pulse, every completed Barracks maintains current + next Expert military work. The Civic Centre maintains buffered civilian work below the current doctrine civilian cap and switches immediately to buffered military work once that current cap is reached. A doctrine soft cap counts as a real handoff point; the CC may not sit idle merely because the global 70-civilian cap has not been reached.
+- Production continuity is a hard floor. After the protected opening pulse, every completed Barracks maintains current + next Expert military work. The Civic Centre maintains buffered civilian work below the current doctrine civilian cap and switches immediately to buffered military work once that current cap is reached. A doctrine soft cap counts as a real handoff point; the CC may not sit idle merely because the global 65-civilian ceiling has not been reached.
 - Near/max population does not empty production buildings. Expert may retain one-unit standby casualty replacements in trainer queues. These are subordinate to phase-critical fields/research and siege. When dedicated siege needs population room, ordinary queued standby soldier orders are removed before ram production.
 - P2 Tech Push may exploit natural food aggressively, but after the configured safety time with two Barracks it may not deadlock below the absolute six-field permanent-food floor. Missing safety fields get hard priority; if no touching slot exists, another Farmstead gets hard priority. One future field is counted once only across queue/foundation state.
 - Permanent fields are hard-touch Farmstead infrastructure. The permitted border gap is capped around 0.8m; repeated placement failure never widens that ring. Terrain/obstruction pressure is solved with another Farmstead, not a remote field.
@@ -490,7 +490,7 @@ Replay regressions locked by IT14:
 
 - IT14.74 is built directly from the known IT14.73 combat-authority baseline. The exclusive Expert combat-plan creation/launch/ownership contracts remain frozen.
 - Doctrine selection is now exactly four equal replay-deterministic rolls: Early P1 Rush 25%, Late P1 Timing Rush 25%, P2 Forge-Tech Push 25%, P3 Boom Max-Tech All-In 25%.
-- P2 Forge-Tech Push and P3 Boom keep the Civic Centre exclusively on permanent civilians until 70 civilians actually exist. Phase advancement does not lower this target: a Town click at 60 civilians still leaves ten civilian CC births before CC military production. Barracks remain the continuous citizen-soldier engine. Hunting cavalry from the CC obeys the same 70-civilian gate for these doctrines.
+- P2 Forge-Tech Push and P3 Boom keep the Civic Centre exclusively on permanent civilians until 65 civilians actually exist. Phase advancement does not lower this target: a Town click at 60 civilians still leaves five civilian CC births before CC military production. Barracks remain the continuous citizen-soldier engine. Hunting cavalry from the CC obeys the same 65-civilian gate for these doctrines.
 - P3 Boom is an economy-to-City doctrine, not a delayed P2 attack. Village and early Town prioritize eco technology and safe phase progress. A normal primary attack may not form before City. City-transition commitment begins the military-tech conversion so Forge research overlaps the P2->P3 transition; a real defense emergency may buy military value earlier.
 - P3 Boom attempts City as soon as Petra's worker/entity requirements are safely satisfied. Its Town-support market thresholds are pulled earlier than the standard P2 doctrine so a missing Town-class requirement does not become an artificial 115-pop City delay.
 - In City, P3 Boom fills the operating population ceiling, finishes live relevant military attack/resistance/health/movement techs, prioritizes Iphicrates for Athens, and prepares two true building siege units. Siege preference is ram first, then a non-ram building siege if the live Arsenal exposes one, otherwise a second ram.
@@ -520,7 +520,7 @@ Replay regressions locked by IT14:
 
 ## IT14.77 — mandatory eco / P3 progression / productive staging repair
 - Village-phase Expert MUST actively invoke the existing Wicker -> Iron Axe opening routine. For Athens/Thebes, once the opening Storehouse is secured, the optional P1 eco sweep may not leapfrog `gather_lumbering_ironaxes`.
-- Doctrine weights remain exactly 25/25/25/25. P2 Tech Push and P3 Boom retain the Civic-Centre civilian-only contract until 70 civilians exist.
+- Doctrine weights remain exactly 25/25/25/25. P2 Tech Push and P3 Boom retain the Civic-Centre civilian-only contract until 65 civilians exist.
 - IT14.76 resource balancing, adaptive barter, failed-order retargeting and finishing overrides remain frozen unless a direct contradiction is found.
 - The <=40% natural-food Field transition, three-Farmstead maximum and current shared farm topology are not rewritten in this pass.
 - P3 Boom Market #2 is a City-phase utility prerequisite first and a future trade endpoint second. It receives earlier thresholds/high priority and dense legal own-territory fallback; ideal long-route geometry cannot permanently block City.
@@ -576,7 +576,7 @@ Replay regressions locked by IT14:
 ## IT14.83 — military conversion without farm regression
 - The IT14.82 Farmstead/Field placement, 40% natural-food transition, field materialization watchdog, and failed-position recovery are frozen for this pass.
 - Normal P2 attacks use 60 only as a floor. Healthy 120+ enemy populations require larger initial waves; 150+ requires ~80.
-- Each non-rush strategic retreat escalates the next P2 commitment: ~75, then ~90, then nearly all available offensive citizen-soldiers while preserving 70 civilians, a 12-soldier home screen, and siege headroom.
+- Each non-rush strategic retreat escalates the next P2 commitment: ~75, then ~90, then nearly all available offensive citizen-soldiers while preserving the live civilian target, a 12-soldier home screen, and siege headroom.
 - An escalated P2/P3-normal follow-up prepares siege, reaching two engines after repeated failed waves.
 - While an active siege push has its requested engine(s), retain a small population replacement pocket so a lost ram/catapult can be rebuilt instead of ordinary infantry instantly consuming 180/180.
 
@@ -585,3 +585,22 @@ Replay regressions locked by IT14:
 - Repeated genuine opening-placement failures may relax the live-slot floor so pathological maps do not deadlock minute 0.
 - After local natural food clears, if exactly one Farmstead exists, desired permanent Fields are still missing, no Field is pending and the exhaustive live scan reports zero open slots, Farmstead #2 must be authorized even if the opening hub managed only zero or one completed Field. The first hub may not be required to produce a Field that physically cannot exist in order to unlock its own recovery hub.
 - Dedicated follow-up Farmsteads retain the compact 3-4 Field requirement. IT14.83 military escalation/siege behavior and IT14.82 Field placement/materialization behavior remain frozen.
+
+
+## IT14.98 Late-P1 conversion contract
+- Global permanent-civilian ceiling is 65.
+- Late-P1 normally converts the Civic Centre at 48 civilians; efficient real food/wood shortage may temporarily raise that target to 55, but idle/walking/food-capacity/wood-access failures may not be papered over by training more civilians.
+- Late-P1 preferred army is 64 with a fixed 52-soldier minimum launch package. Enemy growth may still veto a locally suicidal fight, but may not continually move the global package requirement upward.
+- The CC soldier lane is included in food-burn planning after civilian conversion.
+- While an unlaunched Late-P1 timing remains live, speculative mining is suppressed: stone/metal are assigned only for already-queued immediate costs.
+- Generic Town-phase lanes are held until the Late-P1 attack launches, is abandoned, or reaches the 570-second opportunity deadline.
+
+## IT14.99 combat conversion / elite-core contract
+
+- Canonical benchmark remains Athens Expert vs Athens Very Hard on Mainland Balanced, 200 population, +35% Expert gather/trade bonus.
+- Farmstead candidate ranking strongly prefers four future usable Field sides; constrained maps may fall back rather than deadlock.
+- Early-P1 may use a final-25-second mass fallback: target army mass + favorable battlefield can launch without the preferred P1 tech package.
+- Normal P2/P3 attacks have a hard attrition budget: local dominance cannot justify endless replacement feeding after severe cumulative losses with poor enemy-population damage.
+- Rich Athens P2 maintains 12 champion hoplites + 5 champion javelineers; rich P3 maintains 15 + 5.
+- Elite quota is live/queued/training, so elite deaths reopen elite slots; normal citizen-soldier deaths remain normal replacements.
+- Champion crossbows/Gastraphetes are not deliberately replenished by the elite maintainer; generic AttackPlan champion-crossbow cap is zero.

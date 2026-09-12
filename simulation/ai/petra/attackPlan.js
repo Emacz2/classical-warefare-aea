@@ -895,11 +895,14 @@ AttackPlan.prototype.trainMoreUnits = function(gameState)
 				{
 					const caps = mergePolicy();
 					const pipeline = this.expertChampionPipeline(gameState);
-					let remaining = Math.max(0, (Number(caps.expertAttackPlanChampionGlobalCap) || 6) - pipeline.total);
+					const globalCap = Number.isFinite(Number(caps.expertAttackPlanChampionGlobalCap)) ? Number(caps.expertAttackPlanChampionGlobalCap) : 6;
+					const rangedCap = Number.isFinite(Number(caps.expertAttackPlanRangedChampionCap)) ? Number(caps.expertAttackPlanRangedChampionCap) : 4;
+					const crossbowCap = Number.isFinite(Number(caps.expertAttackPlanCrossbowChampionCap)) ? Number(caps.expertAttackPlanCrossbowChampionCap) : 3;
+					let remaining = Math.max(0, globalCap - pipeline.total);
 					if (selectedTemplate.hasClasses(["Ranged"]))
-						remaining = Math.min(remaining, Math.max(0, (Number(caps.expertAttackPlanRangedChampionCap) || 4) - pipeline.ranged));
+						remaining = Math.min(remaining, Math.max(0, rangedCap - pipeline.ranged));
 					if (selectedTemplate.hasClasses(["Crossbowman"]) || String(template).toLowerCase().includes("crossbow"))
-						remaining = Math.min(remaining, Math.max(0, (Number(caps.expertAttackPlanCrossbowChampionCap) || 3) - pipeline.crossbow));
+						remaining = Math.min(remaining, Math.max(0, crossbowCap - pipeline.crossbow));
 					if (remaining <= 0)
 					{
 						aiWarn("[EXPERT-CHAMPION] cap blocks attack-plan production plan=" + this.name +

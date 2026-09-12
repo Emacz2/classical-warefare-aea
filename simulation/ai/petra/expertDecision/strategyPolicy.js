@@ -1,4 +1,4 @@
-// IT14.46 strategic doctrine layer.
+// IT14.99 strategic doctrine layer.
 // A doctrine is selected once per match and then serialized by the Expert controller.
 // The goal is not to hard-code one perfect build, but to let the same mechanical
 // economy execute several coherent timings without changing difficulty bonuses.
@@ -32,11 +32,11 @@ const DOCTRINES = Object.freeze({
     id: "late_p1_rush",
     label: "Late P1 Timing Rush",
     weight: 0.25,
-    softCivilianCap: 55,
-    softCapUntil: 450,
+    softCivilianCap: 48,
+    softCapUntil: 570,
     soldierTrainingStartTime: 135,
     rushes: 1,
-    rushSize: 28,
+    rushSize: 64,
     p1EcoSweepBeforeP2: false,
     policy: Object.freeze({
       barracksReserveTime: 115,
@@ -56,7 +56,7 @@ const DOCTRINES = Object.freeze({
     id: "p2_tech_push",
     label: "P2 Forge-Tech Push",
     weight: 0.25,
-    softCivilianCap: 70,
+    softCivilianCap: 65,
     softCapUntil: 0,
     soldierTrainingStartTime: 150,
     rushes: 0,
@@ -68,14 +68,14 @@ const DOCTRINES = Object.freeze({
     id: "p3_boom_all_in",
     label: "P3 Boom Max-Tech All-In",
     weight: 0.25,
-    softCivilianCap: 70,
+    softCivilianCap: 65,
     softCapUntil: 0,
     soldierTrainingStartTime: 150,
     rushes: 0,
     rushSize: 0,
     p1EcoSweepBeforeP2: true,
     policy: Object.freeze({
-      // P3 boom protects the fast/safe Town click, then uses the 60-70 civilian
+      // P3 boom protects the fast/safe Town click, then uses the 60-65 civilian
       // Town economy to satisfy City requirements as soon as Petra permits.
       phase2ExceptionalTime: 390,
       phase2NormalTime: 420,
@@ -125,7 +125,7 @@ function policyOverridesForDoctrine(doctrine, time = 0)
   const d = doctrineById(doctrine && doctrine.id || doctrine);
   const now = Math.max(0, Number(time) || 0);
   const rushWindow = d.softCapUntil > 0 && now < d.softCapUntil;
-  const civilianCap = rushWindow ? d.softCivilianCap : 70;
+  const civilianCap = rushWindow ? d.softCivilianCap : 65;
   const rushTemple = Number(d.rushes) > 0 ?
     (rushWindow ? { p1TemplePopulation: 9999 } :
       { p1TemplePopulation: 52, p1TempleMinimumFieldPipeline: 2 }) : {};

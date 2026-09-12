@@ -1292,7 +1292,7 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	const phase = gameState.currentPhase ? gameState.currentPhase() : 1;
 	const deadline = doctrine.id === "early_p1_rush" ?
 		(Number(policy.expertEarlyP1RushOpportunityDeadline) || 450) :
-		(Number(policy.expertLateP1RushOpportunityDeadline) || 480);
+		(Number(policy.expertLateP1RushOpportunityDeadline) || 570);
 	if (phase > 1)
 		return { launch: false, cancel: true, reason: "phase2-transition" };
 
@@ -1366,17 +1366,33 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	const localNeeded = equivalentDefenders > 0 ? Math.max(equivalentDefenders + lead, Math.ceil(equivalentDefenders * ratio)) : 0;
 	const targetIsCC = !!(attack.target && attack.target.hasClass && attack.target.hasClass("CivCentre"));
 	const mainBase = targetIsCC || staticDefenses > 0;
-	const knownArmyNeeded = mainBase ? Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05)) : 0;
+	const targetArmy = Math.max(12, Number(doctrine.rushSize) || 20);
+	const lateP1 = doctrine.id === "late_p1_rush";
+	const fixedLateMinimum = lateP1 ? Math.min(targetArmy, Math.max(12, Number(policy.expertLateP1RushMinimumLaunchArmy) || 52)) : 0;
+	const rawKnownArmyNeeded = mainBase ? Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05)) : 0;
+	// IT14.99: Late-P1 remains a timing attack, so enemy growth may veto a locally suicidal
+	// fight but may not keep raising the required package forever. Once the fixed 52-man
+	// launch package exists, global known-army/population are informational; local defense
+	// remains the safety gate.
+	const knownArmyNeeded = lateP1 ? Math.min(fixedLateMinimum, rawKnownArmyNeeded) : rawKnownArmyNeeded;
 	const pdata = gameState.sharedScript && gameState.sharedScript.playersData ? gameState.sharedScript.playersData[attack.targetPlayer] : undefined;
 	const enemyPop = pdata && pdata.state !== "defeated" ? Math.max(0, Number(pdata.popCount) || 0) : 0;
-	const popSafe = !mainBase || enemyPop <= attackers * Math.max(1.1, Number(policy.expertP1TimingMainBaseEnemyPopPerAttacker) || 1.60);
-	const favorable = attackers > 0 && attackers >= localNeeded && attackers >= knownArmyNeeded && popSafe;
+	const popSafe = lateP1 && attackers >= fixedLateMinimum ? true :
+		(!mainBase || enemyPop <= attackers * Math.max(1.1, Number(policy.expertP1TimingMainBaseEnemyPopPerAttacker) || 1.60));
+	// IT14.99: Early-P1 gets one timing-window escape. If the preferred upgrade did
+	// not finish but the actual army has reached its intended mass and the local fight
+	// is favorable, do not cancel a 22-v-10 opportunity merely because package=missing.
+	const earlyFallbackWindow = !lateP1 && now >= deadline - Math.max(0, Number(policy.expertEarlyP1RushMassFallbackSeconds) || 25);
+	const earlyMassFallback = earlyFallbackWindow && attackers >= targetArmy;
+	const packageReady = upgradeReady || earlyMassFallback || (lateP1 && attackers >= fixedLateMinimum);
+	const favorable = attackers > 0 && (!lateP1 || attackers >= fixedLateMinimum) &&
+		attackers >= localNeeded && attackers >= knownArmyNeeded && popSafe;
 	const logEvery = Math.max(5, Number(policy.expertP1RushGateLogSeconds) || 12);
 	const shouldLog = now >= (Number(this.expertLastP1RushGateLog) || -99999) + logEvery;
 
-	if (!upgradeReady || !favorable)
+	if (!packageReady || !favorable)
 	{
-		const reason = !upgradeReady ? "timing-package" : !popSafe ? "enemy-pop-risk" :
+		const reason = !packageReady ? "timing-package" : !popSafe ? "enemy-pop-risk" :
 			attackers < knownArmyNeeded ? "enemy-mobile-army" : "no-local-advantage";
 		if (now >= deadline)
 		{
@@ -1386,11 +1402,11 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 				aiWarn("[EXPERT-RUSH-GATE] cancel plan=" + attack.name + " strategy=" + doctrine.id +
 					" reason=" + reason + " army=" + attackers + " defenders=" + defenders +
 					" knownEnemy=" + knownEnemyCombat + " enemyPop=" + enemyPop + " static=" + staticDefenses +
-					" needed=" + Math.max(localNeeded, knownArmyNeeded) + " package=" + upgradeLabel +
+					" needed=" + Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded) + " package=" + (earlyMassFallback ? upgradeLabel + "+mass-fallback" : upgradeLabel) +
 					" deadline=" + Math.round(deadline));
 			}
 			return { launch: false, cancel: true, reason, attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
-				needed: Math.max(localNeeded, knownArmyNeeded), upgradeReady };
+				needed: Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded), upgradeReady: packageReady };
 		}
 		if (shouldLog)
 		{
@@ -1398,22 +1414,22 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 			aiWarn("[EXPERT-RUSH-GATE] hold plan=" + attack.name + " strategy=" + doctrine.id +
 				" reason=" + reason + " army=" + attackers + " defenders=" + defenders +
 				" knownEnemy=" + knownEnemyCombat + " enemyPop=" + enemyPop + " static=" + staticDefenses +
-				" needed=" + Math.max(localNeeded, knownArmyNeeded) + " package=" + upgradeLabel +
+				" needed=" + Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded) + " package=" + (earlyMassFallback ? upgradeLabel + "+mass-fallback" : upgradeLabel) +
 				" deadline=" + Math.round(deadline));
 		}
 		return { launch: false, reason, attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
-			needed: Math.max(localNeeded, knownArmyNeeded), upgradeReady };
+			needed: Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded), upgradeReady: packageReady };
 	}
 	if (shouldLog)
 	{
 		this.expertLastP1RushGateLog = now;
 		aiWarn("[EXPERT-RUSH-GATE] launch plan=" + attack.name + " strategy=" + doctrine.id +
 			" army=" + attackers + " defenders=" + defenders + " knownEnemy=" + knownEnemyCombat +
-			" enemyPop=" + enemyPop + " static=" + staticDefenses + " needed=" + Math.max(localNeeded, knownArmyNeeded) +
-			" package=" + upgradeLabel);
+			" enemyPop=" + enemyPop + " static=" + staticDefenses + " needed=" + Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded) +
+			" package=" + (earlyMassFallback ? upgradeLabel + "+mass-fallback" : upgradeLabel));
 	}
 	return { launch: true, reason: "advantage", attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
-		needed: Math.max(localNeeded, knownArmyNeeded), upgradeReady };
+		needed: Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded), upgradeReady: packageReady };
 };
 
 // IT14.66 closes the second P1-launch path that IT14.65 did not cover: a normal
@@ -1740,8 +1756,19 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 		enemy <= own * (Number(policy.expertCombatPressureHoldMaximumEnemyRatio) || 0.55) &&
 		balance.defenses <= (Number(policy.expertCombatPressureHoldMaximumDefenses) || 3) &&
 		army > Math.max(18, Math.floor(launch * 0.45));
-	out.pressureHold = bad && pressured && !captureCommitment && localDominance;
-	out.abort = bad && pressured && !captureCommitment && !localDominance;
+	const hardAttritionLosses = Math.max(Number(policy.expertCombatHardAttritionMinimumOwnLosses) || 36,
+		Math.ceil(launch * (Number(policy.expertCombatHardAttritionLossFraction) || 0.75)));
+	const hardAttrition = pressured && losses >= hardAttritionLosses &&
+		enemyDamage < losses * (Number(policy.expertCombatHardAttritionEnemyDamageCredit) || 0.50);
+	// IT14.99: the hard casualty budget overrides IT14.94's local-dominance hold.
+	// Local snapshots can look 31v0 after the opponent cycles defenders while our
+	// economy has already donated 100+ units into the same objective.
+	out.pressureHold = bad && pressured && !captureCommitment && localDominance && !hardAttrition;
+	out.abort = bad && pressured && !captureCommitment && (!localDominance || hardAttrition);
+	if (hardAttrition && !captureCommitment)
+		aiWarn("[EXPERT-ATTRITION] budget-exhausted plan=" + attack.name + " launch=" + launch +
+			" army=" + army + " losses=" + losses + " enemyDamage=" + enemyDamage +
+			" local=" + own + "v" + enemy + " defenses=" + balance.defenses);
 	if (bad && pressured && captureCommitment)
 		aiWarn("[EXPERT-CAPTURE] hold-cc plan=" + attack.name + " capture=" + Math.round(captureShare * 100) +
 			"% local=" + balance.ownCombat + "v" + balance.enemyCombat + " losses=" + losses +
@@ -2610,16 +2637,18 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				if (this.Config.difficulty >= difficulty.EXPERT && doctrine)
 				{
 					const target = Math.max(12, Number(doctrine.rushSize) || 20);
-					// IT14.50: Late P1 is a timing push, not an early gamble. Require 26/28
-					// before it can leave; Early P1 remains deliberately more opportunistic.
-					const minFraction = doctrine.id === "late_p1_rush" ? 0.93 : 0.78;
-					const minTotal = Math.max(10, Math.min(target, Math.round(target * minFraction)));
+					// IT14.50: Late P1 is a timing push, not an early gamble. IT14.98 uses a fixed
+					// minimum launch package instead of chasing the opponent population upward.
+					const minFraction = doctrine.id === "late_p1_rush" ? 0.80 : 0.78;
+					const minTotal = doctrine.id === "late_p1_rush" ?
+						Math.max(10, Math.min(target, Math.max(Number(mergePolicy().expertLateP1RushMinimumLaunchArmy) || 52, Math.round(target * minFraction)))) :
+						Math.max(10, Math.min(target, Math.round(target * minFraction)));
 					let screenLabel = "infantryMin=" + minTotal;
 					if (gameState.getPlayerCiv() === "athen")
 					{
-						// IT14.54: Athens' rush is a screened infantry timing, not whatever 28
-						// infantry happened to finish first. The 28-man Late P1 target becomes
-						// 16 melee / 12 ranged, with a 15/11 minimum launch screen.
+						// IT14.54: Athens' rush is a screened infantry timing, not merely whatever
+						// infantry finish first. IT14.98 scales the melee/ranged screen from the
+						// doctrine target and fixed minimum launch package.
 						const meleeShare = Number(mergePolicy().athensMeleeShare) || 0.58;
 						const meleeTarget = Math.max(1, Math.min(target - 1, Math.round(target * meleeShare)));
 						const rangedTarget = Math.max(1, target - meleeTarget);

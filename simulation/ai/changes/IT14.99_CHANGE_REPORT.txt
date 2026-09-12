@@ -1,0 +1,65 @@
+EXPERT AI PETRA — IT14.99 CHANGE REPORT
+=======================================
+
+PURPOSE
+IT14.99 is a focused combat-conversion build based on the first two IT14.98 tests.
+IT14.98 proved that Expert can sustain/rebuild a much stronger economy, but Game 1
+showed that poor fight conversion can still burn that advantage away. Game 2 showed
+that the new Late-P1 mass timing can work extremely well. 14.99 therefore preserves
+the 14.98 civilian/food/wood conversion architecture and fixes four observed issues.
+
+1) FARMSTEAD FUTURE-RING QUALITY
+- Farmstead scoring now strongly demotes sites with fewer than four FUTURE usable
+  field positions after natural food disappears.
+- This is a score, not a hard veto, so constrained maps cannot deadlock.
+- Natural-expansion preference is raised from 3 to 4 future field slots.
+- Goal: avoid a Farmstead whose one side is permanently blocked by an existing
+  House/Barracks/other structure and can therefore support only 2-3 touching Fields.
+
+2) EARLY-P1 DEADLINE MASS FALLBACK
+- The preferred P1 tech package remains desirable.
+- During the final 25 seconds of the Early-P1 opportunity window, an army that has
+  reached the intended rush mass may launch without that package if the normal local
+  defender/known-army/population safety checks are favorable.
+- This fixes IT14.98 Game 1 cancelling 22 soldiers against only ~10 local defenders
+  solely because package=missing.
+
+3) HARD ATTRITION BUDGET
+- IT14.94 local-dominance pressure hold remains useful for short tactical superiority.
+- It no longer permits unlimited replacement feeding.
+- A normal P2/P3 attack that has lost at least 36 units AND about 75% of its original
+  launch size while enemy-population damage is below 50% of those losses exhausts its
+  casualty budget and strategically rebooms, unless meaningful CC capture commitment
+  applies.
+- New diagnostic: [EXPERT-ATTRITION] budget-exhausted ...
+
+4) ATHENS RICH-ECONOMY ELITE CORE
+- Gymnasium composition is now role-based rather than a tiny generic 6/8 champion cap.
+- Rich P2 target: 12 champion hoplites + 5 champion javelineers.
+- Rich P3 target: 15 champion hoplites + 5 champion javelineers.
+- Counts use live + AI-queued + currently-training units, so elite casualties reopen
+  only their missing elite role. Normal citizen-soldier casualties continue through
+  normal CC/Barracks replacement.
+- Champion hoplites have first claim; champion javelineers are the second layer.
+- Champion crossbows/Gastraphetes are no longer deliberately produced by the elite
+  maintainer, and the generic AttackPlan crossbow-champion cap is 0.
+- Elite production requires a genuinely rich bank and preserves a reserve so it does
+  not starve ordinary reinforcement/eco continuity.
+- New diagnostic: [EXPERT-ELITE] maintain role=hoplite|javelineer ...
+
+FROZEN / INTENTIONALLY UNCHANGED
+- 65 global civilian ceiling.
+- Late-P1 48 civilian target / 55 efficiency recovery band.
+- Late-P1 64 preferred / 52 minimum launch mass and P2 timing hold.
+- Opening Storehouse selector/service logic from IT14.97.
+- Opening Farmstead berry-cluster doctrine remains; only candidate ring-quality scoring
+  is strengthened.
+- Benchmark Top 3 remains canonical Athens Expert vs Athens Very Hard.
+
+TEST FOCUS
+- Farmsteads should usually preserve four usable sides for future Fields.
+- Early-P1 should no longer cancel a favorable full-mass timing only for missing tech.
+- Watch casualty exchange diagnostics; repeated 100+ loss / ~25 enemy-damage feeds
+  should terminate much earlier.
+- With a rich Town/City bank, expect [EXPERT-ELITE] to build/rebuild the champion
+  hoplite core before premium ranged specialists.

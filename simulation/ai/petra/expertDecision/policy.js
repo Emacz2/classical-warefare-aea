@@ -59,7 +59,9 @@ const DEFAULT_POLICY = Object.freeze({
   // fields in parallel. P1/opening behavior keeps the old three-task ceiling.
   maxConcurrentFieldTasksSurplus: 5,
   fieldParallelExpansionWoodBank: 1000,
-  civilianCap: 70,
+  // IT14.99: 65 remains the global permanent-civilian ceiling. Rush doctrines may
+  // deliberately stop lower while citizen-soldiers carry part of the economy.
+  civilianCap: 65,
   farmPrebuildWoodCivilians: 12,
   farmSecondPrebuildWoodCivilians: 16,
   farmFullPrebuildWoodCivilians: 20,
@@ -77,9 +79,12 @@ const DEFAULT_POLICY = Object.freeze({
   expertCivilianQueueDepthStartPopulation: 24,
   expertProductionVillagerPriority: 1000,
   expertProductionSoldierPriority: 950,
-  // IT14.95 CC contract: the Civic Centre grows to 70 civilians for every doctrine.
-  // Below 70, military production from the CC is allowed only for a real attack/defense
-  // state; selecting a P1 doctrine alone is not enough.
+  // IT14.98 CC contract: 65 is the global ceiling, while Late-P1 uses a lower
+  // economy-conditioned target so the CC can become a third military trainer.
+  // A short recovery allowance is permitted only when real productive labor is efficient.
+  expertLateP1CivilianRecoveryCap: 55,
+  expertLateP1CivilianEfficiencyMinimum: 0.90,
+  expertLateP1CivilianWalkingMaximum: 0.25,
   expertP1CCInfantryMinimumCivilians: 30, // retained for legacy priority/read compatibility
   expertCCP1AttackExceptionArmyFraction: 0.75,
   expertCCP1AttackExceptionMinimumArmy: 12,
@@ -94,7 +99,7 @@ const DEFAULT_POLICY = Object.freeze({
   expertPrimaryOffensiveFloodReserveThreshold: 30,
   expertPrimaryOffensiveFloodTargetArmy: 78,
   soldierFoodReserve: 100,
-  // The CC stays on civilians until the 70-civilian cap; barracks carry military production.
+  // The CC stays on civilians until the live civilian target; barracks carry military production.
   ccOpeningSoldierStartTime: 99999,
   ccSecondEmergencySoldierTime: 99999,
   barracksReserveTime: 135,
@@ -201,7 +206,11 @@ const DEFAULT_POLICY = Object.freeze({
   // Fields. Future Field capacity is strongly preferred in scoring, but only dedicated
   // permanent farm hubs retain the hard 3-field minimum.
   minimumNaturalExpansionFieldSlots: 0,
-  preferredNaturalExpansionFieldSlots: 3,
+  preferredNaturalExpansionFieldSlots: 4,
+  // IT14.99: placement scoring strongly prefers a four-side future farm ring even
+  // when berries temporarily occupy one side. This is a score, not a deadlock gate.
+  farmsteadFutureRingPreferredSlots: 4,
+  farmsteadFutureRingMissingSlotPenalty: 12000,
   maxFarmHubDistanceFromCC: 70,
   minimumPrebuildFields: 2,
   minimumMidPrebuildFields: 3,
@@ -227,7 +236,7 @@ const DEFAULT_POLICY = Object.freeze({
   huntingCavalryMinimumHuntForThree: 650,
   huntingCavalryEarlyRushMinimumHuntForTwo: 900,
   huntingCavalryEarlyRushMinimumHuntForThree: 1400,
-  // IT14.96: rich wild-game is an economic exception to the 70-civilian CC rule.
+  // IT14.96: rich wild-game is an economic exception to the normal CC civilian-continuity rule.
   // Around pop 30, two additional pursuit hunters may interrupt civilian production
   // briefly, then the CC immediately resumes civilians.
   huntingCavalryCCMinimumTime: 120,
@@ -733,13 +742,21 @@ const DEFAULT_POLICY = Object.freeze({
   athensGymnasiumWoodReserve: 225,
   athensGymnasiumFoodReserve: 250,
   athensGymnasiumMetalReserve: 100,
-  athensGymnasiumP2ChampionTarget: 6,
-  athensGymnasiumP3ChampionTarget: 8,
-  // IT14.63 champion composition: Hoplites form the backbone, champion javelineers
-  // are the second layer, and Gastraphetes remain a small specialist detachment.
-  athensGymnasiumRangedCapWithoutMelee: 3,
-  athensGymnasiumCrossbowTarget: 2,
-  athensGymnasiumCrossbowMaximum: 2,
+  // IT14.99 elite-core contract. A rich Athens economy converts surplus into a
+  // persistent melee champion screen rather than repeatedly buying Gastraphetes.
+  // Counts are LIVE + queued/training, so deaths reopen exactly the missing role.
+  athensGymnasiumP2ChampionTarget: 17,
+  athensGymnasiumP3ChampionTarget: 20,
+  athensGymnasiumP2HopliteTarget: 12,
+  athensGymnasiumP3HopliteTarget: 15,
+  athensGymnasiumJavelineerTarget: 5,
+  athensGymnasiumRichFoodBank: 900,
+  athensGymnasiumRichWoodBank: 600,
+  athensGymnasiumRichStoneBank: 180,
+  athensGymnasiumRichMetalBank: 300,
+  athensGymnasiumRangedCapWithoutMelee: 5,
+  athensGymnasiumCrossbowTarget: 0,
+  athensGymnasiumCrossbowMaximum: 0,
   // IT14.65: stop buying premium specialists once the opponent is already in cleanup range.
   athensGymnasiumStopEnemyPopulation: 28,
   athensGymnasiumPlacementFailureLimit: 3,
@@ -1117,7 +1134,14 @@ const DEFAULT_POLICY = Object.freeze({
   expertP2EscalationSecondArmyTarget: 90,
   expertP2EscalationMaximumArmyTarget: 94,
   expertEarlyP1RushOpportunityDeadline: 450,
-  expertLateP1RushOpportunityDeadline: 480,
+  // IT14.99: in the last 25s of the Early-P1 window, sufficient mass + a favorable
+  // battlefield may launch even if the preferred P1 upgrade package is unfinished.
+  expertEarlyP1RushMassFallbackSeconds: 25,
+  // IT14.98: the late timing now masses a real army before Town. 52 is the hard
+  // launch package inside the 64-soldier preferred composition; the window stays
+  // open through 9:30 before the doctrine yields to P2.
+  expertLateP1RushMinimumLaunchArmy: 52,
+  expertLateP1RushOpportunityDeadline: 570,
   expertP1RushGateLogSeconds: 12,
   // IT14.64 pre-engagement sanity check. This does not alter Petra movement; it only
   // refuses a clearly losing head-on commitment before the casualty detector has time to fire.
@@ -1149,6 +1173,13 @@ const DEFAULT_POLICY = Object.freeze({
   expertCombatBadExchangeMinimumFightSeconds: 28,
   expertCombatBadExchangeReboomSeconds: 55,
   expertCombatBadExchangeCooldownSeconds: 35,
+  // IT14.99 hard attrition budget. Local numerical control is not permission to feed
+  // replacements forever into a tower/CC or a poor exchange. Once a normal P2/P3
+  // attack has burned ~75% of its launch size while earning <50% casualty credit,
+  // break the attack and reboom even if the latest local snapshot looks favorable.
+  expertCombatHardAttritionMinimumOwnLosses: 36,
+  expertCombatHardAttritionLossFraction: 0.75,
+  expertCombatHardAttritionEnemyDamageCredit: 0.50,
   // IT14.94: casualty history is not permission to abandon a battlefield we currently own.
   // A large local force with a decisive numerical edge holds pressure; if static defenses
   // are present it may use the existing short tactical regroup instead of full reboom.
@@ -1336,9 +1367,12 @@ const DEFAULT_POLICY = Object.freeze({
   expertFallbackEscalateAfterFailures: 1,
   // Attack-plan champions are specialists, not a substitute for siege and citizen
   // infantry. These caps apply to Petra's normal AttackPlan production path too.
-  expertAttackPlanChampionGlobalCap: 6,
-  expertAttackPlanRangedChampionCap: 4,
-  expertAttackPlanCrossbowChampionCap: 3,
+  // IT14.99: strategic champion composition is owned by the Athens elite-core
+  // maintainer. Generic AttackPlan may supplement it, but never manufacture
+  // champion crossbows; those repeatedly consumed premium resources in 14.98.
+  expertAttackPlanChampionGlobalCap: 20,
+  expertAttackPlanRangedChampionCap: 5,
+  expertAttackPlanCrossbowChampionCap: 0,
   // P2 Tech Push may take a clearly favorable fight with one active core tech instead
   // of idling a 50+ army until both upgrades have fully completed.
   expertP2OpportunityMinimumArmy: 45,

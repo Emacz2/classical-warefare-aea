@@ -450,7 +450,7 @@ export class ExpertDecisionController
 		// IT14.49: once a P1 rush has been explicitly abandoned, stop pretending the
 		// opening civilian cap still matters. Recovery outranks the persistent launch flag.
 		if (attacks && attacks.expertRushRecoveryMode)
-			return { ...base, civilianCap: 70, p1TemplePopulation: 48, p1TempleMinimumFieldPipeline: 2 };
+			return { ...base, civilianCap: 65, p1TemplePopulation: 48, p1TempleMinimumFieldPipeline: 2 };
 		// IT14.52: a live rush may protect its launch timing, but once the army actually
 		// leaves home the worker-aura Temple becomes an immediate economic follow-up.
 		if (attacks && attacks.expertRushHasLaunched)
@@ -465,10 +465,52 @@ export class ExpertDecisionController
 
 	ccCivilianTrainingTarget(gameState)
 	{
-		// IT14.95 global CC economy contract: every doctrine grows to seventy permanent
-		// civilians from the Civic Centre.  A real attack/defense may temporarily interleave
-		// one military unit, but selecting a rush doctrine by itself never lowers this target.
-		return Math.max(70, Number(mergePolicy().civilianCap) || 70);
+		// IT14.99: 65 is the global permanent-civilian ceiling. Late-P1 deliberately
+		// converts the CC into a military trainer at 48 civilians when the existing economy
+		// is doing real work. If food/wood is genuinely short while workers are efficient,
+		// allow a small recovery band to 55; do NOT answer idle/walking/capacity failures by
+		// blindly adding more civilians. Once the rush launches/aborts, rebuild toward 65.
+		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
+		const globalCap = Math.max(1, Number(mergePolicy().civilianCap) || 65);
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
+		const manager = this.HQ && this.HQ.attackManager;
+		if (!doctrine || doctrine.id !== "late_p1_rush" || phase !== 1 ||
+		    manager && (manager.expertRushHasLaunched || manager.expertRushRecoveryMode))
+			return globalCap;
+
+		const softCap = Math.max(1, Math.min(globalCap, Number(policy.civilianCap) || 48));
+		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+		if (workers.civilians < softCap)
+			return softCap;
+
+		// When the timing army is already forming, protect the conversion and stop
+		// recovery civilians from stealing CC cycles from the launch package.
+		const minArmy = Math.max(12, Number(policy.expertLateP1RushMinimumLaunchArmy) || 52);
+		for (const plan of manager && manager.upcomingAttacks && manager.upcomingAttacks[AttackPlan.TYPE_RUSH] || [])
+			if (plan && plan.unitCollection && plan.unitCollection.length >= Math.floor(minArmy * 0.75))
+				return softCap;
+
+		const actual = this.actualWorkerOrders(gameState);
+		const active = Math.max(1, actual.food + actual.farm + actual.wood + actual.stone + actual.metal +
+			actual.chicken + actual.builders + actual.returning + actual.approaching + actual.idle + actual.unproductive);
+		const productiveFraction = Math.max(0, 1 - (actual.idle + actual.unproductive) / active);
+		const walkingFraction = Math.max(0, actual.approaching / active);
+		const efficient = productiveFraction >= (Number(policy.expertLateP1CivilianEfficiencyMinimum) || 0.90) &&
+			walkingFraction <= (Number(policy.expertLateP1CivilianWalkingMaximum) || 0.25);
+
+		const foodForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
+		const woodForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
+		const foodShort = !!(foodForecast && (foodForecast.status === "critical" || foodForecast.status === "short"));
+		const woodShort = !!(woodForecast && (woodForecast.status === "critical" || woodForecast.status === "short"));
+		// More civilians help only when there is actual work for them. A food shortage with
+		// no open food capacity is an infrastructure problem; stalled wood access is a
+		// dropsite/forest problem. Neither is solved by training ten more bodies.
+		const foodLaborCanHelp = foodShort && Math.max(0, Number(this.lastImmediateFoodSlots) || 0) > 0;
+		const woodLaborCanHelp = woodShort && !this.woodIncomeStalled && !this.phaseWoodCrisis;
+		if (efficient && (foodLaborCanHelp || woodLaborCanHelp))
+			return Math.max(softCap, Math.min(globalCap, Number(policy.expertLateP1CivilianRecoveryCap) || 55));
+		return softCap;
 	}
 
 	ccMilitaryExceptionReason(gameState)
@@ -491,7 +533,7 @@ export class ExpertDecisionController
 
 		const doctrine = this.ensureStrategicDoctrine(gameState);
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
-		// P1 is the only case where the attack can be real before seventy civilians.  Do
+		// P1 is the only case where the attack can be real before the global civilian ceiling.  Do
 		// not confuse mere doctrine selection/early arming with "doing a P1 attack": the
 		// rush must already be near its actual launch package.
 		if (doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"))
@@ -1431,7 +1473,7 @@ export class ExpertDecisionController
 			"housePopulationBonus": house && typeof house.getPopulationBonus === "function" ? Number(house.getPopulationBonus()) || 0 : 0,
 			"civilianTrainTime": this.templateBuildTime(civilian),
 			"activeMilitaryTrainers": this.builtByClass(gameState, "Barracks").length,
-			"ccSoldierActive": workers.civilians >= this.currentCivilianCap(gameState)
+			"ccSoldierActive": workers.civilians >= this.ccCivilianTrainingTarget(gameState)
 		};
 	}
 
@@ -1617,8 +1659,18 @@ export class ExpertDecisionController
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		const civilianExecution = this.trainingExecution(gameState, cc);
 		const civilianBatch = gameState.getPopulation() < 24 ? 3 : gameState.getResources().food >= 450 ? 4 : 3;
-		const ccFoodBurnRate = workers.civilians < this.currentCivilianCap(gameState) && civilianExecution && civilianExecution.template ?
+		const ccCivilianTarget = this.ccCivilianTrainingTarget(gameState);
+		let ccFoodBurnRate = workers.civilians < ccCivilianTarget && civilianExecution && civilianExecution.template ?
 			this.batchFoodBurnRate(gameState, cc, civilianExecution.template, civilianBatch) : 0;
+		// IT14.99: once the CC converts from civilians to soldiers, that trainer still burns
+		// food. The old model dropped CC burn to zero exactly when Late-P1 added a third
+		// military production lane, causing the farm/food planner to under-budget the rush.
+		if (workers.civilians >= ccCivilianTarget && cc)
+		{
+			const ccSoldier = this.selectInfantrySoldier(gameState, cc, "cc-cap");
+			if (ccSoldier)
+				ccFoodBurnRate = this.batchFoodBurnRate(gameState, cc, ccSoldier.type, 1);
+		}
 
 		let barracksRate = 0;
 		const barracks = this.builtByClass(gameState, "Barracks").sort((a, b) => a.id() - b.id())[0];
@@ -2838,8 +2890,11 @@ export class ExpertDecisionController
 		if (!plan || !doctrine)
 			return;
 		const target = Math.max(12, Number(doctrine.rushSize) || 20);
-		const minFraction = doctrine.id === "late_p1_rush" ? 0.93 : 0.78;
-		const minTotal = Math.max(10, Math.min(target, Math.round(target * minFraction)));
+		const policy = mergePolicy();
+		const minFraction = doctrine.id === "late_p1_rush" ? 0.80 : 0.78;
+		const minTotal = doctrine.id === "late_p1_rush" ?
+			Math.max(10, Math.min(target, Math.max(Number(policy.expertLateP1RushMinimumLaunchArmy) || 52, Math.round(target * minFraction)))) :
+			Math.max(10, Math.min(target, Math.round(target * minFraction)));
 		let screenLabel = "infantryMin=" + minTotal;
 		if (gameState.getPlayerCiv() === "athen")
 		{
@@ -3056,7 +3111,7 @@ export class ExpertDecisionController
 		else if (Number.isFinite(enemyPop) && enemyPop >= (Number(policy.expertP2HealthyEnemyPopulation) || 120))
 			target = Math.max(target, Number(policy.expertP2HealthyEnemyArmyTarget) || 70);
 
-		// Preserve 70 civilians, a 12-soldier home screen, and room for siege inside
+		// Preserve the live civilian target, a 12-soldier home screen, and room for siege inside
 		// the 180 operating cap. Escalation may use nearly everything else, never more.
 		const operating = this.effectiveOperatingPopulationCap(gameState);
 		const civilianCap = Math.max(0, this.currentCivilianCap(gameState));
@@ -4705,6 +4760,20 @@ export class ExpertDecisionController
 			(Number(this.farmsteadPlacementFailures) || 0) >= (Number(policy.phase2FiveFieldLayoutEscapeMinimumFailures) || 3);
 		const productionReady = barracks >= 2;
 		const phaseDoctrine = this.ensureStrategicDoctrine(gameState);
+		// IT14.99: "Late P1 Timing Rush" owns its timing window. The generic seven-minute
+		// Town lane used to reserve phase resources at ~7:45 and cancel the rush before its
+		// army could leave. Hold ALL ordinary P2 lanes until the rush launches, is explicitly
+		// abandoned, or reaches its 9:30 opportunity deadline.
+		const attackManager = this.HQ && this.HQ.attackManager;
+		const lateP1Deadline = Number(policy.expertLateP1RushOpportunityDeadline) || 570;
+		const lateP1PhaseHold = phaseDoctrine && phaseDoctrine.id === "late_p1_rush" &&
+			now < lateP1Deadline && !(attackManager && (attackManager.expertRushHasLaunched || attackManager.expertRushRecoveryMode));
+		if (lateP1PhaseHold)
+			return {
+				ready: false, state: "rush-hold",
+				reason: `Late-P1 owns P1 through ${Math.round(lateP1Deadline)}s; t=${Math.round(now)} pop=${pop} barracks=${barracks}`,
+				name: info.name, cost: info.cost, coverage, fields, fieldPipeline, barracks, pop, time: now
+			};
 		// IT14.81 P3 hard safety: farm geometry is allowed to affect HOW cleanly the
 		// boom transitions, but it may never trap the P3 doctrine in Village forever.
 		// Normal P3 still targets the ordinary 6-8 Field Town timing.  If by 7:30 we
@@ -5616,9 +5685,21 @@ export class ExpertDecisionController
 		const balancingActive = gameState.ai.elapsedTime >= policy.resourceBalanceStartTime;
 		const foodAllowed = foodSlots > 0;
 		const miningUnlocked = fields >= policy.miningMinimumCompletedFields;
-		const genericTargets = miningUnlocked ? (foodAllowed ? ["food", "wood", "metal", "stone"] : ["wood", "metal", "stone"]) :
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		const attackManager = this.HQ && this.HQ.attackManager;
+		const lateP1FoodWoodMode = doctrine && doctrine.id === "late_p1_rush" && gameState.currentPhase &&
+			gameState.currentPhase() === 1 && !(attackManager && (attackManager.expertRushHasLaunched || attackManager.expertRushRecoveryMode));
+		// IT14.99: a timing rush should not build a large speculative mining economy. Stone/metal
+		// remain legal only when something already queued has an immediate bill for them.
+		const queuedCosts = lateP1FoodWoodMode ? this.queuedResourceCosts(gameState) : undefined;
+		const immediateMiningTargets = lateP1FoodWoodMode && miningUnlocked ? ["metal", "stone"].filter(type =>
+			(Number(queuedCosts && queuedCosts[type]) || 0) > 0) : [];
+		const genericTargets = lateP1FoodWoodMode ?
+			(foodAllowed ? ["food", "wood", ...immediateMiningTargets] : ["wood", ...immediateMiningTargets]) :
+			miningUnlocked ? (foodAllowed ? ["food", "wood", "metal", "stone"] : ["wood", "metal", "stone"]) :
 			(foodAllowed ? ["food", "wood"] : ["wood"]);
-		const soldierTargets = miningUnlocked ? ["wood", "metal", "stone"] : ["wood"];
+		const soldierTargets = lateP1FoodWoodMode ? ["wood", ...immediateMiningTargets] :
+			(miningUnlocked ? ["wood", "metal", "stone"] : ["wood"]);
 		const genericBalance = balancingActive && this.resourceForecast ? this.forecastDirective(genericTargets) :
 			balancingActive ? resourceBalanceDirective({ ...balanceInput, "allowedTargets": genericTargets }) : { "active": false };
 		const soldierBalance = balancingActive && this.resourceForecast ? this.forecastDirective(soldierTargets) :
@@ -5630,10 +5711,13 @@ export class ExpertDecisionController
 		const forecastWood = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
 		const forecastWoodUrgent = !!(forecastWood && (forecastWood.status === "critical" || forecastWood.status === "short"));
 		const civilianWoodAllowed = matureFoodWoodRelease || forecastWoodUrgent;
-		const civilianTargets = miningUnlocked ?
-			(foodAllowed ? (civilianWoodAllowed ? ["food", "wood", "metal", "stone"] : ["food", "metal", "stone"]) :
-				(civilianWoodAllowed ? ["wood", "metal", "stone"] : ["metal", "stone"])) :
-			(civilianWoodAllowed ? ["food", "wood"] : ["food"]);
+		const civilianTargets = lateP1FoodWoodMode ?
+			(foodAllowed ? (civilianWoodAllowed ? ["food", "wood", ...immediateMiningTargets] : ["food", ...immediateMiningTargets]) :
+				(civilianWoodAllowed ? ["wood", ...immediateMiningTargets] : immediateMiningTargets.length ? [...immediateMiningTargets] : ["wood"])) :
+			miningUnlocked ?
+				(foodAllowed ? (civilianWoodAllowed ? ["food", "wood", "metal", "stone"] : ["food", "metal", "stone"]) :
+					(civilianWoodAllowed ? ["wood", "metal", "stone"] : ["metal", "stone"])) :
+				(civilianWoodAllowed ? ["food", "wood"] : ["food"]);
 		const civilianBalance = balancingActive && this.resourceForecast ? this.forecastDirective(civilianTargets) :
 			balancingActive ? resourceBalanceDirective({ ...balanceInput, "allowedTargets": civilianTargets }) : { "active": false };
 		this.lastImmediateFoodSlots = foodSlots;
@@ -8596,7 +8680,7 @@ export class ExpertDecisionController
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		// IT14.96: hunt cavalry is an ECONOMIC exception, not ordinary military production.
 		// Rich safe game around pop ~30 may justify two additional pursuit hunters, then
-		// the CC immediately returns to its seventy-civilian growth contract.
+		// the CC immediately returns to its live civilian growth contract.
 		if (!cc || gameState.getPopulation() < policy.huntingCavalryPopulation ||
 		    (Number(gameState.ai.elapsedTime) || 0) < (Number(policy.huntingCavalryCCMinimumTime) || 120))
 			return false;
@@ -9374,10 +9458,11 @@ export class ExpertDecisionController
 		if (Number.isFinite(enemyPop) && enemyPop <= (Number(policy.athensGymnasiumStopEnemyPopulation) || 28))
 			return;
 
-		// Gymnasium champions are a supplement, not the new army backbone. Dynamically
-		// inspect the current CWA trainer roster: if an Epilektoi/champion spearman is
-		// exposed here, prefer enough melee champions to reinforce the screen; otherwise
-		// use only a few ranged Gastraphetes/javelineer champions and stop.
+		// IT14.99 ELITE CORE. The rich Athens economy should convert surplus into a
+		// persistent champion melee screen, not repeatedly buy ranged Gastraphetes.
+		// Maintain role quotas from LIVE + AI-queued + engine-training units. Deaths
+		// therefore reopen exactly the missing role while ordinary citizen-soldier
+		// losses continue to be replaced by the normal Barracks/CC continuity system.
 		const gymType = gameState.applyCiv("structures/{civ}/gymnasium");
 		for (const gym of this.structuresByTemplate(gameState, gymType).sort((a, b) => a.id() - b.id()))
 		{
@@ -9390,73 +9475,82 @@ export class ExpertDecisionController
 			for (const c of candidates)
 			{
 				c.melee = c.template.hasClasses(["Melee"]);
-				c.ranged = c.template.hasClasses(["Ranged"]);
 				c.spear = c.template.hasClasses(["Spearman"]) || c.template.hasClasses(["Hoplite"]) ||
 					/\/champion_infantry$/.test(c.type);
-				c.crossbow = c.template.hasClasses(["Crossbowman"]) || String(c.type).toLowerCase().includes("crossbow");
 				c.javelineer = c.template.hasClasses(["Javelineer"]) || String(c.type).toLowerCase().includes("javelineer");
+				c.crossbow = c.template.hasClasses(["Crossbowman"]) || String(c.type).toLowerCase().includes("crossbow");
 			}
 			const types = new Set(candidates.map(c => c.type));
-			let existing = 0, melee = 0, javelineers = 0, crossbows = 0;
+			let hoplites = 0, javelineers = 0, crossbows = 0;
+			const countRole = (type, template) =>
+			{
+				const name = String(type || "").toLowerCase();
+				const cand = candidates.find(item => item.type === type);
+				const melee = cand ? cand.melee : template && template.hasClasses && template.hasClasses(["Melee"]);
+				const spear = cand ? cand.spear : template && template.hasClasses && (template.hasClasses(["Spearman"]) || template.hasClasses(["Hoplite"]));
+				const jav = cand ? cand.javelineer : template && template.hasClasses && template.hasClasses(["Javelineer"]) || name.includes("javelineer");
+				const xbow = cand ? cand.crossbow : template && template.hasClasses && template.hasClasses(["Crossbowman"]) || name.includes("crossbow");
+				if (melee && (spear || /\/champion_infantry$/.test(name))) ++hoplites;
+				else if (jav) ++javelineers;
+				else if (xbow) ++crossbows;
+			};
 			for (const ent of gameState.getOwnUnits().values())
 			{
-				if (!ent || !ent.templateName)
+				if (!ent || !ent.templateName || !hasClass(ent, "Champion") || !hasClass(ent, "Infantry"))
 					continue;
-				const name = String(ent.templateName()).toLowerCase();
-				const matchingSpecial = types.has(ent.templateName()) || (hasClass(ent, "Champion") && hasClass(ent, "Infantry") &&
-					(hasClass(ent, "Crossbowman") || name.includes("crossbow") || hasClass(ent, "Javelineer") || name.includes("javelineer") || hasClass(ent, "Melee")));
-				if (!matchingSpecial)
-					continue;
-				++existing;
-				if (hasClass(ent, "Melee")) ++melee;
-				if (hasClass(ent, "Javelineer") || name.includes("javelineer")) ++javelineers;
-				if (hasClass(ent, "Crossbowman") || name.includes("crossbow")) ++crossbows;
+				const type = ent.templateName();
+				if (types.has(type) || hasClass(ent, "Melee") || hasClass(ent, "Javelineer") || hasClass(ent, "Crossbowman"))
+					countRole(type, gameState.getTemplate(type));
 			}
 			for (const plan of queues.citizenSoldier.plans || [])
 				if (plan && types.has(plan.type))
-				{
-					++existing;
-					const c = candidates.find(item => item.type === plan.type);
-					if (c && c.melee) ++melee;
-					if (c && c.javelineer) ++javelineers;
-					if (c && c.crossbow) ++crossbows;
-				}
-			const meleeCandidates = candidates.filter(c => c.melee);
-			const javCandidates = candidates.filter(c => c.javelineer);
-			const crossbowCandidates = candidates.filter(c => c.crossbow);
-			let target = phase >= 3 ? policy.athensGymnasiumP3ChampionTarget : policy.athensGymnasiumP2ChampionTarget;
-			if (!meleeCandidates.length)
-				target = Math.min(target, policy.athensGymnasiumRangedCapWithoutMelee);
-			if (existing >= target)
+					countRole(plan.type, gameState.getTemplate(plan.type));
+			for (const item of gym.trainingQueue ? gym.trainingQueue() || [] : [])
+				if (item && item.unitTemplate && types.has(item.unitTemplate))
+					for (let n = 0; n < Math.max(1, Number(item.count) || 1); ++n)
+						countRole(item.unitTemplate, gameState.getTemplate(item.unitTemplate));
+
+			const hopliteTarget = Math.max(0, phase >= 3 ? Number(policy.athensGymnasiumP3HopliteTarget) || 15 :
+				Number(policy.athensGymnasiumP2HopliteTarget) || 12);
+			const javTarget = Math.max(0, Number(policy.athensGymnasiumJavelineerTarget) || 5);
+			if (hoplites >= hopliteTarget && javelineers >= javTarget)
 				break;
 
-			const oneCost = c => c.cost.food + c.cost.wood + 2*c.cost.stone + 2*c.cost.metal;
-			const desiredMelee = meleeCandidates.length ? Math.max(1, Math.ceil(target * (Number(policy.athensGymnasiumMeleeTargetShare) || 0.60))) : 0;
-			const desiredJav = javCandidates.length ? Math.max(1, Math.ceil(target * (Number(policy.athensGymnasiumJavelineerTargetShare) || 0.25))) : 0;
-			const crossbowMax = Math.max(0, Number(policy.athensGymnasiumCrossbowMaximum) || 2);
+			const bank = gameState.getResources();
+			const rich = bank.food >= (Number(policy.athensGymnasiumRichFoodBank) || 900) &&
+				bank.wood >= (Number(policy.athensGymnasiumRichWoodBank) || 600) &&
+				bank.stone >= (Number(policy.athensGymnasiumRichStoneBank) || 180) &&
+				bank.metal >= (Number(policy.athensGymnasiumRichMetalBank) || 300);
+			if (!rich)
+				continue;
+
+			const hopliteCandidates = candidates.filter(c => c.melee && c.spear && !c.crossbow);
+			const javCandidates = candidates.filter(c => c.javelineer && !c.crossbow);
 			let preferred = [];
-			// IT14.63: explicit composition hierarchy. Champion Hoplites/spears are the
-			// screen, champion javelineers are the second layer, and Gastraphetes never fill
-			// a generic ranged quota after their specialist cap is satisfied.
-			if (meleeCandidates.length && melee < desiredMelee)
-				preferred = meleeCandidates.filter(c => c.spear).length ?
-					meleeCandidates.filter(c => c.spear) : meleeCandidates;
-			else if (javCandidates.length && javelineers < desiredJav)
+			let role = "";
+			if (hoplites < hopliteTarget && hopliteCandidates.length)
+			{
+				preferred = hopliteCandidates;
+				role = "hoplite";
+			}
+			else if (javelineers < javTarget && javCandidates.length)
+			{
 				preferred = javCandidates;
-			else if (crossbowCandidates.length && crossbows < Math.min(crossbowMax, policy.athensGymnasiumCrossbowTarget))
-				preferred = crossbowCandidates;
-			else if (meleeCandidates.length)
-				preferred = meleeCandidates.filter(c => c.spear).length ?
-					meleeCandidates.filter(c => c.spear) : meleeCandidates;
-			else if (javCandidates.length)
-				preferred = javCandidates;
+				role = "javelineer";
+			}
 			else
 				break;
-			preferred.sort((a, b) => oneCost(a) - oneCost(b) || a.type.localeCompare(b.type));
+			preferred.sort((a, b) => (a.cost.food + a.cost.wood + 2*a.cost.stone + 2*a.cost.metal) -
+				(b.cost.food + b.cost.wood + 2*b.cost.stone + 2*b.cost.metal) || a.type.localeCompare(b.type));
 			const selected = preferred[0];
-			if (this.queueAthenianSpecialUnit(gameState, queues, gym, selected, "gymnasium-champion",
-				{ food: 300, wood: 300, metal: 125 }))
+			if (this.queueAthenianSpecialUnit(gameState, queues, gym, selected, "gymnasium-elite-" + role,
+				{ food: 450, wood: 350, stone: 75, metal: 175 }))
+			{
+				aiWarn("[EXPERT-ELITE] maintain role=" + role + " hoplites=" + hoplites + "/" + hopliteTarget +
+					" javelineers=" + javelineers + "/" + javTarget + " crossbows=" + crossbows +
+					" bank=" + Math.round(bank.food) + "/" + Math.round(bank.wood) + "/" + Math.round(bank.stone) + "/" + Math.round(bank.metal));
 				return;
+			}
 		}
 
 		// City Phase: build/use the Prytaneion for Iphicrates when no hero is alive or
@@ -9668,7 +9762,53 @@ export class ExpertDecisionController
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const cap = this.ccCivilianTrainingTarget(gameState);
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
-		if (workers.civilians >= cap)
+
+		// IT14.99: the late-P1 target can legitimately fall from the 55 recovery band
+		// back to 48 once the economy stabilizes or the army nears launch. Do not leave
+		// stale AI-side civilian plans buffered behind that handoff. Training already in
+		// the engine queue is allowed to finish; only not-yet-started Expert plans are
+		// trimmed/removed, preventing several extra civilian batches from stealing CC time.
+		let liveCivilians = 0;
+		for (const item of cc.trainingQueue ? cc.trainingQueue() || [] : [])
+		{
+			const metadata = item && item.metadata || {};
+			if (metadata.expertDecisionTraining !== "civilian" && metadata.expertDecisionCivilian !== true)
+				continue;
+			liveCivilians += Math.max(1, Number(item.count ?? item.number ?? 1) || 1);
+		}
+		let civilianQueueRoom = Math.max(0, cap - workers.civilians - liveCivilians);
+		let prunedCivilians = 0;
+		const keptVillagerPlans = [];
+		for (const plan of queues.villager.plans || [])
+		{
+			const ours = plan && plan.metadata && Number(plan.metadata.trainer) === cc.id() &&
+				(plan.metadata.expertDecisionTraining === "civilian" || plan.metadata.expertDecisionCivilian === true);
+			if (!ours)
+			{
+				keptVillagerPlans.push(plan);
+				continue;
+			}
+			const planned = Math.max(1, Number(plan.number) || 1);
+			if (!civilianQueueRoom)
+			{
+				prunedCivilians += planned;
+				continue;
+			}
+			if (planned > civilianQueueRoom)
+			{
+				prunedCivilians += planned - civilianQueueRoom;
+				plan.number = civilianQueueRoom;
+			}
+			civilianQueueRoom -= Math.max(1, Number(plan.number) || 1);
+			keptVillagerPlans.push(plan);
+		}
+		if (prunedCivilians)
+		{
+			queues.villager.plans = keptVillagerPlans;
+			aiWarn("[EXPERT-PRODUCTION] cc-prune civilians=" + workers.civilians +
+				" live=" + liveCivilians + " cap=" + cap + " removed=" + prunedCivilians);
+		}
+		if (workers.civilians + liveCivilians >= cap)
 			return false;
 		const work = this.expertCivilianWorkCount(gameState, queues, cc);
 		const militaryException = this.ccMilitaryExceptionReason(gameState);
@@ -9682,7 +9822,7 @@ export class ExpertDecisionController
 				if (ent && hasClass(ent, "Cavalry")) ++existingCavalry;
 			huntPulseNeeded = hunt.target > existingCavalry + this.queuedHuntingCavalry(gameState);
 		}
-		// IT14.96: ordinary military still cannot crowd civilians before 70. Rich hunt is
+		// IT14.96: ordinary military still cannot crowd civilians before the live civilian target. Rich hunt is
 		// the one economic exception: keep only one civilian batch buffered so the two-cav
 		// hunt pulse can enter, then immediately restore normal civilian depth.
 		const desiredDepth = ((militaryException && militaryException !== "civilian-cap") || huntPulseNeeded) ? 1 :
@@ -9754,8 +9894,8 @@ export class ExpertDecisionController
 
 		const policy = mergePolicy();
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
-		// IT14.95: protect civilian growth to the real CC target (70), not a lower
-		// doctrine-specific economic cap. Barracks/Cleruchies may still spend normally.
+		// IT14.99: reserve food against the live CC civilian target. Late-P1 may intentionally
+		// stop at 48-55 so the CC can join Barracks production; other doctrines stop at 65.
 		const reserve = workers.civilians >= this.ccCivilianTrainingTarget(gameState) ? 0 : policy.soldierFoodReserve;
 		const resources = gameState.getResources();
 		const athensResourceSlingerWindow = gameState.getPlayerCiv() === "athen" &&
@@ -9858,11 +9998,10 @@ export class ExpertDecisionController
 		const atCivilianCap = workers.civilians >= civilianTarget;
 		const militaryException = atCivilianCap ? "civilian-cap" : this.ccMilitaryExceptionReason(gameState);
 
-		// IT14.95 CC contract:
-		//   * below 70 civilians: CIVILIANS ONLY from the CC by default;
-		//   * exceptions are real combat states (P1 attack package, active P2/P3 attack,
-		//     or meaningful base defense), never doctrine selection alone;
-		//   * at 70 civilians the CC may join ordinary military production.
+		// IT14.98 CC contract:
+		//   * 65 is the global ceiling; Late-P1 normally converts at 48 and may recover to 55;
+		//   * below the live target, only real combat states may interrupt civilian continuity;
+		//   * at the live target the CC joins ordinary citizen-soldier production.
 		let ccQueued = false;
 		if (cc && !atCivilianCap && militaryException &&
 		    (Number(gameState.ai.elapsedTime) || 0) - this.lastP1CCSoldierQueueAt >= 20)
@@ -12128,6 +12267,15 @@ export class ExpertDecisionController
 				// This prevents IT7's "three farmsteads, three fields" starvation pattern.
 				const liveCapacity = farmCapacityAt ? farmCapacityAt(position) : 0;
 				const futureCapacity = farmFutureCapacityAt ? farmFutureCapacityAt(position) : liveCapacity;
+				// IT14.99: count FUTURE usable sides, not merely food service. A Farmstead
+				// tucked against a House/Barracks may service berries perfectly but permanently
+				// lose one quarter of its field ring. Strongly demote <4-side sites while
+				// retaining a score (not a hard gate) so constrained maps can still recover.
+				const ringPreferred = Math.max(3, Number(mergePolicy().farmsteadFutureRingPreferredSlots) || 4);
+				if (futureCapacity < ringPreferred)
+					score += (Number(mergePolicy().farmsteadFutureRingMissingSlotPenalty) || 12000) * (ringPreferred - futureCapacity);
+				else
+					score -= 1200 * Math.min(futureCapacity, ringPreferred + 1);
 				const capacity = request && (request.openingNaturalFood || request.naturalExpansionFood) ?
 					Math.max(liveCapacity, futureCapacity) : liveCapacity;
 				const preferredSpacing = Math.max(0, Number(request && request.preferredFarmsteadSpacing) || 0);
@@ -12153,7 +12301,7 @@ export class ExpertDecisionController
 					if (liveCapacity < preferredLive)
 						score += 7000 * (preferredLive - liveCapacity);
 					score -= 1800 * liveCapacity;
-					score -= 100 * futureCapacity;
+					score -= 900 * futureCapacity;
 				}
 				for (let i = 0; i < 16; ++i)
 				{
@@ -14229,7 +14377,7 @@ export class ExpertDecisionController
 
 		// Compute the current production burn BEFORE assigning newly-created civilians.
 		// New permanent jobs are based on how many food workers the active CC/barracks
-		// actually need, not on "CC is still below 70, so make another farmer".
+		// actually need, not on "CC is still below its live target, so make another farmer".
 		const preAssignmentFoodThroughput = this.foodThroughputMetrics(gameState, cc, foodNetwork);
 		// IT14.91: forecast BEFORE assigning newly trained workers.  New workers react to
 		// the map/economy that exists now rather than yesterday's fixed doctrine ratios.
@@ -14604,8 +14752,8 @@ export class ExpertDecisionController
 		// queue before ordinary infantry can refill the cap this turn.
 		this.pruneOrdinaryTrainingForSiege(gameState, queues);
 		this.trainExpertSiegeFinisher(gameState, queues, siegeContext);
-		// IT14.68 production continuity: keep the CC's next civilian order buffered before
-		// military code decides whether the CC has reached its current civilian cap.
+		// IT14.98 production continuity: keep the CC's next civilian order buffered only up to
+		// the live economy-conditioned target before military production claims the CC.
 		this.queueExpertCivilianContinuity(gameState, queues, cc);
 		this.trainExpertMilitary(gameState, queues, cc);
 		this.trainExpertHuntingCavalry(gameState, cc);
@@ -14683,7 +14831,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT14.97] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT14.99] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -14749,7 +14897,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT14.97] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT14.99] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
