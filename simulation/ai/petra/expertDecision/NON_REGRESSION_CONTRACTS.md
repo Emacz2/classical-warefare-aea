@@ -657,3 +657,13 @@ Replay regressions locked by IT14:
 - An economic target qualifies as exposed only if it is not protected by static defenses or nearby production hubs and the weighted reinforcement package is still favorable.
 - Failed-rush retreat/abort logic from IT15.3 remains binding; IT15.4 changes the decision to enter the fight, not the rule for escaping a bad one.
 - Benchmark methodology is frozen, but qualifying benchmark results must be inserted into EXPERT_BENCHMARKS.txt.
+
+## IT15.5 no-idle migration / real-hostile-defense / P1 timing contracts
+
+- Wood migration staging may delay only a worker that is still productively gathering wood or returning a wood load. It may never intentionally leave an idle citizen-soldier waiting for a migration window.
+- An idle economy worker invalidates any wood-migration hold immediately. Productive work beats migration neatness.
+- Exhausted woodsites still release workers in small cohorts when possible, but an idle worker may exceed the cohort cap rather than stand idle.
+- Expert strategic base-defense scanning must ignore Gaia/wildlife entirely. Only units owned by an actual enemy player may mobilize the Expert defense response or trigger emergency defensive construction.
+- P1 reinforcement awareness is a safety modifier, not a requirement to match hypothetical future enemy production. Nearby mobile reserves count moderately; distant reserves count lightly; production hubs are a small modifier.
+- Early P1 remains a timing attack. Global known enemy army may veto a grossly suicidal main-base dive, but it may not inflate the required launch package without bound.
+- IT15.3 failed-rush retreat/abort remains binding. IT15.2 no-idle food-capacity and owned-territory gathering remain binding.

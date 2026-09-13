@@ -1488,7 +1488,11 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	// fight but may not keep raising the required package forever. Once the fixed 52-man
 	// launch package exists, global known-army/population are informational; local defense
 	// remains the safety gate.
-	const knownArmyNeeded = lateP1 ? Math.min(fixedLateMinimum, rawKnownArmyNeeded) : rawKnownArmyNeeded;
+	// IT15.5: Early-P1 is a timing attack. Global known army is a safety signal, not a
+	// requirement to match every enemy soldier before leaving home. Keep a modest cap;
+	// the local+reinforcement gate still blocks genuinely bad main-base dives.
+	const knownArmyNeeded = lateP1 ? Math.min(fixedLateMinimum, rawKnownArmyNeeded) :
+		Math.min(rawKnownArmyNeeded, targetArmy + 8);
 	const pdata = gameState.sharedScript && gameState.sharedScript.playersData ? gameState.sharedScript.playersData[attack.targetPlayer] : undefined;
 	const enemyPop = pdata && pdata.state !== "defeated" ? Math.max(0, Number(pdata.popCount) || 0) : 0;
 	const popSafe = lateP1 && attackers >= fixedLateMinimum ? true :
@@ -1626,7 +1630,7 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 		const effective = metrics.defenders + metrics.staticDefenses * staticEquivalent + reinforcementEquivalent();
 		return effective > 0 ? Math.max(effective + 2, Math.ceil(effective * 1.15)) : 0;
 	};
-	const globalNeeded = () => mainBase ? Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05)) : 0;
+	const globalNeeded = () => mainBase ? Math.min(32, Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05))) : 0;
 	const popSafe = () => {
 		const defendedTarget = mainBase || metrics.productionHubs > 0 || metrics.defenders >= 6;
 		if (!defendedTarget) return true;

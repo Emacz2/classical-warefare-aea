@@ -4121,6 +4121,12 @@ export class ExpertDecisionController
 		const max2 = policy.defenseAwarenessRadius * policy.defenseAwarenessRadius;
 		for (const ent of gameState.getEnemyUnits().values())
 		{
+			// IT15.5: strategic base defense is for hostile PLAYERS, never Gaia wildlife.
+			// Savanna elephants were being interpreted as an incoming army in IT15.4,
+			// pulling citizen-soldiers off the economy and even triggering emergency towers.
+			const owner = ent && ent.owner ? ent.owner() : undefined;
+			if (owner === 0 || (Number.isFinite(Number(owner)) && gameState.isPlayerEnemy && !gameState.isPlayerEnemy(owner)))
+				continue;
 			const pos = entityPosition(ent);
 			if (!pos || !this.isCombatUnit(ent))
 				continue;
@@ -13423,9 +13429,27 @@ export class ExpertDecisionController
 		}
 		if (this.woodMigrationsThisWindow >= policy.woodMigrationBatch)
 		{
-			const holdUntil = this.woodMigrationWindowStart + policy.woodMigrationWindowSeconds;
-			ent.setMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL, holdUntil);
-			return { trees: [], ...salvage, position, entityId, migrationHold: true };
+			// IT15.5: staging may delay a PRODUCTIVE cutter, never an idle one.
+			// If the worker still has a live wood gather/return order, let it finish that
+			// useful cycle and release it in the next packet. If its tree/order is gone,
+			// release immediately even if that temporarily exceeds the migration packet.
+			const currentId = ent.getMetadata(PlayerID, SUPPLY_ID) ?? currentTargetId(ent);
+			const current = currentId !== undefined ? gameState.getEntityById(currentId) : undefined;
+			let liveWood = false;
+			if (current && current.resourceSupplyAmount && current.resourceSupplyAmount() > 0 && current.resourceSupplyType)
+			{
+				const type = current.resourceSupplyType();
+				liveWood = !!(type && type.generic === "wood");
+			}
+			const productive = !!(liveWood && hasLiveGatherOrder(ent, current.id())) ||
+				!!(ent.resourceCarrying && (ent.resourceCarrying() || []).some(item => item && item.type === "wood" && Number(item.amount) > 0));
+			if (productive)
+			{
+				const holdUntil = this.woodMigrationWindowStart + policy.woodMigrationWindowSeconds;
+				ent.setMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL, holdUntil);
+				return { trees: current ? [{ id: current.id(), entity: current }] : [], ...salvage, position, entityId, migrationHold: true, nextWoodsite: primaryWoodsite };
+			}
+			aiWarn("[EXPERT-WOOD] release-idle-beyond-batch worker=" + ent.id() + " oldSite=" + (entityId || assigned));
 		}
 		++this.woodMigrationsThisWindow;
 		ent.setMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL, undefined);
@@ -13454,8 +13478,15 @@ export class ExpertDecisionController
 		// released within a few seconds; newly trained workers already use the new site.
 		if (woodsite && woodsite.migrationHold)
 		{
-			this.diagnoseWorkerOrder(ent, "wood-migration-hold", Number(ent.getMetadata(PlayerID, WORKSITE_ID)) || 0, "STAGED_WAIT");
-			return;
+			if (!(ent.isIdle && ent.isIdle()))
+			{
+				this.diagnoseWorkerOrder(ent, "wood-migration-hold", Number(ent.getMetadata(PlayerID, WORKSITE_ID)) || 0, "PRODUCTIVE_WAIT");
+				return;
+			}
+			// Never let migration sequencing suppress the global no-idle contract.
+			ent.setMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL, undefined);
+			ent.setMetadata(PlayerID, WORKSITE_ID, undefined);
+			woodsite = woodsite.nextWoodsite || woodsite;
 		}
 		const trees = woodsite.trees || [];
 		const metadataTargetId = ent.getMetadata(PlayerID, SUPPLY_ID);
@@ -14150,8 +14181,7 @@ export class ExpertDecisionController
 			if (job === "chicken" || Number.isFinite(Number(ent.getMetadata(PlayerID, "expertScoutIssuedAt"))))
 				continue;
 			const migrationHoldUntil = Number(ent.getMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL));
-			if (Number.isFinite(migrationHoldUntil) && now < migrationHoldUntil)
-				continue;
+			// IT15.5: an idle worker invalidates any migration hold immediately.
 			if (Number.isFinite(migrationHoldUntil))
 				ent.setMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL, undefined);
 			const foundationId = Number(ent.getMetadata(PlayerID, "target-foundation"));
@@ -15232,7 +15262,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.4] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.5] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -15298,7 +15328,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.4] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.5] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

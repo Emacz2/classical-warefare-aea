@@ -1137,14 +1137,15 @@ const DEFAULT_POLICY = Object.freeze({
   // exposed economic target can still be raided with a smaller force.
   expertP1TimingKnownArmyRatio: 1.05,
   expertP1TimingMainBaseEnemyPopPerAttacker: 1.60,
-  // IT15.4: visible defenders are not the whole fight. Count mobile units that can
-  // reinforce quickly, part of the known reserve farther away, and nearby production
-  // hubs before calling a P1 target "open".
-  expertP1ReinforcementRadius: 190,
-  expertP1ReinforcementNearbyWeight: 0.75,
-  expertP1ReinforcementDistantWeight: 0.25,
-  expertP1ReinforcementProductionRadius: 175,
-  expertP1ReinforcementProductionEquivalent: 2,
+  // IT15.5: visible defenders are not the whole fight, but IT15.4 priced hypothetical
+  // reinforcement far too aggressively and killed the timing attack. Count only a
+  // moderate share of genuinely nearby mobile units, a small distant reserve share,
+  // and nearby production without allowing theory-crafting to outweigh the real fight.
+  expertP1ReinforcementRadius: 155,
+  expertP1ReinforcementNearbyWeight: 0.50,
+  expertP1ReinforcementDistantWeight: 0.10,
+  expertP1ReinforcementProductionRadius: 145,
+  expertP1ReinforcementProductionEquivalent: 1,
   expertP1DefendedEnemyPopPerAttacker: 2.15,
   expertP1TimingExposedDefenderRatio: 0.25,
   expertP1TimingExposedDefenseRadius: 75,
