@@ -645,3 +645,15 @@ Replay regressions locked by IT14:
 - P3 Town phase may research military Forge upgrades in parallel with eco upgrades. A third Forge is allowed only for P3 and only while a real relevant military-tech backlog exists.
 - Iphicrates is an army support asset: attach him to the main active army, keep him near its centre/back-centre, and withdraw him before critical health rather than spending him as front-line DPS.
 - Forecast Storehouse infrastructure must never call an undefined helper. Current-economy Storehouse candidates remain PlayerID-owned only; neutral resources require territorial expansion first.
+
+
+## IT15.4 worker-continuity and P1-reinforcement contracts
+
+- A productive gatherer is the LAST source of strategic rebalance labor. Productive moves require a simultaneously critical AND extreme shortage, are limited to the configured tiny batch, and obey the productive-move cooldown.
+- A worker already travelling to or returning from a valid gather target may not be turned around by a new forecast signal merely because the resource ranking changed.
+- A new wood district is seeded by new/flexible workers. Established lumberjacks remain on their assigned district while any legal salvage wood remains inside the continuity radius.
+- When an old wood district is genuinely exhausted, migration is still staged. The exhausted-site path may not bypass the migration batch/window. No-idle fallback may not override an active wood-migration hold.
+- P1 attack authorization must include rapid enemy reinforcement potential, not only units already standing inside the local defender radius. Nearby mobile troops, a weighted share of the known distant reserve, and nearby military-production hubs all contribute to the launch requirement.
+- An economic target qualifies as exposed only if it is not protected by static defenses or nearby production hubs and the weighted reinforcement package is still favorable.
+- Failed-rush retreat/abort logic from IT15.3 remains binding; IT15.4 changes the decision to enter the fight, not the rule for escaping a bad one.
+- Benchmark methodology is frozen, but qualifying benchmark results must be inserted into EXPERT_BENCHMARKS.txt.

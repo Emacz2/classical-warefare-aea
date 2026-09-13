@@ -73,6 +73,7 @@ const EXPERT_FALLBACK_FAILURES = "expertFallbackFailures";
 const EXPERT_JOB_LEASE_UNTIL = "expertResourceJobLeaseUntil";
 const EXPERT_JOB_LEASE_RESOURCE = "expertResourceJobLeaseResource";
 const EXPERT_STRATEGIC_MOVE_AT = "expertStrategicMoveAt";
+const EXPERT_WOOD_MIGRATION_HOLD_UNTIL = "expertWoodMigrationHoldUntil";
 // IT14.90: post-opening civilians reserved for permanent farm expansion. They may
 // temporarily gather while waiting, but if selected to build a Field they stay there.
 const EXPERT_FUTURE_FARMER = "expertFuturePermanentFarmer";
@@ -6822,13 +6823,22 @@ export class ExpertDecisionController
 		const targetCount = Math.min(baseTarget, candidates.length);
 		if (!targetCount)
 			return;
-		const productiveBatch = Math.max(0, Number(policy.resourceProductiveReassignBatch) || 2);
-		const productiveCooldown = Math.max(1, Number(policy.resourceProductiveReassignCooldownSeconds) || 12);
+		const productiveBatch = Math.max(0, Number(policy.resourceProductiveReassignBatch) || 1);
+		const productiveCooldown = Math.max(1, Number(policy.resourceProductiveReassignCooldownSeconds) || 20);
 		const productiveWindowOpen = now - this.lastProductiveResourceRebalanceTime >= productiveCooldown;
+		// IT15.4 hard worker-uptime invariant. IT15.3 calculated these limits but
+		// accidentally never enforced them inside the move loop. Productive gatherers
+		// now move only during a true extreme+critical shortage, one tiny wave at a
+		// time. Idle, temporary-mismatch and otherwise nonproductive labor remains
+		// available immediately.
+		const productiveEmergency = critical && extreme &&
+			Number(balance.ratio || 1) >= (Number(policy.resourceProductiveReassignMinimumRatio) || 2.25);
 		let moved = 0, productiveMoved = 0;
 		for (const item of candidates)
 		{
 			if (moved >= targetCount) break;
+			if (item.productive && (!productiveEmergency || !productiveWindowOpen || productiveMoved >= productiveBatch))
+				continue;
 			const ent = item.ent;
 			const carrying = ent.resourceCarrying ? (ent.resourceCarrying() || []) : [];
 			const carried = carrying.reduce((sum, item2) => sum + Math.max(0, Number(item2 && item2.amount) || 0), 0);
@@ -13395,21 +13405,32 @@ export class ExpertDecisionController
 		// again. IT14.9 repeatedly did this and created apparent A->B->A churn.
 		if (Number.isFinite(primaryId) && Number.isFinite(Number(entityId)) && primaryId === Number(entityId))
 			return { trees: salvageTrees, ...salvage, position, entityId };
-		const now = Number(gameState.ai.elapsedTime) || 0;
-		if (salvage.availableTargets > 0 && salvage.localWoodAmount > 0)
-		{
-			if (now - this.woodMigrationWindowStart >= policy.woodMigrationWindowSeconds)
-			{
-				this.woodMigrationWindowStart = now;
-				this.woodMigrationsThisWindow = 0;
-			}
-			if (this.woodMigrationsThisWindow >= policy.woodMigrationBatch)
-				return { trees: salvageTrees, ...salvage, position, entityId };
-			++this.woodMigrationsThisWindow;
-			aiWarn("[EXPERT-WOOD] staged migration worker=" + ent.id() + " oldSite=" + (entityId || assigned) +
-				" batch=" + this.woodMigrationsThisWindow + "/" + policy.woodMigrationBatch);
-		}
 
+		// IT15.4: if the old district still has ANY legal wood in the established salvage
+		// radius, keep established workers there. New workers seed the new Storehouse.
+		// We no longer peel old lumberjacks merely because a newer primary exists.
+		if (salvage.availableTargets > 0 && salvage.localWoodAmount > 0)
+			return { trees: salvageTrees, ...salvage, position, entityId, continuityHold: true };
+
+		// The old district is genuinely empty. Release only a small cohort per window.
+		// IT15.3 capped only the branch where salvage still existed, so an actually empty
+		// site bypassed the cap and the whole crew could march at once.
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		if (now - this.woodMigrationWindowStart >= policy.woodMigrationWindowSeconds)
+		{
+			this.woodMigrationWindowStart = now;
+			this.woodMigrationsThisWindow = 0;
+		}
+		if (this.woodMigrationsThisWindow >= policy.woodMigrationBatch)
+		{
+			const holdUntil = this.woodMigrationWindowStart + policy.woodMigrationWindowSeconds;
+			ent.setMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL, holdUntil);
+			return { trees: [], ...salvage, position, entityId, migrationHold: true };
+		}
+		++this.woodMigrationsThisWindow;
+		ent.setMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL, undefined);
+		aiWarn("[EXPERT-WOOD] staged exhausted-site release worker=" + ent.id() + " oldSite=" + (entityId || assigned) +
+			" batch=" + this.woodMigrationsThisWindow + "/" + policy.woodMigrationBatch);
 		ent.setMetadata(PlayerID, WORKSITE_ID, undefined);
 		return primaryWoodsite;
 	}
@@ -13428,6 +13449,14 @@ export class ExpertDecisionController
 	assignWoodWorker(gameState, ent, woodsite, accessIndex)
 	{
 		woodsite = this.workerWoodsite(gameState, ent, woodsite, accessIndex) || woodsite;
+		// A short migration hold is intentional sequencing, not permission for another
+		// fallback subsystem to send the same worker across the map. The next cohort is
+		// released within a few seconds; newly trained workers already use the new site.
+		if (woodsite && woodsite.migrationHold)
+		{
+			this.diagnoseWorkerOrder(ent, "wood-migration-hold", Number(ent.getMetadata(PlayerID, WORKSITE_ID)) || 0, "STAGED_WAIT");
+			return;
+		}
 		const trees = woodsite.trees || [];
 		const metadataTargetId = ent.getMetadata(PlayerID, SUPPLY_ID);
 		const currentId = metadataTargetId ?? currentTargetId(ent);
@@ -14120,6 +14149,11 @@ export class ExpertDecisionController
 			const job = ent.getMetadata(PlayerID, JOB_METADATA);
 			if (job === "chicken" || Number.isFinite(Number(ent.getMetadata(PlayerID, "expertScoutIssuedAt"))))
 				continue;
+			const migrationHoldUntil = Number(ent.getMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL));
+			if (Number.isFinite(migrationHoldUntil) && now < migrationHoldUntil)
+				continue;
+			if (Number.isFinite(migrationHoldUntil))
+				ent.setMetadata(PlayerID, EXPERT_WOOD_MIGRATION_HOLD_UNTIL, undefined);
 			const foundationId = Number(ent.getMetadata(PlayerID, "target-foundation"));
 			if (Number.isFinite(foundationId) && hasLiveRepairOrder(ent, foundationId))
 				continue;
@@ -15198,7 +15232,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.3] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.4] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -15264,7 +15298,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.3] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.4] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

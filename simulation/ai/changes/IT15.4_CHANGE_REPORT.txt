@@ -1,0 +1,92 @@
+CWA Petra Expert AI — IT15.4 Change Report
+==========================================
+
+Purpose
+-------
+IT15.4 is a narrow follow-up to the IT15.3 Human-vs-Expert replay. It targets the
+two remaining high-value failures: excessive worker travel during wood/economic
+reassignment, and P1 attack gates that overvalue a temporary local advantage while
+underestimating how fast the opponent can reinforce.
+
+1. PRODUCTIVE-WORKER CAP IS NOW ACTUALLY ENFORCED
+-------------------------------------------------
+IT15.3 calculated productiveBatch and productiveWindowOpen but never tested either
+inside the reassignment loop. The report claimed a 2-per-12s cap that the runtime
+did not enforce. IT15.4 fixes the implementation.
+
+A productive gatherer may now move only when ALL are true:
+- the target resource is forecast-critical;
+- the imbalance is also extreme;
+- the imbalance ratio is at least 2.25;
+- the productive-move cooldown is open;
+- the current productive batch still has room.
+
+The hard cap is 1 productive gatherer per 20 seconds. Idle, temporary-mismatch and
+otherwise nonproductive workers remain available immediately. Total critical
+reassignment per pass is reduced to 4.
+
+2. WOOD MIGRATION BYPASS CLOSED
+-------------------------------
+IT15.3 limited migration only in the branch where salvage wood still existed. If
+the old site's salvage ring was actually empty, every assigned worker could clear
+its WORKSITE_ID and fall through to the new primary forest in the same update.
+
+IT15.4 changes the doctrine:
+- the existing 68m salvage/continuity radius is retained;
+- while ANY legal salvage wood remains, established workers stay on that district;
+- new/flexible workers may seed the new Storehouse immediately;
+- once the old district is genuinely empty, only 3 workers are released per 6s;
+- workers waiting for the next migration cohort get a short migration hold that the
+  generic no-idle fallback is not allowed to override.
+
+This is the hard version of the user's rule: open the next woodline without making
+the current lumber economy stop all at once.
+
+3. P1 ATTACKS NOW PRICE IN REINFORCEMENTS
+-----------------------------------------
+Both Expert P1 launch paths now measure more than the defender snapshot at the
+selected target. The launch requirement includes:
+- full weight for defenders inside the normal target radius;
+- 75% weight for known mobile enemy troops inside a 190m reinforcement radius;
+- 25% weight for the known mobile reserve farther away;
+- +2 defender-equivalents for each nearby CC/Barracks/Stable/Gymnasium/Fortress.
+
+A defended non-main-base target also receives an enemy-population safety check.
+The 15.3 pattern of launching ~28 into 19 visible defenders while ~40 enemy combat
+units were known should therefore HOLD unless the target is genuinely isolated.
+
+4. "EXPOSED ECONOMY" RETARGET IS STRICTER
+------------------------------------------
+A Storehouse/Farmstead/Market may still be raided with a smaller P1 force, but only
+when it has no static defense, no nearby production hub, and the weighted mobile
+reinforcement package is still favorable. A temporarily empty target inside a live
+enemy base is no longer treated as exposed.
+
+5. PRESERVED 15.3 BEHAVIOR
+---------------------------
+Unchanged in intent:
+- Storehouse forecast helper crash remains fixed;
+- failed P1 rushes still abort/retreat rather than feed replacements forever;
+- fresh post-launch P1 soldiers remain productive at home unless a deliberate wave
+  claims them;
+- Barracks 2-3 batching with shrink-to-1 no-idle behavior remains;
+- P3 parallel Forge / max-tech work remains;
+- Iphicrates support behavior remains;
+- IT15.2 permanent-food and PlayerID-territory sovereignty contracts remain.
+
+6. BENCHMARK FILE CORRECTED
+---------------------------
+The methodology remains frozen, but the leaderboard is no longer frozen. The
+verified IT15.2 Athens-vs-Athens result is inserted as the canonical #1:
+  BREAK 10:00 | DEFEATED 13:52-14:00
+IT14.46 and IT14.49 become #2 and #3.
+
+Next Expert-vs-AI check
+-----------------------
+Watch especially for:
+- walk count during 6-12 minutes;
+- old woodline active gatherers after a new Storehouse opens;
+- [EXPERT-WOOD] staged exhausted-site release occurring in small cohorts;
+- [EXPERT-FORECAST] productive peel frequency (should be rare);
+- P1 RUSH-GATE / TIMING-GATE logs showing reinforce= and hubs=;
+- whether P1 holds a marginal attack but still takes a truly exposed economic raid.

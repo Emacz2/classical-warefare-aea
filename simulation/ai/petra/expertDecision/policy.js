@@ -591,14 +591,17 @@ const DEFAULT_POLICY = Object.freeze({
   civilianEvacuationReleaseSeconds: 10,
   civilianSafeResourceThreatDistance: 62,
   civilianSafeResourceCCDistance: 150,
-  woodMigrationBatch: 2,
-  woodMigrationWindowSeconds: 12,
+  // IT15.4: an exhausted woodsite releases only a small cohort at a time, while any
+  // remaining salvage wood keeps established cutters local. New workers seed new sites.
+  woodMigrationBatch: 3,
+  woodMigrationWindowSeconds: 6,
   woodMigrationSalvageRadius: 68,
-  // IT15.3: only a small number of productive workers may be uprooted by forecast
-  // balancing at once. Newly trained/idle/mismatched workers satisfy demand first.
-  resourceProductiveReassignBatch: 2,
-  resourceProductiveReassignCooldownSeconds: 12,
-  resourceCriticalTotalReassignBatch: 5,
+  // IT15.4: productive gatherer movement is a last-resort emergency valve. The
+  // 15.3 loop computed a cap but failed to enforce it; these limits are now hard.
+  resourceProductiveReassignBatch: 1,
+  resourceProductiveReassignCooldownSeconds: 20,
+  resourceProductiveReassignMinimumRatio: 2.25,
+  resourceCriticalTotalReassignBatch: 4,
   // Preserve a still-rich committed forest instead of switching the whole lumber crew
   // just because the tight ring around its storehouse has thinned out.
   woodMigrationRetainWoodRatio: 1.15,
@@ -1134,6 +1137,15 @@ const DEFAULT_POLICY = Object.freeze({
   // exposed economic target can still be raided with a smaller force.
   expertP1TimingKnownArmyRatio: 1.05,
   expertP1TimingMainBaseEnemyPopPerAttacker: 1.60,
+  // IT15.4: visible defenders are not the whole fight. Count mobile units that can
+  // reinforce quickly, part of the known reserve farther away, and nearby production
+  // hubs before calling a P1 target "open".
+  expertP1ReinforcementRadius: 190,
+  expertP1ReinforcementNearbyWeight: 0.75,
+  expertP1ReinforcementDistantWeight: 0.25,
+  expertP1ReinforcementProductionRadius: 175,
+  expertP1ReinforcementProductionEquivalent: 2,
+  expertP1DefendedEnemyPopPerAttacker: 2.15,
   expertP1TimingExposedDefenderRatio: 0.25,
   expertP1TimingExposedDefenseRadius: 75,
   expertP1TimingTargetDefenderRadius: 95,

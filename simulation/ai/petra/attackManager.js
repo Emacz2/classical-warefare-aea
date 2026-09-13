@@ -1441,30 +1441,45 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 			++attackers;
 	}
 	const radius2 = Math.pow(Number(policy.expertP1RushDefenderRadius) || 95, 2);
+	const reinforcementRadius2 = Math.pow(Math.max(Number(policy.expertP1ReinforcementRadius) || 190, Number(policy.expertP1RushDefenderRadius) || 95), 2);
+	const productionRadius2 = Math.pow(Number(policy.expertP1ReinforcementProductionRadius) || 175, 2);
 	let defenders = 0;
+	let nearbyReinforcements = 0;
 	let knownEnemyCombat = 0;
 	for (const ent of gameState.getEnemyUnits(attack.targetPlayer).values())
 	{
 		if (!ent || !ent.position() || ent.hasClass("Animal") || !(ent.attackTypes && ent.attackTypes()) || ent.hasClass("Support") && !ent.hasClass("Soldier"))
 			continue;
 		++knownEnemyCombat;
-		if (SquareVectorDistance(ent.position(), attack.targetPos) <= radius2)
+		const d2 = SquareVectorDistance(ent.position(), attack.targetPos);
+		if (d2 <= radius2)
 			++defenders;
+		else if (d2 <= reinforcementRadius2)
+			++nearbyReinforcements;
 	}
 	let staticDefenses = 0;
+	let productionHubs = 0;
 	for (const ent of gameState.getEnemyStructures(attack.targetPlayer).values())
 	{
-		if (!ent || !ent.position() || SquareVectorDistance(ent.position(), attack.targetPos) > radius2)
+		if (!ent || !ent.position())
 			continue;
-		if (ent.hasClass("CivCentre") || ent.hasClass("Tower") || ent.hasClass("Fortress") || ent.hasClass("WallTower"))
+		const d2 = SquareVectorDistance(ent.position(), attack.targetPos);
+		if (d2 <= radius2 && (ent.hasClass("CivCentre") || ent.hasClass("Tower") || ent.hasClass("Fortress") || ent.hasClass("WallTower")))
 			++staticDefenses;
+		if (d2 <= productionRadius2 && (ent.hasClass("CivCentre") || ent.hasClass("Barracks") || ent.hasClass("Stable") || ent.hasClass("Gymnasium") || ent.hasClass("Fortress")))
+			++productionHubs;
 	}
-	const equivalentDefenders = defenders + staticDefenses * Math.max(0, Number(policy.expertP1RushStaticDefenseEquivalent) || 3);
+	const distantReserve = Math.max(0, knownEnemyCombat - defenders - nearbyReinforcements);
+	const reinforcementEquivalent = Math.ceil(nearbyReinforcements * (Number(policy.expertP1ReinforcementNearbyWeight) || 0.75) +
+		distantReserve * (Number(policy.expertP1ReinforcementDistantWeight) || 0.25)) +
+		productionHubs * Math.max(0, Number(policy.expertP1ReinforcementProductionEquivalent) || 2);
+	const equivalentDefenders = defenders + staticDefenses * Math.max(0, Number(policy.expertP1RushStaticDefenseEquivalent) || 3) + reinforcementEquivalent;
 	const ratio = Math.max(1.01, Number(policy.expertP1RushLaunchAdvantageRatio) || 1.15);
 	const lead = Math.max(1, Number(policy.expertP1RushLaunchMinimumLead) || 2);
 	const localNeeded = equivalentDefenders > 0 ? Math.max(equivalentDefenders + lead, Math.ceil(equivalentDefenders * ratio)) : 0;
 	const targetIsCC = !!(attack.target && attack.target.hasClass && attack.target.hasClass("CivCentre"));
 	const mainBase = targetIsCC || staticDefenses > 0;
+	const defendedTarget = mainBase || productionHubs > 0 || defenders >= 6;
 	const targetArmy = Math.max(12, Number(doctrine.rushSize) || 20);
 	const lateP1 = doctrine.id === "late_p1_rush";
 	const fixedLateMinimum = lateP1 ? Math.min(targetArmy, Math.max(12, Number(policy.expertLateP1RushMinimumLaunchArmy) || 52)) : 0;
@@ -1477,7 +1492,9 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	const pdata = gameState.sharedScript && gameState.sharedScript.playersData ? gameState.sharedScript.playersData[attack.targetPlayer] : undefined;
 	const enemyPop = pdata && pdata.state !== "defeated" ? Math.max(0, Number(pdata.popCount) || 0) : 0;
 	const popSafe = lateP1 && attackers >= fixedLateMinimum ? true :
-		(!mainBase || enemyPop <= attackers * Math.max(1.1, Number(policy.expertP1TimingMainBaseEnemyPopPerAttacker) || 1.60));
+		(!defendedTarget || enemyPop <= attackers * Math.max(1.1, mainBase ?
+			(Number(policy.expertP1TimingMainBaseEnemyPopPerAttacker) || 1.60) :
+			(Number(policy.expertP1DefendedEnemyPopPerAttacker) || 2.15)));
 	// IT14.99: Early-P1 gets one timing-window escape. If the preferred upgrade did
 	// not finish but the actual army has reached its intended mass and the local fight
 	// is favorable, do not cancel a 22-v-10 opportunity merely because package=missing.
@@ -1500,11 +1517,12 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 				this.expertLastP1RushGateLog = now;
 				aiWarn("[EXPERT-RUSH-GATE] cancel plan=" + attack.name + " strategy=" + doctrine.id +
 					" reason=" + reason + " army=" + attackers + " defenders=" + defenders +
-					" knownEnemy=" + knownEnemyCombat + " enemyPop=" + enemyPop + " static=" + staticDefenses +
+					" knownEnemy=" + knownEnemyCombat + " reinforce=" + nearbyReinforcements + "/" + distantReserve +
+					" hubs=" + productionHubs + " enemyPop=" + enemyPop + " static=" + staticDefenses +
 					" needed=" + Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded) + " package=" + (earlyMassFallback ? upgradeLabel + "+mass-fallback" : upgradeLabel) +
 					" deadline=" + Math.round(deadline));
 			}
-			return { launch: false, cancel: true, reason, attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
+			return { launch: false, cancel: true, reason, attackers, defenders, nearbyReinforcements, distantReserve, productionHubs, knownEnemyCombat, enemyPop, staticDefenses,
 				needed: Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded), upgradeReady: packageReady };
 		}
 		if (shouldLog)
@@ -1512,11 +1530,12 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 			this.expertLastP1RushGateLog = now;
 			aiWarn("[EXPERT-RUSH-GATE] hold plan=" + attack.name + " strategy=" + doctrine.id +
 				" reason=" + reason + " army=" + attackers + " defenders=" + defenders +
-				" knownEnemy=" + knownEnemyCombat + " enemyPop=" + enemyPop + " static=" + staticDefenses +
+				" knownEnemy=" + knownEnemyCombat + " reinforce=" + nearbyReinforcements + "/" + distantReserve +
+					" hubs=" + productionHubs + " enemyPop=" + enemyPop + " static=" + staticDefenses +
 				" needed=" + Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded) + " package=" + (earlyMassFallback ? upgradeLabel + "+mass-fallback" : upgradeLabel) +
 				" deadline=" + Math.round(deadline));
 		}
-		return { launch: false, reason, attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
+		return { launch: false, reason, attackers, defenders, nearbyReinforcements, distantReserve, productionHubs, knownEnemyCombat, enemyPop, staticDefenses,
 			needed: Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded), upgradeReady: packageReady };
 	}
 	if (shouldLog)
@@ -1527,7 +1546,7 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 			" enemyPop=" + enemyPop + " static=" + staticDefenses + " needed=" + Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded) +
 			" package=" + (earlyMassFallback ? upgradeLabel + "+mass-fallback" : upgradeLabel));
 	}
-	return { launch: true, reason: "advantage", attackers, defenders, knownEnemyCombat, enemyPop, staticDefenses,
+	return { launch: true, reason: "advantage", attackers, defenders, nearbyReinforcements, distantReserve, productionHubs, knownEnemyCombat, enemyPop, staticDefenses,
 		needed: Math.max(lateP1 ? fixedLateMinimum : 0, localNeeded, knownArmyNeeded), upgradeReady: packageReady };
 };
 
@@ -1557,18 +1576,32 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 
 	const targetRadius2 = Math.pow(Number(policy.expertP1TimingTargetDefenderRadius) || 95, 2);
 	const defenseRadius2 = Math.pow(Number(policy.expertP1TimingExposedDefenseRadius) || 75, 2);
+	const reinforcementRadius2 = Math.pow(Math.max(Number(policy.expertP1ReinforcementRadius) || 190, Number(policy.expertP1TimingTargetDefenderRadius) || 95), 2);
+	const productionRadius2 = Math.pow(Number(policy.expertP1ReinforcementProductionRadius) || 175, 2);
 	const targetMetrics = pos => {
 		let defenders = 0;
+		let nearbyReinforcements = 0;
 		for (const ent of gameState.getEnemyUnits(attack.targetPlayer).values())
-			if (ent && ent.position() && !ent.hasClass("Animal") && ent.attackTypes && ent.attackTypes() &&
-			    (!ent.hasClass("Support") || ent.hasClass("Soldier")) && SquareVectorDistance(ent.position(), pos) <= targetRadius2)
-				++defenders;
+		{
+			if (!ent || !ent.position() || ent.hasClass("Animal") || !(ent.attackTypes && ent.attackTypes()) ||
+			    ent.hasClass("Support") && !ent.hasClass("Soldier"))
+				continue;
+			const d2 = SquareVectorDistance(ent.position(), pos);
+			if (d2 <= targetRadius2) ++defenders;
+			else if (d2 <= reinforcementRadius2) ++nearbyReinforcements;
+		}
 		let staticDefenses = 0;
+		let productionHubs = 0;
 		for (const ent of gameState.getEnemyStructures(attack.targetPlayer).values())
-			if (ent && ent.position() && SquareVectorDistance(ent.position(), pos) <= defenseRadius2 &&
-			    (ent.hasClass("CivCentre") || ent.hasClass("Tower") || ent.hasClass("Fortress") || ent.hasClass("WallTower")))
+		{
+			if (!ent || !ent.position()) continue;
+			const d2 = SquareVectorDistance(ent.position(), pos);
+			if (d2 <= defenseRadius2 && (ent.hasClass("CivCentre") || ent.hasClass("Tower") || ent.hasClass("Fortress") || ent.hasClass("WallTower")))
 				++staticDefenses;
-		return { defenders, staticDefenses };
+			if (d2 <= productionRadius2 && (ent.hasClass("CivCentre") || ent.hasClass("Barracks") || ent.hasClass("Stable") || ent.hasClass("Gymnasium") || ent.hasClass("Fortress")))
+				++productionHubs;
+		}
+		return { defenders, nearbyReinforcements, staticDefenses, productionHubs };
 	};
 
 	let knownEnemyCombat = 0;
@@ -1583,10 +1616,24 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 	let targetIsCC = !!(attack.target && attack.target.hasClass && attack.target.hasClass("CivCentre"));
 	let mainBase = targetIsCC || metrics.staticDefenses > 0;
 	const staticEquivalent = Math.max(0, Number(policy.expertP1TimingStaticDefenseEquivalent) || 3);
-	const localNeeded = () => Math.max(metrics.defenders + metrics.staticDefenses * staticEquivalent + 2,
-		Math.ceil((metrics.defenders + metrics.staticDefenses * staticEquivalent) * 1.15));
+	const reinforcementEquivalent = () => {
+		const distant = Math.max(0, knownEnemyCombat - metrics.defenders - metrics.nearbyReinforcements);
+		return Math.ceil(metrics.nearbyReinforcements * (Number(policy.expertP1ReinforcementNearbyWeight) || 0.75) +
+			distant * (Number(policy.expertP1ReinforcementDistantWeight) || 0.25)) +
+			metrics.productionHubs * Math.max(0, Number(policy.expertP1ReinforcementProductionEquivalent) || 2);
+	};
+	const localNeeded = () => {
+		const effective = metrics.defenders + metrics.staticDefenses * staticEquivalent + reinforcementEquivalent();
+		return effective > 0 ? Math.max(effective + 2, Math.ceil(effective * 1.15)) : 0;
+	};
 	const globalNeeded = () => mainBase ? Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05)) : 0;
-	const popSafe = () => !mainBase || enemyPop <= attackers * Math.max(1.1, Number(policy.expertP1TimingMainBaseEnemyPopPerAttacker) || 1.60);
+	const popSafe = () => {
+		const defendedTarget = mainBase || metrics.productionHubs > 0 || metrics.defenders >= 6;
+		if (!defendedTarget) return true;
+		const cap = mainBase ? (Number(policy.expertP1TimingMainBaseEnemyPopPerAttacker) || 1.60) :
+			(Number(policy.expertP1DefendedEnemyPopPerAttacker) || 2.15);
+		return enemyPop <= attackers * Math.max(1.1, cap);
+	};
 	let favorable = attackers >= localNeeded() && attackers >= globalNeeded() && popSafe();
 
 	let retargeted = false;
@@ -1605,7 +1652,12 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 			if (!economic)
 				continue;
 			const m = targetMetrics(struct.position());
-			if (m.staticDefenses > 0 || m.defenders > maxExposedDefenders)
+			const distant = Math.max(0, knownEnemyCombat - m.defenders - m.nearbyReinforcements);
+			const reinfEq = Math.ceil(m.nearbyReinforcements * (Number(policy.expertP1ReinforcementNearbyWeight) || 0.75) +
+				distant * (Number(policy.expertP1ReinforcementDistantWeight) || 0.25)) +
+				m.productionHubs * Math.max(0, Number(policy.expertP1ReinforcementProductionEquivalent) || 2);
+			if (m.staticDefenses > 0 || m.productionHubs > 0 || m.defenders > maxExposedDefenders ||
+			    attackers < Math.max(m.defenders + reinfEq + 2, Math.ceil((m.defenders + reinfEq) * 1.10)))
 				continue;
 			const d = centre ? Math.sqrt(SquareVectorDistance(centre, struct.position())) : 0;
 			const valueBias = struct.hasClass("Farmstead") || struct.hasClass("Storehouse") ? -30 : struct.hasClass("Market") ? -20 : 0;
@@ -1621,7 +1673,7 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 			mainBase = false;
 			targetIsCC = false;
 			retargeted = true;
-			favorable = attackers >= Math.max(metrics.defenders + 2, Math.ceil(metrics.defenders * 1.10));
+			favorable = attackers >= localNeeded() && popSafe();
 		}
 	}
 
@@ -1632,12 +1684,13 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 		this.expertLastP1TimingLog = now;
 		aiWarn("[EXPERT-TIMING-GATE] " + (favorable ? retargeted ? "retarget-launch" : "launch" : "hold") +
 			" plan=" + attack.name + " army=" + attackers + " local=" + metrics.defenders +
+			" reinforce=" + metrics.nearbyReinforcements + " hubs=" + metrics.productionHubs +
 			" knownEnemy=" + knownEnemyCombat + " enemyPop=" + enemyPop + " static=" + metrics.staticDefenses +
 			" target=" + (targetIsCC ? "cc" : retargeted ? "exposed-eco" : mainBase ? "defended" : "open") +
 			" needed=" + Math.max(localNeeded(), globalNeeded()));
 	}
 	return { launch: favorable, reason: favorable ? retargeted ? "exposed-economic-target" : "advantage" : "hold-for-better-fight",
-		attackers, defenders: metrics.defenders, knownEnemyCombat, enemyPop, staticDefenses: metrics.staticDefenses, retargeted };
+		attackers, defenders: metrics.defenders, nearbyReinforcements: metrics.nearbyReinforcements, productionHubs: metrics.productionHubs, knownEnemyCombat, enemyPop, staticDefenses: metrics.staticDefenses, retargeted };
 };
 
 AttackManager.prototype.expertRushLocalBalance = function(gameState, attack)
