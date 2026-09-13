@@ -624,3 +624,24 @@ Replay regressions locked by IT14:
 - Early/Late P1 rushes keep the 6-Field permanent-food floor alive while natural food remains; natural-first logic may not erase that strategic floor.
 - Expert economic gather targets must be inside PlayerID territory. Neutral-border wood/food/minerals are expansion targets only; no emergency neutral-wood bridge is permitted, and neutral stock does not count as immediately accessible economic supply.
 - Operational wood collectors are owned-territory only. If owned wood is unserviced, build/roll a Storehouse or expand territory rather than long-haul outside the border.
+
+
+## IT15.2 no-idle food-capacity contracts
+- A food-owned civilian may never remain intentionally idle merely because natural food/farm capacity is saturated.
+- Missing food capacity triggers the Field watchdog immediately; idle food-owned civilians are direct evidence of capacity debt.
+- Until permanent food capacity materializes, food-owned civilians may perform temporary productive work only on legal owned-territory resources; their permanent job remains food_owned.
+- Early/Late-P1 rush food civilians retry food every Expert update; a temporary wood lease may not delay return to a newly available food slot.
+- The IT15.1 owned-territory-only sovereignty rule remains binding.
+
+## IT15.3 worker-uptime and parallel-research contracts
+
+- Forecast balancing may not repeatedly turn travelling workers around. Workers already approaching a live gather target or returning resources are protected from ordinary/critical cross-resource churn unless the move corrects a temporary actual-vs-metadata mismatch.
+- Productive gatherers are the last strategic reassignment source. Move idle/mismatched/flexible labor first; productive cross-resource moves are limited to a small batch with a cooldown.
+- Opening a new wood district does not mean evacuating the old one. Existing workers retain a viable explicit worksite; new/flexible workers seed new capacity first. Staged migration remains small.
+- Wood continuity is still not a rigid finish-the-current-line veto. A genuinely exhausted or unusable owned district may roll over to another owned district.
+- Barracks prefer batches of 2-3 but must shrink to an immediately affordable batch, including 1, rather than idle waiting for batch efficiency.
+- A launched P1 Rush does not automatically own newly trained citizen-soldiers. Fresh soldiers remain productive at home unless a deliberate replacement/reinforcement mechanism claims a useful batch.
+- P3 Boom's max-tech requirement remains binding for normal launch. The solution to late military tech is earlier economic compounding plus 2-3 parallel Forges, not waiving upgrades at the attack deadline.
+- P3 Town phase may research military Forge upgrades in parallel with eco upgrades. A third Forge is allowed only for P3 and only while a real relevant military-tech backlog exists.
+- Iphicrates is an army support asset: attach him to the main active army, keep him near its centre/back-centre, and withdraw him before critical health rather than spending him as front-line DPS.
+- Forecast Storehouse infrastructure must never call an undefined helper. Current-economy Storehouse candidates remain PlayerID-owned only; neutral resources require territorial expansion first.

@@ -1,0 +1,45 @@
+CWA Petra Expert AI — IT15.2 Change Report
+==========================================
+
+Purpose
+-------
+IT15.2 is a surgical correction to IT15.1's food-capacity/no-idle regression.
+
+Replay failure
+--------------
+In the first IT15.1 test, food-owned civilians were intentionally parked in
+AWAIT_FOOD_INFRASTRUCTURE when the natural-food network was saturated and no
+Field was yet available. Idle workers rose into double digits even though legal
+owned-territory productive work existed. At the same time, the Field watchdog
+could wait for its ordinary delay/runway conditions instead of treating the
+idle food workers as proof that capacity was already late.
+
+Binding changes
+---------------
+1. NO IDLE FOOD CAPACITY WAIT:
+   - Food-owned civilians never intentionally stand idle waiting for a Field.
+   - If no natural/farm/build target exists, they take temporary useful work on
+     owned-territory wood/stone/metal while retaining JOB_METADATA=food_owned.
+
+2. IDLE FOOD WORKERS FORCE FIELDS:
+   - Idle food-owned civilians immediately raise the Field watchdog target.
+   - Watchdog delay is zero while food-owned idle capacity debt exists.
+   - The Field action is inserted after opening-tech filtering, so Iron Axe
+     preference cannot suppress a Field needed to stop actual worker idling.
+
+3. TEMPORARY WORK IS NOT A ROLE CHANGE:
+   - Temporary fallback does not convert the civilian into a permanent lumberjack.
+   - Early/Late-P1 rush civilians retry food every Expert update.
+   - A 30-second temporary wood lease may not delay return to newly available food.
+
+4. TERRITORY RULE PRESERVED:
+   - IT15.1's owned-territory-only gathering rule remains unchanged.
+   - Temporary productive fallback is also restricted to owned territory.
+
+Frozen
+------
+- Rush timing/combat package.
+- IT15.1 territory sovereignty.
+- 34/36 rush civilian doctrine and food ownership.
+- Champion/combat changes inherited from IT14.99/15.0.
+- Benchmark file.
