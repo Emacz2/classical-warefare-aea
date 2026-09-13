@@ -973,6 +973,105 @@ AttackManager.prototype.coordinateExpertHealerEscort = function(gameState)
 	return moved;
 };
 
+
+// IT15.3: Iphicrates is a mobile force multiplier, not a home decoration or a
+// front-line disposable hero. Keep him near the centre/back-centre of the largest
+// active army, use a defensive stance to discourage chasing, and withdraw him early
+// when damaged so preserving the aura outranks a few extra hero attacks.
+AttackManager.prototype.coordinateExpertIphicrates = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT)
+		return 0;
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	const interval = Math.max(1, Number(policy.expertIphicratesEscortUpdateSeconds) || 2);
+	if (now < (Number(this.expertLastIphicratesEscortUpdate) || -99999) + interval)
+		return 0;
+	this.expertLastIphicratesEscortUpdate = now;
+	let attack;
+	for (const type of [AttackPlan.TYPE_DEFAULT, AttackPlan.TYPE_HUGE_ATTACK, AttackPlan.TYPE_RUSH])
+		for (const plan of this.startedAttacks[type] || [])
+			if (plan && plan.targetPlayer !== undefined && plan.unitCollection && plan.unitCollection.hasEntities &&
+			    plan.unitCollection.hasEntities() && (!attack || plan.unitCollection.length > attack.unitCollection.length))
+				attack = plan;
+	if (!attack)
+		return 0;
+	let hero;
+	for (const ent of gameState.getOwnUnits().values())
+	{
+		if (!ent || !ent.position || !ent.position() || !ent.hasClass || !ent.hasClass("Hero") || !ent.templateName)
+			continue;
+		if (String(ent.templateName()).toLowerCase().includes("iphicrates"))
+		{
+			hero = ent;
+			break;
+		}
+	}
+	if (!hero)
+		return 0;
+	const hp = hero.healthLevel ? hero.healthLevel() : 1;
+	const withdraw = Math.max(0.30, Math.min(0.90, Number(policy.expertIphicratesWithdrawHealth) || 0.62));
+	const resume = Math.max(withdraw, Math.min(1, Number(policy.expertIphicratesResumeHealth) || 0.85));
+	const heroPlan = hero.getMetadata ? hero.getMetadata(PlayerID, "plan") : undefined;
+	if (hp <= withdraw)
+	{
+		if (Number(heroPlan) === Number(attack.name) && attack.removeUnit)
+			attack.removeUnit(hero, true);
+		if (hero.setMetadata)
+		{
+			hero.setMetadata(PlayerID, "expertIphicratesWithdrawUntil", now + 12);
+			hero.setMetadata(PlayerID, "expertCombatOwner", "hero-withdraw");
+			hero.setMetadata(PlayerID, "expertCombatOwnerPlan", -1);
+		}
+		if (hero.getStance && hero.setStance && hero.getStance() !== "defensive")
+			hero.setStance("defensive");
+		const home = this.expertWoundedHomePosition(gameState, attack.position || attack.targetPos);
+		if (home && hero.moveToRange)
+			hero.moveToRange(home[0], home[1], 0, 14);
+		if (now >= (Number(this.expertLastIphicratesLog) || -99999) + 10)
+		{
+			this.expertLastIphicratesLog = now;
+			aiWarn("[EXPERT-HERO] Iphicrates withdraw hp=" + hp.toFixed(2) + " plan=" + attack.name);
+		}
+		return 1;
+	}
+	const withdrawUntil = Number(hero.getMetadata && hero.getMetadata(PlayerID, "expertIphicratesWithdrawUntil")) || -99999;
+	if ((now < withdrawUntil || hp < resume) && Number(heroPlan) !== Number(attack.name))
+		return 0;
+	if (Number(heroPlan) !== Number(attack.name))
+	{
+		// Do not steal him from another live attack; otherwise attach immediately.
+		if (heroPlan !== undefined && heroPlan !== -1)
+			return 0;
+		if (!attack.addExpertReinforcement || !attack.addExpertReinforcement(gameState, hero))
+			return 0;
+		if (hero.setMetadata)
+		{
+			hero.setMetadata(PlayerID, "expertCombatOwner", "plan:" + attack.name);
+			hero.setMetadata(PlayerID, "expertCombatOwnerPlan", attack.name);
+		}
+		aiWarn("[EXPERT-HERO] Iphicrates attached plan=" + attack.name + " army=" + attack.unitCollection.length);
+	}
+	if (hero.getStance && hero.setStance && hero.getStance() !== "defensive")
+		hero.setStance("defensive");
+	const centre = attack.unitCollection.getCentrePosition && attack.unitCollection.getCentrePosition() || attack.position || attack.rallyPoint;
+	if (!centre)
+		return 0;
+	const target = attack.targetPos || centre;
+	const behind = Math.max(0, Number(policy.expertIphicratesBehindDistance) || 5);
+	let dx = centre[0] - target[0], dz = centre[1] - target[1];
+	let len = Math.hypot(dx, dz);
+	if (!len) { dx = 1; dz = 0; len = 1; }
+	const escort = [centre[0] + dx / len * behind, centre[1] + dz / len * behind];
+	const leash = Math.max(12, Number(policy.expertIphicratesLeashDistance) || 24);
+	if (SquareVectorDistance(hero.position(), escort) > leash * leash && hero.moveToRange)
+	{
+		hero.moveToRange(escort[0], escort[1], 0, Math.max(6, Number(policy.expertIphicratesEscortRange) || 10));
+		return 1;
+	}
+	return 0;
+};
+
 // IT14.90: decisive CC capture lock plus narrower front-contact attack-move correction.
 // attackPlan.js remains unchanged; these are Expert-only post-plan order corrections.
 AttackManager.prototype.coordinateExpertCCCaptureFinish = function(gameState, finishing)
@@ -2580,6 +2679,7 @@ AttackManager.prototype.update = function(gameState, queues, events)
 	// accumulating as an idle home reserve. Siege keeps its existing attachment lane.
 	this.attachExpertPremiumUnitsToActiveAttack(gameState);
 	this.attachExpertSiegeToActiveAttack(gameState);
+	this.coordinateExpertIphicrates(gameState);
 	this.coordinateExpertCCCaptureFinish(gameState, expertFinishing);
 	this.coordinateExpertAttackMoveSweep(gameState);
 	this.coordinateExpertHealerEscort(gameState);

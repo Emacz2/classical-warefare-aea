@@ -592,27 +592,40 @@ function planEconomy(rawState, overrides = {}) {
 
   const forgePipeline = state.structures.forge + state.foundations.forge + state.queued.forge;
   const forgePending = state.foundations.forge + state.queued.forge;
+  const p3BoomForge = !!state.flags.p3BoomDoctrine;
   let transitionForgeTarget = 0;
   const scarcityForgeReady = state.phase >= 2 && state.flags.athensWoodScarcityForge &&
     state.structures.barracks >= 1 && state.population.used >= 55 &&
     (state.structures.field >= 6 || infrastructureNaturalReady);
+  const forgeOnePopulation = p3BoomForge ? (policy.p3BoomForge1Population || 70) : policy.phase2Forge1Population;
+  const forgeOneTime = p3BoomForge ? (policy.p3BoomForge1Time || 330) : policy.phase2ForgeTransitionTime;
   const forgeOneReady = (scarcityForgeReady || state.structures.barracks >= 2 &&
-    state.population.used >= policy.phase2Forge1Population &&
+    state.population.used >= forgeOnePopulation &&
     (state.structures.field >= policy.phase2ForgeTransitionMinimumFields || infrastructureNaturalReady) &&
-    (state.phase >= 2 || state.time >= policy.phase2ForgeTransitionTime)) &&
+    (state.phase >= 2 || state.time >= forgeOneTime)) &&
     !p1TemplePriorityPending;
   if (forgeOneReady)
     transitionForgeTarget = 1;
-  // IT14.64: Forge #2 is not a milestone. It only exists to open a second *usable*
-  // military-research lane while Forge #1 is already doing useful work.
+  // IT15.3: P3 converts boom resources into parallel Forge throughput early enough
+  // that all relevant military tiers can be finished before the army is ready to march.
+  // Other doctrines keep the older on-demand second-lane rule.
+  const forgeTwoPopulation = p3BoomForge ? (policy.p3BoomForge2Population || 85) : policy.phase2Forge2Population;
+  const forgeTwoFoodBank = p3BoomForge ? (policy.p3BoomForge2FoodBank || 300) : policy.phase2ForgeSecondFoodBank;
   const forgeTwoReady = state.phase >= 2 &&
     state.flags.forgeSecondUseful &&
     state.structures.barracks >= 2 &&
-    state.population.used >= policy.phase2Forge2Population &&
+    state.population.used >= forgeTwoPopulation &&
     (state.structures.field >= policy.phase2ForgeSecondMinimumFields || infrastructureNaturalReady) &&
-    state.resources.food >= policy.phase2ForgeSecondFoodBank;
+    state.resources.food >= forgeTwoFoodBank;
   if (forgeTwoReady)
     transitionForgeTarget = 2;
+  const forgeThreeReady = p3BoomForge && state.phase >= 2 && state.flags.forgeThirdUseful &&
+    state.structures.barracks >= 2 &&
+    state.population.used >= (policy.p3BoomForge3Population || 105) &&
+    (state.structures.field >= (policy.p3BoomForge3MinimumFields || 8) || infrastructureNaturalReady) &&
+    state.resources.food >= (policy.p3BoomForge3FoodBank || 450);
+  if (forgeThreeReady)
+    transitionForgeTarget = 3;
   if (forgePipeline < transitionForgeTarget && forgePending === 0) {
     const cost = costOf(state, policy, "forge");
     const canBuild = resourceEnough(state.resources, cost, reservations);

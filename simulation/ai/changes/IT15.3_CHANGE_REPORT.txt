@@ -1,0 +1,119 @@
+CWA Petra Expert AI — IT15.3 Change Report
+==========================================
+
+Purpose
+-------
+IT15.3 is the worker-efficiency / research-throughput correction built from the
+2026-09-12 Human-vs-Expert comparison. It preserves IT15.2's repaired permanent-
+food opening and territorial sovereignty while attacking the measured reason a
+human without the Expert gather bonus could still out-gather Expert: too much
+worker travel/reassignment and too little parallel research throughput.
+
+1. RESTORED FORECAST STOREHOUSE HELPERS (runtime error fix)
+-----------------------------------------------------------
+IT15.1 removed resourceWorkersBySupply() and forecastStorehouseCandidate() while
+applyForecastStorehouseInfrastructure() continued to call the latter. IT15.2
+therefore threw:
+
+  this.forecastStorehouseCandidate is not a function
+
+IT15.3 restores both helpers. The restored candidate scan is updated for the
+IT15.1 sovereignty contract: only PlayerID-owned resources may become immediate
+Storehouse-service candidates. Neutral resources remain expansion intelligence.
+
+2. PRODUCTIVE WORKER INERTIA / GLOBAL REASSIGNMENT CHURN
+---------------------------------------------------------
+The Human-vs-Expert replay showed Expert repeatedly peeling large groups between
+resources. At one sample 55 workers were walking; a +35% gather bonus cannot pay
+while workers are crossing the map.
+
+IT15.3 changes forecast rebalancing:
+- workers already APPROACHING/WALKING/RETURNING are not turned around by a new
+  forecast signal unless correcting a temporary metadata/resource mismatch;
+- idle/mismatched/nonproductive workers move before productive gatherers;
+- productive gatherers are capped at 2 strategic moves per 12-second window;
+- even forecast-critical rebalancing is capped at 5 total workers per pass;
+- workers recently strategically reassigned have a 12-second anti-churn lease.
+
+This does not freeze resource balance. It changes the order of operations to:
+new/idle/flexible labor first, productive specialists last.
+
+3. WOODLINE CONTINUITY
+----------------------
+- woodMigrationSalvageRadius increased from 52m to 68m so the same forest can be
+  followed farther before Petra declares that district finished;
+- staged migration batch reduced from 4 to 2 workers per 12-second window;
+- existing explicit WORKSITE_ID behavior remains: a new Storehouse is primarily
+  for new workers; productive workers stay on their old viable district.
+
+The 14.86 non-regression rule remains: continuity is a preference, never a veto.
+If the old district is genuinely exhausted/unusable, Expert may still open/use a
+new owned-territory district.
+
+4. BARRACKS BATCH TRAINING
+--------------------------
+Barracks now request efficient batches of 2, or 3 when the food bank is healthy.
+queueExpertSoldierBatch() still shrinks the request to the largest immediately
+affordable batch, including 1, so batching can never create trainer idle time.
+
+5. P1 RUSH REINFORCEMENT ECONOMY
+--------------------------------
+After a Rush plan has launched, newly trained citizen-soldiers are no longer
+pre-owned by that started rush. They remain available to the home economy rather
+than walking across the map 1-3 at a time. Existing wounded-replacement logic may
+still send a deliberate replacement wave when the field army actually needs it.
+This supports the intended doctrine: pressure once; if the exchange turns bad,
+retreat/reboom with a stronger home economy instead of feeding the fight.
+
+6. P3 BOOM: PARALLEL FORGES + EARLIER MILITARY RESEARCH
+--------------------------------------------------------
+The max-tech requirement is NOT relaxed. P3 Boom still wants all relevant
+military technology completed before its normal all-in.
+
+IT15.3 makes that achievable earlier:
+- P3 begins Forge military research in Town phase while economic research
+  continues in its own research buildings;
+- P3 Forge #1 may come online from ~70 population / ~5:30 timing when normal
+  infrastructure conditions are met;
+- Forge #2 is proactively justified by a real multi-tech backlog, not only after
+  Forge #1 has already become a visible bottleneck;
+- P3 may build Forge #3 around 105 population / 8 Fields when the military tech
+  backlog and live bank justify a third research lane;
+- military research queues now support three Forge lanes;
+- P3 max-tech mode no longer silently skips narrow relevant military technologies
+  merely because the current army has few cavalry/javelineers.
+
+The objective is not "attack with missing techs at 14:00." It is "use the boom
+and 2-3 Forges so the tech tree is already finished when the ~14:00 army is ready."
+
+7. IPHICRATES SUPPORT BEHAVIOR
+-------------------------------
+Iphicrates now has Expert-only command-hero support behavior:
+- attaches to the largest active primary army instead of remaining at home;
+- defensive stance and centre/back-centre leash to keep his aura with the army;
+- withdraws around 62% health and does not rejoin until ~85% health;
+- survival is prioritized over extra hero DPS.
+
+8. PRESERVED IT15.2 CONTRACTS
+------------------------------
+Unchanged in intent:
+- no intentional AWAIT_FOOD_INFRASTRUCTURE idle state;
+- idle/overflow food civilians force permanent food capacity and remain productive;
+- dedicated rush civilians are food-focused;
+- economic gathering targets must be inside PlayerID territory;
+- neutral resources are not immediately accessible economic stock;
+- food-capacity debt suppresses speculative mineral Storehouses but not required
+  owned-wood rollover;
+- attackPlan.js is unchanged;
+- EXPERT_BENCHMARKS.txt is unchanged.
+
+Next Human-vs-Expert check
+--------------------------
+Pay special attention at 4, 6, 8, 10, 12 and 14 minutes to:
+- total resources gathered;
+- walk/return/idle counts;
+- active wood gatherers when a new Storehouse opens;
+- whether newly trained soldiers seed the new woodline before old lumberjacks move;
+- Forge count and military-tech lanes;
+- P3 military-tech completion time;
+- Iphicrates joining and surviving with the field army.

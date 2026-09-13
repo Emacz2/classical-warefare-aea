@@ -521,8 +521,9 @@ const DEFAULT_POLICY = Object.freeze({
   // Surplus wood should become useful infrastructure instead of a 5k bank.
   // One forge may appear late P1 only under an extreme surplus. Forge #1 is part
   // of the P2 transition and forge #2 is the parallel military-research lane.
-  // IT14.63 hard-caps Expert at two Forges; a third Forge after the tech tree is
-  // mostly exhausted has no useful payback.
+  // IT15.3: ordinary P2 play still stops at two Forges, but P3 max-tech boom may
+  // build a third while a real military-tech backlog exists. Parallel research must
+  // be funded by the boom rather than serially finishing the tree after the army is ready.
   lateP1ForgeTime: 330,
   lateP1ForgePopulation: 70,
   lateP1ForgeWoodBank: 1500,
@@ -541,6 +542,19 @@ const DEFAULT_POLICY = Object.freeze({
   phase2Forge2MetalBank: 175,
   phase2Forge2FoodBank: 450,
   phase2Forge2UsefulWoodBank: 450,
+  // IT15.3 P3 Forge schedule. These are build-enabling banks, not attack shortcuts;
+  // the all-in still requires the relevant military tech tree to be complete.
+  p3BoomForge1Time: 330,
+  p3BoomForge1Population: 70,
+  p3BoomForge2Population: 85,
+  p3BoomForge2FoodBank: 300,
+  p3BoomForge2WoodBank: 300,
+  p3BoomForge2MetalBank: 125,
+  p3BoomForge3Population: 105,
+  p3BoomForge3MinimumFields: 8,
+  p3BoomForge3FoodBank: 450,
+  p3BoomForge3WoodBank: 350,
+  p3BoomForge3MetalBank: 175,
   forgeWoodReserve: 100,
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
@@ -577,9 +591,14 @@ const DEFAULT_POLICY = Object.freeze({
   civilianEvacuationReleaseSeconds: 10,
   civilianSafeResourceThreatDistance: 62,
   civilianSafeResourceCCDistance: 150,
-  woodMigrationBatch: 4,
+  woodMigrationBatch: 2,
   woodMigrationWindowSeconds: 12,
-  woodMigrationSalvageRadius: 52,
+  woodMigrationSalvageRadius: 68,
+  // IT15.3: only a small number of productive workers may be uprooted by forecast
+  // balancing at once. Newly trained/idle/mismatched workers satisfy demand first.
+  resourceProductiveReassignBatch: 2,
+  resourceProductiveReassignCooldownSeconds: 12,
+  resourceCriticalTotalReassignBatch: 5,
   // Preserve a still-rich committed forest instead of switching the whole lumber crew
   // just because the tight ring around its storehouse has thinned out.
   woodMigrationRetainWoodRatio: 1.15,
@@ -1231,6 +1250,14 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.65 premium units do not sit at home while a primary army is already fighting.
   expertPremiumReinforcementBatch: 8,
   expertPremiumReinforcementHealth: 0.75,
+  // IT15.3 Iphicrates support doctrine: keep the ~30m aura embedded in the infantry
+  // mass, but withdraw early because the aura is worth more than hero DPS.
+  expertIphicratesEscortUpdateSeconds: 2,
+  expertIphicratesBehindDistance: 5,
+  expertIphicratesLeashDistance: 24,
+  expertIphicratesEscortRange: 10,
+  expertIphicratesWithdrawHealth: 0.62,
+  expertIphicratesResumeHealth: 0.85,
   // Rams are the finishing tool. Fill a modest number of seats so their movement/damage
   // bonus matters without hiding the whole infantry army inside them.
   expertRamGarrisonTarget: 5,
