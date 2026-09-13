@@ -1201,6 +1201,23 @@ const DEFAULT_POLICY = Object.freeze({
   expertSmartAttackMaximumAgeSeconds: 22,
   expertRushLocalBalanceRadius: 80,
   expertRushDefensiveThreatRadius: 90,
+  // IT15.7: Late-P1 often needs >22s merely to cross the map, so the generic
+  // launch-age sanity window can expire before the real defending army is revealed.
+  // Recheck ONLY Late-P1 on approach/contact using a wider local picture. A marginal
+  // newly revealed fight regroups once to cohere; a clearly losing fight withdraws
+  // before donating the timing army. P2/P3 opportunity logic is intentionally untouched.
+  expertLateP1PreEngagementMinimumAgeSeconds: 18,
+  expertLateP1PreEngagementMaximumAgeSeconds: 80,
+  expertLateP1PreEngagementRadius: 118,
+  expertLateP1PreEngagementDefenseRadius: 105,
+  expertLateP1PreEngagementMinimumOwnCombat: 20,
+  expertLateP1PreEngagementMinimumEnemyCombat: 8,
+  expertLateP1PreEngagementAdvantageRatio: 1.10,
+  expertLateP1PreEngagementMinimumLead: 4,
+  expertLateP1PreEngagementHardOutnumberRatio: 1.10,
+  expertLateP1PreEngagementHardOutnumberMargin: 5,
+  expertLateP1PreEngagementMaximumRegroups: 1,
+  expertLateP1PreEngagementLogSeconds: 4,
   expertRushRetreatCooldownSeconds: 105,
   // IT14.50: a broken melee screen is first a tactical-regroup signal, not an
   // automatic strategic surrender. Only true local pressure / bad exchange should

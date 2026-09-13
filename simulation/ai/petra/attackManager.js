@@ -1697,7 +1697,7 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 		attackers, defenders: metrics.defenders, nearbyReinforcements: metrics.nearbyReinforcements, productionHubs: metrics.productionHubs, knownEnemyCombat, enemyPop, staticDefenses: metrics.staticDefenses, retargeted };
 };
 
-AttackManager.prototype.expertRushLocalBalance = function(gameState, attack)
+AttackManager.prototype.expertRushLocalBalance = function(gameState, attack, radiusOverride, defenseRadiusOverride)
 {
 	const out = { ownCombat: 0, enemyCombat: 0, melee: 0, ranged: 0, defenses: 0 };
 	if (!attack || !attack.unitCollection)
@@ -1706,7 +1706,7 @@ AttackManager.prototype.expertRushLocalBalance = function(gameState, attack)
 	if (!centre)
 		return out;
 	const policy = mergePolicy();
-	const radius2 = Math.pow(Number(policy.expertRushLocalBalanceRadius) || 80, 2);
+	const radius2 = Math.pow(Number(radiusOverride) || Number(policy.expertRushLocalBalanceRadius) || 80, 2);
 	for (const ent of attack.unitCollection.values())
 	{
 		if (!ent || !ent.position() || SquareVectorDistance(ent.position(), centre) > radius2 || isExpertBuildingSiegeEntity(ent))
@@ -1727,7 +1727,7 @@ AttackManager.prototype.expertRushLocalBalance = function(gameState, attack)
 			if (attacks && !ent.hasClass("Animal"))
 				++out.enemyCombat;
 		}
-	const defenseRadius2 = Math.pow(Number(policy.expertRushDefensiveThreatRadius) || 90, 2);
+	const defenseRadius2 = Math.pow(Number(defenseRadiusOverride) || Number(policy.expertRushDefensiveThreatRadius) || 90, 2);
 	if (attack.targetPlayer !== undefined)
 		for (const struct of gameState.getEnemyStructures(attack.targetPlayer).values())
 		{
@@ -1769,6 +1769,79 @@ AttackManager.prototype.expertClearlyOutnumberedDecision = function(gameState, a
 	// to harmless scouting noise or one extra defender crossing the sample radius.
 	if (enemy >= Math.ceil(own * ratio) && enemy >= own + (balance.defenses > 0 ? 5 : 8))
 		out.abort = true;
+	return out;
+};
+
+// IT15.7: the generic pre-fight outnumber check intentionally expires quickly, but a
+// Late-P1 timing can spend 30-40 seconds walking before the opponent's actual army enters
+// vision. Re-evaluate that specific doctrine on approach/contact. A merely marginal fight
+// gets ONE short cohesion regroup; a clearly losing or still-unfavorable fight after that
+// regroup withdraws before the casualty detector has to learn the lesson the expensive way.
+// This function is deliberately Rush + late_p1_rush only: record-setting P2/P3 opportunity
+// attack authorization and execution are outside its scope.
+AttackManager.prototype.expertLateP1PreEngagementDecision = function(gameState, attack)
+{
+	const out = { abort: false, regroup: false, reason: "", balance: undefined, needed: 0, age: 0 };
+	if (this.Config.difficulty < difficulty.EXPERT || !attack || !attack.isStarted() ||
+	    attack.type !== AttackPlan.TYPE_RUSH || expertAttackHasBuildingSiege(attack))
+		return out;
+	const doctrine = gameState.ai.HQ && gameState.ai.HQ.expertDoctrine;
+	if (!doctrine || doctrine.id !== "late_p1_rush")
+		return out;
+	const policy = mergePolicy();
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	const age = now - (Number(attack.expertLaunchTime) || now);
+	out.age = age;
+	if (age < (Number(policy.expertLateP1PreEngagementMinimumAgeSeconds) || 18) ||
+	    age > (Number(policy.expertLateP1PreEngagementMaximumAgeSeconds) || 80))
+		return out;
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
+	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : Infinity;
+	if (enemyPop <= (Number(policy.expertFinishingEnemyPopulation) || 28))
+		return out;
+	const balance = this.expertRushLocalBalance(gameState, attack,
+		Number(policy.expertLateP1PreEngagementRadius) || 118,
+		Number(policy.expertLateP1PreEngagementDefenseRadius) || 105);
+	out.balance = balance;
+	const own = Math.max(0, Number(balance.ownCombat) || 0);
+	const enemy = Math.max(0, Number(balance.enemyCombat) || 0);
+	if (own < (Number(policy.expertLateP1PreEngagementMinimumOwnCombat) || 20) ||
+	    enemy < (Number(policy.expertLateP1PreEngagementMinimumEnemyCombat) || 8))
+		return out;
+	const ratio = Math.max(1.01, Number(policy.expertLateP1PreEngagementAdvantageRatio) || 1.10);
+	const lead = Math.max(1, Number(policy.expertLateP1PreEngagementMinimumLead) || 4);
+	const needed = Math.max(Math.ceil(enemy * ratio), enemy + lead);
+	out.needed = needed;
+	if (own >= needed && balance.defenses <= 1)
+		return out;
+
+	const hardRatio = Math.max(1.01, Number(policy.expertLateP1PreEngagementHardOutnumberRatio) || 1.10);
+	const hardMargin = Math.max(3, Number(policy.expertLateP1PreEngagementHardOutnumberMargin) || 5);
+	const hardOutnumbered = enemy >= Math.ceil(own * hardRatio) && enemy >= own + hardMargin;
+	const regroups = Math.max(0, Number(attack.expertLateP1PreEngagementRegroups) || 0);
+	const maxRegroups = Math.max(0, Number(policy.expertLateP1PreEngagementMaximumRegroups) || 1);
+	const losses = Math.max(0, Number(attack.expertOwnLosses) || 0);
+	const logEvery = Math.max(2, Number(policy.expertLateP1PreEngagementLogSeconds) || 4);
+	if (now >= (Number(attack.expertLastLateP1RecheckLog) || -99999) + logEvery)
+	{
+		attack.expertLastLateP1RecheckLog = now;
+		aiWarn("[EXPERT-LATE-P1-RECHECK] " + (hardOutnumbered ? "danger" : regroups < maxRegroups ? "cohere" : "still-bad") +
+			" plan=" + attack.name + " age=" + Math.round(age) + " army=" + attack.unitCollection.length +
+			" local=" + own + "v" + enemy + " defenses=" + (balance.defenses || 0) +
+			" needed=" + needed + " losses=" + losses + " regroups=" + regroups + "/" + maxRegroups);
+	}
+
+	// If the newly revealed fight is already clearly worse, do not spend a regroup merely
+	// to confirm it. Otherwise use one short backward cohesion step, then demand that the
+	// local advantage has actually recovered before recommitting.
+	if (hardOutnumbered || regroups >= maxRegroups)
+	{
+		out.abort = true;
+		out.reason = hardOutnumbered ? "preengagement_outnumbered" : "preengagement_no_advantage";
+		return out;
+	}
+	out.regroup = true;
+	out.reason = "preengagement_cohere";
 	return out;
 };
 
@@ -2585,6 +2658,45 @@ AttackManager.prototype.update = function(gameState, queues, events)
 					" local=" + (b.ownCombat || 0) + "v" + (b.enemyCombat || 0) +
 					" defenses=" + (b.defenses || 0) + " cancelled=" + cancelled +
 					" until=" + Math.round(this.expertReboomUntil));
+				attack.Abort(gameState);
+				this.startedAttacks[attackType].splice(i--, 1);
+				continue;
+			}
+			const lateP1Recheck = this.expertLateP1PreEngagementDecision(gameState, attack);
+			if (lateP1Recheck.regroup)
+			{
+				attack.expertLateP1PreEngagementRegroups = Math.max(0, Number(attack.expertLateP1PreEngagementRegroups) || 0) + 1;
+				if (this.startExpertTacticalRegroup(gameState, attack, lateP1Recheck))
+				{
+					const b = lateP1Recheck.balance || {};
+					aiWarn("[EXPERT-LATE-P1-RECHECK] REGROUP plan=" + attack.name +
+						" local=" + (b.ownCombat || 0) + "v" + (b.enemyCombat || 0) +
+						" defenses=" + (b.defenses || 0) + " needed=" + lateP1Recheck.needed +
+						" resumeAt=" + Math.round(attack.expertTacticalRegroupUntil));
+					continue;
+				}
+				// If the one allowed cohesion step cannot be issued, treat the unresolved bad
+				// approach as a retreat condition instead of silently charging anyway.
+				lateP1Recheck.abort = true;
+				lateP1Recheck.reason = "preengagement_regroup_unavailable";
+			}
+			if (lateP1Recheck.abort)
+			{
+				const policy = mergePolicy();
+				const b = lateP1Recheck.balance || {};
+				this.expertRushRecoveryMode = true;
+				this.expertRushRecoveryUntil = now + (Number(policy.expertRushRetreatCooldownSeconds) || 105);
+				this.expertReboomUntil = Math.max(this.expertReboomUntil || -99999, this.expertRushRecoveryUntil);
+				this.expertReboomNeedsRelaunch = true;
+				this.expertReboomTargetPlayer = attack.targetPlayer;
+				this.markExpertCombatRetreat(gameState, attack, lateP1Recheck.reason);
+				const cancelled = this.cancelExpertFollowupPreparations(gameState);
+				aiWarn("[EXPERT-LATE-P1-RECHECK] WITHDRAW plan=" + attack.name + " reason=" + lateP1Recheck.reason +
+					" army=" + attack.unitCollection.length + "/" + attack.expertLaunchSize +
+					" local=" + (b.ownCombat || 0) + "v" + (b.enemyCombat || 0) +
+					" defenses=" + (b.defenses || 0) + " needed=" + lateP1Recheck.needed +
+					" losses=" + (Math.max(0, Number(attack.expertOwnLosses) || 0)) +
+					" cancelled=" + cancelled + " recoveryUntil=" + Math.round(this.expertRushRecoveryUntil));
 				attack.Abort(gameState);
 				this.startedAttacks[attackType].splice(i--, 1);
 				continue;

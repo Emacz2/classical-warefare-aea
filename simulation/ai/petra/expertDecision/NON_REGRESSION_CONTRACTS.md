@@ -678,3 +678,13 @@ Replay regressions locked by IT14:
 - Major strategic structures may use 5/8/10 nearby builders as the live bank permits, preferring nearby wood labor; fast construction must release those workers immediately afterward.
 - Every completed Athens Cleruchy is a continuous military-production lane with the same no-idle refill discipline as Barracks and 2-3 unit batching when affordable.
 - P2 Forge-Tech and P3 Boom accelerate Forge infrastructure; the P3/all-tech launch gate itself remains unchanged.
+
+## IT15.7 Late-P1 pre-engagement discipline contract
+
+- Record-setting P2/P3 opportunity attack authorization and execution are frozen for this pass. IT15.7 combat changes apply only to a started `late_p1_rush` Rush plan.
+- The generic 22-second pre-fight sanity window is insufficient for a Late-P1 army that may spend 30-40 seconds crossing the map. Late-P1 therefore retains a doctrine-specific approach/contact recheck through the first ~80 seconds after launch.
+- The Late-P1 recheck uses a wider local battlefield picture than the casualty detector. If newly revealed defenders remove the required local advantage, Expert must not blindly continue the commitment.
+- A marginal newly revealed fight may use one short tactical cohesion regroup. After that regroup, the local advantage must actually be restored; otherwise the Rush withdraws. A clearly outnumbered approach withdraws immediately.
+- This recheck is pre-casualty discipline, not a replacement for the existing failed-rush exchange detector. The goal is to avoid learning `43v53` only after an `18 losses / 6 enemy damage` trade.
+- P2 Forge-Tech opportunity logic, finishing persistence, siege conversion, the IT15.6 natural-food/layout rules, and IT15.5 Gaia/no-idle corrections remain unchanged.
+

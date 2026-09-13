@@ -1,0 +1,30 @@
+CWA Petra Expert AI — IT15.7 Change Report
+
+Base: IT15.6. This is intentionally a surgical combat pass.
+
+WHY IT15.7 EXISTS
+- IT15.6 produced the new canonical record under P2 Forge-Tech Push, so successful P2/P3 attack logic is frozen.
+- The bad IT15.6 Late-P1 replay launched ~54 troops around t=479. Meaningful contact occurred only around t=511, after the generic 22-second pre-fight sanity check had expired.
+- The Rush later aborted at roughly 43v53 only after losing 18 units for 6 enemy-pop damage. The missing behavior was a doctrine-specific approach/contact recheck, not a broad attack-system rewrite.
+
+PRIMARY CHANGE — LATE-P1 PRE-ENGAGEMENT RECHECK
+- Applies ONLY when doctrine == late_p1_rush AND the active plan is a started Rush.
+- Active from ~18s to ~80s after launch, covering long map-crossing travel.
+- Uses a wider 118m local combat picture and 105m defensive-structure picture.
+- Requires a real local advantage (~1.10 ratio and +4 lead) before committing once the defender mass is revealed.
+- A marginal fight gets one short backward cohesion regroup.
+- If the fight is clearly outnumbered, or still lacks the required advantage after the regroup, Expert withdraws before the casualty-based detector has to fire.
+- New telemetry: [EXPERT-LATE-P1-RECHECK] cohere / danger / REGROUP / WITHDRAW.
+
+FROZEN / PRESERVED
+- P2 Forge-Tech opportunity launch gate and battlefield execution.
+- P3 all-tech launch gate.
+- Finishing persistence and siege conversion.
+- IT15.6 natural-food-first, opening layout, 13-house tech doctrine, Temple placement, major-builder crews, expansion production and faster Forge infrastructure.
+- IT15.5 Gaia-defense and no-idle migration corrections.
+- IT15.3 Storehouse runtime fix and P1 home-reserve training behavior.
+
+BENCHMARK
+- Canonical leaderboard updated with IT15.6 as #1.
+- BREAK 10:00.
+- Decisive defeat conservatively recorded as 12:47-13:03 because t=767 is the last bracketing snapshot before telemetry reports enemyPop=0 / no valid target, and t=783 is the next snapshot. Replay EOF is not used.

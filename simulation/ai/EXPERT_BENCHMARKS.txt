@@ -13,9 +13,9 @@ DEFINITIONS
 
 TOP 3 — PERMANENT UNTIL BEATEN
 Rank  Version   Break    Defeated       Finish Gap
-1     IT15.2    10:00    13:52-14:00    3:52-4:00
-2     IT14.46   11:30    19:25.6        7:55.6
-3     IT14.49   13:00    22:31.6        9:31.6
+1     IT15.6    10:00    12:47-13:03    2:47-3:03
+2     IT15.2    10:00    13:52-14:00    3:52-4:00
+3     IT14.46   11:30    19:25.6        7:55.6
 
 LEADERBOARD RULE
 - Do not replace these entries with ordinary regression games, different civilizations, different maps, or human-vs-AI tests.
@@ -34,11 +34,12 @@ Replay continued to approximately 15:04, but that trailing time is NOT used for 
 Reason not ranked in canonical Top 3: opponent civilization was Gaul rather than Athens.
 
 HISTORICAL NOTES
-- IT15.2 established the current canonical record: BREAK 10:00, decisive defeat supported between 13:52 and 14:00.
+- IT15.6 established the current canonical record: BREAK 10:00; decisive defeat is supported between the t=767 and t=783 Expert snapshots (12:47-13:03), with telemetry inside that interval showing enemyPop=0 and no valid enemy target.
+- IT15.2: former #1, BREAK 10:00, decisive defeat supported between 13:52 and 14:00.
 - IT14.46 was the first clean sub-20-minute +35% canonical victory.
-- IT14.49: BREAK=13:00, DEFEATED=22:31.6.
+- IT14.49: former Top-3 result, BREAK=13:00, DEFEATED=22:31.6.
 - IT14.44: former #3; Very Hard fell below 50 permanently at 17:00 and was at 6 pop at 25:00 / 0 at 25:30.
 - IT14.98 produced a very fast non-canonical victory against Gaul Very Hard: BREAK 10:30, decisive defeat between 14:55 and 15:00.
 
 CURRENT VERSION
-IT15.6 is the active regression/test build. Human-vs-Expert games are diagnostic only and never enter the canonical leaderboard.
+IT15.7 is the active regression/test build. Human-vs-Expert games are diagnostic only and never enter the canonical leaderboard.
