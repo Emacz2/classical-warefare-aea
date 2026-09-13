@@ -667,3 +667,14 @@ Replay regressions locked by IT14:
 - P1 reinforcement awareness is a safety modifier, not a requirement to match hypothetical future enemy production. Nearby mobile reserves count moderately; distant reserves count lightly; production hubs are a small modifier.
 - Early P1 remains a timing attack. Global known enemy army may veto a grossly suicidal main-base dive, but it may not inflate the required launch package without bound.
 - IT15.3 failed-rush retreat/abort remains binding. IT15.2 no-idle food-capacity and owned-territory gathering remain binding.
+
+## IT15.6 natural-first / layout / tempo contracts
+
+- Healthy owned natural food is a hard opening hold on NEW permanent Fields. Idle food civilians use productive temporary overflow and retry natural food; idle-food debt cannot manufacture an early Field while the owned natural pool remains above the 25% transition threshold.
+- Berry-heavy openings research Wicker Baskets before Iron Axe. Iron Axe precedes the real Field transition; Plows may not leapfrog healthy natural food.
+- The first House preserves the selected berry/Farmstead district and is placed compactly between the CC/wood economy without consuming the future farm pack.
+- Tech/boom doctrines stop normal House construction at the 13-house breakpoint and reserve Home Garden/pop_house_01 as the normal route to the 180-pop cap. Genuine P1 all-ins/emergencies remain exceptions.
+- Temple #1 is central utility infrastructure: normally within 52m of the CC, scoring worker coverage with extra value for mineral and food workers. Later Temples may specialize outward.
+- Major strategic structures may use 5/8/10 nearby builders as the live bank permits, preferring nearby wood labor; fast construction must release those workers immediately afterward.
+- Every completed Athens Cleruchy is a continuous military-production lane with the same no-idle refill discipline as Barracks and 2-3 unit batching when affordable.
+- P2 Forge-Tech and P3 Boom accelerate Forge infrastructure; the P3/all-tech launch gate itself remains unchanged.

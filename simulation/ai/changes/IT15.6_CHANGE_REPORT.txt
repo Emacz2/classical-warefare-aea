@@ -1,0 +1,49 @@
+CWA Petra Expert AI — IT15.6 Change Report
+
+Base: IT15.5. IT15.4 remains a failed regression branch.
+
+PRIMARY CHANGES
+
+1. NATURAL FOOD FIRST IS NOW A HARD CONTRACT
+- Territory natural-food transition threshold moved to 25%.
+- Permanent Field demand cannot grow while healthy owned natural food remains.
+- The IT15.2 idle-food watchdog no longer forces Fields from transient idle food labor while natural food is healthy.
+- Overflow food civilians remain productive on temporary owned resources and retry food.
+
+2. OPENING ECO TECH ORDER
+- Berry-heavy openings treat 4+ fruit supplies / 500+ fruit as enough to prioritize Wicker Baskets.
+- Intended sequence: Farmstead -> Wicker Baskets -> Iron Axe -> natural-food depletion -> Fields/Plows.
+- Plows is hard-gated behind the real natural-food transition, including the P1 eco sweep.
+
+3. FIRST-HOUSE / FOOD-DISTRICT LAYOUT
+- First House no longer uses a food-annex candidate.
+- It searches a compact 28-54m CC ring toward the wood economy.
+- The selected opening food/berry district is explicitly reserved so House #1 cannot consume the future Farmstead/field footprint.
+
+4. 13-HOUSE CITY-STATE BREAKPOINT
+- P2 Forge-Tech and P3 Boom suppress normal House #14/#15 at the 13-house commitment even before Town.
+- pop_house_01/Home Garden remains the normal 180-pop route once Town is available.
+- P1 all-ins remain free to brute-force houses when timing requires it.
+
+5. FIRST TEMPLE CENTRALIZATION
+- Temple #1 is capped at 52m from the CC and prefers ~30m.
+- Placement scores total worker aura coverage plus extra value for stone/metal and food/farm workers.
+- Later temples retain flexible economic/expansion placement.
+
+6. MAJOR BUILDING CONSTRUCTION TEMPO
+- Arsenal/Gymnasium/Prytaneion/Cleruchy use 5 builders normally, 8 with an abundant bank, up to 10 with a severe surplus.
+- Nearby wood workers receive first claim so construction does not summon builders across the map.
+
+7. EXPANSION PRODUCTION
+- Completed Athens Cleruchies now use continuous current+next queue maintenance, stale-standby pruning, idle-gap diagnostics, and 2-3 unit batches when affordable.
+
+8. FASTER TECH-ORIENTED FORGES
+- P2 Forge #1 target reduced from pop90 / 7:00 to pop70 / 5:30 conditions.
+- P3 Forge #1 target pop60 / 5:00; Forge #2 pop72; Forge #3 pop90 with six Fields OR healthy-natural infrastructure substitution.
+- No military-tech completion gate was relaxed.
+
+PRESERVED FROM IT15.5
+- Gaia/wildlife cannot trigger Expert strategic defense.
+- Wood migration staging may never intentionally idle a worker.
+- IT15.3 Storehouse forecast runtime fix.
+- P1 retreat/recovery logic, Barracks 2-3 batching, hard sovereignty, Iphicrates protection, and canonical benchmark methodology.

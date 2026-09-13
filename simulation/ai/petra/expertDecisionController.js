@@ -2196,7 +2196,12 @@ export class ExpertDecisionController
 		}
 		const richFruitNetwork = fruitSupplyCount >= 8 && fruitRemaining >=
 			Math.max(800, Number(policy.minimumAlternativeNaturalFood) || 400);
-		const wickerPriority = multipleFruit || richFruitNetwork;
+		const openingFruitNetwork = fruitSupplyCount >= (Number(policy.wickerOpeningFruitMinimumSupplies) || 4) &&
+			fruitRemaining >= (Number(policy.wickerOpeningFruitMinimumRemaining) || 500);
+		// IT15.6: a normal berry-heavy opening does not need two disconnected clusters to
+		// justify Baskets. If the opening Farmstead services a meaningful fruit bank, Baskets
+		// precedes Iron Axe; Axe then precedes any real Field/Plows transition.
+		const wickerPriority = multipleFruit || richFruitNetwork || openingFruitNetwork;
 		const basketDone = baskets.some(name => gameState.isResearched(name));
 		const basketBusy = baskets.some(name => gameState.isResearching(name));
 		if (wickerPriority && !basketDone && !basketBusy && farmsteadSecured && storehouseSecured)
@@ -2268,7 +2273,9 @@ export class ExpertDecisionController
 		const farmStarted = this.builtByClass(gameState, "Field").length > 0 ||
 			this.foundationsByClass(gameState, "Field").length > 0 ||
 			(gameState.ai.queues.field && gameState.ai.queues.field.hasQueuedUnits());
-		if (farmStarted && !gameState.isResearched(plows) && !gameState.isResearching(plows) && available.has(plows))
+		const naturalTransitionReached = !Number.isFinite(Number(this.lastTerritoryNaturalFoodRatio)) ||
+			Number(this.lastTerritoryNaturalFoodRatio) <= Number(policy.territoryNaturalFarmTransitionRatio || 0.25);
+		if (farmStarted && naturalTransitionReached && !gameState.isResearched(plows) && !gameState.isResearching(plows) && available.has(plows))
 		{
 			// IT14.56: Plows is no longer an unconditional "farm came online" purchase. If
 			// wood is the clear primary bottleneck and another live lumber upgrade is
@@ -2408,6 +2415,9 @@ export class ExpertDecisionController
 		for (const tech of gameState.findAvailableTech() || [])
 		{
 			const name = tech && tech[0], data = tech && tech[1];
+			if (name === "gather_farming_plows" && Number.isFinite(Number(this.lastTerritoryNaturalFoodRatio)) &&
+			    Number(this.lastTerritoryNaturalFoodRatio) > Number(policy.territoryNaturalFarmTransitionRatio || 0.25))
+				continue;
 			if (!name || alreadyQueued.has(name) || gameState.isResearched(name) || gameState.isResearching(name) ||
 			    !data || !data._template || !Array.isArray(data._template.modifications))
 				continue;
@@ -4572,7 +4582,7 @@ export class ExpertDecisionController
 		return { ...frame, actions };
 	}
 
-	applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex)
+	applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex, foodNetwork)
 	{
 		if (!frame) return frame;
 		const policy = mergePolicy();
@@ -4596,9 +4606,17 @@ export class ExpertDecisionController
 		}
 		const baseDesired = Math.max(0, Number(economyDesired !== undefined && economyDesired !== null ? economyDesired : fallbackDesired) || 0);
 		const crew = Math.max(1, Number(frame.economy && frame.economy.derived && frame.economy.derived.preferredFarmersPerField) || 4);
-		// IT15.2: idle food-owned civilians are themselves proof that permanent-food
-		// capacity is late. Do not wait for berries to deplete or for the normal watchdog.
-		const desired = Math.max(baseDesired, idleFoodDebt > 0 ? pipeline + Math.ceil(idleFoodDebt / crew) : 0);
+		const natural = frame.state && frame.state.food || {};
+		const naturalRemaining = Math.max(0, Number(natural.totalNaturalRemaining) || 0);
+		const naturalRatio = Number.isFinite(Number(natural.territoryNaturalRatio)) ? Number(natural.territoryNaturalRatio) :
+			(Number.isFinite(Number(this.lastTerritoryNaturalFoodRatio)) ? Number(this.lastTerritoryNaturalFoodRatio) : 1);
+		const naturalSlots = Math.max(0, Number(this.immediateFoodCapacitySlots(gameState, foodNetwork)) || 0);
+		const healthyNatural = naturalRemaining > 0 && naturalRatio > Number(policy.territoryNaturalFarmTransitionRatio || 0.25);
+		// IT15.6: a one-update idle food worker is NOT proof that a Field is late while
+		// healthy berries/fruit remain. Let no-idle overflow use wood and retry natural food.
+		// The old IT15.2 override is retained only after the real natural-food transition.
+		const idleFieldDebt = !healthyNatural ? idleFoodDebt : 0;
+		const desired = Math.max(healthyNatural ? pipeline : baseDesired, idleFieldDebt > 0 ? pipeline + Math.ceil(idleFieldDebt / crew) : 0);
 		if (pipeline > Number(this.lastFieldPipeline || 0) || this.lastFieldPipelineProgressAt < -90000)
 			this.lastFieldPipelineProgressAt = now;
 		this.lastFieldPipeline = pipeline;
@@ -4607,12 +4625,10 @@ export class ExpertDecisionController
 			this.lastFieldPipelineProgressAt = now;
 			return frame;
 		}
-		const natural = frame.state && frame.state.food || {};
-		const naturalRemaining = Math.max(0, Number(natural.totalNaturalRemaining) || 0);
 		const deficitSeconds = Math.max(0, Number(natural.foodInfrastructureDeficitSeconds) || 0);
 		const foodBank = Math.max(0, Number(gameState.getResources().food) || 0);
-		const pressure = idleFoodDebt > 0 ||
-			naturalRemaining <= (Number(policy.fieldProgressWatchdogNaturalRemaining) || 120) ||
+		const pressure = idleFieldDebt > 0 ||
+			(!healthyNatural && naturalRemaining <= (Number(policy.fieldProgressWatchdogNaturalRemaining) || 120)) ||
 			deficitSeconds >= (Number(policy.fieldProgressWatchdogFoodDeficitSeconds) || 12) || foodBank <= 300;
 		const forecastFood = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
 		let readyFutureFarmers = 0;
@@ -4623,7 +4639,7 @@ export class ExpertDecisionController
 				++readyFutureFarmers;
 		const forecastFieldPressure = !!(forecastFood && (forecastFood.status === "critical" || forecastFood.status === "short") &&
 			readyFutureFarmers >= Math.max(2, Number(policy.futureFarmFieldBuilderMinimum) || 3));
-		const watchdogDelay = idleFoodDebt > 0 ? 0 : forecastFieldPressure ? 6 : (Number(policy.fieldProgressWatchdogSeconds) || 24);
+		const watchdogDelay = idleFieldDebt > 0 ? 0 : forecastFieldPressure ? 6 : (Number(policy.fieldProgressWatchdogSeconds) || 24);
 		if (!pressure || now - this.lastFieldPipelineProgressAt < watchdogDelay)
 			return frame;
 		if ((frame.actions || []).some(action => action && action.kind === "field" && (action.type === "BUILD" || action.type === "RESERVE")))
@@ -4639,7 +4655,7 @@ export class ExpertDecisionController
 			this.lastFieldWatchdogDiag = now;
 			aiWarn("[EXPERT-FIELD-WATCH] force next field pipeline=" + pipeline + "/" + desired +
 				" open=" + Number(capacity.openFieldSlots || 0) + " food=" + Math.round(foodBank) +
-				" natural=" + Math.round(naturalRemaining) + " idleFoodDebt=" + idleFoodDebt +
+				" natural=" + Math.round(naturalRemaining) + " ratio=" + naturalRatio.toFixed(2) + " slots=" + naturalSlots + " idleFoodDebt=" + idleFoodDebt +
 				" stalled=" + Math.round(now - this.lastFieldPipelineProgressAt) + "s");
 		}
 		// IT14.95: issuing a request is NOT progress.  The timer is reset only when the
@@ -4786,7 +4802,7 @@ export class ExpertDecisionController
 		const naturalRatio = natural && Number.isFinite(Number(natural.territoryNaturalRatio)) ? Number(natural.territoryNaturalRatio) : 0;
 		const naturalRemaining = natural ? Math.max(0, Number(natural.totalNaturalRemaining) || 0) : 0;
 		// IT14.74: the old P2 safety floor was itself bypassing the natural-food contract.
-		if (naturalRemaining > 0 && naturalRatio > Number(policy.territoryNaturalFarmTransitionRatio || 0.40))
+		if (naturalRemaining > 0 && naturalRatio > Number(policy.territoryNaturalFarmTransitionRatio || 0.25))
 			return frame;
 		const target = Math.max(1, Number(policy.phase2AbsoluteMinimumFields) || 6);
 		// A controller field task is represented by the field queue before placement and by
@@ -4882,7 +4898,7 @@ export class ExpertDecisionController
 			Math.max(0, Number(frame.state.food.naturalRunwaySeconds) || 0) : 0;
 		const naturalRatio = frame && frame.state && frame.state.food && Number.isFinite(Number(frame.state.food.territoryNaturalRatio)) ?
 			Number(frame.state.food.territoryNaturalRatio) : 0;
-		const naturalTransitionHealthy = naturalRemaining > 0 && naturalRatio > Number(policy.territoryNaturalFarmTransitionRatio || 0.40);
+		const naturalTransitionHealthy = naturalRemaining > 0 && naturalRatio > Number(policy.territoryNaturalFarmTransitionRatio || 0.25);
 		const naturalInfrastructureHealthy = naturalTransitionHealthy || (naturalRemaining >= policy.naturalFoodInfrastructureRemaining &&
 			naturalRunway >= policy.naturalFoodInfrastructureRunwaySeconds);
 		const foodInfrastructureHealthy = fieldPipeline >= policy.phase2PreferredFields || naturalInfrastructureHealthy;
@@ -4956,7 +4972,7 @@ export class ExpertDecisionController
 			pop >= (Number(policy.phase2TwoBarracksFourFieldEscapeMinimumPopulation) || 90) &&
 			coverage >= (Number(policy.phase2TwoBarracksFourFieldEscapeCostCoverage) || 0.60) &&
 			(Number(this.farmsteadPlacementFailures) || 0) >= (Number(policy.phase2TwoBarracksFourFieldEscapeMinimumFailures) || 8);
-		// IT14.74: healthy >40% combined natural food substitutes for the old six-Field
+		// IT14.74: healthy >25% combined natural food substitutes for the old six-Field
 		// Barracks/phase insurance floor. Once the transition opens, permanent capacity
 		// becomes authoritative again.
 		const twoBarracksFieldFloor = naturalTransitionHealthy || fieldPipeline >= (Number(policy.phase2AbsoluteMinimumFields) || 6);
@@ -9171,7 +9187,7 @@ export class ExpertDecisionController
 
 	shouldSuppressNormalHouseConstruction(gameState)
 	{
-		if (!gameState || !gameState.currentPhase || gameState.currentPhase() < 2)
+		if (!gameState || !gameState.currentPhase)
 			return false;
 		const policy = mergePolicy();
 		const houses = this.builtByClass(gameState, "House").length;
@@ -9179,6 +9195,14 @@ export class ExpertDecisionController
 		const committedHouses = houses + houseFoundations;
 		const strongAt = Math.max(1, Number(policy.houseCapacityTechStrongHouseCount) || 12);
 		const mandatoryAt = Math.max(strongAt, Number(policy.houseCapacityTechMandatoryHouseCount) || 13);
+		const phase = Number(gameState.currentPhase()) || 1;
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		const techDoctrine = doctrine && (doctrine.id === "p2_tech_push" || doctrine.id === "p3_boom_all_in");
+		// IT15.6: a tech/boom line may reserve the 13-house breakpoint before Town.
+		// 160 cap is enough to reach the phase/tech; houses 14-15 are reserved for a true
+		// P1 all-in or emergency where the housing tech cannot arrive in time.
+		if (phase < 2)
+			return !!(techDoctrine && committedHouses >= mandatoryAt);
 		if (committedHouses < strongAt)
 			return false;
 		const techName = "pop_house_01";
@@ -10328,11 +10352,25 @@ export class ExpertDecisionController
 			const cleruchies = this.structuresByTemplate(gameState, cleruchyType).sort((a, b) => a.id() - b.id());
 			for (const cleruchy of cleruchies)
 			{
-				const depth = Math.max(1, Number(policy.expertCleruchyProductionQueueDepth) || 2);
-				const batch = Math.max(1, Number(policy.expertCleruchyTrainingBatch) || 1);
+				const depth = Math.max(2, Number(policy.expertCleruchyProductionQueueDepth) || 2);
+				const batch = Math.max(2, Math.min(3, militaryBatch, Number(policy.expertCleruchyTrainingBatch) || 2));
+				this.pruneUnfundedStandbySoldierPlans(gameState, queues, cleruchy);
+				const now = Number(gameState.ai.elapsedTime) || 0;
+				const workDepth = this.expertSoldierWorkCount(queues, cleruchy);
+				if (workDepth > 0)
+					delete this.trainerIdleSince[cleruchy.id()];
+				else if (!Number.isFinite(Number(this.trainerIdleSince[cleruchy.id()])))
+					this.trainerIdleSince[cleruchy.id()] = now;
 				if (this.queueExpertSoldierBatch(gameState, queues, cleruchy, "cleruchy-auto", batch, depth, true))
-					aiWarn("[EXPERT-TRAIN] cleruchy-auto trainer=" + cleruchy.id() + " depth=" +
+				{
+					const since = Number(this.trainerIdleSince[cleruchy.id()]);
+					const gap = Number.isFinite(since) ? now - since : 0;
+					if (gap > 2)
+						aiWarn("[EXPERT-TRAIN] cleruchy-gap trainer=" + cleruchy.id() + " seconds=" + gap.toFixed(1));
+					aiWarn("[EXPERT-TRAIN] cleruchy-auto trainer=" + cleruchy.id() + " batch=" + batch + " depth=" +
 						this.expertSoldierWorkCount(queues, cleruchy) + "/" + depth);
+					delete this.trainerIdleSince[cleruchy.id()];
+				}
 			}
 		}
 	}
@@ -11171,18 +11209,19 @@ export class ExpertDecisionController
 				const policy = mergePolicy();
 				const ccPos = cc.position();
 				const woodPos = this.getPrimaryWoodPosition(gameState) || [ccPos[0] + 1, ccPos[1]];
-				const annex = this.neutralFoodAnnexCandidate(gameState, ccPos, accessIndex);
-				const candidates = [];
-				if (annex)
-					candidates.push(...generatePlacementCandidates({ "kind": "barracks", "anchor": annex.position, "toward": ccPos,
-						"distances": [14, 18, 22, 26, 30, 34, 38], "angleCount": 48, "templateRadius": geometry.radius }));
-				candidates.push(...generatePlacementCandidates({
+				const foodAnchor = foodObservation && Array.isArray(foodObservation.center) ? foodObservation.center : undefined;
+				const candidates = generatePlacementCandidates({
 					"kind": "barracks", "anchor": ccPos, "toward": woodPos,
-					"distances": [50, 54, 58, 62, 66, 70, 76, 82],
-					"angleCount": 48, "templateRadius": geometry.radius
-				}));
-				request = { kind, candidates, "templateRadius": geometry.radius,
-					"minimumCCDistance": policy.independentBuildingMinimumCCDistance };
+					"distances": [28, 32, 36, 40, 44, 48, 52, 54],
+					"angleCount": 72, "templateRadius": geometry.radius
+				});
+				request = { kind, candidates, "templateRadius": geometry.radius, "openingHouse": true,
+					"minimumCCDistance": Number(policy.openingHouseMinimumCCDistance) || 26,
+					"preferredCCDistance": Number(policy.openingHousePreferredCCDistance) || 38,
+					"maximumCCDistance": Number(policy.openingHouseMaximumCCDistance) || 54,
+					"openingFoodDistrictAnchor": foodAnchor,
+					"openingFoodDistrictReserveRadius": Number(policy.openingHouseFoodDistrictPreserveRadius) || 34,
+					"woodDistrictAnchor": woodPos };
 			}
 			else
 			{
@@ -11645,6 +11684,8 @@ export class ExpertDecisionController
 			if (!this.HQ.canBuild || !templeTypes.some(type => this.HQ.canBuild(gameState, type)))
 				return undefined;
 			const candidates = [];
+			const templePipeline = this.builtByClass(gameState, "Temple").length + this.foundationsByClass(gameState, "Temple").length;
+			const firstTemple = templePipeline === 0;
 			// IT14.34: P1 has no market yet, so choose the economic district by actual
 			// worker coverage rather than structure type alone. The 75m aura should land
 			// where the current farm/mining/wood workforce is densest. In P2 the market
@@ -11705,6 +11746,9 @@ export class ExpertDecisionController
 				"distances": [16, 20, 24, 28, 32, 36, 42, 48, 56, 64, 72], "angleCount": 64, "templateRadius": geometry.radius }));
 			request = { kind, candidates, "templateRadius": geometry.radius,
 				"minimumCCDistance": policy.templeMinimumCCDistance,
+				"maximumCCDistance": firstTemple ? (Number(policy.firstTempleMaximumCCDistance) || 52) : 0,
+				"preferredCCDistance": firstTemple ? (Number(policy.firstTemplePreferredCCDistance) || 30) : 0,
+				"firstTempleCentral": firstTemple,
 				"templeAuraRadius": policy.templeAuraPlanningRadius,
 				"templeMinimumWorkerCoverage": policy.templeMinimumWorkerCoverage };
 		}
@@ -12192,6 +12236,19 @@ export class ExpertDecisionController
 					if (SquareVectorDistance(position, footprint.position) < clearance * clearance) return false;
 				}
 			}
+			if (request && Number(request.maximumCCDistance) > 0 && (kind === "house" || kind === "temple"))
+			{
+				const coreCC = this.findCC(gameState);
+				const maxCC = Number(request.maximumCCDistance);
+				if (coreCC && entityPosition(coreCC) && SquareVectorDistance(position, coreCC.position()) > maxCC * maxCC)
+					return false;
+			}
+			if (kind === "house" && request && request.openingHouse && Array.isArray(request.openingFoodDistrictAnchor))
+			{
+				const reserve = Math.max(0, Number(request.openingFoodDistrictReserveRadius) || 34);
+				if (SquareVectorDistance(position, request.openingFoodDistrictAnchor) < reserve * reserve)
+					return false;
+			}
 			if (kind === "temple" && request && Number(request.templeMinimumWorkerCoverage) > 0)
 			{
 				const radius = Number(request.templeAuraRadius) || 72;
@@ -12442,20 +12499,59 @@ export class ExpertDecisionController
 				}
 				return score / Math.max(1, sources.length || 1);
 			};
+		else if (kind === "house")
+			ports.scoreCandidate = (position, request, index) =>
+			{
+				let score = Number(index) || 0;
+				if (request && request.openingHouse)
+				{
+					const coreCC = this.findCC(gameState);
+					if (coreCC && entityPosition(coreCC))
+						score += 45 * Math.abs(Math.sqrt(SquareVectorDistance(position, coreCC.position())) - (Number(request.preferredCCDistance) || 38));
+					if (Array.isArray(request.openingFoodDistrictAnchor))
+					{
+						const radius = Number(request.openingFoodDistrictReserveRadius) || 34;
+						const distance = Math.sqrt(SquareVectorDistance(position, request.openingFoodDistrictAnchor));
+						if (distance < radius + 10)
+							score += (Number(mergePolicy().openingHouseFoodDistrictPenalty) || 12000) * Math.max(0, radius + 10 - distance);
+					}
+					if (Array.isArray(request.woodDistrictAnchor))
+						score += 12 * Math.sqrt(SquareVectorDistance(position, request.woodDistrictAnchor));
+					return score;
+				}
+				if (farmDistrictReservation)
+					for (const farm of farmDistrictReservation.farmsteads)
+					{
+						const distance = Math.sqrt(SquareVectorDistance(position, farm.position()));
+						if (distance < farmDistrictReservation.preferredDistance)
+							score += 100000 + 1000 * (farmDistrictReservation.preferredDistance - distance);
+					}
+				return score;
+			};
 		else if (kind === "temple")
 			ports.scoreCandidate = (position, request, index) =>
 			{
 				const radius = Number(request && request.templeAuraRadius) || 72;
 				const r2 = radius * radius;
-				let covered = 0;
+				let covered = 0, mineralCovered = 0, farmCovered = 0;
 				for (const worker of gameState.getOwnUnits().values())
 					if (worker && entityPosition(worker) && hasClass(worker, "Worker") &&
 					    !worker.getMetadata(PlayerID, "PartOfArmy") &&
 					    SquareVectorDistance(position, worker.position()) <= r2)
+					{
 						++covered;
-				// Coverage dominates candidate order; one extra long-lived worker in aura is
-				// worth much more than a small geometric preference.
-				return (Number(index) || 0) - covered * 10000;
+						const job = worker.getMetadata ? worker.getMetadata(PlayerID, JOB_METADATA) : undefined;
+						if (job === "stone" || job === "metal") ++mineralCovered;
+						if (job === "farm" || job === "food" || job === "food_owned") ++farmCovered;
+					}
+				let score = (Number(index) || 0) - covered * 9000 - mineralCovered * 3500 - farmCovered * 1200;
+				if (request && request.firstTempleCentral)
+				{
+					const coreCC = this.findCC(gameState);
+					if (coreCC && entityPosition(coreCC))
+						score += 80 * Math.abs(Math.sqrt(SquareVectorDistance(position, coreCC.position())) - (Number(request.preferredCCDistance) || 30));
+				}
+				return score;
 			};
 		else if (kind === "market")
 			ports.scoreCandidate = (position, request, index) =>
@@ -12785,7 +12881,7 @@ export class ExpertDecisionController
 			return frame;
 		const natural = frame && frame.state && frame.state.food ? frame.state.food : undefined;
 		if (natural && Math.max(0, Number(natural.totalNaturalRemaining) || 0) > 0 &&
-		    Number(natural.territoryNaturalRatio) > Number(mergePolicy().territoryNaturalFarmTransitionRatio || 0.40))
+		    Number(natural.territoryNaturalRatio) > Number(mergePolicy().territoryNaturalFarmTransitionRatio || 0.25))
 			return frame;
 		if (this.builtByClass(gameState, "Field").length > 0)
 		{
@@ -14945,7 +15041,7 @@ export class ExpertDecisionController
 		this.memory = frame.memory;
 		this.lastDesiredFields = Number(frame && frame.derived && frame.derived.desiredFields) || 0;
 		// IT14.74: the Town safety helper may add Fields only after combined usable natural
-		// food reaches the <=40% transition. It cannot bypass the hard natural-food hold.
+		// food reaches the <=25% transition. It cannot bypass the hard natural-food hold.
 		frame = this.applyPhase2SafetyField(gameState, frame, farmCapacity, accessIndex);
 		// IT14.77: restore the opening eco-tech contract before any optional Village
 		// military/phase sweep. The Wicker -> Iron Axe routine existed, but the main
@@ -15047,7 +15143,7 @@ export class ExpertDecisionController
 		frame = this.applyPostWickerBranchConstruction(gameState, frame);
 		frame = this.applySecondaryDepletionFieldTrigger(gameState, frame);
 		frame = this.applyPreThirdFarmsteadCapacityRescan(gameState, frame, accessIndex);
-		frame = this.applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex);
+		frame = this.applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex, foodNetwork);
 		// IT15.1: neutral food never preempts permanent Fields. A neutral food district
 		// becomes an economic target only after territorial expansion claims it.
 		frame = this.applyFutureFarmerFieldCrews(gameState, frame);
@@ -15262,7 +15358,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.5] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.6] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -15328,7 +15424,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.5] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.6] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

@@ -54,6 +54,12 @@ const DEFAULT_POLICY = Object.freeze({
   emergencyHouseBuilders: 5,
   normalStrategicBuilders: 3,
   surplusStrategicBuilders: 5,
+  // IT15.6: high-value structures should finish quickly once the economy can afford it.
+  majorStrategicBuilders: 5,
+  surplusMajorStrategicBuilders: 8,
+  severeMajorStrategicBuilders: 10,
+  majorStrategicBuilderBank: 1800,
+  severeMajorStrategicBuilderBank: 3000,
   maxConcurrentFieldTasks: 3,
   // IT14.29: once permanent food is badly behind and wood is abundant, place more
   // fields in parallel. P1/opening behavior keeps the old three-task ceiling.
@@ -110,9 +116,10 @@ const DEFAULT_POLICY = Object.freeze({
   farmTransitionRatio: 0.25,
   naturalFoodExpansionRatio: 0.25,
   // IT14.74: permanent fields do not begin until the COMBINED usable natural food
-  // discovered in our territory falls to 40% or less. Temporary full patches, low food
-  // banks, or surplus wood may not bypass this threshold.
-  territoryNaturalFarmTransitionRatio: 0.40,
+  // discovered in our territory falls to 25% or less. IT15.6 restores the human opening:
+  // natural fruit is the engine; temporary idle food workers overflow productively instead
+  // of buying Fields that steal wood from Barracks/tech timing.
+  territoryNaturalFarmTransitionRatio: 0.25,
   // IT14.42: natural food remains the preferred opening food engine. Do not let a
   // large wood bank or a temporarily full berry patch force early fields while the
   // combined in-territory natural-food pool is still healthy; overflow civilians can
@@ -129,14 +136,16 @@ const DEFAULT_POLICY = Object.freeze({
   naturalFoodInfrastructureRunwaySeconds: 90,
   naturalFoodFieldPressureSlots: 2,
   minimumAlternativeNaturalFood: 60,
+  wickerOpeningFruitMinimumSupplies: 4,
+  wickerOpeningFruitMinimumRemaining: 500,
   foodSiteMinimumCommitSeconds: 20,
   naturalFoodDropsiteComfortDistance: 15,
   naturalFoodFarmsteadIdealDistance: 5,
   naturalFoodFarmsteadAssumedWalkSpeed: 8,
   naturalFoodFarmsteadCarryCapacity: 10,
   naturalFoodFarmsteadPaybackWorkerSeconds: 85,
-  // Legacy staged-transition thresholds retained for post-40% sizing logic. IT14.74
-  // hard-gates the first permanent Field until combined usable natural food is <=40%.
+  // Legacy staged-transition thresholds retained for post-transition sizing logic. IT15.6
+  // hard-gates NEW permanent Fields until combined usable natural food is <=25%.
   fieldTransitionLeadSeconds: 55,
   naturalFoodRunwaySafetySeconds: 45,
   naturalFoodStageTwoRunwaySeconds: 120,
@@ -528,12 +537,12 @@ const DEFAULT_POLICY = Object.freeze({
   lateP1ForgePopulation: 70,
   lateP1ForgeWoodBank: 1500,
   lateP1ForgeWoodFoodRatio: 3.0,
-  phase2Forge1Population: 90,
+  phase2Forge1Population: 70,
   phase2Forge2Population: 80,
   // IT14.64: Forge #2 is an on-demand second research lane, not scheduled infrastructure.
   // The planner may request it only while Forge #1 is actually occupied by a useful
   // military technology and the live bank can fund the building plus another upgrade.
-  phase2ForgeTransitionTime: 420,
+  phase2ForgeTransitionTime: 330,
   phase2ForgeTransitionMinimumFields: 6,
   phase2ForgeSecondMinimumFields: 4,
   phase2ForgeSecondFoodBank: 200,
@@ -544,14 +553,14 @@ const DEFAULT_POLICY = Object.freeze({
   phase2Forge2UsefulWoodBank: 450,
   // IT15.3 P3 Forge schedule. These are build-enabling banks, not attack shortcuts;
   // the all-in still requires the relevant military tech tree to be complete.
-  p3BoomForge1Time: 330,
-  p3BoomForge1Population: 70,
-  p3BoomForge2Population: 85,
+  p3BoomForge1Time: 300,
+  p3BoomForge1Population: 60,
+  p3BoomForge2Population: 72,
   p3BoomForge2FoodBank: 300,
   p3BoomForge2WoodBank: 300,
   p3BoomForge2MetalBank: 125,
-  p3BoomForge3Population: 105,
-  p3BoomForge3MinimumFields: 8,
+  p3BoomForge3Population: 90,
+  p3BoomForge3MinimumFields: 6,
   p3BoomForge3FoodBank: 450,
   p3BoomForge3WoodBank: 350,
   p3BoomForge3MetalBank: 175,
@@ -711,6 +720,9 @@ const DEFAULT_POLICY = Object.freeze({
   templeMinimumCCDistance: 14,
   templeAuraPlanningRadius: 72,
   templeMinimumWorkerCoverage: 8,
+  // IT15.6: Temple #1 is a central utility/defense aura. Later temples may specialize.
+  firstTempleMaximumCCDistance: 52,
+  firstTemplePreferredCCDistance: 30,
   houseWoodWorksiteExclusionRadius: 24,
   // IT14.85: compact houses should form small blocks, but never occupy a likely next
   // Storehouse pad in a healthy forest district.
@@ -878,7 +890,7 @@ const DEFAULT_POLICY = Object.freeze({
   athensCleruchyMaximumCount: 3,
   // IT14.95: completed Cleruchies contribute forward military production.
   expertCleruchyProductionQueueDepth: 2,
-  expertCleruchyTrainingBatch: 1,
+  expertCleruchyTrainingBatch: 2,
   athensCleruchyRepeatCooldownSeconds: 90,
   athensCleruchyMinimumRepeatSpacing: 72,
   athensCleruchyFailedAnchorCooldownSeconds: 90,
@@ -981,6 +993,12 @@ const DEFAULT_POLICY = Object.freeze({
   // legality veto, so awkward maps can still place a Storehouse.
   openingStorehouseFoodDistrictPreserveRadius: 42,
   openingStorehouseFoodDistrictPenalty: 5000,
+  // IT15.6: reserve the berry/Farmstead district before House #1 is placed.
+  openingHouseMinimumCCDistance: 26,
+  openingHousePreferredCCDistance: 38,
+  openingHouseMaximumCCDistance: 54,
+  openingHouseFoodDistrictPreserveRadius: 34,
+  openingHouseFoodDistrictPenalty: 12000,
   openingStorehouseCCCorePreserveRadius: 30,
   openingStorehouseCCCorePenalty: 1200,
   // Once the normal 10-field economy is physically complete, military/civic

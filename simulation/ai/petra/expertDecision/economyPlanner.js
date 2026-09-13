@@ -122,10 +122,10 @@ function fieldDemand(state, policy) {
   const totalNatural = Math.max(0, Number(state.food.totalNaturalRemaining) || 0);
   const runway = Math.max(0, Number(state.food.naturalRunwaySeconds) || 0);
   const territoryRatio = Number.isFinite(state.food.territoryNaturalRatio) ? state.food.territoryNaturalRatio : 1;
-  // IT14.74 hard natural-food contract: permanent fields do not begin until the
-  // COMBINED usable in-territory natural-food pool has fallen to 40% or less. A
-  // temporary low bank/full berry patch is handled with productive wood overflow, not
-  // by bypassing this threshold with early fields.
+  // IT15.6 hard natural-food contract: permanent fields do not begin while the
+  // COMBINED usable in-territory natural-food pool remains above the true transition
+  // threshold. Temporary saturation/idle food labor overflows productively to wood; it
+  // is not evidence that Fields should consume Barracks/technology wood.
   const naturalFirstHold = totalNatural > 0 && territoryRatio > policy.territoryNaturalFarmTransitionRatio;
   const margin = Math.max(1, Number(policy.foodRateSafetyMargin) || 1.12);
   const farmerRate = state.food.averageFarmerRate > 0 ? state.food.averageFarmerRate : 0.7;
@@ -215,12 +215,12 @@ function fieldDemand(state, policy) {
   // no-idle capacity invariant. Surplus food simply suppresses extra burn-rate growth.
   desiredFields = Math.max(desiredFields, capacityFields, permanentFieldFloor);
 
-  // IT15.1: natural food still has priority, but it may NOT erase a strategic permanent-
-  // food floor. IT15.0 could know that six/eight Fields were required and then reset the
-  // target back to the current count merely because berries remained. Keep the staircase
-  // alive so Fields finish before the natural-food cliff.
+  // IT15.6: natural-first is a REAL hold, not a preference. Population field floors and
+  // Barracks burn projections may prepare the later target, but they may not spend wood
+  // on new Fields while healthy owned natural food remains. Existing/pending Fields are
+  // never deleted; growth resumes immediately once the natural pool reaches transition.
   if (naturalFirstHold)
-    desiredFields = Math.max(existingFields, permanentFieldFloor);
+    desiredFields = existingFields;
 
   // IT14.32: ten permanent fields is the normal mature target. Fields 11-12 are
   // emergency reserve capacity only when the live food bank is actually short.
@@ -353,7 +353,7 @@ function woodWorksiteDecision(state, policy) {
 
 function efficientBuilderIntent(action, state, policy) {
   if (!action || action.type !== "BUILD") return action;
-  if (!["house", "barracks", "market", "forge", "temple", "arsenal", "tower"].includes(action.kind)) return action;
+  if (!["house", "barracks", "market", "forge", "temple", "arsenal", "gymnasium", "prytaneion", "cleruchy", "tower"].includes(action.kind)) return action;
 
   const food = Math.max(0, Number(state.resources.food) || 0);
   const wood = Math.max(0, Number(state.resources.wood) || 0);
@@ -407,10 +407,22 @@ function efficientBuilderIntent(action, state, policy) {
     }
   } else {
     builderPool = ["citizenSoldierWood", "wood", "food_overflow_wood", "farm", "food_owned", "food", "stone", "metal"];
-    builderCount = woodSurplus ? policy.surplusStrategicBuilders : policy.normalStrategicBuilders;
-    if (woodSurplus) {
-      jobPriority.citizenSoldierWood = Math.max(jobPriority.citizenSoldierWood || 0, 9);
-      jobPriority.wood = Math.max(jobPriority.wood || 0, 8);
+    const majorStrategic = ["arsenal", "gymnasium", "prytaneion", "cleruchy"].includes(action.kind);
+    const totalBank = food + wood + stone + metal;
+    if (majorStrategic) {
+      const severe = wood >= policy.severeConstructionResourceBank || totalBank >= (Number(policy.severeMajorStrategicBuilderBank) || 3000);
+      const abundant = wood >= policy.surplusConstructionResourceBank || totalBank >= (Number(policy.majorStrategicBuilderBank) || 1800);
+      builderCount = severe ? (Number(policy.severeMajorStrategicBuilders) || 10) :
+        abundant ? (Number(policy.surplusMajorStrategicBuilders) || 8) : (Number(policy.majorStrategicBuilders) || 5);
+      jobPriority.citizenSoldierWood = Math.max(jobPriority.citizenSoldierWood || 0, severe ? 16 : abundant ? 14 : 11);
+      jobPriority.wood = Math.max(jobPriority.wood || 0, severe ? 15 : abundant ? 13 : 10);
+      jobPriority.food_overflow_wood = Math.max(jobPriority.food_overflow_wood || 0, 9);
+    } else {
+      builderCount = woodSurplus ? policy.surplusStrategicBuilders : policy.normalStrategicBuilders;
+      if (woodSurplus) {
+        jobPriority.citizenSoldierWood = Math.max(jobPriority.citizenSoldierWood || 0, 9);
+        jobPriority.wood = Math.max(jobPriority.wood || 0, 8);
+      }
     }
   }
 
@@ -597,8 +609,8 @@ function planEconomy(rawState, overrides = {}) {
   const scarcityForgeReady = state.phase >= 2 && state.flags.athensWoodScarcityForge &&
     state.structures.barracks >= 1 && state.population.used >= 55 &&
     (state.structures.field >= 6 || infrastructureNaturalReady);
-  const forgeOnePopulation = p3BoomForge ? (policy.p3BoomForge1Population || 70) : policy.phase2Forge1Population;
-  const forgeOneTime = p3BoomForge ? (policy.p3BoomForge1Time || 330) : policy.phase2ForgeTransitionTime;
+  const forgeOnePopulation = p3BoomForge ? (policy.p3BoomForge1Population || 60) : policy.phase2Forge1Population;
+  const forgeOneTime = p3BoomForge ? (policy.p3BoomForge1Time || 300) : policy.phase2ForgeTransitionTime;
   const forgeOneReady = (scarcityForgeReady || state.structures.barracks >= 2 &&
     state.population.used >= forgeOnePopulation &&
     (state.structures.field >= policy.phase2ForgeTransitionMinimumFields || infrastructureNaturalReady) &&
@@ -609,7 +621,7 @@ function planEconomy(rawState, overrides = {}) {
   // IT15.3: P3 converts boom resources into parallel Forge throughput early enough
   // that all relevant military tiers can be finished before the army is ready to march.
   // Other doctrines keep the older on-demand second-lane rule.
-  const forgeTwoPopulation = p3BoomForge ? (policy.p3BoomForge2Population || 85) : policy.phase2Forge2Population;
+  const forgeTwoPopulation = p3BoomForge ? (policy.p3BoomForge2Population || 72) : policy.phase2Forge2Population;
   const forgeTwoFoodBank = p3BoomForge ? (policy.p3BoomForge2FoodBank || 300) : policy.phase2ForgeSecondFoodBank;
   const forgeTwoReady = state.phase >= 2 &&
     state.flags.forgeSecondUseful &&
@@ -621,8 +633,8 @@ function planEconomy(rawState, overrides = {}) {
     transitionForgeTarget = 2;
   const forgeThreeReady = p3BoomForge && state.phase >= 2 && state.flags.forgeThirdUseful &&
     state.structures.barracks >= 2 &&
-    state.population.used >= (policy.p3BoomForge3Population || 105) &&
-    (state.structures.field >= (policy.p3BoomForge3MinimumFields || 8) || infrastructureNaturalReady) &&
+    state.population.used >= (policy.p3BoomForge3Population || 90) &&
+    (state.structures.field >= (policy.p3BoomForge3MinimumFields || 6) || infrastructureNaturalReady) &&
     state.resources.food >= (policy.p3BoomForge3FoodBank || 450);
   if (forgeThreeReady)
     transitionForgeTarget = 3;
