@@ -126,7 +126,13 @@ function fieldDemand(state, policy) {
   // COMBINED usable in-territory natural-food pool remains above the true transition
   // threshold. Temporary saturation/idle food labor overflows productively to wood; it
   // is not evidence that Fields should consume Barracks/technology wood.
-  const naturalFirstHold = totalNatural > 0 && territoryRatio > policy.territoryNaturalFarmTransitionRatio;
+  // IT15.9 transition latch: once Expert has paid for permanent food capacity, a
+  // noisy/rebounding natural-food ratio may not put the mature farm programme back
+  // on hold. Replays showed the ratio moving 24% -> 26% while grapes remained; the
+  // old test then froze a ten-Field population target at the six Fields already built.
+  // Natural food is still gathered first, but it now overlaps the permanent transition.
+  const naturalFirstHold = existingFields === 0 && totalNatural > 0 &&
+    territoryRatio > policy.territoryNaturalFarmTransitionRatio;
   const margin = Math.max(1, Number(policy.foodRateSafetyMargin) || 1.12);
   const farmerRate = state.food.averageFarmerRate > 0 ? state.food.averageFarmerRate : 0.7;
   const farmersPerField = preferredFieldCrew(state, policy);
@@ -215,10 +221,9 @@ function fieldDemand(state, policy) {
   // no-idle capacity invariant. Surplus food simply suppresses extra burn-rate growth.
   desiredFields = Math.max(desiredFields, capacityFields, permanentFieldFloor);
 
-  // IT15.6: natural-first is a REAL hold, not a preference. Population field floors and
-  // Barracks burn projections may prepare the later target, but they may not spend wood
-  // on new Fields while healthy owned natural food remains. Existing/pending Fields are
-  // never deleted; growth resumes immediately once the natural pool reaches transition.
+  // IT15.6/15.9: before the transition begins, natural-first is a REAL hold. Once the
+  // first Field enters the pipeline, the transition is latched and population/burn-rate
+  // targets continue even if natural-food sampling bounces above the threshold again.
   if (naturalFirstHold)
     desiredFields = existingFields;
 
@@ -592,7 +597,7 @@ function planEconomy(rawState, overrides = {}) {
         reason: "protect P1 worker-efficiency temple before forge/expansion spending" });
   }
 
-  // IT14.35 keeps the two-forge staging, but Village-phase City States get their
+  // IT15.9 keeps one useful global Forge, but Village-phase City States get their
   // worker-efficiency temple first once its normal post-barracks window is open.
   // This matches the intended Barracks #2 -> Temple -> P2/Forge transition without
   // changing the second-barracks timing or blocking Forge #1 once Town is reached.
@@ -618,26 +623,11 @@ function planEconomy(rawState, overrides = {}) {
     !p1TemplePriorityPending;
   if (forgeOneReady)
     transitionForgeTarget = 1;
-  // IT15.3: P3 converts boom resources into parallel Forge throughput early enough
-  // that all relevant military tiers can be finished before the army is ready to march.
-  // Other doctrines keep the older on-demand second-lane rule.
-  const forgeTwoPopulation = p3BoomForge ? (policy.p3BoomForge2Population || 72) : policy.phase2Forge2Population;
-  const forgeTwoFoodBank = p3BoomForge ? (policy.p3BoomForge2FoodBank || 300) : policy.phase2ForgeSecondFoodBank;
-  const forgeTwoReady = state.phase >= 2 &&
-    state.flags.forgeSecondUseful &&
-    state.structures.barracks >= 2 &&
-    state.population.used >= forgeTwoPopulation &&
-    (state.structures.field >= policy.phase2ForgeSecondMinimumFields || infrastructureNaturalReady) &&
-    state.resources.food >= forgeTwoFoodBank;
-  if (forgeTwoReady)
-    transitionForgeTarget = 2;
-  const forgeThreeReady = p3BoomForge && state.phase >= 2 && state.flags.forgeThirdUseful &&
-    state.structures.barracks >= 2 &&
-    state.population.used >= (policy.p3BoomForge3Population || 90) &&
-    (state.structures.field >= (policy.p3BoomForge3MinimumFields || 6) || infrastructureNaturalReady) &&
-    state.resources.food >= (policy.p3BoomForge3FoodBank || 450);
-  if (forgeThreeReady)
-    transitionForgeTarget = 3;
+  // IT15.9: Forge ownership is global and capped at one. Three 30%-bonus replays
+  // repeatedly produced three Forges while the first two were not being used. The
+  // saved wood and builders are more valuable as Fields, houses and production.
+  // ResearchManager serializes the relevant upgrades through this single lane.
+  transitionForgeTarget = Math.min(1, transitionForgeTarget);
   if (forgePipeline < transitionForgeTarget && forgePending === 0) {
     const cost = costOf(state, policy, "forge");
     const canBuild = resourceEnough(state.resources, cost, reservations);

@@ -1,0 +1,47 @@
+CWA Petra Expert AI — IT15.9 Change Report
+
+Base: IT15.8. IT15.9 is a conservative consistency patch for the +30% Expert calibration.
+The record-setting opening, attack authorization/execution, civilian calibration and
+economic-safety kernel remain frozen.
+
+REPLAY EVIDENCE
+- The same IT15.8 build ranged from a sub-15-minute victory to 20:30 and 24:55.4 wins.
+- The slow second replay began Fields correctly at 24% natural food, but the sampled
+  natural ratio later rebounded to 25-26%. The natural-first hold re-engaged and froze
+  the mature population staircase at six Fields.
+- The same replay left reachable grapes while permanent farming began. This overlap is
+  legal and desirable; abandoning the grapes is not. Natural gatherers remain eligible
+  while the permanent Field pipeline continues.
+- Multiple runs ended with three Forges despite little/no useful parallel research.
+
+CHANGES
+1. One-way natural-to-permanent-food transition.
+   - Natural-first remains a hard hold before the first Field enters the pipeline.
+   - Once any Field is built, founded or queued, the transition is latched.
+   - A noisy 24% -> 26% natural-food reading cannot freeze later 8/10-Field targets.
+   - Remaining safe serviced grapes/berries remain valid and are gathered alongside Fields.
+
+2. Mature Field progress restored.
+   - The existing population staircase remains 6 Fields at 70 pop, 8 at 90 and 10 at 120.
+   - The Field progress watchdog uses the same latched transition rule.
+   - Ten remains the normal mature target; Fields 11-12 remain emergency reserve capacity.
+
+3. Global one-Forge limit.
+   - P3 boom no longer prebuilds Forge #2/#3 from a technology-count/resource-bank guess.
+   - All relevant military research is serialized through the first global Forge.
+   - Secondary bases/colonies cannot manufacture redundant parallel Forge capacity.
+
+FROZEN / PRESERVED
+- +30% Expert gather/trade bonus.
+- 60-civilian one-time growth ceiling and mature food-backbone replacement rule.
+- IT15.6 record P2 combat, launch/opportunity and finishing behavior.
+- Opening Farmstead/Storehouse, Wicker branch, cavalry/chickens and housing.
+- IT15.8 wood-safety kernel, neutral rescue, barter and low-wood unit substitution.
+- Barracks #2 food-capacity gate and P2/P3 production timing.
+
+TEST EXPECTATIONS
+- No more than one Forge.
+- A game that reaches 120 population after starting the farm transition continues toward
+  ten Fields even when reachable natural food remains or its measured ratio rebounds.
+- Existing safe natural-food workers are not deliberately stripped solely because Fields exist.
+- Favorable-seed sub-15 potential is preserved; slow seeds should no longer stop at six Fields.

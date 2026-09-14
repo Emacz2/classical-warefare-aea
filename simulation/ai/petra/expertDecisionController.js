@@ -5029,7 +5029,11 @@ export class ExpertDecisionController
 		const naturalRatio = Number.isFinite(Number(natural.territoryNaturalRatio)) ? Number(natural.territoryNaturalRatio) :
 			(Number.isFinite(Number(this.lastTerritoryNaturalFoodRatio)) ? Number(this.lastTerritoryNaturalFoodRatio) : 1);
 		const naturalSlots = Math.max(0, Number(this.immediateFoodCapacitySlots(gameState, foodNetwork)) || 0);
-		const healthyNatural = naturalRemaining > 0 && naturalRatio > Number(policy.territoryNaturalFarmTransitionRatio || 0.25);
+		// IT15.9: do not re-arm the natural-first hold after the permanent transition
+		// has begun. Sampling can rise a few points as workers expose/count another
+		// grape entity; that must not freeze a mature ten-Field target at six.
+		const healthyNatural = pipeline === 0 && naturalRemaining > 0 &&
+			naturalRatio > Number(policy.territoryNaturalFarmTransitionRatio || 0.25);
 		// IT15.6: a one-update idle food worker is NOT proof that a Field is late while
 		// healthy berries/fruit remain. Let no-idle overflow use wood and retry natural food.
 		// The old IT15.2 override is retained only after the real natural-food transition.
@@ -15928,7 +15932,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.9] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -15994,7 +15998,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.9] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

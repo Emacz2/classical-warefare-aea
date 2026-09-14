@@ -1,0 +1,26 @@
+CWA Petra Expert AI — IT15.9 Static Regression Test Report
+
+RESULT: PASS
+
+CHECKS
+1. JavaScript syntax
+   - petra/expertDecision/economyPlanner.js: PASS
+   - petra/expertDecisionController.js: PASS
+
+2. Natural-first transition before permanent farming
+   Input: 120 population, 26% natural food, 260 natural food remaining,
+          zero completed/founded/queued Fields.
+   Result: naturalFirstHold=true; desiredFields=0. PASS.
+
+3. Transition latch after permanent farming begins
+   Input: same 26% / 260 natural-food state, six completed Fields.
+   Result: naturalFirstHold=false; desiredFields=10; missingFields=4. PASS.
+
+4. Forge construction ceiling
+   - No path in economyPlanner raises transitionForgeTarget above one.
+   - The first Forge remains counted globally through structures + foundations + queue.
+   Result: PASS.
+
+LIMITATION
+Static tests validate planner decisions and syntax. Live 0 A.D. replay testing remains
+required to validate engine integration, placement and match performance.
