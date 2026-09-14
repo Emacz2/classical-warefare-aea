@@ -1,0 +1,80 @@
+EXPERT AI PETRA — PERSISTENT BENCHMARK LEADERBOARD
+=================================================
+
+HISTORICAL CANONICAL BENCHMARK (+35%)
+Athens Expert (difficulty 6) vs Athens Very Hard (difficulty 5)
+Mainland Balanced | 200 population | +35% Expert gather/trade bonus
+
+DEFINITIONS
+- BREAK: first sustained sample after 10:00 where Very Hard is below 50 population and never recovers to 50+.
+- DEFEATED: the decisive conquest defeat point — when all conquest-critical enemy units/structures are destroyed and the opponent is effectively defeated. Do NOT use trailing replay-end time if the replay continues after this point.
+- If only sampled statistics/log diagnostics support the finish, record the narrowest supported time window.
+- FINISH GAP: DEFEATED minus BREAK.
+
+TOP 3 — HISTORICAL +35% RECORDS
+Rank  Version   Break    Defeated       Finish Gap
+1     IT15.6    10:00    12:47-13:03    2:47-3:03
+2     IT15.2    10:00    13:52-14:00    3:52-4:00
+3     IT14.46   11:30    19:25.6        7:55.6
+
+HISTORICAL LEADERBOARD RULE
+- Do not replace these +35% entries with +30% calibration games, ordinary regression games, different civilizations, different maps, or human-vs-AI tests.
+- A +35% result enters this Top 3 only after a CLEAN run under the original canonical benchmark conditions beats the defeated time of an existing entry.
+- Sort primarily by DEFEATED time. BREAK is retained because it distinguishes how quickly Expert actually broke the opponent from how long cleanup took.
+- Benchmark methodology is frozen; benchmark RESULTS are not.
+
+ACTIVE +30% CALIBRATION SERIES — IT15.8
+Athens Expert (difficulty 6) vs Athens Very Hard (difficulty 5)
+Mainland Balanced | 200 population | +30% Expert gather/trade bonus
+Current Expert civilian growth ceiling: 60
+
+Rank  Version   Strategy / Result                 Break    Defeated       Finish Gap
+1     IT15.8    Late P1 Rush -> P2 Tech Push      10:00    15:45-15:50    5:45-5:50
+2     IT15.8    P2 Forge-Tech Push                12:00    15:59-16:15    3:59-4:15
+
++30% CALIBRATION NOTES
+- IT15.8 Late P1 Rush -> P2 Tech Push:
+  * Original Late-P1 rush package reached 52 units and was launch-authorized.
+  * Expert detected severe wood scarcity, cancelled the original rush plan, and adapted to P2 Tech Push.
+  * A 45-man follow-up attack launched at approximately 8:15 with reinforcements available.
+  * Very Hard fell below 50 permanently by 10:00.
+  * Enemy population was down to 2 around 15:43; no valid enemy target remained shortly afterward.
+  * Record DEFEATED as approximately 15:45-15:50.
+  * Replay remained open until 19:07.2; trailing replay time is NOT used for DEFEATED.
+
+- IT15.8 P2 Forge-Tech Push:
+  * Expert reached the 60-civilian ceiling and built a strong P2 army.
+  * 60-man attack was authorized around 9:35-9:50.
+  * Very Hard fell below 50 permanently by 12:00.
+  * Decisive defeat is supported approximately between 15:59 and 16:15.
+  * Replay EOF was approximately 16:22 and is NOT used for DEFEATED.
+
++30% SERIES RULES
+- Keep +30% results separate from the historical +35% leaderboard until enough runs establish a new baseline.
+- Use the same Athens vs Athens, Mainland Balanced, 200-pop benchmark unless explicitly noted otherwise.
+- Always use the decisive conquest defeat point, never replay EOF.
+- Strategy adaptations are part of the result and should be recorded when they materially affect the game.
+- Human-vs-Expert games remain diagnostic only and do not enter either AI-vs-AI leaderboard.
+- Do not modify IT15.8 between calibration runs unless a clear failure or repeated pattern justifies a patch; otherwise preserve build consistency across the sample.
+
+LATEST VERIFIED NON-CANONICAL RESULT
+IT14.98 — Athens Expert vs Gaul Very Hard
+Mainland Balanced | 200 population | +35% Expert bonus
+BREAK: 10:30
+DEFEATED: 14:55-15:00
+FINISH GAP: 4:25-4:30
+Replay continued to approximately 15:04, but that trailing time is NOT used for DEFEATED.
+Reason not ranked in canonical Top 3: opponent civilization was Gaul rather than Athens.
+
+HISTORICAL NOTES
+- IT15.6 established the historical +35% canonical record: BREAK 10:00; decisive defeat is supported between the t=767 and t=783 Expert snapshots (12:47-13:03), with telemetry inside that interval showing enemyPop=0 and no valid enemy target.
+- IT15.2: former #1, BREAK 10:00, decisive defeat supported between 13:52 and 14:00.
+- IT14.46 was the first clean sub-20-minute +35% canonical victory.
+- IT14.49: former Top-3 result, BREAK=13:00, DEFEATED=22:31.6.
+- IT14.44: former #3; Very Hard fell below 50 permanently at 17:00 and was at 6 pop at 25:00 / 0 at 25:30.
+- IT14.98 produced a very fast non-canonical victory against Gaul Very Hard: BREAK 10:30, decisive defeat between 14:55 and 15:00.
+
+CURRENT VERSION
+IT15.8 is the active regression/test build.
+Current calibration uses +30% Expert gather/trade and a 60-civilian growth ceiling.
+Historical +35% records remain preserved above and are not directly replaced by +30% results.
