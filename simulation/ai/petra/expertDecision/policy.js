@@ -65,9 +65,12 @@ const DEFAULT_POLICY = Object.freeze({
   // fields in parallel. P1/opening behavior keeps the old three-task ceiling.
   maxConcurrentFieldTasksSurplus: 5,
   fieldParallelExpansionWoodBank: 1000,
-  // IT14.99: 65 remains the global permanent-civilian ceiling. Rush doctrines may
-  // deliberately stop lower while citizen-soldiers carry part of the economy.
-  civilianCap: 65,
+  // IT15.8 mature-population revision: 60 is the global civilian growth ceiling.
+  // After Expert reaches 60 once, casualties are replaced only when the dedicated
+  // food engine needs them; citizen-soldiers inherit the released population.
+  civilianCap: 60,
+  matureCivilianAbsoluteFloor: 24,
+  matureCivilianFoodReserveWorkers: 0,
   farmPrebuildWoodCivilians: 12,
   farmSecondPrebuildWoodCivilians: 16,
   farmFullPrebuildWoodCivilians: 20,
@@ -85,7 +88,7 @@ const DEFAULT_POLICY = Object.freeze({
   expertCivilianQueueDepthStartPopulation: 24,
   expertProductionVillagerPriority: 1000,
   expertProductionSoldierPriority: 950,
-  // IT14.98 CC contract: 65 is the global ceiling, while Late-P1 uses a lower
+  // IT15.8 CC contract: 60 is the global ceiling, while Late-P1 uses a lower
   // economy-conditioned target so the CC can become a third military trainer.
   // A short recovery allowance is permitted only when real productive labor is efficient.
   expertLateP1CivilianRecoveryCap: 42,
@@ -1386,7 +1389,7 @@ const DEFAULT_POLICY = Object.freeze({
   // but a 4k-stone/50-wood bank needs an explicit wood rescue before queue needs
   // happen to expose the deficit. One transaction per cooldown keeps market price
   // feedback authoritative while restoring a usable production reserve quickly.
-  expertEmergencyWoodBarterStartTime: 540,
+  expertEmergencyWoodBarterStartTime: 0,
   expertEmergencyWoodBarterTrigger: 250,
   expertEmergencyWoodBarterCritical: 100,
   expertEmergencyWoodBarterTarget: 700,
@@ -1535,6 +1538,29 @@ const DEFAULT_POLICY = Object.freeze({
   woodPracticalDistrictFringeDistance: 34,
   woodCrisisImmediateBank: 250,
   woodCrisisImmediateActiveWorkers: 2,
+  // IT15.8 economic safety kernel. These are emergency invariants, not strategy
+  // targets. Once triggered they temporarily outrank rush labor ownership, worker
+  // inertia and hard sovereignty until actual resource flow is restored.
+  ecoSafetyMinimumTime: 150,
+  ecoSafetyCriticalWoodBank: 300,
+  ecoSafetyEarlyWarningWoodBank: 250,
+  ecoSafetyCriticalFoodBank: 220,
+  ecoSafetyMaximumActiveWood: 1,
+  ecoSafetyLowActiveWoodWorkers: 6,
+  ecoSafetyMaximumActiveFood: 1,
+  ecoSafetyExtremeSurplusBank: 1800,
+  ecoSafetyExtremeSurplusRatio: 6,
+  ecoSafetyOwnedWoodFloor: 80,
+  ecoSafetyMinimumWoodWorkers: 12,
+  ecoSafetyMaximumWoodWorkers: 24,
+  ecoSafetyReassignBatch: 12,
+  ecoSafetyMinimumFoodWorkers: 12,
+  ecoSafetyFoodSurplusForWoodPeel: 1200,
+  ecoSafetyNeutralWoodRescueWorkers: 16,
+  ecoSafetyNeutralWoodReleaseBank: 700,
+  ecoSafetyEarlyRushRecoveryCivilianCap: 40,
+  ecoSafetyLateRushRecoveryCivilianCap: 42,
+  ecoSafetyDiagnosticSeconds: 8,
   // IT14.96 adaptive wood-scarcity escape. A P1 rush is an opportunity, not a suicide
   // pact; P2/P3 plans also adapt to the map. If the opening cannot fund sustained wood
   // production, keep one Barracks, accelerate Town, then use Market/barter and/or

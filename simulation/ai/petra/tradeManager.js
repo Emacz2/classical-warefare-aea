@@ -359,7 +359,7 @@ TradeManager.prototype.performExpertEmergencyWoodBarter = function(gameState)
 		return false;
 	const policy = mergePolicy();
 	const now = Number(gameState.ai.elapsedTime) || 0;
-	if (now < (Number(policy.expertEmergencyWoodBarterStartTime) || 540) ||
+	if (now < Math.max(0, Number(policy.expertEmergencyWoodBarterStartTime) || 0) ||
 	    now < (Number(this.expertLastEmergencyBarter) || -99999) + (Number(policy.expertEmergencyWoodBarterCooldownSeconds) || 4))
 		return false;
 	const bank = gameState.getResources();

@@ -76,7 +76,7 @@ const DOCTRINES = Object.freeze({
     id: "p2_tech_push",
     label: "P2 Forge-Tech Push",
     weight: 0.25,
-    softCivilianCap: 65,
+    softCivilianCap: 60,
     softCapUntil: 0,
     soldierTrainingStartTime: 150,
     rushes: 0,
@@ -88,14 +88,14 @@ const DOCTRINES = Object.freeze({
     id: "p3_boom_all_in",
     label: "P3 Boom Max-Tech All-In",
     weight: 0.25,
-    softCivilianCap: 65,
+    softCivilianCap: 60,
     softCapUntil: 0,
     soldierTrainingStartTime: 150,
     rushes: 0,
     rushSize: 0,
     p1EcoSweepBeforeP2: true,
     policy: Object.freeze({
-      // P3 boom protects the fast/safe Town click, then uses the 60-65 civilian
+      // P3 boom protects the fast/safe Town click, then uses the 60-civilian
       // Town economy to satisfy City requirements as soon as Petra permits.
       phase2ExceptionalTime: 390,
       phase2NormalTime: 420,
@@ -145,7 +145,7 @@ function policyOverridesForDoctrine(doctrine, time = 0)
   const d = doctrineById(doctrine && doctrine.id || doctrine);
   const now = Math.max(0, Number(time) || 0);
   const rushWindow = d.softCapUntil > 0 && now < d.softCapUntil;
-  const civilianCap = rushWindow ? d.softCivilianCap : 65;
+  const civilianCap = rushWindow ? d.softCivilianCap : 60;
   const rushTemple = Number(d.rushes) > 0 ?
     (rushWindow ? { p1TemplePopulation: 9999 } :
       { p1TemplePopulation: 52, p1TempleMinimumFieldPipeline: 2 }) : {};

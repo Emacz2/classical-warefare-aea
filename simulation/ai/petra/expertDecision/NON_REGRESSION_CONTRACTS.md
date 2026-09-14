@@ -606,7 +606,7 @@ Replay regressions locked by IT14:
 - Champion crossbows/Gastraphetes are not deliberately replenished by the elite maintainer; generic AttackPlan champion-crossbow cap is zero.
 
 ## IT15.0 no-idle / food-backbone contract
-- Rush dedicated civilians own food. Early P1 targets 34 (40 recovery), Late P1 targets 36 (42 recovery) through Town Phase; City/recovery may reopen 65.
+- Rush dedicated civilians own food. Early P1 targets 34 and Late P1 targets 36. IT15.8 supersedes the old broad recovery clause: after an aborted P1, Village recovery is capped at 40/42 until Town; the normal P2 economy may then reopen the 65-civilian ceiling.
 - Rush doctrines keep only the three trained opening civilian lumberjacks; after six Fields those three migrate to food and citizen-soldiers own secondary resources.
 - A natural-Farmstead builder crew stays in its local food district. Safe neutral fruit serviced by that Farmstead is valid food; generic fallback may not send the crew across the map.
 - Zero legal Field slots plus missing desired Fields and <=25% natural food can force a dedicated farming hub; no impossible two-existing-Fields prerequisite.
@@ -688,3 +688,28 @@ Replay regressions locked by IT14:
 - This recheck is pre-casualty discipline, not a replacement for the existing failed-rush exchange detector. The goal is to avoid learning `43v53` only after an `18 losses / 6 enemy damage` trade.
 - P2 Forge-Tech opportunity logic, finishing persistence, siege conversion, the IT15.6 natural-food/layout rules, and IT15.5 Gaia/no-idle corrections remain unchanged.
 
+## IT15.8 economic-safety kernel contract
+
+- Economic survival outranks strategy. Rush labor ownership, forecast preferences, worker inertia, migration staging, and sovereignty are optimization rules only; none may preserve a state with a critical primary resource and no productive path to recover it.
+- Success is measured by ACTUAL gather orders/income, not job metadata. `woodCiv=29` with `actual wood=0` is an economic failure and must trigger recovery even though many workers are nominally assigned to wood.
+- A critical wood bank with <=6 actual woodcutters activates the safety kernel after the protected opening; zero/stalled wood flow activates it immediately through the existing crisis watchdogs. The kernel repairs broken wood-job workers first, then peels idle/surplus stone, metal, and—when the food bank permits—food labor until real wood gathering resumes.
+- A failed/aborted Early- or Late-P1 Rush immediately releases its rush labor doctrine and converts to the P2 recovery lane once no live Rush remains. A historical `expertRushHasLaunched` flag may never block economic recovery. Village recovery uses 40/42 civilians, not 65; Town may reopen the normal P2 ceiling.
+- IT15.8 narrowly supersedes IT15.1 hard sovereignty during a proven wood-access deadlock. Normal Expert gathering remains PlayerID-territory-only. If owned wood is exhausted (or the watchdog proves zero flow despite a stale accessibility estimate), a capped emergency crew may gather safe Gaia wood on the same land access until a 700-wood reserve is restored. This is an absolute escape valve, not a normal expansion policy.
+- Neutral emergency rescue distance is an efficiency score, never a veto. If safe same-land Gaia wood and a real wood dropsite exist, distance may make the rescue slow but may not make recovery impossible. The rescue crew remains capped and is released as soon as the safety state clears.
+- No-target recovery may not accumulate dozens of repeated failed orders. During economic safety, stale failed-target state is cleared; a worker without a real legal target keeps its prior productive metadata while access/barter/expansion solves the shortage.
+- During a wood emergency with a healthy food bank, new Fields/Farmsteads are suppressed. Existing food infrastructure keeps gathering; scarce wood is reserved for restoring wood access, population/phase continuity, and Town-market recovery rather than expanding an already-surplus food economy.
+- Once a Market exists, emergency wood barter has no artificial time gate. It may immediately sell disposable stone/food/metal in controlled batches toward the 700-wood recovery reserve.
+- Military composition is subordinate to the missing resource during a hard wood emergency. Every civ prefers the immediately affordable infantry with the lowest wood cost; Athens preferentially unlocks and trains zero-wood Slingers when available. Production may not consume the resource that the safety kernel is actively restoring if a cheaper-resource substitute exists.
+- A parallel food-zero guard exists so a future strategy cannot make zero food income legal either. Permanent-food planning remains natural-first, but a mature critical-food/near-zero-income state may override ordinary labor ownership to restore real food gathering.
+- Record-setting IT15.6/15.7 P2 opportunity attack authorization, battlefield execution, finishing persistence, and siege logic remain frozen. IT15.8 is an economy-kernel release.
+
+
+## IT15.8 mature-population / +30% calibration contract
+
+- Expert gather/trade multiplier is now 1.30. Historical +35% leaderboard results remain valid historical records but are not directly comparable with +30% regression games.
+- 60 is the global permanent-civilian GROWTH ceiling for P2/P3. Reaching 60 once marks the economy mature; 60 is not a forever-refill quota.
+- After maturity, civilian replacement is demand-driven by the food engine. The normal target is four civilians per completed Field plus civilians actively using natural food, capped at 60, with a small 24-civilian absolute rebuild floor.
+- If mature civilian count remains above the live food target, the Civic Centre must prefer citizen-soldier production rather than recreating lost civilians.
+- If farmer civilians are killed, surviving civilians assigned to secondary resources rotate into the protected food backbone before new civilian births are requested. Citizen-soldiers inherit wood/stone/metal labor as civilian attrition increases.
+- A 10-Field mature economy therefore normally needs about 40 civilians after natural food is gone. Population released above that food requirement is military/flexible economic population.
+- This calibration does not alter IT15.8's economic-safety kernel, IT15.7 combat changes, or the frozen IT15.6 record-setting P2 attack execution.

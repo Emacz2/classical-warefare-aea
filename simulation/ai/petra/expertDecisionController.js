@@ -74,6 +74,7 @@ const EXPERT_JOB_LEASE_UNTIL = "expertResourceJobLeaseUntil";
 const EXPERT_JOB_LEASE_RESOURCE = "expertResourceJobLeaseResource";
 const EXPERT_STRATEGIC_MOVE_AT = "expertStrategicMoveAt";
 const EXPERT_WOOD_MIGRATION_HOLD_UNTIL = "expertWoodMigrationHoldUntil";
+const EXPERT_NEUTRAL_WOOD_RESCUE = "expertNeutralWoodRescue";
 // IT14.90: post-opening civilians reserved for permanent farm expansion. They may
 // temporarily gather while waiting, but if selected to build a Field they stay there.
 const EXPERT_FUTURE_FARMER = "expertFuturePermanentFarmer";
@@ -364,6 +365,16 @@ export class ExpertDecisionController
 		this.lastP1EcoSweepDiag = -99999;
 		this.lastNeutralFoodAnnexDiag = -99999;
 		this.lastRallyDiag = -99999;
+		// IT15.8 economic safety kernel. Strategy and worker doctrine are preferences;
+		// a real resource-continuity emergency outranks them until productive income returns.
+		this.economicSafety = { active: false, resource: undefined, noOwnedWood: false, neutralWoodRescue: false };
+		this.lastEconomicSafetyDiag = -99999;
+		this.lastEconomicSafetyOverrideDiag = -99999;
+		// IT15.8 mature-population revision. Grow to the civilian ceiling once, then
+		// replace civilian casualties only when the dedicated food engine needs them.
+		this.civilianGrowthCeilingReached = false;
+		this.lastMatureCivilianFoodTarget = -1;
+		this.lastMatureCivilianDiag = -99999;
 	}
 
 
@@ -386,6 +397,346 @@ export class ExpertDecisionController
 		return this.strategyDoctrine;
 	}
 
+	normalizeRushRecoveryStrategy(gameState)
+	{
+		const manager = this.HQ && this.HQ.attackManager;
+		if (!manager || !manager.expertRushRecoveryMode)
+			return false;
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		if (!doctrine)
+			return false;
+		if (doctrine.id !== "early_p1_rush" && doctrine.id !== "late_p1_rush")
+		{
+			const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
+			const now = Number(gameState.ai.elapsedTime) || 0;
+			if (phase >= 2 && now >= (Number(manager.expertRushRecoveryUntil) || -99999))
+			{
+				manager.expertRushRecoveryMode = false;
+				aiWarn("[EXPERT-ECO-SAFETY] rush-recovery cleared phase=" + phase + " t=" + Math.round(now));
+			}
+			return false;
+		}
+		const activeRush = !!(manager.startedAttacks && (manager.startedAttacks[AttackPlan.TYPE_RUSH] || []).some(plan =>
+			plan && plan.unitCollection && plan.unitCollection.length > 0));
+		if (activeRush)
+			return false;
+
+		// IT15.8: a failed/aborted P1 is over. It may not leave its labor doctrine
+		// permanently attached to the economy. Convert immediately to the shared P2
+		// recovery lane; the surviving army remains useful reserve military.
+		this.strategyPivotedFrom = doctrine.id;
+		this.strategyDoctrine = doctrineById("p2_tech_push");
+		this.HQ.expertDoctrine = { ...this.strategyDoctrine };
+		manager.maxRushes = 0;
+		aiWarn("[EXPERT-ECO-SAFETY] rush-recovery pivot " + doctrine.id + "->p2_tech_push" +
+			" recoveryUntil=" + Math.round(Number(manager.expertRushRecoveryUntil) || 0));
+		return true;
+	}
+
+	updateEconomicSafetyState(gameState, accessIndex)
+	{
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const bank = gameState.getResources() || {};
+		const actual = this.actualWorkerOrders(gameState);
+		const wood = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
+		const food = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
+		const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
+		const mature = now >= (Number(policy.ecoSafetyMinimumTime) || 150) || phase >= 2;
+		const otherMax = Math.max(Number(bank.food) || 0, Number(bank.stone) || 0, Number(bank.metal) || 0);
+		const woodBank = Math.max(0, Number(bank.wood) || 0);
+		const woodCritical = !!(wood && (wood.status === "critical" || wood.status === "short"));
+		const activeWood = Math.max(0, Number(actual.wood) || 0);
+		const hardZeroWood = activeWood <= (Number(policy.ecoSafetyMaximumActiveWood) || 1);
+		const lowActiveWood = activeWood <= (Number(policy.ecoSafetyLowActiveWoodWorkers) || 6);
+		const extremeImbalance = otherMax >= (Number(policy.ecoSafetyExtremeSurplusBank) || 1800) &&
+			otherMax >= Math.max(1, woodBank) * (Number(policy.ecoSafetyExtremeSurplusRatio) || 6);
+		const woodEmergency = woodCritical && (
+			this.phaseWoodCrisis || this.woodIncomeStalled ||
+			(mature && hardZeroWood && woodBank <= (Number(policy.ecoSafetyCriticalWoodBank) || 300)) ||
+			(mature && lowActiveWood && woodBank <= (Number(policy.ecoSafetyEarlyWarningWoodBank) || 250)) ||
+			(extremeImbalance && woodBank <= (Number(policy.ecoSafetyCriticalWoodBank) || 300))
+		);
+		const ownAccessible = wood ? Math.max(0, Number(wood.ownAccessible) || 0) : 0;
+		const noOwnedWood = woodEmergency && ownAccessible <= (Number(policy.ecoSafetyOwnedWoodFloor) || 80);
+		// Forecast stock is advisory. If it claims owned wood exists but the watchdog has
+		// proved zero actual wood flow, treat that as an access deadlock and open the same
+		// capped rescue. A stale accessibility estimate may never keep the bot trapped.
+		const accessDeadlock = woodEmergency && hardZeroWood && (this.woodIncomeStalled || this.phaseWoodCrisis);
+		const neutralWoodRescue = (noOwnedWood || accessDeadlock) &&
+			woodBank < (Number(policy.ecoSafetyNeutralWoodReleaseBank) || 700);
+
+		// Food gets a smaller generic guard so an unrelated future strategy cannot make
+		// "zero food income" legal either. Farm/natural-food planning still owns the fix.
+		const foodBank = Math.max(0, Number(bank.food) || 0);
+		const activeFood = Math.max(0, Number(actual.food) || 0) + Math.max(0, Number(actual.farm) || 0) + Math.max(0, Number(actual.chicken) || 0);
+		const foodEmergency = !!(food && food.status === "critical" && mature &&
+			activeFood <= (Number(policy.ecoSafetyMaximumActiveFood) || 1) &&
+			foodBank <= (Number(policy.ecoSafetyCriticalFoodBank) || 220));
+
+		const next = woodEmergency ? {
+			active: true, resource: "wood", noOwnedWood, neutralWoodRescue,
+			bank: woodBank, actual: Math.max(0, Number(actual.wood) || 0), ownAccessible, phase
+		} : foodEmergency ? {
+			active: true, resource: "food", noOwnedWood: false, neutralWoodRescue: false,
+			bank: foodBank, actual: activeFood, ownAccessible: food ? Math.max(0, Number(food.ownAccessible) || 0) : 0, phase
+		} : {
+			active: false, resource: undefined, noOwnedWood: false, neutralWoodRescue: false,
+			bank: woodBank, actual: Math.max(0, Number(actual.wood) || 0), ownAccessible, phase
+		};
+		const changed = !this.economicSafety || this.economicSafety.active !== next.active ||
+			this.economicSafety.resource !== next.resource || this.economicSafety.noOwnedWood !== next.noOwnedWood ||
+			this.economicSafety.neutralWoodRescue !== next.neutralWoodRescue;
+		this.economicSafety = next;
+		if ((changed || next.active) && now - (Number(this.lastEconomicSafetyDiag) || -99999) >=
+			(Number(policy.ecoSafetyDiagnosticSeconds) || 8))
+		{
+			this.lastEconomicSafetyDiag = now;
+			aiWarn("[EXPERT-ECO-SAFETY] " + (next.active ? "ACTIVE" : "clear") +
+				" resource=" + (next.resource || "-") + " bank=" + Math.round(next.bank || 0) +
+				" actual=" + Math.round(next.actual || 0) + " owned=" + Math.round(next.ownAccessible || 0) +
+				" neutralRescue=" + (next.neutralWoodRescue ? 1 : 0) +
+				" res=" + Math.round(Number(bank.food) || 0) + "/" + Math.round(woodBank) + "/" +
+				Math.round(Number(bank.stone) || 0) + "/" + Math.round(Number(bank.metal) || 0));
+		}
+		return next;
+	}
+
+	economySafetyAllowsNeutralWood(gameState)
+	{
+		if (!this.economicSafety || !this.economicSafety.active ||
+		    this.economicSafety.resource !== "wood" || !this.economicSafety.neutralWoodRescue)
+			return false;
+		const bank = gameState.getResources();
+		return (Number(bank && bank.wood) || 0) < (Number(mergePolicy().ecoSafetyNeutralWoodReleaseBank) || 700);
+	}
+
+	neutralWoodRescueCount(gameState)
+	{
+		let count = 0;
+		for (const ent of gameState.getOwnUnits().values())
+			if (ent && ent.getMetadata && ent.getMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE) === true)
+				++count;
+		return count;
+	}
+
+	workerHasLiveResourceAssignment(gameState, ent, generic)
+	{
+		if (!ent || !ent.getMetadata)
+			return false;
+		const state = ent.unitAIState ? String(ent.unitAIState() || "") : "";
+		if ((state.includes("RETURNRESOURCE") || state.includes("RETURNINGRESOURCE")) && ent.resourceCarrying)
+			for (const item of ent.resourceCarrying() || [])
+				if (item && item.type === generic && Number(item.amount) > 0)
+					return true;
+		const supplyId = Number(ent.getMetadata(PlayerID, SUPPLY_ID));
+		if (!Number.isFinite(supplyId))
+			return false;
+		const target = gameState.getEntityById(supplyId);
+		if (!target)
+			return false;
+		const actualGeneric = hasClass(target, "Field") ? "food" : this.resourceGenericForSupply(target);
+		if (actualGeneric !== generic)
+			return false;
+		return hasLiveGatherOrder(ent, supplyId) || state.includes("GATHER.APPROACHING") ||
+			state.includes("GATHER.WALKING") || state.includes("GATHER.GATHERING");
+	}
+
+	applyEconomicSafetyLaborOverride(gameState, accessIndex)
+	{
+		const safety = this.economicSafety;
+		if (!safety || !safety.active)
+			return 0;
+		if (safety.resource === "food")
+			return this.applyEconomicSafetyFoodOverride(gameState, accessIndex);
+		if (safety.resource !== "wood")
+			return 0;
+
+		const policy = mergePolicy();
+		const actual = this.actualWorkerOrders(gameState);
+		const bank = gameState.getResources();
+		const otherMax = Math.max(Number(bank.food) || 0, Number(bank.stone) || 0, Number(bank.metal) || 0);
+		const minimum = Math.max(1, Number(policy.ecoSafetyMinimumWoodWorkers) || 12);
+		const maximum = Math.max(minimum, Number(policy.ecoSafetyMaximumWoodWorkers) || 24);
+		// Safety is deliberately based on ACTUAL gathering, not job metadata. A severe
+		// zero-income state gets a wider rescue crew; an owned-wood exhaustion rescue is
+		// capped by ecoSafetyNeutralWoodRescueWorkers below.
+		let target = minimum;
+		if (this.woodIncomeStalled || this.phaseWoodCrisis || otherMax >= 3000)
+			target = Math.min(maximum, 16);
+		if (!safety.noOwnedWood && otherMax >= 6000)
+			target = Math.min(maximum, 20);
+		if (safety.noOwnedWood)
+			target = Math.min(target, Math.max(1, Number(policy.ecoSafetyNeutralWoodRescueWorkers) || 16));
+		let need = Math.max(0, target - Math.max(0, Number(actual.wood) || 0));
+		if (!need)
+			return 0;
+
+		const minimumFoodWorkers = Math.max(6, Number(policy.ecoSafetyMinimumFoodWorkers) || 12);
+		let foodPeelBudget = Math.max(0,
+			Math.max(0, Number(actual.food) || 0) + Math.max(0, Number(actual.farm) || 0) - minimumFoodWorkers);
+		const candidates = [];
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !ent.getMetadata || !entityPosition(ent) || !this.isExpertEconomyEntity(ent) ||
+			    hasClass(ent, "Cavalry") || ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
+			    ent.getMetadata(PlayerID, TASK_KEY) !== undefined || !this.attackPlanAllowsEconomicWork(gameState, ent))
+				continue;
+			const job = ent.getMetadata(PlayerID, JOB_METADATA);
+			const state = ent.unitAIState ? String(ent.unitAIState() || "") : "";
+			const idle = !!(ent.isIdle && ent.isIdle());
+			const alreadyWoodJob = job === "wood" || job === "citizenSoldierWood";
+			if (alreadyWoodJob && this.workerHasLiveResourceAssignment(gameState, ent, "wood"))
+				continue;
+			let priority = alreadyWoodJob ? 140 : (idle ? 100 : 0);
+			if (job === "stone") priority += 80;
+			else if (job === "metal") priority += 70;
+			else if (job === "food" || job === "food_owned" || job === "farm")
+			{
+				if ((Number(bank.food) || 0) < (Number(policy.ecoSafetyFoodSurplusForWoodPeel) || 1200) || foodPeelBudget <= 0)
+					continue;
+				priority += 40;
+			}
+			else if (!alreadyWoodJob)
+				priority += 90;
+			if (state.includes("RETURNRESOURCE") || state.includes("RETURNINGRESOURCE"))
+				priority -= 15;
+			candidates.push({ ent, job, priority, alreadyWoodJob,
+				foodJob: job === "food" || job === "food_owned" || job === "farm" });
+		}
+		candidates.sort((a, b) => b.priority - a.priority || a.ent.id() - b.ent.id());
+
+		let moved = 0;
+		let attempted = 0;
+		const batch = Math.max(1, Number(policy.ecoSafetyReassignBatch) || 12);
+		for (const item of candidates)
+		{
+			if (!need || attempted >= batch)
+				break;
+			++attempted;
+			const ent = item.ent;
+			const oldJob = item.job;
+			const desired = hasClass(ent, "CitizenSoldier") ? "citizenSoldierWood" : "wood";
+			if (!item.alreadyWoodJob && !this.setDesiredJob(gameState, ent, desired, { force: true }))
+				continue;
+			// Clear stale failed-target state before proving the override with a real order.
+			ent.setMetadata(PlayerID, EXPERT_FALLBACK_FAILED_TARGET, undefined);
+			ent.setMetadata(PlayerID, EXPERT_FALLBACK_ORDER_AT, undefined);
+			ent.setMetadata(PlayerID, EXPERT_FALLBACK_ORDER_TARGET, undefined);
+			if (!this.assignSafeFallback(gameState, ent, accessIndex, ["wood"]))
+			{
+				if (!item.alreadyWoodJob)
+				{
+					ent.setMetadata(PlayerID, JOB_METADATA, oldJob);
+					ent.setMetadata(PlayerID, PENDING_JOB_METADATA, undefined);
+					ent.setMetadata(PlayerID, EXPERT_JOB_LEASE_UNTIL, undefined);
+					ent.setMetadata(PlayerID, EXPERT_JOB_LEASE_RESOURCE, undefined);
+				}
+				// Access is the problem. Do not manufacture another escalating worker loop.
+				ent.setMetadata(PlayerID, EXPERT_FALLBACK_FAILURES, 0);
+				continue;
+			}
+			ent.setMetadata(PlayerID, EXPERT_FALLBACK_FAILURES, 0);
+			if (item.foodJob)
+				--foodPeelBudget;
+			++moved;
+			--need;
+			if ((Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastEconomicSafetyOverrideDiag) || -99999) >= 2)
+			{
+				this.lastEconomicSafetyOverrideDiag = Number(gameState.ai.elapsedTime) || 0;
+				aiWarn("[EXPERT-ECO-SAFETY] labor override worker=" + ent.id() + " " + (oldJob || "-") +
+					"->" + desired + " neutral=" + (ent.getMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE) === true ? 1 : 0) +
+					" remaining=" + need);
+			}
+		}
+		return moved;
+	}
+
+	applyEconomicSafetyFoodOverride(gameState, accessIndex)
+	{
+		const policy = mergePolicy();
+		const actual = this.actualWorkerOrders(gameState);
+		const bank = gameState.getResources();
+		const target = Math.max(8, Number(policy.ecoSafetyMinimumFoodWorkers) || 12);
+		let need = Math.max(0, target - (Math.max(0, Number(actual.food) || 0) + Math.max(0, Number(actual.farm) || 0) + Math.max(0, Number(actual.chicken) || 0)));
+		if (!need)
+			return 0;
+		const candidates = [];
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !ent.getMetadata || !entityPosition(ent) || !this.isExpertEconomyEntity(ent) ||
+			    hasClass(ent, "Cavalry") || ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
+			    ent.getMetadata(PlayerID, TASK_KEY) !== undefined || !this.attackPlanAllowsEconomicWork(gameState, ent))
+				continue;
+			const job = ent.getMetadata(PlayerID, JOB_METADATA);
+			if ((job === "food" || job === "food_owned" || job === "farm") && this.workerHasLiveResourceAssignment(gameState, ent, "food"))
+				continue;
+			let priority = ent.isIdle && ent.isIdle() ? 100 : 0;
+			if (job === "food" || job === "food_owned" || job === "farm") priority += 130;
+			else if (job === "stone") priority += 80;
+			else if (job === "metal") priority += 70;
+			else if (job === "wood")
+			{
+				if ((Number(bank.wood) || 0) < 700 || (Number(actual.wood) || 0) <= 12)
+					continue;
+				priority += 30;
+			}
+			else priority += 60;
+			candidates.push({ ent, job, priority });
+		}
+		candidates.sort((a, b) => b.priority - a.priority || a.ent.id() - b.ent.id());
+		let moved = 0;
+		const batch = Math.max(1, Number(policy.ecoSafetyReassignBatch) || 12);
+		for (const item of candidates)
+		{
+			if (!need || moved >= batch)
+				break;
+			const ent = item.ent;
+			const oldJob = item.job;
+			const desired = hasClass(ent, "Civilian") && !hasClass(ent, "CitizenSoldier") ? "food_owned" : "food";
+			if (!(oldJob === "food" || oldJob === "food_owned" || oldJob === "farm") &&
+			    !this.setDesiredJob(gameState, ent, desired, { force: true }))
+				continue;
+			if (!this.assignSafeFallback(gameState, ent, accessIndex, ["food"]))
+			{
+				if (!(oldJob === "food" || oldJob === "food_owned" || oldJob === "farm"))
+					ent.setMetadata(PlayerID, JOB_METADATA, oldJob);
+				ent.setMetadata(PlayerID, EXPERT_FALLBACK_FAILURES, 0);
+				continue;
+			}
+			ent.setMetadata(PlayerID, EXPERT_FALLBACK_FAILURES, 0);
+			++moved;
+			--need;
+		}
+		return moved;
+	}
+
+	applyEconomicSafetyFrame(gameState, frame)
+	{
+		if (!frame || !this.economicSafety || !this.economicSafety.active || this.economicSafety.resource !== "wood")
+			return frame;
+		const bank = gameState.getResources();
+		// During a wood continuity emergency, a rich food economy must stop buying more
+		// food infrastructure. Existing Fields keep working; new Field/Farmstead wood is
+		// reserved for wood access, housing/phase continuity and (in Town) the Market.
+		if ((Number(bank.food) || 0) < 650)
+			return frame;
+		const removed = [];
+		const actions = (frame.actions || []).filter(action =>
+		{
+			if (!action || (action.type !== "BUILD" && action.type !== "RESERVE"))
+				return true;
+			if (action.kind !== "field" && action.kind !== "farmstead")
+				return true;
+			removed.push(action.kind + ":" + (action.role || "normal"));
+			return false;
+		});
+		if (removed.length)
+			aiWarn("[EXPERT-ECO-SAFETY] suppress wood-spend " + removed.join(",") +
+				" bank=" + Math.round(Number(bank.food) || 0) + "/" + Math.round(Number(bank.wood) || 0));
+		return removed.length ? { ...frame, actions } : frame;
+	}
+
 	updateWoodScarcityStrategy(gameState, woodsite, woodContinuity)
 	{
 		const doctrine = this.ensureStrategicDoctrine(gameState);
@@ -397,9 +748,11 @@ export class ExpertDecisionController
 			return false;
 		const manager = this.HQ && this.HQ.attackManager;
 		const p1RushDoctrine = doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush";
-		// Once a real P1 attack has launched we finish the commitment; this adaptation is
-		// specifically for recognizing a bad economy BEFORE throwing the game away.
-		if (p1RushDoctrine && manager && manager.expertRushHasLaunched)
+		// IT15.8: a LIVE rush may finish its commitment, but a historical launch flag
+		// may never trap the economy after that rush has aborted/ended.
+		const activeRush = !!(manager && manager.startedAttacks &&
+			(manager.startedAttacks[AttackPlan.TYPE_RUSH] || []).some(plan => plan && plan.unitCollection && plan.unitCollection.length > 0));
+		if (p1RushDoctrine && manager && manager.expertRushHasLaunched && activeRush)
 			return false;
 		const wood = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
 		if (!wood)
@@ -454,14 +807,21 @@ export class ExpertDecisionController
 		const attacks = this.HQ.attackManager;
 		// IT15.0: rush civilian caps are composition doctrine, not merely an opening
 		// timer. Keep the small dedicated food workforce through Town Phase; City
-		// Phase or explicit rush recovery may reopen the 65-civilian global ceiling.
+		// Phase or explicit rush recovery may reopen the 60-civilian global ceiling.
 		const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
 		if (Number(doctrine.rushes) > 0 && phase < 3)
 			base = { ...base, civilianCap: Math.max(1, Number(doctrine.softCivilianCap) || 36) };
-		// IT14.49: once a P1 rush has been explicitly abandoned, stop pretending the
-		// opening civilian cap still matters. Recovery outranks the persistent launch flag.
+		// IT15.8: recovery outranks rush composition, but it does not open a 60-civilian
+		// Village-Phase flood. Use the old 40/42 recovery band until Town, then the normal
+		// P2 economy may grow to the global ceiling.
 		if (attacks && attacks.expertRushRecoveryMode)
-			return { ...base, civilianCap: 65, p1TemplePopulation: 48, p1TempleMinimumFieldPipeline: 2 };
+		{
+			const recoveryCap = this.strategyPivotedFrom === "early_p1_rush" ?
+				(Number(mergePolicy().ecoSafetyEarlyRushRecoveryCivilianCap) || 40) :
+				(Number(mergePolicy().ecoSafetyLateRushRecoveryCivilianCap) || 42);
+			return { ...base, civilianCap: phase < 2 ? Math.min(60, recoveryCap) : 60,
+				p1TemplePopulation: 48, p1TempleMinimumFieldPipeline: 2 };
+		}
 		// IT14.52: a live rush may protect its launch timing, but once the army actually
 		// leaves home the worker-aura Temple becomes an immediate economic follow-up.
 		if (attacks && attacks.expertRushHasLaunched)
@@ -474,6 +834,39 @@ export class ExpertDecisionController
 		return Math.max(1, Number(this.strategyPolicyOverrides(gameState).civilianCap) || mergePolicy().civilianCap);
 	}
 
+	matureCivilianFoodTarget(gameState, workers = undefined)
+	{
+		const policy = mergePolicy();
+		const globalCap = Math.max(1, Number(policy.civilianCap) || 60);
+		if (!this.civilianGrowthCeilingReached)
+			return globalCap;
+
+		const fields = this.builtByClass(gameState, "Field").length;
+		const profile = this.fieldGatherProfile(gameState);
+		const farmersPerField = Math.max(1, Number(profile && profile.preferred) || Number(policy.farmersPerField) || 4);
+		let naturalFoodCivilians = 0;
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !ent.getMetadata || !hasClass(ent, "Civilian") || hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry"))
+				continue;
+			const actual = this.workerActualResource(gameState, ent);
+			if (actual !== "food")
+				continue;
+			const supplyId = Number(ent.getMetadata(PlayerID, SUPPLY_ID));
+			const supply = Number.isFinite(supplyId) ? gameState.getEntityById(supplyId) : undefined;
+			if (!supply || !hasClass(supply, "Field"))
+				++naturalFoodCivilians;
+		}
+
+		// Four civilians per live Field is the permanent food backbone. Active natural-food
+		// civilians are additive while those sources still exist. The small absolute floor
+		// protects rebuild capacity if farms are destroyed; it is not a refill-to-60 rule.
+		const foodCapacityTarget = fields * farmersPerField + naturalFoodCivilians +
+			Math.max(0, Number(policy.matureCivilianFoodReserveWorkers) || 0);
+		const floor = Math.max(1, Number(policy.matureCivilianAbsoluteFloor) || 24);
+		return Math.max(1, Math.min(globalCap, Math.max(floor, foodCapacityTarget)));
+	}
+
 	ccCivilianTrainingTarget(gameState)
 	{
 		// IT15.0: rush doctrines use a deliberately small dedicated-civilian economy.
@@ -481,21 +874,45 @@ export class ExpertDecisionController
 		// More civilians are allowed only as a small recovery band when the existing
 		// food network has real open capacity and workers are already being used well.
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
-		const globalCap = Math.max(1, Number(mergePolicy().civilianCap) || 65);
+		const globalCap = Math.max(1, Number(mergePolicy().civilianCap) || 60);
 		const doctrine = this.ensureStrategicDoctrine(gameState);
 		const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
 		const manager = this.HQ && this.HQ.attackManager;
 		const rush = doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush");
+		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+		if (!this.civilianGrowthCeilingReached && workers.civilians >= globalCap)
+		{
+			this.civilianGrowthCeilingReached = true;
+			this.lastMatureCivilianFoodTarget = -1;
+			aiWarn("[EXPERT-CIV-MATURE] ceiling-reached civilians=" + workers.civilians + " cap=" + globalCap +
+				" future replacements=food-demand");
+		}
+		// IT15.8: after a failed P1 has converted to the P2 recovery doctrine, keep the
+		// explicit 40/42 Village recovery cap from strategyPolicyOverrides until Town.
+		if (manager && manager.expertRushRecoveryMode && phase < 2)
+			return Math.max(1, Math.min(globalCap, Number(policy.civilianCap) || 42));
 		// IT15.0: launching the rush does not magically turn the CC back into a
-		// 65-civilian factory. Preserve the Steven-style food backbone through P2;
+		// 60-civilian factory. Preserve the Steven-style food backbone through P2;
 		// the CC remains a military trainer once the soft cap is reached. City Phase
 		// may reopen the global civilian ceiling for long-game recovery/expansion.
 		if (!rush || phase >= 3)
-			return globalCap;
+		{
+			if (!this.civilianGrowthCeilingReached)
+				return globalCap;
+			const matureTarget = this.matureCivilianFoodTarget(gameState, workers);
+			const now = Number(gameState.ai.elapsedTime) || 0;
+			if (matureTarget !== this.lastMatureCivilianFoodTarget || now - this.lastMatureCivilianDiag >= 30)
+			{
+				this.lastMatureCivilianFoodTarget = matureTarget;
+				this.lastMatureCivilianDiag = now;
+				aiWarn("[EXPERT-CIV-MATURE] replacement-target=" + matureTarget + "/" + globalCap +
+					" civilians=" + workers.civilians + " fields=" + this.builtByClass(gameState, "Field").length);
+			}
+			return matureTarget;
+		}
 
 		const fallback = doctrine.id === "early_p1_rush" ? 34 : 36;
 		const softCap = Math.max(1, Math.min(globalCap, Number(policy.civilianCap) || fallback));
-		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		if (workers.civilians < softCap)
 			return softCap;
 
@@ -2624,12 +3041,13 @@ export class ExpertDecisionController
 		};
 		const policy = mergePolicy();
 		const res = gameState.getResources();
-		const lowWood = this.phaseWoodCrisis || this.woodIncomeStalled ||
+		const safetyWood = !!(this.economicSafety && this.economicSafety.active && this.economicSafety.resource === "wood");
+		const lowWood = safetyWood || this.phaseWoodCrisis || this.woodIncomeStalled ||
 			(Number(res.wood) || 0) <= (Number(policy.athensSlingerLowWood) || 300);
 		if (!lowWood)
 			return false;
-		const pivotFoodFloor = this.strategyWoodPivot ? 450 : (Number(policy.athensSlingerUnlockMinimumFoodBank) || 900);
-		const pivotFoodReserve = this.strategyWoodPivot ? 250 : (Number(policy.athensSlingerUnlockFoodReserve) || 600);
+		const pivotFoodFloor = this.strategyWoodPivot || safetyWood ? 450 : (Number(policy.athensSlingerUnlockMinimumFoodBank) || 900);
+		const pivotFoodReserve = this.strategyWoodPivot || safetyWood ? 250 : (Number(policy.athensSlingerUnlockFoodReserve) || 600);
 		const foodReady = (Number(res.food) || 0) >= Math.max(pivotFoodFloor, cost.food + pivotFoodReserve);
 		const stoneReady = (Number(res.stone) || 0) >= cost.stone + (Number(policy.athensSlingerUnlockStoneReserve) || 75);
 		const metalReady = (Number(res.metal) || 0) >= cost.metal;
@@ -5910,8 +6328,35 @@ export class ExpertDecisionController
 		const reconciled = reconcileCivilianRoster(this.civilianRoster, civilians.map(ent => ent.id()), explicit);
 		this.civilianRoster = reconciled.roster;
 		const byId = new Map(civilians.map(ent => [String(ent.id()), ent]));
+		const globalCivilianCap = Math.max(1, Number(policy.civilianCap) || 60);
+		if (!this.civilianGrowthCeilingReached && civilians.length >= globalCivilianCap)
+		{
+			this.civilianGrowthCeilingReached = true;
+			this.lastMatureCivilianFoodTarget = -1;
+			aiWarn("[EXPERT-CIV-MATURE] ceiling-reached civilians=" + civilians.length + " cap=" + globalCivilianCap +
+				" future replacements=food-demand");
+		}
+		const matureFoodTarget = this.civilianGrowthCeilingReached ?
+			Math.min(civilians.length, this.matureCivilianFoodTarget(gameState, metrics)) : 0;
+		const matureFoodBackboneIds = new Set();
+		if (matureFoodTarget > 0)
+		{
+			const ranked = reconciled.civilians.map(entry => {
+				const ent = byId.get(entry.id);
+				const current = ent && ent.getMetadata ? ent.getMetadata(PlayerID, JOB_METADATA) : undefined;
+				const locked = ent && Number.isFinite(Number(ent.getMetadata(PlayerID, FARM_LOCK)));
+				const foodOwned = current === "farm" || current === "food" || current === "food_owned";
+				return { entry, ent, locked, foodOwned };
+			}).filter(item => item.ent);
+			ranked.sort((a, b) => Number(b.locked) - Number(a.locked) || Number(b.foodOwned) - Number(a.foodOwned) ||
+				a.entry.ordinal - b.entry.ordinal || a.ent.id() - b.ent.id());
+			for (const item of ranked.slice(0, matureFoodTarget))
+				matureFoodBackboneIds.add(item.ent.id());
+		}
 		const openingEnd = policy.startingNaturalFoodCivilians + policy.secondTrainedFoodCivilians + policy.targetWoodCivilians;
-		const rushFoodCivilianDoctrine = !!(doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"));
+		const rushFoodCivilianDoctrine = !!(doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush") &&
+			!(this.economicSafety && this.economicSafety.active) &&
+			!(attackManager && attackManager.expertRushRecoveryMode));
 		// If Wicker peeled one/two opening berry civilians to wood because no secondary
 		// natural branch existed, count those workers INSIDE the 20-civilian wood tranche.
 		// Otherwise the ordinal script would quietly create 21-22 permanent wood civilians.
@@ -5944,6 +6389,30 @@ export class ExpertDecisionController
 			const current = ent.getMetadata(PlayerID, JOB_METADATA);
 			const hadPermanentJob = ["wood", "food", "food_owned", "farm", "stone", "metal"].includes(current);
 			let desired;
+
+			// IT15.8 mature population: after reaching 60 civilians once, preserve only the
+			// civilian food backbone. If farmer casualties occur, surviving secondary-resource
+			// civilians rotate into food before the CC is allowed to retrain replacements.
+			// Citizen-soldiers therefore inherit wood/stone/metal population as civilians die.
+			if (!rushFoodCivilianDoctrine && matureFoodBackboneIds.has(ent.id()))
+			{
+				if (ent.getMetadata(PlayerID, EXPERT_FUTURE_FARMER) !== true)
+					ent.setMetadata(PlayerID, EXPERT_FUTURE_FARMER, true);
+				if (current !== "food" && current !== "food_owned" && current !== "farm")
+				{
+					if (current === "wood")
+						woodCivilians = Math.max(0, woodCivilians - 1);
+					else if (current === "stone")
+						stoneWorkers = Math.max(0, stoneWorkers - 1);
+					else if (current === "metal")
+						metalWorkers = Math.max(0, metalWorkers - 1);
+					this.setDesiredJob(gameState, ent, "food_owned", { "force": true });
+					++foodWorkers;
+					aiWarn("[EXPERT-CIV-MATURE] rotate-to-food civilian=" + ent.id() + " from=" + (current || "none") +
+						" target=" + matureFoodTarget);
+				}
+				continue;
+			}
 
 			// IT15.1 Steven contract: a rush build's dedicated civilians ARE the food engine.
 			// Only the three scripted opening lumber civilians may remain on wood before the
@@ -9863,8 +10332,27 @@ export class ExpertDecisionController
 		const ranged = candidates.filter(c => c.ranged);
 		const melee = candidates.filter(c => c.melee);
 		const bankWood = Number(gameState.getResources().wood) || 0;
+		const safetyWood = !!(this.economicSafety && this.economicSafety.active && this.economicSafety.resource === "wood");
 		const woodPressure = gameState.getPlayerCiv() === "athen" &&
-			(this.phaseWoodCrisis || this.woodIncomeStalled || bankWood <= (Number(mergePolicy().athensSlingerLowWood) || 300));
+			(this.phaseWoodCrisis || this.woodIncomeStalled || safetyWood ||
+			 bankWood <= (Number(mergePolicy().athensSlingerLowWood) || 300));
+
+		// IT15.8 production substitution is part of economic survival, not composition
+		// flavor. During a hard wood emergency, every civilization trains the cheapest
+		// immediately affordable infantry among those with the LOWEST wood cost. Athens
+		// naturally lands on unlocked Slingers (zero wood) and therefore keeps producing
+		// without consuming the resource the economy is trying to restore.
+		if (safetyWood)
+		{
+			const affordableNow = affordable(candidates);
+			if (affordableNow.length)
+			{
+				const minWood = Math.min(...affordableNow.map(candidate => candidate.cost.wood));
+				const woodLight = affordableNow.filter(candidate => candidate.cost.wood === minWood);
+				const slingers = gameState.getPlayerCiv() === "athen" ? woodLight.filter(candidate => candidate.slinger) : [];
+				return cheapest(slingers.length ? slingers : woodLight);
+			}
+		}
 
 		// Replay preference: the first deliberate military pulse is mobile ranged infantry
 		// (Athens = javeliners), useful for fast building/gathering while the army masses.
@@ -10144,7 +10632,7 @@ export class ExpertDecisionController
 		const policy = mergePolicy();
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		// IT14.99: reserve food against the live CC civilian target. Late-P1 may intentionally
-		// stop at 48-55 so the CC can join Barracks production; other doctrines stop at 65.
+		// stop below the global ceiling so the CC can join Barracks production; other doctrines grow to 60 once.
 		const reserve = workers.civilians >= this.ccCivilianTrainingTarget(gameState) ? 0 : policy.soldierFoodReserve;
 		const resources = gameState.getResources();
 		const athensResourceSlingerWindow = gameState.getPlayerCiv() === "athen" &&
@@ -10277,7 +10765,7 @@ export class ExpertDecisionController
 		const militaryException = atCivilianCap ? "civilian-cap" : this.ccMilitaryExceptionReason(gameState);
 
 		// IT14.98 CC contract:
-		//   * 65 is the global ceiling; Late-P1 normally converts at 48 and may recover to 55;
+		//   * 60 is the global growth ceiling; mature replacement is food-demand driven;
 		//   * below the live target, only real combat states may interrupt civilian continuity;
 		//   * at the live target the CC joins ordinary citizen-soldier production.
 		let ccQueued = false;
@@ -13568,6 +14056,23 @@ export class ExpertDecisionController
 
 	assignWoodWorker(gameState, ent, woodsite, accessIndex)
 	{
+		// IT15.8 absolute safety valve: while owned wood is exhausted, a worker already
+		// on the capped neutral rescue line stays on that live tree until safety clears.
+		if (ent.getMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE) === true)
+		{
+			const rescueId = Number(ent.getMetadata(PlayerID, SUPPLY_ID));
+			const rescue = Number.isFinite(rescueId) ? gameState.getEntityById(rescueId) : undefined;
+			if (this.economySafetyAllowsNeutralWood(gameState) && rescue && entityPosition(rescue) &&
+			    this.HQ.territoryMap.getOwner(rescue.position()) === 0 && rescue.resourceSupplyAmount &&
+			    rescue.resourceSupplyAmount() > 0)
+			{
+				if (!hasLiveGatherOrder(ent, rescue.id()))
+					ensureGatherOrder(ent, rescue);
+				this.diagnoseWorkerOrder(ent, "wood-neutral-rescue", rescue.id(), "CONFIRMED");
+				return;
+			}
+			ent.setMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE, undefined);
+		}
 		woodsite = this.workerWoodsite(gameState, ent, woodsite, accessIndex) || woodsite;
 		// A short migration hold is intentional sequencing, not permission for another
 		// fallback subsystem to send the same worker across the map. The next cohort is
@@ -14045,15 +14550,27 @@ export class ExpertDecisionController
 		if (!dropsites.length)
 			return undefined;
 		const candidates = [];
+		const allowNeutral = this.economySafetyAllowsNeutralWood(gameState);
+		const rescueCap = Math.max(1, Number(mergePolicy().ecoSafetyNeutralWoodRescueWorkers) || 16);
+		const rescueCount = this.neutralWoodRescueCount(gameState);
 		for (const supply of gameState.getResourceSupplies("wood").values())
 		{
 			if (!supply || !entityPosition(supply) || !supply.resourceSupplyAmount || supply.resourceSupplyAmount() <= 0 || isSupplyFull(gameState, supply))
 				continue;
-			if (getLandAccess(gameState, supply) !== accessIndex || this.HQ.territoryMap.getOwner(supply.position()) !== PlayerID)
+			if (getLandAccess(gameState, supply) !== accessIndex)
+				continue;
+			const owner = this.HQ.territoryMap.getOwner(supply.position());
+			const alreadyRescue = ent.getMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE) === true;
+			if (owner !== PlayerID && !(allowNeutral && owner === 0 && (alreadyRescue || rescueCount < rescueCap)))
+				continue;
+			if (owner === 0 && this.HQ.isDangerousLocation && this.HQ.isDangerousLocation(gameState, supply.position(), 8))
 				continue;
 			let drop = Infinity;
 			for (const site of dropsites)
 				drop = Math.min(drop, Math.sqrt(SquareVectorDistance(supply.position(), site.position())));
+			// IT15.8 absolute escape: once owned wood is genuinely exhausted, distance may
+			// make neutral rescue inefficient but may never make it impossible. The capped
+			// rescue crew takes the nearest safe same-land tree and funds proper expansion.
 			const walk = Math.sqrt(SquareVectorDistance(ent.position(), supply.position()));
 			candidates.push({ supply, score: walk + 4 * drop, drop });
 		}
@@ -14071,6 +14588,8 @@ export class ExpertDecisionController
 			return true;
 		ent.setMetadata(PlayerID, SUPPLY_ID, target.id());
 		ent.setMetadata(PlayerID, "gather-type", "wood");
+		ent.setMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE,
+			this.HQ.territoryMap.getOwner(target.position()) === 0 ? true : undefined);
 		ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
 		if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
 			this.HQ.basesManager.AddTCGatherer(target.id());
@@ -14088,6 +14607,9 @@ export class ExpertDecisionController
 			return out;
 		if (ent.canGather && !ent.canGather(generic))
 			return out;
+		const allowNeutralWood = generic === "wood" && this.economySafetyAllowsNeutralWood(gameState);
+		const neutralRescueCap = Math.max(1, Number(mergePolicy().ecoSafetyNeutralWoodRescueWorkers) || 16);
+		const neutralRescueCount = allowNeutralWood ? this.neutralWoodRescueCount(gameState) : 0;
 		for (const supply of gameState.getResourceSupplies(generic).values())
 		{
 			const pos = entityPosition(supply);
@@ -14097,13 +14619,24 @@ export class ExpertDecisionController
 				continue;
 			if (getLandAccess(gameState, supply) !== accessIndex)
 				continue;
-			if (this.HQ.territoryMap.getOwner(pos) !== PlayerID)
+			const owner = this.HQ.territoryMap.getOwner(pos);
+			const alreadyNeutralRescue = ent.getMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE) === true;
+			if (owner !== PlayerID && !(allowNeutralWood && owner === 0 && (alreadyNeutralRescue || neutralRescueCount < neutralRescueCap)))
+				continue;
+			if (owner === 0 && this.HQ.isDangerousLocation && this.HQ.isDangerousLocation(gameState, pos, 8))
 				continue;
 			if (generic === "wood")
 			{
-				const service = this.woodDropsiteForSupply(gameState, supply, Math.max(20, Number(mergePolicy().fallbackWoodDropsiteRadius) || 36));
+				const normalRadius = Math.max(20, Number(mergePolicy().fallbackWoodDropsiteRadius) || 36);
+				const rescueRadius = owner === 0 ? Infinity : normalRadius;
+				const service = this.resourceDropsiteForSupply(gameState, supply, "wood", rescueRadius);
 				if (!service)
 				{
+					// Neutral rescue requires a real wood dropsite somewhere on the base, but
+					// distance is not a veto in the absolute emergency. Owned trees keep the
+					// normal sparse-map long-haul bridge below.
+					if (owner === 0)
+						continue;
 					// IT14.96 sparse-map bridge: remember legal in-territory trees that are not
 					// yet in a formal Storehouse district. They are used ONLY if no serviced
 					// wood target remains and the forecast says wood is genuinely critical.
@@ -14133,8 +14666,9 @@ export class ExpertDecisionController
 					serviceDistance.set(supply.id(), best);
 					out.push(supply);
 				}
-				// IT15.1: no neutral wood bridge. If owned territory has no serviced
-				// wood, expansion/Storehouse recovery must solve it before workers gather.
+				// IT15.8 supersedes IT15.1 only during an economic-safety emergency:
+				// normal gathering remains owned-territory-only, but owned-wood exhaustion
+				// activates the capped neutral rescue path above so sovereignty cannot deadlock eco.
 			}
 		}
 		out.sort((a, b) => {
@@ -14185,12 +14719,16 @@ export class ExpertDecisionController
 		const current = Number.isFinite(currentId) ? gameState.getEntityById(currentId) : undefined;
 		if (current && entityPosition(current) && current.resourceSupplyAmount && current.resourceSupplyAmount() > 0 &&
 		    current.resourceSupplyType && getLandAccess(gameState, current) === accessIndex &&
-		    this.HQ.territoryMap.getOwner(current.position()) === PlayerID)
+		    (this.HQ.territoryMap.getOwner(current.position()) === PlayerID ||
+		     (this.HQ.territoryMap.getOwner(current.position()) === 0 && this.economySafetyAllowsNeutralWood(gameState) &&
+		      ent.getMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE) === true)))
 		{
 			const type = current.resourceSupplyType();
 			const generic = type && type.generic;
-			const serviced = generic !== "wood" || !!this.woodDropsiteForSupply(gameState, current,
-				Math.max(20, Number(mergePolicy().fallbackWoodDropsiteRadius) || 36));
+			const currentOwner = this.HQ.territoryMap.getOwner(current.position());
+			const currentRadius = currentOwner === 0 ? Infinity :
+				Math.max(20, Number(mergePolicy().fallbackWoodDropsiteRadius) || 36);
+			const serviced = generic !== "wood" || !!this.resourceDropsiteForSupply(gameState, current, "wood", currentRadius);
 			if (preferred.includes(generic) && serviced && hasLiveGatherOrder(ent, current.id()))
 			{
 				ent.setMetadata(PlayerID, "gather-type", generic);
@@ -14223,6 +14761,11 @@ export class ExpertDecisionController
 			{
 				ent.setMetadata(PlayerID, SUPPLY_ID, target.id());
 				ent.setMetadata(PlayerID, "gather-type", generic);
+				if (generic === "wood")
+					ent.setMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE,
+						this.HQ.territoryMap.getOwner(target.position()) === 0 ? true : undefined);
+				else
+					ent.setMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE, undefined);
 				if (ent.getMetadata(PlayerID, JOB_METADATA) === "food_owned" && generic === "wood")
 				{
 					ent.setMetadata(PlayerID, EXPERT_FALLBACK_LEASE_RESOURCE, "wood");
@@ -14351,6 +14894,12 @@ export class ExpertDecisionController
 			}
 			const broadFallback = [...preferred];
 			preferred = this.forecastFallbackPreference(gameState, ent, job, preferred);
+			// IT15.8: a safety-critical resource outranks job ownership and ordinary forecast
+			// preference. If wood is the emergency, always attempt it first; the neutral
+			// rescue/access layer decides whether that attempt is legal.
+			if (this.economicSafety && this.economicSafety.active && this.economicSafety.resource === "wood" &&
+			    ent.canGather && ent.canGather("wood"))
+				preferred = ["wood", ...preferred.filter(type => type !== "wood")];
 			if (!preferred.length)
 			{
 				// IT14.96 hard invariant: surplus work is inefficient, but standing idle is worse.
@@ -14377,8 +14926,18 @@ export class ExpertDecisionController
 					" rescue=" + rescue.join(">") + " failures=" + failures);
 				continue;
 			}
+			if (this.economicSafety && this.economicSafety.active)
+			{
+				// Do not let an access problem become a 93-attempt worker loop. Keep the
+				// worker eligible for the next real supply/expansion update without compounding
+				// failure state.
+				ent.setMetadata(PlayerID, EXPERT_FALLBACK_FAILURES, 0);
+				ent.setMetadata(PlayerID, EXPERT_FALLBACK_ORDER_AT, undefined);
+				ent.setMetadata(PlayerID, EXPERT_FALLBACK_ORDER_TARGET, undefined);
+			}
 			aiWarn("[EXPERT-NO-IDLE] NO-TARGET worker=" + ent.id() + " job=" + (job || "-") +
-				" access=" + accessIndex + " failures=" + failures);
+				" access=" + accessIndex + " failures=" + failures +
+				(this.economicSafety && this.economicSafety.active ? " safety=" + this.economicSafety.resource : ""));
 		}
 	}
 
@@ -14867,7 +15426,9 @@ export class ExpertDecisionController
 		if (this.lastUpdateTurn === gameState.ai.playedTurn)
 			return true;
 		this.lastUpdateTurn = gameState.ai.playedTurn;
-		const doctrine = this.ensureStrategicDoctrine(gameState);
+		let doctrine = this.ensureStrategicDoctrine(gameState);
+		if (this.normalizeRushRecoveryStrategy(gameState))
+			doctrine = this.ensureStrategicDoctrine(gameState);
 		if (!this.strategyP2TransitionLogged && gameState.currentPhase && gameState.currentPhase() >= 2)
 		{
 			this.strategyP2TransitionLogged = true;
@@ -14911,6 +15472,9 @@ export class ExpertDecisionController
 		// IT14.91: forecast BEFORE assigning newly trained workers.  New workers react to
 		// the map/economy that exists now rather than yesterday's fixed doctrine ratios.
 		this.updateResourceForecast(gameState, cc, accessIndex, preAssignmentFoodThroughput);
+		// IT15.8 safety is evaluated before normal job synchronization so a strategy
+		// doctrine can never reassert ownership over a resource-continuity emergency.
+		this.updateEconomicSafetyState(gameState, accessIndex);
 		this.syncJobs(gameState, foodNetwork, preAssignmentFoodThroughput);
 		const foodAlternative = this.alternativeFoodInfo(gameState, foodContext, foodObservation);
 		this.applyPostWickerBerryPeel(gameState, foodObservation, foodAlternative);
@@ -14920,8 +15484,10 @@ export class ExpertDecisionController
 		const woodsite = this.collectWoodsite(gameState, cc, accessIndex);
 		const preWoodWorkers = this.economyWorkerMetrics(gameState);
 		const woodContinuity = this.updateWoodContinuityWatchdog(gameState, preWoodWorkers, woodsite);
+		this.updateEconomicSafetyState(gameState, accessIndex);
 		this.updateWoodScarcityStrategy(gameState, woodsite, woodContinuity);
 		this.applyWoodEmergencyLevel2(gameState, accessIndex, preWoodWorkers, woodContinuity.actual);
+		this.applyEconomicSafetyLaborOverride(gameState, accessIndex);
 		const workers = this.economyWorkerMetrics(gameState);
 		this.resetPhaseWoodRecoveryPriority(gameState, queues);
 		const woodServiceStorehouses = this.woodServiceStorehouseCount(gameState, accessIndex);
@@ -15093,7 +15659,7 @@ export class ExpertDecisionController
 				{
 					// IT15.3: boom does not postpone the entire Forge tree until the City click.
 					// Food/wood/mining eco research continues in its own buildings while Forges
-					// consume military tiers in parallel. This is how the 35% economy bonus is
+					// consume military tiers in parallel. This is how the Expert economy bonus is
 					// converted into a genuinely max-tech ~14 minute army instead of a late queue.
 					coreP2Eco = this.researchExpertP2CoreEcoTech(gameState, queues);
 					this.researchExpertMiningEcoTech(gameState, queues, frame);
@@ -15148,6 +15714,10 @@ export class ExpertDecisionController
 		// becomes an economic target only after territorial expansion claims it.
 		frame = this.applyFutureFarmerFieldCrews(gameState, frame);
 		frame = this.applyFarmHubRetryCooldown(gameState, frame);
+		// IT15.8: economic survival outranks permanent-food expansion. If wood income has
+		// collapsed while the food bank is already healthy, stop spending scarce wood on
+		// new Fields/Farmsteads until the safety kernel restores a usable wood reserve.
+		frame = this.applyEconomicSafetyFrame(gameState, frame);
 		// IT14.91: proactively service a useful mixed wood/stone/metal corridor before
 		// workers have already suffered several minutes of long haul. This is separate
 		// from wood-district migration and never switches the primary forest by itself.
@@ -15358,7 +15928,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.7] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -15424,7 +15994,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.7] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
@@ -15529,6 +16099,9 @@ export class ExpertDecisionController
 			"expertObservedP2MilitaryTechs": { ...this.expertObservedP2MilitaryTechs },
 			"expertObservedCoreEcoTechs": { ...this.expertObservedCoreEcoTechs },
 			"strategyDoctrine": this.strategyDoctrine ? { "id": this.strategyDoctrine.id } : undefined,
+			"civilianGrowthCeilingReached": this.civilianGrowthCeilingReached,
+			"lastMatureCivilianFoodTarget": this.lastMatureCivilianFoodTarget,
+			"lastMatureCivilianDiag": this.lastMatureCivilianDiag,
 			"strategyWoodPivot": this.strategyWoodPivot,
 			"strategyPivotedFrom": this.strategyPivotedFrom,
 			"strategyP2TransitionLogged": this.strategyP2TransitionLogged,
@@ -15645,6 +16218,9 @@ export class ExpertDecisionController
 		this.expertObservedP2MilitaryTechs = { ...(data.expertObservedP2MilitaryTechs || {}) };
 		this.expertObservedCoreEcoTechs = { ...(data.expertObservedCoreEcoTechs || {}) };
 		this.strategyDoctrine = data.strategyDoctrine && data.strategyDoctrine.id ? doctrineById(data.strategyDoctrine.id) : undefined;
+		this.civilianGrowthCeilingReached = !!data.civilianGrowthCeilingReached;
+		this.lastMatureCivilianFoodTarget = Number.isFinite(data.lastMatureCivilianFoodTarget) ? data.lastMatureCivilianFoodTarget : -1;
+		this.lastMatureCivilianDiag = Number.isFinite(data.lastMatureCivilianDiag) ? data.lastMatureCivilianDiag : -99999;
 		this.strategyWoodPivot = !!data.strategyWoodPivot;
 		this.strategyPivotedFrom = data.strategyPivotedFrom;
 		this.strategyLogged = !!this.strategyDoctrine;

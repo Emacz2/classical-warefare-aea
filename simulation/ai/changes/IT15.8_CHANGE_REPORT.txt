@@ -1,0 +1,96 @@
+CWA Petra Expert AI — IT15.8 Change Report
+
+Base: IT15.7. IT15.8 is an economy-kernel stabilization release. Record-setting P2 combat logic remains frozen.
+
+WHY IT15.8 EXISTS
+- IT15.7 exposed an architectural failure: Expert could correctly forecast a wood catastrophe yet trap itself with stronger rules layered above Petra.
+- In the failed replay, Expert reached 12,247 food / 2 wood / 7,144 stone / 2,449 metal with zero active woodcutters while still assigning large labor to food/stone.
+- `woodCiv` metadata was not enough: nominal lumberjacks could have no real legal wood order, creating NO-TARGET loops and 50-93 repeated recovery failures.
+- A second IT15.7 replay survived the same class of wood shortage only because it reached Town, bartered surplus into wood, and unlocked zero-wood Slingers. IT15.8 makes those escape routes deliberate instead of accidental.
+
+ECONOMIC SAFETY KERNEL
+1. Economic survival outranks strategy.
+   - Critical primary-resource continuity overrides rush labor ownership, worker inertia and ordinary resource preferences.
+   - Safety is based on ACTUAL gather orders, not permanent job labels.
+
+2. Earlier wood emergency detection.
+   - After the protected opening, critical wood with <=6 actual woodcutters and <=250 wood activates safety before income reaches absolute zero.
+   - Existing phase/wood-income stall watchdogs also activate it immediately.
+   - Extreme resource imbalance can activate the same path.
+
+3. Repair real lumberjacks before creating more metadata.
+   - Workers already labeled `wood` / `citizenSoldierWood` but lacking a live wood gather/return order are repaired first.
+   - Then idle workers, stone, metal and surplus food labor are peeled toward wood.
+   - Every reassignment must produce a real gather target or the previous job metadata is restored.
+
+4. Absolute wood-access escape valve.
+   - Normal Expert gathering remains owned-territory-only.
+   - If owned wood is exhausted, or the wood watchdog proves zero real flow despite a stale forecast, a capped 16-worker rescue may use safe Gaia wood on the same land access.
+   - Rescue distance affects ranking, never legality: the nearest safe same-land neutral wood is preferable to economic death.
+   - Neutral rescue shuts off automatically once the wood reserve reaches ~700 / the emergency clears.
+
+5. Failed P1 releases the economy.
+   - Once an aborted Early/Late P1 has no live Rush, doctrine converts immediately to `p2_tech_push` recovery.
+   - A historical `expertRushHasLaunched` flag can no longer block the wood-scarcity pivot.
+   - Village recovery civilians are capped at 40 (Early) / 42 (Late), not 65. Town may reopen the normal P2 civilian ceiling.
+
+6. No impossible assignment loops.
+   - Safety resets stale failed-target state rather than letting a worker retry an impossible wood order dozens of times.
+   - No-idle fallback tries the critical resource first, but if access is genuinely unavailable it does not compound failure metadata while the access/barter layer recovers.
+
+7. Stop feeding the surplus during wood collapse.
+   - With a healthy food bank, new Field/Farmstead actions are suppressed during an active wood emergency.
+   - Existing farms keep gathering; scarce wood is reserved for recovery/phase/housing/market infrastructure.
+
+8. Barter is an immediate Town escape route.
+   - Emergency wood barter no longer waits until 9:00. Once a Market exists, <250 wood can immediately convert disposable stone/food/metal toward the existing 700-wood target.
+
+9. Resource-substitution military production.
+   - During hard wood safety, infantry selection prefers the lowest-wood affordable unit for every civilization.
+   - Athens preferentially uses unlocked zero-wood Slingers and the slinger unlock treats economic safety as explicit wood pressure.
+
+10. Food also has a hard floor.
+   - A mature critical-food state with near-zero actual food income can override ordinary job ownership and restore real food gatherers. Natural-food-first / delayed-Field doctrine remains unchanged outside that emergency.
+
+FROZEN / PRESERVED
+- IT15.6 record P2 launch/opportunity logic and battlefield execution.
+- IT15.7 Late-P1 pre-engagement recheck.
+- P3 all-tech launch gate.
+- Finishing persistence / capture finish / siege conversion.
+- IT15.6 natural-food-first, opening layout, housing-tech, Temple and builder doctrines.
+- IT15.5 Gaia defense exclusion and no-idle migration correction.
+
+BENCHMARK
+- Top 3 unchanged: IT15.6 remains #1 (BREAK 10:00, DEFEATED 12:47-13:03).
+- EXPERT_BENCHMARKS current version advanced to IT15.8 only.
+
+CAPTURED-FAILURE REGRESSION CHECKS
+- IT15.7 failed replay t=591: 721F / 63W / 594S / 325M, wood critical, only 6 actual woodcutters. IT15.8 early-warning condition evaluates TRUE; safety begins here rather than waiting for zero income.
+- Same replay t=1055: 8,645F / 12W / 5,930S / 1,591M, actual wood=0, wood stall. IT15.8 safety + neutral-rescue access-deadlock conditions evaluate TRUE.
+- Second IT15.7 replay t=831: 947F / 43W / 36S / 432M, actual wood=0, wood stall, P2 complete. IT15.8 safety evaluates TRUE while preserving Market barter and low-wood Slinger substitution.
+- These are source/scenario regression checks against captured telemetry; live replay testing remains the final integration test.
+
+IT15.8 MATURE-POPULATION CALIBRATION (same version, post human-vs-Expert review)
+11. Expert gather/trade bonus reduced from +35% to +30%.
+    - This intentionally removes part of the artificial economic advantage so future gains must come from better decisions.
+    - Historical +35% benchmark results remain historical and are not directly comparable to new +30% tests.
+
+12. Global civilian growth ceiling reduced from 65 to 60.
+    - P2 Tech Push and P3 Boom grow to 60 permanent civilians once.
+    - Rush soft caps remain lower as before; failed-rush Village recovery remains 40/42 until Town.
+
+13. Reaching 60 is a milestone, not a permanent refill order.
+    - Once 60 civilians has been reached once, later civilian casualties are NOT automatically replaced back to 60.
+    - The live replacement target becomes the dedicated food-engine requirement: four civilians per completed Field plus civilians currently using natural food, with a small 24-civilian absolute rebuild floor.
+    - Example: 10 completed Fields with no natural food -> 40-civilian replacement target. If 60 falls to 50 or 45, the CC trains soldiers instead of civilians. If it falls below 40, civilians are restored only to the food requirement.
+
+14. Mature civilian food backbone.
+    - After the 60-civilian milestone, the controller preserves the required number of civilians as the preferred food workforce.
+    - If farmer civilians are killed while secondary-resource civilians survive, surviving civilians rotate into food before the CC retrains civilian replacements.
+    - Citizen-soldiers increasingly inherit wood/stone/metal work as civilian casualties release population.
+    - This turns attrition into a more military population composition instead of mechanically recreating the original worker mix.
+
+FROZEN FOR THIS CALIBRATION
+- Combat/attack authorization and execution.
+- IT15.8 economic-safety kernel and emergency wood escape.
+- Farm timing, Wicker/berry handling, housing, tech timing and construction logic are unchanged in this calibration pass.
