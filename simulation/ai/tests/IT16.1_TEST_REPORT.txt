@@ -10,7 +10,9 @@ Static checks:
 - maximumFarmsteads remains 2 and the global Forge ceiling remains 1.
 - Expert diagnostics identify IT16.1.
 
-Result: PASS on 2026-09-15. All 101 packaged JavaScript files passed node --check and every listed source contract was found.
+Initial result: INVALID. Node accepted mixed CRLF/LF source, but the in-game SpiderMonkey loader rejected policy.js at startup.
+
+IT16.1a hotfix result: PASS on 2026-09-15. All JavaScript sources were normalized to LF before every packaged file passed node --check. The archive includes SHA256SUMS.txt for extraction-integrity verification.
 
 Live replay acceptance:
 1. Run the same +30% benchmark settings and retain commands, metadata, and interestinglog.
