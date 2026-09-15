@@ -180,8 +180,11 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.74/14.91: permanent farm hubs remain compact and capped. Natural-food
   // dropsites are a separate economic use: if a distinct safe natural-food district
   // repays the building, it may exceed the permanent-farm-hub cap.
-  maximumFarmsteads: 3,
-  maximumNaturalFoodFarmsteads: 5,
+  // IT16.0: two compact hubs are enough for the normal 7-8 Field timing economy.
+  // Finish and use their Field slots before spending another 100 wood. There is no
+  // third-Farmstead exception in the timing build.
+  maximumFarmsteads: 2,
+  maximumNaturalFoodFarmsteads: 2,
   minimumFarmHubFieldSlots: 4,
   // IT14.29: keep four-slot farm hubs as the normal standard, but after repeated
   // real-map placement failures accept a compact three-field hub rather than deadlock.
@@ -540,7 +543,8 @@ const DEFAULT_POLICY = Object.freeze({
   lateP1ForgePopulation: 70,
   lateP1ForgeWoodBank: 1500,
   lateP1ForgeWoodFoodRatio: 3.0,
-  phase2Forge1Population: 70,
+  // Fast Town must immediately turn the new phase into an attack/tech package.
+  phase2Forge1Population: 50,
   phase2Forge2Population: 80,
   // IT14.64: Forge #2 is an on-demand second research lane, not scheduled infrastructure.
   // The planner may request it only while Forge #1 is actually occupied by a useful
@@ -1298,6 +1302,7 @@ const DEFAULT_POLICY = Object.freeze({
   expertPrimaryReinforcementWaveMinimum: 6,
   expertPrimaryReinforcementWaveMaximum: 8,
   expertPrimaryReinforcementWaveCooldownSeconds: 16,
+  expertDisableFragmentedContactSweep: true,
   // IT14.65 premium units do not sit at home while a primary army is already fighting.
   expertPremiumReinforcementBatch: 8,
   expertPremiumReinforcementHealth: 0.75,
@@ -1597,6 +1602,8 @@ const DEFAULT_POLICY = Object.freeze({
   athensSlingerUnlockFoodReserve: 600,
   athensSlingerUnlockStoneReserve: 75,
   athensSlingerUnlockMinimumFoodBank: 900,
+  athensLowWoodP1ForgeStartTime: 180,
+  athensLowWoodP1ForgeMinimumPopulation: 38,
   ecoTechFoodReserve: 600,
   ecoTechWoodReserve: 300,
   ecoTechSurplusFood: 900,

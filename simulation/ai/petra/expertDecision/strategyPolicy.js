@@ -8,7 +8,7 @@ const DOCTRINES = Object.freeze({
     id: "early_p1_rush",
     label: "Early P1 Rush",
     weight: 0.25,
-    softCivilianCap: 34,
+    softCivilianCap: 60,
     softCapUntil: 390,
     soldierTrainingStartTime: 105,
     rushes: 1,
@@ -42,7 +42,7 @@ const DOCTRINES = Object.freeze({
     id: "late_p1_rush",
     label: "Late P1 Timing Rush",
     weight: 0.25,
-    softCivilianCap: 36,
+    softCivilianCap: 60,
     softCapUntil: 570,
     soldierTrainingStartTime: 135,
     rushes: 1,
@@ -145,7 +145,9 @@ function policyOverridesForDoctrine(doctrine, time = 0)
   const d = doctrineById(doctrine && doctrine.id || doctrine);
   const now = Math.max(0, Number(time) || 0);
   const rushWindow = d.softCapUntil > 0 && now < d.softCapUntil;
-  const civilianCap = rushWindow ? d.softCivilianCap : 60;
+  // IT16.0: doctrine never lowers the civilian target. The CC grows to 60 in every
+  // build; only an active P1 attack or a real base defense may borrow a CC cycle.
+  const civilianCap = 60;
   const rushTemple = Number(d.rushes) > 0 ?
     (rushWindow ? { p1TemplePopulation: 9999 } :
       { p1TemplePopulation: 52, p1TempleMinimumFieldPipeline: 2 }) : {};

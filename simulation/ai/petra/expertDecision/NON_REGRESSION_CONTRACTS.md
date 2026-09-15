@@ -1,5 +1,16 @@
 # Expert AI non-regression contracts — IT14
 
+## IT16.0 coordination lock
+
+- The CC targets 60 civilians under every doctrine. Before 60, it may train a soldier only for a live P1 Rush plan or an actual base defense; P2/P3 attacks are not exceptions.
+- A completed Barracks is filled by the production controller in the same controller update in which completion is observed, and every completed Barracks retains queued work when affordable.
+- With natural food depleted, Field #4 is in the pipeline before 4:00 and the planner proceeds toward six; the timing economy matures at 7-8 Fields and continues toward the established ten-Field long-game target when population/food burn requires it.
+- There are at most two Farmsteads in the timing build. Farmstead #2 may not precede Field #4. The crew finishing a permanent Farmstead remains food-owned at the hub and becomes the immediate Field crew.
+- Sparse wood does not automatically cancel P1. Athens adapts to one Barracks plus one Forge, unlocks Slingers when the live tech permits it, substitutes them for wood-cost ranged units, and retains a Hoplite/melee screen.
+- Fast P2 is a declared follow-through route: Barracks #2 may start from a four-Field pipeline and Forge #1 follows promptly. Forge ownership remains globally capped at one.
+- Before an army launches, ordinary civilians must establish the doctrine's secondary-resource floor; massing citizen-soldiers may not leave the live economy with only one or two lumber workers.
+- The arbitrary partial-army contact sweep is disabled. Attack plans remain coherent except for explicit defense, wounded-unit withdrawal, siege operation, or evaluated reinforcement behavior.
+
 These are hard contracts for future Expert updates. Do not remove or weaken them unless a replay demonstrates that the contract itself is wrong.
 
 1. No persistent idle economy workers

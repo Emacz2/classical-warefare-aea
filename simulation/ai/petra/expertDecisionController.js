@@ -777,23 +777,16 @@ export class ExpertDecisionController
 		this.strategyWoodPivot = true;
 		if (p1RushDoctrine)
 		{
-			// Cancel only an UNLAUNCHED rush. Existing soldiers remain useful reserve units.
-			if (manager && manager.upcomingAttacks)
-				for (const plan of [...(manager.upcomingAttacks[AttackPlan.TYPE_RUSH] || [])])
-					if (plan && !(plan.isStarted && plan.isStarted()))
-						this.expertCancelAuthorityPlan(gameState, plan, "wood-scarcity-pivot");
-			this.strategyDoctrine = doctrineById("p2_tech_push");
-			this.HQ.expertDoctrine = { ...this.strategyDoctrine };
+			// IT16.0: sparse wood adapts the P1 composition; it does not automatically
+			// cancel the attack. Athens uses its Forge unlock and shifts ranged production
+			// from wood-cost javelineers to slingers while preserving a hoplite melee line.
 			if (manager)
-			{
-				manager.expertRushRecoveryMode = true;
-				manager.maxRushes = 0;
-			}
+				manager.expertLowWoodP1Adaptation = true;
 		}
 		// P2/P3 doctrines keep their identity; they simply enter the same one-Barracks
 		// fast-Town recovery lane. This is crucial on the exact sparse Steppe case where
 		// 14.95 rolled P2 Tech Push yet still tried to behave like a normal two-Barracks map.
-		const adapted = p1RushDoctrine ? doctrine.id + "->p2_tech_push" : doctrine.id + "->wood-recovery";
+		const adapted = p1RushDoctrine ? doctrine.id + "->slinger_hoplite_p1" : doctrine.id + "->wood-recovery";
 		aiWarn("[EXPERT-STRATEGY] ADAPT " + adapted + " reason=wood-scarcity" +
 			" bank=" + Math.round(bank) + " accessible=" + Math.round(accessible) +
 			" local=" + Math.round(local) + " income=" + income.toFixed(1));
@@ -810,7 +803,7 @@ export class ExpertDecisionController
 		// Phase or explicit rush recovery may reopen the 60-civilian global ceiling.
 		const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
 		if (Number(doctrine.rushes) > 0 && phase < 3)
-			base = { ...base, civilianCap: Math.max(1, Number(doctrine.softCivilianCap) || 36) };
+			base = { ...base, civilianCap: 60 };
 		// IT15.8: recovery outranks rush composition, but it does not open a 60-civilian
 		// Village-Phase flood. Use the old 40/42 recovery band until Town, then the normal
 		// P2 economy may grow to the global ceiling.
@@ -869,16 +862,11 @@ export class ExpertDecisionController
 
 	ccCivilianTrainingTarget(gameState)
 	{
-		// IT15.0: rush doctrines use a deliberately small dedicated-civilian economy.
-		// Civilians own food; citizen-soldiers own wood/minerals until mobilization.
-		// More civilians are allowed only as a small recovery band when the existing
-		// food network has real open capacity and workers are already being used well.
+		// IT16.0 hard contract: every strategy grows the CC civilian economy to 60.
+		// P1 rush and defense may borrow individual CC cycles through
+		// ccMilitaryExceptionReason(), but they do not redefine 34/36/40 as a cap.
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const globalCap = Math.max(1, Number(mergePolicy().civilianCap) || 60);
-		const doctrine = this.ensureStrategicDoctrine(gameState);
-		const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
-		const manager = this.HQ && this.HQ.attackManager;
-		const rush = doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush");
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		if (!this.civilianGrowthCeilingReached && workers.civilians >= globalCap)
 		{
@@ -887,18 +875,9 @@ export class ExpertDecisionController
 			aiWarn("[EXPERT-CIV-MATURE] ceiling-reached civilians=" + workers.civilians + " cap=" + globalCap +
 				" future replacements=food-demand");
 		}
-		// IT15.8: after a failed P1 has converted to the P2 recovery doctrine, keep the
-		// explicit 40/42 Village recovery cap from strategyPolicyOverrides until Town.
-		if (manager && manager.expertRushRecoveryMode && phase < 2)
-			return Math.max(1, Math.min(globalCap, Number(policy.civilianCap) || 42));
-		// IT15.0: launching the rush does not magically turn the CC back into a
-		// 60-civilian factory. Preserve the Steven-style food backbone through P2;
-		// the CC remains a military trainer once the soft cap is reached. City Phase
-		// may reopen the global civilian ceiling for long-game recovery/expansion.
-		if (!rush || phase >= 3)
+		if (!this.civilianGrowthCeilingReached)
+			return globalCap;
 		{
-			if (!this.civilianGrowthCeilingReached)
-				return globalCap;
 			const matureTarget = this.matureCivilianFoodTarget(gameState, workers);
 			const now = Number(gameState.ai.elapsedTime) || 0;
 			if (matureTarget !== this.lastMatureCivilianFoodTarget || now - this.lastMatureCivilianDiag >= 30)
@@ -910,37 +889,6 @@ export class ExpertDecisionController
 			}
 			return matureTarget;
 		}
-
-		const fallback = doctrine.id === "early_p1_rush" ? 34 : 36;
-		const softCap = Math.max(1, Math.min(globalCap, Number(policy.civilianCap) || fallback));
-		if (workers.civilians < softCap)
-			return softCap;
-
-		// Once the timing army is substantially formed, civilian recovery may not steal CC cycles.
-		const minArmy = Math.max(12, Number(policy.expertLateP1RushMinimumLaunchArmy) || (doctrine.id === "early_p1_rush" ? 20 : 52));
-		for (const plan of manager && manager.upcomingAttacks && manager.upcomingAttacks[AttackPlan.TYPE_RUSH] || [])
-			if (plan && plan.unitCollection && plan.unitCollection.length >= Math.floor(minArmy * 0.65))
-				return softCap;
-
-		const actual = this.actualWorkerOrders(gameState);
-		const active = Math.max(1, actual.food + actual.farm + actual.wood + actual.stone + actual.metal +
-			actual.chicken + actual.builders + actual.returning + actual.approaching + actual.idle + actual.unproductive);
-		const productiveFraction = Math.max(0, 1 - (actual.idle + actual.unproductive) / active);
-		const walkingFraction = Math.max(0, actual.approaching / active);
-		const efficient = productiveFraction >= (Number(policy.expertLateP1CivilianEfficiencyMinimum) || 0.90) &&
-			walkingFraction <= (Number(policy.expertLateP1CivilianWalkingMaximum) || 0.25);
-
-		const foodForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
-		const foodShort = !!(foodForecast && (foodForecast.status === "critical" || foodForecast.status === "short"));
-		const foodLaborCanHelp = foodShort && Math.max(0, Number(this.lastImmediateFoodSlots) || 0) > 0;
-		if (efficient && foodLaborCanHelp)
-		{
-			const recoveryCap = doctrine.id === "early_p1_rush" ?
-				(Number(policy.expertEarlyP1CivilianRecoveryCap) || 40) :
-				(Number(policy.expertLateP1CivilianRecoveryCap) || 42);
-			return Math.max(softCap, Math.min(globalCap, recoveryCap));
-		}
-		return softCap;
 	}
 
 	ccMilitaryExceptionReason(gameState)
@@ -955,33 +903,16 @@ export class ExpertDecisionController
 		if (defense && defense.active && Math.max(0, Number(defense.foeCount) || 0) > 0)
 			return "defense";
 
-		// Once an Expert attack is actually on the field, reinforcements are a legitimate
-		// exception to the civilian-only rule regardless of doctrine/phase.
-		for (const plan of this.expertCombatPlans(true))
-			if (plan && plan.expertAuthorityOwned && plan.unitCollection && plan.unitCollection.length > 0)
-				return "active-attack";
-
 		const doctrine = this.ensureStrategicDoctrine(gameState);
-		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
-		// P1 is the only case where the attack can be real before the global civilian ceiling.  Do
-		// not confuse mere doctrine selection/early arming with "doing a P1 attack": the
-		// rush must already be near its actual launch package.
+		// P1 is the only offensive exception below 60. It must still have a live Rush
+		// plan; a stale doctrine label or an aborted rush grants no CC military access.
 		if (doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"))
 		{
-			const targetArmy = Math.max(12, Number(doctrine.rushSize) || 20);
-			const fraction = Math.max(0.5, Math.min(1, Number(policy.expertCCP1AttackExceptionArmyFraction) || 0.75));
-			const minimum = Math.max(Number(policy.expertCCP1AttackExceptionMinimumArmy) || 12, Math.ceil(targetArmy * fraction));
 			const manager = this.HQ && this.HQ.attackManager;
 			for (const plan of manager && manager.upcomingAttacks && manager.upcomingAttacks[AttackPlan.TYPE_RUSH] || [])
-				if (plan && plan.expertAuthorityOwned && plan.unitCollection &&
-				    (plan.expertLaunchAuthorized || plan.unitCollection.length >= minimum))
+				if (plan && plan.expertAuthorityOwned && plan.unitCollection)
 					return "p1-attack";
 		}
-
-		// P2/P3 plans are only created/retained near a real attack package.  Re-use the
-		// existing near-launch test rather than inventing another doctrine-specific timer.
-		if (this.expertMajorAttackNearLaunch(gameState))
-			return "major-attack";
 		return undefined;
 	}
 
@@ -3738,11 +3669,56 @@ export class ExpertDecisionController
 	{
 		if (!plan || !plan.expertAuthorityOwned || plan.state !== AttackPlan.STATE_UNEXECUTED || plan.expertLaunchAuthorized)
 			return false;
+		if (!this.prepareMobilizationEconomy(gameState, plan))
+			return false;
 		if (!plan.authorizeExpertLaunch || !plan.authorizeExpertLaunch(reason))
 			return false;
 		aiWarn("[EXPERT-AUTH] LAUNCH-AUTHORIZED plan=" + plan.name + " type=" + plan.type +
 			" army=" + (plan.unitCollection ? plan.unitCollection.length : 0) + " reason=" + reason);
 		return true;
+	}
+
+	prepareMobilizationEconomy(gameState, plan)
+	{
+		// IT16.0: citizen-soldiers are the secondary-resource economy while massing.
+		// Before they leave, establish an ordinary-civilian wood/mining floor so the
+		// attack cannot turn 1.5k food into a 100/100/100 dead economy.
+		const rush = plan && plan.type === AttackPlan.TYPE_RUSH;
+		const woodFloor = rush ? 8 : 12;
+		const secondaryFloor = rush ? 10 : 18;
+		const candidates = [];
+		let wood = 0, secondary = 0;
+		for (const ent of gameState.getOwnUnits().values())
+		{
+			if (!ent || !ent.getMetadata || !hasClass(ent, "Civilian") || hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry"))
+				continue;
+			const job = ent.getMetadata(PlayerID, JOB_METADATA);
+			if (job === "wood") { ++wood; ++secondary; continue; }
+			if (job === "stone" || job === "metal") { ++secondary; continue; }
+			if ((job === "farm" || job === "food_owned" || job === "food") && ent.getMetadata(PlayerID, TASK_KEY) === undefined)
+				candidates.push(ent);
+		}
+		if (wood >= woodFloor && secondary >= secondaryFloor)
+			return true;
+		candidates.sort((a, b) => a.id() - b.id());
+		let moved = 0;
+		for (const ent of candidates)
+		{
+			let target;
+			if (wood < woodFloor) target = "wood";
+			else if (secondary < secondaryFloor) target = secondary % 3 ? "metal" : "stone";
+			else break;
+			if (this.setDesiredJob(gameState, ent, target))
+			{
+				if (target === "wood") ++wood;
+				++secondary;
+				++moved;
+			}
+		}
+		if (moved)
+			aiWarn("[EXPERT-MOBILIZE] establish civilian secondary floor wood=" + wood + "/" + woodFloor +
+				" secondary=" + secondary + "/" + secondaryFloor + " moved=" + moved + " plan=" + plan.name);
+		return wood >= woodFloor && secondary >= secondaryFloor;
 	}
 
 	expertEvaluateCombatLaunch(gameState, plan)
@@ -5936,20 +5912,23 @@ export class ExpertDecisionController
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const rushDoctrine = doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush";
+		const lowWoodP1 = rushDoctrine && !!(this.HQ.attackManager && this.HQ.attackManager.expertLowWoodP1Adaptation);
 		if (rushDoctrine)
 		{
 			const hopliteQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHopliteTradition;
 			const hopliteBranch = (gameState.isResearched && gameState.isResearched("citystate/hoplite_tradition")) ||
 				(gameState.isResearching && gameState.isResearching("citystate/hoplite_tradition")) ||
 				!!(hopliteQueue && hopliteQueue.hasQueuedUnits && hopliteQueue.hasQueuedUnits());
-			if (hopliteBranch)
+			if (hopliteBranch && !lowWoodP1)
 				return frame;
 		}
-		const start = doctrine.id === "early_p1_rush" ? policy.athensP1ForgeEarlyRushStartTime :
+		const start = lowWoodP1 ? policy.athensLowWoodP1ForgeStartTime : doctrine.id === "early_p1_rush" ? policy.athensP1ForgeEarlyRushStartTime :
 			doctrine.id === "late_p1_rush" ? policy.athensP1ForgeLateRushStartTime : policy.athensP1ForgeTechPushStartTime;
-		if (now < start || gameState.getPopulation() < policy.athensP1ForgeMinimumPopulation || this.builtByClass(gameState, "Barracks").length < 2)
+		const minimumPopulation = lowWoodP1 ? policy.athensLowWoodP1ForgeMinimumPopulation : policy.athensP1ForgeMinimumPopulation;
+		const minimumBarracks = lowWoodP1 ? 1 : 2;
+		if (now < start || gameState.getPopulation() < minimumPopulation || this.builtByClass(gameState, "Barracks").length < minimumBarracks)
 			return frame;
-		if (rushDoctrine)
+		if (rushDoctrine && !lowWoodP1)
 		{
 			const launched = !!(this.HQ.attackManager && this.HQ.attackManager.expertRushHasLaunched);
 			if (launched || now > policy.athensP1MeleeLateRushLatestHold)
@@ -7631,6 +7610,28 @@ export class ExpertDecisionController
 				(Number.isFinite(homeFarmsteadId) ? " homeFarmstead=" + homeFarmsteadId : ""));
 	}
 
+	commitCompletedPermanentFarmsteadBuilders(gameState, taskId, farmsteadId)
+	{
+		// IT16.0 atomic hub-to-Field handoff: the crew that finishes Farmstead #2
+		// remains food-owned at that hub. The next economy frame therefore selects the
+		// same nearby crew for the first Field instead of sending them back to wood.
+		const team = this.constructionWorkers(gameState, taskId);
+		for (const ent of team)
+		{
+			this.releaseConstructionWorker(ent, taskId);
+			if (!ent || !ent.setMetadata || !hasClass(ent, "Civilian") || hasClass(ent, "CitizenSoldier"))
+				continue;
+			ent.setMetadata(PlayerID, JOB_METADATA, "food_owned");
+			ent.setMetadata(PlayerID, FOOD_HOME_PERMANENT, true);
+			if (Number.isFinite(Number(farmsteadId)))
+				ent.setMetadata(PlayerID, FOOD_HOME_FARMSTEAD, Number(farmsteadId));
+			ent.setMetadata(PlayerID, EXPERT_FALLBACK_LEASE_UNTIL, undefined);
+			ent.setMetadata(PlayerID, EXPERT_FALLBACK_LEASE_RESOURCE, undefined);
+		}
+		if (team.length)
+			aiWarn("[EXPERT-FARM] hub-to-field handoff farmstead=" + farmsteadId + " workers=" + team.length);
+	}
+
 	releaseFutureFieldReservations(gameState, taskId)
 	{
 		if (!taskId)
@@ -7991,6 +7992,8 @@ export class ExpertDecisionController
 				}
 				else if (completedNaturalCluster)
 					this.commitCompletedNaturalFarmsteadBuilders(gameState, taskId, completedNaturalCluster);
+				else if (observed.state === "completed" && kind === "farmstead")
+					this.commitCompletedPermanentFarmsteadBuilders(gameState, taskId, observed.completedEntityId);
 				else if (observed.state === "completed" && kind === "storehouse" && this.pendingWoodSelectionByTask[taskId])
 					this.commitCompletedStorehouseBuilders(gameState, taskId, observed.completedEntityId);
 				else
@@ -15592,6 +15595,7 @@ export class ExpertDecisionController
 				"athensWoodScarcityForge": gameState.getPlayerCiv() === "athen" && this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood ? this.resourceForecast.resources.wood.status === "critical" : false,
 				"forgeSecondUseful": this.secondForgeResearchUseful(gameState),
 				"forgeThirdUseful": this.thirdForgeResearchUseful(gameState),
+				"p2TechPushDoctrine": this.ensureStrategicDoctrine(gameState).id === "p2_tech_push",
 				"p3BoomDoctrine": this.isP3BoomDoctrine(gameState)
 			}
 		});
@@ -15932,7 +15936,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.9] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT16.0] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -15998,7 +16002,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.9] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT16.0] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

@@ -1,0 +1,35 @@
+CWA Petra Expert AI — IT16.0 Change Report
+
+Base: IT15.9. IT16.0 is a corrective coordination release for the +30% Expert calibration.
+
+1. Hard CC growth rule
+- All doctrines target 60 civilians.
+- Before 60, CC soldier training is limited to a live P1 Rush plan or actual defense.
+- Aborted rush, P2 attack, P3 attack, and generic “near launch” states are not exceptions.
+
+2. Efficient P1 and low-wood adaptation
+- Sparse wood no longer automatically converts an unlaunched P1 rush into P2 Tech Push.
+- Athens marks a low-wood P1 adaptation: one Barracks, early single Forge, Slinger unlock when the live zero-wood technology is affordable, and a persistent Hoplite/melee screen.
+- The first completed Barracks remains under the existing no-idle queue floor immediately when the controller observes completion.
+
+3. Farm topology and timing
+- Maximum Farmsteads reduced from three/five role-dependent limits to two globally.
+- Farmstead #2 cannot be started before four Fields are built/founded/queued.
+- After natural-food transition, the Field pipeline targets four by 3:30 and six from 4:10.
+- Permanent Farmstead builders remain food-owned at the new hub for the immediate next Field instead of returning to wood.
+
+4. Fast-Town follow-through
+- P2 Tech Push and P3 Boom can begin Barracks #2 with four Fields in the pipeline and a viable wood line rather than waiting until six Fields are complete.
+- Forge #1 population threshold reduced to 50; Forge count remains capped at one.
+
+5. Mobilization and cohesion
+- Before launch, ordinary civilians establish a secondary-resource floor: 8 wood/10 total secondary for P1 Rush, 12 wood/18 total secondary for later attacks.
+- The partial contact sweep that redirected arbitrary subsets of the army is disabled.
+
+Expected replay checks
+- No CC citizen-soldier before 60 unless log reason is p1-attack or defense.
+- First Barracks receives work on its first observed completed update.
+- No Farmstead #2 before Field pipeline 4; never Farmstead #3.
+- Fast P2 has Barracks #2 started around the phase transition and Forge #1 promptly thereafter.
+- At launch, `[EXPERT-MOBILIZE]` confirms the civilian secondary-resource floor if a handoff was required.
+- No `[EXPERT-ATTACK-MOVE] contact` subset redirections.

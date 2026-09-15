@@ -1,0 +1,30 @@
+CWA Petra Expert AI — IT16.0 Static Regression Test Report
+
+Result: PASS for static/syntax/package checks. Live replay validation remains required.
+
+Checks completed
+- Every JavaScript file under ai/petra passes `node --check`.
+- All four strategic doctrines expose a 60 civilian target.
+- Pre-60 CC offensive exceptions for generic active P2/P3 attacks were removed; live P1 Rush and real defense remain.
+- Sparse-wood P1 adaptation no longer cancels the Rush or changes doctrine to P2 Tech Push.
+- Athens low-wood P1 Forge path permits one completed Barracks and preserves the Slinger unlock call.
+- Farmstead limits are exactly two for both permanent and natural-food roles.
+- Natural Farmstead #2 requires at least four Fields in the built/foundation/queue pipeline.
+- Permanent Farmstead completion calls the hub-to-Field worker handoff.
+- Transition Field floor is four at 3:30 and six at 4:10 once permanent farming is active.
+- P2 Tech Push/P3 Boom observation flag reaches the fast-Town Barracks #2 path.
+- Forge #1 threshold is 50 population and total Forge target remains capped at one.
+- Army launch authorization calls the civilian secondary-resource handoff first.
+- Fragmented contact sweep is disabled by policy.
+- Expert difficulty remains +30% in ai/petra/data.json.
+
+Live replay acceptance tests
+1. No CC soldier before 60 unless `[EXPERT-CC]` says `p1-attack` or `defense`.
+2. First completed Barracks receives an Expert soldier plan on the same controller update.
+3. At 4:00 after natural-food exhaustion: Field built+foundation+queued pipeline >=4.
+4. Farmstead #2 appears only after Field pipeline >=4; Farmstead #3 never appears.
+5. Sparse-wood P1 remains a Rush and produces a mixed Slinger/Hoplite army when the civ tech permits Slingers.
+6. Fast P2 begins Barracks #2 before/around phase completion and Forge #1 promptly after requirements are met.
+7. Launch leaves >=8/10 ordinary civilian wood/secondary workers for P1, or >=12/18 for later attacks.
+8. No partial `[EXPERT-ATTACK-MOVE] contact` redirection logs.
+9. Compare outcome, 4/8/15-minute economy, idle trainer time, Field/Farmstead counts, and army losses against IT15.8 and IT15.9; any backward movement is a regression, not a tradeoff to silently accept.

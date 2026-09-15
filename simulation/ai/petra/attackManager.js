@@ -1255,6 +1255,10 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 	if (this.Config.difficulty < difficulty.EXPERT)
 		return 0;
 	const policy = mergePolicy();
+	// IT16.0: this sweep split the timing army into arbitrary contact groups. Keep the
+	// attack plan coherent and let its native target/formation logic resolve contact.
+	if (policy.expertDisableFragmentedContactSweep)
+		return 0;
 	const now = Number(gameState.ai.elapsedTime) || 0;
 	const interval = Math.max(0.75, Number(policy.expertAttackMoveSweepIntervalSeconds) || 1.75);
 	const radius = Math.max(20, Number(policy.expertAttackMoveSweepRadius) || 58);
