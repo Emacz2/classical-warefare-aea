@@ -2697,9 +2697,9 @@ AttackPlan.prototype.UpdateTransporting = function(gameState, events)
 
 AttackPlan.prototype.UpdateWalking = function(gameState, events)
 {
-	// IT16.1b: no sacrificial advance party. While marching a sizeable Expert army,
-	// pull units outside the main 80m envelope back toward the collection centre before
-	// normal target/path orders can send them still farther ahead.
+	// IT16.2: a marching army must not feed detached units into the enemy while
+	// the main body is still standing behind them. Pull meaningful stragglers
+	// back into the formation before evaluating another forward move.
 	if (this.Config.difficulty >= difficulty.EXPERT && this.unitCollection.length >= 20 && this.position)
 	{
 		let detached = 0;
@@ -2712,10 +2712,12 @@ AttackPlan.prototype.UpdateWalking = function(gameState, events)
 		}
 		if (detached)
 		{
-			aiWarn("[EXPERT-COHESION] plan=" + this.name + " regroup-detached=" + detached + " army=" + this.unitCollection.length);
+			aiWarn("[EXPERT-COHESION] plan=" + this.name + " regroup-detached=" + detached +
+				" army=" + this.unitCollection.length);
 			return true;
 		}
 	}
+
 	// we're marching towards the target
 	// Let's check if any of our unit has been attacked.
 	// In case yes, we'll determine if we're simply off against an enemy army, a lone unit/building

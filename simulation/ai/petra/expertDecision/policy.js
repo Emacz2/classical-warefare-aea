@@ -177,9 +177,8 @@ const DEFAULT_POLICY = Object.freeze({
   // positions around the Farmstead. Simple N/E/S/W side-centres overlap when Fields
   // are larger than the Farmstead, so the four-slot contract uses exact rectangle math.
   fieldsPerFarmstead: 4,
-  // IT16.1: a Market is also a food dropsite. Treat the first two compact faces as
-  // deliberate overflow capacity, giving two Farmsteads + one useful Town Market a
-  // normal 7-10 Field envelope without buying a third Farmstead.
+  // IT16.2: the first Town Market is a bounded overflow food hub, never a replacement
+  // for the two compact Farmstead districts.
   fieldsPerMarket: 2,
   marketFarmHubPreferredSlots: 2,
   marketFarmHubMissingSlotPenalty: 18000,

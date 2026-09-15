@@ -75,7 +75,7 @@ function foodMode(state, policy) {
     (Number(state.food.primaryRemaining) || 0) + (Number(state.food.alternativeRemaining) || 0));
   const runway = Math.max(0, Number(state.food.naturalRunwaySeconds) || 0);
   const territoryRatio = Number.isFinite(state.food.territoryNaturalRatio) ? state.food.territoryNaturalRatio : 1;
-	const barracksPipeline = state.structures.barracks + state.foundations.barracks + state.queued.barracks;
+  const barracksPipeline = state.structures.barracks + state.foundations.barracks + state.queued.barracks;
 
   // IT14.15: cover EVERY worthwhile uncovered in-territory fruit/berry cluster before
   // spending wood on permanent farms. The Wicker branch still establishes cluster #2;
@@ -123,6 +123,7 @@ function fieldDemand(state, policy) {
   const totalNatural = Math.max(0, Number(state.food.totalNaturalRemaining) || 0);
   const runway = Math.max(0, Number(state.food.naturalRunwaySeconds) || 0);
   const territoryRatio = Number.isFinite(state.food.territoryNaturalRatio) ? state.food.territoryNaturalRatio : 1;
+  const barracksPipeline = state.structures.barracks + state.foundations.barracks + state.queued.barracks;
   // IT15.6 hard natural-food contract: permanent fields do not begin while the
   // COMBINED usable in-territory natural-food pool remains above the true transition
   // threshold. Temporary saturation/idle food labor overflows productively to wood; it
@@ -132,11 +133,10 @@ function fieldDemand(state, policy) {
   // on hold. Replays showed the ratio moving 24% -> 26% while grapes remained; the
   // old test then froze a ten-Field population target at the six Fields already built.
   // Natural food is still gathered first, but it now overlaps the permanent transition.
-  // IT16.1b: Barracks #1 is a frozen opening prerequisite. A rush doctrine may begin
-  // its farm overlap earlier after that, but can never spend 100/200 wood on Fields
-  // before the first military-production building is in the pipeline.
-  const naturalFirstHold = existingFields === 0 && (barracksPipeline === 0 || totalNatural > 0 &&
-    territoryRatio > policy.territoryNaturalFarmTransitionRatio);
+  // IT16.2 frozen ordering: no permanent Field before Barracks #1 is built, founded,
+  // or queued. Rush farm overlap may begin only after that production commitment.
+  const naturalFirstHold = existingFields === 0 && (barracksPipeline === 0 ||
+    totalNatural > 0 && territoryRatio > policy.territoryNaturalFarmTransitionRatio);
   const margin = Math.max(1, Number(policy.foodRateSafetyMargin) || 1.12);
   const farmerRate = state.food.averageFarmerRate > 0 ? state.food.averageFarmerRate : 0.7;
   const farmersPerField = preferredFieldCrew(state, policy);

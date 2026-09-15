@@ -1,14 +1,5 @@
 # Expert AI non-regression contracts — IT14
 
-## IT16.1 adaptive food-hub lock
-
-- Markets are food dropsites and the first Town Market contributes at most two compact Field slots to the permanent-food capacity graph.
-- Markets remain resource/barter/Town infrastructure; their Field capacity is bounded overflow and never licenses a third or fourth isolated Market field.
-- With two Farmsteads present, a five-Field/no-slot snapshot is not accepted as a mature economy when a Market has legal two-Field capacity.
-- Temple and other independent-building placement protects the full future Farmstead ring and the two reserved Market faces, including faces temporarily occupied by exhaustible natural food.
-- A live own-territory natural-food supply lock remains authoritative until that exact source is exhausted; merely having Fields does not release the worker to farming.
-- IT16.0's 60-civilian CC rule, immediate Barracks use, two-Farmstead ceiling, one-Forge ceiling, sparse-wood Slinger/Hoplite adaptation, and coherent attack-launch rules remain mandatory.
-
 ## IT16.0 coordination lock
 
 - The CC targets 60 civilians under every doctrine. Before 60, it may train a soldier only for a live P1 Rush plan or an actual base defense; P2/P3 attacks are not exceptions.
@@ -733,3 +724,16 @@ Replay regressions locked by IT14:
 - If farmer civilians are killed, surviving civilians assigned to secondary resources rotate into the protected food backbone before new civilian births are requested. Citizen-soldiers inherit wood/stone/metal labor as civilian attrition increases.
 - A 10-Field mature economy therefore normally needs about 40 civilians after natural food is gone. Population released above that food requirement is military/flexible economic population.
 - This calibration does not alter IT15.8's economic-safety kernel, IT15.7 combat changes, or the frozen IT15.6 record-setting P2 attack execution.
+
+## IT16.2 cumulative economy / production / cohesion contract
+
+- Live gather orders, not only supply metadata, count when spreading the opening fruit gatherers. Multi-bush/date-palm patches use one civilian per source before stacking; isolated food and apples retain their separate limits.
+- Permanent Field #1 cannot be planned before Barracks #1 is built, founded, or queued. The natural-food hold remains binding after the Barracks commitment.
+- A completed Barracks is production debt until it begins training; Fields and phase plans may not silently turn that military investment into an idle structure.
+- Ordinary Civic Centre military training before 60 civilians is forbidden except for a P1 rush or an actual attack emergency.
+- Low-wood pressure is reevaluated during P1. Athens may dynamically reserve and build its Forge, unlock Slingers without an artificial stone reserve, and substitute Slingers for wood-costly ranged infantry while retaining melee support.
+- The first Town Market includes its complete 200 wood / 25 stone / 25 metal affordability check. It is a deliberate two-Field overflow hub and must be placed to preserve those two farm faces.
+- Farmstead districts remain compact and bounded: two Farmsteads with up to four Fields each are preferred over redundant Farmsteads with only two or three Fields. Markets supplement rather than replace those districts.
+- Temple and other major-structure placement must respect reserved Farmstead and Market Field slots.
+- A marching Expert army of at least 20 units regroups units detached more than 80 metres from its formation centre before advancing; it may not feed a small advance group while the main body waits.
+- All IT15.1-IT15.8 safety, sovereignty, natural-food, civilian-growth, production, retreat, benchmark, and historical-record contracts remain binding unless explicitly superseded above.

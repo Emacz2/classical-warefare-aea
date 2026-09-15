@@ -1,0 +1,16 @@
+CWA Petra Expert IT16.2 - pre-release verification
+==================================================
+
+PASS: Every JavaScript file under ai/ parsed with node --check.
+PASS: Executable fieldDemand smoke test: no Barracks pipeline => 0 Fields.
+PASS: Executable fieldDemand smoke test: Barracks foundation + depleted natural
+      ratio => permanent Fields requested.
+PASS: Executable fieldDemand smoke test: healthy natural food => 0 Fields even
+      after a Barracks foundation.
+PASS: Source checks found live-order fruit spreading, dynamic low-wood Forge/
+      Slinger handling, full Market affordability, two-Field Market capacity,
+      Market farm-face placement scoring, and marching-army cohesion.
+PASS: Modified JavaScript files use LF line endings.
+
+Archive and extracted-module results are recorded during packaging and should
+be verified against the ZIP checksum supplied with the release.

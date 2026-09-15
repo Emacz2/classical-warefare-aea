@@ -1259,10 +1259,6 @@ export class ExpertDecisionController
 			if (loads.has(supplyId))
 				loads.set(supplyId, loads.get(supplyId) + 1);
 			else if (typeof worker.unitAIOrderData === "function")
-			{
-				// IT16.1b: a just-issued/retargeted gather order can briefly outlive cleared
-				// SUPPLY_ID metadata. Count that live reservation so several civilians in the
-				// same update cannot all observe priorLoad=0 and pile onto one palm.
 				for (const order of worker.unitAIOrderData() || [])
 				{
 					const target = Number(order && order.target);
@@ -1270,7 +1266,6 @@ export class ExpertDecisionController
 					loads.set(target, loads.get(target) + 1);
 					break;
 				}
-			}
 		}
 		return loads;
 	}
@@ -1299,8 +1294,6 @@ export class ExpertDecisionController
 			return Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1);
 		if ((cluster && cluster.ids || []).length === 1)
 			return Math.max(1, Number(policy.naturalFoodSingleSupplyMaxWorkers) || 3);
-		// Multi-source fruit clusters distribute across their individual supplies from
-		// the opening second onward; Wicker changes efficiency, not assignment geometry.
 		return Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1);
 	}
 
@@ -2995,8 +2988,7 @@ export class ExpertDecisionController
 		const pivotFoodFloor = this.strategyWoodPivot || safetyWood ? 450 : (Number(policy.athensSlingerUnlockMinimumFoodBank) || 900);
 		const pivotFoodReserve = this.strategyWoodPivot || safetyWood ? 250 : (Number(policy.athensSlingerUnlockFoodReserve) || 600);
 		const foodReady = (Number(res.food) || 0) >= Math.max(pivotFoodFloor, cost.food + pivotFoodReserve);
-		const stoneReserve = lowWood ? 0 : (Number(policy.athensSlingerUnlockStoneReserve) || 75);
-		const stoneReady = (Number(res.stone) || 0) >= cost.stone + stoneReserve;
+		const stoneReady = (Number(res.stone) || 0) >= cost.stone + (lowWood ? 0 : (Number(policy.athensSlingerUnlockStoneReserve) || 75));
 		const metalReady = (Number(res.metal) || 0) >= cost.metal;
 		// Until the data-side unlock is converted to its intended four-unit cost, do not
 		// spend scarce wood to solve a wood shortage. With the planned 300F/100S cost this
@@ -6008,8 +6000,6 @@ export class ExpertDecisionController
 		for (const resource of ["food", "wood", "stone", "metal"])
 		{
 			const forgeSpend = Number(cost && cost[resource]) || 0;
-			// A dynamic low-wood pivot builds the Forge for Slingers, not for the normal
-			// melee-tech package. Do not make that rescue wait for an unrelated upgrade.
 			const techSpend = rushDoctrine && !lowWoodP1 ? Number(meleeCost[resource]) || 0 : 0;
 			const packageReserve = rushDoctrine && !lowWoodP1 ?
 				Math.max(Number(reserve[resource]) || 0,
@@ -8967,8 +8957,7 @@ export class ExpertDecisionController
 		{
 			const cost = { food: 0, wood: 200, stone: 25, metal: 25 };
 			const affordable = ["food", "wood", "stone", "metal"].every(type => (Number(bank[type]) || 0) >= cost[type]);
-			actions.push({ type: affordable ? "BUILD" : "RESERVE", kind: "market", role: "recovery_barter", priority: Number(policy.expertRecoveryMarketPriority) || 112,
-				cost,
+			actions.push({ type: affordable ? "BUILD" : "RESERVE", kind: "market", role: "recovery_barter", priority: Number(policy.expertRecoveryMarketPriority) || 112, cost,
 				builderCount: 4, builderPool: ["wood", "citizenSoldierWood", "stone", "metal", "food", "farm"],
 				reason: pivotMarketNeed ? "wood-scarcity pivot barter valve" : forecastBarterNeed ? "forecast surplus-to-shortfall barter" : "resource-imbalance recovery barter" });
 			aiWarn("[EXPERT-RECOVERY] " + (affordable ? "build" : "reserve") + "=market reason=" + (pivotMarketNeed ? "wood-pivot" : forecastBarterNeed ? "forecast" : "resource-imbalance") + " bank=" +
@@ -11144,9 +11133,6 @@ export class ExpertDecisionController
 		const policy = mergePolicy();
 		const farms = this.builtByClass(gameState, "Farmstead");
 		const markets = this.builtByClass(gameState, "Market");
-		// IT16.1: Markets are real food dropsites, but bounded two-Field overflow hubs—not
-		// substitutes for the coherent 3-4 Field Farmstead districts. This makes the Town
-		// Market solve a five-Field geometry lock without reviving Farmstead spam.
 		const foodHubs = [
 			...farms.map(farm => ({ "entity": farm, "kind": "farmstead", "slotLimit": Number(policy.fieldsPerFarmstead) || 4 })),
 			...markets.map(market => ({ "entity": market, "kind": "market", "slotLimit": Number(policy.fieldsPerMarket) || 2 }))
@@ -11159,10 +11145,7 @@ export class ExpertDecisionController
 		let shared;
 		try
 		{
-			const hubGeomByKind = {
-				"farmstead": readTemplateGeometry(gameState, "farmstead"),
-				"market": readTemplateGeometry(gameState, "market")
-			};
+			const hubGeomByKind = { "farmstead": readTemplateGeometry(gameState, "farmstead"), "market": readTemplateGeometry(gameState, "market") };
 			shared = {
 				"ports": createPetraPlacementPorts(gameState, "field", {
 					"HQ": this.HQ,
@@ -12085,8 +12068,6 @@ export class ExpertDecisionController
 				"distances": [50, 56, 62, 68, 74, 80, 88, 96, 108], "angleCount": 48, "templateRadius": geometry.radius }));
 			request = { kind, candidates, "templateRadius": geometry.radius,
 				"minimumCCDistance": policy.independentBuildingMinimumCCDistance,
-				// IT16.1: the first Town Market is both a resource/barter building and a
-				// bounded two-Field overflow hub. Candidate scoring below protects that use.
 				"farmHubMarket": this.builtByClass(gameState, "Market").length === 0 };
 		}
 
@@ -12686,9 +12667,6 @@ export class ExpertDecisionController
 				for (const slot of slots)
 					reserveSlot(slot, farm.id());
 			}
-			// IT16.1: protect two canonical Field faces around completed/planned Markets as
-			// firmly as Farmstead faces. Temple and other independent-building searches can
-			// no longer consume the Market's future food capacity before it is used.
 			for (const market of marketHubs)
 			{
 				const idealRequest = this.fieldRequestAt(gameState, market.position(), market.id(), "market");
@@ -12722,14 +12700,10 @@ export class ExpertDecisionController
 			const shared = {
 				"ports": fieldPorts,
 				"fieldGeom": readTemplateGeometry(gameState, "field"),
-				"hubGeomByKind": {
-					"farmstead": readTemplateGeometry(gameState, "farmstead"),
-					"market": readTemplateGeometry(gameState, "market")
-				}
+				"hubGeomByKind": { "farmstead": readTemplateGeometry(gameState, "farmstead"), "market": readTemplateGeometry(gameState, "market") }
 			};
 			const candidateHubKind = kind === "market" ? "market" : "farmstead";
-			const candidateSlotLimit = candidateHubKind === "market" ?
-				Math.max(1, Number(mergePolicy().fieldsPerMarket) || 2) : Math.max(1, Number(mergePolicy().fieldsPerFarmstead) || 4);
+			const candidateSlotLimit = candidateHubKind === "market" ? Math.max(1, Number(mergePolicy().fieldsPerMarket) || 2) : Math.max(1, Number(mergePolicy().fieldsPerFarmstead) || 4);
 			const cache = new Map();
 			const futureCache = new Map();
 			farmCapacityAt = position =>
@@ -13122,8 +13096,6 @@ export class ExpertDecisionController
 					const live = farmCapacityAt(position);
 					const future = farmFutureCapacityAt ? farmFutureCapacityAt(position) : live;
 					const preferred = Math.max(1, Number(policy.marketFarmHubPreferredSlots) || 2);
-					// Live space is strongest, but safe natural food may temporarily occupy a
-					// future face. Rank both; never turn awkward terrain into a Market deadlock.
 					score += (Number(policy.marketFarmHubMissingSlotPenalty) || 18000) * Math.max(0, preferred - Math.max(live, future));
 					score -= 5000 * Math.min(preferred, live) + 1800 * Math.min(preferred, future);
 				}
@@ -16006,7 +15978,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT16.1b] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT16.2] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16072,7 +16044,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT16.1b] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT16.2] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

@@ -1,0 +1,35 @@
+CWA Petra Expert IT16.2
+========================
+
+Baseline
+--------
+IT16.2 was rebuilt from the known-working IT16.0 source. The broken IT16.1/16.1b
+branches were not used as a release base.
+
+Corrections
+-----------
+1. Opening fruit distribution now counts live gather-order targets as well as
+   supply metadata. Berry/date-palm patches fill one civilian per source before
+   stacking.
+2. Field #1 is blocked until Barracks #1 is built, founded, or queued. The
+   existing natural-food hold still applies independently.
+3. Low-wood Athens P1 adaptation is reevaluated during play. It can reserve the
+   Forge, unlock Slingers without an extra stone cushion, and avoid the ordinary
+   melee-tech package blocking that unlock.
+4. The recovery Market uses its full 200W/25S/25M affordability test. A Market
+   is also a bounded two-Field food hub and placement scoring preserves those
+   two faces.
+5. Farmstead hubs remain four-Field hubs, discouraging redundant half-used
+   Farmsteads. Temple and other reserved placement uses the combined Farmstead
+   and Market farm-slot geometry.
+6. A marching Expert army of 20+ units pulls members more than 80 metres from
+   the formation centre back before allowing another advance step.
+7. Existing IT16.0 rules remain intact, including the 60-civilian CC gate,
+   immediate production-lane refill, and two-Forge normal cap.
+
+Release note
+------------
+This package has passed whole-tree JavaScript parsing, an executable
+field-order/natural-food smoke test, line-ending validation, archive integrity,
+and post-extraction module parsing. Replay behavior still requires in-game
+testing because the full 0 A.D. simulation engine is not available here.
