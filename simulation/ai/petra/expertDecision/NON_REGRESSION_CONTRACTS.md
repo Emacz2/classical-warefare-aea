@@ -1,5 +1,14 @@
 # Expert AI non-regression contracts — IT14
 
+## IT16.1 adaptive food-hub lock
+
+- Markets are food dropsites and the first Town Market contributes at most two compact Field slots to the permanent-food capacity graph.
+- Markets remain resource/barter/Town infrastructure; their Field capacity is bounded overflow and never licenses a third or fourth isolated Market field.
+- With two Farmsteads present, a five-Field/no-slot snapshot is not accepted as a mature economy when a Market has legal two-Field capacity.
+- Temple and other independent-building placement protects the full future Farmstead ring and the two reserved Market faces, including faces temporarily occupied by exhaustible natural food.
+- A live own-territory natural-food supply lock remains authoritative until that exact source is exhausted; merely having Fields does not release the worker to farming.
+- IT16.0's 60-civilian CC rule, immediate Barracks use, two-Farmstead ceiling, one-Forge ceiling, sparse-wood Slinger/Hoplite adaptation, and coherent attack-launch rules remain mandatory.
+
 ## IT16.0 coordination lock
 
 - The CC targets 60 civilians under every doctrine. Before 60, it may train a soldier only for a live P1 Rush plan or an actual base defense; P2/P3 attacks are not exceptions.

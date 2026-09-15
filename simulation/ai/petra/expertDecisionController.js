@@ -11118,9 +11118,14 @@ export class ExpertDecisionController
 	{
 		const policy = mergePolicy();
 		const farms = this.builtByClass(gameState, "Farmstead");
-		// IT14.46: fields belong to farmsteads. Markets may accept food, but treating them
-		// as farm hubs created isolated fields with no coherent permanent-food district.
-		const foodHubs = farms.map(farm => ({ "entity": farm, "kind": "farmstead" }));
+		const markets = this.builtByClass(gameState, "Market");
+		// IT16.1: Markets are real food dropsites, but bounded two-Field overflow hubs—not
+		// substitutes for the coherent 3-4 Field Farmstead districts. This makes the Town
+		// Market solve a five-Field geometry lock without reviving Farmstead spam.
+		const foodHubs = [
+			...farms.map(farm => ({ "entity": farm, "kind": "farmstead", "slotLimit": Number(policy.fieldsPerFarmstead) || 4 })),
+			...markets.map(market => ({ "entity": market, "kind": "market", "slotLimit": Number(policy.fieldsPerMarket) || 2 }))
+		];
 		// IT14.82: only an actual foundation is pending capacity. An issued plan that the
 		// simulation has not materialized must never make the farm network look healthier.
 		const committedFields = this.builtByClass(gameState, "Field").length + this.foundationsByClass(gameState, "Field").length;
@@ -11129,7 +11134,10 @@ export class ExpertDecisionController
 		let shared;
 		try
 		{
-			const hubGeomByKind = { "farmstead": readTemplateGeometry(gameState, "farmstead") };
+			const hubGeomByKind = {
+				"farmstead": readTemplateGeometry(gameState, "farmstead"),
+				"market": readTemplateGeometry(gameState, "market")
+			};
 			shared = {
 				"ports": createPetraPlacementPorts(gameState, "field", {
 					"HQ": this.HQ,
@@ -11180,7 +11188,8 @@ export class ExpertDecisionController
 			const farm = descriptor.entity;
 			const hubKind = descriptor.kind;
 			const builtFieldCount = builtFields.filter(field => fieldHome.get(field.id()) === farm.id()).length;
-			const remainingTarget = Math.max(0, Number(policy.fieldsPerFarmstead) - builtFieldCount);
+			const hubSlotLimit = Math.max(1, Number(descriptor.slotLimit) || Number(policy.fieldsPerFarmstead) || 4);
+			const remainingTarget = Math.max(0, hubSlotLimit - builtFieldCount);
 			const touchGap = Math.max(0, Math.min(2.0, Number(policy.existingFarmsteadReuseMaxBorderGap) || 2.0));
 			let idealSlots = remainingTarget > 0 ? this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared,
 				remainingTarget, touchGap, hubKind, false) : [];
@@ -11209,8 +11218,9 @@ export class ExpertDecisionController
 					if (!Number.isFinite(lock))
 						++homeDemand;
 				}
-			const geometricPackingSlots = this.geometricFieldPackingSlotsAt(gameState, farm.position(), farm.id(), accessIndex, hubKind);
+			const geometricPackingSlots = this.geometricFieldPackingSlotsAt(gameState, farm.position(), farm.id(), accessIndex, hubKind).slice(0, hubSlotLimit);
 			hubs.push({ "farm": farm, "hubKind": hubKind, "slots": slots, "builtFieldCount": builtFieldCount, fieldGapLimit, homeDemand,
+				"slotLimit": hubSlotLimit,
 				"idealSlotCount": idealSlots.length, "exhaustiveSlotCount": slots.length,
 				"geometricPackingSlotCount": geometricPackingSlots.length });
 			openFieldSlots += slots.length;
@@ -12049,7 +12059,10 @@ export class ExpertDecisionController
 			candidates.push(...generatePlacementCandidates({ "kind": "barracks", "anchor": ccPos, "toward": toward,
 				"distances": [50, 56, 62, 68, 74, 80, 88, 96, 108], "angleCount": 48, "templateRadius": geometry.radius }));
 			request = { kind, candidates, "templateRadius": geometry.radius,
-				"minimumCCDistance": policy.independentBuildingMinimumCCDistance };
+				"minimumCCDistance": policy.independentBuildingMinimumCCDistance,
+				// IT16.1: the first Town Market is both a resource/barter building and a
+				// bounded two-Field overflow hub. Candidate scoring below protects that use.
+				"farmHubMarket": this.builtByClass(gameState, "Market").length === 0 };
 		}
 
 		else if (kind === "market")
@@ -12597,6 +12610,10 @@ export class ExpertDecisionController
 				...this.builtByClass(gameState, "Farmstead"),
 				...this.foundationsByClass(gameState, "Farmstead")
 			].filter(ent => ent && entityPosition(ent));
+			const marketHubs = [
+				...this.builtByClass(gameState, "Market"),
+				...this.foundationsByClass(gameState, "Market")
+			].filter(ent => ent && entityPosition(ent));
 			// IT14.85: same-frame Farmstead plans are not simulation entities yet. Represent
 			// them as tiny synthetic anchors so every later independent building in this same
 			// decision frame sees and preserves the future compact Field district.
@@ -12644,6 +12661,17 @@ export class ExpertDecisionController
 				for (const slot of slots)
 					reserveSlot(slot, farm.id());
 			}
+			// IT16.1: protect two canonical Field faces around completed/planned Markets as
+			// firmly as Farmstead faces. Temple and other independent-building searches can
+			// no longer consume the Market's future food capacity before it is used.
+			for (const market of marketHubs)
+			{
+				const idealRequest = this.fieldRequestAt(gameState, market.position(), market.id(), "market");
+				idealRequest.gaps = [0.0];
+				idealRequest.maxBorderGap = 0.80;
+				for (const slot of generatePlacementCandidates(idealRequest).slice(0, Math.max(1, Number(policy.fieldsPerMarket) || 2)))
+					reserveSlot(slot, market.id());
+			}
 
 			// IT14.46: markets are no longer permanent-field hubs. Reserve field faces only
 			// around farmsteads so permanent food remains visually and mechanically coherent.
@@ -12658,7 +12686,7 @@ export class ExpertDecisionController
 				"slotMargin": Number(policy.farmDistrictReservedSlotMargin) || 2
 			};
 		}
-		if (kind === "farmstead")
+		if (kind === "farmstead" || kind === "market")
 		{
 			const fieldPorts = createPetraPlacementPorts(gameState, "field", {
 				"HQ": this.HQ,
@@ -12669,15 +12697,21 @@ export class ExpertDecisionController
 			const shared = {
 				"ports": fieldPorts,
 				"fieldGeom": readTemplateGeometry(gameState, "field"),
-				"hubGeomByKind": { "farmstead": readTemplateGeometry(gameState, "farmstead") }
+				"hubGeomByKind": {
+					"farmstead": readTemplateGeometry(gameState, "farmstead"),
+					"market": readTemplateGeometry(gameState, "market")
+				}
 			};
+			const candidateHubKind = kind === "market" ? "market" : "farmstead";
+			const candidateSlotLimit = candidateHubKind === "market" ?
+				Math.max(1, Number(mergePolicy().fieldsPerMarket) || 2) : Math.max(1, Number(mergePolicy().fieldsPerFarmstead) || 4);
 			const cache = new Map();
 			const futureCache = new Map();
 			farmCapacityAt = position =>
 			{
 				const key = position[0].toFixed(2) + ":" + position[1].toFixed(2);
 				if (!cache.has(key))
-					cache.set(key, this.fieldSlotsAt(gameState, position, -1, accessIndex, shared, mergePolicy().fieldsPerFarmstead).length);
+					cache.set(key, this.fieldSlotsAt(gameState, position, -1, accessIndex, shared, candidateSlotLimit, undefined, candidateHubKind).length);
 				return cache.get(key);
 			};
 			// Opening/natural-food Farmsteads are chosen while berries/fruit may physically
@@ -12688,7 +12722,7 @@ export class ExpertDecisionController
 			{
 				const key = position[0].toFixed(2) + ":" + position[1].toFixed(2);
 				if (!futureCache.has(key))
-					futureCache.set(key, this.geometricFieldPackingSlotsAt(gameState, position, -1, accessIndex, "farmstead").length);
+					futureCache.set(key, this.geometricFieldPackingSlotsAt(gameState, position, -1, accessIndex, candidateHubKind).slice(0, candidateSlotLimit).length);
 				return futureCache.get(key);
 			};
 		}
@@ -13057,6 +13091,17 @@ export class ExpertDecisionController
 				// inside this callback. Preserve the normal farm-district exclusion score for
 				// Market #1, then add long-route scoring only to the Town-support Market #2.
 				let score = Number(index) || 0;
+				if (request && request.farmHubMarket && farmCapacityAt)
+				{
+					const policy = mergePolicy();
+					const live = farmCapacityAt(position);
+					const future = farmFutureCapacityAt ? farmFutureCapacityAt(position) : live;
+					const preferred = Math.max(1, Number(policy.marketFarmHubPreferredSlots) || 2);
+					// Live space is strongest, but safe natural food may temporarily occupy a
+					// future face. Rank both; never turn awkward terrain into a Market deadlock.
+					score += (Number(policy.marketFarmHubMissingSlotPenalty) || 18000) * Math.max(0, preferred - Math.max(live, future));
+					score -= 5000 * Math.min(preferred, live) + 1800 * Math.min(preferred, future);
+				}
 				if (farmDistrictReservation)
 					for (const farm of farmDistrictReservation.farmsteads)
 					{
@@ -15936,7 +15981,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT16.0] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT16.1] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16002,7 +16047,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT16.0] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT16.1] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
