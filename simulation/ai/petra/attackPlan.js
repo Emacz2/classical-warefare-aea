@@ -2697,6 +2697,25 @@ AttackPlan.prototype.UpdateTransporting = function(gameState, events)
 
 AttackPlan.prototype.UpdateWalking = function(gameState, events)
 {
+	// IT16.1b: no sacrificial advance party. While marching a sizeable Expert army,
+	// pull units outside the main 80m envelope back toward the collection centre before
+	// normal target/path orders can send them still farther ahead.
+	if (this.Config.difficulty >= difficulty.EXPERT && this.unitCollection.length >= 20 && this.position)
+	{
+		let detached = 0;
+		for (const ent of this.unitCollection.values())
+		{
+			if (!ent || !ent.position() || SquareVectorDistance(ent.position(), this.position) <= 80 * 80)
+				continue;
+			ent.moveToRange(this.position[0], this.position[1], 0, 24);
+			++detached;
+		}
+		if (detached)
+		{
+			aiWarn("[EXPERT-COHESION] plan=" + this.name + " regroup-detached=" + detached + " army=" + this.unitCollection.length);
+			return true;
+		}
+	}
 	// we're marching towards the target
 	// Let's check if any of our unit has been attacked.
 	// In case yes, we'll determine if we're simply off against an enemy army, a lone unit/building

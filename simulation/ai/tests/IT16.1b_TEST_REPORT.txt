@@ -1,0 +1,12 @@
+CWA Petra Expert AI — IT16.1b Static Test Report
+
+- JavaScript parser suite: required after LF normalization.
+- Opening ordering: barracksPipeline===0 is part of naturalFirstHold.
+- Food distribution: date/palm/berry and other multi-source fruit have a one-worker limit; unitAIOrderData targets count toward load.
+- Dynamic wood adaptation: post-180s critical/short wood or <=350 wood enables low-wood P1 Forge logic.
+- Slinger unlock: low-wood mode requires its actual stone cost but no extra stone surplus.
+- Recovery Market: BUILD only when 200W/25S/25M are present; otherwise RESERVE.
+- Combat cohesion: >=20-unit Expert armies regroup members outside 80m while walking.
+- Runtime diagnostic tag: EXPERT-IT16.1b.
+
+Result: PASS on 2026-09-15. All packaged JavaScript files parsed after LF normalization and every listed source invariant was found.

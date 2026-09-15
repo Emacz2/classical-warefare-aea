@@ -1258,6 +1258,19 @@ export class ExpertDecisionController
 			const supplyId = Number(worker.getMetadata(PlayerID, SUPPLY_ID));
 			if (loads.has(supplyId))
 				loads.set(supplyId, loads.get(supplyId) + 1);
+			else if (typeof worker.unitAIOrderData === "function")
+			{
+				// IT16.1b: a just-issued/retargeted gather order can briefly outlive cleared
+				// SUPPLY_ID metadata. Count that live reservation so several civilians in the
+				// same update cannot all observe priorLoad=0 and pile onto one palm.
+				for (const order of worker.unitAIOrderData() || [])
+				{
+					const target = Number(order && order.target);
+					if (!loads.has(target)) continue;
+					loads.set(target, loads.get(target) + 1);
+					break;
+				}
+			}
 		}
 		return loads;
 	}
@@ -1282,11 +1295,13 @@ export class ExpertDecisionController
 		// unknown single fruit source.
 		if (name.includes("apple"))
 			return Math.max(1, Number(policy.naturalFoodAppleTreeMaxWorkers) || 3);
-		if (name.includes("berry") || name.includes("berries"))
-			return this.wickerCompleted(gameState) ? Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1) : Infinity;
+		if (name.includes("berry") || name.includes("berries") || name.includes("date") || name.includes("palm"))
+			return Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1);
 		if ((cluster && cluster.ids || []).length === 1)
 			return Math.max(1, Number(policy.naturalFoodSingleSupplyMaxWorkers) || 3);
-		return this.wickerCompleted(gameState) ? Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1) : Infinity;
+		// Multi-source fruit clusters distribute across their individual supplies from
+		// the opening second onward; Wicker changes efficiency, not assignment geometry.
+		return Math.max(1, Number(policy.naturalFoodMaxWorkersPerSupply) || 1);
 	}
 
 	naturalFoodClusterHasPreferredSlot(gameState, cluster, ent)
@@ -2980,7 +2995,8 @@ export class ExpertDecisionController
 		const pivotFoodFloor = this.strategyWoodPivot || safetyWood ? 450 : (Number(policy.athensSlingerUnlockMinimumFoodBank) || 900);
 		const pivotFoodReserve = this.strategyWoodPivot || safetyWood ? 250 : (Number(policy.athensSlingerUnlockFoodReserve) || 600);
 		const foodReady = (Number(res.food) || 0) >= Math.max(pivotFoodFloor, cost.food + pivotFoodReserve);
-		const stoneReady = (Number(res.stone) || 0) >= cost.stone + (Number(policy.athensSlingerUnlockStoneReserve) || 75);
+		const stoneReserve = lowWood ? 0 : (Number(policy.athensSlingerUnlockStoneReserve) || 75);
+		const stoneReady = (Number(res.stone) || 0) >= cost.stone + stoneReserve;
 		const metalReady = (Number(res.metal) || 0) >= cost.metal;
 		// Until the data-side unlock is converted to its intended four-unit cost, do not
 		// spend scarce wood to solve a wood shortage. With the planned 300F/100S cost this
@@ -5912,7 +5928,11 @@ export class ExpertDecisionController
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const rushDoctrine = doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush";
-		const lowWoodP1 = rushDoctrine && !!(this.HQ.attackManager && this.HQ.attackManager.expertLowWoodP1Adaptation);
+		const bankNow = gameState.getResources();
+		const woodForecastNow = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
+		const dynamicWoodPressure = now >= 180 && ((Number(bankNow.wood) || 0) <= 350 ||
+			woodForecastNow && (woodForecastNow.status === "critical" || woodForecastNow.status === "short"));
+		const lowWoodP1 = rushDoctrine && (!!(this.HQ.attackManager && this.HQ.attackManager.expertLowWoodP1Adaptation) || dynamicWoodPressure);
 		if (rushDoctrine)
 		{
 			const hopliteQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHopliteTradition;
@@ -5988,8 +6008,10 @@ export class ExpertDecisionController
 		for (const resource of ["food", "wood", "stone", "metal"])
 		{
 			const forgeSpend = Number(cost && cost[resource]) || 0;
-			const techSpend = rushDoctrine ? Number(meleeCost[resource]) || 0 : 0;
-			const packageReserve = rushDoctrine ?
+			// A dynamic low-wood pivot builds the Forge for Slingers, not for the normal
+			// melee-tech package. Do not make that rescue wait for an unrelated upgrade.
+			const techSpend = rushDoctrine && !lowWoodP1 ? Number(meleeCost[resource]) || 0 : 0;
+			const packageReserve = rushDoctrine && !lowWoodP1 ?
 				Math.max(Number(reserve[resource]) || 0,
 					resource === "food" ? Number(policy.athensP1MeleeFoodReserve) || 0 :
 					resource === "wood" ? Number(policy.athensP1MeleeWoodReserve) || 0 :
@@ -8943,10 +8965,13 @@ export class ExpertDecisionController
 		const actions = [...(frame.actions || [])];
 		if (!actions.some(action => action && action.kind === "market"))
 		{
-			actions.push({ type: "BUILD", kind: "market", role: "recovery_barter", priority: Number(policy.expertRecoveryMarketPriority) || 112,
+			const cost = { food: 0, wood: 200, stone: 25, metal: 25 };
+			const affordable = ["food", "wood", "stone", "metal"].every(type => (Number(bank[type]) || 0) >= cost[type]);
+			actions.push({ type: affordable ? "BUILD" : "RESERVE", kind: "market", role: "recovery_barter", priority: Number(policy.expertRecoveryMarketPriority) || 112,
+				cost,
 				builderCount: 4, builderPool: ["wood", "citizenSoldierWood", "stone", "metal", "food", "farm"],
 				reason: pivotMarketNeed ? "wood-scarcity pivot barter valve" : forecastBarterNeed ? "forecast surplus-to-shortfall barter" : "resource-imbalance recovery barter" });
-			aiWarn("[EXPERT-RECOVERY] build=market reason=" + (pivotMarketNeed ? "wood-pivot" : forecastBarterNeed ? "forecast" : "resource-imbalance") + " bank=" +
+			aiWarn("[EXPERT-RECOVERY] " + (affordable ? "build" : "reserve") + "=market reason=" + (pivotMarketNeed ? "wood-pivot" : forecastBarterNeed ? "forecast" : "resource-imbalance") + " bank=" +
 				Math.round(bank.food) + "/" + Math.round(bank.wood) + "/" + Math.round(bank.stone) + "/" + Math.round(bank.metal));
 		}
 		return { ...frame, actions };
@@ -15981,7 +16006,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT16.1a] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT16.1b] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16047,7 +16072,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT16.1a] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT16.1b] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
