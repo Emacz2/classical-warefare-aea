@@ -1,0 +1,26 @@
+PETRA EXPERT IT15.8.1 — STATIC TEST REPORT
+==========================================
+
+Validation performed on the packaged source:
+- JavaScript syntax check for every .js file: PASS
+- Archive integrity test: PASS
+- Fresh archive extraction followed by JavaScript syntax check: PASS
+- Baseline file-diff scope check: PASS
+- Version diagnostic marker IT15.8.1: PASS
+- Removed starting-patch-only Wicker condition: PASS
+- Removed generic pre-60 active/major-attack CC exceptions: PASS
+- Natural-food gatherer exclusion present in both future-farmer selection paths: PASS
+- Field fallback no longer recruits generic existing food/farm workers: PASS
+- Existing-hub failed-slot reset and rescan present: PASS
+- Barracks #1 Storehouse anchor and frontier-candidate exclusion present: PASS
+
+Expected source differences from untouched IT15.8:
+- petra/expertDecisionController.js
+- petra/expertDecision/NON_REGRESSION_CONTRACTS.md
+- EXPERT_BENCHMARKS.txt
+- EXPERT_BENCHMARKS_updated.txt
+- changes/IT15.8.1_CHANGE_REPORT.txt (new)
+- tests/IT15.8.1_TEST_REPORT.txt (new)
+
+Limit:
+- No 0 A.D. engine simulation was available in this workspace. Replay behavior must be confirmed in-game; this report does not claim a played match.

@@ -713,3 +713,12 @@ Replay regressions locked by IT14:
 - If farmer civilians are killed, surviving civilians assigned to secondary resources rotate into the protected food backbone before new civilian births are requested. Citizen-soldiers inherit wood/stone/metal labor as civilian attrition increases.
 - A 10-Field mature economy therefore normally needs about 40 civilians after natural food is gone. Population released above that food requirement is military/flexible economic population.
 - This calibration does not alter IT15.8's economic-safety kernel, IT15.7 combat changes, or the frozen IT15.6 record-setting P2 attack execution.
+
+## IT15.8.1 corrective continuity contract
+
+- This build is a direct patch of IT15.8. Unrelated economy, combat, phase, production, and placement behavior remains unchanged.
+- Before any additional permanent Farmstead is authorized, every completed existing Farmstead receives a fresh exhaustive compact-field scan. Transient recent placement failures may not force unnecessary Farmstead construction.
+- Wicker Baskets requires worthwhile additional owned-territory fruit: either multiple worthwhile clusters or an unusually large connected owned fruit network. The ordinary starting patch alone is insufficient.
+- A civilian actively gathering or returning food from a live natural-food supply is never recruited into a Field construction crew. Field construction waits for post-opening, CC-trained future farmers; those builders retain permanent food ownership and stay on the completed Field.
+- Barracks #1 anchors to the completed Storehouse nearest the active wood workforce and does not chase a remote frontier-resource candidate ahead of that worksite placement.
+- Before the 60-civilian ceiling, the Civic Centre trains citizen-soldiers only for a genuine hostile defense or a live Phase-1 Early/Late-P1 attack. Generic P2/P3 attacks, near-launch tests, and lower doctrine soft caps are not exceptions.

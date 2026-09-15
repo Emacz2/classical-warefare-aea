@@ -946,8 +946,8 @@ export class ExpertDecisionController
 	ccMilitaryExceptionReason(gameState)
 	{
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
-		const target = this.ccCivilianTrainingTarget(gameState);
-		if (workers.civilians >= target)
+		const civilianCeiling = Math.max(1, Number(mergePolicy(this.strategyPolicyOverrides(gameState)).civilianCap) || 60);
+		if (workers.civilians >= civilianCeiling)
 			return "civilian-cap";
 
 		// A genuine base defense may borrow the CC for one emergency military pulse.
@@ -955,18 +955,13 @@ export class ExpertDecisionController
 		if (defense && defense.active && Math.max(0, Number(defense.foeCount) || 0) > 0)
 			return "defense";
 
-		// Once an Expert attack is actually on the field, reinforcements are a legitimate
-		// exception to the civilian-only rule regardless of doctrine/phase.
-		for (const plan of this.expertCombatPlans(true))
-			if (plan && plan.expertAuthorityOwned && plan.unitCollection && plan.unitCollection.length > 0)
-				return "active-attack";
-
 		const doctrine = this.ensureStrategicDoctrine(gameState);
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		// P1 is the only case where the attack can be real before the global civilian ceiling.  Do
 		// not confuse mere doctrine selection/early arming with "doing a P1 attack": the
 		// rush must already be near its actual launch package.
-		if (doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"))
+		if ((!gameState.currentPhase || gameState.currentPhase() === 1) && doctrine &&
+		    (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"))
 		{
 			const targetArmy = Math.max(12, Number(doctrine.rushSize) || 20);
 			const fraction = Math.max(0.5, Math.min(1, Number(policy.expertCCP1AttackExceptionArmyFraction) || 0.75));
@@ -976,12 +971,13 @@ export class ExpertDecisionController
 				if (plan && plan.expertAuthorityOwned && plan.unitCollection &&
 				    (plan.expertLaunchAuthorized || plan.unitCollection.length >= minimum))
 					return "p1-attack";
+			// A launched P1 reserve/attack has already crossed the decision boundary. It may
+			// receive CC reinforcements while the P1 doctrine is live, but this exception
+			// disappears immediately on reaching Town phase.
+			for (const plan of this.expertCombatPlans(true))
+				if (plan && plan.expertAuthorityOwned && plan.unitCollection && plan.unitCollection.length > 0)
+					return "p1-attack";
 		}
-
-		// P2/P3 plans are only created/retained near a real attack package.  Re-use the
-		// existing near-launch test rather than inventing another doctrine-specific timer.
-		if (this.expertMajorAttackNearLaunch(gameState))
-			return "major-attack";
 		return undefined;
 	}
 
@@ -2613,12 +2609,10 @@ export class ExpertDecisionController
 		}
 		const richFruitNetwork = fruitSupplyCount >= 8 && fruitRemaining >=
 			Math.max(800, Number(policy.minimumAlternativeNaturalFood) || 400);
-		const openingFruitNetwork = fruitSupplyCount >= (Number(policy.wickerOpeningFruitMinimumSupplies) || 4) &&
-			fruitRemaining >= (Number(policy.wickerOpeningFruitMinimumRemaining) || 500);
-		// IT15.6: a normal berry-heavy opening does not need two disconnected clusters to
-		// justify Baskets. If the opening Farmstead services a meaningful fruit bank, Baskets
-		// precedes Iron Axe; Axe then precedes any real Field/Plows transition.
-		const wickerPriority = multipleFruit || richFruitNetwork || openingFruitNetwork;
+		// IT15.8.1: the starting patch alone no longer buys Wicker. It is worthwhile only
+		// when another owned-territory fruit cluster exists, or the connected owned network
+		// is large enough to represent substantially more than the normal opening patch.
+		const wickerPriority = multipleFruit || richFruitNetwork;
 		const basketDone = baskets.some(name => gameState.isResearched(name));
 		const basketBusy = baskets.some(name => gameState.isResearching(name));
 		if (wickerPriority && !basketDone && !basketBusy && farmsteadSecured && storehouseSecured)
@@ -4956,24 +4950,23 @@ export class ExpertDecisionController
 		const policy = mergePolicy();
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const farms = this.builtByClass(gameState, "Farmstead");
-		if (farms.length < 2 || (farmCapacity && Number(farmCapacity.openFieldSlots) > 0) ||
+		if (farms.length < 1 || (farmCapacity && Number(farmCapacity.openFieldSlots) > 0) ||
 		    now - (Number(this.lastFarmThirdHubRepackAt) || -99999) < (Number(policy.farmThirdHubRepackCooldownSeconds) || 30))
 			return farmCapacity;
 		this.lastFarmThirdHubRepackAt = now;
 		const farmIds = new Set(farms.map(farm => farm.id()));
-		const age = Math.max(0, Number(policy.farmThirdHubFailedSlotForgetAgeSeconds) || 12);
 		const before = (this.failedFieldPositions || []).length;
 		this.failedFieldPositions = (this.failedFieldPositions || []).filter(item =>
 		{
 			if (!item || !Number.isFinite(Number(item.farmsteadId)) || !farmIds.has(Number(item.farmsteadId)))
 				return true;
-			// retry only an OLD transient miss; recent failures remain authoritative.
-			const failedAt = Number(item.until) - 45;
-			return !Number.isFinite(failedAt) || now - failedAt < age;
+			// This is the final check before paying for another Farmstead. Retry every slot on
+			// existing hubs: a recent rejection may only reflect a then-pending foundation.
+			return false;
 		});
 		const cleared = before - this.failedFieldPositions.length;
 		const rescanned = this.farmCapacitySnapshot(gameState, accessIndex);
-		aiWarn("[EXPERT-FARM-REPACK] before-third-hub farms=" + farms.length + " clearedOldFailures=" + cleared +
+		aiWarn("[EXPERT-FARM-REPACK] before-third-hub farms=" + farms.length + " clearedFailures=" + cleared +
 			" open=" + Number(rescanned.openFieldSlots || 0) + " supported=" + Number(rescanned.supportedFieldSlots || 0));
 		return rescanned;
 	}
@@ -4983,9 +4976,9 @@ export class ExpertDecisionController
 		if (!frame || !(frame.actions || []).some(action => action && action.kind === "farmstead" && action.role === "farm_hub_deadlock"))
 			return frame;
 		// The economy planner can request the same emergency hub outside the narrow P1
-		// phase-safety helper. Intercept Farmstead #3 here as well so every deadlock path
-		// gives the two existing hubs one final compact-slot rescan before spending 100 wood.
-		if (this.builtByClass(gameState, "Farmstead").length < 2)
+		// phase-safety helper. Intercept every additional Farmstead here so each deadlock path
+		// gives the existing hubs one final compact-slot rescan before spending 100 wood.
+		if (this.builtByClass(gameState, "Farmstead").length < 1)
 			return frame;
 		const rescanned = this.rescanExistingFarmCapacityBeforeThirdHub(gameState, accessIndex,
 			this.farmCapacitySnapshot(gameState, accessIndex));
@@ -5101,7 +5094,8 @@ export class ExpertDecisionController
 			    ent.getMetadata(PlayerID, EXPERT_FUTURE_FARM_TASK) !== undefined ||
 			    ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
 			    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
-			    ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined)
+			    ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined ||
+			    this.workerGatheringNaturalFood(gameState, ent))
 				continue;
 			future.push(ent);
 		}
@@ -5124,7 +5118,8 @@ export class ExpertDecisionController
 				if (!ent || !entityPosition(ent) || !ent.getMetadata || !hasClass(ent, "Civilian") || hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry") ||
 				    ent.getMetadata(PlayerID, EXPERT_FUTURE_FARMER) === true || ent.getMetadata(PlayerID, EXPERT_FUTURE_FARM_TASK) !== undefined ||
 				    ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
-				    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined)
+				    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined ||
+				    this.workerGatheringNaturalFood(gameState, ent))
 					continue;
 				const ordinal = Number(ent.getMetadata(PlayerID, CIVILIAN_ORDINAL));
 				if (!Number.isFinite(ordinal) || ordinal <= openingEnd)
@@ -5169,23 +5164,15 @@ export class ExpertDecisionController
 				Math.max(0, Number(natural.totalNaturalRemaining) || 0) <= 0);
 			const minimum = emergency ? emergencyMinimum : normalMinimum;
 			const available = future.length - cursor;
-			// IT15.1: never delete a required Field because the special future-farmer
-			// pool is empty. IT15.0 FARM_LOCKed the first crews, stopped creating new
-			// civilians at the rush cap, and then discarded every later Field action.
+			// IT15.8.1: wait for CC-trained future farmers. Natural-food civilians and
+			// established farmers may not be borrowed merely to make a Field start sooner.
 			if (available < minimum)
 			{
-				const count = Math.max(1, Math.min(target, normalMinimum));
-				actions.push({ ...action,
-					"builderCount": count,
-					"requiredBuilderIds": undefined,
-					"builderPool": ["farm", "food_owned", "food"],
-					"builderJobPriority": { "farm": 8, "food_owned": 7, "food": 6 }
-				});
 				if ((Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastFutureFarmCrewWaitDiag) || -99999) >= 8)
 				{
 					this.lastFutureFarmCrewWaitDiag = Number(gameState.ai.elapsedTime) || 0;
-					aiWarn("[EXPERT-FARM-CREW] reuse-existing-food available=" + available + "/" + minimum +
-						" builders=" + count + " role=" + (action.role || "field") +
+					aiWarn("[EXPERT-FARM-CREW] wait-new-civilians available=" + available + "/" + minimum +
+						" role=" + (action.role || "field") +
 						" food=" + Math.round(Number(bank.food) || 0));
 				}
 				continue;
@@ -5249,10 +5236,10 @@ export class ExpertDecisionController
 		if (open <= 0)
 		{
 			const farmsteadPipeline = this.builtByClass(gameState, "Farmstead").length + this.foundationsByClass(gameState, "Farmstead").length;
-			// IT14.89: before Farmstead #3, run one last existing-hub rescan after
+			// IT15.8.1: before another Farmstead, run one last existing-hub rescan after
 			// expiring old transient field failures. If a legal compact slot reappears,
 			// fill it instead of buying a new food hub.
-			if (farmsteadPipeline >= 2 && farmsteadPipeline < Math.max(1, Number(policy.maximumFarmsteads) || 3))
+			if (farmsteadPipeline >= 1 && farmsteadPipeline < Math.max(1, Number(policy.maximumFarmsteads) || 3))
 			{
 				const rescanned = this.rescanExistingFarmCapacityBeforeThirdHub(gameState, accessIndex, farmCapacity);
 				open = rescanned && rescanned.known ? Math.max(0, Number(rescanned.openFieldSlots) || 0) : 0;
@@ -7119,6 +7106,21 @@ export class ExpertDecisionController
 			return carriedType.type;
 		const generic = ent.getMetadata(PlayerID, "gather-type");
 		return ["food", "wood", "stone", "metal"].includes(generic) && state.includes("GATHER") ? generic : undefined;
+	}
+
+	workerGatheringNaturalFood(gameState, ent)
+	{
+		if (!ent || !ent.getMetadata)
+			return false;
+		const supplyId = Number(ent.getMetadata(PlayerID, SUPPLY_ID));
+		const supply = Number.isFinite(supplyId) ? gameState.getEntityById(supplyId) : undefined;
+		if (!supply || hasClass(supply, "Field") || hasClass(supply, "Animal") ||
+		    this.resourceGenericForSupply(supply) !== "food" ||
+		    !supply.resourceSupplyAmount || supply.resourceSupplyAmount() <= 0)
+			return false;
+		const state = ent.unitAIState ? String(ent.unitAIState() || "") : "";
+		return hasLiveGatherOrder(ent, supply.id()) || state.includes("GATHER") ||
+			state.includes("RETURNRESOURCE") || state.includes("RETURNINGRESOURCE");
 	}
 
 	redirectWorkerToForecastResource(gameState, ent, target)
@@ -11942,7 +11944,17 @@ export class ExpertDecisionController
 		{
 			const policy = mergePolicy();
 			const ccPos = cc.position();
-			const builderAnchor = this.dominantWoodBuilderCenter(gameState) || this.getPrimaryWoodPosition(gameState) || ccPos;
+			const firstBarracks = kind === "barracks" && !this.builtByClass(gameState, "Barracks").length &&
+				!this.foundationsByClass(gameState, "Barracks").length;
+			const woodAnchor = this.dominantWoodBuilderCenter(gameState) || this.getPrimaryWoodPosition(gameState) || ccPos;
+			let builderAnchor = woodAnchor;
+			if (firstBarracks)
+			{
+				const storehouses = this.builtByClass(gameState, "Storehouse").filter(ent => ent && entityPosition(ent));
+				storehouses.sort((a, b) => SquareVectorDistance(a.position(), woodAnchor) - SquareVectorDistance(b.position(), woodAnchor) || a.id() - b.id());
+				if (storehouses.length)
+					builderAnchor = storehouses[0].position();
+			}
 			const dx = builderAnchor[0] - ccPos[0], dz = builderAnchor[1] - ccPos[1];
 			const len = Math.hypot(dx, dz) || 1;
 			const outward = [builderAnchor[0] + dx / len * 20, builderAnchor[1] + dz / len * 20];
@@ -11965,7 +11977,7 @@ export class ExpertDecisionController
 			// premature farmstead/field transition. Keep the normal lumber-side placement
 			// immediately behind these candidates so bad frontier geometry cannot delay the
 			// barracks timing.
-			if (action.role !== "third_p2")
+			if (!firstBarracks && action.role !== "third_p2")
 			{
 				const earlyAnchors = this.frontierResourceAnchors(gameState, ccPos, accessIndex)
 					.filter(anchor => anchor.generic === "food" || anchor.generic === "wood")
@@ -15928,7 +15940,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.1] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -15994,7 +16006,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.1] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
