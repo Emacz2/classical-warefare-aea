@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actor version="1">
+  <castshadow/>
+  <group>
+    <variant name="Base">
+      <mesh>props/tropaion_post.dae</mesh>
+      <props>
+		<prop actor="props/units/weapons/spear_hoplite.xml" attachpoint="spear"/>
+		<prop actor="props/units/weapons/sheath_xiphos.xml" attachpoint="sheath"/>
+		<prop actor="props/structures/hellenes/tropaion_armor.xml" attachpoint="armor"/>
+      </props>
+      <textures>
+        <texture file="props/bronze_01.png" name="baseTex"/>
+        <texture file="props/bronze_01_norm.png" name="normTex"/>
+        <texture file="props/bronze_01_spec.png" name="specTex"/>
+        <texture file="structural/ao/hele_tropaion.png" name="aoTex"/>
+      </textures>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="3" name="Helmet-Corinthian-01">
+      <props>
+        <prop actor="props/units/helmets/hele_corinthian_e1.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="3" name="Helmet-Corinthian_02">
+      <props>
+        <prop actor="props/units/helmets/hele_corinthian_e2.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="3" name="Helmet-Corinthian_03">
+      <props>
+        <prop actor="props/units/helmets/hele_corinthian_e3.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="3" name="Helmet-Corinthian_04">
+      <props>
+        <prop actor="props/units/helmets/hele_corinthian_e4.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Helmets-Thracian-01">
+      <props>
+        <prop actor="props/units/helmets/hele_thracian_b5_crested.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Hele Chalcidean Helmet-01">
+      <props>
+        <prop actor="props/units/helmets/hele_chalcidean_a1.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Hele Chalcidean Helmet-02">
+      <props>
+        <prop actor="props/units/helmets/hele_chalcidean_a2.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Hele Chalcidean Helmet-03">
+      <props>
+        <prop actor="props/units/helmets/hele_chalcidean_a3.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Hele Chalcidean Helmet-04">
+      <props>
+        <prop actor="props/units/helmets/hele_chalcidean_a4.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="Hele Chalcidean Helmet-05">
+      <props>
+        <prop actor="props/units/helmets/hele_chalcidean_a5.xml" attachpoint="helmet"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="aspis_spart_01">
+      <props>
+        <prop actor="props/units/shields/aspis_spart_c.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="aspis_spart_02">
+      <props>
+        <prop actor="props/units/shields/aspis_spart_d.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="aspis_spart_03">
+      <props>
+        <prop actor="props/units/shields/aspis_spart_g.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="aspis_spart_04">
+      <props>
+        <prop actor="props/units/shields/aspis_spart_skiritai.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="aspis_spart_05">
+      <props>
+        <prop actor="props/units/shields/aspis_lambda_01.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="aspis_spart_06">
+      <props>
+        <prop actor="props/units/shields/aspis_lambda_02.xml" attachpoint="shield"/>
+      </props>
+    </variant>
+  </group>
+  <group>
+    <variant frequency="1" name="apron 01">
+      <props>
+        <prop actor="props/units/shields/props/aspis_apron_spart_01.xml" attachpoint="apron"/>
+      </props>
+    </variant>
+    <variant frequency="1" name="apron 02">
+      <props>
+        <prop actor="props/units/shields/props/aspis_apron_spart_02.xml" attachpoint="apron"/>
+      </props>
+    </variant>
+  </group>
+  <material>no_trans_ao_norm_spec.xml</material>
+</actor>
