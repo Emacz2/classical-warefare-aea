@@ -37,7 +37,7 @@ function predictiveHouseTrigger(state, policy) {
   );
 }
 
-function housingDecision(state, policy) {
+function housingDecision(state, policy, farm = undefined, woodsite = undefined) {
   const free = accountedFreePopulation(state);
   let trigger = predictiveHouseTrigger(state, policy);
   if (state.population.max > 0 && state.population.limit >= state.population.max)
@@ -48,6 +48,23 @@ function housingDecision(state, policy) {
   const pending = state.foundations.house + state.queued.house;
   if (pending > 0)
     return { needed: false, maintain: true, free, trigger, reason: "house task already exists" };
+
+  // IT15.8.6 bottleneck protection: after House #1, predictive headroom is not a
+  // license to spend the wood needed to prevent an imminent food/wood shutdown.
+  // This is live-state arbitration, not a fixed build order, and a cap emergency wins.
+  const houses = state.structures.house + state.foundations.house + state.queued.house;
+  const fieldPipeline = state.structures.field + state.foundations.field + state.queued.field;
+  const naturalRemaining = Math.max(0, Number(state.food.totalNaturalRemaining) || 0);
+  const naturalRunway = Math.max(0, Number(state.food.naturalRunwaySeconds) || 0);
+  const urgentFoodInfrastructure = !!(farm && !farm.naturalFirstHold && farm.missingFields > 0 &&
+    (fieldPipeline === 0 || naturalRemaining <= 350 || naturalRunway <= 75));
+  const urgentWoodInfrastructure = !!(woodsite && woodsite.expand &&
+    ["prebuild_next_worksite", "workforce_expand", "depleting_expand", "distance_expand",
+      "income_stall_recovery", "phase_wood_recovery"].includes(woodsite.status));
+  if (houses >= 1 && free > Math.max(5, Number(policy.houseEmergencyFreePopulation) || 3) &&
+      (urgentFoodInfrastructure || urgentWoodInfrastructure))
+    return { needed: false, maintain: false, free, trigger,
+      reason: `defer housing for ${urgentFoodInfrastructure ? "food" : "wood"} infrastructure debt (${free} free)` };
 
   // Once the military economy is running, surplus wood should become organized housing
   // before it becomes an idle 1k+ bank. Keep roughly one extra house of headroom while
@@ -435,9 +452,9 @@ function planEconomy(rawState, overrides = {}) {
   const actions = [];
   const reservations = { food: 0, wood: 0, stone: 0, metal: 0 };
 
-  const housing = housingDecision(state, policy);
   const farm = fieldDemand(state, policy);
   const woodsite = woodWorksiteDecision(state, policy);
+  const housing = housingDecision(state, policy, farm, woodsite);
   // IT14.55: detect the impossible food-layout state directly. Natural-food dropsites
   // are not proof that the permanent farm network has usable field geometry.
   const foodCapacityDeadlock = !farm.naturalFirstHold && farm.missingFields > 0 &&

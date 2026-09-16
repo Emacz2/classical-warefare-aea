@@ -752,3 +752,11 @@ Replay regressions locked by IT14:
 - House #1 preserves at least a 34m CC-centre radius, prefers approximately 42m, and may search to 64m. When the opening wood Storehouse exists, candidate validation requires the House to be on the opposite side of that Storehouse from the wood mass.
 - Barracks #2 launches when six completed Fields exist, the layout supports at least six Fields, and wood production is not in a real crisis. It no longer waits for measured farm income to catch up after that physical capacity is complete.
 - The early natural-food exception, wood-crisis veto, population emergency handling, and all IT15.8.4 worker/order corrections remain binding.
+
+## IT15.8.6 live-bottleneck infrastructure arbitration
+
+- Opening wood patches below 1,600 wood are classified as bridge sites, not sustainable forests. On such maps a legal site with at least 25% more wood may beat the closest site when its added opening walk remains within the existing safety limits.
+- After House #1, predictive housing yields while the live economy reports either an unfunded permanent-food transition or a required next wood district. Housing immediately regains priority at five or fewer free population spaces or once the infrastructure debt is secured.
+- Forecast recovery may not purchase a Storehouse for less than 500 wood. Short-lived 120-200 wood fragments are serviced by temporary carrying while the planner waits for a worthwhile district.
+- Natural-food workers remain protected from Field construction. New civilians continue to become future farmers; removing premature housing reservations gives their Field tasks the wood to start.
+- IT15.8.5 Barracks timing, IT15.8.4 command authority, and every earlier food/CC-production invariant remain binding.

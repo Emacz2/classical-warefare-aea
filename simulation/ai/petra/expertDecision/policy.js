@@ -396,7 +396,8 @@ const DEFAULT_POLICY = Object.freeze({
   resourceForecastStorehouseMinimumGain: 4.0,
   resourceForecastStorehouseCriticalMinimumGain: 2.0,
   resourceForecastStorehouseMinimumSpacing: 12,
-  resourceForecastBridgeWoodMinimumAmount: 120,
+  // A short carry bridge is cheaper than a Storehouse serving one 120-200 wood fragment.
+  resourceForecastBridgeWoodMinimumAmount: 500,
   resourceForecastBridgeWoodAccessibleCeiling: 650,
   // Safe neutral fruit/berries just outside the border outrank the next Field.
   resourceForecastNaturalFoodMinimumRemaining: 350,
@@ -952,10 +953,12 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.97: the opening wood search sees same-land neutral forest near our border.
   // A small owned clump is a bridge, not a reason to ignore a sustainable neutral-edge
   // forest that can be serviced by a legal Storehouse in our own territory.
-  openingWoodMinimumSustainableAmount: 800,
+  // A 1,000-wood clump is only a bridge for a 12-20 worker opening.
+  openingWoodMinimumSustainableAmount: 1600,
   openingWoodLegalPlacementRadius: 32,
   openingWoodLegalOffsetWeight: 6,
-  openingWoodDominanceRatio: 1.75,
+  // On bridge-wood maps, a 25% richer legal forest is worth the opening walk.
+  openingWoodDominanceRatio: 1.25,
   openingWoodDominanceMaxExtraApproach: 90,
   openingWoodDominanceMaxApproach: 170,
   openingStorehouseSecondStorehouseGraceSeconds: 45,

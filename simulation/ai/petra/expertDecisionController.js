@@ -5956,7 +5956,8 @@ export class ExpertDecisionController
 			" approach=" + (Number(selected.approachDistance) || 0).toFixed(1) +
 			" legalOffset=" + (Number(selected.legalStorehouseOffset) || 0).toFixed(1) +
 			" avgDrop=" + (Number(selected.averageDropDistance) || 0).toFixed(1) +
-			" candidates=" + ranked.length);
+			" candidates=" + ranked.length + " top=" + ordered.slice(0, 3).map(site =>
+				Math.round(Number(site.localWoodAmount) || 0) + "@" + Math.round(Number(site.approachDistance) || 0)).join(","));
 	}
 
 	builtByClass(gameState, className)
@@ -16053,7 +16054,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.5] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.6] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16119,7 +16120,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.5] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.6] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
