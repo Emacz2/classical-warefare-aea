@@ -495,17 +495,17 @@ function planEconomy(rawState, overrides = {}) {
   const hasHouse = state.structures.house > 0;
   const fieldPipeline = state.structures.field + state.foundations.field + state.queued.field;
   const hasBarracksTask = state.structures.barracks + state.foundations.barracks + state.queued.barracks > 0;
-  const firstBarracksReserve = state.time >= policy.barracksReserveTime;
-  const firstBarracksBuild = state.time >= policy.barracksTargetTime;
-  const firstBarracksHard = state.time >= policy.barracksHardDeadline;
-  if (!hasBarracksTask && hasHouse && firstBarracksReserve) {
+  // IT15.8.5: House #1 and actual affordability are the opening Barracks clock.
+  // The former 2:15 reserve / 2:30 build timers made Expert sit on 200+ wood.
+  // Housing is processed above, so its genuinely needed reservation is still honored.
+  if (!hasBarracksTask && hasHouse) {
     const cost = costOf(state, policy, "barracks");
-    const canBuild = (firstBarracksBuild || firstBarracksHard) && resourceEnough(state.resources, cost, reservations);
+    const canBuild = resourceEnough(state.resources, cost, reservations);
     addReservation(reservations, cost);
     if (canBuild)
-      actions.push({ type: "BUILD", kind: "barracks", priority: 99, builderPool: ["wood", "citizenSoldierWood"], reason: firstBarracksHard ? "3:00 first-barracks deadline" : "2:30 first-barracks target" });
+      actions.push({ type: "BUILD", kind: "barracks", priority: 99, builderPool: ["wood", "citizenSoldierWood"], reason: "first House secured and Barracks wood available" });
     else
-      actions.push({ type: "RESERVE", kind: "barracks", priority: 99, cost, reason: "reserve first-barracks wood before optional expansion" });
+      actions.push({ type: "RESERVE", kind: "barracks", priority: 99, cost, reason: "reserve first-barracks wood immediately after House #1" });
   }
 
   // Second barracks. IT14.4 starts the decision early enough for the BUILDING to
@@ -540,18 +540,17 @@ function planEconomy(rawState, overrides = {}) {
   // through a forecast-proven wood crisis: a second production building is useless when
   // the first one cannot be kept supplied.
   const secondPermanentFoodReady = state.structures.field >= policy.minimumCompletedFieldsBeforeSecondBarracks;
-  const secondMeasuredTarget = Math.max(0, Number(state.food.twoBarracksFoodBurnRate) || 0) *
-    Math.max(1, Number(policy.foodRateSafetyMargin) || 1.12) * 0.90;
-  const secondThroughputReady = !state.food.measuredFoodIncomeAvailable ||
-    Math.max(0, Number(state.food.measuredFoodIncomeRate) || 0) >= secondMeasuredTarget;
   const measuredWood = Math.max(0, Number(state.flags.measuredWoodIncomeRate) || 0);
   const accessibleWood = Math.max(0, Number(state.flags.woodForecastAccessible) || 0);
   const realWoodCrisis = !!state.flags.woodIncomeStalled ||
     (state.flags.woodForecastStatus === "critical" && measuredWood < 8 && accessibleWood < 1200);
   const woodProductionReady = !realWoodCrisis && (
     measuredWood >= 8 || Math.max(0, Number(state.resources.wood) || 0) >= 450 || accessibleWood >= 1200);
+  // Six completed, supported Fields are the durable launch proof. Do not make the
+  // Barracks wait another minute for measured income to catch up while newly staffed
+  // Fields are already the physical capacity the rule asked for.
   const secondCapacityReady = farm.naturalFirstHold ? (secondEarlyReady && woodProductionReady) :
-    (secondPermanentFoodReady && secondThroughputReady && secondLayoutReady && woodProductionReady);
+    (secondPermanentFoodReady && secondLayoutReady && woodProductionReady);
 
   // IT14.75: Barracks #2 is NOT allowed to manufacture farm topology.
   // The shared permanent-food planner owns Farmstead expansion and must first fill

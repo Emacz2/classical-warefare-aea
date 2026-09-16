@@ -11797,12 +11797,13 @@ export class ExpertDecisionController
 					"angleCount": 72, "templateRadius": geometry.radius
 				}));
 				request = { kind, candidates, "templateRadius": geometry.radius, "openingHouse": true,
-					"minimumCCDistance": Number(policy.openingHouseMinimumCCDistance) || 26,
-					"preferredCCDistance": Number(policy.openingHousePreferredCCDistance) || 38,
-					"maximumCCDistance": Number(policy.openingHouseMaximumCCDistance) || 54,
+					"minimumCCDistance": Number(policy.openingHouseMinimumCCDistance) || 34,
+					"preferredCCDistance": Number(policy.openingHousePreferredCCDistance) || 42,
+					"maximumCCDistance": Number(policy.openingHouseMaximumCCDistance) || 64,
 					"openingFoodDistrictAnchor": foodAnchor,
 					"openingFoodDistrictReserveRadius": Number(policy.openingHouseFoodDistrictPreserveRadius) || 34,
-					"woodDistrictAnchor": woodPos };
+					"woodDistrictAnchor": woodPos,
+					"openingWoodStorehousePosition": openingStores.length ? [...openingStores[0].position()] : undefined };
 			}
 			else
 			{
@@ -12837,6 +12838,18 @@ export class ExpertDecisionController
 			{
 				const reserve = Math.max(0, Number(request.openingFoodDistrictReserveRadius) || 34);
 				if (SquareVectorDistance(position, request.openingFoodDistrictAnchor) < reserve * reserve)
+					return false;
+			}
+			if (kind === "house" && request && request.openingHouse &&
+			    Array.isArray(request.openingWoodStorehousePosition) && Array.isArray(request.woodDistrictAnchor))
+			{
+				// Storehouse must remain between the opening House and its wood mass.
+				const store = request.openingWoodStorehousePosition;
+				const toWoodX = request.woodDistrictAnchor[0] - store[0];
+				const toWoodZ = request.woodDistrictAnchor[1] - store[1];
+				const toHouseX = position[0] - store[0];
+				const toHouseZ = position[1] - store[1];
+				if (toWoodX * toHouseX + toWoodZ * toHouseZ > 0)
 					return false;
 			}
 			if (kind === "temple" && request && Number(request.templeMinimumWorkerCoverage) > 0)
@@ -16040,7 +16053,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.4] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.5] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16106,7 +16119,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.4] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.5] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

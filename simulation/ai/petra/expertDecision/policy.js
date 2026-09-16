@@ -997,9 +997,9 @@ const DEFAULT_POLICY = Object.freeze({
   openingStorehouseFoodDistrictPreserveRadius: 42,
   openingStorehouseFoodDistrictPenalty: 5000,
   // IT15.6: reserve the berry/Farmstead district before House #1 is placed.
-  openingHouseMinimumCCDistance: 26,
-  openingHousePreferredCCDistance: 38,
-  openingHouseMaximumCCDistance: 54,
+  openingHouseMinimumCCDistance: 34,
+  openingHousePreferredCCDistance: 42,
+  openingHouseMaximumCCDistance: 64,
   openingHouseFoodDistrictPreserveRadius: 34,
   openingHouseFoodDistrictPenalty: 12000,
   openingStorehouseCCCorePreserveRadius: 30,

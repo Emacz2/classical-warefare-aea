@@ -745,3 +745,10 @@ Replay regressions locked by IT14:
 - Before Barracks #1 has a live foundation, a second House is held together with secondary Farmsteads and Storehouses whenever more than three population spaces remain. At three or fewer free spaces the population-emergency escape permits the House.
 - The opening House prefers the CC-side of an existing wood Storehouse, keeping the Storehouse between the House and trees. Later Houses may prefer the outside of established farm districts, but resource corridors, Storehouse work rings, and every reserved touching-Field footprint remain hard exclusions.
 - IT15.8.3's Barracks-before-secondary-dropsite rule and every IT15.8.1/15.8.2 food and production contract remain binding.
+
+## IT15.8.5 affordability-driven Barracks timing / protected opening House
+
+- Barracks #1 has no arbitrary 2:15 reserve or 2:30 construction permission. After House #1 is complete, it is reserved or built immediately according to actual wood remaining after genuinely active higher-order commitments.
+- House #1 preserves at least a 34m CC-centre radius, prefers approximately 42m, and may search to 64m. When the opening wood Storehouse exists, candidate validation requires the House to be on the opposite side of that Storehouse from the wood mass.
+- Barracks #2 launches when six completed Fields exist, the layout supports at least six Fields, and wood production is not in a real crisis. It no longer waits for measured farm income to catch up after that physical capacity is complete.
+- The early natural-food exception, wood-crisis veto, population emergency handling, and all IT15.8.4 worker/order corrections remain binding.

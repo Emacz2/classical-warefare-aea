@@ -1,0 +1,28 @@
+PETRA EXPERT IT15.8.5 — BARRACKS TEMPO / OPENING HOUSE GEOMETRY
+================================================================
+
+BASELINE
+- Directly built on IT15.8.4.
+
+REPLAY FINDINGS
+- House #1 used the old 26m legal minimum and still appeared directly beside the CC.
+- House #1 was complete and 320 wood was banked at about 2:07, but Barracks #1 was
+  forbidden until the old 2:30 target timer.
+- Six permanent Fields eventually existed, but Barracks #2 waited for lagging measured
+  income even though the physical food capacity requested by the rule was complete.
+
+CORRECTIONS
+1. Barracks #1 uses state, not a clock
+   - Once House #1 exists, reserve/build Barracks #1 immediately when affordable after
+     active housing commitments.
+2. Protected opening House
+   - Increase the CC exclusion radius from 26m to 34m; prefer 42m and search to 64m.
+   - With a wood Storehouse present, reject every opening-House candidate on the
+     woodline side of the Storehouse.
+3. Barracks #2 recognizes completed capacity
+   - Six completed, physically supported Fields plus non-crisis wood unlock Barracks #2.
+   - Measured food income may guide later balancing but no longer adds a hidden wait
+     after the six-Field requirement has already been met.
+
+DEFERRED
+- Garrison/ungarrison path-shortening remains a separate micro feature.
