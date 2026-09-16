@@ -1,0 +1,18 @@
+PETRA EXPERT IT15.8.9 — OWNERSHIP AND COMPACT-HOUSING CORRECTION
+
+Replay diagnosis
+- IT15.8.8's opening pass-through used a fixed 10m corridor and nearly opposite-side requirement, so none of the actual opening builders qualified.
+- House #2 considered Farmstead-ring candidates before literal snap positions beside House #1.
+- Emergency food safety and an old temporary-food exception could assign citizen-soldiers to fruit.
+- The no-idle recovery loop could seize an assigned builder during the brief idle interval after depositing resources.
+
+Corrections
+- Pass-through uses the Civic Center's actual obstruction radius, admits useful angled approaches, remains construction-only, and retains the four-worker/75-second cap.
+- Existing-house snap and gap-fill positions rank before Farmstead-ring or broad fallback housing positions.
+- Citizen-soldiers are excluded from emergency food assignment; the retired temporary-food exception can no longer create new soldier food workers.
+- Any live construction task owns its builder completely; no-idle recovery cannot assign that unit a temporary gather job.
+
+Preserved
+- IT15.8.8 staged-forest valuation.
+- IT15.8.7 opening Farmstead crew ownership and natural-food dispersion.
+- Successful opening Farmstead, Storehouse, House #1, and Barracks behavior observed in the 16:01 replay.

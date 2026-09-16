@@ -75,6 +75,6 @@ HISTORICAL NOTES
 - IT14.98 produced a very fast non-canonical victory against Gaul Very Hard: BREAK 10:30, decisive defeat between 14:55 and 15:00.
 
 CURRENT VERSION
-IT15.8.7 is the active corrective regression/test build, built directly on IT15.8.6. It prevents civilians from long-hauling to unserviced food, holds the Wicker branch Farmstead behind Barracks #1 without timing out, and scores Storehouse #1 against the selected forest's real tree mass.
+IT15.8.9 is the active corrective regression/test build, built directly on IT15.8.8. It preserves staged-forest and serviced-food behavior while fixing construction ownership, soldier food assignments, compact House snapping, and the overly strict opening pass-through trigger.
 Current calibration uses +30% Expert gather/trade and a 60-civilian growth ceiling.
 Historical +35% records remain preserved above and are not directly replaced by +30% results.

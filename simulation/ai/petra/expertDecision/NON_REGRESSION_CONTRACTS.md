@@ -769,3 +769,20 @@ Replay regressions locked by IT14:
 - Opening Storehouse placement minimizes weighted haul to the selected forest while retaining hard protection for proven future Field footprints.
 - The civilians who construct the opening Farmstead remain its food crew after completion and disperse across the selected live supplies; generic construction release may not redirect them to wood.
 - Dropsite coverage is judged against real supply positions, so a Farmstead correctly placed beside the patch is never invalidated solely by a misleading connected-cluster centroid.
+
+## IT15.8.8 staged-forest and opening pass-through contract
+
+- Storehouse choice must value a woodline as a staged plan: immediately serviceable edge wood plus bounded connected continuation wood, not merely the nearest local cluster.
+- A newly exposed edge may not be rejected as a small fragment when it leads into a worthwhile connected forest and a later legal Storehouse can progress through it.
+- Opening building pass-through is limited to assigned builders in the first 75 seconds, only when the route crosses the Civic Center and the destination is on the opposite side.
+- No worker may use the pass-through more than once, no more than four workers may start it, and already-garrisoned workers must still be unloaded after that cap is reached.
+- Pass-through must not take ownership of gatherers, soldiers, defense units, or general movement.
+- All IT15.8.7 Farmstead-worker ownership and serviced-food invariants remain binding.
+
+## IT15.8.9 worker ownership and compact housing
+
+- A worker with a live Expert construction task is exclusively owned by that task until completion or explicit cleanup; no-idle recovery may not issue any gather order during deposit/build transitions.
+- Citizen-soldiers never gather natural food or work Fields, including during food emergencies. Food deficits use civilians, infrastructure, or barter.
+- House #2 and later Houses try legal gap-fill and exact snap positions beside the established House cluster before Farmstead rings, annexes, or broad placement fallbacks.
+- Opening pass-through uses the actual Civic Center obstruction footprint and may accept angled entry when the destination-side unload shortens travel, while retaining all IT15.8.8 safety caps.
+- The successful IT15.8.8 opening Farmstead, Storehouse, first House, and Barracks placement behavior remains binding.

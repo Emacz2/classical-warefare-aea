@@ -950,6 +950,13 @@ const DEFAULT_POLICY = Object.freeze({
   openingWoodApproachWeight: 0.35,
   openingWoodDropWeight: 6,
   openingWoodTreeCountWeight: 16,
+  // Score the forest as a staged human cutting plan: Storehouse #1 services the
+  // accessible edge, then cleared space permits a deeper Storehouse. Continuation
+  // wood is discounted because it is not immediate, but may not disappear merely
+  // because it falls outside one 40m snapshot.
+  openingWoodContinuationLinkDistance: 28,
+  openingWoodContinuationReach: 110,
+  openingWoodContinuationWeight: 0.65,
   // IT14.97: the opening wood search sees same-land neutral forest near our border.
   // A small owned clump is a bridge, not a reason to ignore a sustainable neutral-edge
   // forest that can be serviced by a legal Storehouse in our own territory.

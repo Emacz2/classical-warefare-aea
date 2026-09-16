@@ -1,0 +1,16 @@
+PETRA EXPERT IT15.8.9 — STATIC TEST REPORT
+
+- JavaScript syntax: PASS
+- Version marker IT15.8.9: PASS
+- Construction-task workers excluded from no-idle fallback: PASS
+- Emergency food safety excludes citizen-soldiers: PASS
+- Legacy soldier-food acquisition path is unreachable: PASS
+- House gap-fill/compact snap candidates precede Farmstead-ring candidates: PASS
+- Opening pass-through uses live CC obstruction geometry and still enforces time, count, construction ownership, and one-use limits: PASS
+- IT15.8.7 Farmstead-worker ownership paths remain present: PASS
+
+Replay verification required
+- Confirm paired [EXPERT-TELEPORT] garrison/unload events during useful opening crossings.
+- Confirm House #2 touches or forms a compact barrier with House #1 when a legal snap exists.
+- Confirm opening citizen-soldiers never receive food/date-palm orders.
+- Confirm assigned builders deposit once and return directly to their foundation without fallback gathering.

@@ -1,0 +1,15 @@
+PETRA EXPERT IT15.8.8 — STATIC TEST REPORT
+
+- JavaScript syntax checks: PASS
+- Version marker IT15.8.8: PASS
+- Staged-forest fields and policy wiring: PASS
+- Expansion fragment gate uses full connected forest amount: PASS
+- Opening pass-through is construction-only, opposite-side gated, first-75-seconds limited, four-worker capped, and one-use per worker: PASS
+- Pass-through completion remains available after the fourth worker enters: PASS
+- Save/load preserves opening pass-through count: PASS
+- IT15.8.7 Farmstead-builder ownership and serviced-food code paths remain present: PASS
+
+Runtime replay verification required
+- Confirm CC rally-directed unload exits on the intended side in the game engine.
+- Confirm [EXPERT-WOOD-OPEN] reports the larger connected forest and selects the intended staged woodline.
+- Confirm [EXPERT-TELEPORT] pairs each garrison with an unload and no worker remains garrisoned.

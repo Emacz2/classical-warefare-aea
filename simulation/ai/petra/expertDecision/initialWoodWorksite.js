@@ -36,6 +36,26 @@ function summarizeAt(center, trees, radius) {
   return { local, localWoodAmount, availableTargets, saturatedTargets, averageDropDistance };
 }
 
+function connectedForest(localTrees, allTrees, linkDistance, maximumReach, origin) {
+  const linked2 = linkDistance * linkDistance;
+  const reach2 = maximumReach * maximumReach;
+  const byId = new Map(allTrees.map(tree => [Number(tree.id), tree]));
+  const visited = new Set(localTrees.map(tree => Number(tree.id)));
+  const queue = [...localTrees];
+  while (queue.length) {
+    const current = queue.shift();
+    for (const candidate of allTrees) {
+      const id = Number(candidate.id);
+      if (visited.has(id) || squareDistance(candidate.position, origin) > reach2 ||
+          squareDistance(candidate.position, current.position) > linked2)
+        continue;
+      visited.add(id);
+      queue.push(candidate);
+    }
+  }
+  return [...visited].map(id => byId.get(id)).filter(Boolean);
+}
+
 function selectInitialWoodWorksite(trees, anchorPosition, options = {}) {
   const anchor = requirePosition(anchorPosition, "initial woodsite anchorPosition");
   const candidates = usableTrees(trees);
@@ -46,6 +66,9 @@ function selectInitialWoodWorksite(trees, anchorPosition, options = {}) {
   const approachWeight = Number.isFinite(options.approachWeight) ? options.approachWeight : 1.5;
   const dropWeight = Number.isFinite(options.dropWeight) ? options.dropWeight : 8;
   const treeCountWeight = Number.isFinite(options.treeCountWeight) ? options.treeCountWeight : 12;
+  const continuationLinkDistance = Number.isFinite(options.continuationLinkDistance) ? options.continuationLinkDistance : 28;
+  const continuationReach = Number.isFinite(options.continuationReach) ? options.continuationReach : 110;
+  const continuationWeight = Number.isFinite(options.continuationWeight) ? options.continuationWeight : 0.65;
   const seen = new Set();
   const scored = [];
 
@@ -60,16 +83,22 @@ function selectInitialWoodWorksite(trees, anchorPosition, options = {}) {
     seen.add(key);
 
     const summary = summarizeAt(center, candidates, radius);
+    const forest = connectedForest(summary.local, candidates, continuationLinkDistance, continuationReach, center);
+    const forestWoodAmount = forest.reduce((sum, tree) => sum + Number(tree.remaining || 0), 0);
+    const continuationWoodAmount = Math.max(0, forestWoodAmount - summary.localWoodAmount);
     const approachDistance = Math.sqrt(squareDistance(center, anchor));
     // Remaining wood is the dominant signal. Average drop-off distance and one-time
     // opening walk are penalties. Saturated trees still count as healthy wood; they
     // are temporarily occupied, not absent.
-    const score = summary.localWoodAmount + summary.local.length * treeCountWeight -
+    const score = summary.localWoodAmount + continuationWoodAmount * continuationWeight + summary.local.length * treeCountWeight -
       summary.averageDropDistance * dropWeight - approachDistance * approachWeight;
     scored.push({
       position: center,
       treeIds: summary.local.map(tree => tree.id),
       localWoodAmount: summary.localWoodAmount,
+      forestTreeIds: forest.map(tree => tree.id),
+      forestWoodAmount,
+      continuationWoodAmount,
       availableTargets: summary.availableTargets,
       saturatedTargets: summary.saturatedTargets,
       averageDropDistance: summary.averageDropDistance,
