@@ -1,0 +1,14 @@
+PETRA EXPERT IT15.8.7 — STATIC TEST REPORT
+
+- JavaScript syntax validation: PASS
+- Version marker IT15.8.7: PASS
+- Distant food assignment requires completed dropsite or nearby Farmstead foundation: PASS
+- Pending/queued Farmstead is not considered assignment service: PASS
+- Wicker branch Farmstead held until Barracks #1 foundation: PASS
+- Wicker timeout clock held while Barracks #1 owns opening priority: PASS
+- Opening Storehouse request includes selected-forest resource weights: PASS
+- Opening Storehouse score includes weighted tree-haul distance: PASS
+- Exact farm-slot placement protection retained: PASS
+- Opening Farmstead task records its food cluster for completion handoff: PASS
+- Opening civilian builders receive permanent natural-food locks: PASS
+- Food service tests actual supply positions rather than centroid alone: PASS

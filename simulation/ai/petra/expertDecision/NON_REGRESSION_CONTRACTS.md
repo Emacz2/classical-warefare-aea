@@ -760,3 +760,12 @@ Replay regressions locked by IT14:
 - Forecast recovery may not purchase a Storehouse for less than 500 wood. Short-lived 120-200 wood fragments are serviced by temporary carrying while the planner waits for a worthwhile district.
 - Natural-food workers remain protected from Field construction. New civilians continue to become future farmers; removing premature housing reservations gives their Field tasks the wood to start.
 - IT15.8.5 Barracks timing, IT15.8.4 command authority, and every earlier food/CC-production invariant remain binding.
+
+## IT15.8.7 serviced natural-food assignment
+
+- A distant natural-food cluster that warrants its own Farmstead is not a valid civilian gather target until a nearby completed dropsite or Farmstead foundation exists.
+- A queued Farmstead or remembered cluster selection does not count as service.
+- Wicker may reserve a secondary branch before Barracks #1, but its workers stay productive locally and its placement timeout does not begin until the Barracks foundation exists.
+- Opening Storehouse placement minimizes weighted haul to the selected forest while retaining hard protection for proven future Field footprints.
+- The civilians who construct the opening Farmstead remain its food crew after completion and disperse across the selected live supplies; generic construction release may not redirect them to wood.
+- Dropsite coverage is judged against real supply positions, so a Farmstead correctly placed beside the patch is never invalidated solely by a misleading connected-cluster centroid.

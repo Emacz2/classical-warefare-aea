@@ -998,7 +998,10 @@ const DEFAULT_POLICY = Object.freeze({
   // central berry/future-field district. This is a score preference, not a hard
   // legality veto, so awkward maps can still place a Storehouse.
   openingStorehouseFoodDistrictPreserveRadius: 42,
-  openingStorehouseFoodDistrictPenalty: 5000,
+  // Exact reserved Field footprints remain hard validation. This softer radial
+  // preference must not push the opening dropsite off the selected wood mass.
+  openingStorehouseFoodDistrictPenalty: 160,
+  openingStorehouseWoodDistanceScoreWeight: 180,
   // IT15.6: reserve the berry/Farmstead district before House #1 is placed.
   openingHouseMinimumCCDistance: 34,
   openingHousePreferredCCDistance: 42,
