@@ -737,3 +737,11 @@ Replay regressions locked by IT14:
 - The main worker controller has final command authority each AI turn. The no-idle watchdog runs before it and may not overwrite a gather/build command merely because the engine has not exposed that newly issued order yet.
 - Genuine idle workers remain covered: the watchdog acts on the following update if no live work materializes, after which the main controller may refine the fallback target.
 - IT15.8.2 post-Wicker supply capacities and all IT15.8.1 corrective contracts remain binding.
+
+## IT15.8.4 opening-dispersion and infrastructure-order correction
+
+- Normal worker assignment runs before the no-idle watchdog so the initial food civilians are distributed by the least-loaded natural-supply allocator instead of all receiving the watchdog's nearest-bush fallback.
+- A same-turn ownership set prevents the watchdog from replacing any worker order considered by normal assignment before the simulation exposes it as live. Workers untouched by normal assignment remain eligible for immediate rescue.
+- Before Barracks #1 has a live foundation, a second House is held together with secondary Farmsteads and Storehouses whenever more than three population spaces remain. At three or fewer free spaces the population-emergency escape permits the House.
+- The opening House prefers the CC-side of an existing wood Storehouse, keeping the Storehouse between the House and trees. Later Houses may prefer the outside of established farm districts, but resource corridors, Storehouse work rings, and every reserved touching-Field footprint remain hard exclusions.
+- IT15.8.3's Barracks-before-secondary-dropsite rule and every IT15.8.1/15.8.2 food and production contract remain binding.

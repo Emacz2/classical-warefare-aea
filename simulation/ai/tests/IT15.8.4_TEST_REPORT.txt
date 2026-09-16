@@ -1,0 +1,19 @@
+PETRA EXPERT IT15.8.4 — STATIC TEST REPORT
+==========================================
+
+- Full-tree Node JavaScript syntax check: PASS
+- Version marker IT15.8.4: PASS
+- Normal worker allocator precedes no-idle watchdog: PASS
+- Per-turn worker ownership is marked before diagnostic deduplication: PASS
+- Watchdog skips workers handled by normal allocation: PASS
+- House #2 is held before a live Barracks when free population is greater than 3: PASS
+- Population emergency escape at 3 or fewer free spaces: PASS
+- Existing House foundations are not cancelled: PASS
+- Secondary Farmstead/Storehouse Barracks gate retained: PASS
+- Opening House-behind-Storehouse candidates added: PASS
+- Farm-district House candidates retain reserved-Field validation: PASS
+
+Limit:
+- No 0 A.D. SpiderMonkey runtime is available in this workspace. The package must
+  still be compile-verified and behavior-tested in game; Node validation is not an
+  engine or replay simulation test.

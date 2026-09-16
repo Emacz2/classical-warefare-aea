@@ -1,0 +1,34 @@
+PETRA EXPERT IT15.8.4 — OPENING DISPERSION / HOUSE ORDER
+========================================================
+
+BASELINE
+- Directly built on IT15.8.3. No rewrite or forward-port from the failed 16.x line.
+
+REPLAY FINDINGS
+- Moving the no-idle watchdog before normal assignment in IT15.8.3 stopped same-turn
+  command replacement, but made the watchdog assign every initially idle food civilian
+  to the same nearest berry bush before the least-loaded allocator ran.
+- House #2 was committed immediately after House #1 completed at roughly 30/40 pop,
+  while Barracks #1 remained unplaced.
+
+CORRECTIONS
+1. Opening berry dispersion without command thrashing
+   - Normal assignment again runs first.
+   - A per-update ownership set records every worker the normal allocator handled.
+   - The watchdog runs second and skips those workers, while retaining authority over
+     genuinely unhandled idle civilians.
+2. Barracks before House #2
+   - Before a live Barracks foundation, second-House actions and unstarted queue plans
+     are held whenever more than three population spaces remain.
+   - Existing House foundations are never cancelled; <=3 free population is an adaptive
+     emergency escape.
+3. House locality and protected space
+   - The first House prefers the CC-side of a wood Storehouse, away from the woodline.
+   - Later Houses consider the outside of established farm districts before extending
+     the old compact House block.
+   - Existing resource-corridor, Storehouse-ring, and reserved Field-slot vetoes remain.
+
+DEFERRED
+- Building garrison/ungarrison path shortening is feasible, but is intentionally not
+  mixed into this opening correction. It needs its own path-benefit, capacity, threat,
+  and successful-unload state machine.

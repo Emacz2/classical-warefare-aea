@@ -2586,6 +2586,15 @@ export class ExpertDecisionController
 			return frame;
 		const farmsteads = this.builtByClass(gameState, "Farmstead").length + this.foundationsByClass(gameState, "Farmstead").length;
 		const storehouses = this.builtByClass(gameState, "Storehouse").length + this.foundationsByClass(gameState, "Storehouse").length;
+		const population = Math.max(0, Number(gameState.getPopulation()) || 0);
+		const populationLimit = Math.max(population, Number(gameState.getPopulationLimit()) || 0);
+		const freePopulation = Math.max(0, populationLimit - population);
+		const houses = this.builtByClass(gameState, "House").length + this.foundationsByClass(gameState, "House").length;
+		// A second House is opening infrastructure, just like a second dropsite.  Do not
+		// spend its wood or construction time before Barracks #1 merely because a generic
+		// prebuild threshold fired.  The hard-cap escape remains adaptive: at <=3 free
+		// slots the House is allowed so production cannot deadlock on an awkward map.
+		const holdSecondHouse = houses >= 1 && freePopulation > 3;
 		let blocked = 0;
 		const actions = frame.actions.filter(action =>
 		{
@@ -2601,12 +2610,30 @@ export class ExpertDecisionController
 				++blocked;
 				return false;
 			}
+			if (action.kind === "house" && holdSecondHouse &&
+			    (action.type === "BUILD" || action.type === "RESERVE"))
+			{
+				++blocked;
+				return false;
+			}
 			return true;
 		});
+		// Also remove an unstarted second-House plan inherited from the preceding update;
+		// foundations are never cancelled here.
+		if (holdSecondHouse)
+		{
+			const queue = gameState.ai && gameState.ai.queues && gameState.ai.queues.house;
+			if (queue && Array.isArray(queue.plans) && queue.plans.length)
+			{
+				blocked += queue.plans.length;
+				queue.plans = [];
+			}
+		}
 		if (blocked && (Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastFirstBarracksGateDiag) || -99999) >= 8)
 		{
 			this.lastFirstBarracksGateDiag = Number(gameState.ai.elapsedTime) || 0;
-			aiWarn("[EXPERT-OPENING-GATE] hold secondary dropsite until Barracks #1 is placed blocked=" + blocked);
+			aiWarn("[EXPERT-OPENING-GATE] hold secondary infrastructure until Barracks #1 is placed blocked=" + blocked +
+				" freePop=" + freePopulation);
 		}
 		return blocked ? { ...frame, actions } : frame;
 	}
@@ -8117,6 +8144,11 @@ export class ExpertDecisionController
 		const id = finiteId(ent);
 		if (!Number.isFinite(id))
 			return;
+		// The ordinary allocator owns every worker it considered this update.  The idle
+		// watchdog runs afterward and must not replace a just-issued order before the
+		// simulation has had a turn to expose that order as live.
+		if (this.workerOrdersTouchedThisTurn)
+			this.workerOrdersTouchedThisTurn.add(id);
 		const live = describeLiveOrder(ent);
 		const key = desired + ":" + targetId + ":" + status + ":" + live.state + ":" + live.targets.join(",");
 		if (this.orderDiagnostics[id] === key)
@@ -11748,11 +11780,22 @@ export class ExpertDecisionController
 				const ccPos = cc.position();
 				const woodPos = this.getPrimaryWoodPosition(gameState) || [ccPos[0] + 1, ccPos[1]];
 				const foodAnchor = foodObservation && Array.isArray(foodObservation.center) ? foodObservation.center : undefined;
-				const candidates = generatePlacementCandidates({
+				const candidates = [];
+				// Prefer the protected side of the opening wood dropsite: Storehouse between
+				// trees and House, House toward the CC.  This shortens builder travel without
+				// putting a footprint in the lumber path.
+				const openingStores = [...this.builtByClass(gameState, "Storehouse"),
+					...this.foundationsByClass(gameState, "Storehouse")].filter(ent => ent && entityPosition(ent));
+				for (const store of openingStores.slice(0, 2))
+					candidates.push(...generatePlacementCandidates({
+						"kind": "barracks", "anchor": store.position(), "toward": ccPos,
+						"distances": [24, 28, 32], "angleCount": 16, "templateRadius": geometry.radius
+					}));
+				candidates.push(...generatePlacementCandidates({
 					"kind": "barracks", "anchor": ccPos, "toward": woodPos,
 					"distances": [28, 32, 36, 40, 44, 48, 52, 54],
 					"angleCount": 72, "templateRadius": geometry.radius
-				});
+				}));
 				request = { kind, candidates, "templateRadius": geometry.radius, "openingHouse": true,
 					"minimumCCDistance": Number(policy.openingHouseMinimumCCDistance) || 26,
 					"preferredCCDistance": Number(policy.openingHousePreferredCCDistance) || 38,
@@ -11842,8 +11885,7 @@ export class ExpertDecisionController
 				// outside of an existing farm district first. They can build it with almost no
 				// travel and immediately return to their fields.
 				const farmHouseCandidates = [];
-				if (action.preferFarmDistrictHouse)
-					for (const farm of this.builtByClass(gameState, "Farmstead").filter(ent => ent && entityPosition(ent)).slice(0, 6))
+				for (const farm of this.builtByClass(gameState, "Farmstead").filter(ent => ent && entityPosition(ent)).slice(0, 6))
 					{
 						const pos = farm.position();
 						let fdx = pos[0] - cc.position()[0], fdz = pos[1] - cc.position()[1];
@@ -11867,7 +11909,7 @@ export class ExpertDecisionController
 						...this.builtByClass(gameState, "Storehouse")
 					].filter(ent => ent && entityPosition(ent));
 					developed.sort((a, b) => SquareVectorDistance(b.position(), ccPos) - SquareVectorDistance(a.position(), ccPos) || a.id() - b.id());
-					const candidates = [...gapFillHouseCandidates, ...compactHouseCandidates, ...farmHouseCandidates];
+					const candidates = [...gapFillHouseCandidates, ...farmHouseCandidates, ...compactHouseCandidates];
 					for (const anchorEnt of developed.slice(0, 8))
 					{
 						const pos = anchorEnt.position();
@@ -11913,7 +11955,7 @@ export class ExpertDecisionController
 					dx /= len; dz /= len;
 					const tangent = [-dz, dx];
 					const spacing = Math.max(10, 2 * Number(geometry.radius || 4) + 2);
-					const lineCandidates = [...gapFillHouseCandidates, ...compactHouseCandidates, ...farmHouseCandidates];
+					const lineCandidates = [...gapFillHouseCandidates, ...farmHouseCandidates, ...compactHouseCandidates];
 					const annex = this.neutralFoodAnnexCandidate(gameState, cc.position(), accessIndex);
 					if (annex)
 						lineCandidates.unshift(...generatePlacementCandidates({ "kind": "barracks", "anchor": annex.position, "toward": cc.position(),
@@ -14876,6 +14918,8 @@ export class ExpertDecisionController
 			    !this.attackPlanAllowsEconomicWork(gameState, ent) ||
 			    !(ent.isIdle && ent.isIdle()))
 				continue;
+			if (this.workerOrdersTouchedThisTurn && this.workerOrdersTouchedThisTurn.has(ent.id()))
+				continue;
 			const job = ent.getMetadata(PlayerID, JOB_METADATA);
 			if (job === "chicken" || Number.isFinite(Number(ent.getMetadata(PlayerID, "expertScoutIssuedAt"))))
 				continue;
@@ -15920,11 +15964,13 @@ export class ExpertDecisionController
 		this.trainAthenianSpecialUnits(gameState, queues);
 		this.trainExpertHealerDetachment(gameState, queues);
 		this.ensureConstructionOrders(gameState);
-		// Run the idle watchdog first. updateWorkers() then has final authority for this
-		// turn, so the watchdog cannot overwrite a gather command that the engine has not
-		// yet had one simulation turn to expose as a live order.
-		this.enforceNoIdleEconomyWorkers(gameState, accessIndex);
+		// Let the normal allocator distribute the opening workers first (including one
+		// civilian per berry bush).  The watchdog then handles only workers the allocator
+		// did not touch; the per-turn guard prevents it from replacing fresh commands.
+		this.workerOrdersTouchedThisTurn = new Set();
 		this.updateWorkers(gameState, cc, foodNetwork, woodsite, accessIndex);
+		this.enforceNoIdleEconomyWorkers(gameState, accessIndex);
+		this.workerOrdersTouchedThisTurn = undefined;
 		this.diagnose(gameState, frame, foodObservation, woodsite);
 		return true;
 	}
@@ -15994,7 +16040,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.3] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.4] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16060,7 +16106,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.3] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.4] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
