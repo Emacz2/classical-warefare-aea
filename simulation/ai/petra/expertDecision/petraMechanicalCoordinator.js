@@ -29,6 +29,7 @@ function prepareBuild(gameState, action, request, ports, tracker, options) {
     execution: {
       position: resolved.position,
       angle: resolved.angle,
+      candidateIndex: resolved.candidateIndex,
       starterId: starter.id(),
       builderIds: [starter.id()],
       taskId,

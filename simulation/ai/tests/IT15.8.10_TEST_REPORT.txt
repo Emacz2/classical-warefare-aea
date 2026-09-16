@@ -1,0 +1,17 @@
+PETRA EXPERT IT15.8.10 — STATIC TEST REPORT
+
+- JavaScript syntax checks: PASS
+- Version marker IT15.8.10: PASS
+- Placement resolver candidate index propagated into execution: PASS
+- Opening recovery candidates maintain aligned candidate-to-woodsite mapping: PASS
+- Opening Storehouse scoring uses the candidate's own tree mass and anchor: PASS
+- Selected recovery site is bound immediately to pending and primary woodsite state: PASS
+- Opening Storehouse edge relaxation retains exact reserved-Field overlap validation: PASS
+- Construction orders skip pass-through-owned builders: PASS
+- Teleport remains owned through garrison, unload, and physical exit; timeout fallback is bounded: PASS
+- Placement rejection diagnostics now include rejection-type counts: PASS
+
+Replay verification required
+- Confirm the preferred opening Storehouse is accepted on the legal farm-district edge when it does not overlap a Field footprint.
+- If recovery is needed, confirm [EXPERT-WOOD] authoritative opening site precedes all new civilian wood orders and those orders use the same forest.
+- Confirm [EXPERT-TELEPORT] progresses garrison -> unload -> complete, or emits a bounded abort without stranding the builder.

@@ -786,3 +786,11 @@ Replay regressions locked by IT14:
 - House #2 and later Houses try legal gap-fill and exact snap positions beside the established House cluster before Farmstead rings, annexes, or broad placement fallbacks.
 - Opening pass-through uses the actual Civic Center obstruction footprint and may accept angled entry when the destination-side unload shortens travel, while retaining all IT15.8.8 safety caps.
 - The successful IT15.8.8 opening Farmstead, Storehouse, first House, and Barracks placement behavior remains binding.
+
+## IT15.8.10 authoritative opening woodsite
+
+- The opening Storehouse and its workers share one authoritative woodsite identity. Recovery may select another forest, but placement scoring, selected tree IDs, primary worksite state, builders, and new civilians must all switch atomically to that same forest.
+- An opening Storehouse may occupy the Farmstead district edge when it overlaps no exact reserved Field footprint; blanket distance alone may not reject it.
+- A Storehouse foundation becomes authoritative for new wood workers immediately rather than waiting for completion.
+- A pending building pass-through exclusively owns its builder until physical exit or bounded timeout; construction repair commands may not overwrite garrison/unload commands.
+- All IT15.8.9 worker-ownership, civilian-food, and compact-housing contracts remain binding.

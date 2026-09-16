@@ -1,0 +1,22 @@
+PETRA EXPERT IT15.8.10 — AUTHORITATIVE OPENING WOODSITE
+
+Replay diagnosis
+- The preferred 1,600-wood site was selected correctly, but all 258 opening Storehouse candidates were rejected.
+- Opening Storehouses preserved a blanket Farmstead-distance radius even when they did not overlap a real reserved Field footprint.
+- Recovery searched alternate forests while placement scoring and worker targeting remained bound to the original forest.
+- New civilians therefore walked toward the stale tree target, then were redirected after the recovered Storehouse completed.
+- Teleport garrison commands were issued, but construction repair commands replaced them before the engine completed garrisoning.
+
+Corrections
+- Opening Storehouses may use the Farmstead district edge; every exact current/future Field rectangle remains protected.
+- Every recovery candidate carries its own woodsite/tree/resource identity through placement scoring.
+- The chosen candidate index is returned by the mechanical coordinator and becomes the single authoritative opening woodsite immediately.
+- The recovered Storehouse foundation becomes the destination for new wood workers before completion, preventing stale cross-forest assignments.
+- Placement failures now report rejection-type counts rather than only a total.
+- A pending CC pass-through owns its builder until physical unload completes or a four-second garrison timeout aborts safely.
+- Construction repair orders cannot overwrite a pending pass-through command.
+
+Preserved
+- IT15.8.9 construction/no-idle ownership, civilian-only food work, and compact House priority.
+- IT15.8.8 staged-forest valuation.
+- IT15.8.7 Farmstead-builder food ownership.

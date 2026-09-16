@@ -42,6 +42,6 @@ HISTORICAL NOTES
 - IT14.98 produced a very fast non-canonical victory against Gaul Very Hard: BREAK 10:30, decisive defeat between 14:55 and 15:00.
 
 CURRENT VERSION
-IT15.8.9 is the active corrective regression/test build, built directly on IT15.8.8. Current calibration uses +30% Expert gather/trade and a 60-civilian growth ceiling. It repairs construction-task ownership, enforces civilian-only food work, prioritizes compact House snapping, and broadens the capped opening Civic Center pass-through using the holder's real footprint.
+IT15.8.10 is the active corrective regression/test build, built directly on IT15.8.9. Current calibration uses +30% Expert gather/trade and a 60-civilian growth ceiling. Opening Storehouse placement, recovery, and worker targeting now share one authoritative woodsite; exact farm slots remain protected while blanket Farmstead distance no longer rejects a legal wood edge.
 Historical Top-3 entries above were recorded at +35% and remain preserved as historical records; +30% runs should be tracked separately until a new benchmark series is explicitly adopted.
 Human-vs-Expert games are diagnostic only and never enter the historical +35% canonical leaderboard.

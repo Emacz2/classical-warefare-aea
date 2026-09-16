@@ -7695,7 +7695,7 @@ export class ExpertDecisionController
 	applyOpeningBuildingPassThrough(gameState, cc)
 	{
 		const now = Number(gameState.ai.elapsedTime) || 0;
-		if (!cc || now > 75)
+		if (!cc)
 			return;
 		// Finish an already-started pass-through first. The target rally point gives the
 		// engine the desired exit side; normal construction ownership reissues the repair
@@ -7706,19 +7706,42 @@ export class ExpertDecisionController
 				continue;
 			const targetId = Number(ent.getMetadata(PlayerID, "expertOpeningTeleportTarget"));
 			const target = Number.isFinite(targetId) ? gameState.getEntityById(targetId) : undefined;
+			const startedAt = Number(ent.getMetadata(PlayerID, "expertOpeningTeleportStartedAt"));
+			const unloadAt = Number(ent.getMetadata(PlayerID, "expertOpeningTeleportUnloadAt"));
 			if (ent.garrisonHolderID && ent.garrisonHolderID() === cc.id() && cc.unload)
 			{
-				if (target && entityPosition(target) && cc.setRallyPoint)
-					cc.setRallyPoint(target, "repair");
-				cc.unload(ent.id());
-				if (cc.unsetRallyPoint)
-					cc.unsetRallyPoint();
+				if (!Number.isFinite(unloadAt) || now - unloadAt >= 2)
+				{
+					if (target && entityPosition(target) && cc.setRallyPoint)
+						cc.setRallyPoint(target, "repair");
+					cc.unload(ent.id());
+					if (cc.unsetRallyPoint)
+						cc.unsetRallyPoint();
+					ent.setMetadata(PlayerID, "expertOpeningTeleportUnloadAt", now);
+					aiWarn("[EXPERT-TELEPORT] unload worker=" + ent.id() + " holder=" + cc.id() + " toward=" + targetId);
+				}
+				continue;
+			}
+			if (Number.isFinite(unloadAt))
+			{
 				ent.setMetadata(PlayerID, "expertOpeningTeleportHolder", undefined);
 				ent.setMetadata(PlayerID, "expertOpeningTeleportTarget", undefined);
-				aiWarn("[EXPERT-TELEPORT] unload worker=" + ent.id() + " holder=" + cc.id() + " toward=" + targetId);
+				ent.setMetadata(PlayerID, "expertOpeningTeleportStartedAt", undefined);
+				ent.setMetadata(PlayerID, "expertOpeningTeleportUnloadAt", undefined);
+				aiWarn("[EXPERT-TELEPORT] complete worker=" + ent.id() + " holder=" + cc.id() + " toward=" + targetId);
+				continue;
+			}
+			if (Number.isFinite(startedAt) && now - startedAt >= 4)
+			{
+				ent.setMetadata(PlayerID, "expertOpeningTeleportHolder", undefined);
+				ent.setMetadata(PlayerID, "expertOpeningTeleportTarget", undefined);
+				ent.setMetadata(PlayerID, "expertOpeningTeleportStartedAt", undefined);
+				aiWarn("[EXPERT-TELEPORT] abort worker=" + ent.id() + " reason=garrison-timeout");
 			}
 		}
 
+		if (now > 75)
+			return;
 		const ccPos = entityPosition(cc);
 		if (!ccPos || !cc.canGarrisonInside || !cc.canGarrisonInside())
 			return;
@@ -7745,6 +7768,7 @@ export class ExpertDecisionController
 			ent.setMetadata(PlayerID, "expertOpeningTeleportUsed", true);
 			ent.setMetadata(PlayerID, "expertOpeningTeleportHolder", cc.id());
 			ent.setMetadata(PlayerID, "expertOpeningTeleportTarget", targetId);
+			ent.setMetadata(PlayerID, "expertOpeningTeleportStartedAt", now);
 			ent.garrison(cc);
 			++this.openingTeleportCount;
 			aiWarn("[EXPERT-TELEPORT] garrison worker=" + ent.id() + " holder=" + cc.id() + " target=" + targetId);
@@ -8133,7 +8157,7 @@ export class ExpertDecisionController
 			// workers. Existing lumberjacks keep their explicit WORKSITE_ID and therefore
 			// stay on the old line; the new cohort builds/chops at the expansion instead.
 			if (!isField && kind === "storehouse" && observed.state === "foundation" &&
-			    this.builtByClass(gameState, "Storehouse").length === 1 && this.pendingWoodSelectionByTask[taskId])
+			    this.builtByClass(gameState, "Storehouse").length <= 1 && this.pendingWoodSelectionByTask[taskId])
 			{
 				const foundation = Number.isFinite(observed.foundationId) ? gameState.getEntityById(observed.foundationId) : undefined;
 				if (foundation && entityPosition(foundation) &&
@@ -8142,7 +8166,8 @@ export class ExpertDecisionController
 					this.primaryWoodWorksite = {
 						"position": foundation.position(), "taskId": taskId, "foundationId": foundation.id()
 					};
-					aiWarn("[EXPERT-WOOD] second storehouse foundation active for new workers task=" + taskId + " foundation=" + foundation.id());
+					aiWarn("[EXPERT-WOOD] storehouse foundation authoritative for new workers task=" + taskId +
+						" foundation=" + foundation.id() + " builtBefore=" + this.builtByClass(gameState, "Storehouse").length);
 				}
 			}
 
@@ -11483,20 +11508,30 @@ export class ExpertDecisionController
 				recovery >= 1 ? [0, 4, 8, 12, 16, 20, 24, 28, 32, 36] : [0, 4, 8, 12, 16, 20, 24, 28, 32];
 			const angleCount = recovery >= 2 ? 48 : 32;
 			const candidates = [];
+			const candidateWoodSites = [];
 			for (const site of ranked)
 			{
 				if (Array.isArray(site.legalStorehousePosition))
+				{
 					candidates.push([...site.legalStorehousePosition]);
-				candidates.push(...initialStorehousePlacementCandidates({ "action": "SELECT_INITIAL_WOODSITE", ...site }, { distances, angleCount }));
+					candidateWoodSites.push({ ...site, "resourcePoints": this.resourcePlacementPoints(gameState, site.treeIds || []) });
+				}
+				const siteCandidates = initialStorehousePlacementCandidates({ "action": "SELECT_INITIAL_WOODSITE", ...site }, { distances, angleCount });
+				candidates.push(...siteCandidates);
+				for (let i = 0; i < siteCandidates.length; ++i)
+					candidateWoodSites.push({ ...site, "resourcePoints": this.resourcePlacementPoints(gameState, site.treeIds || []) });
 			}
 			request = {
-				kind, "templateRadius": geometry.radius, candidates,
+				kind, "templateRadius": geometry.radius, candidates, candidateWoodSites,
 				"worksiteAnchor": ranked[0].position, "selectedTreeIds": [...(ranked[0].treeIds || [])],
 				"resourcePoints": this.resourcePlacementPoints(gameState, ranked[0].treeIds || []),
 				// IT14.72: the opening Storehouse is a wood-edge building, not a farm-
 				// district building. Score legal candidates away from the berry/future-
 				// field core while keeping the same selected wood patch.
 				"openingStorehouse": true,
+				// The opening Storehouse may use the Farmstead district edge, but the
+				// exact reserved Field rectangles remain protected below.
+				"storehouseFarmEdgeRelax": true,
 				"foodDistrictAnchor": foodObservation && Array.isArray(foodObservation.center) ? [...foodObservation.center] : undefined,
 				"ccAnchor": cc && cc.position ? [...cc.position()] : undefined
 			};
@@ -13152,7 +13187,9 @@ export class ExpertDecisionController
 				if (request && request.openingStorehouse)
 				{
 					const policy = mergePolicy();
-					const points = Array.isArray(request.resourcePoints) ? request.resourcePoints : [];
+					const candidateSite = Array.isArray(request.candidateWoodSites) ? request.candidateWoodSites[index] : undefined;
+					const points = candidateSite && Array.isArray(candidateSite.resourcePoints) ? candidateSite.resourcePoints :
+						(Array.isArray(request.resourcePoints) ? request.resourcePoints : []);
 					if (points.length)
 					{
 						let totalWeight = 0, distanceScore = 0;
@@ -13182,8 +13219,9 @@ export class ExpertDecisionController
 					}
 					// Keep the Storehouse useful as a dropsite while choosing the OUTER edge
 					// of the same selected forest patch when two legal positions are similar.
-					if (Array.isArray(request.worksiteAnchor))
-						score += 8 * Math.sqrt(SquareVectorDistance(position, request.worksiteAnchor));
+					const worksiteAnchor = candidateSite && Array.isArray(candidateSite.position) ? candidateSite.position : request.worksiteAnchor;
+					if (Array.isArray(worksiteAnchor))
+						score += 8 * Math.sqrt(SquareVectorDistance(position, worksiteAnchor));
 					return score;
 				}
 				if (!request)
@@ -13495,8 +13533,12 @@ export class ExpertDecisionController
 						" need=" + Math.max(1, Number(action.minimumFieldSlotsNeeded) || 1) +
 						" minNow=" + Math.max(1, Number(request.minimumFieldSlots) || 1) +
 						" failures=" + Number(this.farmsteadPlacementFailures || 0) : "";
+					const rejectionSummary = {};
+					for (const item of rejected)
+						rejectionSummary[item && item.reason || "unknown"] = Number(rejectionSummary[item && item.reason || "unknown"] || 0) + 1;
 					aiWarn("[EXPERT-PLACE] blocked kind=" + action.kind + " role=" + (action.role || "primary") +
-						" reason=" + (blocked && blocked.reason || "unknown") + " rejected=" + rejected.length + foodBlockDiag);
+						" reason=" + (blocked && blocked.reason || "unknown") + " rejected=" + rejected.length +
+						" rejectionTypes=" + Object.entries(rejectionSummary).map(([reason, count]) => reason + ":" + count).join(",") + foodBlockDiag);
 					delete this.pendingWoodSelectionByTask[request.taskId];
 					delete this.pendingFoodSelectionByTask[request.taskId];
 					continue;
@@ -13514,6 +13556,23 @@ export class ExpertDecisionController
 				// Keep housing recovery debt until the House itself completes.
 				if (action.kind !== "house")
 					this.placementFailureCounts[action.kind + ":" + (action.role || "primary")] = 0;
+				if (action.kind === "storehouse" && request.openingStorehouse)
+				{
+					const selectedSite = Array.isArray(request.candidateWoodSites) ? request.candidateWoodSites[Number(exec.candidateIndex)] : undefined;
+					const authoritative = selectedSite || {
+						"position": request.worksiteAnchor,
+						"treeIds": request.selectedTreeIds,
+						"resourcePoints": request.resourcePoints
+					};
+					this.pendingWoodSelectionByTask[exec.taskId] = { ...authoritative };
+					this.primaryWoodWorksite = {
+						"position": [...exec.position], "taskId": exec.taskId, "pending": true,
+						"treeIds": [...(authoritative.treeIds || [])]
+					};
+					aiWarn("[EXPERT-WOOD] authoritative opening site task=" + exec.taskId +
+						" candidate=" + Number(exec.candidateIndex) + " trees=" + (authoritative.treeIds || []).length +
+						" store=" + exec.position[0].toFixed(1) + "," + exec.position[1].toFixed(1));
+				}
 				this.activeTaskBuildIntent[exec.taskId] = {
 					"builderPool": Array.isArray(action.builderPool) ? [...action.builderPool] : undefined,
 					"requiredBuilderIds": Array.isArray(action.requiredBuilderIds) ? [...action.requiredBuilderIds] : undefined,
@@ -15531,6 +15590,10 @@ export class ExpertDecisionController
 
 			for (const builder of team)
 			{
+				// A pending CC pass-through owns the builder until it has physically exited.
+				// Reissuing repair here cancels the engine garrison command before it completes.
+				if (builder.getMetadata && builder.getMetadata(PlayerID, "expertOpeningTeleportHolder") !== undefined)
+					continue;
 				const carrying = builder.resourceCarrying ? (builder.resourceCarrying() || []) : [];
 				if (carrying.some(resource => resource && Number(resource.amount) > 0))
 				{
@@ -16202,7 +16265,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.9] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.10] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16260,7 +16323,7 @@ export class ExpertDecisionController
 				continue;
 			if (ent.getMetadata(PlayerID, DEFAULT_OWNERSHIP_METADATA) !== true)
 				continue;
-			for (const key of [DEFAULT_OWNERSHIP_METADATA, JOB_METADATA, PENDING_JOB_METADATA, TASK_KEY, CIVILIAN_ORDINAL, WORKSITE_ID, FOOD_SITE, FOOD_SITE_CHANGED_AT, FOOD_PREVIOUS_SITE, SUPPLY_ID, EXPERT_DEFENSE, EXPERT_DEFENSE_ORDER_AT, EXPERT_DEFENSE_ORDER_STAGE, EXPERT_CIVILIAN_EVAC, EXPERT_CIVILIAN_DANGER_AT, EXPERT_WICKER_PEELED, EXPERT_WICKER_BRANCH, NATURAL_FOOD_LOCK, FOOD_HOME_FARMSTEAD, FOOD_HOME_PERMANENT, EXPERT_ADAPTIVE_FOOD, EXPERT_FALLBACK_LEASE_UNTIL, EXPERT_FALLBACK_LEASE_RESOURCE, EXPERT_STRATEGIC_MOVE_AT, "target-foundation", "expertOpeningTeleportUsed", "expertOpeningTeleportHolder", "expertOpeningTeleportTarget", "expertWoundedReturnUntil", "expertWoundedFromPlan", "expertCombatRetreatUntil", "expertCombatRetreatReason", "expertRamAttackPlan"])
+			for (const key of [DEFAULT_OWNERSHIP_METADATA, JOB_METADATA, PENDING_JOB_METADATA, TASK_KEY, CIVILIAN_ORDINAL, WORKSITE_ID, FOOD_SITE, FOOD_SITE_CHANGED_AT, FOOD_PREVIOUS_SITE, SUPPLY_ID, EXPERT_DEFENSE, EXPERT_DEFENSE_ORDER_AT, EXPERT_DEFENSE_ORDER_STAGE, EXPERT_CIVILIAN_EVAC, EXPERT_CIVILIAN_DANGER_AT, EXPERT_WICKER_PEELED, EXPERT_WICKER_BRANCH, NATURAL_FOOD_LOCK, FOOD_HOME_FARMSTEAD, FOOD_HOME_PERMANENT, EXPERT_ADAPTIVE_FOOD, EXPERT_FALLBACK_LEASE_UNTIL, EXPERT_FALLBACK_LEASE_RESOURCE, EXPERT_STRATEGIC_MOVE_AT, "target-foundation", "expertOpeningTeleportUsed", "expertOpeningTeleportHolder", "expertOpeningTeleportTarget", "expertOpeningTeleportStartedAt", "expertOpeningTeleportUnloadAt", "expertWoundedReturnUntil", "expertWoundedFromPlan", "expertCombatRetreatUntil", "expertCombatRetreatReason", "expertRamAttackPlan"])
 				ent.setMetadata(PlayerID, key, undefined);
 		}
 		for (const name of Object.keys(this.HQ.Config.priorities || {}))
@@ -16268,7 +16331,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.9] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.10] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
