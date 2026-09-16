@@ -722,3 +722,18 @@ Replay regressions locked by IT14:
 - A civilian actively gathering or returning food from a live natural-food supply is never recruited into a Field construction crew. Field construction waits for post-opening, CC-trained future farmers; those builders retain permanent food ownership and stay on the completed Field.
 - Barracks #1 anchors to the completed Storehouse nearest the active wood workforce and does not chase a remote frontier-resource candidate ahead of that worksite placement.
 - Before the 60-civilian ceiling, the Civic Centre trains citizen-soldiers only for a genuine hostile defense or a live Phase-1 Early/Late-P1 attack. Generic P2/P3 attacks, near-launch tests, and lower doctrine soft caps are not exceptions.
+
+## IT15.8.2 post-Wicker branch-capacity correction
+
+- Post-Wicker redistribution counts civilians already assigned to the secondary natural-food source before moving surplus workers from the opening berries.
+- Five live bushes retain five civilians. A single apple tree has a hard preferred capacity of three civilians total, including workers assigned before the Wicker transition.
+- If two civilians already occupy that apple tree, exactly one surplus berry civilian joins it; further surplus berry civilians return to productive wood work.
+- This patch does not alter IT15.8.1 Field crews, Farmstead rescanning, first-Barracks locality, CC production, or combat behavior.
+
+## IT15.8.3 opening-order and command-authority correction
+
+- After the opening Farmstead and Storehouse exist, Barracks #1 must be physically placed before any second Farmstead or second Storehouse is permitted.
+- A queued Barracks is not sufficient; the gate releases only when a Barracks is built or has a live foundation.
+- The main worker controller has final command authority each AI turn. The no-idle watchdog runs before it and may not overwrite a gather/build command merely because the engine has not exposed that newly issued order yet.
+- Genuine idle workers remain covered: the watchdog acts on the following update if no live work materializes, after which the main controller may refine the fallback target.
+- IT15.8.2 post-Wicker supply capacities and all IT15.8.1 corrective contracts remain binding.

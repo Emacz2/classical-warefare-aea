@@ -1,0 +1,16 @@
+PETRA EXPERT IT15.8.3 — STATIC TEST REPORT
+==========================================
+
+- Full-tree Node JavaScript syntax check: PASS
+- Archive integrity check: PASS
+- Fresh-extraction full-tree Node syntax check: PASS
+- Exact archive/source byte comparison: PASS
+- Version marker IT15.8.3: PASS
+- Secondary Farmstead/Storehouse filter requires live Barracks placement: PASS
+- Primary Farmstead/Storehouse actions remain allowed: PASS
+- No-idle watchdog precedes normal worker assignment: PASS
+- IT15.8.2 branch-capacity code retained: PASS
+
+Limit:
+- No 0 A.D. SpiderMonkey runtime is available in this workspace. The package must
+  still be compile-verified in game; Node validation is not an engine test.

@@ -2386,7 +2386,7 @@ export class ExpertDecisionController
 				break;
 			keep.add(ent.id());
 		}
-		const peel = workers.filter(ent => !keep.has(ent.id()));
+		let peel = workers.filter(ent => !keep.has(ent.id()));
 
 		// IT14.14: if Wicker reveals spare berry workers AND a worthwhile secondary
 		// in-territory food cluster exists, those workers establish that branch instead
@@ -2397,6 +2397,37 @@ export class ExpertDecisionController
 			foodAlternative.next.remaining >= policy.minimumAlternativeNaturalFood ? foodAlternative.next : undefined;
 		if (branch && peel.length)
 		{
+			// IT15.8.2: branch capacity includes civilians already assigned there. In the
+			// 5-bush + single-apple case, two civilians may reach the apple before Wicker;
+			// only one of the three peeled berry civilians should then join them.
+			const branchLoads = this.naturalFoodSupplyLoads(gameState, branch);
+			let branchOpenSlots = 0;
+			for (const id of branch.availableIds && branch.availableIds.length ? branch.availableIds : branch.ids || [])
+			{
+				const limit = this.naturalFoodSupplyWorkerLimit(gameState, id, branch);
+				if (Number.isFinite(limit))
+					branchOpenSlots += Math.max(0, limit - (branchLoads.get(Number(id)) || 0));
+				else
+					branchOpenSlots += peel.length;
+			}
+			branchOpenSlots = Math.min(branchOpenSlots,
+				Math.max(0, Number(policy.naturalFoodMaxWorkersPerCluster) - this.naturalFoodClusterActiveWorkers(gameState, branch)));
+			const branchPeel = peel.slice(0, branchOpenSlots);
+			const surplusPeel = peel.slice(branchOpenSlots);
+			peel = branchPeel;
+			for (const ent of surplusPeel)
+			{
+				ent.setMetadata(PlayerID, EXPERT_WICKER_PEELED, true);
+				this.setDesiredJob(gameState, ent, "wood");
+				aiWarn("[EXPERT-BERRIES] post-Wicker branch-full worker=" + ent.id() + " -> wood");
+			}
+			if (!peel.length)
+			{
+				this.postWickerBerryPeelDone = true;
+				aiWarn("[EXPERT-BERRIES] Wicker peel complete workers=" + workers.length + " bushes=" + live.size +
+					" branchSlots=0 moved=0");
+				return;
+			}
 			const site = encodeFoodSite(branch.ids);
 			const now = Number(gameState.ai.elapsedTime) || 0;
 			this.postWickerBranchCluster = { ...branch, ids: [...branch.ids], center: [...branch.center] };
@@ -2546,6 +2577,38 @@ export class ExpertDecisionController
 			actions.push({ "type": "BUILD", "kind": "farmstead", "role": "wicker_branch", "priority": 99,
 				"builderPool": ["food", "food_owned"], "requiredBuilderIds": [...this.postWickerBranchWorkerIds] });
 		return { ...frame, actions };
+	}
+
+	applyFirstBarracksOpeningGate(gameState, frame)
+	{
+		if (!frame || !Array.isArray(frame.actions) ||
+		    this.builtByClass(gameState, "Barracks").length || this.foundationsByClass(gameState, "Barracks").length)
+			return frame;
+		const farmsteads = this.builtByClass(gameState, "Farmstead").length + this.foundationsByClass(gameState, "Farmstead").length;
+		const storehouses = this.builtByClass(gameState, "Storehouse").length + this.foundationsByClass(gameState, "Storehouse").length;
+		let blocked = 0;
+		const actions = frame.actions.filter(action =>
+		{
+			if (!action)
+				return false;
+			if (action.kind === "farmstead" && farmsteads >= 1 && action.role !== "primary")
+			{
+				++blocked;
+				return false;
+			}
+			if (action.kind === "storehouse" && storehouses >= 1 && action.role !== "primary")
+			{
+				++blocked;
+				return false;
+			}
+			return true;
+		});
+		if (blocked && (Number(gameState.ai.elapsedTime) || 0) - (Number(this.lastFirstBarracksGateDiag) || -99999) >= 8)
+		{
+			this.lastFirstBarracksGateDiag = Number(gameState.ai.elapsedTime) || 0;
+			aiWarn("[EXPERT-OPENING-GATE] hold secondary dropsite until Barracks #1 is placed blocked=" + blocked);
+		}
+		return blocked ? { ...frame, actions } : frame;
 	}
 
 	researchExpertEcoTech(gameState, queues, foodClusters, cc)
@@ -5095,7 +5158,7 @@ export class ExpertDecisionController
 			    ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
 			    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined ||
 			    ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined ||
-			    this.workerGatheringNaturalFood(gameState, ent))
+			    this.workerActualResource(gameState, ent) === "food")
 				continue;
 			future.push(ent);
 		}
@@ -5119,7 +5182,7 @@ export class ExpertDecisionController
 				    ent.getMetadata(PlayerID, EXPERT_FUTURE_FARMER) === true || ent.getMetadata(PlayerID, EXPERT_FUTURE_FARM_TASK) !== undefined ||
 				    ent.getMetadata(PlayerID, TASK_KEY) !== undefined ||
 				    ent.getMetadata(PlayerID, EXPERT_DEFENSE) !== undefined || ent.getMetadata(PlayerID, EXPERT_CIVILIAN_EVAC) !== undefined ||
-				    this.workerGatheringNaturalFood(gameState, ent))
+				    this.workerActualResource(gameState, ent) === "food")
 					continue;
 				const ordinal = Number(ent.getMetadata(PlayerID, CIVILIAN_ORDINAL));
 				if (!Number.isFinite(ordinal) || ordinal <= openingEnd)
@@ -7106,21 +7169,6 @@ export class ExpertDecisionController
 			return carriedType.type;
 		const generic = ent.getMetadata(PlayerID, "gather-type");
 		return ["food", "wood", "stone", "metal"].includes(generic) && state.includes("GATHER") ? generic : undefined;
-	}
-
-	workerGatheringNaturalFood(gameState, ent)
-	{
-		if (!ent || !ent.getMetadata)
-			return false;
-		const supplyId = Number(ent.getMetadata(PlayerID, SUPPLY_ID));
-		const supply = Number.isFinite(supplyId) ? gameState.getEntityById(supplyId) : undefined;
-		if (!supply || hasClass(supply, "Field") || hasClass(supply, "Animal") ||
-		    this.resourceGenericForSupply(supply) !== "food" ||
-		    !supply.resourceSupplyAmount || supply.resourceSupplyAmount() <= 0)
-			return false;
-		const state = ent.unitAIState ? String(ent.unitAIState() || "") : "";
-		return hasLiveGatherOrder(ent, supply.id()) || state.includes("GATHER") ||
-			state.includes("RETURNRESOURCE") || state.includes("RETURNINGRESOURCE");
 	}
 
 	redirectWorkerToForecastResource(gameState, ent, target)
@@ -15843,6 +15891,9 @@ export class ExpertDecisionController
 					(siegeContext.finishing ? "finish" : siegeContext.p2KillSwitch ? "p2-kill" : siegeContext.brokenTown ? "broken-p2" : "p3-push"));
 			}
 		}
+		// IT15.8.3 opening order: after the opening food/wood dropsites, Barracks #1
+		// must be physically placed before any second Farmstead or Storehouse.
+		frame = this.applyFirstBarracksOpeningGate(gameState, frame);
 		this.setDecisionPriorities(gameState, frame);
 		const prepared = this.prepareExecution(gameState, frame, cc, accessIndex, foodObservation);
 		try
@@ -15869,8 +15920,11 @@ export class ExpertDecisionController
 		this.trainAthenianSpecialUnits(gameState, queues);
 		this.trainExpertHealerDetachment(gameState, queues);
 		this.ensureConstructionOrders(gameState);
-		this.updateWorkers(gameState, cc, foodNetwork, woodsite, accessIndex);
+		// Run the idle watchdog first. updateWorkers() then has final authority for this
+		// turn, so the watchdog cannot overwrite a gather command that the engine has not
+		// yet had one simulation turn to expose as a live order.
 		this.enforceNoIdleEconomyWorkers(gameState, accessIndex);
+		this.updateWorkers(gameState, cc, foodNetwork, woodsite, accessIndex);
 		this.diagnose(gameState, frame, foodObservation, woodsite);
 		return true;
 	}
@@ -15940,7 +15994,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.1] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.3] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16006,7 +16060,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.1] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.3] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

@@ -1,6 +1,13 @@
 PETRA EXPERT IT15.8.1 — STATIC TEST REPORT
 ==========================================
 
+CORRECTION NOTE
+- The first packaged candidate passed Node syntax checking but was rejected by the
+  0 A.D. JavaScript engine with "missing } after function body".
+- That candidate is withdrawn. Its newly added class helper was removed and the
+  two checks now reuse IT15.8's existing workerActualResource() method directly.
+- This report applies only to the rebuilt archive.
+
 Validation performed on the packaged source:
 - JavaScript syntax check for every .js file: PASS
 - Archive integrity test: PASS
@@ -9,7 +16,7 @@ Validation performed on the packaged source:
 - Version diagnostic marker IT15.8.1: PASS
 - Removed starting-patch-only Wicker condition: PASS
 - Removed generic pre-60 active/major-attack CC exceptions: PASS
-- Natural-food gatherer exclusion present in both future-farmer selection paths: PASS
+- Active food-gatherer exclusion present in both future-farmer selection paths: PASS
 - Field fallback no longer recruits generic existing food/farm workers: PASS
 - Existing-hub failed-slot reset and rescan present: PASS
 - Barracks #1 Storehouse anchor and frontier-candidate exclusion present: PASS
@@ -23,4 +30,6 @@ Expected source differences from untouched IT15.8:
 - tests/IT15.8.1_TEST_REPORT.txt (new)
 
 Limit:
-- No 0 A.D. engine simulation was available in this workspace. Replay behavior must be confirmed in-game; this report does not claim a played match.
+- No 0 A.D. SpiderMonkey runtime or engine simulation was available in this workspace.
+  Node syntax and archive checks are not represented as an in-game compile test.
+  Replay behavior and engine compilation must be confirmed in-game.

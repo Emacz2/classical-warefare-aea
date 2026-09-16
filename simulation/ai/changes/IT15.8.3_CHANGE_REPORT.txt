@@ -1,0 +1,25 @@
+PETRA EXPERT IT15.8.3 — OPENING ORDER / WORKER AUTHORITY
+=======================================================
+
+BASELINE
+- Directly built on IT15.8.2; all earlier 15.8 corrections are retained.
+
+REPLAY FINDINGS
+- Replay #2 placed Storehouse #2 before Barracks #1.
+- During the first 2-3 minutes, updateWorkers issued intended food/wood work, then
+  the same-turn no-idle watchdog saw the unit's pre-command IDLE state and replaced
+  that order with fallback work. On the next update the main controller replaced the
+  fallback again, producing visible back-and-forth walking.
+
+CORRECTIONS
+1. Barracks-first expansion gate
+   - After the opening Farmstead and Storehouse, no second Farmstead or Storehouse
+     action survives until Barracks #1 is built or has a foundation.
+2. Single command authority per turn
+   - The no-idle watchdog now runs before normal worker assignment.
+   - Normal assignment has the final command for the turn and cannot be overwritten
+     solely because the engine has not processed that new command yet.
+
+UNCHANGED
+- IT15.8.2 apple/berry capacity accounting.
+- Field crews, CC rules, farm packing, military planning, and combat behavior.

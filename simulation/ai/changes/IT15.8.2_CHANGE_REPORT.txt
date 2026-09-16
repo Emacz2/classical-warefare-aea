@@ -1,0 +1,19 @@
+PETRA EXPERT IT15.8.2 — POST-WICKER CAPACITY CORRECTION
+======================================================
+
+BASELINE
+- Directly built on the corrected IT15.8.1 source.
+
+REPLAY FINDING
+- The opening cluster had five live bushes.
+- The secondary source was one 400-food apple tree.
+- Two new civilians had already been assigned to the apple before Wicker completed.
+- The old peel routine then assigned all three surplus opening workers to that branch because it did not subtract the two existing apple workers.
+
+CORRECTION
+- Secondary branch open slots are now calculated per live supply using the existing supply limits and current worker loads.
+- Apple capacity remains three total civilians.
+- In the observed 5-bush + apple case, five remain on berries, one peeled civilian joins the two apple workers, and the other two peeled civilians return to wood.
+
+UNCHANGED
+- All IT15.8.1 Field, Farmstead, Barracks, CC-production, economy-safety, and combat corrections.
