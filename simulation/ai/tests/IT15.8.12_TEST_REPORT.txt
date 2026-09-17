@@ -1,0 +1,17 @@
+IT15.8.12 STATIC/REGRESSION CHECK REPORT
+
+PASS: expertDecisionController.js, economyPlanner.js, and policy.js parse with node --check.
+PASS: normal first-Barracks transition targets minimumCompletedFieldsBeforeSecondBarracks.
+PASS: handoff applies only after a Barracks exists and natural food is <=25%.
+PASS: handoff applies only to civilians without an established permanent job.
+PASS: original natural-food workers and established lumberjacks are not reassigned by handoff.
+PASS: handoff civilians receive future-farmer ownership and food_owned jobs.
+PASS: Farmstead three-bush reward increased without removing field-capacity or legality scoring.
+PASS: teleport rally and unload occur in different updates; rally persists through unload.
+PASS: IT15.8.12 diagnostic marker is present.
+
+LIVE REPLAY REQUIRED
+- Confirm Farmstead chooses the side servicing the larger number of berry bushes.
+- Confirm new CC civilians begin the six-Field pipeline after Barracks #1 placement.
+- Confirm production remains active around 4:00 and Barracks #2 can follow.
+- Confirm teleported workers visibly exit on the target side of the CC.

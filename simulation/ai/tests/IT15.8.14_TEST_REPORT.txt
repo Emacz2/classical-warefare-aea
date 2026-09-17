@@ -1,0 +1,17 @@
+IT15.8.14 STATIC/REGRESSION CHECK REPORT
+
+PASS: all four changed JavaScript files parse with node --check.
+PASS: Barracks #2 keeps the six-completed-Field launch rule.
+PASS: after Barracks #2 completes, desired permanent capacity has an eight-Field minimum.
+PASS: the forced Farmstead branch ignores unrelated reservations but still reserves its own real cost.
+PASS: ordinary/natural Farmsteads retain the normal shared reservation test.
+PASS: Town core eco research is evaluated before the P2 military-priority branch.
+PASS: long-haul expansion requires both a 32m measured average haul and at least eight active wood workers.
+PASS: army recovery applies only to idle members of a launched walking army and does not touch active combat orders.
+PASS: IT15.8.14 diagnostic marker is present.
+
+LIVE REPLAY REQUIRED
+- Confirm Barracks #2 is followed directly by Fields 7-8 and a prompt third Farmstead when the existing six slots are full.
+- Confirm the first available P2 food upgrade is queued promptly on entering Town Phase when food is pressured.
+- Confirm a worthwhile expansion is built before workers normalize half-map resource walks.
+- Confirm no launched soldier group remains idle at an intermediate rally point.

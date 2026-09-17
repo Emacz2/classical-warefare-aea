@@ -2809,6 +2809,32 @@ AttackPlan.prototype.UpdateWalking = function(gameState, events)
 		}
 	}
 
+	// IT15.8.14: a moving army is not a parking lot. Formation/path updates can leave a
+	// minority of reinforcements idle around an intermediate rally point while the main
+	// collection keeps moving (and therefore prevents the centre-based stuck test above).
+	// Reissue only to genuinely idle, non-garrisoned members; active combat and the rest
+	// of the formation are untouched.
+	if (this.Config.difficulty >= difficulty.EXPERT && gameState.ai.playedTurn % 5 === 0)
+	{
+		const waypoint = this.path && this.path.length ? this.path[0] : this.targetPos;
+		if (waypoint)
+		{
+			let recovered = 0;
+			for (const ent of this.unitCollection.values())
+			{
+				if (!ent || !ent.position || !ent.position() || !ent.isIdle || !ent.isIdle() ||
+				    ent.getMetadata(PlayerID, "transport") !== undefined ||
+				    ent.getMetadata(PlayerID, "garrisonHolder") !== undefined)
+					continue;
+				ent.move(waypoint[0], waypoint[1]);
+				++recovered;
+			}
+			if (recovered)
+				aiWarn("[EXPERT-ATTACK-MOVE] recovered-idle plan=" + this.name +
+					" units=" + recovered + " waypoint=" + Math.round(waypoint[0]) + "," + Math.round(waypoint[1]));
+		}
+	}
+
 	return true;
 };
 

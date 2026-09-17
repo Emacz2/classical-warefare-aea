@@ -794,3 +794,12 @@ Replay regressions locked by IT14:
 - A Storehouse foundation becomes authoritative for new wood workers immediately rather than waiting for completion.
 - A pending building pass-through exclusively owns its builder until physical exit or bounded timeout; construction repair commands may not overwrite garrison/unload commands.
 - All IT15.8.9 worker-ownership, civilian-food, and compact-housing contracts remain binding.
+
+## IT15.8.14 sustained food, economic research, expansion, and army motion
+
+- Six completed Fields authorize Barracks #2 but never terminate farm growth. Two completed Barracks impose an immediate eight-Field floor; population and measured burn continue the existing path toward ten.
+- A forced permanent-food Farmstead is tested against its own real resource cost. Unrelated food, phase, or unit reservations may not block a wood-only hub while the wood is already banked.
+- On entering Town Phase, the core food/wood economic lane is evaluated immediately. An assembling or active attack does not postpone the first Town economic upgrade behind two Forge technologies.
+- A large lumber workforce with a measured 32m+ average drop haul is expansion evidence. Athens may claim a worthwhile frontier Cleruchy instead of accepting repeated half-map resource walks.
+- During an active attack march, genuinely idle non-garrisoned army members receive the current waypoint again. Active combat orders and economically productive pre-launch reserves are untouched.
+- IT15.8.13 Field-builder handoff and every earlier opening, worker-ownership, building-order, and placement contract remain binding.

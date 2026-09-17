@@ -171,7 +171,9 @@ const DEFAULT_POLICY = Object.freeze({
   futureFarmTargetFields: 10,
   futureFarmFieldBuilderTarget: 4,
   futureFarmFieldBuilderMinimum: 3,
-  futureFarmFieldBuilderEmergencyMinimum: 2,
+  // One newly trained civilian may start the first emergency Field immediately.
+  // Waiting for a ceremonial crew after natural food is gone creates a food/idle deadlock.
+  futureFarmFieldBuilderEmergencyMinimum: 1,
   futureFarmFieldEmergencyFoodBank: 120,
   // IT14.80: compact human-like farm blocks use four footprint-derived pinwheel
   // positions around the Farmstead. Simple N/E/S/W side-centres overlap when Fields
@@ -303,6 +305,8 @@ const DEFAULT_POLICY = Object.freeze({
   secondBarracksHardNaturalFood: 800,
   secondBarracksEarlyFoodBank: 350,
   minimumCompletedFieldsBeforeSecondBarracks: 6,
+  // Six unlocks Barracks #2; eight is the immediate two-Barracks support floor.
+  postSecondBarracksFieldFloor: 8,
   foodRateSafetyMargin: 1.12,
   foodBankBridgeForSecondBarracks: 900,
   secondBarracksMinimumFoodBridgeSeconds: 60,
@@ -691,9 +695,9 @@ const DEFAULT_POLICY = Object.freeze({
   foodSurplusNewCivilianWoodRatio: 1.75,
   // Permanent-food floors: natural food and a temporary food bank may delay expansion,
   // but they may not collapse the long-term farm economy below these population-scaled floors.
-  fieldFloorSixPopulation: 70,
-  fieldFloorEightPopulation: 90,
-  fieldFloorTenPopulation: 120,
+  fieldFloorSixPopulation: 40,
+  fieldFloorEightPopulation: 70,
+  fieldFloorTenPopulation: 110,
   fieldFloorTwelvePopulation: 9999,
   preferredPermanentFields: 10,
   emergencyPermanentFieldsFoodBank: 500,
@@ -743,7 +747,9 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.86: opening Farmstead candidate ranking rewards servicing up to three berry
   // bushes at once. Hard Field-capacity legality remains unchanged.
   openingFarmsteadMultiBushExtraRadius: 6,
-  openingFarmsteadMultiBushReward: 900,
+  // Cardinality matters more than a tiny nearest-bush advantage: if one legal side
+  // efficiently services three bushes and another only two, prefer the three-bush side.
+  openingFarmsteadMultiBushReward: 6000,
   expertCleanupEnemyPopulation: 8,
   // IT14.53: when the enemy is down to a literal handful of population and still
   // owns a Civic Centre, siege and the finishing army stop cleaning side buildings
@@ -892,6 +898,10 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.94: one expansion is not a lifetime cap. The first healthy expansion remains
   // optional; additional Cleruchies require renewed scarcity and are spaced/cooldown-bound.
   athensCleruchyMaximumCount: 3,
+  // A large working party hauling this far has already proved that dropsites alone are
+  // no longer enough. Claim a rich frontier rather than walking half the map.
+  athensCleruchyLongHaulDistance: 32,
+  athensCleruchyLongHaulWorkers: 8,
   // IT14.95: completed Cleruchies contribute forward military production.
   expertCleruchyProductionQueueDepth: 2,
   expertCleruchyTrainingBatch: 2,
@@ -1058,7 +1068,8 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.89: worker drift alone must not legitimize a second forest while the
   // currently serviced district is still genuinely productive. Unlike IT14.86's
   // hard graph veto, this lock releases immediately on measured wood trouble.
-  woodHealthyDistrictMinimumRemaining: 900,
+  // A serviced 600-800 wood cutting front is still a productive early district.
+  woodHealthyDistrictMinimumRemaining: 450,
   woodHealthyDistrictMinimumActiveWorkers: 4,
   woodHealthyDistrictAlternateHoldDistance: 42,
   // IT14.92: a forest district follows the live cutting face, not the original

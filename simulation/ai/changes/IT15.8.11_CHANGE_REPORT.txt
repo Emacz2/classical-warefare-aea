@@ -1,0 +1,31 @@
+IT15.8.11 CORRECTIVE CHANGE REPORT
+
+Replay source: 2026-09-16 19:55:45 (+30% Expert)
+
+Observed failures
+- At t=191, food income was 0, natural food was exhausted, one Field was unfinished,
+  the Barracks could not sustain production, and four civilians were idle.
+- The Field crew gate waited for three new civilians even under critical food pressure.
+- Storehouse #3 was authorized while Storehouse #2 still served about 800 wood with
+  eight active cutters, because the district health floor was fixed at 900 wood.
+- Opening forest selection excluded neutral-border trees even when a legal Storehouse
+  position existed inside owned territory.
+- Pass-through garrison/unload commands were issued, but the directional rally point
+  was cleared in the same turn as unload, so the intended exit-side shortcut was lost.
+
+Corrections
+1. A single future farmer can immediately launch the first emergency Field once usable
+   natural food is at or below the 120-food transition floor and food is critical/short.
+2. A serviced wood district remains healthy down to 450 practical wood when it still
+   has the required active cutters and no real wood crisis.
+3. Opening forest scoring includes safe neutral-border trees, while Storehouse placement
+   remains restricted to owned territory and the correct land-access region.
+4. The teleport rally point remains active through unload and is cleared only after all
+   active opening pass-throughs complete.
+
+Preserved contracts
+- Natural-food civilians are not borrowed to construct Fields.
+- New civilians who construct Fields remain farmers.
+- No CC soldiers before 60 civilians except P1 attack or defense exceptions.
+- Opening Farmstead crew retention/dispersion, authoritative Storehouse worker targeting,
+  Barracks ordering, compact housing, and protected farm slots are unchanged.

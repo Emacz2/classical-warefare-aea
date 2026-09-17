@@ -1,8 +1,0 @@
-IT14.82 FOCUSED FARM REGRESSION FIX
-
-- Built directly from IT14.81.
-- Root cause from 14.81: Static-obstruction dimensions produced Field centres the Expert pre-check accepted but the simulation never materialized.
-- Restored full Footprint dimensions for Farmstead/Field centre spacing while retaining shared 135-degree district rotation.
-- Added 8-second Field foundation watchdog. Unmaterialized Field tasks are cancelled, released, removed from active/pending capacity, and retried at a different compact coordinate.
-- Only real Field foundations count as pending permanent-food capacity.
-- No strategy, CC-production, phase, barter, defense, or farm-distance rules changed.

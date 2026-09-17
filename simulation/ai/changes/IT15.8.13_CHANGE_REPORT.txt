@@ -1,0 +1,26 @@
+IT15.8.13 CORRECTIVE CHANGE REPORT
+
+Replay source: 2026-09-16 20:51:34 (+30% Expert)
+
+Replay-confirmed failure
+- The six-Field demand correction worked, but the first placed Field carried an exclusive
+  requiredBuilderIds list containing only one newer future farmer.
+- Four original berry workers correctly remained attached to their Farmstead, then entered
+  LOCAL_FARM_DISTRICT_WAIT because that exclusive list rejected them.
+- Other food-owned civilians hit FOOD_CAPACITY_DEBT_TEMP_WORK and were sent to lumber even
+  though a usable Field foundation already existed.
+
+Correction
+- requiredBuilderIds now owns Field placement, not exclusive construction rights.
+- During the <=25% natural-food transition and until six Fields are complete, food-owned
+  civilians may reinforce a placed Field foundation even when they were not its placer.
+- A local exhausted-berry crew is eligible for its own Farmstead's Field first.
+- Emergency Field construction accepts up to eight food civilians so the berry crew and
+  food overflow build capacity instead of splitting into idle and lumber groups.
+- Construction workers remain food-owned and are handed onto the completed Field.
+
+Preserved
+- Healthy natural-food workers are not pulled off live berries.
+- New civilians still place Fields and remain farmers.
+- Existing lumberjacks are not reassigned.
+- IT15.8.12 Farmstead scoring, six-Field demand, Barracks handoff, and teleport sequencing remain.

@@ -1,0 +1,19 @@
+IT15.8.11 STATIC/REGRESSION CHECK REPORT
+
+PASS: petra/expertDecisionController.js parses with node --check.
+PASS: petra/expertDecision/policy.js parses with node --check.
+PASS: emergency Field minimum is 1 and applies at <=120 natural food under a critical/short forecast.
+PASS: normal Field construction still requires the configured three-person future-farmer crew.
+PASS: natural-food civilians remain excluded from the future-farmer builder pool.
+PASS: opening neutral-border forest scoring retains owned-territory Storehouse legality checks.
+PASS: serviced wood district health still requires active cutters, a serving dropsite,
+      and absence of income stall, phase crisis, or immediate wood crisis.
+PASS: opening pass-through rally point is no longer cleared in the unload command turn.
+PASS: IT15.8.11 diagnostic version marker is present.
+
+Required live replay validation
+- Confirm first Field foundation begins with the first available new future farmer before
+  natural food reaches zero.
+- Confirm no third Storehouse appears while the second district remains serviced/productive.
+- Confirm garrisoned builders visibly exit the CC on the target side and save walking distance.
+- Confirm the selected opening Storehouse legally services the best safe border forest.

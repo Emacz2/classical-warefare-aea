@@ -1,0 +1,29 @@
+IT15.8.12 CORRECTIVE CHANGE REPORT
+
+Replay source: 2026-09-16 20:39:27 (+30% Expert)
+
+Preserved result
+- The first 2:00-2:15 opening was the best recent opening and is intentionally preserved.
+
+Replay-confirmed failures
+- Farmstead candidate scoring did not make three efficiently serviced bushes decisively
+  better than an otherwise similar two-bush side.
+- Once the Barracks was secured, the fixed 20-civilian lumber script continued consuming
+  new CC civilians even though citizen-soldiers could expand lumber income.
+- The field staircase requested only 2, then 3 Fields during the critical transition.
+  At 4:00 only one Field was complete, two were foundations, food was 25, and production stalled.
+- Teleport set the directional rally and unloaded in the same simulation update; commands
+  appeared in the log without giving the engine a prior update to apply the exit direction.
+
+Corrections
+1. Opening Farmstead scoring now strongly prefers servicing three nearby bushes over two,
+   while existing placement legality and future-field-capacity checks remain active.
+2. After Barracks #1 enters the pipeline and natural food reaches <=25%, every genuinely
+   new/unassigned CC civilian is reserved as a future farmer until six Fields are complete.
+3. The transition immediately targets the six-Field backbone instead of the 2->3->4 time ramp.
+4. Original berry civilians finish natural food; existing lumberjacks are not pulled away.
+5. Teleport now uses separate simulation updates for rally placement and unload.
+
+Expected live result
+- New CC civilians begin Fields as the Barracks comes online, remain farmers, and establish
+  six Fields quickly enough to sustain CC + Barracks and permit Barracks #2.

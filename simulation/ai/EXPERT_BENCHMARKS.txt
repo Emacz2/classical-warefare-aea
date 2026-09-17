@@ -42,6 +42,6 @@ HISTORICAL NOTES
 - IT14.98 produced a very fast non-canonical victory against Gaul Very Hard: BREAK 10:30, decisive defeat between 14:55 and 15:00.
 
 CURRENT VERSION
-IT15.8.10 is the active corrective regression/test build, built directly on IT15.8.9. Current calibration uses +30% Expert gather/trade and a 60-civilian growth ceiling. Opening Storehouse placement, recovery, and worker targeting now share one authoritative woodsite; exact farm slots remain protected while blanket Farmstead distance no longer rejects a legal wood edge.
+IT15.8.14 is the active corrective regression/test build, built directly on IT15.8.13. Current calibration uses +30% Expert gather/trade and a 60-civilian growth ceiling. It preserves the improved opening and food-worker handoff, treats six Fields as the Barracks #2 launch floor rather than the end state, immediately continues toward eight, prevents unrelated food reservations from blocking a wood-only capacity Farmstead, starts Town economic research alongside the attack package, recognizes long-haul resource expansion pressure, and recovers idle members of an already-launched marching army.
 Historical Top-3 entries above were recorded at +35% and remain preserved as historical records; +30% runs should be tracked separately until a new benchmark series is explicitly adopted.
 Human-vs-Expert games are diagnostic only and never enter the historical +35% canonical leaderboard.

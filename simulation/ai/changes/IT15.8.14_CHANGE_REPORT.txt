@@ -1,0 +1,28 @@
+IT15.8.14 CHANGE REPORT
+
+BASE
+- Directly derived from IT15.8.13. The improved opening, natural-food ownership, Field-builder handoff, Barracks timing, and placement rules were not rewritten.
+
+REPLAY EVIDENCE — 20260916-211752
+- Six Fields completed around 5:03, while desired capacity continued to 8-10.
+- With two Farmsteads fully packed at six Fields, Expert repeatedly logged a forced third-hub reservation from roughly 5:03 onward.
+- The bank repeatedly held about 1,100-1,300 wood, yet the wood-only Farmstead was rejected because the shared affordability test included unrelated food reservations.
+- Barracks #2 increased sustained food burn while the bank remained near zero.
+- The P2 push path placed two military technologies ahead of the first core Town eco technology.
+- The launched army was strategically committed, but some marching members could remain visibly idle around an intermediate point.
+
+CORRECTIONS
+1. Six Fields remain the Barracks #2 launch minimum; two completed Barracks immediately demand at least eight Fields.
+2. Permanent Field population floors now begin at 6/8/10 Fields at 40/70/110 population, subject to the existing natural-food hold.
+3. A forced capacity Farmstead checks only its own real cost, preventing food reservations from blocking banked wood.
+4. Town food/wood economic research is evaluated immediately and can proceed in parallel with Forge research during an attack build-up.
+5. Sustained 32m+ lumber hauling by 8+ active wood workers can trigger a worthwhile Athens frontier expansion.
+6. Idle members of an already-marching Expert army are reissued the current waypoint without disturbing active fighters or pre-launch economic reserves.
+
+FILES CHANGED
+- petra/expertDecision/economyPlanner.js
+- petra/expertDecision/policy.js
+- petra/expertDecisionController.js
+- petra/attackPlan.js
+- petra/expertDecision/NON_REGRESSION_CONTRACTS.md
+- EXPERT_BENCHMARKS_updated.txt

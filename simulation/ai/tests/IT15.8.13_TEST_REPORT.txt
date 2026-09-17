@@ -1,0 +1,15 @@
+IT15.8.13 STATIC/REGRESSION CHECK REPORT
+
+PASS: expertDecisionController.js parses with node --check.
+PASS: healthy natural-food collection logic is unchanged.
+PASS: requiredBuilderIds remains enforced outside the food-transition emergency.
+PASS: requiredBuilderIds no longer excludes local exhausted-berry workers from Field construction.
+PASS: transition override is bounded to <=25% natural food and fewer than six completed Fields.
+PASS: emergency Field construction is capped at eight builders.
+PASS: completed Field handoff retains construction workers as permanent farmers.
+PASS: IT15.8.13 diagnostic marker is present.
+
+LIVE REPLAY REQUIRED
+- Confirm the original berry crew joins the first local Field foundation after berries expire.
+- Confirm those civilians do not depart for lumber or wait idle at the Farmstead.
+- Confirm the first Field completes substantially sooner and its builders remain farming.

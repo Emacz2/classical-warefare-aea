@@ -1,9 +1,0 @@
-IT14.76 static validation
-- Baseline: exact IT14.75 tree copied before targeted edits.
-- Runtime diagnostic marker: [EXPERT-IT14.76].
-- JavaScript syntax: PASS (all Petra .js files, node --check).
-- Doctrine selection: unchanged at 25% each for Early P1 / Late P1 / P2 Tech / P3 Boom.
-- P2/P3 Civic Centre civilian contract: unchanged at 70 civilians before CC soldiers.
-- Farming transition threshold: existing 40% natural-food rule left unchanged.
-- Code-diff scope: policy.js, tradeManager.js, attackManager.js, expertDecisionController.js only; documentation/benchmark text also updated.
-- Engine behavior still requires replay validation; static checks cannot guarantee zero gameplay regressions.

@@ -1,9 +1,0 @@
-IT14.84 TEST REPORT — P3 BOOM vs THEBES — INCOMPLETE / FAIL
-
-- Reached 180/180 with 70 civilians, ~108-114 military reserve and a strong resource bank.
-- P3 stalled because the doctrine demanded 2 real siege engines while only 1 existed at population cap.
-- At 18:07 Expert was still 180/180, enemy population ~92, realSiege=1/2, and no attack plan existed.
-- Military research continued, but the P3 City path did not consistently use idle research capacity for remaining eco upgrades.
-- Farmstead #3 and the Temple were planned together; the Temple could steal space from the newly selected farm district before its foundation existed.
-- A redundant second Market was built even though the Temple pipeline could satisfy the Town-class City prerequisite; P3 utility spacing also allowed the Markets to be much too close.
-- Farming itself remained functional: 3 Farmsteads / 8 Fields at the stop.

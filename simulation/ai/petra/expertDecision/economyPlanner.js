@@ -193,6 +193,12 @@ function fieldDemand(state, policy) {
       floor = Math.min(floor, existingFields + 1);
     desiredFields = Math.max(desiredFields, floor);
 
+    // IT15.8.12: once the first Barracks exists and natural food has entered the
+    // real transition window, build the six-Field food backbone immediately. The
+    // previous 2->3->4 time staircase let both CC and Barracks starve around 4:00.
+    if (mode === "transition")
+      desiredFields = Math.max(desiredFields, policy.minimumCompletedFieldsBeforeSecondBarracks);
+
     const shortRunway = totalNatural <= 0 || runway <= policy.fieldTransitionLeadSeconds + policy.naturalFoodRunwaySafetySeconds;
     if (shortRunway || state.resources.food < policy.postOpeningFoodFloor)
       desiredFields = Math.max(desiredFields, fieldsForOneBarracks);
@@ -215,7 +221,10 @@ function fieldDemand(state, policy) {
   // two-barracks burn rate even if the CURRENT food bank happens to be large. A bank
   // surplus is temporary; it is not a reason to stop building the farm economy.
   if (state.structures.barracks >= 2)
-    desiredFields = Math.max(desiredFields, policy.minimumCompletedFieldsBeforeSecondBarracks, fieldsForTwoBarracks);
+    // Six Fields are permission to LAUNCH Barracks #2, not a steady-state food target.
+    // The moment the second production building is real, continue directly toward the
+    // eight-Field support floor while measured burn decides whether still more are due.
+    desiredFields = Math.max(desiredFields, policy.postSecondBarracksFieldFloor || 8, fieldsForTwoBarracks);
 
   // Population-scaled permanent-food floor. A temporary food surplus may pause burn-rate
   // expansion, but it may never erase the long-term 6 -> 8 -> 10 -> 12 field staircase.
@@ -900,7 +909,13 @@ function planEconomy(rawState, overrides = {}) {
         constrainedRole ?
         `opening food hub saturated at ${state.food.maxSaturatedHubFields} fields; ${farm.missingFields} fields still missing` :
         `completed farm layout has no touching field slots; ${farm.missingFields} fields still missing`;
-      if (resourceEnough(state.resources, cost, reservations)) {
+      // A forced food-capacity hub normally costs wood only. Unrelated food/phase/unit
+      // reservations must not make 1,200 banked wood look unaffordable; that exact false
+      // reservation held IT15.8.13 at six Fields for several minutes. The hub still
+      // reserves its own real cost immediately after admission.
+      const capacityResourcesAvailable = forcedRole ? resourceEnough(state.resources, cost, {}) :
+        resourceEnough(state.resources, cost, reservations);
+      if (capacityResourcesAvailable) {
         actions.push({ type: "BUILD", kind: "farmstead", role, priority: forcedRole ? 114 : 96, builderCount: forcedRole ? 6 : undefined, builderPool: ["food", "food_owned", "farm"], reason });
         addReservation(reservations, cost);
       } else {
