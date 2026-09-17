@@ -14,9 +14,14 @@
     <RepeatTime op="add">150</RepeatTime>
   </Melee>
   </Attack>
+    <Cost>
+    <Resources>
+      <wood op="add">10</wood>
+    </Resources>
+  </Cost>
  <Identity>
     <GenericName>Missile Shield</GenericName>
-    <Tooltip>+4.5 Pierce and +0.5 Crush/Hack resistance but -4% walk speed and +150 ms melee repeat time</Tooltip>
+    <Tooltip>+4.5 Pierce and +0.5 Crush/Hack resistance but -4% walk speed cost +10 wood and +150 ms melee repeat time</Tooltip>
     <History>Sparabara, Gerrhon, Persian Wall Shield</History>
   </Identity>
   <UnitMotion>

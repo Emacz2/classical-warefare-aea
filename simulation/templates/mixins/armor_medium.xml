@@ -9,9 +9,14 @@
       </Damage>
     </Entity>
   </Resistance>
+    <Cost>
+    <Resources>
+      <food op="add">10</food>
+    </Resources>
+  </Cost>
  <Identity>
     <GenericName>Medium Armor</GenericName>
-    <Tooltip>+1.5 Hack and +1 Crush/Pierce resistance but -3% walk speed</Tooltip>
+    <Tooltip>+1.5 Hack and +1 Crush/Pierce resistance but -3% walk speed and +10 food cost</Tooltip>
     <History>Linothorax, scale vest, muscle cuirass</History>
   </Identity>
   <UnitMotion>
