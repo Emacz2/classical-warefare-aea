@@ -9,9 +9,14 @@
       </Damage>
     </Entity>
   </Resistance>
+    <Cost>
+    <Resources>
+      <food op="add">5</food>
+    </Resources>
+  </Cost>
  <Identity>
     <GenericName>Light Armor</GenericName>
-    <Tooltip>+0.5 of each resistance but -1% walk speed</Tooltip>
+    <Tooltip>+0.5 of each resistance but -1% walk speed and +5 food cost.</Tooltip>
     <History>Leather, padded cloth, cotton armor.</History>
   </Identity>
   <UnitMotion>

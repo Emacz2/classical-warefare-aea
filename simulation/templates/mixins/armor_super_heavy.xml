@@ -9,10 +9,16 @@
       </Damage>
     </Entity>
   </Resistance>
+      <Cost>
+    <Resources>
+      <food op="add">10</food>
+      <metal op="add">10</metal>
+    </Resources>
+  </Cost>
  <Identity>
     <GenericName>Super Heavy Armor</GenericName>
     <VisibleClasses datatype="tokens">Armored</VisibleClasses>
-    <Tooltip>+3 Hack/Pierce and +2.5 Crush resistance but -6% slower walk speed</Tooltip>
+    <Tooltip>+3 Hack/Pierce and +2.5 Crush resistance but -6% slower walk speed, +10 food and +10 metal cost</Tooltip>
     <History>Elite mail, reinforced lamellar, royal guards</History>
   </Identity>
   <UnitMotion>

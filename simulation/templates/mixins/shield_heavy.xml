@@ -14,9 +14,15 @@
     <RepeatTime op="add">150</RepeatTime>
   </Melee>
   </Attack>
+    <Cost>
+    <Resources>
+      <wood op="add">15</wood>
+      <metal op="add">5</metal>
+    </Resources>
+  </Cost>
  <Identity>
     <GenericName>Heavy Formation Shields</GenericName>
-    <Tooltip>+4.5 Pierce +3 Hack and + 2.5 Crush resistance but -5% walk speed and 150 ms melee repeat time</Tooltip>
+    <Tooltip>+4.5 Pierce +3 Hack and + 2.5 Crush resistance but -5% walk speed, + 15 wood cost, + 5 metal cost  and 150 ms melee repeat time</Tooltip>
     <History>Aspis (Greeks), Scutum (Romans), Sacred Band Shield</History>
   </Identity>
   <UnitMotion>

@@ -9,10 +9,16 @@
       </Damage>
     </Entity>
   </Resistance>
+    <Cost>
+    <Resources>
+      <food op="add">10</food>
+      <metal op="add">5</metal>
+    </Resources>
+  </Cost>
  <Identity>
     <GenericName>Heavy Armor</GenericName>
      <VisibleClasses datatype="tokens">Armored</VisibleClasses>
-    <Tooltip>+2 Hack/Pierce Resistance +1.5 Crush but -4% walk speed</Tooltip>
+    <Tooltip>+2 Hack/Pierce Resistance +1.5 Crush but -4% walk speed, +10 food and +5 metal cost</Tooltip>
     <History>Mail shirt, heavy scale, lamellar</History>
   </Identity>
   <UnitMotion>
