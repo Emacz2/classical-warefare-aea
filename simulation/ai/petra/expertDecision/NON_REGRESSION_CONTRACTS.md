@@ -1,38 +1,5 @@
 # Expert AI non-regression contracts — IT14
 
-## IT15.8.17 opening-worksite / sparse-biome correction
-
-- House #1 commits at 24/30 accounted population, prioritizes the opening
-  Storehouse/wood district, and uses exactly four nearby citizen-soldier
-  woodworkers without pulling civilians from natural food.
-- A sparse opening forest may prebuild its replacement Storehouse only after
-  Barracks #1 exists; the Barracks-before-second-dropsite contract remains hard.
-- Rich safe hunt may batch two pursuit cavalry after the protected civilian-only
-  CC window when the live bank can pay for both without exhausting food.
-- For Athens, Sparta, and Thebes, a P1 force still assembling after six minutes
-  commits to Forge + Melee Attack I when the technology is available; a genuine
-  earlier launch may preserve speed and skip the package.
-
-## IT16.1 adaptive food-hub lock
-
-- Markets are food dropsites and the first Town Market contributes at most two compact Field slots to the permanent-food capacity graph.
-- Markets remain resource/barter/Town infrastructure; their Field capacity is bounded overflow and never licenses a third or fourth isolated Market field.
-- With two Farmsteads present, a five-Field/no-slot snapshot is not accepted as a mature economy when a Market has legal two-Field capacity.
-- Temple and other independent-building placement protects the full future Farmstead ring and the two reserved Market faces, including faces temporarily occupied by exhaustible natural food.
-- A live own-territory natural-food supply lock remains authoritative until that exact source is exhausted; merely having Fields does not release the worker to farming.
-- IT16.0's 60-civilian CC rule, immediate Barracks use, two-Farmstead ceiling, one-Forge ceiling, sparse-wood Slinger/Hoplite adaptation, and coherent attack-launch rules remain mandatory.
-
-## IT16.0 coordination lock
-
-- The CC targets 60 civilians under every doctrine. Before 60, it may train a soldier only for a live P1 Rush plan or an actual base defense; P2/P3 attacks are not exceptions.
-- A completed Barracks is filled by the production controller in the same controller update in which completion is observed, and every completed Barracks retains queued work when affordable.
-- With natural food depleted, Field #4 is in the pipeline before 4:00 and the planner proceeds toward six; the timing economy matures at 7-8 Fields and continues toward the established ten-Field long-game target when population/food burn requires it.
-- There are at most two Farmsteads in the timing build. Farmstead #2 may not precede Field #4. The crew finishing a permanent Farmstead remains food-owned at the hub and becomes the immediate Field crew.
-- Sparse wood does not automatically cancel P1. Athens adapts to one Barracks plus one Forge, unlocks Slingers when the live tech permits it, substitutes them for wood-cost ranged units, and retains a Hoplite/melee screen.
-- Fast P2 is a declared follow-through route: Barracks #2 may start from a four-Field pipeline and Forge #1 follows promptly. Forge ownership remains globally capped at one.
-- Before an army launches, ordinary civilians must establish the doctrine's secondary-resource floor; massing citizen-soldiers may not leave the live economy with only one or two lumber workers.
-- The arbitrary partial-army contact sweep is disabled. Attack plans remain coherent except for explicit defense, wounded-unit withdrawal, siege operation, or evaluated reinforcement behavior.
-
 These are hard contracts for future Expert updates. Do not remove or weaken them unless a replay demonstrates that the contract itself is wrong.
 
 1. No persistent idle economy workers
@@ -746,3 +713,122 @@ Replay regressions locked by IT14:
 - If farmer civilians are killed, surviving civilians assigned to secondary resources rotate into the protected food backbone before new civilian births are requested. Citizen-soldiers inherit wood/stone/metal labor as civilian attrition increases.
 - A 10-Field mature economy therefore normally needs about 40 civilians after natural food is gone. Population released above that food requirement is military/flexible economic population.
 - This calibration does not alter IT15.8's economic-safety kernel, IT15.7 combat changes, or the frozen IT15.6 record-setting P2 attack execution.
+
+## IT15.8.1 corrective continuity contract
+
+- This build is a direct patch of IT15.8. Unrelated economy, combat, phase, production, and placement behavior remains unchanged.
+- Before any additional permanent Farmstead is authorized, every completed existing Farmstead receives a fresh exhaustive compact-field scan. Transient recent placement failures may not force unnecessary Farmstead construction.
+- Wicker Baskets requires worthwhile additional owned-territory fruit: either multiple worthwhile clusters or an unusually large connected owned fruit network. The ordinary starting patch alone is insufficient.
+- A civilian actively gathering or returning food from a live natural-food supply is never recruited into a Field construction crew. Field construction waits for post-opening, CC-trained future farmers; those builders retain permanent food ownership and stay on the completed Field.
+- Barracks #1 anchors to the completed Storehouse nearest the active wood workforce and does not chase a remote frontier-resource candidate ahead of that worksite placement.
+- Before the 60-civilian ceiling, the Civic Centre trains citizen-soldiers only for a genuine hostile defense or a live Phase-1 Early/Late-P1 attack. Generic P2/P3 attacks, near-launch tests, and lower doctrine soft caps are not exceptions.
+
+## IT15.8.2 post-Wicker branch-capacity correction
+
+- Post-Wicker redistribution counts civilians already assigned to the secondary natural-food source before moving surplus workers from the opening berries.
+- Five live bushes retain five civilians. A single apple tree has a hard preferred capacity of three civilians total, including workers assigned before the Wicker transition.
+- If two civilians already occupy that apple tree, exactly one surplus berry civilian joins it; further surplus berry civilians return to productive wood work.
+- This patch does not alter IT15.8.1 Field crews, Farmstead rescanning, first-Barracks locality, CC production, or combat behavior.
+
+## IT15.8.3 opening-order and command-authority correction
+
+- After the opening Farmstead and Storehouse exist, Barracks #1 must be physically placed before any second Farmstead or second Storehouse is permitted.
+- A queued Barracks is not sufficient; the gate releases only when a Barracks is built or has a live foundation.
+- The main worker controller has final command authority each AI turn. The no-idle watchdog runs before it and may not overwrite a gather/build command merely because the engine has not exposed that newly issued order yet.
+- Genuine idle workers remain covered: the watchdog acts on the following update if no live work materializes, after which the main controller may refine the fallback target.
+- IT15.8.2 post-Wicker supply capacities and all IT15.8.1 corrective contracts remain binding.
+
+## IT15.8.4 opening-dispersion and infrastructure-order correction
+
+- Normal worker assignment runs before the no-idle watchdog so the initial food civilians are distributed by the least-loaded natural-supply allocator instead of all receiving the watchdog's nearest-bush fallback.
+- A same-turn ownership set prevents the watchdog from replacing any worker order considered by normal assignment before the simulation exposes it as live. Workers untouched by normal assignment remain eligible for immediate rescue.
+- Before Barracks #1 has a live foundation, a second House is held together with secondary Farmsteads and Storehouses whenever more than three population spaces remain. At three or fewer free spaces the population-emergency escape permits the House.
+- The opening House prefers the CC-side of an existing wood Storehouse, keeping the Storehouse between the House and trees. Later Houses may prefer the outside of established farm districts, but resource corridors, Storehouse work rings, and every reserved touching-Field footprint remain hard exclusions.
+- IT15.8.3's Barracks-before-secondary-dropsite rule and every IT15.8.1/15.8.2 food and production contract remain binding.
+
+## IT15.8.5 affordability-driven Barracks timing / protected opening House
+
+- Barracks #1 has no arbitrary 2:15 reserve or 2:30 construction permission. After House #1 is complete, it is reserved or built immediately according to actual wood remaining after genuinely active higher-order commitments.
+- House #1 preserves at least a 34m CC-centre radius, prefers approximately 42m, and may search to 64m. When the opening wood Storehouse exists, candidate validation requires the House to be on the opposite side of that Storehouse from the wood mass.
+- Barracks #2 launches when six completed Fields exist, the layout supports at least six Fields, and wood production is not in a real crisis. It no longer waits for measured farm income to catch up after that physical capacity is complete.
+- The early natural-food exception, wood-crisis veto, population emergency handling, and all IT15.8.4 worker/order corrections remain binding.
+
+## IT15.8.6 live-bottleneck infrastructure arbitration
+
+- Opening wood patches below 1,600 wood are classified as bridge sites, not sustainable forests. On such maps a legal site with at least 25% more wood may beat the closest site when its added opening walk remains within the existing safety limits.
+- After House #1, predictive housing yields while the live economy reports either an unfunded permanent-food transition or a required next wood district. Housing immediately regains priority at five or fewer free population spaces or once the infrastructure debt is secured.
+- Forecast recovery may not purchase a Storehouse for less than 500 wood. Short-lived 120-200 wood fragments are serviced by temporary carrying while the planner waits for a worthwhile district.
+- Natural-food workers remain protected from Field construction. New civilians continue to become future farmers; removing premature housing reservations gives their Field tasks the wood to start.
+- IT15.8.5 Barracks timing, IT15.8.4 command authority, and every earlier food/CC-production invariant remain binding.
+
+## IT15.8.7 serviced natural-food assignment
+
+- A distant natural-food cluster that warrants its own Farmstead is not a valid civilian gather target until a nearby completed dropsite or Farmstead foundation exists.
+- A queued Farmstead or remembered cluster selection does not count as service.
+- Wicker may reserve a secondary branch before Barracks #1, but its workers stay productive locally and its placement timeout does not begin until the Barracks foundation exists.
+- Opening Storehouse placement minimizes weighted haul to the selected forest while retaining hard protection for proven future Field footprints.
+- The civilians who construct the opening Farmstead remain its food crew after completion and disperse across the selected live supplies; generic construction release may not redirect them to wood.
+- Dropsite coverage is judged against real supply positions, so a Farmstead correctly placed beside the patch is never invalidated solely by a misleading connected-cluster centroid.
+
+## IT15.8.8 staged-forest and opening pass-through contract
+
+- Storehouse choice must value a woodline as a staged plan: immediately serviceable edge wood plus bounded connected continuation wood, not merely the nearest local cluster.
+- A newly exposed edge may not be rejected as a small fragment when it leads into a worthwhile connected forest and a later legal Storehouse can progress through it.
+- Opening building pass-through is limited to assigned builders in the first 75 seconds, only when the route crosses the Civic Center and the destination is on the opposite side.
+- No worker may use the pass-through more than once, no more than four workers may start it, and already-garrisoned workers must still be unloaded after that cap is reached.
+- Pass-through must not take ownership of gatherers, soldiers, defense units, or general movement.
+- All IT15.8.7 Farmstead-worker ownership and serviced-food invariants remain binding.
+
+## IT15.8.9 worker ownership and compact housing
+
+- A worker with a live Expert construction task is exclusively owned by that task until completion or explicit cleanup; no-idle recovery may not issue any gather order during deposit/build transitions.
+- Citizen-soldiers never gather natural food or work Fields, including during food emergencies. Food deficits use civilians, infrastructure, or barter.
+- House #2 and later Houses try legal gap-fill and exact snap positions beside the established House cluster before Farmstead rings, annexes, or broad placement fallbacks.
+- Opening pass-through uses the actual Civic Center obstruction footprint and may accept angled entry when the destination-side unload shortens travel, while retaining all IT15.8.8 safety caps.
+- The successful IT15.8.8 opening Farmstead, Storehouse, first House, and Barracks placement behavior remains binding.
+
+## IT15.8.10 authoritative opening woodsite
+
+- The opening Storehouse and its workers share one authoritative woodsite identity. Recovery may select another forest, but placement scoring, selected tree IDs, primary worksite state, builders, and new civilians must all switch atomically to that same forest.
+- An opening Storehouse may occupy the Farmstead district edge when it overlaps no exact reserved Field footprint; blanket distance alone may not reject it.
+- A Storehouse foundation becomes authoritative for new wood workers immediately rather than waiting for completion.
+- A pending building pass-through exclusively owns its builder until physical exit or bounded timeout; construction repair commands may not overwrite garrison/unload commands.
+- All IT15.8.9 worker-ownership, civilian-food, and compact-housing contracts remain binding.
+
+## IT15.8.14 sustained food, economic research, expansion, and army motion
+
+- Six completed Fields authorize Barracks #2 but never terminate farm growth. Two completed Barracks impose an immediate eight-Field floor; population and measured burn continue the existing path toward ten.
+- A forced permanent-food Farmstead is tested against its own real resource cost. Unrelated food, phase, or unit reservations may not block a wood-only hub while the wood is already banked.
+- On entering Town Phase, the core food/wood economic lane is evaluated immediately. An assembling or active attack does not postpone the first Town economic upgrade behind two Forge technologies.
+- A large lumber workforce with a measured 32m+ average drop haul is expansion evidence. Athens may claim a worthwhile frontier Cleruchy instead of accepting repeated half-map resource walks.
+- During an active attack march, genuinely idle non-garrisoned army members receive the current waypoint again. Active combat orders and economically productive pre-launch reserves are untouched.
+- IT15.8.13 Field-builder handoff and every earlier opening, worker-ownership, building-order, and placement contract remain binding.
+
+## IT15.8.15 early food handoff and faster conversion
+
+- Non-rush openings begin the permanent-food handoff when combined usable in-territory natural food reaches 40%. Natural gatherers finish their supplies; newly trained civilians build and remain on Fields.
+- Dedicated civilian lumber growth stops at 20. Citizen-soldier wood labor and temporary overflow remain available, but they do not justify sending additional civilian batches to lumber while the Field block is incomplete.
+- Before the first Field exists, House #2 yields while actual population has more than five free slots. A real cap emergency always overrides this deferral.
+- Three civilians remain the stable opening batch. With sufficient food and headroom, later batches may increase to four or five.
+- P3 support Markets preserve at least 90m separation. The P3 winning army releases sooner while retaining a home reserve and real siege, and siege executes a surviving enemy Civic Centre once enemy population reaches 16.
+- IT15.8.14 food-capacity, Town eco research, expansion, and active-army motion rules remain binding.
+
+## IT15.8.16 early growth conversion
+
+- A civilian with a live natural-food supply lock remains protected from Field construction. A newly trained civilian reserved as a future farmer may build a Field immediately when it has no such lock, even if its temporary resource classification is food.
+- The stable opening remains three-civilian batches. Thereafter four civilians require 200 available food and five require 250, with civilian-cap and population-headroom limits still authoritative.
+- Before 6:00, House #2 and later Houses wait until actual population has six or fewer free slots. Pending housing and true population emergencies remain authoritative.
+- Once natural food is exhausted, a 50+ population economy below 200 food demands Field #7 before treating six Fields as sufficient for Town preparation.
+- IT15.8.15's 40% normal food transition, wood ceiling, Market spacing, P3 release, and every earlier worker-ownership contract remain binding.
+
+## IT15.8.17 verified opening correction
+
+- This build is reconstructed from the actual IT15.8.11–IT15.8.16 archive chain;
+  no IT16.1/16.2 file is an input.
+- One connected natural-food cluster never authorizes Wicker by itself. Ordinary
+  natural-food supplies disperse from the opening command and allow no more than
+  two civilians; apples and isolated large fruit may use three.
+- House #1 begins around 24/30, prioritizes the opening Storehouse district, and
+  uses four citizen soldiers without taking civilians from food.
+- Sparse-forest replacement remains Barracks-gated. Rich-hunt cavalry batching and
+  delayed Greek Forge/Melee-I timing do not relax the protected CC opening.

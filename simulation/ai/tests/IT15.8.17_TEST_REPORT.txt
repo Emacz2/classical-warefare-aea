@@ -1,0 +1,17 @@
+IT15.8.17 VERIFICATION REPORT
+
+PASS — base controller reported EXPERT-IT15.8.16 before modification.
+PASS — finished controller reports EXPERT-IT15.8.17 and contains no IT16 marker.
+PASS — controller, economy planner, policy, and attack manager parse successfully.
+PASS — Wicker priority is driven only by two worthwhile food clusters.
+PASS — ordinary natural-food supply limit is finite and independent of Wicker.
+PASS — natural-food target selection orders candidates by current worker load.
+PASS — House #1 trigger is six accounted free slots (24/30).
+PASS — House #1 uses four citizenSoldierWood builders only.
+PASS — opening House candidates begin 10–24m from the Storehouse and retain the
+       established legality/farm-district filters.
+PASS — sparse-wood handoff requires a completed Barracks.
+PASS — rich-hunt pursuit cavalry retains a maximum batch of two.
+PASS — delayed Greek P1 upgrade path is limited to the existing city-state set.
+PASS — benchmark table remains unchanged pending a clean replay.
+

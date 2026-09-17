@@ -1,0 +1,30 @@
+IT15.8.17 — VERIFIED 15.8-LINE CORRECTIVE BUILD
+
+Base provenance
+---------------
+Reconstructed from IT15.8.11, then overlaid in order with the changed files from
+IT15.8.12, IT15.8.13, IT15.8.14, IT15.8.15, and IT15.8.16. This package is not
+derived from the abandoned IT16.1/16.2 working trees.
+
+Corrections
+-----------
+1. Wicker Baskets requires at least two worthwhile owned-territory natural-food
+   clusters. Multiple palms/bushes in one connected cluster never qualify alone.
+2. Natural-food dispersion applies before and after Wicker. Workers choose the
+   least-loaded live supply first; normal supplies allow at most two civilians.
+   Apples and isolated large/unknown fruit trees retain the three-worker exception.
+3. House #1 commits at 24/30 accounted population, searches close to the opening
+   Storehouse, and uses exactly four nearby citizen-soldier woodworkers.
+4. Sparse opening forests may prebuild a replacement Storehouse after Barracks #1,
+   without weakening the Barracks-before-secondary-dropsite rule.
+5. Rich safe hunt may batch two pursuit cavalry after the protected civilian-only
+   CC window when both are affordable; diagnostics report the requested batch.
+6. A Greek-city-state P1 force still assembling after 6:00 treats Forge + Melee
+   Attack I as its timing package; one completed Barracks is enough to begin it.
+7. Runtime diagnostics identify this build as EXPERT-IT15.8.17.
+
+Frozen behavior
+---------------
+Field demand, natural-food ownership, civilian-to-farm handoff, general resource
+balancing, doctrine selection, attack grouping, and benchmark rankings are unchanged.
+
