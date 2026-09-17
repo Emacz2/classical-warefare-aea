@@ -1,0 +1,27 @@
+IT15.8.16 STATIC/REGRESSION CHECK REPORT
+
+PASS: trainingPolicy.js, economyPlanner.js, policy.js, and expertDecisionController.js parse with node --check.
+PASS: both civilian-training paths use 200 food for four and 250 food for five.
+PASS: the stable sub-24 population opening remains a three-civilian batch.
+PASS: batch size remains bounded by civilian target and population headroom.
+PASS: natural-food-locked civilians remain excluded from Field construction.
+PASS: reserved future farmers without a natural-food lock may build Fields immediately.
+PASS: all post-first opening Houses defer above six actual free population slots.
+PASS: pending/emergency housing handling remains in front of the new deferral.
+PASS: Field #7 is demanded at 50+ population when natural food is exhausted and food is below 200.
+PASS: IT15.8.16 diagnostic marker is present.
+
+CONTROL — IT15.8.15 REPLAY 20260917-135259
+Time   Pop   Food   Wood
+1:00    18    220     10
+2:00    27    210     78
+3:00    37    203     88
+4:00    53    113    532
+5:00    66     71    823
+
+LIVE REPLAY REQUIRED
+- Record IT15.8.16 population/food/wood at exactly 1:00 through 5:00.
+- Confirm Field #1 starts before the IT15.8.15 ~3:10 foundation and Fields 3-6 follow.
+- Confirm original natural-food civilians remain gathering until their supplies expire.
+- Confirm the second queued civilian batch becomes four/five when affordable.
+- Confirm fewer premature Houses and a materially smaller 5:00 wood/food imbalance.

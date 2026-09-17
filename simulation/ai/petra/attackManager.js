@@ -1255,6 +1255,10 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 	if (this.Config.difficulty < difficulty.EXPERT)
 		return 0;
 	const policy = mergePolicy();
+	// IT16.0: this sweep split the timing army into arbitrary contact groups. Keep the
+	// attack plan coherent and let its native target/formation logic resolve contact.
+	if (policy.expertDisableFragmentedContactSweep)
+		return 0;
 	const now = Number(gameState.ai.elapsedTime) || 0;
 	const interval = Math.max(0.75, Number(policy.expertAttackMoveSweepIntervalSeconds) || 1.75);
 	const radius = Math.max(20, Number(policy.expertAttackMoveSweepRadius) || 58);
@@ -1407,21 +1411,12 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	const traditionPending = greekHopliteCiv && !tradition && (
 		!!(gameState.isResearching && gameState.isResearching("citystate/hoplite_tradition")) ||
 		!!(traditionQueue && traditionQueue.hasQueuedUnits && traditionQueue.hasQueuedUnits()));
-	if (civ === "athen")
+	if (greekHopliteCiv)
 	{
 		const melee = !!(gameState.isResearched && gameState.isResearched("citystate/city_state_attack_melee_01"));
 		upgradeReady = melee || tradition;
 		upgradeLabel = melee ? "melee" : tradition ? "hoplite" : traditionPending ? "hoplite-pending" : "missing";
 	}
-	else if (traditionPending)
-	{
-		// Sparta/Thebes do not require a Forge package, but once they voluntarily pay
-		// the P1 Tradition cost, do not launch before the 60-second production tech lands.
-		upgradeReady = false;
-		upgradeLabel = "hoplite-pending";
-	}
-	else if (tradition)
-		upgradeLabel = "hoplite";
 
 	if ((!attack.target || !attack.targetPos || attack.targetPlayer === undefined) && attack.chooseTarget)
 		attack.chooseTarget(gameState);

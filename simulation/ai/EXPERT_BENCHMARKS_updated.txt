@@ -75,6 +75,6 @@ HISTORICAL NOTES
 - IT14.98 produced a very fast non-canonical victory against Gaul Very Hard: BREAK 10:30, decisive defeat between 14:55 and 15:00.
 
 CURRENT VERSION
-IT15.8.14 is the active corrective regression/test build, built directly on IT15.8.13. Replay 20260916-211752 proved that six Fields were being treated as a practical stopping point: the planner wanted 8-10, but a wood-only third Farmstead was repeatedly blocked by unrelated food reservations while 1.1k-1.3k wood sat banked. IT15.8.14 makes eight Fields the immediate two-Barracks floor, admits that forced hub against its real cost, evaluates Town eco research before the P2 military package, recognizes sustained long-haul lumber as expansion evidence, and recovers idle members of a launched marching army.
+IT15.8.16 is the active corrective regression/test build, built directly on IT15.8.15. The two IT15.8.15 five-minute controls showed real progress: Replay 2 reached 66 population versus 56 and gathered 297 more food plus 804 more wood, but still ended at 71 food/823 wood because Field crews did not accept reserved future farmers until roughly 3:10. IT15.8.16 preserves that growth while allowing unlocked future farmers to build Fields immediately, uses actual four/five-civilian affordability, suppresses premature opening Houses, and demands Field #7 during a 50+ population food shortage.
 Current calibration uses +30% Expert gather/trade and a 60-civilian growth ceiling.
 Historical +35% records remain preserved above and are not directly replaced by +30% results.

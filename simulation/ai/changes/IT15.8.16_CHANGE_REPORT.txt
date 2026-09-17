@@ -1,0 +1,36 @@
+IT15.8.16 CHANGE REPORT
+
+BASE
+IT15.8.16 is a narrow conversion correction built directly on IT15.8.15.
+It preserves the second replay's stronger population growth, opening placements,
+20-civilian normal wood ceiling, Town eco research, expansion, and combat changes.
+
+CONTROL COMPARISON — REPLAYS 20260917-135253 / 135259
+At 5:00, the second IT15.8.15 replay reached 66 population versus 56 and had
+gathered 297 more food plus 804 more wood. It nevertheless held only 71 food
+and 823 wood, so the stronger economy still felt slow and starved.
+
+ROOT CAUSES
+- Field #1 was requested around 1:20, but the crew filter rejected reserved future
+  farmers until roughly 3:10 because it treated every currently-food-classified
+  civilian as protected natural-food labor.
+- Post-opening civilian batches used artificial 350/700 food thresholds for four/five
+  even though civilian cost is 50 food; another batch of three was locked too early.
+- Predictive housing continued buying Houses #3/#4 with 10-13 real population slots.
+- Six Fields remained the practical one-Barracks stopping point despite food below 200.
+
+CORRECTIONS
+1. A future farmer may build a Field while temporarily categorized as food unless it
+   carries a real natural-food supply lock. Original fruit workers remain protected.
+2. After the stable three-civilian opening, batch size uses actual affordability:
+   four at 200 food and five at 250 food, still bounded by cap/headroom.
+3. Before 6:00, every House after House #1 waits until actual population has six or
+   fewer free slots. A pending House and genuine cap emergency remain authoritative.
+4. With one or more Barracks, exhausted natural food, population 50+, and food below
+   200, Field #7 becomes an immediate pre-Town food floor.
+
+EXPECTED 1-5 MINUTE EFFECT
+- Preserve IT15.8.15's equal 1:00/2:00 population and stronger 4:00/5:00 growth.
+- Move the first Field materially earlier than ~3:10 and accelerate Fields 2-6.
+- Convert part of the 823-wood 5:00 bank into food capacity rather than extra Houses.
+- Produce four/five-civilian batches whenever the real bank supports them.

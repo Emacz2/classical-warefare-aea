@@ -1,0 +1,22 @@
+IT15.8.15 STATIC/REGRESSION CHECK REPORT
+
+PASS: all four changed JavaScript files parse with node --check.
+PASS: non-rush permanent-food transition is 40%, not the replay's late 25% gate.
+PASS: dedicated civilian lumber growth is capped at 20.
+PASS: House #2 yields with no Field and more than five actual population slots free.
+PASS: population emergency still overrides House #2 deferral.
+PASS: civilian batch ladders agree: 3 opening, then 4 at 350 food and 5 at 700 food.
+PASS: batch size remains bounded by civilian target and population headroom.
+PASS: P3 support Markets require 90m spacing and prefer 135m.
+PASS: P3 Boom retains siege/readiness gates while releasing earlier at 84 army.
+PASS: Civic Centre execution begins at enemy population 16.
+PASS: IT15.8.15 diagnostic marker is present.
+
+LIVE REPLAY REQUIRED
+- Confirm Field #1 starts before 4:00 and the six-Field block exists early enough to
+  sustain CC plus Barracks production.
+- Confirm civilian lumber stops near 20 and new CC civilians build/stay on Fields.
+- Confirm House #2 is delayed without creating a population block.
+- Confirm rich food banks produce four- or five-civilian batches.
+- Confirm Market #2 creates a useful route instead of clustering beside Market #1.
+- Confirm P3 Boom launches and destroys the final Civic Centre materially sooner.

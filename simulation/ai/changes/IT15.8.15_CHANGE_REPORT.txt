@@ -1,0 +1,40 @@
+IT15.8.15 CHANGE REPORT
+
+BASE
+IT15.8.15 is a small corrective build directly on IT15.8.14. It does not replace
+the opening placement, worker-ownership, Field-crew, expansion, technology, or army
+motion work that already passed.
+
+REPLAY EVIDENCE — 20260917-131122
+- Field #1 could not be authorized until 3:59 because the combined-natural-food hold
+  remained active above 25%.
+- Dedicated civilian lumber reached 20 while natural food was still active, then
+  continued toward 27 because policy allowed 28.
+- House #2 began around 30/40 population before any Field existed.
+- Civilian batches could never exceed four.
+- Field #7 was well placed but arrived around 8:00, after the food-starved P2 transition.
+- The P3 Boom attack/cleanup package converted its winning position too slowly.
+
+CORRECTIONS
+1. Permanent-food transition begins at 40% combined in-territory natural food. The
+   last natural food now overlaps construction of Fields by newly trained civilians.
+2. Dedicated civilian lumber is capped at 20. Citizen-soldiers and genuinely temporary
+   overflow may still supply wood; new civilians are reserved for food growth.
+3. House #2 waits when real population has more than five free slots and no Field has
+   started. Population emergencies remain authoritative.
+4. Civilian training keeps three-unit opening batches, then uses four at 350 food and
+   five at 700 food when population/civilian headroom permits.
+5. P3 support Markets require 90m separation and prefer 135m rather than clustering.
+6. P3 Boom's combat threshold is reduced from 90 to 84 plus its home reserve, with
+   hard/absolute release moved to 15:30/17:00. It still requires real siege and the
+   existing readiness gates.
+7. At enemy population 16 or lower, siege executes the enemy Civic Centre instead of
+   extending a capture/cleanup loop until population eight.
+
+UNCHANGED
+- CC trains no ordinary soldiers before the civilian target except a P1 attack or
+  genuine defense exception.
+- Natural-food workers are not pulled to build Fields; new civilians own the farm handoff.
+- Barracks #2 still uses six completed Fields as its launch floor, while the economy
+  continues immediately toward eight and then measured demand.
+- IT15.8.14 Town eco-tech, expansion, and launched-army recovery rules remain binding.

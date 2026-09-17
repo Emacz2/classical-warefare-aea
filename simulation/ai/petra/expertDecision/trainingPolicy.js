@@ -17,7 +17,9 @@ function decideCivilianTraining(rawState, overrides = {}) {
   if (free <= policy.houseEmergencyFreePopulation && !housePending)
     return { action: "PAUSE", batch: 0, reason: "housing emergency; do not train deeper into the block" };
   const food = state.resources.food;
-  let batch = state.population.used < 24 ? 3 : food >= 450 ? 4 : food >= 150 ? 3 : food >= 100 ? 2 : food >= 50 ? 1 : 0;
+  // IT15.8.15: three is the reliable opening batch, not a permanent batch size.
+  // Once food can sustain it, four- and five-civilian batches reduce CC overhead.
+  let batch = state.population.used < 24 ? 3 : food >= 250 ? 5 : food >= 200 ? 4 : food >= 150 ? 3 : food >= 100 ? 2 : food >= 50 ? 1 : 0;
   batch = Math.min(batch, free, civilianRoom);
   if (batch <= 0)
     return { action: "WAIT", batch: 0, reason: "insufficient food or population space" };

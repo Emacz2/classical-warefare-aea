@@ -50,6 +50,8 @@ const DEFAULT_POLICY = Object.freeze({
   normalBarracksBuilders: 4,
   surplusBarracksBuilders: 6,
   normalHouseBuilders: 3,
+  openingHouseBuilders: 4,
+  openingHouseTriggerFreePopulation: 6,
   surplusHouseBuilders: 4,
   emergencyHouseBuilders: 5,
   normalStrategicBuilders: 3,
@@ -171,19 +173,26 @@ const DEFAULT_POLICY = Object.freeze({
   futureFarmTargetFields: 10,
   futureFarmFieldBuilderTarget: 4,
   futureFarmFieldBuilderMinimum: 3,
-  // One newly trained civilian may start the first emergency Field immediately.
-  // Waiting for a ceremonial crew after natural food is gone creates a food/idle deadlock.
-  futureFarmFieldBuilderEmergencyMinimum: 1,
+  futureFarmFieldBuilderEmergencyMinimum: 2,
   futureFarmFieldEmergencyFoodBank: 120,
   // IT14.80: compact human-like farm blocks use four footprint-derived pinwheel
   // positions around the Farmstead. Simple N/E/S/W side-centres overlap when Fields
   // are larger than the Farmstead, so the four-slot contract uses exact rectangle math.
   fieldsPerFarmstead: 4,
+  // IT16.1: a Market is also a food dropsite. Treat the first two compact faces as
+  // deliberate overflow capacity, giving two Farmsteads + one useful Town Market a
+  // normal 7-10 Field envelope without buying a third Farmstead.
+  fieldsPerMarket: 2,
+  marketFarmHubPreferredSlots: 2,
+  marketFarmHubMissingSlotPenalty: 18000,
   // IT14.74/14.91: permanent farm hubs remain compact and capped. Natural-food
   // dropsites are a separate economic use: if a distinct safe natural-food district
   // repays the building, it may exceed the permanent-farm-hub cap.
-  maximumFarmsteads: 3,
-  maximumNaturalFoodFarmsteads: 5,
+  // IT16.0: two compact hubs are enough for the normal 7-8 Field timing economy.
+  // Finish and use their Field slots before spending another 100 wood. There is no
+  // third-Farmstead exception in the timing build.
+  maximumFarmsteads: 2,
+  maximumNaturalFoodFarmsteads: 2,
   minimumFarmHubFieldSlots: 4,
   // IT14.29: keep four-slot farm hubs as the normal standard, but after repeated
   // real-map placement failures accept a compact three-field hub rather than deadlock.
@@ -238,6 +247,8 @@ const DEFAULT_POLICY = Object.freeze({
   woodExpansionWorkerThreshold: 8,
   woodProactiveHandoffAmount: 1300,
   woodProactiveHandoffWorkers: 12,
+  openingSmallWoodHandoffAmount: 1200,
+  openingSmallWoodHandoffLatestTime: 240,
   targetWoodDropDistance: 24,
   requiredLowWoodObservations: 2,
   woodWorksiteRadius: 30,
@@ -256,6 +267,8 @@ const DEFAULT_POLICY = Object.freeze({
   // briefly, then the CC immediately resumes civilians.
   huntingCavalryCCMinimumTime: 120,
   huntingCavalryFoodReserve: 120,
+  huntingCavalryRichBatchFoodReserve: 60,
+  huntingCavalryRichBatchHunt: 900,
   huntingCavalryTrainingPriority: 1120,
   firstBarracksPopulation: 30,
   minimumFieldsBeforeBarracks: 2,
@@ -305,8 +318,6 @@ const DEFAULT_POLICY = Object.freeze({
   secondBarracksHardNaturalFood: 800,
   secondBarracksEarlyFoodBank: 350,
   minimumCompletedFieldsBeforeSecondBarracks: 6,
-  // Six unlocks Barracks #2; eight is the immediate two-Barracks support floor.
-  postSecondBarracksFieldFloor: 8,
   foodRateSafetyMargin: 1.12,
   foodBankBridgeForSecondBarracks: 900,
   secondBarracksMinimumFoodBridgeSeconds: 60,
@@ -400,8 +411,7 @@ const DEFAULT_POLICY = Object.freeze({
   resourceForecastStorehouseMinimumGain: 4.0,
   resourceForecastStorehouseCriticalMinimumGain: 2.0,
   resourceForecastStorehouseMinimumSpacing: 12,
-  // A short carry bridge is cheaper than a Storehouse serving one 120-200 wood fragment.
-  resourceForecastBridgeWoodMinimumAmount: 500,
+  resourceForecastBridgeWoodMinimumAmount: 120,
   resourceForecastBridgeWoodAccessibleCeiling: 650,
   // Safe neutral fruit/berries just outside the border outrank the next Field.
   resourceForecastNaturalFoodMinimumRemaining: 350,
@@ -545,7 +555,8 @@ const DEFAULT_POLICY = Object.freeze({
   lateP1ForgePopulation: 70,
   lateP1ForgeWoodBank: 1500,
   lateP1ForgeWoodFoodRatio: 3.0,
-  phase2Forge1Population: 70,
+  // Fast Town must immediately turn the new phase into an attack/tech package.
+  phase2Forge1Population: 50,
   phase2Forge2Population: 80,
   // IT14.64: Forge #2 is an on-demand second research lane, not scheduled infrastructure.
   // The planner may request it only while Forge #1 is actually occupied by a useful
@@ -695,9 +706,9 @@ const DEFAULT_POLICY = Object.freeze({
   foodSurplusNewCivilianWoodRatio: 1.75,
   // Permanent-food floors: natural food and a temporary food bank may delay expansion,
   // but they may not collapse the long-term farm economy below these population-scaled floors.
-  fieldFloorSixPopulation: 40,
-  fieldFloorEightPopulation: 70,
-  fieldFloorTenPopulation: 110,
+  fieldFloorSixPopulation: 70,
+  fieldFloorEightPopulation: 90,
+  fieldFloorTenPopulation: 120,
   fieldFloorTwelvePopulation: 9999,
   preferredPermanentFields: 10,
   emergencyPermanentFieldsFoodBank: 500,
@@ -747,9 +758,7 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.86: opening Farmstead candidate ranking rewards servicing up to three berry
   // bushes at once. Hard Field-capacity legality remains unchanged.
   openingFarmsteadMultiBushExtraRadius: 6,
-  // Cardinality matters more than a tiny nearest-bush advantage: if one legal side
-  // efficiently services three bushes and another only two, prefer the three-bush side.
-  openingFarmsteadMultiBushReward: 6000,
+  openingFarmsteadMultiBushReward: 900,
   expertCleanupEnemyPopulation: 8,
   // IT14.53: when the enemy is down to a literal handful of population and still
   // owns a Civic Centre, siege and the finishing army stop cleaning side buildings
@@ -773,6 +782,7 @@ const DEFAULT_POLICY = Object.freeze({
   athensP1ForgeWoodReserve: 180,
   athensP1ForgeMetalReserve: 0,
   athensP1MeleeTechStartTime: 250,
+  greekDelayedP1UpgradeCommitTime: 360,
   athensP1MeleeFoodReserve: 225,
   athensP1MeleeWoodReserve: 150,
   athensP1MeleeMetalReserve: 0,
@@ -898,10 +908,6 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.94: one expansion is not a lifetime cap. The first healthy expansion remains
   // optional; additional Cleruchies require renewed scarcity and are spaced/cooldown-bound.
   athensCleruchyMaximumCount: 3,
-  // A large working party hauling this far has already proved that dropsites alone are
-  // no longer enough. Claim a rich frontier rather than walking half the map.
-  athensCleruchyLongHaulDistance: 32,
-  athensCleruchyLongHaulWorkers: 8,
   // IT14.95: completed Cleruchies contribute forward military production.
   expertCleruchyProductionQueueDepth: 2,
   expertCleruchyTrainingBatch: 2,
@@ -960,22 +966,13 @@ const DEFAULT_POLICY = Object.freeze({
   openingWoodApproachWeight: 0.35,
   openingWoodDropWeight: 6,
   openingWoodTreeCountWeight: 16,
-  // Score the forest as a staged human cutting plan: Storehouse #1 services the
-  // accessible edge, then cleared space permits a deeper Storehouse. Continuation
-  // wood is discounted because it is not immediate, but may not disappear merely
-  // because it falls outside one 40m snapshot.
-  openingWoodContinuationLinkDistance: 28,
-  openingWoodContinuationReach: 110,
-  openingWoodContinuationWeight: 0.65,
   // IT14.97: the opening wood search sees same-land neutral forest near our border.
   // A small owned clump is a bridge, not a reason to ignore a sustainable neutral-edge
   // forest that can be serviced by a legal Storehouse in our own territory.
-  // A 1,000-wood clump is only a bridge for a 12-20 worker opening.
-  openingWoodMinimumSustainableAmount: 1600,
+  openingWoodMinimumSustainableAmount: 800,
   openingWoodLegalPlacementRadius: 32,
   openingWoodLegalOffsetWeight: 6,
-  // On bridge-wood maps, a 25% richer legal forest is worth the opening walk.
-  openingWoodDominanceRatio: 1.25,
+  openingWoodDominanceRatio: 1.75,
   openingWoodDominanceMaxExtraApproach: 90,
   openingWoodDominanceMaxApproach: 170,
   openingStorehouseSecondStorehouseGraceSeconds: 45,
@@ -1015,14 +1012,11 @@ const DEFAULT_POLICY = Object.freeze({
   // central berry/future-field district. This is a score preference, not a hard
   // legality veto, so awkward maps can still place a Storehouse.
   openingStorehouseFoodDistrictPreserveRadius: 42,
-  // Exact reserved Field footprints remain hard validation. This softer radial
-  // preference must not push the opening dropsite off the selected wood mass.
-  openingStorehouseFoodDistrictPenalty: 160,
-  openingStorehouseWoodDistanceScoreWeight: 180,
+  openingStorehouseFoodDistrictPenalty: 5000,
   // IT15.6: reserve the berry/Farmstead district before House #1 is placed.
-  openingHouseMinimumCCDistance: 34,
-  openingHousePreferredCCDistance: 42,
-  openingHouseMaximumCCDistance: 64,
+  openingHouseMinimumCCDistance: 26,
+  openingHousePreferredCCDistance: 38,
+  openingHouseMaximumCCDistance: 54,
   openingHouseFoodDistrictPreserveRadius: 34,
   openingHouseFoodDistrictPenalty: 12000,
   openingStorehouseCCCorePreserveRadius: 30,
@@ -1068,8 +1062,7 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.89: worker drift alone must not legitimize a second forest while the
   // currently serviced district is still genuinely productive. Unlike IT14.86's
   // hard graph veto, this lock releases immediately on measured wood trouble.
-  // A serviced 600-800 wood cutting front is still a productive early district.
-  woodHealthyDistrictMinimumRemaining: 450,
+  woodHealthyDistrictMinimumRemaining: 900,
   woodHealthyDistrictMinimumActiveWorkers: 4,
   woodHealthyDistrictAlternateHoldDistance: 42,
   // IT14.92: a forest district follows the live cutting face, not the original
@@ -1322,6 +1315,7 @@ const DEFAULT_POLICY = Object.freeze({
   expertPrimaryReinforcementWaveMinimum: 6,
   expertPrimaryReinforcementWaveMaximum: 8,
   expertPrimaryReinforcementWaveCooldownSeconds: 16,
+  expertDisableFragmentedContactSweep: true,
   // IT14.65 premium units do not sit at home while a primary army is already fighting.
   expertPremiumReinforcementBatch: 8,
   expertPremiumReinforcementHealth: 0.75,
@@ -1621,6 +1615,8 @@ const DEFAULT_POLICY = Object.freeze({
   athensSlingerUnlockFoodReserve: 600,
   athensSlingerUnlockStoneReserve: 75,
   athensSlingerUnlockMinimumFoodBank: 900,
+  athensLowWoodP1ForgeStartTime: 180,
+  athensLowWoodP1ForgeMinimumPopulation: 38,
   ecoTechFoodReserve: 600,
   ecoTechWoodReserve: 300,
   ecoTechSurplusFood: 900,

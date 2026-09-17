@@ -1,0 +1,26 @@
+IT15.8.17 STATIC VERIFICATION
+
+PASS — economyPlanner.js parses.
+PASS — expertDecisionController.js parses.
+PASS — attackManager.js parses.
+PASS — House #1 has a six-free-slot opening trigger.
+PASS — House #1 builder pool is citizenSoldierWood-only with four builders.
+PASS — House #1 placement candidates prioritize the wood worksite and retain the
+       former CC-ring fallback.
+PASS — sparse-forest handoff requires Barracks #1 and cannot violate the
+       Barracks-before-second-Storehouse contract.
+PASS — rich-hunt cavalry batching retains the two-unit maximum and logs batch size.
+PASS — delayed Greek P1 Forge/Melee-I applies only to Athens, Sparta, and Thebes.
+PASS — benchmark table intentionally unchanged pending replay evidence.
+
+Replay checks requested
+-----------------------
+- House #1 foundation begins around 24/30 and completes before the cap.
+- Four citizen soldiers build it near the opening worksite; civilians stay on food.
+- On a sparse forest map, replacement Storehouse begins after Barracks #1 and
+  before wood delivery collapses.
+- With >=900 safe hunt and sufficient food after 2:00, two pursuit cavalry are
+  trained as one batch.
+- A Greek P1 army still home after 6:00 builds a Forge, researches Melee Attack I,
+  and launches in the 7–9 minute timing window rather than leaving unupgraded.
+
