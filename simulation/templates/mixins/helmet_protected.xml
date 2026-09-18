@@ -10,11 +10,16 @@
     </Entity>
   </Resistance>
   <Vision>
-    <Range op="add">-10</Range>
+    <Range op="add">-5</Range>
   </Vision>
+     <Cost>
+    <Resources>
+      <metal op="add">5</metal>
+    </Resources>
+  </Cost>
   <Identity>
     <GenericName>Protected Helmet</GenericName>
-    <Tooltip>+0.5 of each resistance but -10 vision.</Tooltip>
+    <Tooltip>+0.5 of each resistance but -5 vision and +5 metal cost.</Tooltip>
     <History>Helmets with substantial cheek, brow, or neck protection trade some situational awareness for broader head coverage.</History>
   </Identity>
 </Entity>
