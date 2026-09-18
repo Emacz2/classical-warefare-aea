@@ -1,5 +1,5 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-const root=__dirname+'/../petra/expertDecision/';
+const root=__dirname+'/../expertDecision/';
 const clean=p=>fs.readFileSync(root+p,'utf8').replace(/^import .*\n/gm,'').replace(/export\s*\{[^}]*\};?/g,'');
 const ctx=vm.createContext({console});
 vm.runInContext(fs.readFileSync(__dirname+'/state-fixture.js','utf8').replace(/export\s*\{[^}]*\};?/g,'')+'\n'+clean('policy.js')+'\n'+clean('economyPlanner.js')+'\n'+clean('petraMechanicalCollector.js')+'\nthis.api={mergePolicy,fieldDemand,collectWorkerMetrics,planEconomy};',ctx);
@@ -33,7 +33,7 @@ assert(!plan.actions.some(a=>a.kind==='farmstead'&&a.role==='farm_hub_deadlock')
 plan=ctx.api.planEconomy({...blocked,foundations:{...blocked.foundations,field:1}}, {targetWoodCivilians:20});
 assert(!plan.actions.some(a=>a.kind==='farmstead'&&a.role==='farm_hub_deadlock'),'pending fields prevent duplicate hub');
 // Execute actual no-local-work branch; it must fall through instead of returning false.
-const controller=fs.readFileSync(__dirname+'/../petra/expertDecisionController.js','utf8');
+const controller=fs.readFileSync(__dirname+'/../expertDecisionController.js','utf8');
 const start=controller.indexOf('\t\t\t\t\tconst local = this.assignFoodHomeLocalWork');
 const end=controller.indexOf('\n\t\t\t\t}',start);
 assert(start>0&&end>start);

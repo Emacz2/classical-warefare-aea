@@ -505,11 +505,18 @@ export class ExpertDecisionController
 
 	economySafetyAllowsNeutralWood(gameState)
 	{
-		if (!this.economicSafety || !this.economicSafety.active ||
-		    this.economicSafety.resource !== "wood" || !this.economicSafety.neutralWoodRescue)
-			return false;
-		const bank = gameState.getResources();
-		return (Number(bank && bank.wood) || 0) < (Number(mergePolicy().ecoSafetyNeutralWoodReleaseBank) || 700);
+		// IT15.8.24: recovery cannot override owned-territory gathering.
+		return false;
+	}
+
+	ensureLegalGatherOrder(gameState, ent, supply)
+	{
+		const pos = entityPosition(supply);
+		const type = supply && supply.resourceSupplyType && supply.resourceSupplyType();
+		if (!pos || this.HQ.territoryMap.getOwner(pos) !== PlayerID ||
+		    type && type.generic === "food" && hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry"))
+			return { status: "FAILED" };
+		return ensureGatherOrder(ent, supply);
 	}
 
 	neutralWoodRescueCount(gameState)
@@ -4553,7 +4560,7 @@ export class ExpertDecisionController
 			ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
 			if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
 				this.HQ.basesManager.AddTCGatherer(target.id());
-			const result = ensureGatherOrder(ent, target);
+			const result = this.ensureLegalGatherOrder(gameState, ent, target);
 			aiWarn("[EXPERT-CIV] safe-work worker=" + ent.id() + " resource=" + generic + " target=" + target.id());
 			return result.status !== "FAILED";
 		}
@@ -7994,7 +8001,7 @@ export class ExpertDecisionController
 			ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
 			if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
 				this.HQ.basesManager.AddTCGatherer(field.id());
-			const gather = ensureGatherOrder(ent, field);
+			const gather = this.ensureLegalGatherOrder(gameState, ent, field);
 			this.diagnoseWorkerOrder(ent, "field-handoff", field.id(), gather.status);
 			++locked;
 		}
@@ -13958,7 +13965,7 @@ export class ExpertDecisionController
 			ent.setMetadata(PlayerID, SUPPLY_ID, target.id());
 			ent.setMetadata(PlayerID, "gather-type", generic);
 			ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
-			const order = ensureGatherOrder(ent, target);
+			const order = this.ensureLegalGatherOrder(gameState, ent, target);
 			aiWarn("[EXPERT-LOCALITY] worker=" + ent.id() + " home=" + home.id() +
 				" local=" + generic + " target=" + target.id() + " status=" + order.status);
 			return order.status !== "FAILED";
@@ -13968,6 +13975,13 @@ export class ExpertDecisionController
 
 	assignFoodWorker(gameState, ent, foodNetwork, accessIndex)
 	{
+		if (hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry"))
+		{
+			ent.setMetadata(PlayerID, FARM_LOCK, undefined);
+			ent.setMetadata(PlayerID, NATURAL_FOOD_LOCK, undefined);
+			ent.setMetadata(PlayerID, JOB_METADATA, "citizenSoldierWood");
+			return this.assignSafeFallback(gameState, ent, accessIndex, ["wood", "metal", "stone"]);
+		}
 		const network = foodNetwork && Array.isArray(foodNetwork.clusters) ? foodNetwork : { clusters: [] };
 		const clusters = network.clusters;
 		const siteIds = decodeFoodSite(ent.getMetadata(PlayerID, FOOD_SITE));
@@ -14248,7 +14262,7 @@ export class ExpertDecisionController
 		}
 		if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
 			this.HQ.basesManager.AddTCGatherer(target.id());
-		const order = ensureGatherOrder(ent, target);
+		const order = this.ensureLegalGatherOrder(gameState, ent, target);
 		this.diagnoseWorkerOrder(ent, "food-site", target.id(), order.status);
 		return order.status !== "FAILED";
 	}
@@ -14365,6 +14379,8 @@ export class ExpertDecisionController
 
 	assignFarmWorker(gameState, ent, accessIndex)
 	{
+		if (!hasClass(ent, "Civilian") || hasClass(ent, "CitizenSoldier") || hasClass(ent, "Cavalry"))
+			return false;
 		const policy = mergePolicy();
 		// IT14.85 hotfix: garrisoned/transitioning workers can temporarily have no
 		// world position. Never feed an undefined vector into distance math or issue
@@ -14396,7 +14412,7 @@ export class ExpertDecisionController
 					this.diagnoseWorkerOrder(ent, "farm-lock", locked.id(), "CONFIRMED");
 					return true;
 				}
-				const order = ensureGatherOrder(ent, locked);
+				const order = this.ensureLegalGatherOrder(gameState, ent, locked);
 				this.diagnoseWorkerOrder(ent, "farm-lock", locked.id(), order.status);
 				return order.status !== "FAILED";
 			}
@@ -14491,7 +14507,7 @@ export class ExpertDecisionController
 		ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
 		if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
 			this.HQ.basesManager.AddTCGatherer(target.id());
-		const order = ensureGatherOrder(ent, target);
+		const order = this.ensureLegalGatherOrder(gameState, ent, target);
 		this.diagnoseWorkerOrder(ent, "farm-lock", target.id(), order.status);
 		return order.status !== "FAILED";
 	}
@@ -14620,7 +14636,7 @@ export class ExpertDecisionController
 			    rescue.resourceSupplyAmount() > 0)
 			{
 				if (!hasLiveGatherOrder(ent, rescue.id()))
-					ensureGatherOrder(ent, rescue);
+					this.ensureLegalGatherOrder(gameState, ent, rescue);
 				this.diagnoseWorkerOrder(ent, "wood-neutral-rescue", rescue.id(), "CONFIRMED");
 				return;
 			}
@@ -14707,7 +14723,7 @@ export class ExpertDecisionController
 		ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
 		if (targetChanged && this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
 			this.HQ.basesManager.AddTCGatherer(target.id());
-		const order = ensureGatherOrder(ent, target);
+		const order = this.ensureLegalGatherOrder(gameState, ent, target);
 		this.diagnoseWorkerOrder(ent, "wood", target.id(), order.status);
 	}
 
@@ -15146,13 +15162,15 @@ export class ExpertDecisionController
 		ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
 		if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
 			this.HQ.basesManager.AddTCGatherer(target.id());
-		const order = ensureGatherOrder(ent, target);
+		const order = this.ensureLegalGatherOrder(gameState, ent, target);
 		this.diagnoseWorkerOrder(ent, "wood-emergency-longhaul", target.id(), order.status);
 		return order.status !== "FAILED";
 	}
 
 	resourceCandidatesInOwnTerritory(gameState, ent, accessIndex, generic)
 	{
+		if (generic === "food" && hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry"))
+			return [];
 		const out = [];
 		const emergencyWood = [];
 		const serviceDistance = new Map();
@@ -15264,6 +15282,11 @@ export class ExpertDecisionController
 
 	assignSafeFallback(gameState, ent, accessIndex, preferred = ["wood", "food", "stone", "metal"], failedTargetId = undefined)
 	{
+		if (hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry"))
+		{
+			preferred = preferred.filter(resource => resource !== "food");
+			if (!preferred.length) preferred = ["wood", "metal", "stone"];
+		}
 		// IT14.39: temporary fallback work is still real work. If the worker already
 		// has a live, legal gather order in one of the requested resource classes,
 		// finish that target instead of recomputing the nearest supply every decision
@@ -15327,7 +15350,7 @@ export class ExpertDecisionController
 				ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
 				if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
 					this.HQ.basesManager.AddTCGatherer(target.id());
-				const order = ensureGatherOrder(ent, target);
+				const order = this.ensureLegalGatherOrder(gameState, ent, target);
 				this.diagnoseWorkerOrder(ent, "fallback:" + generic, target.id(), order.status);
 				if (order.status === "FAILED")
 				{
@@ -15646,7 +15669,7 @@ export class ExpertDecisionController
 					this.diagnoseWorkerOrder(ent, "chicken", target.id(), "CONFIRMED");
 					return true;
 				}
-				const order = ensureGatherOrder(ent, target);
+				const order = this.ensureLegalGatherOrder(gameState, ent, target);
 				this.diagnoseWorkerOrder(ent, "chicken", target.id(), order.status);
 				return true;
 			}
@@ -15684,7 +15707,7 @@ export class ExpertDecisionController
 				this.diagnoseWorkerOrder(ent, "hunt", target.id(), "CONFIRMED");
 				return true;
 			}
-			const order = ensureGatherOrder(ent, target);
+			const order = this.ensureLegalGatherOrder(gameState, ent, target);
 			this.diagnoseWorkerOrder(ent, "hunt", target.id(), order.status);
 			return true;
 		}
@@ -15860,11 +15883,18 @@ export class ExpertDecisionController
 			this.trackResourceRoundTrip(gameState, ent);
 			// IT15.1 hard territory gate: no stale metadata/live order may preserve an
 			// economic gather target after that resource lies outside our territory.
-			const liveSupplyId = Number(ent.getMetadata(PlayerID, SUPPLY_ID));
+			const gatherState = ent.unitAIState ? String(ent.unitAIState()) : "";
+			const observedTarget = gatherState.includes(".GATHER.") ? currentTargetId(ent) : undefined;
+			const liveSupplyId = Number(Number.isFinite(observedTarget) ? observedTarget : ent.getMetadata(PlayerID, SUPPLY_ID));
 			const liveSupply = Number.isFinite(liveSupplyId) ? gameState.getEntityById(liveSupplyId) : undefined;
 			if (liveSupply && entityPosition(liveSupply) && liveSupply.resourceSupplyType &&
-			    this.HQ.territoryMap.getOwner(liveSupply.position()) !== PlayerID)
+			    (this.HQ.territoryMap.getOwner(liveSupply.position()) !== PlayerID ||
+			     hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry") && liveSupply.resourceSupplyType().generic === "food"))
 			{
+				if (gatherState.includes(".GATHER.") && ent.stopMoving) ent.stopMoving();
+				ent.setMetadata(PlayerID, FARM_LOCK, undefined);
+				ent.setMetadata(PlayerID, NATURAL_FOOD_LOCK, undefined);
+				ent.setMetadata(PlayerID, EXPERT_NEUTRAL_WOOD_RESCUE, undefined);
 				ent.setMetadata(PlayerID, SUPPLY_ID, undefined);
 				ent.setMetadata(PlayerID, WORKSITE_ID, undefined);
 				ent.setMetadata(PlayerID, EXPERT_FALLBACK_LEASE_RESOURCE, undefined);
@@ -16501,7 +16531,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.23] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.24] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16567,7 +16597,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.23] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.24] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

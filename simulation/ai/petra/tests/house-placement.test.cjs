@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
-const source = fs.readFileSync(__dirname + '/../petra/expertDecisionController.js', 'utf8');
+const source = fs.readFileSync(__dirname + '/../expertDecisionController.js', 'utf8');
 const square = (a,b) => (a[0]-b[0])**2 + (a[1]-b[1])**2;
 // Execute the actual opening-house validation block, not a reimplementation.
 const start = source.indexOf('\t\t\tif (kind === "house" && request && request.openingHouse && !request.openingHouseFallbackStage');
