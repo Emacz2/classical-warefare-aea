@@ -4,18 +4,18 @@
     <Entity>
       <Damage>
         <Hack op="add">0.5</Hack>
-        <Pierce op="add">0.5</Pierce>
+        <Crush op="add">0.5</Crush>
       </Damage>
     </Entity>
   </Resistance>
-   <Cost>
+    <Cost>
     <Resources>
-      <metal op="add">5</metal>
+      <food op="add">5</food>
     </Resources>
   </Cost>
   <Identity>
-    <GenericName>Open Helmet</GenericName>
-    <Tooltip>+0.5 Hack/Pierce resistance but +5 metal cost.</Tooltip>
+    <GenericName>Protective Leather Cap</GenericName>
+    <Tooltip>+0.5 Hack/Pierce resistance but +5 food cost.</Tooltip>
     <History>Open-faced helmets provide modest head protection with only a small reduction in peripheral awareness.</History>
   </Identity>
 </Entity>

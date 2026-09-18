@@ -3,18 +3,23 @@
   <Resistance>
     <Entity>
       <Damage>
-        <Crush op="add">0.5</Crush>
+        <Crush op="add">1</Crush>
         <Hack op="add">1</Hack>
         <Pierce op="add">1</Pierce>
       </Damage>
     </Entity>
   </Resistance>
   <Vision>
-    <Range op="add">-15</Range>
+    <Range op="add">-10</Range>
   </Vision>
+     <Cost>
+    <Resources>
+      <metal op="add">10</metal>
+    </Resources>
+  </Cost>
   <Identity>
     <GenericName>Enclosed Helmet</GenericName>
-    <Tooltip>+1 Hack/Pierce and +0.5 Crush resistance but -15 vision.</Tooltip>
+    <Tooltip>+1 of each resistance but -10 vision and +10 metal cost.</Tooltip>
     <History>Highly enclosed helmets maximize protection of the head and face at the cost of peripheral vision and battlefield awareness.</History>
   </Identity>
 </Entity>

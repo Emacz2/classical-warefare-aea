@@ -8,9 +8,14 @@
       </Damage>
     </Entity>
   </Resistance>
+   <Cost>
+    <Resources>
+      <metal op="add">5</metal>
+    </Resources>
+  </Cost>
   <Identity>
     <GenericName>Unobstructed Helmet</GenericName>
-    <Tooltip>+0.5 Hack/Pierce resistance with no vision penalty.</Tooltip>
+    <Tooltip>+0.5 Hack/Pierce resistance but +5 metal cost.</Tooltip>
     <History>Open helmet designs that protect the head while preserving a broad field of view, such as the Boeotian cavalry helmet.</History>
   </Identity>
 </Entity>
