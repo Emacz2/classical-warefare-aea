@@ -14,9 +14,14 @@
     <RepeatTime op="add">50</RepeatTime>
   </Melee>
 </Attack>
+ <Cost>
+    <Resources>
+      <wood op="add">10</wood>
+    </Resources>
+  </Cost>
  <Identity>
     <GenericName>Medium Shield</GenericName>
-    <Tooltip>+3 Pierce, +1.5 Hack and +1 Crush resistance but -2% walk speed and 50ms slower melee repeat time</Tooltip>
+    <Tooltip>+3 Pierce, +1.5 Hack and +1 Crush resistance but +10 wood, -2% walk speed and 50ms slower melee repeat time</Tooltip>
     <History>Germanic, Celtic, Han Infantry, Parma, Large Caetra, reinforced/large pelte</History>
   </Identity>
   <UnitMotion>

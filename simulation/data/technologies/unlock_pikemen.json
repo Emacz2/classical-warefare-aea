@@ -3,8 +3,8 @@
 	"description": "",
 	"cost": {
 		"food": 135,
-		"wood": 135,
-		"metal": 30
+		"wood": 105,
+		"metal": 45
 		
 	},
 	"requirements": {
