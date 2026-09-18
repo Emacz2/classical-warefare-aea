@@ -1,0 +1,20 @@
+IT15.8.20 — first-house placement deadlock correction
+Base: exact local IT15.8.19 controller. Only expertDecisionController.js changed.
+
+First house searches more positions around the existing Storehouse.
+If the preferred scan fails, retry immediately in the same decision:
+  Stage 1: 8–30m from Storehouse; relax CC minimum, food-area circle,
+           broad farmstead exclusion circle, and behind-Storehouse hard veto.
+  Stage 2: remove artificial Storehouse/CC distance limits.
+Storehouse proximity and protected-side placement remain scoring preferences.
+Engine legality, owned territory, land access, resource corridors, prospective
+wood dropsites, and explicitly reserved farm footprints remain protected.
+Fallback outcome logs use EXPERT-IT15.8.20-HOUSE.
+
+No economy, training, strategy, gather assignment, or technology changes.
+Install over 15.8.19: overwrite simulation/ai/petra/expertDecisionController.js
+using petra/expertDecisionController.js from this archive.
+
+Verification: Node syntax check; executable tests of production opening-house
+validation and same-frame retry branches; diff against 15.8.19.
+No game-engine replay was run here. In-game placement remains to be tested.

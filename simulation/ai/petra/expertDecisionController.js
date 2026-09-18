@@ -12079,7 +12079,7 @@ export class ExpertDecisionController
 				for (const store of openingStores.slice(0, 2))
 					candidates.push(...generatePlacementCandidates({
 						"kind": "barracks", "anchor": store.position(), "toward": ccPos,
-						"distances": [10, 12, 14, 16, 18, 20, 22, 24], "angleCount": 32, "templateRadius": geometry.radius
+						"distances": [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 30, 34, 40], "angleCount": 48, "templateRadius": geometry.radius
 					}));
 				candidates.push(...generatePlacementCandidates({
 					"kind": "barracks", "anchor": ccPos, "toward": woodPos,
@@ -13126,7 +13126,7 @@ export class ExpertDecisionController
 				if (coreCC && entityPosition(coreCC) && SquareVectorDistance(position, coreCC.position()) > maxCC * maxCC)
 					return false;
 			}
-			if (kind === "house" && request && request.openingHouse && Array.isArray(request.openingFoodDistrictAnchor))
+			if (kind === "house" && request && request.openingHouse && !request.openingHouseFallbackStage && Array.isArray(request.openingFoodDistrictAnchor))
 			{
 				const reserve = Math.max(0, Number(request.openingFoodDistrictReserveRadius) || 34);
 				if (SquareVectorDistance(position, request.openingFoodDistrictAnchor) < reserve * reserve)
@@ -13141,11 +13141,12 @@ export class ExpertDecisionController
 				const toWoodZ = request.woodDistrictAnchor[1] - store[1];
 				const toHouseX = position[0] - store[0];
 				const toHouseZ = position[1] - store[1];
-				if (toWoodX * toHouseX + toWoodZ * toHouseZ > 0)
+				if (!request.openingHouseFallbackStage && toWoodX * toHouseX + toWoodZ * toHouseZ > 0)
 					return false;
 				const storeDistance = Math.sqrt(SquareVectorDistance(position, store));
-				if (storeDistance < (Number(request.minimumStorehouseDistance) || 10) ||
-				    storeDistance > (Number(request.maximumStorehouseDistance) || 20))
+				if (request.openingHouseFallbackStage !== 2 &&
+				    (storeDistance < (Number(request.minimumStorehouseDistance) || 10) ||
+				     storeDistance > (Number(request.maximumStorehouseDistance) || 20)))
 					return false;
 			}
 			if (kind === "temple" && request && Number(request.templeMinimumWorkerCoverage) > 0)
@@ -13174,7 +13175,7 @@ export class ExpertDecisionController
 				{
 					const distance = Math.sqrt(SquareVectorDistance(position, farm.position()));
 					const relaxedStorehouseEdge = kind === "storehouse" && request && request.storehouseFarmEdgeRelax;
-					if (!relaxedStorehouseEdge && distance < farmDistrictReservation.minimumDistance)
+					if (!relaxedStorehouseEdge && !(request.openingHouse && request.openingHouseFallbackStage > 0) && distance < farmDistrictReservation.minimumDistance)
 						return false;
 					const dx = Math.abs(position[0] - farm.position()[0]);
 					const dz = Math.abs(position[1] - farm.position()[1]);
@@ -13433,6 +13434,15 @@ export class ExpertDecisionController
 					}
 					if (Array.isArray(request.woodDistrictAnchor))
 						score += 12 * Math.sqrt(SquareVectorDistance(position, request.woodDistrictAnchor));
+					if (Array.isArray(request.openingWoodStorehousePosition))
+					{
+						const store = request.openingWoodStorehousePosition;
+						score += 300 * Math.sqrt(SquareVectorDistance(position, store));
+						if (Array.isArray(request.woodDistrictAnchor) &&
+						    (position[0] - store[0]) * (request.woodDistrictAnchor[0] - store[0]) +
+						    (position[1] - store[1]) * (request.woodDistrictAnchor[1] - store[1]) > 0)
+							score += 10000;
+					}
 					return score;
 				}
 				if (farmDistrictReservation)
@@ -13642,10 +13652,31 @@ export class ExpertDecisionController
 				if (!request)
 					continue;
 				const oneFrame = { ...frame, "actions": [action], "training": { "action": "NONE", "batch": 0 } };
-				const prepared = prepareMechanicalExecution(gameState, oneFrame, {
+				let prepared = prepareMechanicalExecution(gameState, oneFrame, {
 					"placements": { [buildKey(action)]: request }, "training": {}
 				}, { "placement": this.placementPorts(gameState, action.kind, accessIndex) }, this.foundationTracker, { "playerId": PlayerID });
-				const exec = prepared.execution.builds[buildKey(action)];
+				let exec = prepared.execution.builds[buildKey(action)];
+				// IT15.8.20: retry within this decision, not minutes later. Only opening-house
+				// layout preferences relax; territory, access, obstructions, resource corridors,
+				// prospective wood dropsites and explicit farm footprints retain their veto.
+				if (!exec && request.openingHouse)
+				{
+					for (const stage of [1, 2])
+					{
+						request.openingHouseFallbackStage = stage;
+						request.minimumCCDistance = 0;
+						request.maximumCCDistance = stage === 1 ? 96 : 0;
+						request.minimumStorehouseDistance = 8;
+						request.maximumStorehouseDistance = 30;
+						prepared = prepareMechanicalExecution(gameState, oneFrame, {
+							"placements": { [buildKey(action)]: request }, "training": {}
+						}, { "placement": this.placementPorts(gameState, action.kind, accessIndex) }, this.foundationTracker, { "playerId": PlayerID });
+						exec = prepared.execution.builds[buildKey(action)];
+						aiWarn("[EXPERT-IT15.8.20-HOUSE] t=" + Math.round(gameState.ai.elapsedTime) +
+							" stage=" + stage + " result=" + (exec ? "placed" : "no-legal-position"));
+						if (exec) break;
+					}
+				}
 				if (!exec)
 				{
 					const blocked = prepared.blocked && prepared.blocked.find(item => item.key === buildKey(action));
@@ -16444,7 +16475,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.19] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.20] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16510,7 +16541,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.19] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.20] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
