@@ -825,6 +825,28 @@ Replay regressions locked by IT14:
 
 ## IT15.8.18 farm-hub and P1 sequencing correction
 
+## IT15.8.19 P1 resources, military maturity, and contact response
+
+- Once the Greek P1 Forge window opens, training may not consume the live Forge plus
+  Melee-I resource package. Affordable javelineers/ranged substitutes keep production
+  moving; an unfunded Hoplite standby may not reserve the protected metal.
+- Outside a true finishing state, raw army size never substitutes for having at least
+  one relevant military upgrade active or completed before a P2 attack.
+- A started army inside hostile defensive-fire range receives an army-wide,
+  structure-aware attack-move order; it may not stand in formation taking free fire.
+- Opening House #1 stays 10–20m from the opening Storehouse, behind it relative to the
+  woodline, preserving both builder travel and future deeper Storehouse access.
+- Non-animal natural food within 25m of owned territory is frontier intelligence.
+  Construction and worker orders remain subject to normal territory legality.
+- Neutral wood within 25m of owned territory is expansion/Storehouse intelligence only;
+  workers may not gather it until it becomes owned and normally serviceable.
+- Strategic metal and stone floors remain active after forecast balancing begins. Farms
+  stay protected; civilians join minerals only after the opening food/wood structure,
+  with bounded citizen-soldier support when wood is healthy.
+- Routine Forge scaling stops at two. A third Forge may never be speculative or idle.
+- P3 may convert a demonstrated advantage before max-tech completion only with real
+  siege, at least two completed military upgrades, sufficient army, and a population lead.
+
 - A strategy-specific civilian soft cap never authorizes CC soldiers before the global
   60-civilian ceiling. Before 60, the only exceptions are a real P1 attack package or
   live base defense.

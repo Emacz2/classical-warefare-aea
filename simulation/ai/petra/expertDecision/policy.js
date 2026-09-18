@@ -581,6 +581,7 @@ const DEFAULT_POLICY = Object.freeze({
   p3BoomForge3FoodBank: 450,
   p3BoomForge3WoodBank: 350,
   p3BoomForge3MetalBank: 175,
+  p3BoomMaximumRoutineForges: 2,
   forgeWoodReserve: 100,
   // Expert defense doctrine: large incoming forces trigger a deliberate retreat to the
   // base, full-army assembly, and only then a coordinated counterattack. Towers are
@@ -1037,6 +1038,12 @@ const DEFAULT_POLICY = Object.freeze({
   openingHouseMaximumCCDistance: 64,
   openingHouseFoodDistrictPreserveRadius: 34,
   openingHouseFoodDistrictPenalty: 12000,
+  openingHouseMinimumStorehouseDistance: 10,
+  openingHouseMaximumStorehouseDistance: 20,
+  frontierNaturalFoodRecognitionDistance: 25,
+  // Planning-only awareness: neutral frontier trees may justify a Storehouse or
+  // expansion, but do not become direct gather targets before territory reaches them.
+  frontierWoodRecognitionDistance: 25,
   openingStorehouseCCCorePreserveRadius: 30,
   openingStorehouseCCCorePenalty: 1200,
   // Once the normal 10-field economy is physically complete, military/civic
@@ -1389,6 +1396,10 @@ const DEFAULT_POLICY = Object.freeze({
   expertP3BoomHeroPlacementFailureWaive: 3,
   expertP3BoomHardLaunchTime: 930,
   expertP3BoomAbsoluteLaunchTime: 1020,
+  expertP3BoomAdvantageLaunchTime: 780,
+  expertP3BoomAdvantageMinimumArmy: 84,
+  expertP3BoomAdvantageRequiredCompletedTechs: 2,
+  expertP3BoomAdvantageEnemyPopulationRatio: 0.75,
   // IT14.47: if the opponent is already strategically broken in Town Phase, begin
   // the siege-finisher pipeline as soon as the civ's own tech tree actually permits
   // an arsenal/ram. Availability checks remain authoritative, so this cannot invent

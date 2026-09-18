@@ -1,0 +1,37 @@
+IT15.8.19 — P1 PACKAGE / COMBAT CONTACT CORRECTION
+
+Replay findings
+---------------
+- Replay 1 rolled early_p1_rush. Metal-cost Hoplites consumed the starting metal,
+  leaving Forge=false and melee=false through the P1 deadline.
+- The expired rush later converted to p2_tech_push and used the old >=60-army
+  no-tech opportunity escape, producing the observed unupgraded 14:15 attack.
+- Replay 2 rolled late_p1_rush. Its outskirts grapes were neutral by the territory
+  raster even though the cluster visibly touched the border.
+
+Corrections
+-----------
+1. Forge construction no longer waits for simultaneous affordability of Forge,
+   Melee-I, and every operating reserve.
+2. Once the Greek P1 Forge window opens, soldier selection protects the real live
+   Forge + Melee-I costs. If Hoplites would consume protected metal, the Barracks
+   selects an affordable ranged alternative such as a javelineer; the no-idle
+   fallback cannot steal the protected package.
+3. A non-finishing P2 attack cannot use army size as a substitute for military
+   research. At least one relevant upgrade must be completed, researching, or queued.
+4. An army entering CC/tower/fortress fire redirects every eligible combat unit into
+   attack-move contact, including structures, instead of leaving the formation idle.
+5. Opening House #1 must be 10–20m from the opening Storehouse and remain on its
+   protected CC-facing side, away from the forest/deeper Storehouse path.
+6. Natural food within 25m of owned territory is recognized as frontier food.
+   Normal construction and worker legality still apply.
+7. Frontier wood within 25m is visible to Storehouse/expansion planning while direct
+   lumber orders remain restricted to owned territory.
+8. The strategic mineral floor now remains active after the forecast governor starts.
+   P2/P3 builds establish metal and stone before phase, Hoplite and Forge demand stalls;
+   civilians join mining after the food/wood opening and a bounded number of citizen
+   soldiers may reinforce it without stripping farms.
+9. Routine Forge construction is capped at two. A third is disabled unless explicitly
+   re-enabled with two occupied research lanes and an immediately fundable backlog.
+10. A P3 boom may convert a clear advantage from 13:00 with 84 army, real siege, two
+    completed military technologies, and enemy population no more than 75% of ours.

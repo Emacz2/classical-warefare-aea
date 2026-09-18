@@ -64,11 +64,21 @@ function ownerAt(context, position) {
   return map.getOwner(position);
 }
 
-function allowedWoodTerritory(gameState, owner, playerId, context = {}) {
+function allowedWoodTerritory(gameState, owner, playerId, context = {}, position = undefined) {
   // IT15.1 hard sovereignty invariant: economic wood targets must already be
   // inside our own territory. Neutral/allied forests belong to expansion planning,
   // never to the current lumber district.
-  return owner === playerId;
+  if (owner === playerId)
+    return true;
+  if (!context.allowNeutralWood || owner !== 0 || !position)
+    return false;
+  const frontier = Math.max(0, Number(context.frontierWoodDistance) || 0);
+  for (let angle = 0; frontier > 0 && angle < 16; ++angle) {
+    const a = 2 * Math.PI * angle / 16;
+    if (ownerAt(context, [position[0] + frontier * Math.cos(a), position[1] + frontier * Math.sin(a)]) === playerId)
+      return true;
+  }
+  return false;
 }
 
 function collectFoodCandidates(gameState, context) {
@@ -87,8 +97,17 @@ function collectFoodCandidates(gameState, context) {
       continue;
     if (Number.isFinite(accessIndex) && getLandAccess(gameState, ent) !== accessIndex)
       continue;
-    if (ownerAt(context, pos) !== playerId)
-      continue;
+    if (ownerAt(context, pos) !== playerId) {
+      const frontier = Math.max(0, Number(context.frontierFoodDistance) || 0);
+      let touchesOwn = false;
+      if (frontier > 0)
+        for (let angle = 0; angle < 16 && !touchesOwn; ++angle) {
+          const a = 2 * Math.PI * angle / 16;
+          touchesOwn = ownerAt(context, [pos[0] + frontier * Math.cos(a), pos[1] + frontier * Math.sin(a)]) === playerId;
+        }
+      if (!touchesOwn)
+        continue;
+    }
     candidates.push(ent);
   }
   return candidates;
@@ -263,7 +282,7 @@ function collectInitialWoodCandidates(gameState, context) {
       continue;
     if (Number.isFinite(accessIndex) && getLandAccess(gameState, ent) !== accessIndex)
       continue;
-    if (!allowedWoodTerritory(gameState, ownerAt(context, pos), playerId, context))
+    if (!allowedWoodTerritory(gameState, ownerAt(context, pos), playerId, context, pos))
       continue;
     const anchorSq = squareDistance(pos, anchorPosition);
     if (anchorSq > searchSq)
@@ -305,7 +324,7 @@ function collectWoodTrees(gameState, context) {
       continue;
     if (Number.isFinite(accessIndex) && getLandAccess(gameState, ent) !== accessIndex)
       continue;
-    if (!allowedWoodTerritory(gameState, ownerAt(context, pos), playerId, context))
+    if (!allowedWoodTerritory(gameState, ownerAt(context, pos), playerId, context, pos))
       continue;
     const dropSq = squareDistance(pos, worksitePosition);
     if (dropSq > radiusSq)

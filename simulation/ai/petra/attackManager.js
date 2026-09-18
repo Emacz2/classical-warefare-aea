@@ -1305,7 +1305,18 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 				if (dot >= dotMinimum)
 					enemiesAhead.push(enemy);
 			}
-			if (enemiesAhead.length < minimumEnemies)
+			let defensiveContact;
+			for (const structure of gameState.getEnemyStructures(attack.targetPlayer).values())
+			{
+				if (!structure || !structure.position || !structure.position() ||
+				    !(structure.hasClass("CivCentre") || structure.hasClass("Tower") || structure.hasClass("WallTower") ||
+				      structure.hasClass("Fortress") || structure.hasDefensiveFire && structure.hasDefensiveFire()))
+					continue;
+				if (SquareVectorDistance(centre, structure.position()) <= radius2 &&
+				    (!defensiveContact || SquareVectorDistance(centre, structure.position()) < SquareVectorDistance(centre, defensiveContact.position())))
+					defensiveContact = structure;
+			}
+			if (enemiesAhead.length < minimumEnemies && !defensiveContact)
 				continue;
 			this.expertLastAttackMoveSweepAt[key] = now;
 
@@ -1329,7 +1340,7 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 				let nearest = Infinity;
 				for (const enemy of enemiesAhead)
 					nearest = Math.min(nearest, SquareVectorDistance(ent.position(), enemy.position()));
-				if (nearest > engagement2)
+				if (!defensiveContact && nearest > engagement2)
 					continue;
 				candidates.push({ ent, nearest });
 			}
@@ -1338,9 +1349,11 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 			candidates.sort((a, b) => a.nearest - b.nearest || a.ent.id() - b.ent.id());
 			const capByEnemies = Math.max(minimumEnemies, enemiesAhead.length * unitsPerEnemy);
 			const capByArmy = Math.max(1, Math.ceil(attack.unitCollection.length * maxFraction));
-			const redirectCount = Math.min(candidates.length, capByEnemies, capByArmy);
+			const redirectCount = defensiveContact ? candidates.length : Math.min(candidates.length, capByEnemies, capByArmy);
+			const contactDestination = defensiveContact ? defensiveContact.position() : destination;
 			for (const item of candidates.slice(0, redirectCount))
-				item.ent.attackMove(destination[0], destination[1], { "attack": ["Unit"], "avoid": ["Support", "Domestic", "Ship"] });
+				item.ent.attackMove(contactDestination[0], contactDestination[1], {
+					"attack": defensiveContact ? ["Unit", "Structure"] : ["Unit"], "avoid": ["Support", "Domestic", "Ship"] });
 			redirectedTotal += redirectCount;
 			if (redirectCount && now - (Number(this.expertLastAttackMoveSweepLog) || -99999) >= 6)
 			{

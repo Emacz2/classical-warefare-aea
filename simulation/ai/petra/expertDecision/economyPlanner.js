@@ -687,7 +687,8 @@ function planEconomy(rawState, overrides = {}) {
     state.resources.food >= forgeTwoFoodBank;
   if (forgeTwoReady)
     transitionForgeTarget = 2;
-  const forgeThreeReady = p3BoomForge && state.phase >= 2 && state.flags.forgeThirdUseful &&
+  const forgeThreeReady = p3BoomForge && (Number(policy.p3BoomMaximumRoutineForges) || 2) >= 3 &&
+    state.phase >= 2 && state.flags.forgeThirdUseful &&
     state.structures.barracks >= 2 &&
     state.population.used >= (policy.p3BoomForge3Population || 90) &&
     (state.structures.field >= (policy.p3BoomForge3MinimumFields || 6) || infrastructureNaturalReady) &&

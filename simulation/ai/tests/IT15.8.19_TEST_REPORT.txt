@@ -1,0 +1,16 @@
+IT15.8.19 VERIFICATION REPORT
+
+PASS — JavaScript syntax checks for all changed runtime files.
+PASS — Runtime marker identifies EXPERT-IT15.8.19.
+PASS — Greek P1 soldier budget reserves live Forge and Melee-I costs.
+PASS — No-idle substitution cannot spend the protected P1 package.
+PASS — P2 no-tech army-size launch escape removed; finishing exception retained.
+PASS — Defensive-fire contact issues army-wide structure-aware attack-move.
+PASS — Opening House hard Storehouse distance band is 10–20m.
+PASS — Frontier natural-food recognition radius is 25m.
+PASS — Frontier wood recognition is planning-only; serviced gather targets remain owned.
+PASS — Strategic metal/stone floors execute after forecast balancing activates.
+PASS — Routine P3 Forge target is capped at two.
+PASS — P3 advantage launch still requires siege plus completed military technology.
+
+Replay testing remains required for randomized map geometry and combat behavior.

@@ -1135,10 +1135,18 @@ export class ExpertDecisionController
 		if (!gameState || !this.isP3BoomDoctrine(gameState) || !gameState.currentPhase || gameState.currentPhase() < 2 ||
 		    this.builtByClass(gameState, "Forge").length !== 2)
 			return false;
+		const policy = mergePolicy();
+		if (this.builtByClass(gameState, "Forge").length >= Math.max(2, Number(policy.p3BoomMaximumRoutineForges) || 2))
+			return false;
+		let occupied = 0;
+		for (const name of Object.keys(this.expertObservedP2MilitaryTechs || {}))
+			if (gameState.isResearching && gameState.isResearching(name))
+				++occupied;
+		if (occupied < 2)
+			return false;
 		const tech = this.expertRelevantMilitaryTechStatus(gameState);
 		if (tech.complete || tech.available + tech.researching < 2)
 			return false;
-		const policy = mergePolicy();
 		const res = gameState.getResources();
 		return (Number(res.food) || 0) >= (Number(policy.p3BoomForge3FoodBank) || 450) &&
 			(Number(res.wood) || 0) >= (Number(policy.p3BoomForge3WoodBank) || 350) &&
@@ -1251,7 +1259,8 @@ export class ExpertDecisionController
 			"anchorPosition": cc.position(),
 			"accessIndex": accessIndex,
 			"playerId": PlayerID,
-			"linkDistance": 24
+			"linkDistance": 24,
+			"frontierFoodDistance": Number(mergePolicy().frontierNaturalFoodRecognitionDistance) || 18
 		};
 	}
 
@@ -3611,6 +3620,11 @@ export class ExpertDecisionController
 				Number.isFinite(enemyPop) && enemyPop <= Math.max(Number(policy.expertP3BoomMaxPopOvermatchEnemyPopulation) || 60,
 					pop * (Number(policy.expertP3BoomMaxPopOvermatchRatio) || 0.65));
 			const maxPopPackageReady = pop >= operating && oneSiegeReady && reserveReady && heroReady && tech.complete;
+			const completedTechs = this.expertObservedTechCount(gameState, this.expertObservedP2MilitaryTechs).completed;
+			const advantageReady = now >= (Number(policy.expertP3BoomAdvantageLaunchTime) || 780) && oneSiegeReady &&
+				reserve >= Math.max(70, Number(policy.expertP3BoomAdvantageMinimumArmy) || 84) + homeReserve &&
+				completedTechs >= Math.max(1, Number(policy.expertP3BoomAdvantageRequiredCompletedTechs) || 2) &&
+				Number.isFinite(enemyPop) && enemyPop <= pop * (Number(policy.expertP3BoomAdvantageEnemyPopulationRatio) || 0.75);
 			const heroFailures = Number(this.placementFailureCounts["prytaneion:athens_p3_heroes"] || 0);
 			const hardDeadline = now >= (Number(policy.expertP3BoomHardLaunchTime) || 1080);
 			const absoluteDeadline = now >= (Number(policy.expertP3BoomAbsoluteLaunchTime) || 1200);
@@ -3623,7 +3637,7 @@ export class ExpertDecisionController
 			// become a circular veto at 180/180. If the opponent is already badly outmatched,
 			// or the full hero+tech package is otherwise ready, one real siege engine is enough
 			// to create the finishing plan and free population through combat.
-			if (!normalReady && !hardReady && !absoluteReady && !maxPopOvermatch && !maxPopPackageReady)
+			if (!normalReady && !hardReady && !absoluteReady && !maxPopOvermatch && !maxPopPackageReady && !advantageReady)
 				return undefined;
 		}
 		const phase2Researching = phase === 1 && gameState.getPhaseName && gameState.isResearching && gameState.isResearching(gameState.getPhaseName(2));
@@ -3897,6 +3911,11 @@ export class ExpertDecisionController
 				enemyPop <= Math.max(Number(policy.expertP3BoomMaxPopOvermatchEnemyPopulation) || 60,
 					pop * (Number(policy.expertP3BoomMaxPopOvermatchRatio) || 0.65));
 			const maxPopPackageReady = pop >= operating && oneSiegeReady && armyReady && heroReady && tech.complete;
+			const completedTechs = this.expertObservedTechCount(gameState, this.expertObservedP2MilitaryTechs).completed;
+			const advantageReady = elapsed >= (Number(policy.expertP3BoomAdvantageLaunchTime) || 780) && oneSiegeReady &&
+				army >= Math.max(70, Number(policy.expertP3BoomAdvantageMinimumArmy) || 84) &&
+				completedTechs >= Math.max(1, Number(policy.expertP3BoomAdvantageRequiredCompletedTechs) || 2) &&
+				Number.isFinite(enemyPop) && enemyPop <= pop * (Number(policy.expertP3BoomAdvantageEnemyPopulationRatio) || 0.75);
 			const heroFailures = Number(this.placementFailureCounts["prytaneion:athens_p3_heroes"] || 0);
 			const hardDeadline = elapsed >= (Number(policy.expertP3BoomHardLaunchTime) || 1080);
 			const absoluteDeadline = elapsed >= (Number(policy.expertP3BoomAbsoluteLaunchTime) || 1200);
@@ -3906,7 +3925,7 @@ export class ExpertDecisionController
 			const absoluteLaunch = absoluteDeadline && pop >= operating - 20 && armyReady && oneSiegeReady;
 			const normalLaunch = heroReady && popReady && tech.complete;
 			const maxPopEscape = maxPopOvermatch || maxPopPackageReady;
-			if (armyReady && ((siegeReady && (normalLaunch || hardLaunch)) || absoluteLaunch || maxPopEscape))
+			if ((armyReady && ((siegeReady && (normalLaunch || hardLaunch)) || absoluteLaunch || maxPopEscape)) || advantageReady)
 			{
 				const heroWaived = !heroReady && (hardLaunch || absoluteLaunch || maxPopOvermatch);
 				aiWarn("[EXPERT-P3-ALL-IN] ready pop=" + pop + "/" + operating + " army=" + army +
@@ -3916,7 +3935,7 @@ export class ExpertDecisionController
 					((hardLaunch || absoluteLaunch) && !tech.complete ? " hard-deadline=1" : "") +
 					(absoluteLaunch ? " absolute-deadline=1" : ""));
 				this.expertAuthorizeCombatLaunch(gameState, plan,
-					maxPopEscape && !siegeReady ? "p3-maxpop-one-siege" : "p3-max-tech-all-in");
+					advantageReady ? "p3-advantage-conversion" : maxPopEscape && !siegeReady ? "p3-maxpop-one-siege" : "p3-max-tech-all-in");
 			}
 			return;
 		}
@@ -3943,10 +3962,9 @@ export class ExpertDecisionController
 		}
 		const tech = manager.getExpertP2AttackTechGate ? manager.getExpertP2AttackTechGate(gameState) : { ready: true, active: 0, completed: 0 };
 		const minimum = Math.max(adaptiveTarget, Number(policy.expertP2OpportunityMinimumArmy) || 45);
-		const noTechMinimum = Math.max(minimum, Number(policy.expertP2OpportunityNoTechArmy) || 60);
 		const activeEnough = (Number(tech.active) || Number(tech.completed) || 0) >= (Number(policy.expertP2OpportunityMinimumActiveTechs) || 1);
 		const packageReady = !!tech.ready && army >= minimum;
-		const opportunityReady = army >= minimum && (activeEnough || army >= noTechMinimum);
+		const opportunityReady = army >= minimum && activeEnough;
 		if (!packageReady && !opportunityReady)
 			return;
 		const decision = manager.expertP1TimingWindowDecision ? manager.expertP1TimingWindowDecision(gameState, plan) : { launch: false };
@@ -5888,7 +5906,8 @@ export class ExpertDecisionController
 			"accessIndex": accessIndex,
 			"playerId": PlayerID,
 			"searchRadius": Number(policy.openingWoodSearchRadius) || 180,
-			"allowNeutralWood": !!allowNeutralWood
+			"allowNeutralWood": !!allowNeutralWood,
+			"frontierWoodDistance": Number(policy.frontierWoodRecognitionDistance) || 25
 		});
 		let trees = collect(true);
 		const choose = candidates => selectInitialWoodWorksite(candidates, cc.position(), {
@@ -6100,7 +6119,7 @@ export class ExpertDecisionController
 		for (const resource of ["food", "wood", "stone", "metal"])
 		{
 			const forgeSpend = Number(cost && cost[resource]) || 0;
-			const techSpend = rushDoctrine ? Number(meleeCost[resource]) || 0 : 0;
+			const techSpend = 0;
 			const packageReserve = rushDoctrine ?
 				Math.max(Number(reserve[resource]) || 0,
 					resource === "food" ? Number(policy.athensP1MeleeFoodReserve) || 0 :
@@ -6776,8 +6795,10 @@ export class ExpertDecisionController
 			this.applyProFoodBankRebalance(gameState, foodWoodFeedback);
 			this.applyFoodSurplusWoodRebalance(gameState, foodWoodFeedback, openingEnd);
 			this.applyMiningTechBootstrap(gameState);
-			this.applyStrategicMetalRebalance(gameState, openingEnd);
 		}
+		// The strategic mineral floor must remain active after the general forecast
+		// governor starts; otherwise phase/Forge/Hoplite demand can coexist with one miner.
+		this.applyStrategicMetalRebalance(gameState, openingEnd);
 	}
 
 	// Legacy cleanup only. IT15.8.9 retired the temporary citizen-soldier food exception;
@@ -7134,18 +7155,28 @@ export class ExpertDecisionController
 		// IT14.38 metal floor: three miners once the two-barracks P1 economy exists,
 		// six immediately in Town, and eight in a mature two-forge Town economy.
 		// Forge research should not wait for a giant food bank before metal exists.
+		const doctrine = this.ensureStrategicDoctrine(gameState);
 		let target = 0;
+		let stoneTarget = 0;
 		if (phase >= 2)
+		{
 			target = pop >= 120 && this.builtByClass(gameState, "Forge").length >= 2 ? 8 : 6;
-		else if (barracks >= 2 && pop >= 65)
-			target = 3;
-		if (!target)
+			stoneTarget = pop >= 100 ? 4 : 3;
+		}
+		else if (barracks >= 1 && pop >= 45 && doctrine &&
+		         ["p2_tech_push", "p3_boom_all_in", "late_p1_rush"].includes(doctrine.id))
+		{
+			target = barracks >= 2 || pop >= 60 ? 3 : 2;
+			stoneTarget = 2;
+		}
+		if (!target && !stoneTarget)
 			return;
 
 		const bank = gameState.getResources();
 		let metalWorkers = 0;
 		const stoneCandidates = [];
 		const woodSoldiers = [];
+		const woodCivilians = [];
 		for (const ent of gameState.getOwnUnits().values())
 		{
 			if (!ent || !entityPosition(ent) || !this.isExpertEconomyEntity(ent) ||
@@ -7158,21 +7189,24 @@ export class ExpertDecisionController
 				++metalWorkers;
 			else if (job === "stone")
 				stoneCandidates.push(ent);
+			else if (hasClass(ent, "Civilian") && !hasClass(ent, "CitizenSoldier") &&
+			         job === "wood" && !Number.isFinite(Number(ent.getMetadata(PlayerID, FARM_LOCK))))
+				woodCivilians.push(ent);
 			else if (hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry") &&
 			         (job === "wood" || job === "citizenSoldierWood" || job === "food_overflow_wood"))
 				woodSoldiers.push(ent);
 		}
-		if (metalWorkers >= target && bank.metal >= policy.strategicMetalBankFloor * 0.75)
+		const stoneWorkers = stoneCandidates.length;
+		if (metalWorkers >= target && stoneWorkers >= stoneTarget && bank.metal >= policy.strategicMetalBankFloor * 0.75)
 			return;
 
 		let needed = Math.max(0, Math.min(policy.strategicMetalReassignBatch, target - metalWorkers));
-		if (!needed)
-			return;
 		let moved = 0;
+		const reassigned = new Set();
 
 		// Stone is the first donor whenever it is ahead of metal.
 		const stoneDonorFloor = phase === 1 ? Math.max(200, Number(policy.miningTechBootstrapStoneBankTarget) + 100) : 200;
-		if (bank.stone >= Math.max(stoneDonorFloor, bank.metal * 1.10))
+		if (needed && stoneWorkers > stoneTarget && bank.stone >= Math.max(stoneDonorFloor, bank.metal * 1.10))
 		{
 			stoneCandidates.sort((a, b) => b.id() - a.id());
 			for (const ent of stoneCandidates)
@@ -7180,8 +7214,21 @@ export class ExpertDecisionController
 				if (moved >= needed) break;
 				if (!this.setDesiredJob(gameState, ent, "metal"))
 					continue;
+				reassigned.add(ent.id());
 				++moved;
 				aiWarn("[EXPERT-METAL] stone->metal worker=" + ent.id() + " target=" + target + " bank=" + Math.round(bank.stone) + "/" + Math.round(bank.metal));
+			}
+		}
+
+		if (moved < needed && woodCivilians.length >= Math.max(18, Number(policy.targetWoodCivilians) - 2) && bank.wood >= 350)
+		{
+			woodCivilians.sort((a, b) => b.id() - a.id());
+			const ent = woodCivilians[0];
+			if (ent && this.setDesiredJob(gameState, ent, "metal"))
+			{
+				reassigned.add(ent.id());
+				++moved;
+				aiWarn("[EXPERT-METAL] wood-civilian->metal worker=" + ent.id() + " target=" + target);
 			}
 		}
 
@@ -7195,6 +7242,7 @@ export class ExpertDecisionController
 				if (moved >= needed) break;
 				if (!this.setDesiredJob(gameState, ent, "metal"))
 					continue;
+				reassigned.add(ent.id());
 				++moved;
 				aiWarn("[EXPERT-METAL] wood-soldier->metal worker=" + ent.id() + " target=" + target + " bank=" + Math.round(bank.wood) + "/" + Math.round(bank.metal));
 			}
@@ -7243,6 +7291,20 @@ export class ExpertDecisionController
 
 		if (moved)
 			this.lastStrategicMetalRebalanceTime = now;
+
+		let stoneNeed = Math.max(0, stoneTarget - stoneWorkers);
+		for (const ent of [...woodCivilians.slice(1), ...woodSoldiers])
+		{
+			if (!stoneNeed || bank.wood < 350)
+				break;
+			if (reassigned.has(ent.id()))
+				continue;
+			if (!this.setDesiredJob(gameState, ent, "stone"))
+				continue;
+			--stoneNeed;
+			this.lastStrategicMetalRebalanceTime = now;
+			aiWarn("[EXPERT-MINERALS] wood->stone worker=" + ent.id() + " target=" + stoneTarget);
+		}
 	}
 
 	workerActualResource(gameState, ent)
@@ -10906,11 +10968,40 @@ export class ExpertDecisionController
 		// a 1k+ wood bank is zero. This prevents Barracks from waiting for metal-heavy
 		// Swordsmen while affordable Hoplites/Javelineers are available.
 		const protectedWoodReserve = protectWood ? Math.min(liveWood, 350) : 0;
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const greekP1 = this.isCityStateCiv(gameState) && gameState.currentPhase && gameState.currentPhase() === 1 &&
+			doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush");
+		const meleeName = "citystate/city_state_attack_melee_01";
+		const meleeQueue = gameState.ai.queues && gameState.ai.queues.expertAthensP1Melee;
+		const meleeCommitted = !greekP1 || gameState.isResearched(meleeName) || gameState.isResearching(meleeName) ||
+			!!(meleeQueue && meleeQueue.hasQueuedUnits && meleeQueue.hasQueuedUnits());
+		const p1PackageReserve = { food: 0, wood: 0, stone: 0, metal: 0 };
+		if (greekP1 && !meleeCommitted && now >= (Number(policy.athensP1ForgeEarlyRushStartTime) || 210))
+		{
+			try
+			{
+				const meleeTemplate = gameState.getTemplate(meleeName);
+				const raw = meleeTemplate && meleeTemplate.cost ? meleeTemplate.cost() : meleeTemplate && meleeTemplate._template && meleeTemplate._template.cost || {};
+				for (const resource of ["food", "wood", "stone", "metal"])
+					p1PackageReserve[resource] = Math.max(0, Number(raw[resource]) || 0);
+			}
+			catch (e) {}
+			if (!this.builtByClass(gameState, "Forge").length && !this.foundationsByClass(gameState, "Forge").length)
+				try
+				{
+					const forge = gameState.getTemplate(gameState.applyCiv(BUILDING_SPECS.forge.template));
+					const raw = forge && forge.cost ? forge.cost() : {};
+					for (const resource of ["food", "wood", "stone", "metal"])
+						p1PackageReserve[resource] += Math.max(0, Number(raw[resource]) || 0);
+				}
+				catch (e) {}
+		}
 		const resourceBudget = {
-			"food": Math.max(0, (Number(resources.food) || 0) - reserve),
-			"wood": Math.max(0, liveWood - protectedWoodReserve),
-			"stone": Number(resources.stone) || 0,
-			"metal": Number(resources.metal) || 0
+			"food": Math.max(0, (Number(resources.food) || 0) - reserve - p1PackageReserve.food),
+			"wood": Math.max(0, liveWood - Math.max(protectedWoodReserve, p1PackageReserve.wood)),
+			"stone": Math.max(0, (Number(resources.stone) || 0) - p1PackageReserve.stone),
+			"metal": Math.max(0, (Number(resources.metal) || 0) - p1PackageReserve.metal)
 		};
 		let selected = this.selectInfantrySoldier(gameState, trainer, source, resourceBudget);
 		if (!selected)
@@ -10943,12 +11034,11 @@ export class ExpertDecisionController
 		let noIdleFallback = false;
 		if (batch <= 0)
 		{
-			const liveBudget = {
-				"food": Number(resources.food) || 0,
-				"wood": Number(resources.wood) || 0,
-				"stone": Number(resources.stone) || 0,
-				"metal": Number(resources.metal) || 0
-			};
+			// The no-idle substitution may spend ordinary preferences, but it may not
+			// steal the protected Greek P1 Forge/Melee package.
+			const liveBudget = greekP1 && !meleeCommitted ? { ...resourceBudget } : {
+				"food": Number(resources.food) || 0, "wood": Number(resources.wood) || 0,
+				"stone": Number(resources.stone) || 0, "metal": Number(resources.metal) || 0 };
 			const fallback = this.selectInfantrySoldier(gameState, trainer, source, liveBudget);
 			if (fallback && liveBudget.food >= fallback.cost.food && liveBudget.wood >= fallback.cost.wood &&
 			    liveBudget.stone >= fallback.cost.stone && liveBudget.metal >= fallback.cost.metal)
@@ -10958,7 +11048,7 @@ export class ExpertDecisionController
 				noIdleFallback = true;
 			}
 		}
-		const standbyUnfunded = batch <= 0 && allowStandby;
+		const standbyUnfunded = batch <= 0 && allowStandby && !(greekP1 && !meleeCommitted);
 		if (standbyUnfunded)
 			batch = 1;
 		if (batch <= 0)
@@ -10994,7 +11084,6 @@ export class ExpertDecisionController
 		if (!plan)
 			return false;
 		queues.citizenSoldier.addPlan(plan);
-		const doctrine = this.ensureStrategicDoctrine(gameState);
 		const attacks = this.HQ.attackManager;
 		const p1RushMilitaryPriority = doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush") &&
 			workers.civilians >= (Number(policy.expertP1CCInfantryMinimumCivilians) || 30) &&
@@ -12004,7 +12093,9 @@ export class ExpertDecisionController
 					"openingFoodDistrictAnchor": foodAnchor,
 					"openingFoodDistrictReserveRadius": Number(policy.openingHouseFoodDistrictPreserveRadius) || 34,
 					"woodDistrictAnchor": woodPos,
-					"openingWoodStorehousePosition": openingStores.length ? [...openingStores[0].position()] : undefined };
+					"openingWoodStorehousePosition": openingStores.length ? [...openingStores[0].position()] : undefined,
+					"minimumStorehouseDistance": Number(policy.openingHouseMinimumStorehouseDistance) || 10,
+					"maximumStorehouseDistance": Number(policy.openingHouseMaximumStorehouseDistance) || 20 };
 			}
 			else
 			{
@@ -13051,6 +13142,10 @@ export class ExpertDecisionController
 				const toHouseX = position[0] - store[0];
 				const toHouseZ = position[1] - store[1];
 				if (toWoodX * toHouseX + toWoodZ * toHouseZ > 0)
+					return false;
+				const storeDistance = Math.sqrt(SquareVectorDistance(position, store));
+				if (storeDistance < (Number(request.minimumStorehouseDistance) || 10) ||
+				    storeDistance > (Number(request.maximumStorehouseDistance) || 20))
 					return false;
 			}
 			if (kind === "temple" && request && Number(request.templeMinimumWorkerCoverage) > 0)
@@ -16349,7 +16444,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.18] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.19] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16415,7 +16510,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.18] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.19] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
