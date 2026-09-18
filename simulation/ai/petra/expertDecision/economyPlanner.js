@@ -155,7 +155,11 @@ function fieldDemand(state, policy) {
   // COMBINED usable in-territory natural-food pool remains above the true transition
   // threshold. Temporary saturation/idle food labor overflows productively to wood; it
   // is not evidence that Fields should consume Barracks/technology wood.
-  const naturalFirstHold = totalNatural > 0 && territoryRatio > policy.territoryNaturalFarmTransitionRatio;
+  const farmHandoff = state.structures.barracks + state.foundations.barracks + state.queued.barracks > 0 &&
+    (state.workers.woodCivilians >= (Number(policy.targetWoodCivilians) || 20) ||
+     existingFields > 0 && Number(state.food.foodInfrastructureDeficitSeconds || 0) >=
+       Number(policy.foodInfrastructureEmergencySustainSeconds || 15));
+  const naturalFirstHold = !farmHandoff && totalNatural > 0 && territoryRatio > policy.territoryNaturalFarmTransitionRatio;
   const margin = Math.max(1, Number(policy.foodRateSafetyMargin) || 1.12);
   const farmerRate = state.food.averageFarmerRate > 0 ? state.food.averageFarmerRate : 0.7;
   const farmersPerField = preferredFieldCrew(state, policy);
@@ -208,7 +212,7 @@ function fieldDemand(state, policy) {
     // IT15.8.12: once the first Barracks exists and natural food has entered the
     // real transition window, build the six-Field food backbone immediately. The
     // previous 2->3->4 time staircase let both CC and Barracks starve around 4:00.
-    if (mode === "transition")
+    if (mode === "transition" || farmHandoff)
       desiredFields = Math.max(desiredFields, policy.minimumCompletedFieldsBeforeSecondBarracks);
 
     const shortRunway = totalNatural <= 0 || runway <= policy.fieldTransitionLeadSeconds + policy.naturalFoodRunwaySafetySeconds;
@@ -300,7 +304,7 @@ function fieldDemand(state, policy) {
     naturalExpansion ? Math.max(1, currentFarmsteads + 1) : Math.max(1, currentFarmsteads));
   return {
     mode,
-    prebuild: mode === "prepare" || mode === "transition",
+    prebuild: farmHandoff || mode === "prepare" || mode === "transition",
     desiredFields,
     missingFields,
     desiredFarmsteads,
@@ -919,9 +923,9 @@ function planEconomy(rawState, overrides = {}) {
     // fields from a two-Farmstead natural-food network before admitting that the network
     // cannot fit them. That circular prerequisite created the 14.99 two-Farmstead /
     // one-Field starvation state.
-    const naturalLowForForcedHub = naturalGroundClearedForPermanentHub ||
-      Math.max(0, Number(state.food.territoryNaturalRatio) || 0) <= 0.25;
-    const forcedCapacityHubReady = foodCapacityDeadlock && naturalLowForForcedHub &&
+    // A proven capacity deadlock overrides the natural-ground preference. Otherwise
+    // untouched fruit can permanently veto the hub needed to feed production.
+    const forcedCapacityHubReady = foodCapacityDeadlock &&
       currentFarmsteads >= 1 && currentFarmsteads <= 2;
     // A permanent hub is a LAST resort after existing natural-food ground has cleared.
     // Natural-expansion Farmsteads above remain allowed because they are paying for an

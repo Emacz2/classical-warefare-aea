@@ -1198,6 +1198,10 @@ export class ExpertDecisionController
 				continue;
 			++out.attackCommitted;
 			const job = ent.getMetadata(PlayerID, JOB_METADATA);
+			if (hasClass(ent, "Civilian") && !hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry") &&
+			    (job === "wood" || job === "citizenSoldierWood" || job === "food_overflow_wood" ||
+			     (["food", "food_owned", "farm"].includes(job) && ent.getMetadata(PlayerID, "gather-type") === "wood")))
+				out.woodCivilians = Math.max(0, out.woodCivilians - 1);
 			if (job === "food" || job === "food_owned")
 				out.food = Math.max(0, out.food - 1);
 			else if (job === "farm")
@@ -6503,7 +6507,8 @@ export class ExpertDecisionController
 		const scriptedWoodTarget = Math.max(policy.firstTrainedWoodCivilians, policy.targetWoodCivilians - wickerWoodPeelCount);
 		const barracksFoodHandoff = fields < Math.max(6, Number(policy.minimumCompletedFieldsBeforeSecondBarracks) || 6) &&
 			(this.builtByClass(gameState, "Barracks").length + this.foundationsByClass(gameState, "Barracks").length > 0) &&
-			Number(this.lastTerritoryNaturalFoodRatio) <= Number(policy.territoryNaturalFarmTransitionRatio || 0.25);
+			(woodCivilians >= policy.targetWoodCivilians ||
+			 Number(this.lastTerritoryNaturalFoodRatio) <= Number(policy.territoryNaturalFarmTransitionRatio || 0.25));
 		// IT14.92: food_owned metadata is not proof that a civilian is already useful
 		// farm labor; many of those workers may be temporarily mining. Count actual
 		// permanent farmers plus uncommitted future-farmer reservations instead.
@@ -6666,7 +6671,8 @@ export class ExpertDecisionController
 				// builder pool. Existing lumberjacks/miners are not pulled across the map.
 				const futureFarmTargetWorkers = Math.max(policy.farmersPerField,
 					(Number(policy.futureFarmTargetFields) || 10) * preferredFarmersPerField);
-				if (!hadPermanentJob && entry.ordinal > openingEnd &&
+				if (!hadPermanentJob && (entry.ordinal > openingEnd ||
+				    woodCivilians >= policy.targetWoodCivilians && barracksCount > 0) &&
 				    ent.getMetadata(PlayerID, EXPERT_FUTURE_FARMER) !== true &&
 				    futureFarmLabor < futureFarmTargetWorkers)
 				{
@@ -11791,7 +11797,8 @@ export class ExpertDecisionController
 					improvement = this.weightedWoodDistance(practicalCluster, current) - this.weightedWoodDistance(practicalCluster, selection.position);
 					if (improvement >= policy.woodDeepenMinimumDistanceImprovement)
 					{
-						const minimumDeepenWood = Math.max(900, Number(policy.woodDeepenMinimumRemaining) || 1200);
+						const minimumDeepenWood = lateSamePatchReuse || cuttingFrontAdvance ? lateReuseWood :
+							Math.max(900, Number(policy.woodDeepenMinimumRemaining) || 1200);
 						ranked = (selection.ranked && selection.ranked.length ? selection.ranked : [selection])
 							.filter(site => site && site.position && this.HQ.territoryMap.getOwner(site.position) === PlayerID &&
 								Math.max(0, Number(site.localWoodAmount) || 0) >= minimumDeepenWood &&
@@ -14051,7 +14058,11 @@ export class ExpertDecisionController
 					const local = this.assignFoodHomeLocalWork(gameState, ent, home, accessIndex);
 					this.diagnoseWorkerOrder(ent, "food-home-wait", homeId,
 						local ? "LOCAL_PRODUCTIVE_FALLBACK" : "LOCAL_FARM_DISTRICT_WAIT");
-					return local;
+					if (local) return true;
+					// IT15.8.22: an exhausted/unusable home is a preference, not an idle lock.
+					// Continue into the normal serviced-food selector when no local job exists.
+					ent.setMetadata(PlayerID, FOOD_HOME_FARMSTEAD, undefined);
+					ent.setMetadata(PlayerID, FOOD_HOME_PERMANENT, undefined);
 				}
 			}
 			ent.setMetadata(PlayerID, FOOD_HOME_FARMSTEAD, undefined);
@@ -15331,7 +15342,7 @@ export class ExpertDecisionController
 	}
 
 
-	enforceNoIdleEconomyWorkers(gameState, accessIndex)
+	enforceNoIdleEconomyWorkers(gameState, accessIndex, foodNetwork)
 	{
 		// IT14.76: issuing a gather command is not success.  If the unit is still idle a
 		// few seconds later with no live order, count a failure, blacklist that target for
@@ -15393,8 +15404,12 @@ export class ExpertDecisionController
 					if (this.assignFoodHomeLocalWork(gameState, ent, home, accessIndex))
 						continue;
 					this.diagnoseWorkerOrder(ent, "food-home-wait", homeId, "NO_LOCAL_PRODUCTIVE_TARGET");
-					continue;
+					ent.setMetadata(PlayerID, FOOD_HOME_FARMSTEAD, undefined);
+					ent.setMetadata(PlayerID, FOOD_HOME_PERMANENT, undefined);
+					// Do not bypass the productive fallback below just because home has no job.
 				}
+				if (foodNetwork && this.assignFoodWorker(gameState, ent, foodNetwork, accessIndex))
+					continue;
 				const rushFoodBackbone = this.strategyDoctrine &&
 					(this.strategyDoctrine.id === "early_p1_rush" || this.strategyDoctrine.id === "late_p1_rush");
 				if (rushFoodBackbone)
@@ -16404,7 +16419,7 @@ export class ExpertDecisionController
 		// did not touch; the per-turn guard prevents it from replacing fresh commands.
 		this.workerOrdersTouchedThisTurn = new Set();
 		this.updateWorkers(gameState, cc, foodNetwork, woodsite, accessIndex);
-		this.enforceNoIdleEconomyWorkers(gameState, accessIndex);
+		this.enforceNoIdleEconomyWorkers(gameState, accessIndex, foodNetwork);
 		this.workerOrdersTouchedThisTurn = undefined;
 		this.diagnose(gameState, frame, foodObservation, woodsite);
 		return true;
@@ -16475,7 +16490,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.20] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.22] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16541,7 +16556,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.20] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.22] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

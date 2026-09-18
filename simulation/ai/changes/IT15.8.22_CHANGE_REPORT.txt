@@ -1,0 +1,26 @@
+IT15.8.22 — remove food-work and capacity deadlocks
+Install over IT15.8.21. Only two game files changed:
+  simulation/ai/petra/expertDecisionController.js
+  simulation/ai/petra/expertDecision/economyPlanner.js
+Archive contains matching petra/ paths. Tests are optional, not game files.
+
+An exhausted/unusable home food district no longer returns failure or bypasses
+productive recovery. Try local food/farms/construction first; if none succeeds,
+release the home preference and continue normal food selection. Idle recovery
+receives the current food network and tries food before secondary resources.
+Natural-food dispersion, territory/access checks and live gather locks remain.
+
+When permanent farms have started and food deficit is sustained, temporary drops
+in civilian wood assignments cannot reinstate the natural-food veto on farms.
+With missing farms, zero legal existing-hub slots, no pending fields and only
+one/two existing hubs, permit a dedicated capacity hub despite remaining fruit.
+Existing touching slots and pending fields still prevent unnecessary hubs.
+The prior house fallback, wood counts and woodline correction remain unchanged.
+No strategy/civilian-cap, military, technology or opening-placement changes.
+
+Verification: execute full production planner with replay-shaped state (18 wood
+civilians, 8 idle, 15 overflow, 2 farms, 2 hubs, zero field slots, 1200 natural
+food remaining); assert capacity hub authorized. Assert existing slots get farms
+first and pending fields prevent duplicate hubs. Execute actual home-release
+branch; retain wood-count and opening-house tests; syntax-check changed files.
+This is mocked-state verification, not a game-engine run or replay simulation.

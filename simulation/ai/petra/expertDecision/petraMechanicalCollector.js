@@ -393,12 +393,16 @@ function collectWorkerMetrics(gameState, options = {}) {
     }
     else if (job === "wood" || job === "citizenSoldierWood") {
       ++out.wood;
-      if (civilian && job === "wood") ++out.woodCivilians;
     }
     else if (job === "stone")
       ++out.stone;
     else if (job === "metal")
       ++out.metal;
+    // Assigned labor includes approaching trees and returning/depositing wood.
+    // Temporary food-owned wood overflow also belongs inside the civilian tranche.
+    if (civilian && (job === "wood" || job === "citizenSoldierWood" || job === "food_overflow_wood" ||
+        (["food", "food_owned", "farm"].includes(job) && gatherType === "wood")))
+      ++out.woodCivilians;
     if (ent.getMetadata(playerId, taskKey) !== undefined)
       ++out.builders;
     if (typeof ent.isIdle === "function" && ent.isIdle())

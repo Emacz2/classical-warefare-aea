@@ -1,0 +1,23 @@
+IT15.8.21 — food handoff and woodline continuity
+Base: IT15.8.20, retaining the first-house fallback.
+Changed game files:
+  petra/expertDecisionController.js
+  petra/expertDecision/economyPlanner.js
+  petra/expertDecision/petraMechanicalCollector.js
+Install these over the matching files under simulation/ai/.
+
+Assigned civilian wood labor includes walking to trees, returning/depositing wood,
+and temporary food-owned wood overflow. Citizen soldiers are not civilians.
+Defense/attack commitments are removed from the available civilian wood count.
+At the configured civilian wood tranche (normally 20), with Barracks placed,
+remaining natural food no longer vetoes farm construction. Request at least the
+six-field backbone; burn-rate demand may require more. New civilians are reserved
+for farm work; existing natural-food gatherers are not forcibly reassigned.
+Same-patch helper Storehouse candidates can now use the existing 450-wood reuse
+threshold rather than silently failing a contradictory 900/1200-wood threshold.
+Existing access/spacing/improvement checks remain; this is not an unconditional
+second Storehouse order, and resource-service dropsites retain their own checks.
+
+Tests: production collector and fieldDemand executed with travel/return/overflow
+workers and remaining natural food; retained opening-house test; JS syntax checks.
+No game-engine replay executed here; timing and placement still need in-game tests.
