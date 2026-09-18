@@ -949,7 +949,11 @@ export class ExpertDecisionController
 	ccMilitaryExceptionReason(gameState)
 	{
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
-		const civilianCeiling = Math.max(1, Number(mergePolicy(this.strategyPolicyOverrides(gameState)).civilianCap) || 60);
+		// IT15.8.18: strategy soft caps are composition targets, not permission for an
+		// ordinary P2/P3 opening to turn the CC into a Barracks.  Before the global
+		// 60-civilian ceiling, only a real P1 attack package or live defense may train
+		// soldiers from the CC.
+		const civilianCeiling = Math.max(1, Number(mergePolicy().civilianCap) || 60);
 		if (workers.civilians >= civilianCeiling)
 			return "civilian-cap";
 
@@ -3205,6 +3209,11 @@ export class ExpertDecisionController
 		{
 			const doctrine = this.ensureStrategicDoctrine(gameState);
 			const rushDoctrine = doctrine && (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush");
+			// IT15.8.18 Greek P1 has one unambiguous package: Forge + Melee-I.
+			// Tradition remains a Town-phase economy/composition tech, but it may not
+			// consume the Village CC or suppress the agreed melee timing.
+			if (rushDoctrine)
+				return false;
 			if (!rushDoctrine || now < policy.hopliteTraditionMinimumTime ||
 			    now > policy.hopliteTraditionLatestP1StartTime ||
 			    gameState.getPopulation() < policy.hopliteTraditionMinimumPopulation ||
@@ -6024,19 +6033,11 @@ export class ExpertDecisionController
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		const rushDoctrine = doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush";
-		const delayedP1 = rushDoctrine && now >= (Number(policy.greekDelayedP1UpgradeCommitTime) || 360);
-		if (rushDoctrine)
-		{
-			const hopliteQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHopliteTradition;
-			const hopliteBranch = (gameState.isResearched && gameState.isResearched("citystate/hoplite_tradition")) ||
-				(gameState.isResearching && gameState.isResearching("citystate/hoplite_tradition")) ||
-				!!(hopliteQueue && hopliteQueue.hasQueuedUnits && hopliteQueue.hasQueuedUnits());
-			if (hopliteBranch && !delayedP1)
-				return frame;
-		}
 		const start = doctrine.id === "early_p1_rush" ? policy.athensP1ForgeEarlyRushStartTime :
 			doctrine.id === "late_p1_rush" ? policy.athensP1ForgeLateRushStartTime : policy.athensP1ForgeTechPushStartTime;
-		const minimumBarracks = delayedP1 ? 1 : 2;
+		// A Greek P1 Forge owns the infrastructure slot after Barracks #1.  Ordinary
+		// tech-push play keeps its existing two-Barracks prerequisite.
+		const minimumBarracks = rushDoctrine ? 1 : 2;
 		if (now < start || gameState.getPopulation() < policy.athensP1ForgeMinimumPopulation || this.builtByClass(gameState, "Barracks").length < minimumBarracks)
 			return frame;
 		if (rushDoctrine)
@@ -6138,14 +6139,6 @@ export class ExpertDecisionController
 			return false;
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		const now = Number(gameState.ai.elapsedTime) || 0;
-		const delayedP1 = (doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush") &&
-			now >= (Number(policy.greekDelayedP1UpgradeCommitTime) || 360);
-		const hopliteQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHopliteTradition;
-		const hopliteBranch = (gameState.isResearched && gameState.isResearched("citystate/hoplite_tradition")) ||
-			(gameState.isResearching && gameState.isResearching("citystate/hoplite_tradition")) ||
-			!!(hopliteQueue && hopliteQueue.hasQueuedUnits && hopliteQueue.hasQueuedUnits());
-		if ((doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush") && hopliteBranch && !delayedP1)
-			return false;
 		if (now < policy.athensP1MeleeTechStartTime || !this.builtByClass(gameState, "Forge").length)
 			return false;
 		const techName = "citystate/city_state_attack_melee_01";
@@ -6203,6 +6196,37 @@ export class ExpertDecisionController
 		aiWarn("[EXPERT-ATHENS-P1] queued melee-tech=" + techName + " strategy=" + doctrine.id +
 			" bank=" + Math.round(bank.food) + "/" + Math.round(bank.wood) + "/" + Math.round(bank.stone) + "/" + Math.round(bank.metal));
 		return true;
+	}
+
+	applyGreekP1ForgeBeforeSecondBarracks(gameState, frame)
+	{
+		if (!gameState || !frame || !this.isCityStateCiv(gameState) ||
+		    !gameState.currentPhase || gameState.currentPhase() !== 1)
+			return frame;
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		if (!doctrine || (doctrine.id !== "early_p1_rush" && doctrine.id !== "late_p1_rush"))
+			return frame;
+		const techName = "citystate/city_state_attack_melee_01";
+		const queue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertAthensP1Melee;
+		const meleeCommitted = !!(gameState.isResearched && gameState.isResearched(techName)) ||
+			!!(gameState.isResearching && gameState.isResearching(techName)) ||
+			!!(queue && queue.hasQueuedUnits && queue.hasQueuedUnits());
+		const forgeReady = this.builtByClass(gameState, "Forge").length > 0;
+		if (forgeReady && meleeCommitted)
+			return frame;
+		const removed = [];
+		const actions = (frame.actions || []).filter(action =>
+		{
+			const second = action && action.kind === "barracks" && action.role === "second" &&
+				(action.type === "BUILD" || action.type === "RESERVE");
+			if (second)
+				removed.push(action.type);
+			return !second;
+		});
+		if (removed.length)
+			aiWarn("[EXPERT-GREEK-P1] hold Barracks #2 until Forge + Melee-I committed forge=" +
+				forgeReady + " melee=" + meleeCommitted);
+		return removed.length ? { ...frame, actions } : frame;
 	}
 
 	specialStructurePipeline(gameState, kind)
@@ -14116,9 +14140,22 @@ export class ExpertDecisionController
 				Math.min(Math.max(desired, 8), Math.max(8, Number(policy.maxConcurrentBuilders) || 10)) : desired;
 			return existing.some(worker => worker.id() === ent.id()) || existing.length < emergencyDesired;
 		}) : [];
+		const farmsteadFoundations = this.foundationsByClass(gameState, "Farmstead").filter(foundation =>
+		{
+			if (!foundation || !entityPosition(foundation) || !foodInfrastructureEligible)
+				return false;
+			const taskId = foundation.getMetadata && foundation.getMetadata(PlayerID, "expertTaskId");
+			if (!taskId)
+				return false;
+			const intent = this.activeTaskBuildIntent[taskId] || {};
+			const cap = Math.max(1, Math.min(Number(policy.farmsteadBuilderCap) || 4,
+				Number(intent.builderCount) || Number(policy.farmsteadBuilderCap) || 4));
+			const existing = this.constructionWorkers(gameState, taskId);
+			return existing.some(worker => worker.id() === ent.id()) || existing.length < cap;
+		});
 		let foundations = [
 			...fieldFoundations.map(foundation => ({ foundation, rank: 0, kind: "field" })),
-			...this.foundationsByClass(gameState, "Farmstead").map(foundation => ({ foundation, rank: 1, kind: "farmstead" }))
+			...farmsteadFoundations.map(foundation => ({ foundation, rank: 1, kind: "farmstead" }))
 		].filter(item => item.foundation && entityPosition(item.foundation));
 		if (!foundations.length)
 			return false;
@@ -14158,6 +14195,19 @@ export class ExpertDecisionController
 			const taskId = target.foundation.getMetadata && target.foundation.getMetadata(PlayerID, "expertTaskId");
 			if (taskId)
 				commitBuilders([ent], taskId, PlayerID);
+		}
+		else
+		{
+			const taskId = target.foundation.getMetadata && target.foundation.getMetadata(PlayerID, "expertTaskId");
+			if (taskId)
+				commitBuilders([ent], taskId, PlayerID);
+			// The small crew that invests its walk/build time in a permanent food hub
+			// owns the first Fields there; it must not immediately fall back to lumber.
+			if (hasClass(ent, "Civilian") && !hasClass(ent, "CitizenSoldier"))
+			{
+				ent.setMetadata(PlayerID, EXPERT_FUTURE_FARMER, true);
+				ent.setMetadata(PlayerID, JOB_METADATA, "food_owned");
+			}
 		}
 		ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_BUILDER);
 		const order = ensureRepairOrder(ent, target.foundation, false);
@@ -15989,6 +16039,7 @@ export class ExpertDecisionController
 		// is strategy-aware and the research lane reads the live technology cost.
 		frame = this.applyAthenianP1ForgeInfrastructure(gameState, frame);
 		this.researchExpertAthenianP1MeleeTech(gameState, queues);
+		frame = this.applyGreekP1ForgeBeforeSecondBarracks(gameState, frame);
 		// Once the mature P1 economy is ready, phase reservation outranks optional eco
 		// research. During the opening this returns false, so Wicker/Axe still run before
 		// the first house exactly as before. IT14.55 gives the first-tier mining pair its
@@ -16298,7 +16349,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.17] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.18] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16364,7 +16415,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.17] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.18] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

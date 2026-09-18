@@ -1,0 +1,21 @@
+IT15.8.18 VERIFICATION REPORT
+
+PASS — JavaScript syntax: expertDecisionController.js
+PASS — JavaScript syntax: attackManager.js
+PASS — JavaScript syntax: expertDecision/economyPlanner.js
+PASS — JavaScript syntax: expertDecision/policy.js
+PASS — Runtime marker is EXPERT-IT15.8.18.
+PASS — CC civilian-cap exception reads mergePolicy().civilianCap (global 60), not a
+       doctrine override.
+PASS — Farmstead BUILD actions use policy.farmsteadBuilderCap = 4.
+PASS — Generic food-infrastructure assignment applies the same four-builder cap and
+       commits accepted builders to the construction task.
+PASS — Civilian Farmstead builders receive future-farmer + food_owned ownership.
+PASS — Permanent farm-hub minimum CC distance is 55.
+PASS — Greek P1 suppresses Village Hoplite Tradition, requires Forge/Melee-I before
+       Barracks #2, and requires Melee-I at attack launch.
+PASS — Late-P1 fixed launch floor is 36 while existing battlefield safety gates remain.
+
+Scope note: these checks validate code structure and invariants. Replay validation is
+still required because map geometry, resource generation, and opponent behavior cannot
+be simulated by the patch workspace.

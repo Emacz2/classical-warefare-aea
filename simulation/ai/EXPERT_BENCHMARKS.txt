@@ -42,6 +42,6 @@ HISTORICAL NOTES
 - IT14.98 produced a very fast non-canonical victory against Gaul Very Hard: BREAK 10:30, decisive defeat between 14:55 and 15:00.
 
 CURRENT VERSION
-IT16.1 is the active regression/test build. Current calibration uses +30% Expert gather/trade and a hard 60-civilian growth target before ordinary CC military production. IT16.1 additionally treats the first Market as a bounded two-Field food hub so two Farmsteads cannot lock the economy at five Fields.
+IT15.8.16 is the active corrective regression/test build, built directly on IT15.8.15. The two IT15.8.15 five-minute controls showed real progress: Replay 2 reached 66 population versus 56 and gathered 297 more food plus 804 more wood, but still ended at 71 food/823 wood because Field crews did not accept reserved future farmers until roughly 3:10. IT15.8.16 preserves that growth while allowing unlocked future farmers to build Fields immediately, uses actual four/five-civilian affordability, suppresses premature opening Houses, and demands Field #7 during a 50+ population food shortage.
 Historical Top-3 entries above were recorded at +35% and remain preserved as historical records; +30% runs should be tracked separately until a new benchmark series is explicitly adopted.
 Human-vs-Expert games are diagnostic only and never enter the historical +35% canonical leaderboard.

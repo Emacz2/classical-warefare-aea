@@ -947,7 +947,7 @@ function planEconomy(rawState, overrides = {}) {
       const capacityResourcesAvailable = forcedRole ? resourceEnough(state.resources, cost, {}) :
         resourceEnough(state.resources, cost, reservations);
       if (capacityResourcesAvailable) {
-        actions.push({ type: "BUILD", kind: "farmstead", role, priority: forcedRole ? 114 : 96, builderCount: forcedRole ? 6 : undefined, builderPool: ["food", "food_owned", "farm"], reason });
+        actions.push({ type: "BUILD", kind: "farmstead", role, priority: forcedRole ? 114 : 96, builderCount: policy.farmsteadBuilderCap, builderPool: ["food", "food_owned", "farm"], reason });
         addReservation(reservations, cost);
       } else {
         actions.push({ type: "RESERVE", kind: "farmstead", role, priority: forcedRole ? 114 : 96, cost, reason: forcedRole ?

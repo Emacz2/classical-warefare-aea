@@ -1395,23 +1395,17 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	if (phase > 1)
 		return { launch: false, cancel: true, reason: "phase2-transition" };
 
-	// IT14.66: Athens has two legitimate P1 timing packages. Melee-I remains the
-	// direct-combat route, while an already-finished Hoplite Tradition means the rush
-	// deliberately paid for faster/cheaper mass instead of a Forge detour.
+	// IT15.8.18: Greek P1 uses the explicit Forge + Melee-I package. Hoplite
+	// Tradition is useful later, but it cannot substitute for the attack upgrade.
 	let upgradeReady = true;
 	let upgradeLabel = "n/a";
 	const civ = gameState.getPlayerCiv && gameState.getPlayerCiv();
 	const greekHopliteCiv = civ === "athen" || civ === "spart" || civ === "theb";
-	const tradition = greekHopliteCiv && !!(gameState.isResearched && gameState.isResearched("citystate/hoplite_tradition"));
-	const traditionQueue = gameState.ai && gameState.ai.queues && gameState.ai.queues.expertHopliteTradition;
-	const traditionPending = greekHopliteCiv && !tradition && (
-		!!(gameState.isResearching && gameState.isResearching("citystate/hoplite_tradition")) ||
-		!!(traditionQueue && traditionQueue.hasQueuedUnits && traditionQueue.hasQueuedUnits()));
 	if (greekHopliteCiv)
 	{
 		const melee = !!(gameState.isResearched && gameState.isResearched("citystate/city_state_attack_melee_01"));
-		upgradeReady = melee || tradition;
-		upgradeLabel = melee ? "melee" : tradition ? "hoplite" : traditionPending ? "hoplite-pending" : "missing";
+		upgradeReady = melee;
+		upgradeLabel = melee ? "melee" : "missing-melee";
 	}
 
 	if ((!attack.target || !attack.targetPos || attack.targetPlayer === undefined) && attack.chooseTarget)
@@ -1495,7 +1489,7 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	// is favorable, do not cancel a 22-v-10 opportunity merely because package=missing.
 	const earlyFallbackWindow = !lateP1 && now >= deadline - Math.max(0, Number(policy.expertEarlyP1RushMassFallbackSeconds) || 25);
 	const earlyMassFallback = earlyFallbackWindow && attackers >= targetArmy;
-	const packageReady = upgradeReady || earlyMassFallback || (lateP1 && attackers >= fixedLateMinimum);
+	const packageReady = upgradeReady || (!greekHopliteCiv && (earlyMassFallback || (lateP1 && attackers >= fixedLateMinimum)));
 	const favorable = attackers > 0 && (!lateP1 || attackers >= fixedLateMinimum) &&
 		attackers >= localNeeded && attackers >= knownArmyNeeded && popSafe;
 	const logEvery = Math.max(5, Number(policy.expertP1RushGateLogSeconds) || 12);

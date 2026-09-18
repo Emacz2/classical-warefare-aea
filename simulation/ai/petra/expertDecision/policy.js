@@ -1013,7 +1013,10 @@ const DEFAULT_POLICY = Object.freeze({
   // instead of burning repeated 20-second dead windows.
   thirdBarracksAwaitingFoundationRetrySeconds: 6,
   strategicPlacementFallbackAfterFailures: 1,
-  farmHubMinimumCCDistance: 40,
+  // Permanent hubs need room for Fields on the CC-facing side as well as the outer
+  // side.  Forty metres still allowed the second hub to consume the CC farm ring.
+  farmHubMinimumCCDistance: 55,
+  farmsteadBuilderCap: 4,
   // Independent buildings should live outside the food-production core. Fields keep
   // first claim on the legal ring immediately around every farmstead; houses/barracks/
   // markets prefer the outside of that district instead of consuming future field slots.
@@ -1226,7 +1229,10 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.98: the late timing now masses a real army before Town. 52 is the hard
   // launch package inside the 64-soldier preferred composition; the window stays
   // open through 9:30 before the doctrine yields to P2.
-  expertLateP1RushMinimumLaunchArmy: 52,
+  // A 7-9 minute timing cannot wait for the former 52-man floor.  Melee-I plus a
+  // coherent 36-unit screened force is the package; battlefield safety still vetoes
+  // a locally losing engagement.
+  expertLateP1RushMinimumLaunchArmy: 36,
   expertLateP1RushOpportunityDeadline: 570,
   expertP1RushGateLogSeconds: 12,
   // IT14.64 pre-engagement sanity check. This does not alter Petra movement; it only

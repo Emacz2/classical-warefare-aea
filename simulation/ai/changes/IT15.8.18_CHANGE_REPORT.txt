@@ -1,0 +1,33 @@
+IT15.8.18 — CONTROLLED FARM-HUB / P1 CORRECTIVE BUILD
+
+Baseline
+--------
+This is a direct patch of the verified IT15.8.17 file set. It does not recreate the
+AI folder and does not replace the opening berry, Wicker, Storehouse, House, Barracks,
+farm-transition, or worker-dispersion systems.
+
+Replay evidence addressed
+-------------------------
+1. The Sahara replay rolled p2_tech_push, not a P1 rush. Its strategy-specific soft
+   civilian cap was nevertheless accepted as a "civilian-cap" CC military exception.
+   The exception now uses the global 60-civilian ceiling. Before 60, CC soldiers are
+   legal only for a real P1 attack package or live defense.
+2. Nineteen civilians could join Farmstead #2 because the generic food-infrastructure
+   worker path did not apply a Farmstead construction cap. Farmstead foundations now
+   accept at most four committed workers.
+3. Those builders immediately returned to lumber because a Farmstead build carried no
+   future-food ownership. Civilian Farmstead builders are now tagged food_owned and
+   future-farmer so they own the first Fields in the new district.
+4. Permanent farm hubs could sit only 40 metres from the CC. The minimum is now 55 to
+   preserve usable Field space on the CC-facing side.
+5. Greek P1 had contradictory packages: Hoplite Tradition could suppress Forge/Melee-I,
+   while the attack gate later expected the melee timing. Greek P1 now has one sequence:
+   Barracks #1, Forge, queue/research Melee-I, then Barracks #2.
+6. The former 52-unit late-P1 floor delayed the supposed timing attack. It is now 36;
+   the existing local defender, reinforcement, static-defense, and enemy-pop safety
+   checks still veto bad attacks. Greek P1 cannot launch without Melee-I.
+
+Runtime identity
+----------------
+Diagnostics identify this build as EXPERT-IT15.8.18.
+

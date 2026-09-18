@@ -823,6 +823,21 @@ Replay regressions locked by IT14:
 
 ## IT15.8.17 verified opening correction
 
+## IT15.8.18 farm-hub and P1 sequencing correction
+
+- A strategy-specific civilian soft cap never authorizes CC soldiers before the global
+  60-civilian ceiling. Before 60, the only exceptions are a real P1 attack package or
+  live base defense.
+- A Farmstead foundation has a hard four-worker construction cap. Its civilian crew is
+  retained as future farmers and may not return to lumber before staffing the new food
+  district.
+- Permanent Farmsteads remain at least 55 metres from the CC so the CC-facing farm ring
+  is not consumed by the hub itself.
+- Greek P1 order is Barracks #1 -> Forge -> Melee-I commitment -> Barracks #2. Hoplite
+  Tradition cannot replace Melee-I for P1 launch authorization.
+- Late P1 is a real timing attack: 36 coherent upgraded attackers may launch when the
+  local battlefield gate is favorable; it does not wait for the former 52-man floor.
+
 - This build is reconstructed from the actual IT15.8.11–IT15.8.16 archive chain;
   no IT16.1/16.2 file is an input.
 - One connected natural-food cluster never authorizes Wicker by itself. Ordinary
