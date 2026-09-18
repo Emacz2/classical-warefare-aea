@@ -44,3 +44,26 @@ for(const success of [true,false]){
   assert.equal(writes.length,success?0:2);
 }
 console.log('PASS: full planner capacity recovery and exhausted-home fallthrough.');
+plan=ctx.api.planEconomy({...blocked,time:351,population:{used:77},resources:{food:813,wood:244,stone:200,metal:30},
+  structures:{...blocked.structures,field:6},workers:{...blocked.workers,idle:0},
+  food:{...blocked.food,measuredFoodIncomeRate:16.1,foodInfrastructureDeficitSeconds:0,supportedFieldSlots:6}}, {targetWoodCivilians:20});
+assert(!plan.actions.some(a=>a.kind==='farmstead'&&a.type==='BUILD'),'adequate income and food bank must not buy third hub');
+// Execute the entire production metal-rebalance method with actual candidate filtering.
+const metalStart=controller.indexOf('\n\tapplyStrategicMetalRebalance(gameState, openingEnd)');
+const metalEnd=controller.indexOf('\n\tworkerActualResource(',metalStart);
+const method=controller.slice(metalStart,metalEnd).replace('applyStrategicMetalRebalance(gameState, openingEnd)','function rebalance(gameState, openingEnd)');
+const constants=['TASK_KEY','PENDING_JOB_METADATA','EXPERT_DEFENSE','EXPERT_CIVILIAN_EVAC','JOB_METADATA','FARM_LOCK','CIVILIAN_ORDINAL','FOOD_HOME_FARMSTEAD','FOOD_HOME_PERMANENT'];
+const metalContext=vm.createContext({mergePolicy});
+vm.runInContext(constants.map(k=>'const '+k+'='+JSON.stringify(k)+';').join('\n')+'\nconst PlayerID=2,entityPosition=e=>e.position(),hasClass=(e,c)=>e.hasClass(c),aiWarn=()=>{};\n'+method+'\nthis.rebalance=rebalance;',metalContext);
+for(const civilian of [true,false]) for(const donorCount of [8,12]) {
+  const miners=Array.from({length:donorCount},(_,i)=>({id:()=>i+1,position:()=>[i,0],hasClass:c=>civilian?c==='Civilian':c==='CitizenSoldier',
+    getMetadata:(_p,k)=>k==='JOB_METADATA'?(civilian?'wood':'citizenSoldierWood'):undefined}));
+  const moves=[];
+  const owner={resourceForecast:{resources:{metal:{status:'critical'}}},builtByClass:(_g,c)=>c==='Barracks'?[{}]:[],
+    ensureStrategicDoctrine:()=>({id:'early_p1_rush'}),isExpertEconomyEntity:()=>true,attackPlanAllowsEconomicWork:()=>true,
+    setDesiredJob:(_g,e,j,o)=>{moves.push({j,force:o&&o.force});return true;}};
+  metalContext.rebalance.call(owner,{ai:{elapsedTime:351},currentPhase:()=>1,getPopulation:()=>77,getOwnUnits:()=>new Map(miners.map(e=>[e.id(),e])),getResources:()=>({food:813,wood:244,stone:200,metal:30})},28);
+  assert.equal(moves.length,donorCount===8?0:civilian?1:2,'bounded metal reassignment preserves eight wood donors');
+  assert(moves.every(m=>m.j==='metal'&&m.force),'critical metal overrides job lease without wholesale reassignment');
+}
+console.log('PASS: surplus-food hub suppression and early-P1 critical metal assignments.');

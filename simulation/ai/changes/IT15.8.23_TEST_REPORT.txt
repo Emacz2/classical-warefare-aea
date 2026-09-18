@@ -1,0 +1,31 @@
+15.8.23 narrow correction over 15.8.22
+
+Install ONLY these two game files, preserving their relative paths:
+petra/expertDecisionController.js
+petra/expertDecision/economyPlanner.js
+Tests and this report are optional and are not game files.
+
+Changes:
+- Extra permanent farm hubs now require food capacity pressure, rather than
+  merely being below a long-term field target. Existing available farm slots
+  and genuine shortage recovery remain supported.
+- Early-P1 rush is included in strategic metal reassignment. Critical metal
+  demand can override ordinary job leases, with bounded reassignment and an
+  eight-worker wood donor floor. Existing reassignment starts at five minutes.
+- Critical demand targets three metal workers below 60 population, six above.
+  The existing cooldown and small per-update batch are retained.
+
+Unchanged: opening, berry distribution, house placement, strategy selection,
+combat and expansion logic. No other game files are included.
+
+Verification:
+- JavaScript syntax checks for both changed game files passed.
+- Food handoff/planner tests passed: assigned wood accounting, natural-food
+  transition, shortage capacity recovery, no duplicate pending hub, adequate
+  food suppressing another hub, and exhausted-home fallback.
+- Metal reassignment tests passed with mocked game entities for civilian and
+  citizen-soldier donors, including preservation of eight wood donors.
+- Existing house placement test passed (13 assertions/scenarios).
+
+Not verified in the game engine. These checks cannot guarantee replay outcome
+or absence of every regression. Compare against 15.8.22 on the same settings.

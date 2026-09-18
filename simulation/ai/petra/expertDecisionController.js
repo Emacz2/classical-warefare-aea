@@ -7170,11 +7170,17 @@ export class ExpertDecisionController
 			stoneTarget = pop >= 100 ? 4 : 3;
 		}
 		else if (barracks >= 1 && pop >= 45 && doctrine &&
-		         ["p2_tech_push", "p3_boom_all_in", "late_p1_rush"].includes(doctrine.id))
+		         ["p2_tech_push", "p3_boom_all_in", "late_p1_rush", "early_p1_rush"].includes(doctrine.id))
 		{
 			target = barracks >= 2 || pop >= 60 ? 3 : 2;
 			stoneTarget = 2;
 		}
+		const metalForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.metal;
+		const criticalProductionMetal = barracks >= 1 && pop >= 45 &&
+			(metalForecast && metalForecast.status === "critical" ||
+			 Number(gameState.getResources().metal) < policy.strategicMetalBankFloor);
+		if (criticalProductionMetal)
+			target = Math.max(target, pop >= 60 ? 6 : 3);
 		if (!target && !stoneTarget)
 			return;
 
@@ -7196,7 +7202,9 @@ export class ExpertDecisionController
 			else if (job === "stone")
 				stoneCandidates.push(ent);
 			else if (hasClass(ent, "Civilian") && !hasClass(ent, "CitizenSoldier") &&
-			         job === "wood" && !Number.isFinite(Number(ent.getMetadata(PlayerID, FARM_LOCK))))
+			         (job === "wood" || job === "food_overflow_wood" ||
+			          job === "food_owned" && ent.getMetadata(PlayerID, "gather-type") === "wood") &&
+			         !Number.isFinite(Number(ent.getMetadata(PlayerID, FARM_LOCK))))
 				woodCivilians.push(ent);
 			else if (hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry") &&
 			         (job === "wood" || job === "citizenSoldierWood" || job === "food_overflow_wood"))
@@ -7218,7 +7226,7 @@ export class ExpertDecisionController
 			for (const ent of stoneCandidates)
 			{
 				if (moved >= needed) break;
-				if (!this.setDesiredJob(gameState, ent, "metal"))
+				if (!this.setDesiredJob(gameState, ent, "metal", { "force": !!criticalProductionMetal }))
 					continue;
 				reassigned.add(ent.id());
 				++moved;
@@ -7226,11 +7234,12 @@ export class ExpertDecisionController
 			}
 		}
 
-		if (moved < needed && woodCivilians.length >= Math.max(18, Number(policy.targetWoodCivilians) - 2) && bank.wood >= 350)
+		if (moved < needed && (woodCivilians.length >= Math.max(18, Number(policy.targetWoodCivilians) - 2) && bank.wood >= 350 ||
+		    criticalProductionMetal && woodCivilians.length + woodSoldiers.length - moved > 8))
 		{
 			woodCivilians.sort((a, b) => b.id() - a.id());
 			const ent = woodCivilians[0];
-			if (ent && this.setDesiredJob(gameState, ent, "metal"))
+			if (ent && this.setDesiredJob(gameState, ent, "metal", { "force": !!criticalProductionMetal }))
 			{
 				reassigned.add(ent.id());
 				++moved;
@@ -7240,13 +7249,15 @@ export class ExpertDecisionController
 
 		// If metal is critically absent, peel a small number of citizen-soldier
 		// lumberjacks. Never do this wholesale: wood remains the infrastructure fuel.
-		if (moved < needed && (bank.wood >= 350 || metalWorkers + moved < 2))
+		if (moved < needed && (bank.wood >= 350 || metalWorkers + moved < 2 ||
+		    criticalProductionMetal && woodCivilians.length + woodSoldiers.length - moved > 8))
 		{
 			woodSoldiers.sort((a, b) => b.id() - a.id());
 			for (const ent of woodSoldiers)
 			{
 				if (moved >= needed) break;
-				if (!this.setDesiredJob(gameState, ent, "metal"))
+				if (criticalProductionMetal && woodCivilians.length + woodSoldiers.length - moved <= 8) break;
+				if (!this.setDesiredJob(gameState, ent, "metal", { "force": !!criticalProductionMetal }))
 					continue;
 				reassigned.add(ent.id());
 				++moved;
@@ -7284,7 +7295,7 @@ export class ExpertDecisionController
 			{
 				if (moved >= needed) break;
 				if ((loads.get(item.lockedId) || 0) <= policy.strategicMetalMinimumFarmersPerField) continue;
-				if (!this.setDesiredJob(gameState, item.ent, "metal"))
+				if (!this.setDesiredJob(gameState, item.ent, "metal", { "force": !!criticalProductionMetal }))
 					continue;
 				item.ent.setMetadata(PlayerID, FARM_LOCK, undefined);
 				item.ent.setMetadata(PlayerID, FOOD_HOME_FARMSTEAD, undefined);
@@ -16490,7 +16501,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.22] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.23] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16556,7 +16567,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.22] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.23] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

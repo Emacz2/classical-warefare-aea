@@ -509,6 +509,15 @@ function planEconomy(rawState, overrides = {}) {
   // when the biome still reports natural food somewhere on the map.
   const foodInfrastructureEmergency = !farm.naturalFirstHold && farm.missingFields > 0 &&
     Number(state.food.foodInfrastructureDeficitSeconds || 0) >= Number(policy.foodInfrastructureEmergencySustainSeconds || 15);
+  // Missing long-term target fields are not an immediate food shortage. A hub is
+  // justified by insufficient delivered income and a short bank bridge, or genuine
+  // food-capacity idling with a modest bank. Keep the starving two-field escape.
+  const activeFoodBurn = state.structures.barracks >= 2 ? state.food.twoBarracksFoodBurnRate :
+    state.structures.barracks >= 1 ? state.food.oneBarracksFoodBurnRate : state.food.ccFoodBurnRate;
+  const foodCapacityNeedsExpansion = state.resources.food < 200 ||
+    (farm.measuredIncome < activeFoodBurn * (Number(policy.foodRateSafetyMargin) || 1.12) &&
+     state.resources.food < Math.max(200, activeFoodBurn * 60)) ||
+    (state.workers.idle >= farm.farmersPerField && state.resources.food < 500);
   const severeFoodCapacityDeadlock = foodCapacityDeadlock &&
     (state.workers.overflowWood >= policy.foodCapacityDeadlockPauseOverflow ||
      state.workers.idle >= policy.foodCapacityDeadlockPauseOverflow ||
@@ -930,7 +939,7 @@ function planEconomy(rawState, overrides = {}) {
     // A permanent hub is a LAST resort after existing natural-food ground has cleared.
     // Natural-expansion Farmsteads above remain allowed because they are paying for an
     // actual new food district; this guard applies only to extra permanent farm hubs.
-    const permanentHubNeeded = farm.missingFields > 0 && openFieldSlots <= 0 &&
+    const permanentHubNeeded = foodCapacityNeedsExpansion && farm.missingFields > 0 && openFieldSlots <= 0 &&
       pendingFields === 0 && (naturalGroundClearedForPermanentHub || forcedCapacityHubReady) &&
       (saturatedHubReady || saturatedNetworkReady || constrainedOpeningHubReady || forcedCapacityHubReady);
     const farmsteadActionAlreadyPlanned = actions.some(action => action && action.kind === "farmstead" && (action.type === "BUILD" || action.type === "RESERVE"));
