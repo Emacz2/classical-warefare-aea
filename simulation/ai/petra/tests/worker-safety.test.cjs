@@ -33,5 +33,31 @@ assert.deepEqual(jobs,['wood','metal','stone']);assert(metadata.some(([k,v])=>k=
 const farmStart=source.indexOf('\n\tassignFarmWorker('),farmEnd=source.indexOf('\n\t\tconst policy',farmStart);
 vm.runInContext(source.slice(farmStart,farmEnd).trim().replace(/^assignFarmWorker\(/,'function farm(')+'\n}\nthis.farm=farm;',ctx);
 assert.equal(ctx.farm({},soldier,1),false);
+// Run the live-order cleanup block with a supply whose resourceSupplyType()
+// returns undefined, as observed in the 15.8.24 replay crash.
+const liveStart=source.indexOf('\n\t\t\tconst gatherState = ent.unitAIState ? String(ent.unitAIState()) : "";');
+const liveEnd=source.indexOf('\n\n\t\t\tif (ent.getMetadata(PlayerID, EXPERT_DEFENSE)',liveStart);
+assert(liveStart>0&&liveEnd>liveStart);
+const cleanup=new Function('gameState','ent','currentTargetId','entityPosition','hasClass','PlayerID',
+ 'FARM_LOCK','NATURAL_FOOD_LOCK','EXPERT_NEUTRAL_WOOD_RESCUE','SUPPLY_ID','WORKSITE_ID',
+ 'EXPERT_FALLBACK_LEASE_RESOURCE','EXPERT_FALLBACK_LEASE_UNTIL','aiWarn',
+ source.slice(liveStart,liveEnd));
+const keys=['farm','natural','neutral','supply','worksite','lease','leaseUntil'];
+for(const [resourceType,territory,classes,expectedStop] of [
+ [undefined,2,['CitizenSoldier'],false],
+ [{generic:'food'},2,['CitizenSoldier'],true],
+ [{generic:'wood'},0,['Civilian'],true],
+ [{generic:'wood'},2,['Civilian'],false]]) {
+ let stopped=0;const changes=[];
+ const ent={unitAIState:()=> 'INDIVIDUAL.GATHER.GATHERING',hasClass:c=>classes.includes(c),
+   getMetadata:(_p,k)=>k==='supply'?42:undefined,
+   setMetadata:(_p,k,v)=>changes.push([k,v]),stopMoving:()=>{stopped++},id:()=>3};
+ const target={position:()=>[territory,0],resourceSupplyType:()=>resourceType};
+ cleanup.call(owner,{getEntityById:()=>target},ent,()=>42,e=>e.position(),(e,c)=>e.hasClass(c),
+  2,...keys,()=>{});
+ assert.equal(stopped,expectedStop?1:0,'null type must not crash or spuriously revoke');
+ assert.equal(changes.length>0,expectedStop);
+}
+assert.equal(ctx.order.call(owner,{},worker(['Civilian']),{position:()=>[2,0],resourceSupplyType:()=>undefined}).status,'FAILED');
 assert.equal((source.match(/ensureGatherOrder\(/g)||[]).length,1,'controller gather orders all route through the final gate');
 console.log('PASS: 36 role/territory/resource combinations, emergency neutral exclusion, soldier handoff and farm exclusion.');

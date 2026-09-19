@@ -513,7 +513,7 @@ export class ExpertDecisionController
 	{
 		const pos = entityPosition(supply);
 		const type = supply && supply.resourceSupplyType && supply.resourceSupplyType();
-		if (!pos || this.HQ.territoryMap.getOwner(pos) !== PlayerID ||
+		if (!pos || !type || this.HQ.territoryMap.getOwner(pos) !== PlayerID ||
 		    type && type.generic === "food" && hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry"))
 			return { status: "FAILED" };
 		return ensureGatherOrder(ent, supply);
@@ -2898,8 +2898,10 @@ export class ExpertDecisionController
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
 		if (this.strategyWoodPivot)
 			return 0;
+		const longGame = doctrine.id === "p2_tech_push" || doctrine.id === "p3_boom_all_in";
+		const sweepStart = longGame ? Math.min(Number(policy.p1EcoSweepStartTime) || 330, 240) : policy.p1EcoSweepStartTime;
 		if (!doctrine.p1EcoSweepBeforeP2 || !gameState.currentPhase || gameState.currentPhase() !== 1 ||
-		    gameState.ai.elapsedTime < policy.p1EcoSweepStartTime || !gameState.ai || !gameState.ai.queueManager)
+		    gameState.ai.elapsedTime < sweepStart || !gameState.ai || !gameState.ai.queueManager)
 			return 0;
 		if (this.primaryEcoTechBusy(gameState))
 			return 0;
@@ -11719,6 +11721,19 @@ export class ExpertDecisionController
 			for (const source of sources.slice(0, 6))
 				if (source && entityPosition(source) && !candidateAnchors.some(pos => SquareVectorDistance(pos, source.position()) < 2*2))
 					candidateAnchors.push(source.position());
+			// An expanded forest mass center can be obstructed while the actual worker
+			// edge is open. Search around current cutters as well, without relaxing the
+			// final obstruction, territory or resource-corridor checks.
+			if (action.resourceGeneric === "wood")
+				for (const worker of gameState.getOwnUnits().values())
+				{
+				const pos = entityPosition(worker);
+				if (!pos || !worker.getMetadata || !sourceIds.includes(Number(worker.getMetadata(PlayerID, SUPPLY_ID))) ||
+				    candidateAnchors.some(candidate => SquareVectorDistance(candidate, pos) < 6*6))
+					continue;
+				candidateAnchors.push(pos);
+				if (candidateAnchors.length >= 14) break;
+				}
 			const woodService = action.resourceGeneric === "wood" || action.resourceGeneric === "mixed";
 			const distances = woodService ?
 				[Math.max(3, geometry.radius + 0.5), geometry.radius + 2.5, geometry.radius + 5.5, geometry.radius + 9.5, geometry.radius + 14.5, geometry.radius + 20.5, geometry.radius + 26.5, geometry.radius + 32.5] :
@@ -14968,7 +14983,7 @@ export class ExpertDecisionController
 					const sameDistrict = placementIds.some(id => primaryWoodIds.has(Number(id))) ||
 						(primaryWood.center && district.center && SquareVectorDistance(primaryWood.center, district.center) <=
 							Math.pow(Number(policy.woodHealthyDistrictAlternateHoldDistance) || 42, 2));
-					if (!sameDistrict)
+						if (!sameDistrict && district.dropDistance <= 35)
 					{
 						if (now - (Number(this.lastWoodDriftHoldDiag) || -99999) >= 8)
 						{
@@ -14980,10 +14995,10 @@ export class ExpertDecisionController
 						return false;
 					}
 				}
-				return district.dropDistance > woodHardDistance || district.roundTripSeconds > woodSlowRoundTrip;
+			return district.dropDistance > woodHardDistance || district.dropDistance > 35 || district.roundTripSeconds > woodSlowRoundTrip;
 			}
 			if (district.generic !== "food")
-				return district.dropDistance > hardDistance || district.roundTripSeconds > slowRoundTrip;
+			return district.dropDistance > hardDistance || district.dropDistance > 35 || district.roundTripSeconds > slowRoundTrip;
 			if (farmsteads.length >= maximumFarmsteads)
 				return false;
 			// IT14.55: natural-food dropsites must represent a genuinely distinct district.
@@ -14992,7 +15007,7 @@ export class ExpertDecisionController
 			if (!district.center || farmsteads.some(farm => entityPosition(farm) &&
 			    SquareVectorDistance(farm.position(), district.center) < foodSpacing * foodSpacing))
 				return false;
-			return district.dropDistance > foodHardDistance || district.roundTripSeconds > foodSlowRoundTrip;
+			return district.dropDistance > foodHardDistance || district.dropDistance > 35 || district.roundTripSeconds > foodSlowRoundTrip;
 		});
 		if (!candidates.length)
 			return undefined;
@@ -15887,9 +15902,10 @@ export class ExpertDecisionController
 			const observedTarget = gatherState.includes(".GATHER.") ? currentTargetId(ent) : undefined;
 			const liveSupplyId = Number(Number.isFinite(observedTarget) ? observedTarget : ent.getMetadata(PlayerID, SUPPLY_ID));
 			const liveSupply = Number.isFinite(liveSupplyId) ? gameState.getEntityById(liveSupplyId) : undefined;
-			if (liveSupply && entityPosition(liveSupply) && liveSupply.resourceSupplyType &&
+			const liveSupplyType = liveSupply && liveSupply.resourceSupplyType && liveSupply.resourceSupplyType();
+			if (liveSupply && entityPosition(liveSupply) && liveSupplyType &&
 			    (this.HQ.territoryMap.getOwner(liveSupply.position()) !== PlayerID ||
-			     hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry") && liveSupply.resourceSupplyType().generic === "food"))
+			     hasClass(ent, "CitizenSoldier") && !hasClass(ent, "Cavalry") && liveSupplyType.generic === "food"))
 			{
 				if (gatherState.includes(".GATHER.") && ent.stopMoving) ent.stopMoving();
 				ent.setMetadata(PlayerID, FARM_LOCK, undefined);
@@ -16531,7 +16547,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.24] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.25] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16597,7 +16613,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.24] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.25] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
