@@ -15,7 +15,7 @@
   </Cost>
   <Identity>
     <GenericName>Protective Leather Cap</GenericName>
-    <Tooltip>+0.5 Hack/Pierce resistance but +5 food cost.</Tooltip>
-    <History>Open-faced helmets provide modest head protection with only a small reduction in peripheral awareness.</History>
+    <Tooltip>+0.5 Hack/Crush resistance but +5 food cost.</Tooltip>
+    <History>Leather caps provide limited protection against blows and abrasions while leaving the face uncovered and vision unobstructed.</History>
   </Identity>
 </Entity>
