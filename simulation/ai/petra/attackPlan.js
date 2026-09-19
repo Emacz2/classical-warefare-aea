@@ -1056,6 +1056,32 @@ AttackPlan.prototype.isAvailableUnit = function(gameState, ent)
 };
 
 
+AttackPlan.prototype.expertExposedTower = function(gameState, enemyUnits, enemyStructures, executeCC)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || executeCC ||
+	    this.unitCollection.length < 30 || !this.position)
+		return undefined;
+	const towers = [];
+	for (const structure of enemyStructures.values())
+		if (structure && structure.position() &&
+		    (structure.hasClass("Tower") || structure.hasClass("WallTower")) &&
+		    SquareVectorDistance(structure.position(), this.position) <= 80 * 80)
+			towers.push(structure);
+	towers.sort((a, b) => SquareVectorDistance(a.position(), this.position) -
+		SquareVectorDistance(b.position(), this.position) || a.id() - b.id());
+	for (const tower of towers)
+	{
+		let defenders = 0;
+		for (const enemy of enemyUnits.values())
+			if (enemy && enemy.position() && enemy.attackTypes && enemy.attackTypes() &&
+			    SquareVectorDistance(enemy.position(), tower.position()) <= 50 * 50)
+				++defenders;
+		if (defenders <= Math.floor(this.unitCollection.length / 4))
+			return tower;
+	}
+	return undefined;
+};
+
 // IT14.45 ram assault state.  Once a ram has actually joined this attack, the CC is
 // the strategic objective.  Infantry pressure the perimeter until a ram is close
 // enough to participate, then the plan releases the whole army inward.
@@ -2222,6 +2248,16 @@ AttackPlan.prototype.update = function(gameState, events)
 		const enemyStructures = gameState.getEnemyStructures(this.targetPlayer);
 		const expertDefenseThreat = this.expertDefensiveThreatState(gameState);
 		this.maintainExpertInfantryScreen(gameState);
+		// An uncontested firing tower is a combat objective, not terrain to wait beside.
+		// Commit the existing army to one tower at a time while keeping the CC execution
+		// order and nearby enemy units ahead of it. A thin army still uses the perimeter.
+		const exposedTower = this.expertExposedTower(gameState, enemyUnits, enemyStructures, expertRamAssault.executeCC);
+		if (exposedTower && this.expertLastTowerSuppressionTarget !== exposedTower.id())
+		{
+			this.expertLastTowerSuppressionTarget = exposedTower.id();
+			aiWarn("[EXPERT-TOWER] suppress plan=" + this.name + " tower=" + exposedTower.id() +
+				" army=" + this.unitCollection.length);
+		}
 		// If a no-siege infantry plan somehow inherited a defended CC/tower as its
 		// strategic target, immediately look again for exposed workers/production.
 		if (expertDefenseThreat.recent && !expertRamAssault.active && this.target && this.target.hasClass("Structure") &&
@@ -2359,6 +2395,8 @@ AttackPlan.prototype.update = function(gameState, events)
 				const target = gameState.getEntityById(targetId);
 				if (!target || gameState.isPlayerAlly(target.owner()))
 					needsUpdate = true;
+				else if (exposedTower && target.hasClass("Structure") && target.id() !== exposedTower.id())
+					needsUpdate = true;
 				else if (expertRamAssault.executeCC && target.hasClass("Structure") &&
 				    (!expertRamAssault.objective || target.id() !== expertRamAssault.objective.id()))
 					needsUpdate = true;
@@ -2379,6 +2417,10 @@ AttackPlan.prototype.update = function(gameState, events)
 					target.hasClass("Civilian") && target.unitAIState().split(".")[1] == "FLEEING")
 					maybeUpdate = true;
 			}
+			else if (exposedTower && ent.position() &&
+			    SquareVectorDistance(ent.position(), exposedTower.position()) <= 75 * 75 &&
+			    !(ent.unitAIState && String(ent.unitAIState()).includes(".COMBAT.")))
+				maybeUpdate = true;
 
 			// don't update too soon if not necessary
 			if (!needsUpdate)
@@ -2536,6 +2578,12 @@ AttackPlan.prototype.update = function(gameState, events)
 				    ent.canAttackTarget(expertRamAssault.objective, allowCapture(gameState, ent, expertRamAssault.objective)))
 				{
 					ent.attack(expertRamAssault.objective.id(), allowCapture(gameState, ent, expertRamAssault.objective));
+					continue;
+				}
+				else if (exposedTower &&
+				    ent.canAttackTarget(exposedTower, allowCapture(gameState, ent, exposedTower)))
+				{
+					ent.attack(exposedTower.id(), allowCapture(gameState, ent, exposedTower));
 					continue;
 				}
 				// This may prove dangerous as we may be blocked by something we

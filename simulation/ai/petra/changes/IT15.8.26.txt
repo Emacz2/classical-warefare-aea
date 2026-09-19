@@ -1,0 +1,7 @@
+IT15.8.26 — secondary natural food handoff
+
+Observed in 20260919-135628: around 175 seconds, the second farmstead completed and four civilians were committed to a live 800-food cluster. Those workers immediately reported food-home-wait and went to wood or field construction. At 207 seconds the bank was 4 food while that natural source remained unharvested.
+
+Cause: a worker transferred from the exhausted first district retained FOOD_HOME_PERMANENT. The home-farm preference intercepted food assignment ahead of its new NATURAL_FOOD_LOCK. Completing a natural-expansion farmstead now clears the old permanent preference, and any live natural-food lock bypasses that preference until the supplies are exhausted. Existing farm workers without a natural-food lock retain their farm preference. This preserves natural food alongside field construction instead of replacing it.
+
+Verification: node tests/natural-food-handoff.test.cjs; node tests/food-handoff.test.cjs. A replay is still required to verify actual food delivery and CC uptime.

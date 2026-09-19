@@ -1236,10 +1236,9 @@ const DEFAULT_POLICY = Object.freeze({
   // IT14.98: the late timing now masses a real army before Town. 52 is the hard
   // launch package inside the 64-soldier preferred composition; the window stays
   // open through 9:30 before the doctrine yields to P2.
-  // A 7-9 minute timing cannot wait for the former 52-man floor.  Melee-I plus a
-  // coherent 36-unit screened force is the package; battlefield safety still vetoes
-  // a locally losing engagement.
-  expertLateP1RushMinimumLaunchArmy: 36,
+  // A 36-unit launch sent only part of the 52 available infantry into a 60-unit
+  // defense, then caused a lethal retreat before contact. Commit the actual army.
+  expertLateP1RushMinimumLaunchArmy: 52,
   expertLateP1RushOpportunityDeadline: 570,
   expertP1RushGateLogSeconds: 12,
   // IT14.64 pre-engagement sanity check. This does not alter Petra movement; it only

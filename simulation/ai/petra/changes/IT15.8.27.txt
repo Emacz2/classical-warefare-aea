@@ -1,0 +1,12 @@
+IT15.8.27 — rush commitment, productive idle recovery, tower suppression, and surplus research
+
+Based on the two runs in interestinglog(20260919-223336).html. The late P1 rush launched 37/64 at ~8:40, then at 9:35 withdrew 42 versus 60 with zero losses. The P2 run recorded 22 idle at 10:55, 40 idle at 13:03, and 22 idle at 20:15; many NO-TARGET reports followed. A 100+ unit force avoided nearby towers while enemy combat was low. Some technology was queued, but a large resource bank accumulated late.
+
+Changes (on top of the 15.8.26 patch):
+- Raise late P1 launch floor from 36 to 52. A weak economy may now cancel that timing and transition to P2; this is preferable to dispatching a 37-unit army into a stronger defense. The production economy still needs replay evaluation.
+- Under enemy finishing conditions, attach a coherent reserve batch to the live attack plan until it reaches 80, leaving four home soldiers. This directly addresses military reserves left idle while an undersized attack struggles to finish.
+- When all eligible gather resources are full/unavailable, an idle economic worker may help complete an owned, same-land foundation within 85m; six builders per foundation maximum. No off-territory gathering was enabled.
+- A 30+ unit attack selects one nearby, lightly defended tower (within 80m) for capture/attack, including while waiting for rams. Enemy units in reach still take priority; the existing literal CC execution rule overrides tower selection.
+- In Town/City, when the bank exceeds 1200 food, 600 wood, 250 stone, and 250 metal, queue one affordable mining/carrying upgrade in a separate lane while the primary eco upgrade is busy. The extra lane reserves 500 food, 250 wood, 100 stone and 100 metal and refuses duplicates.
+
+Static syntax check and six .test.cjs suites pass, including a focused test for the new behavior. No 0 A.D. simulation was available here. A literal zero-idle guarantee would be dishonest: new units can be idle briefly, and a map can have no legal gather slots or reachable foundations. Verify sustained idles, 7–10m rush army/food/metal and actual tower capture with the next replay.

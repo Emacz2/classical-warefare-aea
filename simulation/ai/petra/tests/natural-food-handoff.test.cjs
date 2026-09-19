@@ -1,0 +1,30 @@
+const fs = require('node:fs');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const source = fs.readFileSync(__dirname + '/../expertDecisionController.js', 'utf8');
+const start = source.indexOf('\n\tcommitCompletedNaturalFarmsteadBuilders(');
+const end = source.indexOf('\n\treleaseFutureFieldReservations(', start);
+assert(start > 0 && end > start);
+const method = source.slice(start, end).replace('commitCompletedNaturalFarmsteadBuilders(gameState, taskId, cluster)', 'function commit(gameState, taskId, cluster)');
+const constants = ['FOOD_SITE', 'FOOD_PREVIOUS_SITE', 'FOOD_SITE_CHANGED_AT', 'NATURAL_FOOD_LOCK', 'FOOD_HOME_FARMSTEAD', 'FOOD_HOME_PERMANENT', 'SUPPLY_ID', 'JOB_METADATA', 'PENDING_JOB_METADATA'];
+const ctx = vm.createContext({});
+vm.runInContext(constants.map(k => `const ${k}=${JSON.stringify(k)};`).join('\n') + `
+const PlayerID=2, Worker={SUBROLE_GATHERER:'gatherer'};
+const encodeFoodSite=ids=>ids.join(','), decodeFoodSite=s=>s?String(s).split(','):[];
+const entityPosition=e=>e.position(),centerOf=es=>es[0].position();
+const SquareVectorDistance=(a,b)=>(a[0]-b[0])**2+(a[1]-b[1])**2;
+const hasClass=(e,k)=>e.hasClass(k),aiWarn=()=>{};
+${method}
+this.commit=commit;`, ctx);
+const metadata = new Map([['FOOD_HOME_PERMANENT',true], ['FOOD_HOME_FARMSTEAD', 1], ['JOB_METADATA','food_owned']]);
+const worker = {id:()=>20, hasClass:k=>k==='Civilian', getMetadata:(_p,k)=>metadata.get(k), setMetadata:(_p,k,v)=>metadata.set(k,v), stopMoving:()=>{}};
+const supply = {id:()=>30,position:()=>[10,10]};
+const home = {id:()=>40,position:()=>[10,11]};
+const game = {ai:{elapsedTime:175},getEntityById:id=>id===30?supply:undefined};
+const owner = {constructionWorkers:()=>[worker],releaseConstructionWorker:()=>{},builtByClass:()=>[home]};
+ctx.commit.call(owner,game,'farmstead:2',{ids:[30],center:[10,10]});
+assert.equal(metadata.get('NATURAL_FOOD_LOCK'),'30');
+assert.equal(metadata.get('FOOD_HOME_FARMSTEAD'),40);
+assert.equal(metadata.get('FOOD_HOME_PERMANENT'),undefined,'old farm preference cannot steal newly committed berries');
+assert(source.includes('if (!lockedCluster && ent.getMetadata(PlayerID, FOOD_HOME_PERMANENT) === true)'), 'live natural lock bypasses permanent farm preference');
+console.log('PASS: completed farmstead transfers old farm workers to live natural food.');
