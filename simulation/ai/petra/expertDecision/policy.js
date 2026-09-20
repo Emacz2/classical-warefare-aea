@@ -70,7 +70,7 @@ const DEFAULT_POLICY = Object.freeze({
   // IT15.8 mature-population revision: 60 is the global civilian growth ceiling.
   // After Expert reaches 60 once, casualties are replaced only when the dedicated
   // food engine needs them; citizen-soldiers inherit the released population.
-  civilianCap: 60,
+  civilianCap: 50,
   matureCivilianAbsoluteFloor: 24,
   matureCivilianFoodReserveWorkers: 0,
   farmPrebuildWoodCivilians: 12,

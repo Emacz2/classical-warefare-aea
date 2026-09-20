@@ -1,0 +1,9 @@
+IT15.8.28 — limited strategy/capacity experiment, based on exact IT15.8.27 patch files.
+Install: extract this patch over the existing IT15.8.27 Petra folder. Only the three included JavaScript files change.
+
+1. P3 boom target: 55 civilians. P2 tech push and post-rush target: 50 civilians. The original P1 rush soft caps (34/36) and Village-phase recovery bands remain intact. CC civilian/infantry switching and mature replacements use the selected strategy target.
+2. At population capacity, with at least 2500 wood and fewer than 1200 food or 600 metal/stone, the existing forecast market may barter surplus wood in batches up to 500, retaining at least 1500 wood. Existing 500-size emergency and forecast barter logic remains.
+3. Existing obstruction-tested CC pass-through stays available until 120 seconds rather than 75 and permits up to six units instead of four. Garrison/unload timeout and target checks remain unchanged.
+
+Existing behavior: the baseline already supports up to 500 per barter order and a small zero-pop trader route if two markets have a valid route. This patch does not add a market or a new archer training policy. The requested max-pop-only archer behavior needs validation against available mod templates before changing production.
+No replay simulation was run here. Syntax checks and selected prior regression tests passed. Compare phase timing, population, houses, tech orders, resource banks and idle counts against IT15.8.27, especially on the two new Expert-branch map conditions.

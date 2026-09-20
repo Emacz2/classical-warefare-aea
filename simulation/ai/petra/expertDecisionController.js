@@ -829,7 +829,7 @@ export class ExpertDecisionController
 			const recoveryCap = this.strategyPivotedFrom === "early_p1_rush" ?
 				(Number(mergePolicy().ecoSafetyEarlyRushRecoveryCivilianCap) || 40) :
 				(Number(mergePolicy().ecoSafetyLateRushRecoveryCivilianCap) || 42);
-			return { ...base, civilianCap: phase < 2 ? Math.min(60, recoveryCap) : 60,
+			return { ...base, civilianCap: phase < 2 ? Math.min(50, recoveryCap) : 50,
 				p1TemplePopulation: 48, p1TempleMinimumFieldPipeline: 2 };
 		}
 		// IT14.52: a live rush may protect its launch timing, but once the army actually
@@ -847,7 +847,7 @@ export class ExpertDecisionController
 	matureCivilianFoodTarget(gameState, workers = undefined)
 	{
 		const policy = mergePolicy();
-		const globalCap = Math.max(1, Number(policy.civilianCap) || 60);
+		const globalCap = this.currentCivilianCap(gameState);
 		if (!this.civilianGrowthCeilingReached)
 			return globalCap;
 
@@ -884,7 +884,7 @@ export class ExpertDecisionController
 		// More civilians are allowed only as a small recovery band when the existing
 		// food network has real open capacity and workers are already being used well.
 		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
-		const globalCap = Math.max(1, Number(mergePolicy().civilianCap) || 60);
+		const globalCap = Math.max(1, Number(this.strategyPolicyOverrides(gameState).civilianCap) || 50);
 		const doctrine = this.ensureStrategicDoctrine(gameState);
 		const phase = gameState.currentPhase ? Number(gameState.currentPhase()) || 1 : 1;
 		const manager = this.HQ && this.HQ.attackManager;
@@ -958,9 +958,9 @@ export class ExpertDecisionController
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
 		// IT15.8.18: strategy soft caps are composition targets, not permission for an
 		// ordinary P2/P3 opening to turn the CC into a Barracks.  Before the global
-		// 60-civilian ceiling, only a real P1 attack package or live defense may train
+		// strategy's civilian ceiling, only a real P1 attack package or live defense may train
 		// soldiers from the CC.
-		const civilianCeiling = Math.max(1, Number(mergePolicy().civilianCap) || 60);
+		const civilianCeiling = this.currentCivilianCap(gameState);
 		if (workers.civilians >= civilianCeiling)
 			return "civilian-cap";
 
@@ -6566,7 +6566,7 @@ export class ExpertDecisionController
 		const reconciled = reconcileCivilianRoster(this.civilianRoster, civilians.map(ent => ent.id()), explicit);
 		this.civilianRoster = reconciled.roster;
 		const byId = new Map(civilians.map(ent => [String(ent.id()), ent]));
-		const globalCivilianCap = Math.max(1, Number(policy.civilianCap) || 60);
+		const globalCivilianCap = this.currentCivilianCap(gameState);
 		if (!this.civilianGrowthCeilingReached && civilians.length >= globalCivilianCap)
 		{
 			this.civilianGrowthCeilingReached = true;
@@ -7949,7 +7949,7 @@ export class ExpertDecisionController
 		if (!passThroughActive && cc.unsetRallyPoint)
 			cc.unsetRallyPoint();
 
-		if (now > 75)
+		if (now > 120)
 			return;
 		const ccPos = entityPosition(cc);
 		if (!ccPos || !cc.canGarrisonInside || !cc.canGarrisonInside())
@@ -7958,7 +7958,7 @@ export class ExpertDecisionController
 		const holderRadius = Math.max(10, Number(obstruction && obstruction.max) || 14);
 		for (const ent of gameState.getOwnUnits().values())
 		{
-			if (this.openingTeleportCount >= 4 || !ent || !entityPosition(ent) || !ent.canGarrison || !ent.canGarrison() ||
+			if (this.openingTeleportCount >= 6 || !ent || !entityPosition(ent) || !ent.canGarrison || !ent.canGarrison() ||
 			    ent.getMetadata(PlayerID, "expertOpeningTeleportUsed") === true ||
 			    ent.getMetadata(PlayerID, TASK_KEY) === undefined)
 				continue;
@@ -9385,20 +9385,32 @@ export class ExpertDecisionController
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		if (now - this.lastForecastBarterAt < (Number(policy.resourceForecastBarterCooldownSeconds) || 10))
 			return false;
-		const target = (this.resourceForecast.rankedNeeds || []).find(item => item &&
+		let target = (this.resourceForecast.rankedNeeds || []).find(item => item &&
 			(item.status === "critical" || item.status === "short" || item.coverageRatio < (Number(policy.resourceForecastBarterTargetCoverage) || 1.10)));
+		const bank = gameState.getResources();
+		const maxPopulation = (Number(gameState.getPopulation()) || 0) >=
+			(Number(gameState.getPopulationLimit()) || Infinity);
+		const surplusWood = maxPopulation && (Number(bank.wood) || 0) >= 2500;
+		if (!target && surplusWood)
+		{
+			const need = ["food", "metal", "stone"].find(type =>
+				(Number(bank[type]) || 0) < (type === "food" ? 1200 : 600));
+			if (need)
+				target = { type: need, status: "max-pop-short", coverageRatio: 0 };
+		}
 		const pivotWoodBarter = this.strategyWoodPivot && target && target.type === "wood" && target.status === "critical";
 		const donorFloor = pivotWoodBarter ? (Number(policy.strategyWoodPivotBarterMinimumDonorFloat) || 350) :
 			(Number(policy.resourceForecastBarterMinimumDonorFloat) || 900);
-		const donor = (this.resourceForecast.rankedSurplus || []).find(item => item && target && item.type !== target.type &&
+		let donor = (this.resourceForecast.rankedSurplus || []).find(item => item && target && item.type !== target.type &&
 			item.floatAmount >= donorFloor);
+		if (target && target.status === "max-pop-short" && surplusWood)
+			donor = { type: "wood", floatAmount: (Number(bank.wood) || 0) - 1500, dynamicCeiling: 1500 };
 		if (!target || !donor)
 			return false;
 		const barterers = this.builtByClass(gameState, "Barter").length ? this.builtByClass(gameState, "Barter") : this.builtByClass(gameState, "Market");
 		const barterer = barterers.find(ent => ent && ent.barter);
 		if (!barterer)
 			return false;
-		const bank = gameState.getResources();
 		const amount = Math.min(Number(policy.resourceForecastBarterAmount) || 500,
 			Math.max(0, Math.floor((Number(bank[donor.type]) || 0) - donor.dynamicCeiling)));
 		if (amount < 100)

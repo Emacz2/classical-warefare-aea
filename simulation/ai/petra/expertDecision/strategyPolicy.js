@@ -76,7 +76,7 @@ const DOCTRINES = Object.freeze({
     id: "p2_tech_push",
     label: "P2 Forge-Tech Push",
     weight: 0.25,
-    softCivilianCap: 60,
+    softCivilianCap: 50,
     softCapUntil: 0,
     soldierTrainingStartTime: 150,
     rushes: 0,
@@ -88,7 +88,7 @@ const DOCTRINES = Object.freeze({
     id: "p3_boom_all_in",
     label: "P3 Boom Max-Tech All-In",
     weight: 0.25,
-    softCivilianCap: 60,
+    softCivilianCap: 55,
     softCapUntil: 0,
     soldierTrainingStartTime: 150,
     rushes: 0,
@@ -145,7 +145,8 @@ function policyOverridesForDoctrine(doctrine, time = 0)
   const d = doctrineById(doctrine && doctrine.id || doctrine);
   const now = Math.max(0, Number(time) || 0);
   const rushWindow = d.softCapUntil > 0 && now < d.softCapUntil;
-  const civilianCap = rushWindow ? d.softCivilianCap : 60;
+  const civilianCap = rushWindow ? d.softCivilianCap :
+    d.id === "p3_boom_all_in" ? 55 : 50;
   const rushTemple = Number(d.rushes) > 0 ?
     (rushWindow ? { p1TemplePopulation: 9999 } :
       { p1TemplePopulation: 52, p1TempleMinimumFieldPipeline: 2 }) : {};
