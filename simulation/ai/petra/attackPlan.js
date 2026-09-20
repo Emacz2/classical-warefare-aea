@@ -1114,7 +1114,7 @@ AttackPlan.prototype.expertOvermatchCaptureReady = function(gameState)
 		    SquareVectorDistance(structure.position(), cc.position()) <= radius2)
 		{
 			if (structure.garrisoned)
-				garrison += structure.garrisoned().length;
+				garrison += (structure.garrisoned() || []).length;
 			if (structure.hasDefensiveFire && structure.hasDefensiveFire())
 				++firing;
 		}
@@ -1154,7 +1154,7 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
 		{
 			if (!struct || !struct.position() || !this.isValidTarget(struct) || !struct.isGarrisonHolder ||
-			    !struct.isGarrisonHolder() || !struct.garrisoned || !struct.garrisoned().length)
+			    !struct.isGarrisonHolder() || !struct.garrisoned || !(struct.garrisoned() || []).length)
 				continue;
 			const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
 			if (dist < ccDist) { ccDist = dist; cc = struct; }
@@ -1298,7 +1298,7 @@ AttackPlan.prototype.expertDefensiveThreatState = function(gameState)
 		if (!dangerous)
 			continue;
 		dangerousStructures.push(struct);
-		const garrisoned = struct.isGarrisonHolder && struct.isGarrisonHolder() && struct.garrisoned ? struct.garrisoned().length : 0;
+		const garrisoned = struct.isGarrisonHolder && struct.isGarrisonHolder() && struct.garrisoned ? (struct.garrisoned() || []).length : 0;
 		if (garrisoned > 0)
 		{
 			out.active = true;
@@ -1452,7 +1452,7 @@ AttackPlan.prototype.forceExpertFinishingRetarget = function(gameState)
 			for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
 			{
 				if (!struct || !struct.position() || !this.isValidTarget(struct) || !struct.isGarrisonHolder ||
-				    !struct.isGarrisonHolder() || !struct.garrisoned || !struct.garrisoned().length) continue;
+				    !struct.isGarrisonHolder() || !struct.garrisoned || !(struct.garrisoned() || []).length) continue;
 				const dist = centre ? SquareVectorDistance(struct.position(), centre) : 0;
 				if (dist < bestDist) { bestDist = dist; best = struct; }
 			}
@@ -1785,7 +1785,7 @@ AttackPlan.prototype.isValidTarget = function(ent)
 		return false;
 	if (this.sameLand && getLandAccess(this.gameState, ent) != this.sameLand)
 		return false;
-	return !ent.decaying() || ent.getDefaultArrow() || ent.isGarrisonHolder() && ent.garrisoned().length;
+	return !ent.decaying() || ent.getDefaultArrow() || ent.isGarrisonHolder() && (ent.garrisoned() || []).length;
 };
 
 /** Rush target finder aims at isolated non-defended buildings */

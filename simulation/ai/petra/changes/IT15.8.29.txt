@@ -1,6 +1,7 @@
-IT15.8.29 revised patch. Requires IT15.8.28 already installed.
-Changed: petra/config.js, petra/expertDecisionController.js, petra/attackPlan.js.
-Expert resource gathering and trade multiplier changed from 1.30 to 1.25. Other difficulty levels and build/training time modifiers unchanged.
-Town/City authority attacks retain the original 15.8.29 safe infantry-overmatch launch: >=65 infantry, >=18 melee, enemy population <= half infantry, and local CC defenses sufficiently weak. The plan rechecks safety at the objective, prioritizes a nearby tower where useful, then the CC without requiring a ram.
-A lone nearby enemy mechanical siege unit now remains a base threat even if its escort dies or it pauses; a minimum response of 12 defenders is selected where available, capped at 18 for a small siege threat. This prevents the normal three-unit threat threshold from releasing defenders back to work while catapults remain. Ordinary raid thresholds are unchanged.
-Validation: JS syntax for all three changed files; existing house, worker, late-rush checks; targeted single-catapult threat check and ordinary-unit veto. No engine replay completed. Compare with IT15.8.28 using decisive conquest defeat time.
+IT15.8.29 corrected patch. Requires IT15.8.28 installed first.
+Files: petra/config.js, petra/data.json, petra/expertDecisionController.js, petra/attackPlan.js.
+Expert gather and trade bonus is +25% (1.25), and setup text matches. Other difficulties unchanged.
+Attacks may launch without a ram when an infantry overmatch has a sufficiently safe enemy CC. The attack plan rechecks that advantage at the objective, clears a nearby tower where appropriate, then attacks/captures the CC.
+Enemy mechanical siege remains a base threat even after its escort is lost, keeping 12–18 defenders responding where available. Ordinary raid thresholds unchanged.
+Crash correction: garrisoned() can return undefined even when the function exists. All newly added and nearby attack-plan garrison counts now treat undefined as an empty list. This prevents the repeated attack authorization error seen in the 20260920-213226 replay.
+Validation: JS syntax, existing late-rush recovery tests, focused actual overmatch method with undefined garrison (launch), occupied garrison (veto), and nearby defenders (veto). No full engine match simulated. Benchmark decisive conquest defeat time, not replay end.
