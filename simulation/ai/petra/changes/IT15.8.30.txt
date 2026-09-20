@@ -1,0 +1,7 @@
+IT15.8.30 corrective patch. Requires the corrected IT15.8.29 patch installed.
+Changed files: petra/config.js, petra/data.json, petra/expertDecisionController.js.
+Expert gather/trade multiplier 1.25 -> 1.20; setup description matches. Very Hard remains 1.56 and other difficulty levels unchanged.
+Wood recovery: rank eligible wood supplies by worker travel plus four times dropsite walk, rather than dropsite walk alone. When wood bank <=250 and <=2 workers have active wood orders, permit the existing owned-territory long-haul bridge even if the resource forecast has not marked wood critical. Neutral/outside-territory gathering remains disabled.
+No new attack, house, farm, or doctrine rules. Existing corrected 15.8.29 attackPlan.js must remain installed.
+Checks: syntax for changed JS, JSON matches multiplier, existing worker safety and late-rush tests, focused worker choice/owned-wood bridge cases. No full engine replay. The blocked/dangerous storehouse-site rejection seen in 20260920-215950 remains an unverified map-dependent limitation.
+Benchmark using decisive conquest defeat time rather than the replay file duration.

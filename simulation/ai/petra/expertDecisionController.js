@@ -15363,7 +15363,10 @@ export class ExpertDecisionController
 		if (generic === "wood" && !out.length)
 		{
 			const forecastWood = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood;
-			if (this.woodIncomeStalled || forecastWood && forecastWood.status === "critical")
+			const woodBank = Number(gameState.getResources().wood) || 0;
+			const zeroWoodOrders = this.actualWorkerOrders(gameState).wood <= 2;
+			if (this.woodIncomeStalled || forecastWood && forecastWood.status === "critical" ||
+			    woodBank <= 250 && zeroWoodOrders)
 			{
 				const dropsites = this.resourceDropsites(gameState, "wood").filter(site => site && entityPosition(site));
 				for (const supply of emergencyWood)
@@ -15374,9 +15377,8 @@ export class ExpertDecisionController
 					serviceDistance.set(supply.id(), best);
 					out.push(supply);
 				}
-				// IT15.8 supersedes IT15.1 only during an economic-safety emergency:
-				// normal gathering remains owned-territory-only, but owned-wood exhaustion
-				// activates the capped neutral rescue path above so sovereignty cannot deadlock eco.
+				// Use distant but owned trees to bridge the storehouse shortage;
+				// neutral gathering remains disabled by economySafetyAllowsNeutralWood.
 			}
 		}
 		out.sort((a, b) => {
@@ -15388,7 +15390,11 @@ export class ExpertDecisionController
 			{
 				const aService = Number.isFinite(da) ? Math.sqrt(da) : Infinity;
 				const bService = Number.isFinite(db) ? Math.sqrt(db) : Infinity;
-				if (aService !== bService) return aService - bService;
+				// The first trip still costs time: never send the whole crew across
+				// the base for a marginally closer dropsite.
+				const scoreA = workerA + 4 * aService;
+				const scoreB = workerB + 4 * bService;
+				if (scoreA !== scoreB) return scoreA - scoreB;
 			}
 			else if (Number.isFinite(da) || Number.isFinite(db))
 			{
@@ -16709,7 +16715,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.29] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.30] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16775,7 +16781,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.29] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.30] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()
