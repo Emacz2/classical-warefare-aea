@@ -3934,6 +3934,19 @@ export class ExpertDecisionController
 				this.expertAuthorizeCombatLaunch(gameState, plan, "rush:" + (decision.reason || "advantage"));
 			return;
 		}
+		// A clear local overmatch is an opportunity to end the game. Do not make a
+		// nearly full infantry army wait at home for City Phase or another ram.
+		if (phase >= 2 && army >= 70 && plan.expertOvermatchCaptureReady &&
+		    plan.expertOvermatchCaptureReady(gameState))
+		{
+			if (this.expertAuthorizeCombatLaunch(gameState, plan, "infantry-overmatch"))
+			{
+				plan.expertInfantryOvermatch = true;
+				aiWarn("[EXPERT-OVERMATCH] launch plan=" + plan.name + " infantry=" + army +
+					" enemyPop=" + this.lowestEnemyPopulation(gameState));
+			}
+			return;
+		}
 
 		if (phase === 1)
 		{
@@ -4756,6 +4769,7 @@ export class ExpertDecisionController
 		if (!ccPos || !gameState.getEnemyUnits)
 			return undefined;
 		const enemies = [];
+		const nearbySiege = [];
 		let strength = 0;
 		let nearest = Infinity;
 		const max2 = policy.defenseAwarenessRadius * policy.defenseAwarenessRadius;
@@ -4774,9 +4788,14 @@ export class ExpertDecisionController
 			if (dist2 > max2)
 				continue;
 			const dist = Math.sqrt(dist2);
-			if (!this.enemyIsApproachingBase(gameState, ent, ccPos, dist))
+			// A surviving catapult remains a base threat even when its escort
+			// has died or it has paused to fire.
+			const siege = hasClass(ent, "Siege") && !hasClass(ent, "Human");
+			if (!siege && !this.enemyIsApproachingBase(gameState, ent, ccPos, dist))
 				continue;
 			enemies.push(ent);
+			if (siege)
+				nearbySiege.push(ent);
 			strength += this.combatStrength(ent);
 			nearest = Math.min(nearest, dist);
 		}
@@ -4784,11 +4803,11 @@ export class ExpertDecisionController
 		// Farther threats still need a meaningful group, but 3 attackers inside ~85m
 		// are enough to mobilize. This prevents concentrated human armies from killing
 		// scattered working citizen-soldiers before the old 12-unit gate trips.
-		const required = nearest <= 85 ? 3 : policy.defenseThreatMinimumUnits;
+		const required = nearbySiege.length ? 1 : nearest <= 85 ? 3 : policy.defenseThreatMinimumUnits;
 		if (enemies.length < required)
 			return undefined;
-		const position = centerOf(enemies) || ccPos;
-		return { "entities": enemies, "count": enemies.length, strength, position, nearest };
+		const position = centerOf(nearbySiege.length ? nearbySiege : enemies) || ccPos;
+		return { "entities": enemies, "count": enemies.length, "siegeCount": nearbySiege.length, strength, position, nearest };
 	}
 
 	expertDefenders(gameState)
@@ -4814,9 +4833,10 @@ export class ExpertDecisionController
 
 		const policy = mergePolicy();
 		const minimum = Math.min(defenders.length, Math.max(
-			Number(policy.defenseResponseMinimumUnits) || 8,
+			threat.siegeCount ? 12 : Number(policy.defenseResponseMinimumUnits) || 8,
 			Math.ceil(threat.count * (Number(policy.defenseResponseMinimumCountRatio) || 1.25))));
 		const maximum = Math.min(defenders.length, Math.max(minimum,
+			threat.siegeCount ? 18 : 0,
 			Math.ceil(threat.count * (Number(policy.defenseResponseMaximumCountRatio) || 1.75))));
 		const targetStrength = Math.max(1, Number(threat.strength) || threat.count) *
 			(Number(policy.defenseResponseStrengthRatio) || 1.35);
@@ -16689,7 +16709,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.27] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.29] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16755,7 +16775,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.27] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.29] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

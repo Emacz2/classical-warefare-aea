@@ -1082,6 +1082,46 @@ AttackPlan.prototype.expertExposedTower = function(gameState, enemyUnits, enemyS
 	return undefined;
 };
 
+// A launch advantage is reevaluated at the objective: losing the melee screen or
+// discovering garrisoned defenders cancels the infantry shortcut automatically.
+AttackPlan.prototype.expertOvermatchCaptureReady = function(gameState)
+{
+	if (this.Config.difficulty < difficulty.EXPERT || this.targetPlayer === undefined || !this.unitCollection)
+		return false;
+	const own = this.unitCollection.toEntityArray ? this.unitCollection.toEntityArray() : [...this.unitCollection.values()];
+	const infantry = own.filter(ent => ent && ent.position && ent.position() && ent.hasClass && ent.hasClass("Infantry"));
+	const melee = infantry.filter(ent => ent.hasClass("Melee"));
+	if (infantry.length < 65 || melee.length < 18)
+		return false;
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[this.targetPlayer];
+	const enemyPop = pdata && Number(pdata.popCount);
+	if (!Number.isFinite(enemyPop) || enemyPop > infantry.length / 2)
+		return false;
+	let cc;
+	for (const structure of gameState.getEnemyStructures(this.targetPlayer).values())
+		if (structure && structure.position && structure.position() && structure.hasClass("CivCentre"))
+		{ cc = structure; break; }
+	if (!cc)
+		return false;
+	const radius2 = 80 * 80;
+	let defenders = 0, garrison = 0, firing = 0;
+	for (const enemy of gameState.getEnemyUnits(this.targetPlayer).values())
+		if (enemy && enemy.position && enemy.position() && enemy.attackTypes && enemy.attackTypes() &&
+		    SquareVectorDistance(enemy.position(), cc.position()) <= radius2)
+			++defenders;
+	for (const structure of gameState.getEnemyStructures(this.targetPlayer).values())
+		if (structure && structure.position && structure.position() &&
+		    SquareVectorDistance(structure.position(), cc.position()) <= radius2)
+		{
+			if (structure.garrisoned)
+				garrison += structure.garrisoned().length;
+			if (structure.hasDefensiveFire && structure.hasDefensiveFire())
+				++firing;
+		}
+	return firing <= 3 && defenders <= Math.floor(melee.length / 4) &&
+		garrison <= Math.floor(melee.length / 6);
+};
+
 // IT14.45 ram assault state.  Once a ram has actually joined this attack, the CC is
 // the strategic objective.  Infantry pressure the perimeter until a ram is close
 // enough to participate, then the plan releases the whole army inward.
@@ -1097,11 +1137,12 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : 999;
 	const policy = mergePolicy();
 	const executeCC = enemyPop > 0 && enemyPop <= policy.expertCCExecutionEnemyPopulation;
+	const infantryOvermatch = this.expertInfantryOvermatch && this.expertOvermatchCaptureReady(gameState);
 	// IT14.53: a living CC becomes the hard execution objective once the opponent is
 	// down to a literal handful of population. IT14.46's garrison-holder cleanup is
 	// still valuable, but only AFTER the CC is gone. This prevents rams from spending
 	// the final minute on a storehouse/barracks/tower while conquest can be ended now.
-	if (executeCC)
+	if (executeCC || infantryOvermatch)
 		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
 		{
 			if (!struct || !struct.position() || !struct.hasClass("CivCentre") || !this.isValidTarget(struct))
@@ -1146,6 +1187,22 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 	{
 		this.expertRamHoldSince = undefined;
 		this.expertRamHoldLogged = false;
+		if (infantryOvermatch)
+		{
+			let objective = cc;
+			for (const structure of gameState.getEnemyStructures(this.targetPlayer).values())
+				if (structure && structure.position && structure.position() && this.isValidTarget(structure) &&
+				    (structure.hasClass("Tower") || structure.hasClass("WallTower")) &&
+				    SquareVectorDistance(structure.position(), cc.position()) <= 80 * 80 &&
+				    (!objective || SquareVectorDistance(structure.position(), centre) < SquareVectorDistance(objective.position(), centre)))
+					objective = structure;
+			this.target = objective;
+			this.targetPos = objective.position();
+			out.active = true;
+			out.ready = true;
+			out.objective = objective;
+			out.objectivePos = objective.position();
+		}
 		return out;
 	}
 	// A ram in the plan turns the CC into the shared strategic objective.  The
@@ -1158,7 +1215,7 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 	out.objectivePos = cc.position();
 	// At execution population there is no reason to wait on the old perimeter staging
 	// choreography. Rams and infantry commit to the CC together immediately.
-	if (executeCC)
+	if (executeCC || infantryOvermatch)
 	{
 		out.ready = true;
 		out.executeCC = true;
@@ -2247,6 +2304,9 @@ AttackPlan.prototype.update = function(gameState, events)
 		const enemyUnits = gameState.getEnemyUnits(this.targetPlayer);
 		const enemyStructures = gameState.getEnemyStructures(this.targetPlayer);
 		const expertDefenseThreat = this.expertDefensiveThreatState(gameState);
+		if (this.expertInfantryOvermatch && expertRamAssault.active &&
+		    this.expertOvermatchCaptureReady(gameState))
+			expertDefenseThreat.recent = false;
 		this.maintainExpertInfantryScreen(gameState);
 		// An uncontested firing tower is a combat objective, not terrain to wait beside.
 		// Commit the existing army to one tower at a time while keeping the CC execution
@@ -3191,6 +3251,7 @@ AttackPlan.prototype.Serialize = function()
 		"expertLastWoundedReplacementWave": this.expertLastWoundedReplacementWave,
 		"expertLastPrimaryReinforcementWave": this.expertLastPrimaryReinforcementWave,
 		"expertAuthorityOwned": this.expertAuthorityOwned,
+		"expertInfantryOvermatch": this.expertInfantryOvermatch,
 		"expertAuthorityState": this.expertAuthorityState,
 		"expertLaunchAuthorized": this.expertLaunchAuthorized,
 		"expertLaunchReason": this.expertLaunchReason

@@ -1,0 +1,6 @@
+IT15.8.29 revised patch. Requires IT15.8.28 already installed.
+Changed: petra/config.js, petra/expertDecisionController.js, petra/attackPlan.js.
+Expert resource gathering and trade multiplier changed from 1.30 to 1.25. Other difficulty levels and build/training time modifiers unchanged.
+Town/City authority attacks retain the original 15.8.29 safe infantry-overmatch launch: >=65 infantry, >=18 melee, enemy population <= half infantry, and local CC defenses sufficiently weak. The plan rechecks safety at the objective, prioritizes a nearby tower where useful, then the CC without requiring a ram.
+A lone nearby enemy mechanical siege unit now remains a base threat even if its escort dies or it pauses; a minimum response of 12 defenders is selected where available, capped at 18 for a small siege threat. This prevents the normal three-unit threat threshold from releasing defenders back to work while catapults remain. Ordinary raid thresholds are unchanged.
+Validation: JS syntax for all three changed files; existing house, worker, late-rush checks; targeted single-catapult threat check and ordinary-unit veto. No engine replay completed. Compare with IT15.8.28 using decisive conquest defeat time.
