@@ -2415,7 +2415,8 @@ export class ExpertDecisionController
 			if ((job === "food" || job === "food_owned") && live.has(supplyId))
 				workers.push(ent);
 		}
-		if (workers.length <= live.size)
+		const keepLimit = Math.min(live.size, Math.max(1, Number(policy.naturalFoodMaxWorkersPerCluster) || 6));
+		if (workers.length <= keepLimit)
 		{
 			this.postWickerBerryPeelDone = true;
 			aiWarn("[EXPERT-BERRIES] Wicker peel complete workers=" + workers.length + " bushes=" + live.size + " moved=0");
@@ -2427,13 +2428,15 @@ export class ExpertDecisionController
 		const keep = new Set();
 		for (const id of live)
 		{
+			if (keep.size >= keepLimit)
+				break;
 			const group = workers.filter(ent => Number(ent.getMetadata(PlayerID, SUPPLY_ID)) === id).sort((a, b) => a.id() - b.id());
 			if (group.length)
 				keep.add(group[0].id());
 		}
 		for (const ent of workers.slice().sort((a, b) => a.id() - b.id()))
 		{
-			if (keep.size >= Math.min(live.size, workers.length))
+			if (keep.size >= Math.min(keepLimit, workers.length))
 				break;
 			keep.add(ent.id());
 		}
@@ -9252,6 +9255,25 @@ export class ExpertDecisionController
 			(Number(policy.athensCleruchyLongHaulDistance) || 32) &&
 			Math.max(0, Number(actual.wood) || 0) >= (Number(policy.athensCleruchyLongHaulWorkers) || 8);
 		const lowNatural = natural <= (Number(policy.athensCleruchyScarcityNaturalFoodThreshold) || 250);
+		// Fruit just outside our border is expansion stock, never a gathering target.
+		// Claim it before committing another farm district when the owned natural
+		// food stock is below 40% of what this base has discovered.
+		let frontierFood = 0;
+		const territoryFoodRatio = frame && frame.state && frame.state.food ?
+			Number(frame.state.food.territoryNaturalRatio) : 1;
+		if (territoryFoodRatio <= 0.40 && gameState.getResourceSupplies && this.HQ.territoryMap)
+			for (const supply of gameState.getResourceSupplies("food").values())
+			{
+				const pos = entityPosition(supply);
+				if (!pos || hasClass(supply, "Animal") || !supply.resourceSupplyAmount ||
+				    supply.resourceSupplyAmount() < 150 || this.HQ.territoryMap.getOwner(pos) !== 0)
+					continue;
+				if ([0, 1, 2, 3, 4, 5, 6, 7].some(i => {
+					const angle = i * Math.PI / 4;
+					return this.HQ.territoryMap.getOwner([pos[0] + 30 * Math.cos(angle), pos[1] + 30 * Math.sin(angle)]) === PlayerID;
+				}))
+					frontierFood += Number(supply.resourceSupplyAmount()) || 0;
+			}
 		const woodCrisis = this.woodIncomeStalled || this.phaseWoodCrisis || fastWoodCrisis;
 		const forecastNeed = this.resourceForecast && this.resourceForecast.rankedNeeds ?
 			this.resourceForecast.rankedNeeds.find(item => item && item.status === "critical" &&
@@ -9264,9 +9286,10 @@ export class ExpertDecisionController
 		// even before its current local bank reaches an old absolute threshold.
 		const legacyWoodScarcity = !forecastWoodComfortable && (fundedWoodExpansion || criticalWood ||
 			(lowWood && (lowNatural || recentFailure || expansionStatus || woodCrisis)));
-		const active = forecastCritical || legacyWoodScarcity || longHaul;
+		const active = forecastCritical || legacyWoodScarcity || longHaul || frontierFood >= 300;
 		return { active, localWood, natural, status, recentFailure, failureCount, woodCrisis, fundedWoodExpansion, forecastCritical,
-			longHaul, primaryResource: forecastNeed ? forecastNeed.type : lowWood || woodCrisis || longHaul ? "wood" : lowNatural ? "food" : "wood" };
+			longHaul, frontierFood, primaryResource: forecastNeed ? forecastNeed.type :
+				lowWood || woodCrisis || longHaul ? "wood" : frontierFood >= 300 || lowNatural ? "food" : "wood" };
 	}
 
 	cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity = false, primaryResource = undefined)
@@ -9486,8 +9509,13 @@ export class ExpertDecisionController
 		// completed colony before committing another builder team.
 		if (cleruchyPipeline >= 1 && !scarcity.active)
 			return frame;
-		if (cleruchyPipeline >= 1 && now - (Number(this.lastCleruchyCompletedAt) || -99999) <
-		    (Number(policy.athensCleruchyRepeatCooldownSeconds) || 90))
+		// A depleted district with many idle workers cannot wait the ordinary
+		// expansion cooldown before claiming another reachable resource district.
+		const strandedWorkers = scarcity.active && scarcity.localWood < 900 &&
+			[...gameState.getOwnUnits().values()].filter(ent => ent && this.isExpertEconomyEntity(ent) &&
+				ent.isIdle && ent.isIdle() && this.attackPlanAllowsEconomicWork(gameState, ent)).length >= 20;
+		const repeatCooldown = strandedWorkers ? 20 : (Number(policy.athensCleruchyRepeatCooldownSeconds) || 90);
+		if (cleruchyPipeline >= 1 && now - (Number(this.lastCleruchyCompletedAt) || -99999) < repeatCooldown)
 			return frame;
 		const candidate = this.cleruchyFrontierCandidate(gameState, cc, accessIndex, scarcity.active, scarcity.primaryResource);
 		if (!candidate)
@@ -16715,7 +16743,7 @@ export class ExpertDecisionController
 		const reserve = this.expertMilitaryReserveMetrics(gameState);
 		const actual = this.actualWorkerOrders(gameState);
 		const res = gameState.getResources();
-		aiWarn("[EXPERT-IT15.8.30] t=" + Math.round(gameState.ai.elapsedTime) +
+		aiWarn("[EXPERT-IT15.8.31] t=" + Math.round(gameState.ai.elapsedTime) +
 			" strat=" + (this.strategyDoctrine && this.strategyDoctrine.id || "-") +
 			" stage=" + frame.stage.stage + " pop=" + gameState.getPopulation() + "/" + gameState.getPopulationLimit() +
 			" opCap=" + Math.min(gameState.getPopulationMax(), Number(mergePolicy().expertOperatingPopulationCap) || 200) + "/" + gameState.getPopulationMax() +
@@ -16781,7 +16809,7 @@ export class ExpertDecisionController
 				gameState.ai.queueManager.changePriority(name, this.HQ.Config.priorities[name]);
 		if (!this.HQ.firstBaseConfig && this.HQ.hasPotentialBase())
 			this.HQ.configFirstBase(gameState);
-		aiWarn("[EXPERT-IT15.8.30] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
+		aiWarn("[EXPERT-IT15.8.31] manual Expert release at t=" + Math.round(gameState.ai.elapsedTime) + " reason=" + reason);
 	}
 
 	Serialize()

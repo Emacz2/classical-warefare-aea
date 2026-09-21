@@ -25,15 +25,15 @@ const DEFAULT_POLICY = Object.freeze({
   postWickerOneWorkerPerBush: true,
   // Preferred connected-patch ceiling. This caps NEW assignments only; it must never
   // redefine whether the opening berries themselves are valid food.
-  naturalFoodMaxWorkersPerCluster: 8,
+  naturalFoodMaxWorkersPerCluster: 6,
   // One civilian per individual berry/fruit supply before permanent food. This is
   // intentionally stricter than the connected-patch ceiling: a five-bush patch wants
   // five civilians, not eight civilians piled onto those same five bushes.
   naturalFoodMaxWorkersPerSupply: 2,
   // IT14.37: distinguish larger single fruit trees from berry bushes. Apples may
   // support three workers; an unknown isolated fruit source uses the same safe cap.
-  naturalFoodAppleTreeMaxWorkers: 3,
-  naturalFoodSingleSupplyMaxWorkers: 3,
+  naturalFoodAppleTreeMaxWorkers: 2,
+  naturalFoodSingleSupplyMaxWorkers: 2,
   // A serviced natural-food district remains the immediate worker target, but IT14.59
   // no longer waits for literal exhaustion before scouting/building the NEXT worthwhile
   // district. This lets a third fruit/berry source receive its Farmstead before a field
@@ -119,7 +119,7 @@ const DEFAULT_POLICY = Object.freeze({
   barracksHardDeadline: 180,
   farmPrepareRatio: 0.45,
   farmTransitionRatio: 0.40,
-  naturalFoodExpansionRatio: 0.25,
+  naturalFoodExpansionRatio: 0.40,
   // IT14.74: permanent fields do not begin until the COMBINED usable natural food
   // discovered in our territory falls to 40% or less. IT15.6 restores the human opening:
   // natural fruit is the engine; temporary idle food workers overflow productively instead
@@ -1040,7 +1040,7 @@ const DEFAULT_POLICY = Object.freeze({
   openingHouseFoodDistrictPenalty: 12000,
   openingHouseMinimumStorehouseDistance: 10,
   openingHouseMaximumStorehouseDistance: 20,
-  frontierNaturalFoodRecognitionDistance: 25,
+  frontierNaturalFoodRecognitionDistance: 35,
   // Planning-only awareness: neutral frontier trees may justify a Storehouse or
   // expansion, but do not become direct gather targets before territory reaches them.
   frontierWoodRecognitionDistance: 25,
