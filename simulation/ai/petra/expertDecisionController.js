@@ -199,6 +199,8 @@ export class ExpertDecisionController
 		this.foundationTracker = new FoundationTracker({ "playerId": PlayerID });
 		this.initialWoodSelection = undefined;
 		this.openingTeleportCount = 0;
+		this.openingGatherTeleportCount = 0;
+		this.expertLaunchBlockDiagnostics = {};
 		this.primaryWoodWorksite = undefined;
 		// IT14.61: if the opening Storehouse plan stalls before a foundation exists,
 		// each retry widens the woodsite search rather than blindly repeating the same
@@ -3920,6 +3922,31 @@ export class ExpertDecisionController
 		return true;
 	}
 
+	expertLogLaunchBlock(gameState, plan, blocker, detail = "")
+	{
+		if (!plan || !plan.unitCollection || plan.unitCollection.length < 40)
+			return;
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const key = String(plan.name);
+		const previous = this.expertLaunchBlockDiagnostics[key];
+		if (previous && previous.blocker === blocker && now - previous.at < 32)
+			return;
+		const overmatch = plan.expertOvermatchCaptureStatus &&
+			plan.expertOvermatchCaptureStatus(gameState);
+		const safety = overmatch ?
+			" overmatch=" + overmatch.blocker + " inf=" + (overmatch.infantry ?? "?") +
+			" melee=" + (overmatch.melee ?? "?") + " enemy=" + (overmatch.enemyPop ?? "?") +
+			" ccDef=" + (overmatch.defenders ?? "?") + "/" + (overmatch.defenderLimit ?? "?") +
+			" garrison=" + (overmatch.garrison ?? "?") + "/" + (overmatch.garrisonLimit ?? "?") +
+			" firing=" + (overmatch.firing ?? "?") + "/3" : "";
+		// Report gate changes promptly; suppress repeated per-tick logging.
+		this.expertLaunchBlockDiagnostics[key] = { blocker, at: now };
+		aiWarn("[EXPERT-LAUNCH-BLOCK] t=" + Math.round(now) + " plan=" + plan.name +
+			" phase=" + (gameState.currentPhase ? gameState.currentPhase() : "?") +
+			" army=" + plan.unitCollection.length + " block=" + blocker +
+			(detail ? " " + detail : "") + safety);
+	}
+
 	expertEvaluateCombatLaunch(gameState, plan)
 	{
 		if (!plan || plan.state !== AttackPlan.STATE_UNEXECUTED || plan.expertLaunchAuthorized)
@@ -3935,6 +3962,8 @@ export class ExpertDecisionController
 				this.expertCancelAuthorityPlan(gameState, plan, decision.reason || "rush-cancel");
 			else if (decision.launch)
 				this.expertAuthorizeCombatLaunch(gameState, plan, "rush:" + (decision.reason || "advantage"));
+			else
+				this.expertLogLaunchBlock(gameState, plan, "rush-timing", "reason=" + (decision.reason || "waiting"));
 			return;
 		}
 		// A clear local overmatch is an opportunity to end the game. Do not make a
@@ -3954,10 +3983,18 @@ export class ExpertDecisionController
 		if (phase === 1)
 		{
 			if (army < (Number(policy.expertP1ReserveAttackMinimumArmy) || 45))
+			{
+				this.expertLogLaunchBlock(gameState, plan, "p1-army", "required=" + (Number(policy.expertP1ReserveAttackMinimumArmy) || 45));
 				return;
+			}
 			const decision = manager.expertP1TimingWindowDecision ? manager.expertP1TimingWindowDecision(gameState, plan) : { launch: false };
 			if (decision.launch)
 				this.expertAuthorizeCombatLaunch(gameState, plan, "p1-reserve:" + (decision.reason || "advantage"));
+			else
+				this.expertLogLaunchBlock(gameState, plan, "p1-timing", "reason=" + (decision.reason || "waiting") +
+					" attackers=" + (decision.attackers ?? "?") + " defenders=" + (decision.defenders ?? "?") +
+					" reinforcements=" + (decision.nearbyReinforcements ?? "?") +
+					" static=" + (decision.staticDefenses ?? "?") + " enemyCombat=" + (decision.knownEnemyCombat ?? "?"));
 			return;
 		}
 
@@ -3973,7 +4010,10 @@ export class ExpertDecisionController
 				return;
 			}
 			if (phase < 3)
+			{
+				this.expertLogLaunchBlock(gameState, plan, "p3-phase", "required=city");
 				return;
+			}
 			const operating = this.effectiveOperatingPopulationCap(gameState);
 			const pop = gameState.getPopulation();
 			const popReady = pop >= operating - Math.max(0, Number(policy.expertP3BoomAllInPopulationSlack) || 5);
@@ -4016,6 +4056,10 @@ export class ExpertDecisionController
 				this.expertAuthorizeCombatLaunch(gameState, plan,
 					advantageReady ? "p3-advantage-conversion" : maxPopEscape && !siegeReady ? "p3-maxpop-one-siege" : "p3-max-tech-all-in");
 			}
+			else
+				this.expertLogLaunchBlock(gameState, plan, "p3-package", "pop=" + pop + "/" + operating +
+					" siege=" + siege.total + "/" + siegeTarget + " tech=" + tech.complete +
+					" hero=" + heroReady + " armyReady=" + armyReady);
 			return;
 		}
 		if (finishing.active && army >= Math.max(8, Number(policy.expertFinishingMinimumArmy) || 36))
@@ -4025,7 +4069,10 @@ export class ExpertDecisionController
 		}
 		const adaptiveTarget = this.expertP2AttackArmyTarget(gameState, plan.targetPlayer);
 		if (army < adaptiveTarget)
+		{
+			this.expertLogLaunchBlock(gameState, plan, "p2-army", "required=" + adaptiveTarget);
 			return;
+		}
 		const escalation = manager.expertP2EscalationTargetPlayer === plan.targetPlayer ?
 			Math.max(0, Number(manager.expertP2EscalationLevel) || 0) : 0;
 		// An escalated City-phase follow-up with a real Arsenal waits for its real
@@ -4037,7 +4084,10 @@ export class ExpertDecisionController
 				Math.max(1, Number(policy.expertP2EscalationFirstSiegeTarget) || 1);
 			const siege = this.expertBuildingSiegeStatus(gameState);
 			if (siege.existing < desiredSiege)
+			{
+				this.expertLogLaunchBlock(gameState, plan, "p2-siege", "built=" + siege.existing + "/" + desiredSiege);
 				return;
+			}
 		}
 		const tech = manager.getExpertP2AttackTechGate ? manager.getExpertP2AttackTechGate(gameState) : { ready: true, active: 0, completed: 0 };
 		const minimum = Math.max(adaptiveTarget, Number(policy.expertP2OpportunityMinimumArmy) || 45);
@@ -4045,10 +4095,19 @@ export class ExpertDecisionController
 		const packageReady = !!tech.ready && army >= minimum;
 		const opportunityReady = army >= minimum && activeEnough;
 		if (!packageReady && !opportunityReady)
+		{
+			this.expertLogLaunchBlock(gameState, plan, "p2-tech", "ready=" + tech.ready + " active=" + tech.active +
+				" completed=" + tech.completed + " needed=" + (Number(policy.expertP2OpportunityMinimumActiveTechs) || 1));
 			return;
+		}
 		const decision = manager.expertP1TimingWindowDecision ? manager.expertP1TimingWindowDecision(gameState, plan) : { launch: false };
 		if (decision.launch)
 			this.expertAuthorizeCombatLaunch(gameState, plan, (packageReady ? "p2-package:" : "p2-opportunity:") + (decision.reason || "advantage"));
+		else
+			this.expertLogLaunchBlock(gameState, plan, "p2-timing", "reason=" + (decision.reason || "waiting") +
+				" attackers=" + (decision.attackers ?? "?") + " defenders=" + (decision.defenders ?? "?") +
+				" reinforcements=" + (decision.nearbyReinforcements ?? "?") +
+				" static=" + (decision.staticDefenses ?? "?") + " enemyCombat=" + (decision.knownEnemyCombat ?? "?"));
 	}
 
 	updateExpertCombatAuthority(gameState)
@@ -7905,11 +7964,22 @@ export class ExpertDecisionController
 		return order.status !== "FAILED";
 	}
 
-	applyOpeningBuildingPassThrough(gameState, cc)
+	applyOpeningBuildingPassThrough(gameState, cc, includeGatherers = false)
 	{
 		const now = Number(gameState.ai.elapsedTime) || 0;
 		if (!cc)
 			return;
+		// The CC has one rally point, shared by every occupant. Process just one
+		// destination at a time so a storehouse exit cannot reroute berry workers.
+		let activeTargetId;
+		for (const occupant of gameState.getOwnUnits().values())
+			if (occupant && occupant.getMetadata &&
+			    Number(occupant.getMetadata(PlayerID, "expertOpeningTeleportHolder")) === cc.id() &&
+			    !Number.isFinite(Number(occupant.getMetadata(PlayerID, "expertOpeningTeleportUnloadAt"))))
+			{
+				activeTargetId = Number(occupant.getMetadata(PlayerID, "expertOpeningTeleportTarget"));
+				break;
+			}
 		// Finish an already-started pass-through first. The target rally point gives the
 		// engine the desired exit side; normal construction ownership reissues the repair
 		// order immediately after the unit materializes outside the CC.
@@ -7922,12 +7992,14 @@ export class ExpertDecisionController
 			const startedAt = Number(ent.getMetadata(PlayerID, "expertOpeningTeleportStartedAt"));
 			const rallyAt = Number(ent.getMetadata(PlayerID, "expertOpeningTeleportRallyAt"));
 			const unloadAt = Number(ent.getMetadata(PlayerID, "expertOpeningTeleportUnloadAt"));
+			if (!Number.isFinite(unloadAt) && targetId !== activeTargetId)
+				continue;
 			if (ent.garrisonHolderID && ent.garrisonHolderID() === cc.id() && cc.unload)
 			{
 				if (!Number.isFinite(rallyAt))
 				{
 					if (target && entityPosition(target) && cc.setRallyPoint)
-						cc.setRallyPoint(target, "repair");
+						cc.setRallyPoint(target, ent.getMetadata(PlayerID, "expertOpeningTeleportGather") ? "gather" : "repair");
 					ent.setMetadata(PlayerID, "expertOpeningTeleportRallyAt", now);
 					aiWarn("[EXPERT-TELEPORT] rally worker=" + ent.id() + " holder=" + cc.id() + " toward=" + targetId);
 					continue;
@@ -7944,12 +8016,18 @@ export class ExpertDecisionController
 			}
 			if (Number.isFinite(unloadAt))
 			{
+			const exit = entityPosition(ent), destination = entityPosition(target), centre = entityPosition(cc);
+			const exitSide = exit && destination && centre ?
+				Math.sign((exit[0] - centre[0]) * (destination[0] - centre[0]) +
+					(exit[1] - centre[1]) * (destination[1] - centre[1])) : 0;
 				ent.setMetadata(PlayerID, "expertOpeningTeleportHolder", undefined);
 				ent.setMetadata(PlayerID, "expertOpeningTeleportTarget", undefined);
 				ent.setMetadata(PlayerID, "expertOpeningTeleportStartedAt", undefined);
 				ent.setMetadata(PlayerID, "expertOpeningTeleportRallyAt", undefined);
 				ent.setMetadata(PlayerID, "expertOpeningTeleportUnloadAt", undefined);
-				aiWarn("[EXPERT-TELEPORT] complete worker=" + ent.id() + " holder=" + cc.id() + " toward=" + targetId);
+				ent.setMetadata(PlayerID, "expertOpeningTeleportGather", undefined);
+				aiWarn("[EXPERT-TELEPORT] complete worker=" + ent.id() + " holder=" + cc.id() +
+					" toward=" + targetId + " exitSide=" + exitSide);
 				continue;
 			}
 			if (Number.isFinite(startedAt) && now - startedAt >= 4)
@@ -7958,6 +8036,7 @@ export class ExpertDecisionController
 				ent.setMetadata(PlayerID, "expertOpeningTeleportTarget", undefined);
 				ent.setMetadata(PlayerID, "expertOpeningTeleportStartedAt", undefined);
 				ent.setMetadata(PlayerID, "expertOpeningTeleportRallyAt", undefined);
+				ent.setMetadata(PlayerID, "expertOpeningTeleportGather", undefined);
 				aiWarn("[EXPERT-TELEPORT] abort worker=" + ent.id() + " reason=garrison-timeout");
 			}
 		}
@@ -7971,6 +8050,8 @@ export class ExpertDecisionController
 			}
 		if (!passThroughActive && cc.unsetRallyPoint)
 			cc.unsetRallyPoint();
+		if (passThroughActive && !Number.isFinite(activeTargetId))
+			return;
 
 		if (now > 120)
 			return;
@@ -7981,12 +8062,23 @@ export class ExpertDecisionController
 		const holderRadius = Math.max(10, Number(obstruction && obstruction.max) || 14);
 		for (const ent of gameState.getOwnUnits().values())
 		{
-			if (this.openingTeleportCount >= 6 || !ent || !entityPosition(ent) || !ent.canGarrison || !ent.canGarrison() ||
-			    ent.getMetadata(PlayerID, "expertOpeningTeleportUsed") === true ||
-			    ent.getMetadata(PlayerID, TASK_KEY) === undefined)
+			if (!ent || !entityPosition(ent) || !ent.canGarrison || !ent.canGarrison() ||
+			    ent.getMetadata(PlayerID, "expertOpeningTeleportUsed") === true)
 				continue;
-			const targetId = Number(ent.getMetadata(PlayerID, "target-foundation"));
+			const builder = ent.getMetadata(PlayerID, TASK_KEY) !== undefined;
+			if (builder ? this.openingTeleportCount >= 6 : this.openingGatherTeleportCount >= 4)
+				continue;
+			if (includeGatherers === builder || !builder && (!hasClass(ent, "Civilian") || hasClass(ent, "CitizenSoldier") ||
+			    (ent.resourceCarrying && (ent.resourceCarrying() || []).some(item => item && Number(item.amount) > 0))))
+				continue;
+			const targetId = Number(ent.getMetadata(PlayerID, builder ? "target-foundation" : SUPPLY_ID));
+			if (Number.isFinite(activeTargetId) && activeTargetId !== targetId)
+				continue;
 			const target = Number.isFinite(targetId) ? gameState.getEntityById(targetId) : undefined;
+			if (!builder && (!target || !target.resourceSupplyAmount || target.resourceSupplyAmount() <= 0 ||
+			    hasClass(target, "Field") || hasClass(target, "Animal") ||
+			    !["food", "wood"].includes(this.resourceGenericForSupply(target))))
+				continue;
 			const start = entityPosition(ent), finish = entityPosition(target);
 			if (!finish || SquareVectorDistance(start, ccPos) > (holderRadius + 14) * (holderRadius + 14) ||
 			    SquareVectorDistance(finish, ccPos) < (holderRadius + 8) * (holderRadius + 8) ||
@@ -7997,12 +8089,23 @@ export class ExpertDecisionController
 			const alignment = (ax * bx + az * bz) / Math.max(1, Math.hypot(ax, az) * Math.hypot(bx, bz));
 			if (alignment >= 0.65)
 				continue;
+			// A nearly opposite-side trip saves roughly (pi - 2) * CC radius
+			// compared with skirting its footprint. Short/oblique trips do not repay
+			// the garrison/rally/unload delay.
+			if (!builder && (alignment > -0.92 || Math.hypot(ax, az) + Math.hypot(bx, bz) > 65))
+				continue;
 			ent.setMetadata(PlayerID, "expertOpeningTeleportUsed", true);
+			if (!builder)
+				ent.setMetadata(PlayerID, "expertOpeningTeleportGather", true);
 			ent.setMetadata(PlayerID, "expertOpeningTeleportHolder", cc.id());
 			ent.setMetadata(PlayerID, "expertOpeningTeleportTarget", targetId);
 			ent.setMetadata(PlayerID, "expertOpeningTeleportStartedAt", now);
 			ent.garrison(cc);
-			++this.openingTeleportCount;
+			activeTargetId = targetId;
+			if (builder)
+				++this.openingTeleportCount;
+			else
+				++this.openingGatherTeleportCount;
 			aiWarn("[EXPERT-TELEPORT] garrison worker=" + ent.id() + " holder=" + cc.id() + " target=" + targetId);
 		}
 	}
@@ -16094,6 +16197,8 @@ export class ExpertDecisionController
 	{
 		for (const ent of gameState.getOwnUnits().values())
 		{
+			if (ent && ent.getMetadata && ent.getMetadata(PlayerID, "expertOpeningTeleportHolder") !== undefined)
+				continue;
 			if (!entityPosition(ent) || !this.isExpertEconomyEntity(ent))
 				continue;
 			this.trackResourceRoundTrip(gameState, ent);
@@ -16679,6 +16784,7 @@ export class ExpertDecisionController
 		this.workerOrdersTouchedThisTurn = new Set();
 		this.updateWorkers(gameState, cc, foodNetwork, woodsite, accessIndex);
 		this.enforceNoIdleEconomyWorkers(gameState, accessIndex, foodNetwork);
+		this.applyOpeningBuildingPassThrough(gameState, cc, true);
 		this.workerOrdersTouchedThisTurn = undefined;
 		this.diagnose(gameState, frame, foodObservation, woodsite);
 		return true;
@@ -16830,6 +16936,8 @@ export class ExpertDecisionController
 			"foundationTracker": this.foundationTracker.serialize(),
 			"initialWoodSelection": this.initialWoodSelection,
 			"openingTeleportCount": this.openingTeleportCount,
+			"openingGatherTeleportCount": this.openingGatherTeleportCount,
+			"expertLaunchBlockDiagnostics": { ...this.expertLaunchBlockDiagnostics },
 			"primaryWoodWorksite": this.primaryWoodWorksite,
 			"openingStorehouseRecoveryCount": this.openingStorehouseRecoveryCount,
 			"lastStorehouseCompletedAt": this.lastStorehouseCompletedAt,
@@ -16945,6 +17053,8 @@ export class ExpertDecisionController
 		this.foundationTracker = FoundationTracker.deserialize(data.foundationTracker || {});
 		this.initialWoodSelection = data.initialWoodSelection;
 		this.openingTeleportCount = Math.max(0, Number(data.openingTeleportCount) || 0);
+		this.openingGatherTeleportCount = Math.max(0, Number(data.openingGatherTeleportCount) || 0);
+		this.expertLaunchBlockDiagnostics = { ...(data.expertLaunchBlockDiagnostics || {}) };
 		this.primaryWoodWorksite = data.primaryWoodWorksite;
 		this.openingStorehouseRecoveryCount = Math.max(0, Number(data.openingStorehouseRecoveryCount) || 0);
 		this.lastStorehouseCompletedAt = Number.isFinite(Number(data.lastStorehouseCompletedAt)) ? Number(data.lastStorehouseCompletedAt) : -99999;

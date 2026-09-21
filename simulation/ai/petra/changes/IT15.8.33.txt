@@ -1,0 +1,8 @@
+Expert Petra 15.8.33 patch — apply after 15.8.32
+
+1. Launch blocker diagnostics: record the specific active P1/P2/P3 launch gate for an assembled army (>=40 plan units), including the relevant army/tech/siege/timing values and the independent infantry-overmatch safety values. Log on gate change or every 32 seconds while the same gate persists. Infantry-overmatch safety now exposes a status object shared by its existing boolean decision and diagnostics; no threshold or attack authorization changed.
+2. Opening CC pass-through: preserve the six-builder cap and allow up to four additional empty-handed civilian gatherers (berries or wood) within the first 120 seconds if the CC lies directly across their path. Process a single destination at a time because the CC rally point is shared; on exit, log which side of the CC the unit reached. A worker in transit retains its assigned resource and is skipped by the resource allocator until it exits. No pass-through for soldiers, farms, animals, carried resources, or oblique/long trips.
+
+No other economy, strategy, attack, bonus or building-placement changes. This patch does not alter 15.8.32's early forecast mineral storehouse; that separately discussed issue is deferred.
+
+Verification: node --check on both changed modules; six existing Petra node regression scripts pass. No game engine replay was run: compare opening elapsed time, worker exitSide, subsequent actual gathering, and [EXPERT-LAUNCH-BLOCK] during next test before changing attack thresholds.

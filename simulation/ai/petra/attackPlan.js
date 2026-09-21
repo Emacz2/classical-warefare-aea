@@ -1086,23 +1086,29 @@ AttackPlan.prototype.expertExposedTower = function(gameState, enemyUnits, enemyS
 // discovering garrisoned defenders cancels the infantry shortcut automatically.
 AttackPlan.prototype.expertOvermatchCaptureReady = function(gameState)
 {
+	return this.expertOvermatchCaptureStatus(gameState).ready;
+};
+
+// Report the same safety inputs used by the launch gate, without relaxing it.
+AttackPlan.prototype.expertOvermatchCaptureStatus = function(gameState)
+{
 	if (this.Config.difficulty < difficulty.EXPERT || this.targetPlayer === undefined || !this.unitCollection)
-		return false;
+		return { ready: false, blocker: "target-or-army-unavailable" };
 	const own = this.unitCollection.toEntityArray ? this.unitCollection.toEntityArray() : [...this.unitCollection.values()];
 	const infantry = own.filter(ent => ent && ent.position && ent.position() && ent.hasClass && ent.hasClass("Infantry"));
 	const melee = infantry.filter(ent => ent.hasClass("Melee"));
 	if (infantry.length < 65 || melee.length < 18)
-		return false;
+		return { ready: false, blocker: "infantry-or-melee", infantry: infantry.length, melee: melee.length };
 	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[this.targetPlayer];
 	const enemyPop = pdata && Number(pdata.popCount);
 	if (!Number.isFinite(enemyPop) || enemyPop > infantry.length / 2)
-		return false;
+		return { ready: false, blocker: "enemy-population", infantry: infantry.length, melee: melee.length, enemyPop };
 	let cc;
 	for (const structure of gameState.getEnemyStructures(this.targetPlayer).values())
 		if (structure && structure.position && structure.position() && structure.hasClass("CivCentre"))
 		{ cc = structure; break; }
 	if (!cc)
-		return false;
+		return { ready: false, blocker: "enemy-cc-unavailable", infantry: infantry.length, melee: melee.length, enemyPop };
 	const radius2 = 80 * 80;
 	let defenders = 0, garrison = 0, firing = 0;
 	for (const enemy of gameState.getEnemyUnits(this.targetPlayer).values())
@@ -1118,8 +1124,11 @@ AttackPlan.prototype.expertOvermatchCaptureReady = function(gameState)
 			if (structure.hasDefensiveFire && structure.hasDefensiveFire())
 				++firing;
 		}
-	return firing <= 3 && defenders <= Math.floor(melee.length / 4) &&
-		garrison <= Math.floor(melee.length / 6);
+	const blocker = firing > 3 ? "firing-structures" : defenders > Math.floor(melee.length / 4) ?
+		"cc-defenders" : garrison > Math.floor(melee.length / 6) ? "cc-garrison" : "ready";
+	return { ready: blocker === "ready", blocker, infantry: infantry.length, melee: melee.length,
+		enemyPop, defenders, defenderLimit: Math.floor(melee.length / 4),
+		garrison, garrisonLimit: Math.floor(melee.length / 6), firing };
 };
 
 // IT14.45 ram assault state.  Once a ram has actually joined this attack, the CC is
