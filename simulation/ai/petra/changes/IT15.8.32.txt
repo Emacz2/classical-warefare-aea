@@ -1,0 +1,8 @@
+Expert Petra IT15.8.32 patch (apply over IT15.8.31)
+
+1. On the P3 boom route only, queue the first Town market ahead of the first Town forge once at least one barracks and 65 population are present. Reserve its resource cost before optional forge expenditure. P2 attacks retain their existing market gate; Village forge and temple ordering are unchanged.
+2. For a serviced owned stone/metal district with at least two miners, at least 250 resource remaining and a measured drop distance greater than 25m, allow a storehouse even while permanent fields are catching up. The existing wood reserve, construction pipeline and territory/placement checks remain active.
+
+Scope deliberately deferred: strategy weights, attack launch/capture thresholds, City ram selection, Greek Village temple timing and wood worksite migration. In the supplied replay the wood controller logged repeated 'HOLD healthy serviced district' decisions and later released it once practical wood fell to 427; a screenshot alone cannot establish whether the pictured unused patch was inaccessible, marked outside territory, or deprioritized by worker assignments. The 13:45 overmatch likewise does not prove the enemy defense near its CC was safe to attack.
+
+Verification: node --check on both changed JavaScript files; node --test service-tech.test.cjs worker-safety.test.cjs. No in-game replay run here. The 20% Expert gather/trade bonus and 15.8.31 natural-food worker limits are untouched.

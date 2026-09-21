@@ -671,6 +671,26 @@ function planEconomy(rawState, overrides = {}) {
     state.population.used >= policy.p1TemplePopulation &&
     (fieldPipeline >= policy.p1TempleMinimumFieldPipeline || infrastructureNaturalReady);
 
+  // IT15.8.32: the P3 economy needs its first barter outlet as soon as Town
+  // begins. Reserve it ahead of the first Town forge; an actual P2 push keeps
+  // its existing two-barracks timing and the Village forge remains untouched.
+  const marketPipeline = state.structures.market + state.foundations.market + state.queued.market;
+  const earlyBoomMarket = state.phase >= 2 && !!state.flags.p3BoomDoctrine;
+  if (state.phase >= 2 && marketPipeline === 0 &&
+      state.structures.barracks >= (earlyBoomMarket ? 1 : 2) &&
+      state.population.used >= (earlyBoomMarket ? Math.min(65, policy.phase2MarketPopulation) : policy.phase2MarketPopulation)) {
+    const cost = costOf(state, policy, "market");
+    const canBuildMarket = state.resources.wood >= (cost.wood || 0) + policy.phase2MarketWoodReserve &&
+      state.resources.food >= (cost.food || 0) && state.resources.stone >= (cost.stone || 0) && state.resources.metal >= (cost.metal || 0) &&
+      resourceEnough(state.resources, cost, reservations);
+    addReservation(reservations, cost);
+    actions.push(canBuildMarket ?
+      { type: "BUILD", kind: "market", role: "town_market", priority: earlyBoomMarket ? 100 : 94,
+        builderPool: strategicBuilderPool, reason: "establish Town market and barter/dropsite capacity" } :
+      { type: "RESERVE", kind: "market", role: "town_market", priority: earlyBoomMarket ? 100 : 94,
+        cost, reason: "protect first Town market before optional P2 spending" });
+  }
+
   const forgePipeline = state.structures.forge + state.foundations.forge + state.queued.forge;
   const forgePending = state.foundations.forge + state.queued.forge;
   const p3BoomForge = !!state.flags.p3BoomDoctrine;
@@ -758,22 +778,6 @@ function planEconomy(rawState, overrides = {}) {
         addReservation(reservations, cost);
       }
     }
-  }
-
-  // First Town market: retain the resource-dropsite behavior that worked well in
-  // IT14.32.
-  const marketPipeline = state.structures.market + state.foundations.market + state.queued.market;
-  if (state.phase >= 2 && state.structures.barracks >= 2 && marketPipeline === 0 &&
-      state.population.used >= policy.phase2MarketPopulation) {
-    const cost = costOf(state, policy, "market");
-    const canBuildMarket = state.resources.wood >= (cost.wood || 0) + policy.phase2MarketWoodReserve &&
-      state.resources.food >= (cost.food || 0) && state.resources.stone >= (cost.stone || 0) && state.resources.metal >= (cost.metal || 0) &&
-      resourceEnough(state.resources, cost, reservations);
-    addReservation(reservations, cost);
-    if (canBuildMarket)
-      actions.push({ type: "BUILD", kind: "market", role: "town_market", priority: 94, builderPool: strategicBuilderPool, reason: "establish Town market and barter/dropsite capacity" });
-    else
-      actions.push({ type: "RESERVE", kind: "market", role: "town_market", priority: 94, cost, reason: "protect first Town market before optional P2 spending" });
   }
 
   // If the next phase still needs another Town-class structure, add a second

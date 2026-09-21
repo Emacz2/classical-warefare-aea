@@ -15119,7 +15119,11 @@ export class ExpertDecisionController
 				(Number(policy.resourceServiceMinimumNaturalFoodRemaining) || 300) : district.generic === "wood" ?
 				(Number(policy.woodServiceMinimumRemaining) || 450) :
 				(Number(policy.resourceServiceMinimumMineralRemaining) || 250);
-			if (district.workers.length < requiredWorkers || district.remaining < requiredRemaining)
+			// A pair of miners hauling more than 25m already pays for local service.
+			// Do not wait for a third miner while stone/metal is leaking travel time.
+			const longMineralHaul = (district.generic === "stone" || district.generic === "metal") &&
+				district.workers.length >= 2 && district.dropDistance > 25;
+			if ((!longMineralHaul && district.workers.length < requiredWorkers) || district.remaining < requiredRemaining)
 				return false;
 			if (district.generic === "wood")
 			{
@@ -15184,7 +15188,9 @@ export class ExpertDecisionController
 		const naturalRemaining = frame && frame.state && frame.state.food ?
 			Math.max(0, Number(frame.state.food.totalNaturalRemaining) || 0) : 0;
 		const foodForecast = this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.food;
-		if (need.generic !== "wood" && need.generic !== "food" && fieldPipeline < desiredFields &&
+		const urgentMineralHaul = (need.generic === "stone" || need.generic === "metal") &&
+			need.dropDistance > 25 && need.workers.length >= 2;
+		if (need.generic !== "wood" && need.generic !== "food" && !urgentMineralHaul && fieldPipeline < desiredFields &&
 		    (naturalRemaining <= 0 || foodForecast && (foodForecast.status === "critical" || foodForecast.status === "short")))
 			return frame;
 		const kind = need.generic === "food" ? "farmstead" : "storehouse";
