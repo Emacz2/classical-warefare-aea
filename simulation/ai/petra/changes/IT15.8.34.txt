@@ -1,0 +1,37 @@
+Expert Petra 15.8.34 patch — apply after 15.8.33
+
+Scope: three corrective areas only. No gathering bonus, opening placement, farm,
+Wicker, house, teleport, cavalry, technology-cost or difficulty changes.
+
+1. Resource-district locality and woodline persistence
+   - Resource-service Storehouses now carry the exact local worker IDs from the
+     district audit into builder selection. The generic builder resolver can no
+     longer pull workers from another productive woodline to construct them.
+   - Forecast mixed/mineral Storehouses use workers already assigned to the
+     serviced supplies whenever those workers exist.
+   - Completion preserves those builders' original resource job, so constructing
+     a mineral Storehouse does not silently convert its crew into lumberjacks.
+
+2. Coherent P1 commitment and production
+   - Wood scarcity may pivot an unformed P1 rush, but it cannot cancel a rush that
+     has already reached its declared army target. The completed army is explicitly
+     launch-authorized instead.
+   - A legitimate earlier pivot immediately removes pending CC-combat orders and
+     closes the P1 CC military exception; existing trained soldiers are retained.
+   - While below the civilian target, an underfilled Barracks receives military
+     resources before the CC. This favors a funded Barracks batch instead of
+     splitting the same bank into one CC soldier and one Barracks soldier.
+
+3. Decisive tower/CC finishing
+   - Infantry-overmatch capture permission is reevaluated from the live army and
+     enemy state for every started Expert plan. It no longer depends on whether
+     the plan originally launched through the overmatch shortcut.
+   - A no-siege overmatch clears an exposed tower first when necessary, then hard
+     locks the enemy CC for capture. It does not wait for a ram.
+   - New [EXPERT-CAPTURE-FINISH] LOCK diagnostics identify the no-siege execution.
+
+Verification
+   - node --check passes for expertDecisionController.js and attackPlan.js.
+   - All six existing Petra regression scripts pass (nine PASS groups).
+   - No engine simulation was run. Test two replays: abort the first if locality or
+     strategy coherence fails; let the second reach conquest to measure finish time.
