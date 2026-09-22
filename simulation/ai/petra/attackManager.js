@@ -1210,7 +1210,7 @@ AttackManager.prototype.coordinateExpertCCCaptureFinish = function(gameState, fi
 	if (!lock || Number(lock.plan) !== Number(attack.name) || Number(lock.targetId) !== Number(cc.id()))
 	{
 		lock = { plan: attack.name, targetId: cc.id(), targetPlayer: finishing.targetPlayer,
-			startedAt: now, lastCapture: ours, progressCapture: ours, lastProgressAt: now };
+			startedAt: now, startCapture: ours, lastCapture: ours, progressCapture: ours, lastProgressAt: now };
 		this.expertCCCaptureLock = lock;
 		aiWarn("[EXPERT-CAPTURE-FINISH] LOCK plan=" + attack.name + " cc=" + cc.id() +
 			" army=" + attack.unitCollection.length + " capturers=" + capturers.length + " screen=" + enemyScreen.length);
@@ -1228,12 +1228,27 @@ AttackManager.prototype.coordinateExpertCCCaptureFinish = function(gameState, fi
 	const stall = Math.max(6, Number(policy.expertCCCaptureFinishStallSeconds) || 18);
 	if (now - (Number(lock.lastProgressAt) || now) >= stall)
 	{
-		const retry = Math.max(8, Number(policy.expertCCCaptureFinishRetryDelaySeconds) || 24);
-		this.expertCCCaptureSuppressedUntil[cc.id()] = now + retry;
-		this.expertCCCaptureLock = undefined;
-		aiWarn("[EXPERT-CAPTURE-FINISH] STALLED cc=" + cc.id() + " capture=" + Math.round(ours) +
-			" release=destroy retry=" + Math.round(retry));
-		return 0;
+		const meaningfulGain = Math.max(1, Number(policy.expertCCCaptureFinishMeaningfulProgressPoints) || 25);
+		const meaningfulProgress = Math.max(ours, Number(lock.progressCapture) || 0) >=
+			(Number(lock.startCapture) || 0) + meaningfulGain;
+		if (meaningfulProgress)
+		{
+			// IT15.8.41: a temporarily flat capture bar is not permission to throw away
+			// accumulated ownership. The local-overmatch tests above already prove that
+			// capture remains safe, so refresh orders and preserve exclusive ownership.
+			lock.lastProgressAt = now;
+			aiWarn("[EXPERT-CAPTURE-FINISH] STALLED-HOLD cc=" + cc.id() + " capture=" + Math.round(ours) +
+				" action=resume-capture");
+		}
+		else
+		{
+			const retry = Math.max(8, Number(policy.expertCCCaptureFinishRetryDelaySeconds) || 24);
+			this.expertCCCaptureSuppressedUntil[cc.id()] = now + retry;
+			this.expertCCCaptureLock = undefined;
+			aiWarn("[EXPERT-CAPTURE-FINISH] STALLED cc=" + cc.id() + " capture=" + Math.round(ours) +
+				" release=destroy retry=" + Math.round(retry));
+			return 0;
+		}
 	}
 
 	attack.target = cc;

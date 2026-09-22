@@ -1,0 +1,35 @@
+Expert AI 15.8.41 — authoritative replay corrections
+
+Scope
+- Based directly on verified 15.8.40.
+- Expert gather/trade bonus remains 15%.
+- No opening, population-cap, strategy-probability, placement, or training changes.
+
+Corrections
+1. Sparse-biome wood service
+   - When wood is critical and the bank is <= 200, nearby legal fragments within 75m
+     are evaluated as one economic district.
+   - A combined 350+ wood district may place a Storehouse even when every connected
+     sub-cluster fails the ordinary 500–600 wood threshold.
+2. Farm spending gate
+   - Farmer ownership no longer recursively demands another Field when the current
+     field pipeline already covers live CC+barracks burn.
+   - At 900+ food and <=250 wood, an established six-plus-field economy freezes new
+     Field spending until the imbalance clears.
+3. P3/CC spending ownership
+   - P3 all-in commits the City phase through the majorTech queue at 12:00/100+ pop
+     as soon as prerequisites expose the phase technology.
+   - The phase queue receives priority 1125 so lower-priority spending cannot steal
+     its reserved resources.
+   - During that P3 spending window, Athens may buy Hoplite Tradition without waiting
+     for both broad Town attack upgrades, preventing an otherwise idle CC.
+4. Persistent enemy-CC capture
+   - Once capture has gained at least 25 points and local overmatch remains valid, a
+     temporary progress stall refreshes capture orders instead of switching to destroy.
+   - The old destroy/retry fallback remains only for attempts that made no meaningful
+     capture progress.
+
+Validation
+- JavaScript syntax checks.
+- Full inherited regression suite.
+- New replay-derived ownership-invariants test.

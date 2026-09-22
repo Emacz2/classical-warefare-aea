@@ -694,6 +694,14 @@ const DEFAULT_POLICY = Object.freeze({
   dynamicWoodShortageBank: 350,
   foodSurplusRedirectThreshold: 900,
   foodSurplusPauseFarmExpansion: 1000,
+  // IT15.8.41 live bank veto for redundant permanent-food spending.
+  farmExpansionFoodSurplusHold: 900,
+  farmExpansionWoodCrisisHold: 250,
+  // IT15.8.41 sparse-biome wood districts: nearby fragments may jointly justify one
+  // emergency dropsite even when no connected sub-cluster clears the normal floor.
+  fragmentedWoodEmergencyBank: 200,
+  fragmentedWoodDistrictRadius: 75,
+  fragmentedWoodDistrictMinimumAmount: 350,
   // IT14.43: once the required food workforce is already covered, a large food
   // bank should make NEW civilians behave like a human surplus-management choice.
   // IT14.71 deliberately raises this threshold: an early food surplus is productive
@@ -857,6 +865,10 @@ const DEFAULT_POLICY = Object.freeze({
   expertCCCaptureFinishScreenersPerEnemy: 3,
   expertCCCaptureFinishOrderIntervalSeconds: 1.75,
   expertCCCaptureFinishStallSeconds: 18,
+  expertCCCaptureFinishMeaningfulProgressPoints: 25,
+  // IT15.8.41 P3 all-in owns the phase queue at the agreed ~12 minute timing.
+  expertP3CommitMinimumTime: 720,
+  expertP3CommitMinimumPopulation: 100,
   expertCCCaptureFinishRetryDelaySeconds: 24,
   expertCCCaptureFinishProgressPoints: 2,
   // Athens' zero-pop Scythian civic police are overflow manpower, not core army.

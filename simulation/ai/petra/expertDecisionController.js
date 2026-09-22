@@ -3344,9 +3344,14 @@ export class ExpertDecisionController
 		{
 			if (!queues.minorTech || queues.minorTech.hasQueuedUnits())
 				return false;
-			// Athens still locks in the broad Town attack pair before buying Tradition
-			// if the P1 production window was missed.
-			if (civ === "athen")
+			// Ordinarily Athens locks in the broad Town attack pair first. At the agreed
+			// P3-all-in commitment time, however, an idle CC with an affordable Tradition
+			// is worse than strict ordering; spend through this lane while City reserves
+			// its independent majorTech account.
+			const doctrine = this.ensureStrategicDoctrine(gameState);
+			const p3SpendingLane = doctrine && doctrine.id === "p3_boom_all_in" &&
+				now >= (Number(policy.expertP3CommitMinimumTime) || 720);
+			if (civ === "athen" && !p3SpendingLane)
 			{
 				const coreReady = name => gameState.isResearched(name) || gameState.isResearching(name) ||
 					Object.prototype.hasOwnProperty.call(this.expertObservedP2MilitaryTechs || {}, name);
@@ -6115,6 +6120,45 @@ export class ExpertDecisionController
 		// proven it is mature enough. This converts P1 surplus into new spending options.
 		gameState.ai.queueManager.changePriority("majorTech", Math.max(this.HQ.Config.priorities.majorTech || 1, 1100));
 		aiWarn("[EXPERT-PHASE] queued " + decision.name + " lane=" + decision.state + " " + decision.reason);
+		return true;
+	}
+
+	researchExpertP3Commitment(gameState, queues)
+	{
+		if (!gameState || !queues || !queues.majorTech || !gameState.currentPhase ||
+		    gameState.currentPhase() !== 2 || !gameState.getPhaseName || !gameState.ai || !gameState.ai.queueManager)
+			return false;
+		const doctrine = this.ensureStrategicDoctrine(gameState);
+		if (!doctrine || doctrine.id !== "p3_boom_all_in")
+			return false;
+		const policy = mergePolicy();
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		if (now < (Number(policy.expertP3CommitMinimumTime) || 720) ||
+		    gameState.getPopulation() < (Number(policy.expertP3CommitMinimumPopulation) || 100))
+			return false;
+		const city = gameState.getPhaseName(3);
+		if (!city || gameState.isResearching && gameState.isResearching(city))
+			return !!city;
+		if (queues.majorTech.hasQueuedUnits())
+			return !!(Array.isArray(queues.majorTech.plans) && queues.majorTech.plans.some(plan => plan && plan.type === city));
+
+		// The available-tech list is the authoritative prerequisite check. Once City is
+		// exposed, queue it immediately so majorTech owns the bank instead of allowing
+		// Fields, houses, or optional research to consume the intended all-in resources.
+		const available = new Map(gameState.findAvailableTech ? gameState.findAvailableTech() || [] : []);
+		if (!available.has(city))
+			return false;
+		const plan = new ResearchPlan(gameState, city, true);
+		if (!plan)
+			return false;
+		plan.metadata = { "expertDecisionLayer": true, "expertPhase3": true,
+			"expertPhaseQueuedAt": now, "lane": "p3-all-in-commitment" };
+		plan.queueToReset = "majorTech";
+		queues.majorTech.addPlan(plan);
+		this.HQ.phasing = 3;
+		gameState.ai.queueManager.changePriority("majorTech", Math.max(this.HQ.Config.priorities.majorTech || 1, 1125));
+		aiWarn("[EXPERT-PHASE] queued " + city + " lane=p3-all-in-commitment t=" + Math.round(now) +
+			" pop=" + gameState.getPopulation());
 		return true;
 	}
 
@@ -12257,6 +12301,26 @@ export class ExpertDecisionController
 					.filter(site => site && site.position && this.HQ.territoryMap.getOwner(site.position) === PlayerID &&
 						Math.max(0, Number(site.forestWoodAmount || site.localWoodAmount) || 0) >= minimumDistrictWood)
 					.slice(0, 8);
+				// IT15.8.41: sparse palms and other fragmented biomes may be one useful
+				// economic district even though graph connectivity divides them into several
+				// sub-threshold forests. During a real wood shortage, aggregate nearby legal
+				// fragments around the best site; the ordinary minimum remains unchanged.
+				if (!ranked.length && forecastWood && forecastWood.status === "critical" &&
+				    (Number(gameState.getResources().wood) || 0) <= (Number(policy.fragmentedWoodEmergencyBank) || 200))
+				{
+					const radius = Math.max(35, Number(policy.fragmentedWoodDistrictRadius) || 75);
+					const nearbyFragments = all.filter(tree => tree && Array.isArray(tree.position) &&
+						SquareVectorDistance(tree.position, selection.position) <= radius * radius);
+					const combinedWood = nearbyFragments.reduce((sum, tree) => sum + Math.max(0, Number(tree.remaining) || 0), 0);
+					const emergencyMinimum = Math.max(100, Number(policy.fragmentedWoodDistrictMinimumAmount) || 350);
+					if (combinedWood >= emergencyMinimum)
+					{
+						ranked = [{ ...selection, treeIds: nearbyFragments.map(tree => tree.id),
+							localWoodAmount: combinedWood, forestWoodAmount: combinedWood }];
+						aiWarn("[EXPERT-WOOD] aggregate-fragments wood=" + Math.round(combinedWood) +
+							" pieces=" + nearbyFragments.length + " bank=" + Math.round(Number(gameState.getResources().wood) || 0));
+					}
+				}
 				if (!ranked.length)
 				{
 					aiWarn("[EXPERT-WOOD] reject fragment district bestWood=" + Math.round(Number(selection.localWoodAmount) || 0) +
@@ -16682,6 +16746,7 @@ export class ExpertDecisionController
 		this.researchExpertMiningEcoTech(gameState, queues, frame);
 		this.researchExpertP1EcoSweep(gameState, queues);
 		const phasePending = this.researchExpertPhase2(gameState, queues, frame);
+		const phase3Pending = !phasePending && this.researchExpertP3Commitment(gameState, queues);
 		// Athens-specific pressure valve: once the Forge exposes the intended zero-wood
 		// slinger unlock, surplus food/stone can keep barracks productive through a wood dip.
 		// This is intentionally independent of phasePending because it consumes no wood.
@@ -16714,7 +16779,8 @@ export class ExpertDecisionController
 					this.researchExpertMiningEcoTech(gameState, queues, frame);
 					if (!coreP2Eco)
 						this.researchExpertEcoTech(gameState, queues, allFoodClusters, cc);
-					this.researchExpertP2MilitaryTech(gameState, queues);
+					if (!phase3Pending)
+						this.researchExpertP2MilitaryTech(gameState, queues);
 				}
 				if (cityTransition || (defenseState && defenseState.active))
 				{

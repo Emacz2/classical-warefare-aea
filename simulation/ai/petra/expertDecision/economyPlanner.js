@@ -259,9 +259,21 @@ function fieldDemand(state, policy) {
   const surplusFloor = barracksPipeline >= 1 ? policy.minimumCompletedFieldsBeforeSecondBarracks : 0;
   const foodSurplusSolved = state.time >= 240 && state.resources.food >= policy.foodSurplusPauseFarmExpansion && completedFields >= surplusFloor;
 
-  // Resource-bank optimization may never override permanent food infrastructure or the
-  // no-idle capacity invariant. Surplus food simply suppresses extra burn-rate growth.
-  desiredFields = Math.max(desiredFields, capacityFields, permanentFieldFloor);
+  // IT15.8.41: food ownership is not itself proof that another Field is needed. If the
+  // completed/pending pipeline already covers live production burn, do not let a large
+  // inherited farmer roster recursively manufacture Field #9/#10 while wood is critical.
+  const liveProductionBurn = barracksPipeline >= 2 ? state.food.twoBarracksFoodBurnRate :
+    barracksPipeline >= 1 ? state.food.oneBarracksFoodBurnRate : state.food.ccFoodBurnRate;
+  const productionCovered = projectedPipelineIncome >= Math.max(0, liveProductionBurn * margin);
+  desiredFields = Math.max(desiredFields, productionCovered ? 0 : capacityFields, permanentFieldFloor);
+
+  // A strong food bank plus an acute wood shortage is an explicit spending veto. Existing
+  // Fields remain, but no additional farm wood is spent until the imbalance clears.
+  const woodCrisisFarmHold = existingFields >= Math.max(6, Number(policy.minimumCompletedFieldsBeforeSecondBarracks) || 6) &&
+    state.resources.food >= (Number(policy.farmExpansionFoodSurplusHold) || 900) &&
+    state.resources.wood <= (Number(policy.farmExpansionWoodCrisisHold) || 250);
+  if (woodCrisisFarmHold)
+    desiredFields = existingFields;
 
   // IT15.6: natural-first is a REAL hold, not a preference. Population field floors and
   // Barracks burn projections may prepare the later target, but they may not spend wood
