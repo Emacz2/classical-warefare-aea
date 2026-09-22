@@ -1,0 +1,19 @@
+Expert AI IT15.8.38 — Tower suppression command ownership
+
+Scope: one narrow correction on top of IT15.8.37.
+
+Observed failure:
+- attackPlan correctly identified tower 4035 and assigned a 24-unit suppression squad.
+- attackManager then repeatedly issued generic defensive-contact attack-move orders to
+  80-105 eligible units, overwriting the tower squad and stalling the finishing attack.
+- This continued while Expert held approximately 175 population against 12.
+
+Correction:
+- When attackPlan identifies an exposed tower, the generic attack-move sweep yields.
+- attackPlan retains command authority over its bounded tower capture squad.
+- The remainder of the army remains available for the strategic finishing objective.
+- Generic attack-move behavior remains unchanged for enemy-unit screens and defensive
+  contacts that are not already owned by exposed-tower suppression.
+
+New replay marker:
+- [EXPERT-ATTACK-MOVE] yield-tower
