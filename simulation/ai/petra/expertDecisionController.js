@@ -15684,6 +15684,20 @@ export class ExpertDecisionController
 			preferred = preferred.filter(resource => resource !== "food");
 			if (!preferred.length) preferred = ["wood", "metal", "stone"];
 		}
+		// IT15.8.39: JOB_METADATA is persistent resource ownership. Construction and
+		// combat are temporary interruptions, and the no-idle rescue path must resume
+		// that resource before considering another one. A cross-resource fallback is
+		// allowed only when the owned class has no legal target or the bank-based
+		// emergency test explicitly authorizes the transfer.
+		const ownedJob = ent.getMetadata && ent.getMetadata(PlayerID, JOB_METADATA);
+		const ownedResource = jobResourceType(ownedJob);
+		if (ownedResource && preferred.includes(ownedResource))
+		{
+			const ownedTargets = this.resourceCandidatesInOwnTerritory(gameState, ent, accessIndex, ownedResource)
+				.filter(candidate => !Number.isFinite(Number(failedTargetId)) || candidate.id() !== Number(failedTargetId));
+			if (ownedTargets.length)
+				preferred = [ownedResource, ...preferred.filter(resource => resource !== ownedResource)];
+		}
 		// IT14.39: temporary fallback work is still real work. If the worker already
 		// has a live, legal gather order in one of the requested resource classes,
 		// finish that target instead of recomputing the nearest supply every decision

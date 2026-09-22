@@ -8,6 +8,23 @@ import { allowCapture, getLandAccess } from "simulation/ai/petra/entityExtend.js
 import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
 import { Worker } from "simulation/ai/petra/worker.js";
 
+const EXPERT_COMBAT_COMMAND_OWNER = "expertCombatCommandOwner";
+const EXPERT_COMBAT_COMMAND_UNTIL = "expertCombatCommandUntil";
+
+function hasActiveExpertCombatCommand(ent, now)
+{
+	return !!(ent && ent.getMetadata && ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER) &&
+		Number(ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_UNTIL)) > now);
+}
+
+function ownExpertCombatCommand(ent, owner, now, seconds = 6)
+{
+	if (!ent || !ent.setMetadata)
+		return;
+	ent.setMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER, owner);
+	ent.setMetadata(PlayerID, EXPERT_COMBAT_COMMAND_UNTIL, now + seconds);
+}
+
 // IT14.62: "Siege" is a broad gameplay class and can legitimately appear on
 // non-engine units. Expert's structure-finishing logic needs actual mechanical
 // building wreckers instead of treating every Siege-tagged entity as a ram/pult.
@@ -652,6 +669,11 @@ AttackManager.prototype.peelExpertWoundedUnits = function(gameState, attack)
 	const policy = mergePolicy();
 	const balance = this.expertRushLocalBalance(gameState, attack);
 	const closeCombat = balance.enemyCombat > 0 || balance.defenses > 0;
+	// IT15.8.39: do not dismantle a won finishing army during a lull.  The old lull
+	// threshold peeled healthy-enough veterans precisely when no enemy combat or
+	// defensive structure remained to justify interrupting the decisive objective.
+	if (!closeCombat && attack.unitCollection.length >= 40)
+		return 0;
 	const threshold = Math.max(0.05, Math.min(0.9, closeCombat ?
 		(Number(policy.expertWoundedRetreatHealthCombat) || 0.18) :
 		(Number(policy.expertWoundedRetreatHealthLull) || 0.30)));
@@ -1222,6 +1244,7 @@ AttackManager.prototype.coordinateExpertCCCaptureFinish = function(gameState, fi
 		for (const ent of candidates.slice(0, screenersPerEnemy))
 		{
 			ent.attack(enemy.id(), false);
+			ownExpertCombatCommand(ent, "enemy-combat", now);
 			assignedScreeners.add(ent.id());
 		}
 	}
@@ -1230,6 +1253,7 @@ AttackManager.prototype.coordinateExpertCCCaptureFinish = function(gameState, fi
 	{
 		if (assignedScreeners.has(ent.id()))
 			continue;
+		ownExpertCombatCommand(ent, "cc-capture", now);
 		const orders = ent.unitAIOrderData ? ent.unitAIOrderData() || [] : [];
 		const currentTarget = orders.length && orders[0].target;
 		if (Number(currentTarget) === Number(cc.id()) && String(ent.unitAIState && ent.unitAIState() || "").includes("COMBAT"))
@@ -1316,6 +1340,25 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 				    (!defensiveContact || SquareVectorDistance(centre, structure.position()) < SquareVectorDistance(centre, defensiveContact.position())))
 					defensiveContact = structure;
 			}
+			// IT15.8.38: attackPlan owns exposed-tower suppression. It selects a bounded
+			// capture squad and keeps the rest of the army moving toward the decisive
+			// objective. The generic contact sweep used to run immediately afterward and
+			// replace that order with attack-move for every eligible unit (80-105 units in
+			// the 15.8.36 India replay), so the tower squad never held its target. Yield
+			// command authority whenever the plan has an exposed tower to suppress.
+			const exposedTower = attack.expertExposedTower &&
+				attack.expertExposedTower(gameState, gameState.getEnemyUnits(attack.targetPlayer),
+					gameState.getEnemyStructures(attack.targetPlayer), false);
+			if (exposedTower)
+			{
+				if (now - (Number(attack.expertLastTowerSweepYieldLog) || -99999) >= 6)
+				{
+					attack.expertLastTowerSweepYieldLog = now;
+					aiWarn("[EXPERT-ATTACK-MOVE] yield-tower plan=" + attack.name +
+						" tower=" + exposedTower.id() + " army=" + attack.unitCollection.length);
+				}
+				continue;
+			}
 			if (enemiesAhead.length < minimumEnemies && !defensiveContact)
 				continue;
 			this.expertLastAttackMoveSweepAt[key] = now;
@@ -1329,6 +1372,10 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 				if (ent.getMetadata && (ent.getMetadata(PlayerID, "garrisonHolder") !== undefined ||
 				    ent.getMetadata(PlayerID, "expertWoundedReturnUntil") !== undefined ||
 				    ent.getMetadata(PlayerID, "expertCombatRetreatUntil") !== undefined))
+					continue;
+				// CC capture, tower suppression, and direct enemy combat own their units.
+				// Generic movement is strictly the lowest-priority authority.
+				if (hasActiveExpertCombatCommand(ent, now))
 					continue;
 				if (!(ent.attackTypes && ent.attackTypes()))
 					continue;
@@ -1349,7 +1396,12 @@ AttackManager.prototype.coordinateExpertAttackMoveSweep = function(gameState)
 			candidates.sort((a, b) => a.nearest - b.nearest || a.ent.id() - b.ent.id());
 			const capByEnemies = Math.max(minimumEnemies, enemiesAhead.length * unitsPerEnemy);
 			const capByArmy = Math.max(1, Math.ceil(attack.unitCollection.length * maxFraction));
-			const redirectCount = defensiveContact ? candidates.length : Math.min(candidates.length, capByEnemies, capByArmy);
+			// A defensive structure is contact, not permission to redirect the entire
+			// army.  Bound the response just like a unit screen; objective authorities
+			// above decide capture/suppression with the remainder.
+			const structureCap = Math.max(minimumEnemies, Math.min(24, Math.ceil(attack.unitCollection.length * 0.30)));
+			const redirectCount = defensiveContact ? Math.min(candidates.length, structureCap, capByArmy) :
+				Math.min(candidates.length, capByEnemies, capByArmy);
 			const contactDestination = defensiveContact ? defensiveContact.position() : destination;
 			for (const item of candidates.slice(0, redirectCount))
 				item.ent.attackMove(contactDestination[0], contactDestination[1], {

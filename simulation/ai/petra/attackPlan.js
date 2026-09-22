@@ -9,6 +9,23 @@ import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
 import { TrainingPlan } from "simulation/ai/petra/queueplanTraining.js";
 import { Worker } from "simulation/ai/petra/worker.js";
 
+const EXPERT_COMBAT_COMMAND_OWNER = "expertCombatCommandOwner";
+const EXPERT_COMBAT_COMMAND_UNTIL = "expertCombatCommandUntil";
+
+function hasActiveExpertCombatCommand(ent, now)
+{
+	return !!(ent && ent.getMetadata && ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER) &&
+		Number(ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_UNTIL)) > now);
+}
+
+function ownExpertCombatCommand(ent, owner, now, seconds = 6)
+{
+	if (!ent || !ent.setMetadata)
+		return;
+	ent.setMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER, owner);
+	ent.setMetadata(PlayerID, EXPERT_COMBAT_COMMAND_UNTIL, now + seconds);
+}
+
 // IT14.62: Expert distinguishes true mechanical building wreckers from the broad
 // Siege class. Human/Infantry units carrying a special weapon are combat troops, not
 // rams/catapults for attack planning purposes.
@@ -1104,8 +1121,11 @@ AttackPlan.prototype.expertTowerSuppressionSquad = function(gameState, tower, en
 			++defenders;
 	const desired = Math.max(10, Math.min(24, defenders * 3 + 8,
 		Math.floor(this.unitCollection.length * 0.30)));
+	const now = Number(gameState.ai.elapsedTime) || 0;
 	const candidates = this.unitCollection.toEntityArray().filter(ent => ent && ent.position && ent.position() &&
 		!ent.hasClass("Ship") && !ent.hasClass("Siege") && !ent.hasClass("Support") &&
+		!(hasActiveExpertCombatCommand(ent, now) &&
+		  ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER) === "cc-capture") &&
 		ent.canAttackTarget(tower, allowCapture(gameState, ent, tower)));
 	candidates.sort((a, b) => {
 		const am = a.hasClass("Melee") ? 0 : 1;
@@ -1376,6 +1396,18 @@ AttackPlan.prototype.maintainExpertInfantryScreen = function(gameState)
 	if (now - (Number(this.expertLastScreenUpdate) || -99999) < (Number(policy.expertRangedScreenUpdateSeconds) || 3))
 		return 0;
 	this.expertLastScreenUpdate = now;
+	// IT15.8.39: screening is formation maintenance, not an objective.  When the
+	// local enemy combat screen is negligible it must not pull dozens of ranged
+	// units backward from a CC/tower finish.
+	const localCentre = this.unitCollection.getCentrePosition && this.unitCollection.getCentrePosition() || this.position;
+	let localEnemyCombat = 0;
+	if (localCentre && this.targetPlayer !== undefined)
+		for (const enemy of gameState.getEnemyUnits(this.targetPlayer).values())
+			if (enemy && enemy.position && enemy.position() && enemy.attackTypes && enemy.attackTypes() &&
+			    SquareVectorDistance(enemy.position(), localCentre) <= 70 * 70)
+				++localEnemyCombat;
+	if (localEnemyCombat < 3)
+		return 0;
 	const melee = [], ranged = [];
 	for (const ent of this.unitCollection.values())
 	{
@@ -1399,6 +1431,8 @@ AttackPlan.prototype.maintainExpertInfantryScreen = function(gameState)
 	let moved = 0;
 	for (const ent of ranged)
 	{
+		if (hasActiveExpertCombatCommand(ent, now))
+			continue;
 		const rangedDistance = Math.sqrt(SquareVectorDistance(ent.position(), this.targetPos));
 		if (rangedDistance + tolerance >= meleeDistance)
 			continue;
@@ -2354,6 +2388,10 @@ AttackPlan.prototype.update = function(gameState, events)
 		// the explicit false here only discovers a target for the bounded suppression squad.
 		const exposedTower = this.expertExposedTower(gameState, enemyUnits, enemyStructures, false);
 		const towerSuppressionIds = this.expertTowerSuppressionSquad(gameState, exposedTower, enemyUnits);
+		if (exposedTower)
+			for (const ent of this.unitCollection.values())
+				if (towerSuppressionIds.has(ent.id()))
+					ownExpertCombatCommand(ent, "tower-suppression", time);
 		if (exposedTower && this.expertLastTowerSuppressionTarget !== exposedTower.id())
 		{
 			this.expertLastTowerSuppressionTarget = exposedTower.id();
@@ -2463,6 +2501,21 @@ AttackPlan.prototype.update = function(gameState, events)
 		{
 			const ent = gameState.getEntityById(this.unitCollUpdateArray[check]);
 			if (!ent || !ent.position())
+				continue;
+			const commandOwner = ent.getMetadata && ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER);
+			const commandActive = hasActiveExpertCombatCommand(ent, time);
+			// Objective ownership is exclusive.  Refresh the tower squad directly here;
+			// capture/enemy-combat orders come from AttackManager and survive this pass.
+			if (commandActive && commandOwner === "tower-suppression" && exposedTower &&
+			    towerSuppressionIds.has(ent.id()) && ent.canAttackTarget(exposedTower, allowCapture(gameState, ent, exposedTower)))
+			{
+				const orders = ent.unitAIOrderData ? ent.unitAIOrderData() || [] : [];
+				if (!orders.length || Number(orders[0].target) !== Number(exposedTower.id()))
+					ent.attack(exposedTower.id(), allowCapture(gameState, ent, exposedTower));
+				ownExpertCombatCommand(ent, "tower-suppression", time);
+				continue;
+			}
+			if (commandActive)
 				continue;
 			// Do not reassign units which have reacted to an attack in that same turn
 			if (ent.getMetadata(PlayerID, "lastAttackPlanUpdateTime") == time)

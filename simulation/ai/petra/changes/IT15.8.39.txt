@@ -1,0 +1,32 @@
+Expert AI IT15.8.39 — Command stability
+
+Baseline
+- Built directly from tested IT15.8.38.
+- No changes to strategy probabilities, civilian caps, economy bonuses, farm targets,
+  building placement, production rules, or technology priorities.
+
+Focused corrections
+1. Persistent worker resource ownership
+   - The no-idle fallback retries a worker's owned resource first whenever a legal
+     in-territory target remains.
+   - Building and combat remain temporary interruptions; lack of a legal target or
+     an existing bank-emergency directive can still select productive fallback work.
+
+2. Single military command authority
+   - Priority is CC capture, tower suppression, direct enemy combat, then generic
+     attack-move.
+   - Objective owners receive short renewable leases, preventing lower-priority
+     systems from replacing their orders on the next update.
+   - Contact with one defensive structure can redirect at most a bounded detachment,
+     never the entire army.
+
+3. Finishing micro restraint
+   - Ranged-screen pullback is disabled when fewer than three enemy combat units are
+     locally present.
+   - Wounded lull peeling is disabled for an uncontested finishing army of 40+ units.
+
+Validation
+- JavaScript syntax checks passed for all three changed source files.
+- Existing regression suites passed.
+- IT15.8.39 command-stability guard test passed.
+- Source audit confirms exactly three Petra source files changed from IT15.8.38.
