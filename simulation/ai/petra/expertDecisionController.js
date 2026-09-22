@@ -10132,7 +10132,23 @@ export class ExpertDecisionController
 				stone: Number(cost && cost.stone) || 0, metal: Number(cost && cost.metal) || 0
 			};
 			const ram = template.hasClasses(["Ram"]) || String(type).toLowerCase().includes("ram");
-			candidates.push({ type, cost: resources, ram, score: (ram ? -10000 : 0) + resources.food + resources.wood + resources.stone + resources.metal });
+			const cityRam = ram && (siegeName.includes("ram_city") || siegeName.includes("city_ram") ||
+				siegeName.includes("fortified") || template.hasClasses(["City"]));
+			const totalCost = resources.food + resources.wood + resources.stone + resources.metal;
+			candidates.push({ type, cost: resources, ram, cityRam, totalCost,
+				score: (ram ? -10000 : 0) + totalCost });
+		}
+		// IT15.8.37: in City phase, the fortified/city ram is the primary finisher.
+		// The old cost-first ordering silently selected units/athen/siege_ram ahead of
+		// units/athen/siege_ram_city, wasting the phase-three investment.
+		if (preference === "ram" && gameState.currentPhase && gameState.currentPhase() >= 3)
+		{
+			const cityRams = candidates.filter(candidate => candidate.cityRam);
+			if (cityRams.length)
+			{
+				cityRams.sort((a, b) => b.totalCost - a.totalCost || a.type.localeCompare(b.type));
+				return cityRams[0];
+			}
 		}
 		if (preference === "nonram")
 		{

@@ -1,0 +1,24 @@
+Expert AI IT15.8.37 — Preserve a won battlefield
+
+Scope: two narrow corrections on top of the complete IT15.8.36 Petra folder.
+
+1. Live military advantage now outranks stale cumulative attrition.
+   - When an active army still has at least 40 units, at least 24 nearby combatants,
+     no local static defenses, and an overwhelming local lead (at least 2:1 and +18),
+     Expert keeps the current attack alive.
+   - Earlier casualties are checkpointed at that moment. Only new casualties can
+     contribute to a later bad-exchange retreat.
+   - The broken-melee-screen rule cannot immediately cancel this same decisive hold.
+   - Real retreats for local collapse, depleted armies, defended positions, and bad
+     exchanges remain unchanged.
+   - New replay marker: [EXPERT-ADVANTAGE] preserve.
+
+2. City-phase ram selection prefers the fortified/city ram.
+   - In Phase 3, automatic ram selection chooses units/*/siege_ram_city (or an
+     equivalent City/Fortified ram) ahead of the cheaper basic ram.
+   - Phase 2 behavior and optional non-ram siege selection remain unchanged.
+
+Replay reason for the change:
+The IT15.8.36 army reached approximately 83 local combatants versus 8 with zero local
+defenses, but historical casualties triggered [EXPERT-ATTRITION] budget-exhausted and
+[EXPERT-REBOOM]. That discarded a won battlefield and prolonged the match.

@@ -1468,8 +1468,9 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 			++productionHubs;
 	}
 	const distantReserve = Math.max(0, knownEnemyCombat - defenders - nearbyReinforcements);
+	const distantWeight = Math.min(0.10, Math.max(0, Number(policy.expertP1ReinforcementDistantWeight) || 0.10));
 	const reinforcementEquivalent = Math.ceil(nearbyReinforcements * (Number(policy.expertP1ReinforcementNearbyWeight) || 0.75) +
-		distantReserve * (Number(policy.expertP1ReinforcementDistantWeight) || 0.25)) +
+		distantReserve * distantWeight) +
 		productionHubs * Math.max(0, Number(policy.expertP1ReinforcementProductionEquivalent) || 2);
 	const equivalentDefenders = defenders + staticDefenses * Math.max(0, Number(policy.expertP1RushStaticDefenseEquivalent) || 3) + reinforcementEquivalent;
 	const ratio = Math.max(1.01, Number(policy.expertP1RushLaunchAdvantageRatio) || 1.15);
@@ -1480,7 +1481,8 @@ AttackManager.prototype.expertP1RushLaunchDecision = function(gameState, attack)
 	const defendedTarget = mainBase || productionHubs > 0 || defenders >= 6;
 	const targetArmy = Math.max(12, Number(doctrine.rushSize) || 20);
 	const lateP1 = doctrine.id === "late_p1_rush";
-	const fixedLateMinimum = lateP1 ? Math.min(targetArmy, Math.max(12, Number(policy.expertLateP1RushMinimumLaunchArmy) || 52)) : 0;
+	const fixedLateMinimum = lateP1 ? Math.min(targetArmy, Math.max(12,
+		Math.min(50, Number(policy.expertLateP1RushMinimumLaunchArmy) || 50))) : 0;
 	const rawKnownArmyNeeded = mainBase ? Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05)) : 0;
 	// IT14.99: Late-P1 remains a timing attack, so enemy growth may veto a locally suicidal
 	// fight but may not keep raising the required package forever. Once the fixed 52-man
@@ -1620,15 +1622,18 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 	const staticEquivalent = Math.max(0, Number(policy.expertP1TimingStaticDefenseEquivalent) || 3);
 	const reinforcementEquivalent = () => {
 		const distant = Math.max(0, knownEnemyCombat - metrics.defenders - metrics.nearbyReinforcements);
+		const distantWeight = Math.min(0.10, Math.max(0, Number(policy.expertP1ReinforcementDistantWeight) || 0.10));
 		return Math.ceil(metrics.nearbyReinforcements * (Number(policy.expertP1ReinforcementNearbyWeight) || 0.75) +
-			distant * (Number(policy.expertP1ReinforcementDistantWeight) || 0.25)) +
+			distant * distantWeight) +
 			metrics.productionHubs * Math.max(0, Number(policy.expertP1ReinforcementProductionEquivalent) || 2);
 	};
 	const localNeeded = () => {
 		const effective = metrics.defenders + metrics.staticDefenses * staticEquivalent + reinforcementEquivalent();
 		return effective > 0 ? Math.max(effective + 2, Math.ceil(effective * 1.15)) : 0;
 	};
-	const globalNeeded = () => mainBase ? Math.min(32, Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05))) : 0;
+	// The whole-map army is context, not an immediate defender.  Nearby units retain
+	// their full local weight; distant units cannot indefinitely ratchet a timing army.
+	const globalNeeded = () => mainBase ? Math.min(24, Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05))) : 0;
 	const popSafe = () => {
 		const defendedTarget = mainBase || metrics.productionHubs > 0 || metrics.defenders >= 6;
 		if (!defendedTarget) return true;
@@ -1655,8 +1660,9 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 				continue;
 			const m = targetMetrics(struct.position());
 			const distant = Math.max(0, knownEnemyCombat - m.defenders - m.nearbyReinforcements);
+			const distantWeight = Math.min(0.10, Math.max(0, Number(policy.expertP1ReinforcementDistantWeight) || 0.10));
 			const reinfEq = Math.ceil(m.nearbyReinforcements * (Number(policy.expertP1ReinforcementNearbyWeight) || 0.75) +
-				distant * (Number(policy.expertP1ReinforcementDistantWeight) || 0.25)) +
+				distant * distantWeight) +
 				m.productionHubs * Math.max(0, Number(policy.expertP1ReinforcementProductionEquivalent) || 2);
 			if (m.staticDefenses > 0 || m.productionHubs > 0 || m.defenders > maxExposedDefenders ||
 			    attackers < Math.max(m.defenders + reinfEq + 2, Math.ceil((m.defenders + reinfEq) * 1.10)))
@@ -1897,7 +1903,8 @@ AttackManager.prototype.expertFailedRushDecision = function(gameState, attack)
 // must not disguise a 5:1 casualty trade by continuously refilling one doomed plan.
 AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 {
-	const out = { abort: false, pressureHold: false, losses: 0, enemyDamage: 0, balance: undefined };
+	const out = { abort: false, pressureHold: false, decisiveLiveDominance: false,
+		losses: 0, enemyDamage: 0, balance: undefined };
 	if (this.Config.difficulty < difficulty.EXPERT || !attack || !attack.isStarted() ||
 	    (attack.type !== AttackPlan.TYPE_DEFAULT && attack.type !== AttackPlan.TYPE_HUGE_ATTACK) ||
 	    !(Number(attack.expertLaunchTime) >= 0))
@@ -1906,7 +1913,14 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 	const now = Number(gameState.ai.elapsedTime) || 0;
 	if (now - Number(attack.expertLaunchTime) < (Number(policy.expertCombatBadExchangeMinimumFightSeconds) || 28))
 		return out;
-	const losses = Math.max(0, Number(attack.expertOwnLosses) || 0);
+	const rawLosses = Math.max(0, Number(attack.expertOwnLosses) || 0);
+	// IT15.8.37: once a reinforced army has conclusively won the live battlefield,
+	// casualties from the earlier exchange are history, not a reason to abandon the
+	// position. Only losses suffered after that dominance checkpoint count toward a
+	// later retreat decision.
+	const forgivenLosses = Math.min(rawLosses,
+		Math.max(0, Number(attack.expertAttritionForgivenLosses) || 0));
+	const losses = Math.max(0, rawLosses - forgivenLosses);
 	if (losses < (Number(policy.expertCombatBadExchangeMinimumOwnLosses) || 12))
 		return out;
 	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
@@ -1983,6 +1997,23 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 		enemy <= own * (Number(policy.expertCombatPressureHoldMaximumEnemyRatio) || 0.55) &&
 		balance.defenses <= (Number(policy.expertCombatPressureHoldMaximumDefenses) || 3) &&
 		army > Math.max(18, Math.floor(launch * 0.45));
+	// The 15.8.36 Athenian replay reached 83v8 with no local static defense, yet the
+	// cumulative casualty counter recalled the entire reinforced army. At >= 2:1 local
+	// strength with a useful army still present, the current position is authoritative.
+	// Checkpoint old losses and continue the same attack; do not let the broken-screen
+	// rule immediately reverse this decision below.
+	const decisiveLiveDominance = localDominance && balance.defenses === 0 &&
+		own >= enemy * 2 && own >= enemy + 18;
+	if (bad && decisiveLiveDominance)
+	{
+		attack.expertAttritionForgivenLosses = rawLosses;
+		out.pressureHold = true;
+		out.decisiveLiveDominance = true;
+		aiWarn("[EXPERT-ADVANTAGE] preserve plan=" + attack.name + " army=" + army +
+			" rawLosses=" + rawLosses + " forgiven=" + rawLosses + " enemyDamage=" + enemyDamage +
+			" local=" + own + "v" + enemy + " defenses=" + balance.defenses);
+		return out;
+	}
 	const hardAttritionLosses = Math.max(Number(policy.expertCombatHardAttritionMinimumOwnLosses) || 36,
 		Math.ceil(launch * (Number(policy.expertCombatHardAttritionLossFraction) || 0.75)));
 	const hardAttrition = pressured && losses >= hardAttritionLosses &&
@@ -2569,7 +2600,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 			}
 			else if (updateStep === AttackPlan.PREPARATION_START)
 			{
-				if (attack.StartAttack(gameState))
+				const started = attack.StartAttack(gameState);
+				if (started)
 				{
 					if (this.Config.difficulty >= difficulty.EXPERT &&
 					    (attackType === AttackPlan.TYPE_RUSH || attackType === AttackPlan.TYPE_DEFAULT || attackType === AttackPlan.TYPE_HUGE_ATTACK))
@@ -2600,8 +2632,33 @@ AttackManager.prototype.update = function(gameState, queues, events)
 						chat.launchAttack(gameState, attack.targetPlayer, attack.getType());
 					this.startedAttacks[attackType].push(attack);
 				}
+				else if (this.Config.difficulty >= difficulty.EXPERT && attack.expertAuthorityOwned &&
+				         attack.expertLaunchAuthorized && attack.unitCollection && attack.unitCollection.length &&
+				         (Number(attack.expertLaunchStartRetries) || 0) < 3)
+				{
+					// IT15.8.35: a transient target/path failure must not silently dissolve an
+					// authorized army. Re-enter preparation with the same units and select a
+					// fresh target/path on the next update.
+					attack.expertLaunchStartRetries = (Number(attack.expertLaunchStartRetries) || 0) + 1;
+					attack.state = AttackPlan.STATE_UNEXECUTED;
+					attack.expertAuthorityState = "LAUNCH_AUTHORIZED";
+					attack.target = undefined;
+					attack.targetPos = undefined;
+					attack.path = undefined;
+					attack.forceStart();
+					aiWarn("[EXPERT-AUTH-START-RETRY] plan=" + attack.name +
+						" retry=" + attack.expertLaunchStartRetries +
+						" army=" + attack.unitCollection.length);
+					continue;
+				}
 				else
+				{
+					if (this.Config.difficulty >= difficulty.EXPERT && attack.expertAuthorityOwned)
+						aiWarn("[EXPERT-AUTH-START-FAILED] plan=" + attack.name +
+							" army=" + (attack.unitCollection ? attack.unitCollection.length : 0) +
+							" action=rebuild-next-update");
 					attack.Abort(gameState);
+				}
 				this.upcomingAttacks[attackType].splice(i--, 1);
 			}
 		}
@@ -2764,7 +2821,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 				this.startedAttacks[attackType].splice(i--, 1);
 				continue;
 			}
-			const brokenScreenRetreat = this.shouldExpertRetreatBrokenScreen(gameState, attack);
+			const brokenScreenRetreat = badExchange.decisiveLiveDominance ? false :
+				this.shouldExpertRetreatBrokenScreen(gameState, attack);
 			if (!finishPersistence.persist && brokenScreenRetreat)
 			{
 				const policy = mergePolicy();
@@ -2908,7 +2966,8 @@ AttackManager.prototype.update = function(gameState, queues, events)
 					// minimum launch package instead of chasing the opponent population upward.
 					const minFraction = doctrine.id === "late_p1_rush" ? 0.80 : 0.78;
 					const minTotal = doctrine.id === "late_p1_rush" ?
-						Math.max(10, Math.min(target, Math.max(Number(mergePolicy().expertLateP1RushMinimumLaunchArmy) || 52, Math.round(target * minFraction)))) :
+						Math.max(10, Math.min(target, Math.max(Math.min(50,
+							Number(mergePolicy().expertLateP1RushMinimumLaunchArmy) || 50), Math.round(target * minFraction)))) :
 						Math.max(10, Math.min(target, Math.round(target * minFraction)));
 					let screenLabel = "infantryMin=" + minTotal;
 					if (gameState.getPlayerCiv() === "athen")
