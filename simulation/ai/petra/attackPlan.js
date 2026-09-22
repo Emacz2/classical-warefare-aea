@@ -403,6 +403,10 @@ AttackPlan.prototype.authorizeExpertLaunch = function(reason)
 	this.expertLaunchAuthorized = true;
 	this.expertAuthorityState = "LAUNCH_AUTHORIZED";
 	this.expertLaunchReason = reason || "expert-authority";
+	// IT15.8.35: authorization closes this plan's recruitment queues.  Leaving the
+	// queues open allowed the controller to keep adding plan-tagged trainees while
+	// updatePreparation waited for those same trainees forever.
+	this.emptyQueues();
 	// Now, and only now, make the mechanical preparation path immediately startable.
 	return this.forceStart();
 };
@@ -686,7 +690,11 @@ AttackPlan.prototype.updatePreparation = function(gameState)
 			}
 			return AttackPlan.PREPARATION_KEEP_GOING;
 		}
-		if (gameState.countOwnQueuedEntitiesWithMetadata("plan", +this.name) > 0)
+		// An Expert-authorized army launches with the units it actually has.  Units
+		// already in a trainer finish into reserve; they may not hold the field army
+		// behind an endlessly renewed queue.
+		if (!(this.expertAuthorityOwned && this.expertLaunchAuthorized) &&
+		    gameState.countOwnQueuedEntitiesWithMetadata("plan", +this.name) > 0)
 		{
 			// keep on while the units finish being trained, then we'll start
 			this.emptyQueues();
@@ -1082,6 +1090,32 @@ AttackPlan.prototype.expertExposedTower = function(gameState, enemyUnits, enemyS
 	return undefined;
 };
 
+// IT15.8.36: suppress a firing tower with a bounded detachment. The old order
+// redirected the whole army, so a won attack orbited one tower instead of ending
+// the game at the CC.
+AttackPlan.prototype.expertTowerSuppressionSquad = function(gameState, tower, enemyUnits)
+{
+	if (!tower || !tower.position())
+		return new Set();
+	let defenders = 0;
+	for (const enemy of enemyUnits.values())
+		if (enemy && enemy.position && enemy.position() && enemy.attackTypes && enemy.attackTypes() &&
+		    SquareVectorDistance(enemy.position(), tower.position()) <= 50 * 50)
+			++defenders;
+	const desired = Math.max(10, Math.min(24, defenders * 3 + 8,
+		Math.floor(this.unitCollection.length * 0.30)));
+	const candidates = this.unitCollection.toEntityArray().filter(ent => ent && ent.position && ent.position() &&
+		!ent.hasClass("Ship") && !ent.hasClass("Siege") && !ent.hasClass("Support") &&
+		ent.canAttackTarget(tower, allowCapture(gameState, ent, tower)));
+	candidates.sort((a, b) => {
+		const am = a.hasClass("Melee") ? 0 : 1;
+		const bm = b.hasClass("Melee") ? 0 : 1;
+		return am - bm || SquareVectorDistance(a.position(), tower.position()) -
+			SquareVectorDistance(b.position(), tower.position()) || a.id() - b.id();
+	});
+	return new Set(candidates.slice(0, desired).map(ent => ent.id()));
+};
+
 // A launch advantage is reevaluated at the objective: losing the melee screen or
 // discovering garrisoned defenders cancels the infantry shortcut automatically.
 AttackPlan.prototype.expertOvermatchCaptureReady = function(gameState)
@@ -1147,11 +1181,13 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 	const policy = mergePolicy();
 	const executeCC = enemyPop > 0 && enemyPop <= policy.expertCCExecutionEnemyPopulation;
 	const infantryOvermatch = this.expertInfantryOvermatch && this.expertOvermatchCaptureReady(gameState);
+	const decisiveOvermatch = this.unitCollection.length >= 90 && enemyPop > 0 &&
+		enemyPop <= Math.floor(this.unitCollection.length * 0.75);
 	// IT14.53: a living CC becomes the hard execution objective once the opponent is
 	// down to a literal handful of population. IT14.46's garrison-holder cleanup is
 	// still valuable, but only AFTER the CC is gone. This prevents rams from spending
 	// the final minute on a storehouse/barracks/tower while conquest can be ended now.
-	if (executeCC || infantryOvermatch)
+	if (executeCC || infantryOvermatch || decisiveOvermatch)
 		for (const struct of gameState.getEnemyStructures(this.targetPlayer).values())
 		{
 			if (!struct || !struct.position() || !struct.hasClass("CivCentre") || !this.isValidTarget(struct))
@@ -1196,21 +1232,15 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 	{
 		this.expertRamHoldSince = undefined;
 		this.expertRamHoldLogged = false;
-		if (infantryOvermatch)
+		if (infantryOvermatch || decisiveOvermatch)
 		{
-			let objective = cc;
-			for (const structure of gameState.getEnemyStructures(this.targetPlayer).values())
-				if (structure && structure.position && structure.position() && this.isValidTarget(structure) &&
-				    (structure.hasClass("Tower") || structure.hasClass("WallTower")) &&
-				    SquareVectorDistance(structure.position(), cc.position()) <= 80 * 80 &&
-				    (!objective || SquareVectorDistance(structure.position(), centre) < SquareVectorDistance(objective.position(), centre)))
-					objective = structure;
-			this.target = objective;
-			this.targetPos = objective.position();
+			this.target = cc;
+			this.targetPos = cc.position();
 			out.active = true;
 			out.ready = true;
-			out.objective = objective;
-			out.objectivePos = objective.position();
+			out.executeCC = true;
+			out.objective = cc;
+			out.objectivePos = cc.position();
 		}
 		return out;
 	}
@@ -1224,7 +1254,7 @@ AttackPlan.prototype.expertRamAssaultState = function(gameState)
 	out.objectivePos = cc.position();
 	// At execution population there is no reason to wait on the old perimeter staging
 	// choreography. Rams and infantry commit to the CC together immediately.
-	if (executeCC || infantryOvermatch)
+	if (executeCC || infantryOvermatch || decisiveOvermatch)
 	{
 		out.ready = true;
 		out.executeCC = true;
@@ -2320,12 +2350,15 @@ AttackPlan.prototype.update = function(gameState, events)
 		// An uncontested firing tower is a combat objective, not terrain to wait beside.
 		// Commit the existing army to one tower at a time while keeping the CC execution
 		// order and nearby enemy units ahead of it. A thin army still uses the perimeter.
-		const exposedTower = this.expertExposedTower(gameState, enemyUnits, enemyStructures, expertRamAssault.executeCC);
+		// Keep expertExposedTower's established "CC execution overrides tower" contract;
+		// the explicit false here only discovers a target for the bounded suppression squad.
+		const exposedTower = this.expertExposedTower(gameState, enemyUnits, enemyStructures, false);
+		const towerSuppressionIds = this.expertTowerSuppressionSquad(gameState, exposedTower, enemyUnits);
 		if (exposedTower && this.expertLastTowerSuppressionTarget !== exposedTower.id())
 		{
 			this.expertLastTowerSuppressionTarget = exposedTower.id();
 			aiWarn("[EXPERT-TOWER] suppress plan=" + this.name + " tower=" + exposedTower.id() +
-				" army=" + this.unitCollection.length);
+				" squad=" + towerSuppressionIds.size + " army=" + this.unitCollection.length);
 		}
 		// If a no-siege infantry plan somehow inherited a defended CC/tower as its
 		// strategic target, immediately look again for exposed workers/production.
@@ -2464,7 +2497,8 @@ AttackPlan.prototype.update = function(gameState, events)
 				const target = gameState.getEntityById(targetId);
 				if (!target || gameState.isPlayerAlly(target.owner()))
 					needsUpdate = true;
-				else if (exposedTower && target.hasClass("Structure") && target.id() !== exposedTower.id())
+				else if (exposedTower && towerSuppressionIds.has(ent.id()) &&
+				    target.hasClass("Structure") && target.id() !== exposedTower.id())
 					needsUpdate = true;
 				else if (expertRamAssault.executeCC && target.hasClass("Structure") &&
 				    (!expertRamAssault.objective || target.id() !== expertRamAssault.objective.id()))
@@ -2486,7 +2520,7 @@ AttackPlan.prototype.update = function(gameState, events)
 					target.hasClass("Civilian") && target.unitAIState().split(".")[1] == "FLEEING")
 					maybeUpdate = true;
 			}
-			else if (exposedTower && ent.position() &&
+			else if (exposedTower && towerSuppressionIds.has(ent.id()) && ent.position() &&
 			    SquareVectorDistance(ent.position(), exposedTower.position()) <= 75 * 75 &&
 			    !(ent.unitAIState && String(ent.unitAIState()).includes(".COMBAT.")))
 				maybeUpdate = true;
@@ -2643,16 +2677,16 @@ AttackPlan.prototype.update = function(gameState, events)
 				// enemy units remain the first priority; when no defender is in range,
 				// every capture-capable foot soldier works the CC with the rams instead
 				// of wandering off to capture houses under defensive fire.
+				else if (exposedTower && towerSuppressionIds.has(ent.id()) &&
+				    ent.canAttackTarget(exposedTower, allowCapture(gameState, ent, exposedTower)))
+				{
+					ent.attack(exposedTower.id(), allowCapture(gameState, ent, exposedTower));
+					continue;
+				}
 				else if (expertRamAssault.executeCC && expertRamAssault.objective &&
 				    ent.canAttackTarget(expertRamAssault.objective, allowCapture(gameState, ent, expertRamAssault.objective)))
 				{
 					ent.attack(expertRamAssault.objective.id(), allowCapture(gameState, ent, expertRamAssault.objective));
-					continue;
-				}
-				else if (exposedTower &&
-				    ent.canAttackTarget(exposedTower, allowCapture(gameState, ent, exposedTower)))
-				{
-					ent.attack(exposedTower.id(), allowCapture(gameState, ent, exposedTower));
 					continue;
 				}
 				// This may prove dangerous as we may be blocked by something we

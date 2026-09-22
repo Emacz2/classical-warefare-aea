@@ -1,0 +1,40 @@
+Expert AI IT15.8.36
+====================
+
+Scope
+-----
+Small corrective patch on top of IT15.8.35. It preserves the 15.8.35
+AUTHORIZED -> STARTED attack handoff and the existing economy/opening rules.
+
+Changes
+-------
+1. Committed-use gate for an additional farmstead
+   - The farm-capacity deadlock path no longer purchases another farmstead
+     unless at least two fields are still needed and enough wood exists to
+     begin using the new hub.
+   - An approved hub carries a debt of two or three fields.
+   - Once the hub completes, those fields are requested specifically around
+     that farmstead and the debt is reduced only as each field completes.
+   - Existing farmstead slots are still rescanned before another hub is bought.
+
+2. Decisive tower-to-CC attack handoff
+   - A nearby exposed tower receives a bounded suppression squad (10-24 units,
+     never more than 30% of the army), favoring melee units.
+   - The rest of an overwhelming army is no longer redirected to the tower.
+   - With at least 90 army units and enemy population no greater than 75% of
+     that army, the plan directly executes the enemy CC instead of waiting for
+     ram staging.
+   - The established global rule that CC execution outranks tower suppression
+     remains intact.
+
+Validation
+----------
+- JavaScript syntax checks passed for all three Expert integration files.
+- All nine existing regression test groups passed.
+
+Replay checks requested
+-----------------------
+- A third farmstead should be followed by fields attached to that hub.
+- [EXPERT-TOWER] should report a bounded squad count.
+- Under decisive overmatch, most of the army should continue to the CC rather
+  than orbiting the tower.

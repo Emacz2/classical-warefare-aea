@@ -336,6 +336,7 @@ export class ExpertDecisionController
 		this.lastFieldPipelineProgressAt = -99999;
 		this.lastFieldWatchdogDiag = -99999;
 		this.lastFarmThirdHubRepackAt = -99999;
+		this.committedFarmHubFields = undefined;
 		this.lastWoodDriftHoldDiag = -99999;
 		// IT14.53: Athens special production is deliberately small and opportunistic.
 		// These diagnostics/cooldowns keep it from spamming champion/hero queue attempts.
@@ -929,7 +930,9 @@ export class ExpertDecisionController
 			return softCap;
 
 		// Once the timing army is substantially formed, civilian recovery may not steal CC cycles.
-		const minArmy = Math.max(12, Number(policy.expertLateP1RushMinimumLaunchArmy) || (doctrine.id === "early_p1_rush" ? 20 : 52));
+		const minArmy = Math.max(12, doctrine.id === "early_p1_rush" ?
+			(Number(policy.expertLateP1RushMinimumLaunchArmy) || 20) :
+			Math.min(50, Number(policy.expertLateP1RushMinimumLaunchArmy) || 50));
 		for (const plan of manager && manager.upcomingAttacks && manager.upcomingAttacks[AttackPlan.TYPE_RUSH] || [])
 			if (plan && plan.unitCollection && plan.unitCollection.length >= Math.floor(minArmy * 0.65))
 				return softCap;
@@ -3565,7 +3568,8 @@ export class ExpertDecisionController
 		const policy = mergePolicy();
 		const minFraction = doctrine.id === "late_p1_rush" ? 0.80 : 0.78;
 		const minTotal = doctrine.id === "late_p1_rush" ?
-			Math.max(10, Math.min(target, Math.max(Number(policy.expertLateP1RushMinimumLaunchArmy) || 52, Math.round(target * minFraction)))) :
+			Math.max(10, Math.min(target, Math.max(Math.min(50,
+				Number(policy.expertLateP1RushMinimumLaunchArmy) || 50), Math.round(target * minFraction)))) :
 			Math.max(10, Math.min(target, Math.round(target * minFraction)));
 		let screenLabel = "infantryMin=" + minTotal;
 		if (gameState.getPlayerCiv() === "athen")
@@ -3746,7 +3750,10 @@ export class ExpertDecisionController
 				return undefined;
 			return primary;
 		}
-		const upcoming = this.expertCombatPlans(false).filter(plan => plan && plan.expertAuthorityOwned);
+		// IT15.8.35: once launch is authorized, stop tagging new trainees for that
+		// upcoming plan.  Otherwise every new queued unit renews the preparation wait.
+		const upcoming = this.expertCombatPlans(false).filter(plan => plan && plan.expertAuthorityOwned &&
+			!plan.expertLaunchAuthorized);
 		return upcoming.length ? upcoming[0] : undefined;
 	}
 
@@ -3917,6 +3924,7 @@ export class ExpertDecisionController
 			return false;
 		if (!plan.authorizeExpertLaunch || !plan.authorizeExpertLaunch(reason))
 			return false;
+		plan.expertLaunchAuthorizedAt = Number(gameState.ai.elapsedTime) || 0;
 		aiWarn("[EXPERT-AUTH] LAUNCH-AUTHORIZED plan=" + plan.name + " type=" + plan.type +
 			" army=" + (plan.unitCollection ? plan.unitCollection.length : 0) + " reason=" + reason);
 		return true;
@@ -4122,6 +4130,30 @@ export class ExpertDecisionController
 				this.expertAssignReserveToPlan(gameState, plan);
 				this.expertEvaluateCombatLaunch(gameState, plan);
 			}
+		// IT15.8.35 launch watchdog.  An authorized plan must advance into mechanical
+		// completion immediately; log and re-arm it if another subsystem changed its
+		// forced state.  The AttackManager remains the sole owner of array transitions.
+		const now = Number(gameState.ai && gameState.ai.elapsedTime) || 0;
+		for (const plan of this.expertCombatPlans(false))
+		{
+			if (!plan || !plan.expertAuthorityOwned || !plan.expertLaunchAuthorized ||
+			    plan.state !== AttackPlan.STATE_UNEXECUTED)
+				continue;
+			const authorizedAt = Number(plan.expertLaunchAuthorizedAt);
+			if (!Number.isFinite(authorizedAt))
+				plan.expertLaunchAuthorizedAt = now;
+			else if (now - authorizedAt >= 4 && now >= (Number(plan.expertLastLaunchWatchdogAt) || -99999) + 4)
+			{
+				plan.expertLastLaunchWatchdogAt = now;
+				if (plan.emptyQueues)
+					plan.emptyQueues();
+				if (plan.forceStart)
+					plan.forceStart();
+				aiWarn("[EXPERT-AUTH-WATCHDOG] plan=" + plan.name + " state=" + plan.state +
+					" army=" + (plan.unitCollection ? plan.unitCollection.length : 0) +
+					" authorizedFor=" + Math.round(now - authorizedAt));
+			}
+		}
 		// A nearly defeated opponent is still an opponent. When a finishing plan
 		// shrinks, send a coherent reserve batch to that live plan instead of
 		// leaving 80+ citizen-soldiers searching saturated gathering sites.
@@ -5283,13 +5315,58 @@ export class ExpertDecisionController
 		const rescanned = this.rescanExistingFarmCapacityBeforeThirdHub(gameState, accessIndex,
 			this.farmCapacitySnapshot(gameState, accessIndex));
 		if (!rescanned || !rescanned.known || Number(rescanned.openFieldSlots) <= 0)
-			return frame;
+		{
+			// IT15.8.36: an additional permanent food hub is only useful if the economy
+			// can immediately use it. Carry a two/three-field debt through construction;
+			// this prevents builders from finishing the Farmstead and returning to wood.
+			const builtFields = this.builtByClass(gameState, "Field").length;
+			const foundations = this.foundationsByClass(gameState, "Field").length;
+			const queued = gameState.ai.queues.field ? gameState.ai.queues.field.countQueuedUnits() : 0;
+			const desired = Math.max(0, Number(frame.economy && frame.economy.derived && frame.economy.derived.desiredFields) || 0);
+			const missing = Math.max(0, desired - builtFields - foundations - queued);
+			const wood = Math.max(0, Number(gameState.getResources().wood) || 0);
+			const actions = (frame.actions || []).map(action => {
+				if (!action || action.kind !== "farmstead" || action.role !== "farm_hub_deadlock")
+					return action;
+				if (missing < 2 || wood < 200)
+					return undefined;
+				return { ...action, "committedFieldCount": Math.min(3, missing) };
+			}).filter(Boolean);
+			if (actions.length !== (frame.actions || []).length)
+				aiWarn("[EXPERT-FARM-COMMIT] defer-third-hub missing=" + missing + " wood=" + Math.round(wood));
+			else
+				aiWarn("[EXPERT-FARM-COMMIT] third-hub fields=" + Math.min(3, missing) + " wood=" + Math.round(wood));
+			return { ...frame, actions };
+		}
 		const actions = (frame.actions || []).filter(action => !(action && action.kind === "farmstead" && action.role === "farm_hub_deadlock"));
 		if (!actions.some(action => action && action.kind === "field" && (action.type === "BUILD" || action.type === "RESERVE")))
 			actions.unshift({ "type": "BUILD", "kind": "field", "role": "pre_third_hub_repack",
 				"priority": Number(mergePolicy().phase2SafetyFieldPriority) || 125, "builderCount": 3,
 				"builderPool": ["food", "food_owned", "farm"] });
 		aiWarn("[EXPERT-FARM-REPACK] replace-third-hub-with-field open=" + Number(rescanned.openFieldSlots || 0));
+		return { ...frame, actions };
+	}
+
+	applyCommittedFarmHubFields(gameState, frame)
+	{
+		const debt = this.committedFarmHubFields;
+		if (!frame || !debt || debt.remaining <= 0)
+			return frame;
+		const now = Number(gameState.ai.elapsedTime) || 0;
+		const farm = gameState.getEntityById(Number(debt.farmsteadId));
+		if (!farm || !entityPosition(farm) || now > Number(debt.expiresAt || 0))
+		{
+			this.committedFarmHubFields = undefined;
+			return frame;
+		}
+		const already = (frame.actions || []).some(action => action && action.kind === "field" &&
+			Number(action.requiredFarmsteadId) === Number(debt.farmsteadId));
+		if (already)
+			return frame;
+		const actions = [...(frame.actions || [])];
+		actions.unshift({ "type": "BUILD", "kind": "field", "role": "committed_new_hub",
+			"requiredFarmsteadId": Number(debt.farmsteadId), "priority": 140,
+			"builderCount": 4, "builderPool": ["food", "food_owned", "farm"] });
 		return { ...frame, actions };
 	}
 
@@ -8523,6 +8600,7 @@ export class ExpertDecisionController
 
 			if (observed.state === "completed" || observed.state === "missing-after-foundation")
 			{
+				const completedIntent = this.activeTaskBuildIntent[taskId] || {};
 				const completedNaturalCluster = observed.state === "completed" && kind === "farmstead" ?
 					this.pendingFoodSelectionByTask[taskId] : undefined;
 				const completedWickerBranch = !!(completedNaturalCluster && this.postWickerBranchCluster &&
@@ -8545,6 +8623,26 @@ export class ExpertDecisionController
 					this.postWickerBranchFarmsteadPending = false;
 					this.postWickerBranchFarmsteadStartedAt = -99999;
 					aiWarn("[EXPERT-BERRIES] secondary food farmstead complete; branch workers locked");
+				}
+				if (!isField && kind === "farmstead" && observed.state === "completed" &&
+				    Number(completedIntent.committedFieldCount) > 0 && Number.isFinite(Number(observed.completedEntityId)))
+				{
+					this.committedFarmHubFields = {
+						"farmsteadId": Number(observed.completedEntityId),
+						"remaining": Number(completedIntent.committedFieldCount),
+						"expiresAt": (Number(gameState.ai.elapsedTime) || 0) + 150
+					};
+					aiWarn("[EXPERT-FARM-COMMIT] hub-complete id=" + observed.completedEntityId +
+						" fields=" + completedIntent.committedFieldCount);
+				}
+				if (isField && observed.state === "completed" && this.committedFarmHubFields &&
+				    Number(completedIntent.committedFarmsteadId) === Number(this.committedFarmHubFields.farmsteadId))
+				{
+					--this.committedFarmHubFields.remaining;
+					aiWarn("[EXPERT-FARM-COMMIT] field-complete hub=" + this.committedFarmHubFields.farmsteadId +
+						" remaining=" + this.committedFarmHubFields.remaining);
+					if (this.committedFarmHubFields.remaining <= 0)
+						this.committedFarmHubFields = undefined;
 				}
 				delete this.taskStartedAt[taskId];
 				delete this.activeTaskBuildIntent[taskId];
@@ -11846,10 +11944,11 @@ export class ExpertDecisionController
 		};
 	}
 
-	farmsteadForNextField(gameState, accessIndex, offset = 0)
+	farmsteadForNextField(gameState, accessIndex, offset = 0, requiredFarmsteadId = undefined)
 	{
 		const snapshot = this.farmCapacitySnapshot(gameState, accessIndex);
-		const usable = snapshot.hubs.filter(hub => hub.slots.length);
+		const usable = snapshot.hubs.filter(hub => hub.slots.length &&
+			(!Number.isFinite(Number(requiredFarmsteadId)) || hub.farm.id() === Number(requiredFarmsteadId)));
 		if (!usable.length)
 			return undefined;
 		usable.sort((a, b) => {
@@ -12597,7 +12696,7 @@ export class ExpertDecisionController
 		{
 			const roleMatch = String(action.role || "").match(/capacity_(\d+)/);
 			const offset = roleMatch ? Math.max(0, Number(roleMatch[1]) - 1) : 0;
-			const hub = this.farmsteadForNextField(gameState, accessIndex, offset);
+			const hub = this.farmsteadForNextField(gameState, accessIndex, offset, action.requiredFarmsteadId);
 			if (!hub || !hub.farm || !hub.slots.length)
 				return undefined;
 			const hubKind = hub.hubKind || "farmstead";
@@ -14045,7 +14144,9 @@ export class ExpertDecisionController
 					"role": action.role || "primary",
 					"resourceGeneric": request.resourceGeneric || action.resourceGeneric || undefined,
 					"woodExpansionMode": request.woodExpansionMode || action.woodExpansionMode || undefined,
-					"farmsteadId": action.kind === "field" && Number.isFinite(Number(request.farmsteadId)) ? Number(request.farmsteadId) : undefined
+					"farmsteadId": action.kind === "field" && Number.isFinite(Number(request.farmsteadId)) ? Number(request.farmsteadId) : undefined,
+					"committedFieldCount": action.kind === "farmstead" ? Number(action.committedFieldCount) || undefined : undefined,
+					"committedFarmsteadId": action.kind === "field" && Number.isFinite(Number(action.requiredFarmsteadId)) ? Number(action.requiredFarmsteadId) : undefined
 				};
 				if (action.kind === "field" && Array.isArray(action.requiredBuilderIds))
 					for (const workerId of action.requiredBuilderIds)
@@ -16627,6 +16728,7 @@ export class ExpertDecisionController
 		frame = this.applyPostWickerBranchConstruction(gameState, frame);
 		frame = this.applySecondaryDepletionFieldTrigger(gameState, frame);
 		frame = this.applyPreThirdFarmsteadCapacityRescan(gameState, frame, accessIndex);
+		frame = this.applyCommittedFarmHubFields(gameState, frame);
 		frame = this.applyPermanentFieldProgressWatchdog(gameState, frame, accessIndex, foodNetwork);
 		// IT15.1: neutral food never preempts permanent Fields. A neutral food district
 		// becomes an economic target only after territorial expansion claims it.
@@ -17019,6 +17121,7 @@ export class ExpertDecisionController
 			"lastFieldPipelineProgressAt": this.lastFieldPipelineProgressAt,
 			"lastFieldWatchdogDiag": this.lastFieldWatchdogDiag,
 			"lastFarmThirdHubRepackAt": this.lastFarmThirdHubRepackAt,
+			"committedFarmHubFields": this.committedFarmHubFields ? { ...this.committedFarmHubFields } : undefined,
 			"lastWoodDriftHoldDiag": this.lastWoodDriftHoldDiag,
 			"lastAthenianSlingerDiag": this.lastAthenianSlingerDiag,
 			"lastAthenianP1ForgeDiag": this.lastAthenianP1ForgeDiag,
@@ -17141,6 +17244,7 @@ export class ExpertDecisionController
 		this.lastFieldPipelineProgressAt = Number.isFinite(data.lastFieldPipelineProgressAt) ? data.lastFieldPipelineProgressAt : -99999;
 		this.lastFieldWatchdogDiag = Number.isFinite(data.lastFieldWatchdogDiag) ? data.lastFieldWatchdogDiag : -99999;
 		this.lastFarmThirdHubRepackAt = Number.isFinite(data.lastFarmThirdHubRepackAt) ? data.lastFarmThirdHubRepackAt : -99999;
+		this.committedFarmHubFields = data.committedFarmHubFields ? { ...data.committedFarmHubFields } : undefined;
 		this.lastWoodDriftHoldDiag = Number.isFinite(data.lastWoodDriftHoldDiag) ? data.lastWoodDriftHoldDiag : -99999;
 		this.lastAthenianSlingerDiag = Number.isFinite(data.lastAthenianSlingerDiag) ? data.lastAthenianSlingerDiag : -99999;
 		this.lastAthenianP1ForgeDiag = Number.isFinite(data.lastAthenianP1ForgeDiag) ? data.lastAthenianP1ForgeDiag : -99999;
