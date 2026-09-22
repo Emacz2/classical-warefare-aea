@@ -1,0 +1,33 @@
+Expert AI IT15.8.40 — 15% bonus and decisive tower capture
+
+Baseline
+- Built directly from tested IT15.8.39.
+- No changes to worker assignment, farms, expansions, production, civilian caps,
+  strategy probabilities, technology priorities, building placement, or launch gates.
+
+1. Expert economic bonus
+- Resource gathering multiplier reduced from 1.20 to 1.15.
+- Trade gain multiplier uses the same 1.15 difficulty multiplier.
+- AI menu description updated from Expert +20% to Expert +15%.
+
+2. Decisive tower-capture lock
+- The existing bounded suppression squad remains for non-decisive engagements.
+- With at least 36 eligible soldiers and a local 2:1-plus overmatch, the army enters
+  a tower-capture lock instead of feeding an arbitrary 24-unit side mission.
+- A small screen of at most 18 soldiers handles nearby defenders; the remaining
+  eligible force captures the tower.
+- Once established, the lock persists while at least 24 eligible soldiers retain a
+  clear local advantage. It ends when the tower disappears or the force is genuinely
+  threatened.
+- CC-capture ownership remains higher priority than tower capture.
+
+3. No contradictory finishing micro
+- Ranged-screen repositioning is disabled during the decisive tower-capture lock.
+- Wounded peeling is disabled during the lock or another overwhelming live advantage.
+- Generic attack movement continues to yield to the tower objective.
+
+Validation
+- JavaScript syntax and data.json parsing passed.
+- All prior regression groups passed.
+- New IT15.8.40 bonus/tower-capture guards passed.
+- Audit confirms ExpertDecisionController and all unrelated Petra files are unchanged.

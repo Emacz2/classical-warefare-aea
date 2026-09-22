@@ -669,10 +669,22 @@ AttackManager.prototype.peelExpertWoundedUnits = function(gameState, attack)
 	const policy = mergePolicy();
 	const balance = this.expertRushLocalBalance(gameState, attack);
 	const closeCombat = balance.enemyCombat > 0 || balance.defenses > 0;
+	let towerCaptureUnits = 0;
+	const now = Number(gameState.ai.elapsedTime) || 0;
+	for (const ent of attack.unitCollection.values())
+		if (ent && ent.getMetadata &&
+		    ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER) === "tower-capture" &&
+		    Number(ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_UNTIL)) > now)
+			++towerCaptureUnits;
 	// IT15.8.39: do not dismantle a won finishing army during a lull.  The old lull
 	// threshold peeled healthy-enough veterans precisely when no enemy combat or
 	// defensive structure remained to justify interrupting the decisive objective.
-	if (!closeCombat && attack.unitCollection.length >= 40)
+	// IT15.8.40: one firing tower is not a reason to peel two soldiers every update.
+	// During a decisive tower capture or overwhelming live advantage, keep the army
+	// together and finish the objective. Peeling remains available in a real close fight.
+	const decisiveLiveAdvantage = balance.ownCombat >= 40 &&
+		balance.ownCombat >= balance.enemyCombat * 2 + 18;
+	if (towerCaptureUnits >= 12 || decisiveLiveAdvantage || !closeCombat && attack.unitCollection.length >= 40)
 		return 0;
 	const threshold = Math.max(0.05, Math.min(0.9, closeCombat ?
 		(Number(policy.expertWoundedRetreatHealthCombat) || 0.18) :
@@ -691,7 +703,6 @@ AttackManager.prototype.peelExpertWoundedUnits = function(gameState, attack)
 	const batch = Math.max(1, closeCombat ?
 		(Number(policy.expertWoundedRetreatBatchCombat) || 2) :
 		(Number(policy.expertWoundedRetreatBatchLull) || 6));
-	const now = Number(gameState.ai.elapsedTime) || 0;
 	let peeled = 0;
 	for (const ent of candidates.slice(0, batch))
 	{

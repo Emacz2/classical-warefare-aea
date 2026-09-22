@@ -1112,15 +1112,18 @@ AttackPlan.prototype.expertExposedTower = function(gameState, enemyUnits, enemyS
 // the game at the CC.
 AttackPlan.prototype.expertTowerSuppressionSquad = function(gameState, tower, enemyUnits)
 {
+	this.expertDecisiveTowerCapture = false;
+	this.expertTowerScreenIds = new Set();
 	if (!tower || !tower.position())
+	{
+		this.expertTowerCaptureTarget = undefined;
 		return new Set();
-	let defenders = 0;
+	}
+	const defenders = [];
 	for (const enemy of enemyUnits.values())
 		if (enemy && enemy.position && enemy.position() && enemy.attackTypes && enemy.attackTypes() &&
 		    SquareVectorDistance(enemy.position(), tower.position()) <= 50 * 50)
-			++defenders;
-	const desired = Math.max(10, Math.min(24, defenders * 3 + 8,
-		Math.floor(this.unitCollection.length * 0.30)));
+			defenders.push(enemy);
 	const now = Number(gameState.ai.elapsedTime) || 0;
 	const candidates = this.unitCollection.toEntityArray().filter(ent => ent && ent.position && ent.position() &&
 		!ent.hasClass("Ship") && !ent.hasClass("Siege") && !ent.hasClass("Support") &&
@@ -1133,6 +1136,31 @@ AttackPlan.prototype.expertTowerSuppressionSquad = function(gameState, tower, en
 		return am - bm || SquareVectorDistance(a.position(), tower.position()) -
 			SquareVectorDistance(b.position(), tower.position()) || a.id() - b.id();
 	});
+	// IT15.8.40: once a large army decisively overmatches the local defenders, the
+	// tower becomes a short capture objective, not a permanent 24-unit side mission.
+	// Reserve only a small combat screen; every other eligible nearby soldier captures.
+	const continuingCapture = Number(this.expertTowerCaptureTarget) === Number(tower.id());
+	const decisive = candidates.length >= 36 && candidates.length >= defenders.length * 2 + 18 ||
+		continuingCapture && candidates.length >= 24 && candidates.length >= defenders.length * 1.25 + 8;
+	if (decisive)
+	{
+		this.expertDecisiveTowerCapture = true;
+		this.expertTowerCaptureTarget = tower.id();
+		const screenCount = Math.min(Math.max(0, candidates.length - 24), defenders.length * 2, 18);
+		if (screenCount)
+		{
+			const screen = [...candidates].sort((a, b) => {
+				const nearest = ent => defenders.reduce((best, enemy) =>
+					Math.min(best, SquareVectorDistance(ent.position(), enemy.position())), Infinity);
+				return nearest(a) - nearest(b) || a.id() - b.id();
+			});
+			this.expertTowerScreenIds = new Set(screen.slice(0, screenCount).map(ent => ent.id()));
+		}
+		return new Set(candidates.filter(ent => !this.expertTowerScreenIds.has(ent.id())).map(ent => ent.id()));
+	}
+	this.expertTowerCaptureTarget = undefined;
+	const desired = Math.max(10, Math.min(24, defenders.length * 3 + 8,
+		Math.floor(this.unitCollection.length * 0.30)));
 	return new Set(candidates.slice(0, desired).map(ent => ent.id()));
 };
 
@@ -2380,7 +2408,6 @@ AttackPlan.prototype.update = function(gameState, events)
 		if (this.expertInfantryOvermatch && expertRamAssault.active &&
 		    this.expertOvermatchCaptureReady(gameState))
 			expertDefenseThreat.recent = false;
-		this.maintainExpertInfantryScreen(gameState);
 		// An uncontested firing tower is a combat objective, not terrain to wait beside.
 		// Commit the existing army to one tower at a time while keeping the CC execution
 		// order and nearby enemy units ahead of it. A thin army still uses the perimeter.
@@ -2388,19 +2415,29 @@ AttackPlan.prototype.update = function(gameState, events)
 		// the explicit false here only discovers a target for the bounded suppression squad.
 		const exposedTower = this.expertExposedTower(gameState, enemyUnits, enemyStructures, false);
 		const towerSuppressionIds = this.expertTowerSuppressionSquad(gameState, exposedTower, enemyUnits);
+		if (!this.expertDecisiveTowerCapture)
+			this.maintainExpertInfantryScreen(gameState);
 		if (exposedTower)
 			for (const ent of this.unitCollection.values())
 				if (towerSuppressionIds.has(ent.id()))
-					ownExpertCombatCommand(ent, "tower-suppression", time);
+					ownExpertCombatCommand(ent, this.expertDecisiveTowerCapture ? "tower-capture" : "tower-suppression", time);
+		else
+			for (const ent of this.unitCollection.values())
+				if (ent.getMetadata && String(ent.getMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER) || "").startsWith("tower-"))
+				{
+					ent.setMetadata(PlayerID, EXPERT_COMBAT_COMMAND_OWNER, undefined);
+					ent.setMetadata(PlayerID, EXPERT_COMBAT_COMMAND_UNTIL, undefined);
+				}
 		if (exposedTower && this.expertLastTowerSuppressionTarget !== exposedTower.id())
 		{
 			this.expertLastTowerSuppressionTarget = exposedTower.id();
-			aiWarn("[EXPERT-TOWER] suppress plan=" + this.name + " tower=" + exposedTower.id() +
-				" squad=" + towerSuppressionIds.size + " army=" + this.unitCollection.length);
+			aiWarn("[EXPERT-TOWER] " + (this.expertDecisiveTowerCapture ? "capture-lock" : "suppress") +
+				" plan=" + this.name + " tower=" + exposedTower.id() + " capturers=" + towerSuppressionIds.size +
+				" screen=" + this.expertTowerScreenIds.size + " army=" + this.unitCollection.length);
 		}
 		// If a no-siege infantry plan somehow inherited a defended CC/tower as its
 		// strategic target, immediately look again for exposed workers/production.
-		if (expertDefenseThreat.recent && !expertRamAssault.active && this.target && this.target.hasClass("Structure") &&
+		if (!this.expertDecisiveTowerCapture && expertDefenseThreat.recent && !expertRamAssault.active && this.target && this.target.hasClass("Structure") &&
 		    (this.target.hasClass("CivCentre") || this.target.hasClass("Tower") || this.target.hasClass("WallTower") ||
 		     this.target.hasClass("Fortress") || this.target.hasDefensiveFire && this.target.hasDefensiveFire()))
 		{
@@ -2506,13 +2543,13 @@ AttackPlan.prototype.update = function(gameState, events)
 			const commandActive = hasActiveExpertCombatCommand(ent, time);
 			// Objective ownership is exclusive.  Refresh the tower squad directly here;
 			// capture/enemy-combat orders come from AttackManager and survive this pass.
-			if (commandActive && commandOwner === "tower-suppression" && exposedTower &&
+			if (commandActive && (commandOwner === "tower-suppression" || commandOwner === "tower-capture") && exposedTower &&
 			    towerSuppressionIds.has(ent.id()) && ent.canAttackTarget(exposedTower, allowCapture(gameState, ent, exposedTower)))
 			{
 				const orders = ent.unitAIOrderData ? ent.unitAIOrderData() || [] : [];
 				if (!orders.length || Number(orders[0].target) !== Number(exposedTower.id()))
 					ent.attack(exposedTower.id(), allowCapture(gameState, ent, exposedTower));
-				ownExpertCombatCommand(ent, "tower-suppression", time);
+				ownExpertCombatCommand(ent, commandOwner, time);
 				continue;
 			}
 			if (commandActive)
