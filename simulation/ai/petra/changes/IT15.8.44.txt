@@ -1,0 +1,8 @@
+Expert AI 15.8.44 — wood continuity and whole-battle combat authority
+
+- Wood recovery may reuse reachable fringe trees around a worker's own dropsite.
+- Normal P2/P3 main-base attacks require a whole-army advantage rather than the
+  old Rush-oriented 24-unit global cap.
+- Catastrophic cumulative exchanges override misleading small local scans before
+  loss history can be forgiven.
+- No bonus, opening, civilian-cap, tech-priority, temple, house, or template changes.

@@ -40,6 +40,8 @@ import { desiredBuilders, constructionPriority, allocateBuilderBudget } from "si
 import { hasLiveGatherOrder, hasLiveRepairOrder, ensureGatherOrder, ensureRepairOrder, describeLiveOrder } from
 	"simulation/ai/petra/expertDecision/liveOrderVerifier.js";
 import { decideWoodWorkerTarget } from "simulation/ai/petra/expertDecision/workerPolicy.js";
+import { chooseServicedWoodDistrict, existingFarmsteadProbeBudget } from
+	"simulation/ai/petra/expertDecision/woodWorksite.js";
 import { needsDepositBeforeRetarget, pendingTransitionDecision, isCrossResourceJobChange, jobResourceType } from "simulation/ai/petra/expertDecision/resourceTransitionPolicy.js";
 import { encodeFoodSite, decodeFoodSite, matchingFoodCluster, effectiveGatherRate, naturalRunwaySeconds, shouldSwitchFoodSite } from
 	"simulation/ai/petra/expertDecision/foodEfficiency.js";
@@ -8927,6 +8929,26 @@ export class ExpertDecisionController
 		return best;
 	}
 
+	findUsableServicedWoodWorksite(gameState, accessIndex, currentEntityId, workerPosition = undefined)
+	{
+		const policy = mergePolicy();
+		const radius = Math.max(24, Number(policy.fallbackWoodDropsiteRadius) || 36);
+		const districts = [];
+		for (const store of this.builtByClass(gameState, "DropsiteWood"))
+		{
+			if (!entityPosition(store) || getLandAccess(gameState, store) !== accessIndex)
+				continue;
+			const trees = this.woodTreesAt(gameState, store.position(), accessIndex, radius);
+			const metrics = summarizeWoodTrees(trees);
+			districts.push({ "store": store, "storeId": store.id(), "position": store.position(), trees, metrics });
+		}
+		return chooseServicedWoodDistrict(districts, {
+			"minimumWood": Math.max(40, Number(policy.servicedWoodRecoveryMinimum) || 100),
+			"workerPosition": workerPosition,
+			"currentId": currentEntityId
+		});
+	}
+
 	woodWorkerCenter(gameState)
 	{
 		const workers = [];
@@ -9299,6 +9321,24 @@ export class ExpertDecisionController
 				trees = alternative.trees;
 				metrics = alternative.metrics;
 				aiWarn("[EXPERT-WOOD] switched to existing healthy storehouse=" + alternative.store.id());
+			}
+			else
+			{
+				const recovery = this.findUsableServicedWoodWorksite(gameState, accessIndex, entityId);
+				if (recovery)
+				{
+					this.primaryWoodWorksite = {
+						"entityId": recovery.store.id(),
+						"position": recovery.store.position(),
+						"taskId": recovery.store.getMetadata ? recovery.store.getMetadata(PlayerID, "expertTaskId") : undefined
+					};
+					entityId = recovery.store.id();
+					pos = recovery.store.position();
+					trees = recovery.trees;
+					metrics = recovery.metrics;
+					aiWarn("[EXPERT-WOOD] recovered existing serviced district=" + recovery.store.id() +
+						" wood=" + Math.floor(metrics.localWoodAmount));
+				}
 			}
 			}
 		}
@@ -12027,7 +12067,8 @@ export class ExpertDecisionController
 			const farm = descriptor.entity;
 			const hubKind = descriptor.kind;
 			const builtFieldCount = builtFields.filter(field => fieldHome.get(field.id()) === farm.id()).length;
-			const remainingTarget = Math.max(0, Number(policy.fieldsPerFarmstead) - builtFieldCount);
+			const remainingTarget = existingFarmsteadProbeBudget(builtFieldCount,
+				policy.fieldsPerFarmstead, policy.existingFarmsteadProbeLimit);
 			const touchGap = Math.max(0, Math.min(2.0, Number(policy.existingFarmsteadReuseMaxBorderGap) || 2.0));
 			let idealSlots = remainingTarget > 0 ? this.fieldSlotsAt(gameState, farm.position(), farm.id(), accessIndex, shared,
 				remainingTarget, touchGap, hubKind, false) : [];
@@ -15134,6 +15175,27 @@ export class ExpertDecisionController
 	{
 		// Permanent lumberjacks stay lumberjacks. Stone/metal have their own strategic
 		// worker lanes; silently turning a dead woodline into a mineral boom hid IT14.53.
+		const assigned = Number(ent.getMetadata(PlayerID, WORKSITE_ID));
+		const recovery = this.findUsableServicedWoodWorksite(gameState, accessIndex,
+			Number.isFinite(assigned) ? assigned : undefined, entityPosition(ent) ? ent.position() : undefined);
+		if (recovery)
+		{
+			const candidates = recovery.trees.filter(tree => !tree.saturated).sort((a, b) =>
+				(Number(a.dropDistance) || 0) - (Number(b.dropDistance) || 0) || Number(a.id) - Number(b.id));
+			const target = candidates.length ? gameState.getEntityById(Number(candidates[0].id)) : undefined;
+			if (target)
+			{
+				ent.setMetadata(PlayerID, SUPPLY_ID, target.id());
+				ent.setMetadata(PlayerID, WORKSITE_ID, recovery.store.id());
+				ent.setMetadata(PlayerID, "gather-type", "wood");
+				ent.setMetadata(PlayerID, "subrole", Worker.SUBROLE_GATHERER);
+				if (this.HQ.basesManager && this.HQ.basesManager.AddTCGatherer)
+					this.HQ.basesManager.AddTCGatherer(target.id());
+				const order = this.ensureLegalGatherOrder(gameState, ent, target);
+				this.diagnoseWorkerOrder(ent, "wood-serviced-recovery", target.id(), order.status);
+				return true;
+			}
+		}
 		if (this.assignSafeFallback(gameState, ent, accessIndex, ["wood"]))
 			return true;
 		if (this.phaseWoodCrisis || this.woodIncomeStalled)

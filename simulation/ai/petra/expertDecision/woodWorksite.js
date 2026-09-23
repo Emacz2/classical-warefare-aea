@@ -40,9 +40,6 @@ function chooseWoodTarget(worker, trees, options = {}) {
 }
 
 function updateLowWoodEvidence(previousCount, metrics, policy) {
-  // Strategic rollover must begin BEFORE the last usable tree disappears.
-  // Available local targets therefore do not erase genuine low-stock evidence.
-  // Mere saturation still does not count unless the measured stock itself is low.
   const criticallyLow = metrics.localWoodAmount <= policy.localWoodCriticalAmount;
   const poorDelivery = metrics.localWoodAmount < policy.localWoodHealthyAmount &&
     metrics.averageDropDistance > policy.targetWoodDropDistance;
@@ -53,4 +50,45 @@ function updateLowWoodEvidence(previousCount, metrics, policy) {
   return Math.max(0, previousCount || 0) + 1;
 }
 
-export { analyzeWoodWorksite, chooseWoodTarget, updateLowWoodEvidence };
+function existingFarmsteadProbeBudget(builtFields, normalTarget = 4, probeLimit = 6) {
+  const built = Math.max(0, Math.floor(Number(builtFields) || 0));
+  const normal = Math.max(1, Math.floor(Number(normalTarget) || 4));
+  const limit = Math.max(normal, Math.floor(Number(probeLimit) || normal));
+  return Math.max(0, limit - built);
+}
+
+function chooseServicedWoodDistrict(districts, options = {}) {
+  const minimumWood = Math.max(1, Number(options.minimumWood) || 1);
+  const workerPosition = options.workerPosition;
+  const currentId = Number(options.currentId);
+  let best;
+  let bestScore = -Infinity;
+  for (const district of districts || []) {
+    if (!district || !district.metrics || district.metrics.localWoodAmount < minimumWood ||
+        district.metrics.availableTargets <= 0)
+      continue;
+    const storeId = district.storeId !== undefined ? Number(district.storeId) :
+      district.store && typeof district.store.id === "function" ? Number(district.store.id()) : NaN;
+    if (options.excludeCurrent === true && Number.isFinite(currentId) && storeId === currentId)
+      continue;
+    let approach = 0;
+    if (Array.isArray(workerPosition) && Array.isArray(district.position))
+      approach = Math.hypot(workerPosition[0] - district.position[0], workerPosition[1] - district.position[1]);
+    const amount = Math.min(1800, Math.max(0, Number(district.metrics.localWoodAmount) || 0));
+    const drop = Math.max(0, Number(district.metrics.averageDropDistance) || 0);
+    const score = amount - approach * 12 - drop * 8;
+    if (score > bestScore) {
+      bestScore = score;
+      best = district;
+    }
+  }
+  return best;
+}
+
+export {
+  analyzeWoodWorksite,
+  chooseWoodTarget,
+  updateLowWoodEvidence,
+  existingFarmsteadProbeBudget,
+  chooseServicedWoodDistrict
+};

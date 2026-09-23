@@ -184,6 +184,10 @@ const DEFAULT_POLICY = Object.freeze({
   // positions around the Farmstead. Simple N/E/S/W side-centres overlap when Fields
   // are larger than the Farmstead, so the four-slot contract uses exact rectangle math.
   fieldsPerFarmstead: 4,
+  // The four-field layout remains the target, but a built Farmstead is not
+  // considered geometrically full until two additional legal touching slots
+  // have been tested.  This avoids buying hub #3 beside an existing 4+2 block.
+  existingFarmsteadProbeLimit: 6,
   // IT14.74/14.91: permanent farm hubs remain compact and capped. Natural-food
   // dropsites are a separate economic use: if a distinct safe natural-food district
   // repays the building, it may exceed the permanent-farm-hub cap.
@@ -248,6 +252,10 @@ const DEFAULT_POLICY = Object.freeze({
   targetWoodDropDistance: 24,
   requiredLowWoodObservations: 2,
   woodWorksiteRadius: 30,
+  // Recovery threshold for fragments already covered by a real wood dropsite.
+  // This is intentionally below localWoodHealthyAmount: it is an anti-idle
+  // fallback, not permission to migrate a productive forest crew.
+  servicedWoodRecoveryMinimum: 100,
   cavalryHuntSearchRadius: 220,
   // IT14.63: hunt cavalry comes from the Civic Centre, not a dedicated Stable.
   // The starting horse remains first; rich safe hunt may justify up to two additional
@@ -1308,6 +1316,13 @@ const DEFAULT_POLICY = Object.freeze({
   expertCombatBadExchangeMinimumFightSeconds: 28,
   expertCombatBadExchangeReboomSeconds: 55,
   expertCombatBadExchangeCooldownSeconds: 35,
+  expertCombatCatastrophicMinimumOwnLosses: 20,
+  expertCombatCatastrophicLossFraction: 0.25,
+  expertCombatCatastrophicEnemyDamageCredit: 0.35,
+  expertCombatCatastrophicMinimumEnemyCombat: 12,
+  expertCombatCatastrophicGlobalThreatRatio: 0.35,
+  expertCombatDominanceCheckpointEnemyDamageCredit: 0.60,
+  expertP2GlobalArmyAdvantageRatio: 1.05,
   // IT14.99 hard attrition budget. Local numerical control is not permission to feed
   // replacements forever into a tower/CC or a poor exchange. Once a normal P2/P3
   // attack has burned ~75% of its launch size while earning <50% casualty credit,

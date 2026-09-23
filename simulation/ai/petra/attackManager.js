@@ -6,6 +6,8 @@ import { Config } from "simulation/ai/petra/config.js";
 import * as difficulty from "simulation/ai/petra/difficultyLevel.js";
 import { allowCapture, getLandAccess } from "simulation/ai/petra/entityExtend.js";
 import { mergePolicy } from "simulation/ai/petra/expertDecision/policy.js";
+import { observedEnemyCombat, catastrophicCombatExchange, requiredGlobalAttackers } from
+	"simulation/ai/petra/expertDecision/combatExchange.js";
 import { Worker } from "simulation/ai/petra/worker.js";
 
 const EXPERT_COMBAT_COMMAND_OWNER = "expertCombatCommandOwner";
@@ -1711,7 +1713,8 @@ AttackManager.prototype.expertP1TimingWindowDecision = function(gameState, attac
 	};
 	// The whole-map army is context, not an immediate defender.  Nearby units retain
 	// their full local weight; distant units cannot indefinitely ratchet a timing army.
-	const globalNeeded = () => mainBase ? Math.min(24, Math.ceil(knownEnemyCombat * Math.max(1, Number(policy.expertP1TimingKnownArmyRatio) || 1.05))) : 0;
+	const globalNeeded = () => mainBase ? requiredGlobalAttackers(knownEnemyCombat,
+		attack.type, AttackPlan.TYPE_RUSH, policy) : 0;
 	const popSafe = () => {
 		const defendedTarget = mainBase || metrics.productionHubs > 0 || metrics.defenders >= 6;
 		if (!defendedTarget) return true;
@@ -1992,6 +1995,29 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 	if (now - Number(attack.expertLaunchTime) < (Number(policy.expertCombatBadExchangeMinimumFightSeconds) || 28))
 		return out;
 	const rawLosses = Math.max(0, Number(attack.expertOwnLosses) || 0);
+	const launch = Math.max(1, Number(attack.expertLaunchSize) || attack.unitCollection.length + rawLosses);
+	const army = attack.unitCollection ? attack.unitCollection.length : 0;
+	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
+	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : Number(attack.expertLaunchEnemyPopulation) || 0;
+	const priorLow = Number.isFinite(Number(attack.expertLowestEnemyPopulation)) ? Number(attack.expertLowestEnemyPopulation) : Number(attack.expertLaunchEnemyPopulation) || enemyPop;
+	attack.expertLowestEnemyPopulation = Math.min(priorLow, enemyPop);
+	const enemyDamage = Math.max(0, (Number(attack.expertLaunchEnemyPopulation) || enemyPop) - attack.expertLowestEnemyPopulation);
+	const balance = this.expertRushLocalBalance(gameState, attack);
+	const globalEnemyCombat = observedEnemyCombat(gameState.sharedScript && gameState.sharedScript.playersData, attack.targetPlayer);
+	if (catastrophicCombatExchange({ rawLosses, launchSize: launch, armySize: army,
+		enemyDamage, globalEnemyCombat }, policy))
+	{
+		out.losses = rawLosses;
+		out.enemyDamage = enemyDamage;
+		out.balance = balance;
+		out.abort = true;
+		aiWarn("[EXPERT-ATTRITION] catastrophic-exchange plan=" + attack.name +
+			" launch=" + launch + " army=" + army + " losses=" + rawLosses +
+			" enemyDamage=" + enemyDamage + " globalEnemy=" +
+			(Number.isFinite(globalEnemyCombat) ? globalEnemyCombat : "?") +
+			" local=" + (balance.ownCombat || 0) + "v" + (balance.enemyCombat || 0));
+		return out;
+	}
 	// IT15.8.37: once a reinforced army has conclusively won the live battlefield,
 	// casualties from the earlier exchange are history, not a reason to abandon the
 	// position. Only losses suffered after that dominance checkpoint count toward a
@@ -2001,12 +2027,6 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 	const losses = Math.max(0, rawLosses - forgivenLosses);
 	if (losses < (Number(policy.expertCombatBadExchangeMinimumOwnLosses) || 12))
 		return out;
-	const pdata = gameState.sharedScript && gameState.sharedScript.playersData && gameState.sharedScript.playersData[attack.targetPlayer];
-	const enemyPop = pdata ? Math.max(0, Number(pdata.popCount) || 0) : Number(attack.expertLaunchEnemyPopulation) || 0;
-	const priorLow = Number.isFinite(Number(attack.expertLowestEnemyPopulation)) ? Number(attack.expertLowestEnemyPopulation) : Number(attack.expertLaunchEnemyPopulation) || enemyPop;
-	attack.expertLowestEnemyPopulation = Math.min(priorLow, enemyPop);
-	const enemyDamage = Math.max(0, (Number(attack.expertLaunchEnemyPopulation) || enemyPop) - attack.expertLowestEnemyPopulation);
-	const balance = this.expertRushLocalBalance(gameState, attack);
 	const bad = enemyDamage < losses * (Number(policy.expertCombatBadExchangeEnemyDamageCredit) || 0.70);
 	const pressured = balance.defenses > 0 || balance.enemyCombat >= 4 ||
 		balance.enemyCombat >= Math.max(4, Math.ceil(Math.max(1, balance.ownCombat) * 0.8));
@@ -2065,8 +2085,6 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 	// Preserve strategic retreat for a real collapse, but keep the plan alive while the
 	// local force is still decisively superior. Static defenses can trigger the existing
 	// short tactical regroup without surrendering the entire offensive.
-	const launch = Math.max(1, Number(attack.expertLaunchSize) || attack.unitCollection.length + losses);
-	const army = attack.unitCollection ? attack.unitCollection.length : 0;
 	const own = Math.max(0, Number(balance.ownCombat) || 0);
 	const enemy = Math.max(0, Number(balance.enemyCombat) || 0);
 	const localDominance = army >= (Number(policy.expertCombatPressureHoldMinimumArmy) || 40) &&
@@ -2082,7 +2100,10 @@ AttackManager.prototype.expertBadExchangeDecision = function(gameState, attack)
 	// rule immediately reverse this decision below.
 	const decisiveLiveDominance = localDominance && balance.defenses === 0 &&
 		own >= enemy * 2 && own >= enemy + 18;
-	if (bad && decisiveLiveDominance)
+	const earnedDominanceCheckpoint = enemyDamage >= rawLosses *
+		(Number(policy.expertCombatDominanceCheckpointEnemyDamageCredit) || 0.60) ||
+		Number.isFinite(globalEnemyCombat) && globalEnemyCombat <= Math.max(6, Math.floor(own * 0.35));
+	if (bad && decisiveLiveDominance && earnedDominanceCheckpoint)
 	{
 		attack.expertAttritionForgivenLosses = rawLosses;
 		out.pressureHold = true;
