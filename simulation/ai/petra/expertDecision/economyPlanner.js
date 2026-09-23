@@ -502,6 +502,54 @@ function efficientBuilderIntent(action, state, policy) {
   return { ...action, builderPool, builderCount, builderJobPriority: jobPriority, preferFarmDistrictHouse };
 }
 
+// IT15.8.42: one live-state spending arbiter sits above the individual farm,
+// production and technology planners.  Those planners may propose useful work, but a
+// proposal is not permission to spend the same scarce wood several different ways.
+function arbitrateEconomicSpending(actions, state, policy, farm, foodInfrastructureEmergency) {
+  const measuredWood = Math.max(0, Number(state.flags.measuredWoodIncomeRate) || 0);
+  const effectiveWoodWorkers = Math.max(0, Number(state.workers.wood) || 0);
+  const activeBurn = state.structures.barracks >= 2 ? state.food.twoBarracksFoodBurnRate :
+    state.structures.barracks >= 1 ? state.food.oneBarracksFoodBurnRate : state.food.ccFoodBurnRate;
+  const foodSecure = state.resources.food >= (Number(policy.economyArbiterFoodSurplusBank) || 800) &&
+    (farm.measuredIncome >= activeBurn * 0.90 || state.structures.field >= 6);
+  const woodContinuityWeak = !!(state.flags.woodIncomeStalled || state.flags.phaseWoodCrisis) ||
+    measuredWood < (Number(policy.economyArbiterMinimumMeasuredWoodRate) || 8) ||
+    effectiveWoodWorkers < (Number(policy.economyArbiterMinimumEffectiveWoodWorkers) || 12);
+  const woodCrisis = state.resources.wood <= (Number(policy.economyArbiterWoodCrisisBank) || 250) &&
+    (woodContinuityWeak || foodSecure);
+  const utilization = Math.max(0, Math.min(1, Number(state.housing.militaryTrainerUtilization) || 0));
+  const blocked = [];
+
+  const keep = action => {
+    if (!action || !["BUILD", "RESERVE"].includes(action.type))
+      return true;
+    const emergencyFood = foodInfrastructureEmergency || action.priority >= 110 ||
+      action.role === "farm_hub_deadlock";
+    if (woodCrisis && foodSecure && !emergencyFood &&
+        (action.kind === "field" || action.kind === "farmstead")) {
+      blocked.push(`${action.kind}:${action.role || "optional"}:food-secure/wood-critical`);
+      return false;
+    }
+    if (woodCrisis && action.kind === "temple") {
+      blocked.push(`${action.kind}:${action.role || "economic"}:wait-for-wood-continuity`);
+      return false;
+    }
+    if (action.kind === "barracks" && ["third_p2", "fourth_p3", "fifth_p3"].includes(action.role)) {
+      const sustainable = !woodContinuityWeak &&
+        state.resources.wood >= (Number(policy.economyArbiterThirdBarracksWoodBank) || 350) &&
+        utilization >= (Number(policy.economyArbiterTrainerUtilization) || 0.75);
+      if (!sustainable) {
+        blocked.push(`${action.kind}:${action.role}:throughput=${utilization.toFixed(2)}/wood=${Math.round(state.resources.wood)}`);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  return { actions: actions.filter(keep), blocked, woodCrisis, foodSecure,
+    effectiveWoodWorkers, measuredWood, trainerUtilization: utilization };
+}
+
 function planEconomy(rawState, overrides = {}) {
   const policy = mergePolicy(overrides);
   const state = normalizeState(rawState);
@@ -657,8 +705,14 @@ function planEconomy(rawState, overrides = {}) {
   // Once Barracks #2 is complete, give the economic aura a real protected build window
   // before optional expansion can consume the same 200 wood.
   const earlyTemplePipeline = state.structures.temple + state.foundations.temple + state.queued.temple;
-  const p1TempleReadyNow = state.phase === 1 && state.flags.templeBuildable && completedBarracks >= 2 &&
-    earlyTemplePipeline === 0 && state.population.used >= policy.p1TemplePopulation &&
+  const economicWorkers = Math.max(0, state.workers.food + state.workers.farm + state.workers.wood + state.workers.stone + state.workers.metal);
+  const adaptiveTempleWindow = !state.flags.p1RushDoctrine && completedBarracks >= 1 &&
+    state.population.used >= (Number(policy.p1TempleAdaptivePopulation) || 45) &&
+    economicWorkers >= (Number(policy.p1TempleMinimumEconomicWorkers) || 30) &&
+    !state.flags.woodIncomeStalled && !state.flags.phaseWoodCrisis;
+  const p1TempleReadyNow = state.phase === 1 && state.flags.templeBuildable && (completedBarracks >= 2 || adaptiveTempleWindow) &&
+    earlyTemplePipeline === 0 && state.population.used >=
+      (adaptiveTempleWindow ? (Number(policy.p1TempleAdaptivePopulation) || 45) : policy.p1TemplePopulation) &&
     (fieldPipeline >= policy.p1TempleMinimumFieldPipeline || infrastructureNaturalReady);
   if (p1TempleReadyNow) {
     const cost = costOf(state, policy, "temple");
@@ -679,8 +733,8 @@ function planEconomy(rawState, overrides = {}) {
   // changing the second-barracks timing or blocking Forge #1 once Town is reached.
   const preForgeTemplePipeline = state.structures.temple + state.foundations.temple + state.queued.temple;
   const p1TemplePriorityPending = state.phase === 1 && state.flags.templeBuildable &&
-    completedBarracks >= 2 && preForgeTemplePipeline === 0 &&
-    state.population.used >= policy.p1TemplePopulation &&
+    (completedBarracks >= 2 || adaptiveTempleWindow) && preForgeTemplePipeline === 0 &&
+    state.population.used >= (adaptiveTempleWindow ? (Number(policy.p1TempleAdaptivePopulation) || 45) : policy.p1TemplePopulation) &&
     (fieldPipeline >= policy.p1TempleMinimumFieldPipeline || infrastructureNaturalReady);
 
   // IT15.8.32: the P3 economy needs its first barter outlet as soon as Town
@@ -765,7 +819,9 @@ function planEconomy(rawState, overrides = {}) {
     state.population.used >= policy.phase2ThirdBarracksPopulation &&
     (state.structures.field >= policy.phase2ThirdBarracksMinimumFields || infrastructureNaturalReady) &&
     state.resources.food >= policy.phase2ThirdBarracksFoodBank &&
-    state.resources.wood >= policy.phase2ThirdBarracksWoodBank;
+    state.resources.wood >= Math.max(policy.phase2ThirdBarracksWoodBank,
+      Number(policy.economyArbiterThirdBarracksWoodBank) || 350) &&
+    state.housing.militaryTrainerUtilization >= (Number(policy.economyArbiterTrainerUtilization) || 0.75);
   if (thirdBarracksReady) {
     const cost = costOf(state, policy, "barracks");
     if (resourceEnough(state.resources, cost, reservations)) {
@@ -1031,9 +1087,10 @@ function planEconomy(rawState, overrides = {}) {
   // only consumes resources/builders without improving the timing.
 
 
-  for (let i = 0; i < actions.length; ++i)
-    actions[i] = efficientBuilderIntent(actions[i], state, policy);
-  actions.sort((a, b) => b.priority - a.priority);
+  const arbitration = arbitrateEconomicSpending(actions, state, policy, farm, foodInfrastructureEmergency);
+  for (let i = 0; i < arbitration.actions.length; ++i)
+    arbitration.actions[i] = efficientBuilderIntent(arbitration.actions[i], state, policy);
+  arbitration.actions.sort((a, b) => b.priority - a.priority);
 
   return {
     policy,
@@ -1055,16 +1112,17 @@ function planEconomy(rawState, overrides = {}) {
       secondBarracksFoodReady: farm.secondBarracksFoodReady,
       secondBarracksBridgeSeconds: farm.secondBarracksBridgeSeconds,
       secondBarracksProjectedRate: farm.secondBarracksProjectedRate,
-      woodsiteStatus: woodsite.status
+      woodsiteStatus: woodsite.status,
+      economicArbitration: arbitration
     },
     reservations,
-    authorizedSpend: actions.filter(a => a.type === "BUILD").reduce((sum, a) => {
+    authorizedSpend: arbitration.actions.filter(a => a.type === "BUILD").reduce((sum, a) => {
       const c = costOf(state, policy, a.kind);
       for (const type of ["food", "wood", "stone", "metal"])
         sum[type] += c[type] || 0;
       return sum;
     }, { food: 0, wood: 0, stone: 0, metal: 0 }),
-    actions
+    actions: arbitration.actions
   };
 }
 
@@ -1078,4 +1136,5 @@ export {
   effectiveFieldWorkerUnits,
   woodWorksiteDecision,
   resourceEnough
+  ,arbitrateEconomicSpending
 };

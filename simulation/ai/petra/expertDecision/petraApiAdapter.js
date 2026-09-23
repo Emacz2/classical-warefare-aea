@@ -247,8 +247,13 @@ function housingMetrics(gameState, context = {}) {
     (houseTemplate && typeof houseTemplate.getPopulationBonus === "function" ? Number(houseTemplate.getPopulationBonus()) || 0 : 0);
   const civilianTrainTime = Number.isFinite(Number(live.civilianTrainTime)) ? Number(live.civilianTrainTime) : 0;
   const activeMilitaryTrainers = Number.isFinite(Number(live.activeMilitaryTrainers)) ? Math.max(0, Number(live.activeMilitaryTrainers)) : 0;
+  const busyMilitaryTrainers = Number.isFinite(Number(live.busyMilitaryTrainers)) ? Math.max(0, Number(live.busyMilitaryTrainers)) : 0;
+  const militaryTrainerUtilization = Number.isFinite(Number(live.militaryTrainerUtilization)) ?
+    Math.max(0, Math.min(1, Number(live.militaryTrainerUtilization))) :
+    (activeMilitaryTrainers ? Math.min(1, busyMilitaryTrainers / activeMilitaryTrainers) : 0);
   const ccSoldierActive = !!live.ccSoldierActive;
-  return { houseBuildTime, housePopulationBonus, civilianTrainTime, activeMilitaryTrainers, ccSoldierActive };
+  return { houseBuildTime, housePopulationBonus, civilianTrainTime, activeMilitaryTrainers,
+    busyMilitaryTrainers, militaryTrainerUtilization, ccSoldierActive };
 }
 
 function observePetra(gameState, context = {}) {
@@ -358,7 +363,8 @@ function observePetra(gameState, context = {}) {
       civilians: Number.isFinite(Number(context.workers.civilians)) ? Math.max(0, Number(context.workers.civilians)) : 0,
       woodCivilians: Number.isFinite(Number(context.workers.woodCivilians)) ? Math.max(0, Number(context.workers.woodCivilians)) : 0,
       foodOwnedCivilians: Number.isFinite(Number(context.workers.foodOwnedCivilians)) ? Math.max(0, Number(context.workers.foodOwnedCivilians)) : 0,
-      overflowWood: Number.isFinite(Number(context.workers.overflowWood)) ? Math.max(0, Number(context.workers.overflowWood)) : 0
+      overflowWood: Number.isFinite(Number(context.workers.overflowWood)) ? Math.max(0, Number(context.workers.overflowWood)) : 0,
+      attackCommitted: Number.isFinite(Number(context.workers.attackCommitted)) ? Math.max(0, Number(context.workers.attackCommitted)) : 0
     }
   };
 }

@@ -750,6 +750,68 @@ export class ExpertDecisionController
 		return removed.length ? { ...frame, actions } : frame;
 	}
 
+	applyFinalEconomicSpendingArbiter(gameState, frame)
+	{
+		if (!frame)
+			return frame;
+		const policy = mergePolicy(this.strategyPolicyOverrides(gameState));
+		const bank = gameState.getResources();
+		const workers = this.economyWorkerMetrics(gameState);
+		const actual = this.actualWorkerOrders(gameState);
+		const housing = this.housingMetrics(gameState, this.findCC(gameState));
+		const foodRate = Math.max(0, Number(frame.state && frame.state.food && frame.state.food.measuredFoodIncomeRate) || 0);
+		const barracks = this.builtByClass(gameState, "Barracks").length;
+		const burn = Math.max(0, Number(frame.state && frame.state.food &&
+			(barracks >= 2 ? frame.state.food.twoBarracksFoodBurnRate :
+			 barracks === 1 ? frame.state.food.oneBarracksFoodBurnRate : frame.state.food.ccFoodBurnRate)) || 0);
+		const foodSecure = (Number(bank.food) || 0) >= (Number(policy.economyArbiterFoodSurplusBank) || 800) &&
+			(foodRate >= burn * 0.90 || this.builtByClass(gameState, "Field").length >= 6);
+		const measuredWood = Math.max(0, Number(this.woodIncomeEMA) || 0);
+		const effectiveWood = Math.max(0, Number(workers.wood) || 0);
+		const actualWood = Math.max(0, Number(actual.wood) || 0);
+		const woodWeak = this.woodIncomeStalled || this.phaseWoodCrisis ||
+			measuredWood < (Number(policy.economyArbiterMinimumMeasuredWoodRate) || 8) ||
+			effectiveWood < (Number(policy.economyArbiterMinimumEffectiveWoodWorkers) || 12) || actualWood < 4;
+		const woodCrisis = (Number(bank.wood) || 0) <= (Number(policy.economyArbiterWoodCrisisBank) || 250) &&
+			(woodWeak || foodSecure);
+		const removed = [];
+		const actions = (frame.actions || []).filter(action =>
+		{
+			if (!action || !["BUILD", "RESERVE"].includes(action.type))
+				return true;
+			const emergencyFood = action.priority >= 110 || action.role === "farm_hub_deadlock";
+			if (woodCrisis && foodSecure && !emergencyFood &&
+			    (action.kind === "field" || action.kind === "farmstead" || action.kind === "temple"))
+			{
+				removed.push(action.kind + ":" + (action.role || "optional"));
+				return false;
+			}
+			if (action.kind === "barracks" && ["third_p2", "fourth_p3", "fifth_p3"].includes(action.role))
+			{
+				const sustainable = !woodWeak && (Number(bank.wood) || 0) >=
+					(Number(policy.economyArbiterThirdBarracksWoodBank) || 350) &&
+					housing.militaryTrainerUtilization >= (Number(policy.economyArbiterTrainerUtilization) || 0.75);
+				if (!sustainable)
+				{
+					removed.push(action.kind + ":" + action.role);
+					return false;
+				}
+			}
+			return true;
+		});
+		if (woodCrisis && foodSecure && this.committedFarmHubFields)
+		{
+			removed.push("committed-field-debt");
+			this.committedFarmHubFields = undefined;
+		}
+		if (removed.length)
+			aiWarn("[EXPERT-ARBITER] blocked=" + removed.join(",") + " bank=" +
+				Math.round(Number(bank.food) || 0) + "/" + Math.round(Number(bank.wood) || 0) +
+				" wood=" + effectiveWood + "/" + actualWood + " rate=" + measuredWood.toFixed(1) +
+				" trainers=" + housing.busyMilitaryTrainers + "/" + housing.activeMilitaryTrainers);
+		return removed.length ? { ...frame, actions } : frame;
+	}
+
 	updateWoodScarcityStrategy(gameState, woodsite, woodContinuity)
 	{
 		const doctrine = this.ensureStrategicDoctrine(gameState);
@@ -1974,11 +2036,18 @@ export class ExpertDecisionController
 		const training = this.trainingExecution(gameState, cc);
 		const civilian = training && training.template ? gameState.getTemplate(training.template) : undefined;
 		const workers = collectWorkerMetrics(gameState, { "playerId": PlayerID });
+		const barracks = this.builtByClass(gameState, "Barracks");
+		let busyMilitaryTrainers = 0;
+		for (const trainer of barracks)
+			if (trainer && trainer.trainingQueue && (trainer.trainingQueue() || []).length)
+				++busyMilitaryTrainers;
 		return {
 			"houseBuildTime": this.templateBuildTime(house),
 			"housePopulationBonus": house && typeof house.getPopulationBonus === "function" ? Number(house.getPopulationBonus()) || 0 : 0,
 			"civilianTrainTime": this.templateBuildTime(civilian),
-			"activeMilitaryTrainers": this.builtByClass(gameState, "Barracks").length,
+			"activeMilitaryTrainers": barracks.length,
+			"busyMilitaryTrainers": busyMilitaryTrainers,
+			"militaryTrainerUtilization": barracks.length ? busyMilitaryTrainers / barracks.length : 0,
 			"ccSoldierActive": workers.civilians >= this.ccCivilianTrainingTarget(gameState)
 		};
 	}
@@ -16700,7 +16769,8 @@ export class ExpertDecisionController
 				"athensWoodScarcityForge": gameState.getPlayerCiv() === "athen" && this.resourceForecast && this.resourceForecast.resources && this.resourceForecast.resources.wood ? this.resourceForecast.resources.wood.status === "critical" : false,
 				"forgeSecondUseful": this.secondForgeResearchUseful(gameState),
 				"forgeThirdUseful": this.thirdForgeResearchUseful(gameState),
-				"p3BoomDoctrine": this.isP3BoomDoctrine(gameState)
+				"p3BoomDoctrine": this.isP3BoomDoctrine(gameState),
+				"p1RushDoctrine": doctrine.id === "early_p1_rush" || doctrine.id === "late_p1_rush"
 			}
 		});
 		// IT14.51: strategy-level operating population ceiling. A 300-pop lobby may
@@ -16947,6 +17017,9 @@ export class ExpertDecisionController
 					(siegeContext.finishing ? "finish" : siegeContext.p2KillSwitch ? "p2-kill" : siegeContext.brokenTown ? "broken-p2" : "p3-push"));
 			}
 		}
+		// IT15.8.42 final authority: controller-side helpers above may propose work after
+		// the pure economy plan. Re-run arbitration immediately before execution.
+		frame = this.applyFinalEconomicSpendingArbiter(gameState, frame);
 		// IT15.8.3 opening order: after the opening food/wood dropsites, Barracks #1
 		// must be physically placed before any second Farmstead or Storehouse.
 		frame = this.applyFirstBarracksOpeningGate(gameState, frame);

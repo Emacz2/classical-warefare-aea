@@ -36,6 +36,8 @@ function normalizeState(input = {}) {
       housePopulationBonus: n(housing.housePopulationBonus),
       civilianTrainTime: n(housing.civilianTrainTime),
       activeMilitaryTrainers: n(housing.activeMilitaryTrainers),
+      busyMilitaryTrainers: n(housing.busyMilitaryTrainers),
+      militaryTrainerUtilization: n(housing.militaryTrainerUtilization),
       ccSoldierActive: bool(housing.ccSoldierActive)
     },
     resources: {
@@ -123,7 +125,8 @@ function normalizeState(input = {}) {
       civilians: n(workers.civilians),
       woodCivilians: n(workers.woodCivilians),
       foodOwnedCivilians: n(workers.foodOwnedCivilians),
-      overflowWood: n(workers.overflowWood)
+      overflowWood: n(workers.overflowWood),
+      attackCommitted: n(workers.attackCommitted)
     },
     costs: input.costs || {},
     flags: { ...(input.flags || {}) }

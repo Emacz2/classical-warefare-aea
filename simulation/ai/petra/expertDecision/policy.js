@@ -473,6 +473,12 @@ const DEFAULT_POLICY = Object.freeze({
   phase2ThirdBarracksMinimumFields: 6,
   phase2ThirdBarracksFoodBank: 300,
   phase2ThirdBarracksWoodBank: 200,
+  economyArbiterWoodCrisisBank: 250,
+  economyArbiterFoodSurplusBank: 800,
+  economyArbiterMinimumMeasuredWoodRate: 8,
+  economyArbiterMinimumEffectiveWoodWorkers: 12,
+  economyArbiterThirdBarracksWoodBank: 350,
+  economyArbiterTrainerUtilization: 0.75,
   // IT14.59 City all-in throughput. P1 stays at two Barracks and P2 at three; the
   // fourth/fifth are explicitly City-only so the early phase/tech timing cannot regress.
   cityFourthBarracksPopulation: 140,
@@ -517,6 +523,8 @@ const DEFAULT_POLICY = Object.freeze({
   // luxury. A non-rush/P2-tech opening may reserve it once the basic two-barracks
   // economy is established; rush doctrines still suppress it until the rush launches.
   p1TemplePopulation: 55,
+  p1TempleAdaptivePopulation: 45,
+  p1TempleMinimumEconomicWorkers: 30,
   p1TempleMinimumFieldPipeline: 3,
   p1TempleWoodReserve: 25,
   // Give the post-barracks P1 temple a short protected construction window before

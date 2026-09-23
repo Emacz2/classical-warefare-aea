@@ -1,0 +1,35 @@
+Expert AI 15.8.42 — live economic spending arbitration
+
+Scope
+- Based directly on verified 15.8.41.
+- Expert gather/trade bonus remains 15%.
+- Attack, defense, capture, opening placement, and strategy probabilities are unchanged.
+
+Corrections
+1. Effective workforce
+   - Economic counts exclude units owned by an active attack/defense command.
+   - Spending decisions now receive committed-military counts, delivered wood income,
+     actual wood orders, and current Barracks utilization.
+2. Shared spending authority
+   - Farm, Farmstead, Temple, and production-building proposals pass through one final
+     live-state arbiter immediately before execution.
+   - A food-rich/wood-critical economy defers optional Fields/Farmsteads and cancels
+     stale committed-field debt. Genuine food-capacity deadlocks remain exempt.
+3. Sustainable military production
+   - Barracks #3+ requires strong live wood continuity, a 350-wood operating bank, and
+     at least 75% utilization of the existing Barracks.
+   - A population/field-count milestone alone can no longer authorize another trainer.
+4. Adaptive Greek Temple
+   - Non-P1-rush strategies may propose the worker-aura Temple in late P1 after
+     Barracks #1 once population/economic-worker value justifies it.
+   - The Temple waits during an actual wood-continuity crisis rather than reserving
+     the wood needed to restore lumber service or phase continuity.
+5. Diagnostics
+   - [EXPERT-ARBITER] reports each veto with bank, effective/actual wood workers,
+     measured wood rate, and busy/total Barracks.
+
+Validation
+- JavaScript syntax checks for all changed runtime files.
+- Full inherited regression suite.
+- New replay-derived economic-arbiter test covering the 1.2k food / 71 wood failure,
+  sustainable Barracks #3 admission, and emergency food-capacity override.
