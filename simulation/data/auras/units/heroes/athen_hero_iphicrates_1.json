@@ -6,9 +6,10 @@
 		{ "value": "Attack/Ranged/MaxRange", "add": 3 },
 		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
 		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 },
-		{ "value": "Attack/Melee/PrepareTime", "multiply": 0.5,  "affects": "PaidMerc" }
+		{ "value": "Attack/Melee/PrepareTime", "multiply": 0.5,  "affects": "Mercenary" },
+		{ "value": "Attack/Ranged/PrepareTime", "multiply": 0.5,  "affects": "Mercenary" }
 	],
 	"auraName": "Formation Reforms",
 	"showDescription": 1,
-	"auraDescription": "Ranged soldiers +3 range, PaidMerc 50% less prepare time, all Soldiers +1.5 hack and 1 pierce resitance."
+	"auraDescription": "Ranged soldiers +3 range, Mercanaries 50% less prepare time, all Soldiers +1.5 hack and 1 pierce resitance."
 }

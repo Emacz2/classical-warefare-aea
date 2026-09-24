@@ -1,12 +1,12 @@
 {
 	"type": "global",
-	"affects": ["PaidMerc"],
+	"affects": ["Mercenary"],
 	"modifications": [
 		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.10 },
 		{ "value": "Cost/BuildTime", "multiply": 0.9 }
 	],
 	"auraName": "Fast reinforcements",
 	"showDescription": 1,
-	"auraDescription": "Infantry Mercaneries +10% movement speed and 10% less train timee.",
+	"auraDescription": "Infantry Mercaneries +10% movement speed and 10% less train time.",
 	"overlayIcon": "art/textures/ui/session/auras/speed_bonus.png"
 }

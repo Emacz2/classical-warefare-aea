@@ -1,5 +1,9 @@
 {
 	"genericName": "Experienced Crews",
+	"specificName": {
+		"athen": "Trierarchy"
+	
+	},
 	"description": "Train your oarsmen and sailors to move more efficiently and speed up your ships.",
 	"cost": {
 		"food": 500

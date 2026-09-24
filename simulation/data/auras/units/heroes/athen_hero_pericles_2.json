@@ -8,7 +8,7 @@
                 { "value": "Researcher/TechCostMultiplier/metal", "multiply": 0.85 },
                 { "value": "Researcher/TechCostMultiplier/time", "multiply": 0.8 }
 	],
-	"auraName": "Scholarship and the Arts",
+	"auraName": "Golden Age",
 	"showDescription": 1,
 	"auraDescription": "Technologies -15% cost, -20% research time."
 }
