@@ -1,10 +1,10 @@
 {
-	"genericName": "Iphicratean Reforms",
-	"description": "Iphicrates modernized the Athenian army by replacing heavy hoplite equipment with lighter armor, longer spears, and longer swords. His reforms increased mobility and tactical flexibility while reclaiming valuable bronze from obsolete equipment.",
+	"genericName": "Iphicratean Arms Reforms",
+	"description": "Ancient authors credit Iphicrates with introducing lighter equipment, smaller shields, and longer spears and swords, improving his infantry’s mobility and reach..",
 	"cost": {
 		"food": 400,
-		"wood": 400,
-		"metal": -200
+		"wood": 400
+	
 	},
 	"requirements": {
 		"all": [
@@ -15,15 +15,13 @@
 	"requirementsTooltip": "Unlocked in City Phase.",
 	"icon": "silvershields.png",
 	"researchTime": 30,
-	"tooltip": "Reforms the Athenian infantry after the innovations of Iphicrates. Recover 200 Metal by replacing heavy bronze equipment with lighter arms and armor. Infantry move 5% faster. Spearmen gain +1 melee range and attack 200 ms faster. Swordsmen gain +0.5 melee range and attack 50 ms faster. All melee infantry lose 1 Hack and 1 Pierce Resistance due to their lighter equipment.",
+	"tooltip":  "Infantry move 5% faster but lose 0.5 Hack/Pierce Resistance. Infantry spearmen gain +1 m melee range. Infantry swordsmen gain +0.5 m melee range.",
 	"modifications": [
 	{ "value": "Attack/Melee/MaxRange", "add": 1, "affects": "Infantry Spearman" },
 	{ "value": "Attack/Melee/MaxRange", "add": 0.5, "affects": "Infantry Swordsman" },
 	{ "value": "UnitMotion/WalkSpeed", "multiply": 1.05, "affects": "Infantry" },
-	{ "value": "Attack/Melee/RepeatTime", "add": -200, "affects": "Infantry Spearman" },
-	{ "value": "Attack/Melee/RepeatTime", "add": -50, "affects": "Infantry Swordsman" },
-	{ "value": "Resistance/Entity/Damage/Hack", "add": -1, "affects": "Infantry Melee" },
-	{ "value": "Resistance/Entity/Damage/Pierce", "add": -1, "affects": "Infantry Melee" }
+	{ "value": "Resistance/Entity/Damage/Hack", "add": -0.5, "affects": "Infantry" },
+	{ "value": "Resistance/Entity/Damage/Pierce", "add": 0.5, "affects": "Infantry" }
 
 	],
 	"soundComplete": "interface/alarm/alarm_upgradearmory.xml"

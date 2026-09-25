@@ -1,12 +1,13 @@
 {
 	"type": "global",
-	"affects": ["Mercenary"],
+	"affects": ["Infantry Javelineer"],
 	"modifications": [
-		{ "value": "UnitMotion/WalkSpeed", "multiply": 1.10 },
-		{ "value": "Cost/BuildTime", "multiply": 0.9 }
+		{ "value": "UnitMotion/RunMultiplier", "multiply": 1.05 },
+		{ "value": "Attack/Ranged/MaxRange", "add": 2 },
+		{ "value": "Vision/Range","add": 10 }
 	],
-	"auraName": "Fast reinforcements",
+	"auraName": "Peltast Tactics",
 	"showDescription": 1,
-	"auraDescription": "Infantry Mercaneries +10% movement speed and 10% less train time.",
+	"auraDescription": "Infantry javelineers gain +5% run speed, +2m ranged attack range, and +10m vision.",
 	"overlayIcon": "art/textures/ui/session/auras/speed_bonus.png"
 }
