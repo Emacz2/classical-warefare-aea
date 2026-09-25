@@ -1,14 +1,15 @@
 {
 	"type": "range",
 	"radius": 45,
-	"affects": ["Soldier"],
+	"affects": ["Mercenary"],
 	"modifications": [
-		{ "value": "Attack/Ranged/MaxRange", "add": 3 },
-		{ "value": "Resistance/Entity/Damage/Hack", "add": 1.5 },
-		{ "value": "Resistance/Entity/Damage/Pierce", "add": 1 },
-		{ "value": "Attack/Melee/PrepareTime", "multiply": 0.5,  "affects": "PaidMerc" }
+		{ "value": "Attack/Melee/PrepareTime", "multiply": 0.5 },
+		{ "value": "Attack/Ranged/PrepareTime", "multiply": 0.5 },
+		{ "value": "Attack/Ranged/RepeatTime", "add": -100, "affects": "Archer" },
+		{ "value": "Attack/Ranged/RepeatTime", "add": -150,  "affects": "Slinger"  },
+		{ "value": "Attack/Ranged/RepeatTime", "add": -300,  "affects": "Javelineer"}
 	],
-	"auraName": "Formation Reforms",
+	"auraName": "Mercenary Discipline",
 	"showDescription": 1,
-	"auraDescription": "Ranged soldiers +3 range, PaidMerc 50% less prepare time, all Soldiers +1.5 hack and 1 pierce resitance."
+	"auraDescription": "Mercanaries 50% less prepare time.  Archers attack 100ms quicker, slingers 150ms quicker and Javelineers 300ms."
 }

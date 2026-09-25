@@ -10,7 +10,7 @@
 		{ "value": "Loot/metal", "replace": 0},
 		{ "value": "Capturable/CapturePoints", "multiply": 1.5}
 	],
-	"auraName": "Periclean Defensive Strategy",
+	"auraName": "Strategic Withdrawal",
 	"showDescription": 1,
 	"auraDescription": "Soldiers, Ships, Siege engines and structures give 0 loot, +50% Building capture points.",
 	"overlayIcon": "art/textures/ui/session/auras/standground.png"
